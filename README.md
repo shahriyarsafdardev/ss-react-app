@@ -1,42 +1,77 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ScholarSite React Application
 
-## 1.install
+This project was created to house ScholarSite's Student Portal. We’re receiving more and more validation everyday that we’re building something very special at ScholarSite and are really excited for this next step in the journey.
 
-### npm
+## Product Description
 
-```
-npm i
-or
-npm i --legacy-peer-deps
-```
+ScholarSite hosts live sessions with some of the world's leading experts. During these sessions, teachers engage with students and help them accelerate their career growth. Often these same students want to revisit materials they have covered in the live sessions, and to do so, they come to the Student Portal.
 
-### yarn
+## Designs
+
+The initial designs for the Student Portal are shown [here](https://www.figma.com/file/bcAdfEQCTLfnF8HCHdy6Iq/Student-Prototype?node-id=0%3A1).
+
+A prototype is shown [here](https://www.figma.com/proto/bcAdfEQCTLfnF8HCHdy6Iq/Student-Prototype?node-id=7%3A3758&scaling=scale-down&page-id=0%3A1&starting-point-node-id=30%3A9406).
+
+As you can see, we are using a set of MaterialUI components which are already integrated within this directory. This should allow us to focus on code quality and testing rather than spending time on styling details.
+## Development
+
+We would like to build this project using test driven development. Thic process will rely on both:
+
+- Integration testing using enzyme
+- Unit testing using jest
+- Continuous integration using CircleCi
+
+These tests will rely on a set of fixtured included within the `./fixtures/` directory.
+
+## API
+
+### Login
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/sign_in
+
+Params:  { email: string, password: string } 
+
+Successful response fixture: fixtures/successful_authentication.json
+
+Failed response fixture: fixtures/failed_authentication.json
+
+### Cohort List
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts
+
+Params:  {}
+
+Fixture: fixtures/cohorts_fixture.json
+
+### Cohort Details
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid
+
+Params:  {} 
+
+Fixture: fixtures/cohort_fixture.json
+
+## Tooling
+
+### Install
 
 ```
 yarn install
 ```
 
-## 2.Start
+### Start
 
 ```sh
-npm start
-or
 yarn start
 ```
 
-## 2.Build
+### Build
 
 ```sh
-npm run build or yarn build
+yarn build
 ```
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
-
-Your app is ready to be deployed.
-
-## User Guide
-
-You can find detailed instructions on using Create React App and many tips in [its documentation](https://facebook.github.io/create-react-app/).

@@ -1,0 +1,10 @@
+{
+  "user": {
+    "id": "uuid",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "email",
+    "profile_image_url": "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Madeline-Mann.jpeg"
+  },
+  "accessToken": "token"
+}
