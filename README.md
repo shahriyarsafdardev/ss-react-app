@@ -35,6 +35,17 @@ Successful response fixture: fixtures/successful_authentication.json
 
 Failed response fixture: fixtures/failed_authentication.json
 
+### Fetch User
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/fetch_user
+
+Params:  {} 
+
+Successful response fixture: fixtures/successful_user_fetch.json
+
+Failed response fixture: fixtures/failed_user_fetch.json
+
+
 ### Cohort List
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts
