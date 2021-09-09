@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import fakeRequest from '../utils/fakeRequest';
 import { verify, sign } from '../utils/jwt';
 // @types
-import { User } from '../@types/account';
+import { payloadUser } from '../@types/account';
 //
 import mock from './mock';
 
@@ -12,13 +12,31 @@ import mock from './mock';
 const JWT_SECRET = 'minimal-secret-key';
 const JWT_EXPIRES_IN = '5 days';
 
-const users: User[] = [
+const users: payloadUser[] = [
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-0',
-    displayName: 'Jaydon Frankie',
+    first_name: 'Jaydon',
+    last_name: 'Frankie',
     email: 'demo@minimals.cc',
     password: 'demo1234',
-    photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+    profile_image_url: '/static/mock-images/avatars/avatar_default.jpg',
+    phoneNumber: '+40 777666555',
+    country: 'United States',
+    address: '90210 Broadway Blvd',
+    state: 'California',
+    city: 'San Francisco',
+    zipCode: '94116',
+    about: 'Praesent turpis. Phasellus viverra nulla ut metus varius laoreet. Phasellus tempus.',
+    role: 'admin',
+    isPublic: true
+  },
+  {
+    id: '8864c717-587d-472a-929a-8e5f298024da-1',
+    first_name: 'Aqib',
+    last_name: 'Maqbool',
+    email: 'aqibmaqqbool@gmail.com',
+    password: 'aqib1234',
+    profile_image_url: '/static/mock-images/avatars/avatar_default.jpg',
     phoneNumber: '+40 777666555',
     country: 'United States',
     address: '90210 Broadway Blvd',
@@ -74,10 +92,11 @@ mock.onPost('/api/account/register').reply(async (config) => {
 
     user = {
       id: uuidv4(),
-      displayName: `${firstName} ${lastName}`,
+      first_name: firstName,
+      last_name: lastName,
       email,
       password,
-      photoURL: null,
+      profile_image_url: null,
       phoneNumber: null,
       country: null,
       address: null,

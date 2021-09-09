@@ -37,18 +37,31 @@ const initialState: AuthState = {
 };
 
 const JWTReducer = (state: AuthState, action: JWTActions) => {
+  let newUser: AuthUser;
   switch (action.type) {
     case 'INITIALIZE':
+      newUser = action.payload.user;
+      newUser = {
+        ...newUser,
+        displayName: `${newUser?.first_name} ${newUser?.last_name}`,
+        photoUrl: newUser?.profile_image_url
+      };
       return {
         isAuthenticated: action.payload.isAuthenticated,
         isInitialized: true,
-        user: action.payload.user
+        user: newUser
       };
     case 'LOGIN':
+      newUser = action.payload.user;
+      newUser = {
+        ...newUser,
+        displayName: `${newUser?.first_name} ${newUser?.last_name}`,
+        photoUrl: newUser?.profile_image_url
+      };
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user
+        user: newUser
       };
     case 'LOGOUT':
       return {
@@ -58,10 +71,16 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
       };
 
     case 'REGISTER':
+      newUser = action.payload.user;
+      newUser = {
+        ...newUser,
+        displayName: `${newUser?.first_name} ${newUser?.last_name}`,
+        photoUrl: newUser?.profile_image_url
+      };
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload.user
+        user: newUser
       };
 
     default:
