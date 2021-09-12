@@ -95,6 +95,9 @@ export default function LoginForm() {
             type="email"
             label="Email address"
             {...getFieldProps('email')}
+            inputProps={{
+              'data-testid': 'email'
+            }}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
           />
@@ -105,8 +108,9 @@ export default function LoginForm() {
             type={showPassword ? 'text' : 'password'}
             label="Password"
             {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
+            inputProps={{
+              'data-testid': 'password',
+              endadornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleShowPassword} edge="end">
                     <Icon icon={showPassword ? eyeFill : eyeOffFill} />
@@ -131,6 +135,7 @@ export default function LoginForm() {
         </Stack>
 
         <LoadingButton
+          data-testid="loginBtn"
           fullWidth
           size="large"
           type="submit"
