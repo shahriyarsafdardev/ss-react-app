@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@material-ui/lab';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store, persistor } from '../redux/store';
-
+import { useTranslation } from 'react-i18next';
 import App from 'App';
 import LoadingScreen from 'components/LoadingScreen';
 import { CollapseDrawerProvider } from 'contexts/CollapseDrawerContext';
@@ -59,6 +59,11 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({t: key => key})
+}));
+
+
 test('it performs a user login', async () => {
   window.scrollTo = jest.fn();
 
@@ -86,6 +91,8 @@ test('it performs a user login', async () => {
     );
   });
 
+  console.log(document.children[0].innerHTML)
+
   // act(() => {
   //   const { container } = render(
   //     <LocalStorageMock>
@@ -100,14 +107,19 @@ test('it performs a user login', async () => {
   //   );
   // });
 
-  userEvent.type(screen.getByTestId('email'), 'demo@minimals.cc');
-  userEvent.type(screen.getByTestId('password'), 'demo1234');
   act(async () => {
-    await fireEvent.click(screen.getByTestId('loginBtn'));
+    await fireEvent.click(screen.getAllByText("Pages")[0]);
   });
 
-  // await waitFor(() => container.querySelector('h6'));
+  
+  // userEvent.type(screen.getByTestId('email'), 'demo@minimals.cc');
+  // userEvent.type(screen.getByTestId('password'), 'demo1234');
+  // act(async () => {
+  //   await fireEvent.click(screen.getByTestId('loginBtn'));
+  // });
 
-  // expect(container.querySelector('input')).toHaveTextContent('hello there');
-  expect(screen.getByRole('button')).toBeDisabled();
+  // // await waitFor(() => container.querySelector('h6'));
+
+  // // expect(container.querySelector('input')).toHaveTextContent('hello there');
+  // expect(screen.getByRole('button')).toBeDisabled();
 });
