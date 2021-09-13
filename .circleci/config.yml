@@ -1,8 +1,12 @@
 version: 2
 jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:15
     steps:
       - checkout
-     - node/install:
+      - node/install:
           install-yarn: true
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
