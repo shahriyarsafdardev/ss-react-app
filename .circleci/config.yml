@@ -31,6 +31,10 @@ jobs:
           name: install dependecies
           command: yarn install
       - run:
+          name: Run server
+          command: yarn start
+          background: true
+      - run:
           name: Run tests
           command: yarn test
 
