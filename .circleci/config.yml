@@ -1,7 +1,5 @@
 version: 2
 jobs:
- - node/test:
-    version: '15.1'
   build:
     working_directory: ~/redux-async
     docker:
