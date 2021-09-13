@@ -26,7 +26,7 @@ describe('When user tries to login', () => {
     await page.click("input[name='password']");
     await page.type("input[name='password']", 'wrongPass');
 
-    await page.click("button[type='submit']");
+    await page.click("button[type='saubmit']");
 
     await page.waitForSelector('.MuiAlert-standardError', {
       waitUntil: 'load',
