@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  node: circleci/node@4.1
 jobs:
   build:
     working_directory: ~/project
@@ -6,14 +8,15 @@ jobs:
       - image: circleci/node:15
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
+      - node/install-packages:
+        pkg-manager: yarn
+        cache-key: "yarn.lock"
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
       - save_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
           paths:
-            - /home/circleci/.npm
+            - ~/project/circleci/.npm
       - run:
           name: Run Tests
           command: yarn test
