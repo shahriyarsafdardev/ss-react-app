@@ -36,6 +36,7 @@ describe('When user tries to login', () => {
   });
 
   test('successful login with valid credentials', async () => {
+    await page.setDefaultNavigationTimeout(0);
     await page.goto('http://localhost:3000/dashboard');
     await page.waitForSelector("input[name='email']");
 
