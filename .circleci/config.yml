@@ -33,6 +33,7 @@ jobs:
       - run:
           name: Run server
           command: yarn start
+          background: true
       - run:
           name: Run tests
           command: yarn test
