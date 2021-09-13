@@ -23,7 +23,6 @@ jobs:
           background: true
 
   test:
-    
     docker:
       - image: circleci/node:15-browsers
     steps:
