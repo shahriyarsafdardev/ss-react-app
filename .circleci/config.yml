@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
+          requires: Run server
 
 workflows:
   version: 2
