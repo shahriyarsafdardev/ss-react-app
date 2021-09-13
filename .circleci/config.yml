@@ -23,6 +23,7 @@ jobs:
           background: true
 
   test:
+    parallelism: 1
     docker:
       - image: circleci/node:15-browsers
     steps:
@@ -37,7 +38,7 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
-          requires: Run server
+          when: Run server
 
 workflows:
   version: 2
