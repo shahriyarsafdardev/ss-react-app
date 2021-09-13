@@ -49,11 +49,11 @@ describe('When user tries to login', () => {
     await page.type("input[name='email']", 'aqibmaqqbool@gmail.com');
 
     await page.click("input[name='password']");
-    await page.type("input[name='password']", "aqib1234");
+    await page.type("input[name='password']", 'aqib1234');
 
     await page.click("button[type='submit']");
 
-    await page.waitForSelector('#user-title',  {
+    await page.waitForSelector('#user-title', {
       waitUntil: 'load',
       // Remove the timeout
       timeout: 0
