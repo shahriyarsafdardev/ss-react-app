@@ -17,3 +17,9 @@ jobs:
       - run:
           name: install dependecies
           command: yarn install
+      - run:
+          name: Run server
+          command: yarn start
+      - run:
+          name: Run tests
+          command: yarn test
