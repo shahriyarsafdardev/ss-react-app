@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-jest.setTimeout(150000);
+jest.setTimeout(1000000);
 
 describe('When user tries to login', () => {
   let browser: any;
@@ -28,7 +28,11 @@ describe('When user tries to login', () => {
 
     await page.click("button[type='submit']");
 
-    await page.waitForSelector('.MuiAlert-standardError');
+    await page.waitForSelector('.MuiAlert-standardError', {
+      waitUntil: 'load',
+      // Remove the timeout
+      timeout: 0
+    });
 
     const element = await page.$('.MuiAlert-standardError');
     const value = await page.evaluate((el: any) => el.textContent, element);
@@ -49,7 +53,11 @@ describe('When user tries to login', () => {
 
     await page.click("button[type='submit']");
 
-    await page.waitForSelector('#user-title');
+    await page.waitForSelector('#user-title',  {
+      waitUntil: 'load',
+      // Remove the timeout
+      timeout: 0
+    });
     let element = await page.$('#user-title');
     let value = await page.evaluate((el: any) => el.textContent, element);
 
