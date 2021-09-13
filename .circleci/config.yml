@@ -1,9 +1,5 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:15
     steps:
       - checkout
      - node/install:
