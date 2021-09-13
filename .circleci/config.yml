@@ -21,7 +21,6 @@ jobs:
           name: Run server
           command: yarn start
           background: true
-  test:
-    - run:
-        name: Run tests
-        command: yarn test
+      - run:
+          name: Run tests
+          command: yarn test
