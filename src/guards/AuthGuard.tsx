@@ -1,5 +1,5 @@
-import { useState, ReactNode, useEffect } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { ReactNode, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 // hooks
 import useAuth from '../hooks/useAuth';
 // pages
