@@ -40,6 +40,12 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
+const SideBarTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  fontWeight: 500,
+  padding: '1.5rem'
+}));
+
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -123,7 +129,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         }
       }}
     >
-      <Stack
+      {/* <Stack
         spacing={3}
         sx={{
           px: 2.5,
@@ -163,13 +169,16 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </AccountStyle>
           </Link>
         )}
-      </Stack>
+      </Stack> */}
+      <SideBarTitle gutterBottom variant="h4">
+        ScholarSite
+      </SideBarTitle>
 
       <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
 
-      <Box sx={{ flexGrow: 1 }} />
+      {/* <Box sx={{ flexGrow: 1 }} /> */}
 
-      {!isCollapse && (
+      {/* {!isCollapse && (
         <Stack
           spacing={3}
           alignItems="center"
@@ -190,7 +199,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             Documentation
           </Button>
         </Stack>
-      )}
+      )} */}
     </Scrollbar>
   );
 
