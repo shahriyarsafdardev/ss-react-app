@@ -69,15 +69,14 @@ export default function Router() {
 
     // Dashboard Routes
     {
-      path: 'dashboard',
+      path: '/',
       element: (
         <AuthGuard>
           <DashboardLayout />
         </AuthGuard>
       ),
       children: [
-        { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-        { path: 'app', element: <GeneralApp /> },
+        { path: '/', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -86,7 +85,7 @@ export default function Router() {
         {
           path: 'e-commerce',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/e-commerce/shop" replace /> },
+            { path: '/', element: <Navigate to="/e-commerce/shop" replace /> },
             { path: 'shop', element: <EcommerceShop /> },
             { path: 'product/:name', element: <EcommerceProductDetails /> },
             { path: 'list', element: <EcommerceProductList /> },
@@ -99,7 +98,7 @@ export default function Router() {
         {
           path: 'user',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
+            { path: '/', element: <Navigate to="/user/profile" replace /> },
             { path: 'profile', element: <UserProfile /> },
             { path: 'cards', element: <UserCards /> },
             { path: 'list', element: <UserList /> },
@@ -118,7 +117,7 @@ export default function Router() {
         {
           path: 'blog',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/blog/posts" replace /> },
+            { path: '/', element: <Navigate to="/blog/posts" replace /> },
             { path: 'posts', element: <BlogPosts /> },
             { path: 'post/:title', element: <BlogPost /> },
             { path: 'new-post', element: <BlogNewPost /> }
@@ -127,7 +126,7 @@ export default function Router() {
         {
           path: 'mail',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/mail/all" replace /> },
+            { path: '/', element: <Navigate to="/mail/all" replace /> },
             { path: 'label/:customLabel', element: <Mail /> },
             { path: 'label/:customLabel/:mailId', element: <Mail /> },
             { path: ':systemLabel', element: <Mail /> },
@@ -161,71 +160,72 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" replace /> }
       ]
     },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { path: '/', element: <LandingPage /> },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
-        {
-          path: 'components',
-          children: [
-            { path: '/', element: <ComponentsOverview /> },
-            // FOUNDATIONS
-            { path: 'color', element: <Color /> },
-            { path: 'typography', element: <Typography /> },
-            { path: 'shadows', element: <Shadows /> },
-            { path: 'grid', element: <Grid /> },
-            { path: 'icons', element: <Icons /> },
-            // MATERIAL UI
-            { path: 'accordion', element: <Accordion /> },
-            { path: 'alert', element: <Alert /> },
-            { path: 'autocomplete', element: <Autocomplete /> },
-            { path: 'avatar', element: <Avatar /> },
-            { path: 'badge', element: <Badge /> },
-            { path: 'breadcrumbs', element: <Breadcrumb /> },
-            { path: 'buttons', element: <Buttons /> },
-            { path: 'checkbox', element: <Checkbox /> },
-            { path: 'chip', element: <Chip /> },
-            { path: 'dialog', element: <Dialog /> },
-            { path: 'label', element: <Label /> },
-            { path: 'list', element: <List /> },
-            { path: 'menu', element: <Menu /> },
-            { path: 'pagination', element: <Pagination /> },
-            { path: 'pickers', element: <Pickers /> },
-            { path: 'popover', element: <Popover /> },
-            { path: 'progress', element: <Progress /> },
-            { path: 'radio-button', element: <RadioButtons /> },
-            { path: 'rating', element: <Rating /> },
-            { path: 'slider', element: <Slider /> },
-            { path: 'snackbar', element: <Snackbar /> },
-            { path: 'stepper', element: <Stepper /> },
-            { path: 'switch', element: <Switches /> },
-            { path: 'table', element: <Table /> },
-            { path: 'tabs', element: <Tabs /> },
-            { path: 'textfield', element: <Textfield /> },
-            { path: 'timeline', element: <Timeline /> },
-            { path: 'tooltip', element: <Tooltip /> },
-            { path: 'transfer-list', element: <TransferList /> },
-            { path: 'tree-view', element: <TreeView /> },
-            { path: 'data-grid', element: <DataGrid /> },
-            // EXTRA COMPONENTS
-            { path: 'chart', element: <Charts /> },
-            { path: 'map', element: <Map /> },
-            { path: 'editor', element: <Editor /> },
-            { path: 'copy-to-clipboard', element: <CopyToClipboard /> },
-            { path: 'upload', element: <Upload /> },
-            { path: 'carousel', element: <Carousel /> },
-            { path: 'multi-language', element: <MultiLanguage /> },
-            { path: 'animate', element: <Animate /> },
-            { path: 'mega-menu', element: <MegaMenu /> }
-          ]
-        }
-      ]
-    },
-    { path: '*', element: <Navigate to="/404" replace /> }
+    // {
+    //   path: '/',
+    // element: <MainLayout />,
+    //   children: [
+    //     { path: '/', element: <LandingPage /> },
+    //     { path: 'about-us', element: <About /> },
+    //     { path: 'contact-us', element: <Contact /> },
+    //     { path: 'faqs', element: <Faqs /> },
+    //     {
+    //       path: 'components',
+    //       children: [
+    //         { path: '/', element: <ComponentsOverview /> },
+    //         // FOUNDATIONS
+    //         { path: 'color', element: <Color /> },
+    //         { path: 'typography', element: <Typography /> },
+    //         { path: 'shadows', element: <Shadows /> },
+    //         { path: 'grid', element: <Grid /> },
+    //         { path: 'icons', element: <Icons /> },
+    //         // MATERIAL UI
+    //         { path: 'accordion', element: <Accordion /> },
+    //         { path: 'alert', element: <Alert /> },
+    //         { path: 'autocomplete', element: <Autocomplete /> },
+    //         { path: 'avatar', element: <Avatar /> },
+    //         { path: 'badge', element: <Badge /> },
+    //         { path: 'breadcrumbs', element: <Breadcrumb /> },
+    //         { path: 'buttons', element: <Buttons /> },
+    //         { path: 'checkbox', element: <Checkbox /> },
+    //         { path: 'chip', element: <Chip /> },
+    //         { path: 'dialog', element: <Dialog /> },
+    //         { path: 'label', element: <Label /> },
+    //         { path: 'list', element: <List /> },
+    //         { path: 'menu', element: <Menu /> },
+    //         { path: 'pagination', element: <Pagination /> },
+    //         { path: 'pickers', element: <Pickers /> },
+    //         { path: 'popover', element: <Popover /> },
+    //         { path: 'progress', element: <Progress /> },
+    //         { path: 'radio-button', element: <RadioButtons /> },
+    //         { path: 'rating', element: <Rating /> },
+    //         { path: 'slider', element: <Slider /> },
+    //         { path: 'snackbar', element: <Snackbar /> },
+    //         { path: 'stepper', element: <Stepper /> },
+    //         { path: 'switch', element: <Switches /> },
+    //         { path: 'table', element: <Table /> },
+    //         { path: 'tabs', element: <Tabs /> },
+    //         { path: 'textfield', element: <Textfield /> },
+    //         { path: 'timeline', element: <Timeline /> },
+    //         { path: 'tooltip', element: <Tooltip /> },
+    //         { path: 'transfer-list', element: <TransferList /> },
+    //         { path: 'tree-view', element: <TreeView /> },
+    //         { path: 'data-grid', element: <DataGrid /> },
+    //         // EXTRA COMPONENTS
+    //         { path: 'chart', element: <Charts /> },
+    //         { path: 'map', element: <Map /> },
+    //         { path: 'editor', element: <Editor /> },
+    //         { path: 'copy-to-clipboard', element: <CopyToClipboard /> },
+    //         { path: 'upload', element: <Upload /> },
+    //         { path: 'carousel', element: <Carousel /> },
+    //         { path: 'multi-language', element: <MultiLanguage /> },
+    //         { path: 'animate', element: <Animate /> },
+    //         { path: 'mega-menu', element: <MegaMenu /> }
+    //       ]
+    //     }
+    //   ]
+    // },
+    { path: '*', element: <Navigate to="/404" replace /> },
+    { path: '/auth/*', element: <Navigate to="/404" replace /> }
   ]);
 }
 

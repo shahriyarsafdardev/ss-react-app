@@ -1,5 +1,5 @@
-import { useState, ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useState, ReactNode, useEffect } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 // hooks
 import useAuth from '../hooks/useAuth';
 // pages
@@ -14,18 +14,16 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated } = useAuth();
   const { pathname } = useLocation();
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated && pathname !== '/') {
+      navigate('/');
+    }
+  }, [pathname, isAuthenticated, navigate]);
 
   if (!isAuthenticated) {
-    if (pathname !== requestedLocation) {
-      setRequestedLocation(pathname);
-    }
     return <Login />;
-  }
-
-  if (requestedLocation && pathname !== requestedLocation) {
-    setRequestedLocation(null);
-    return <Navigate to={requestedLocation} />;
   }
 
   return <>{children}</>;
