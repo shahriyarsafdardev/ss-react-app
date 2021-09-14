@@ -37,13 +37,6 @@ const sidebarConfig = [
         title: 'discover',
         path: PATH_DASHBOARD.general.app,
         icon: ICONS.discover
-      },
-      // Cohorts Section
-      {
-        title: 'my sample cohort',
-        path: PATH_DASHBOARD.cohorts.root,
-        icon: ICONS.cohorts,
-        children: [{ title: 'peers', path: PATH_DASHBOARD.cohorts.cards }]
       }
     ]
   }

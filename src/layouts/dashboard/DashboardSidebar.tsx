@@ -12,6 +12,8 @@ import {
   Typography,
   CardActionArea
 } from '@material-ui/core';
+// redux
+import { RootState, useDispatch, useSelector } from '../../redux/store';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -23,8 +25,13 @@ import MyAvatar from '../../components/MyAvatar';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
+
+import { getCohorts } from '../../redux/slices/cohort';
+
 //
 import sidebarConfig from './SidebarConfig';
+import cohortsConfig from './cohortsConfig';
+
 import { DocIllustration } from '../../assets';
 // ----------------------------------------------------------------------
 
@@ -61,43 +68,43 @@ type IconCollapseProps = {
   collapseClick: boolean;
 };
 
-function IconCollapse({ onToggleCollapse, collapseClick }: IconCollapseProps) {
-  return (
-    <Tooltip title="Mini Menu">
-      <CardActionArea
-        onClick={onToggleCollapse}
-        sx={{
-          width: 18,
-          height: 18,
-          display: 'flex',
-          cursor: 'pointer',
-          borderRadius: '50%',
-          alignItems: 'center',
-          color: 'text.primary',
-          justifyContent: 'center',
-          border: 'solid 1px currentColor',
-          ...(collapseClick && {
-            borderWidth: 2
-          })
-        }}
-      >
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            bgcolor: 'currentColor',
-            transition: (theme) => theme.transitions.create('all'),
-            ...(collapseClick && {
-              width: 0,
-              height: 0
-            })
-          }}
-        />
-      </CardActionArea>
-    </Tooltip>
-  );
-}
+// function IconCollapse({ onToggleCollapse, collapseClick }: IconCollapseProps) {
+//   return (
+//     <Tooltip title="Mini Menu">
+//       <CardActionArea
+//         onClick={onToggleCollapse}
+//         sx={{
+//           width: 18,
+//           height: 18,
+//           display: 'flex',
+//           cursor: 'pointer',
+//           borderRadius: '50%',
+//           alignItems: 'center',
+//           color: 'text.primary',
+//           justifyContent: 'center',
+//           border: 'solid 1px currentColor',
+//           ...(collapseClick && {
+//             borderWidth: 2
+//           })
+//         }}
+//       >
+//         <Box
+//           sx={{
+//             width: 8,
+//             height: 8,
+//             borderRadius: '50%',
+//             bgcolor: 'currentColor',
+//             transition: (theme) => theme.transitions.create('all'),
+//             ...(collapseClick && {
+//               width: 0,
+//               height: 0
+//             })
+//           }}
+//         />
+//       </CardActionArea>
+//     </Tooltip>
+//   );
+// }
 
 type DashboardSidebarProps = {
   isOpenSidebar: boolean;
@@ -106,7 +113,9 @@ type DashboardSidebarProps = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const dispatch = useDispatch();
+  const { cohorts } = useSelector((state: RootState) => state.cohort);
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -115,8 +124,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    dispatch(getCohorts());
+  }, [dispatch]);
 
   const renderContent = (
     <Scrollbar
@@ -174,7 +186,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         ScholarSite
       </SideBarTitle>
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      <NavSection
+        cohortsData={cohortsConfig(cohorts)}
+        navConfig={sidebarConfig}
+        isShow={!isCollapse}
+      />
 
       {/* <Box sx={{ flexGrow: 1 }} /> */}
 

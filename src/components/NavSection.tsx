@@ -32,6 +32,7 @@ const ListSubheaderStyle = styled((props) => (
 interface ListItemStyleProps extends ListItemButtonProps {
   component?: ReactNode;
   to?: string;
+  name?: string;
 }
 
 const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => ({
@@ -106,6 +107,7 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
       <>
         <ListItemStyle
           disableGutters
+          name="sidebar-items"
           onClick={handleOpen}
           sx={{
             ...(isActiveRoot && activeRootStyle)
@@ -195,13 +197,19 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
 
 interface NavSectionProps extends BoxProps {
   isShow?: boolean | undefined;
+  cohortsData?: any | undefined;
   navConfig: {
     subheader: string;
     items: NavItemProps[];
   }[];
 }
 
-export default function NavSection({ navConfig, isShow = true, ...other }: NavSectionProps) {
+export default function NavSection({
+  navConfig,
+  cohortsData = [],
+  isShow = true,
+  ...other
+}: NavSectionProps) {
   return (
     <Box {...other}>
       {navConfig.map((list) => {
@@ -215,6 +223,11 @@ export default function NavSection({ navConfig, isShow = true, ...other }: NavSe
           </List>
         );
       })}
+      <List key={cohortsData} disablePadding>
+        {cohortsData.map((item: NavItemProps) => (
+          <NavItem key={item.title} item={item} isShow={isShow} />
+        ))}
+      </List>
     </Box>
   );
 }

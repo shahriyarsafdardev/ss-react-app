@@ -109,10 +109,10 @@ export default function Router() {
           ]
         },
         {
-          path: 'cohorts',
+          path: 'cohorts/:cohortID',
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-            { path: 'cards', element: <PeerCards /> }
+            { path: '/peers', element: <PeerCards /> }
           ]
         },
         {
