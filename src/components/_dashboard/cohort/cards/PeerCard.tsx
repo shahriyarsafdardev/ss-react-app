@@ -43,13 +43,14 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 
 type PeerCardProps = {
   user: UserData;
+  openModal: () => void;
 };
 
-export default function PeerCard({ user }: PeerCardProps) {
+export default function PeerCard({ user, openModal }: PeerCardProps) {
   const { name, cover, position, avatarUrl } = user;
 
   return (
-    <Card>
+    <Card onClick={openModal}>
       <CardActionArea>
         <CardMediaStyle>
           <SvgIconStyle
