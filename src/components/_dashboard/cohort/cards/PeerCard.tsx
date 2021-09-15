@@ -13,7 +13,6 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
   position: 'relative',
   justifyContent: 'center',
   paddingTop: 'calc(100% * 9 / 16)',
-  cursor: 'pointer',
   '&:before': {
     top: 0,
     zIndex: 9,
@@ -49,7 +48,7 @@ export default function PeerCard({ user, openModal }: PeerCardProps) {
   const { name, cover, position, avatarUrl } = user;
 
   return (
-    <Card onClick={openModal}>
+    <Card onClick={openModal} style={{ cursor: 'pointer' }}>
       <CardMediaStyle>
         <SvgIconStyle
           color="paper"
