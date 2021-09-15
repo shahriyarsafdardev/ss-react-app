@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-jest.setTimeout(10000);
+jest.setTimeout(36000);
 
 describe('When user tries to login', () => {
   let browser: any;
