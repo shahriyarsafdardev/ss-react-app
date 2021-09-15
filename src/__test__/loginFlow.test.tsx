@@ -16,7 +16,7 @@ describe('When user tries to login', () => {
   });
 
   test('unsuccessful login with invalid credentials', async () => {
-    await page.goto('http://localhost:3000/dashboard');
+    await page.goto('http://localhost:3000/');
     await page.waitForSelector("input[name='email']");
 
     await page.click("input[name='email']");
@@ -36,7 +36,7 @@ describe('When user tries to login', () => {
   });
 
   test('successful login with valid credentials', async () => {
-    await page.goto('http://localhost:3000/dashboard');
+    await page.goto('http://localhost:3000/');
     await page.waitForSelector("input[name='email']");
 
     await page.click("input[name='email']");
@@ -51,7 +51,7 @@ describe('When user tries to login', () => {
     let element = await page.$('#user-title');
     let value = await page.evaluate((el: any) => el.textContent, element);
 
-    await page.goto('http://localhost:3000/dashboard'); // Reload page to verify user persistence
+    await page.goto('http://localhost:3000/'); // Reload page to verify user persistence
 
     await page.waitForSelector('#user-title');
     element = await page.$('#user-title');

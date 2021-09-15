@@ -16,7 +16,7 @@ describe('A valid user can access peers tab', () => {
   });
 
   test('successful login with valid credentials', async () => {
-    await page.goto('http://localhost:3000/dashboard');
+    await page.goto('http://localhost:3000/');
     await page.waitForSelector("input[name='email']");
 
     await page.click("input[name='email']");
