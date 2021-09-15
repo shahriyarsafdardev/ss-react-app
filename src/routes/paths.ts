@@ -36,6 +36,7 @@ export const PATH_DASHBOARD = {
   root: '/',
   general: {
     app: path(ROOTS_DASHBOARD, '/'),
+    discover: path(ROOTS_DASHBOARD, '/discover'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),

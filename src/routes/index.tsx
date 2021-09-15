@@ -77,6 +77,7 @@ export default function Router() {
       ),
       children: [
         { path: '/', element: <GeneralApp /> },
+        { path: '/discover', element: <GeneralApp /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },

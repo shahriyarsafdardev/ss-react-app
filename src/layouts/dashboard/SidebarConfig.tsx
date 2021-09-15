@@ -35,7 +35,7 @@ const sidebarConfig = [
     items: [
       {
         title: 'discover',
-        path: PATH_DASHBOARD.general.app,
+        path: PATH_DASHBOARD.general.discover,
         icon: ICONS.discover
       }
     ]
