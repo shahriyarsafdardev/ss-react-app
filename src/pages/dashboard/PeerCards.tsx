@@ -36,7 +36,7 @@ export default function UserCards() {
 
   return (
     <Page title="Peers | Minimal-UI">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
+      <Container id="cohort-tab-title" maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs heading="Peers Tab" links={[]} />
         <Grid container spacing={3}>
           {users.map((user) => (

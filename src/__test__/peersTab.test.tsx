@@ -1,13 +1,35 @@
 import puppeteer from 'puppeteer';
+import axios from 'axios';
 
-jest.setTimeout(10000);
+jest.setTimeout(36000);
+jest.mock('axios');
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+const width = 1400;
+const height = 1000;
+
+mockedAxios.get.mockImplementation((url) => {
+  switch (url) {
+    case '/cohorts':
+      return Promise.resolve({ data: [] });
+    default:
+      return Promise.reject(new Error('not found'));
+  }
+});
 
 describe('A valid user can access peers tab', () => {
   let browser: any;
   let page: any;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: true });
+    browser = await puppeteer.launch({
+      headless: false,
+      defaultViewport: {
+        width,
+        height
+      }
+    });
     page = await browser.newPage();
   });
 
@@ -27,11 +49,23 @@ describe('A valid user can access peers tab', () => {
 
     await page.click("button[type='submit']");
 
-    const [button] = await page.$x("//div[contains(., 'my sample cohort')]");
-    if (button) {
-      await button.click();
-    }
+    await page.waitForSelector('#cohort-2');
 
-    // testing in progress
+    await page.evaluate(() => {
+      document.getElementById('cohort-2')?.click();
+    });
+
+    await page.waitForSelector('#peers-0');
+
+    await page.evaluate(() => {
+      document.getElementById('peers-0')?.click();
+    });
+
+    await page.waitForSelector('#cohort-tab-title');
+
+    const value = await page.evaluate(
+      () => document.getElementById('cohort-tab-title')?.children[0].textContent
+    );
+    await expect(value).toContain('Peers Tab');
   });
 });
