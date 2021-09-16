@@ -51,13 +51,13 @@ const users: payloadUser[] = [
 
 // ----------------------------------------------------------------------
 
-export const mockTesting = () => {
-  mock.onPost('/api/account/login').reply(async (config) => {
+export const mockTesting = (url: string) => {
+  mock.onPost(url).reply(async (config) => {
     try {
       await fakeRequest(1000);
 
       const { email, password } = JSON.parse(config.data);
-      const user = users.find((_user) => _user.email === email);
+      const user = users.find((_user: any) => _user.email === email);
 
       if (!user) {
         return [400, { message: 'There is no user corresponding to the email address.' }];

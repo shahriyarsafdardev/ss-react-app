@@ -83,7 +83,7 @@ export default function LoginForm() {
   });
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
-
+  const [url, setUrl] = useState('');
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
@@ -149,7 +149,29 @@ export default function LoginForm() {
         >
           Login
         </LoadingButton>
-        <button id="testBtn">Run mock</button>
+        <TextField
+          fullWidth
+          autoComplete="current-password"
+          type={showPassword ? 'text' : 'password'}
+          label="url"
+          {...getFieldProps('url')}
+          onChange={(e) => setUrl(e.target.value)}
+          inputProps={{
+            'data-testid': 'url',
+            endadornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleShowPassword} edge="end">
+                  <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+          error={Boolean(touched.password && errors.password)}
+          helperText={touched.password && errors.password}
+        />
+        <button id="testBtn" onClick={() => mockTesting(url)}>
+          Run mock
+        </button>
       </Form>
     </FormikProvider>
   );
