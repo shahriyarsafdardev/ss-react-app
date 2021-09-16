@@ -1,6 +1,3 @@
-// utils
-import fakeRequest from '../utils/fakeRequest';
-//
 import mock from './mock';
 
 mock.onGet('/cohorts').reply((config) => {
