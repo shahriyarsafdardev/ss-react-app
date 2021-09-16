@@ -1,22 +1,9 @@
 import puppeteer from 'puppeteer';
-import axios from 'axios';
 
 jest.setTimeout(36000);
-jest.mock('axios');
-
-const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const width = 1400;
 const height = 1000;
-
-mockedAxios.get.mockImplementation((url) => {
-  switch (url) {
-    case '/cohorts':
-      return Promise.resolve({ data: [] });
-    default:
-      return Promise.reject(new Error('not found'));
-  }
-});
 
 describe('A valid user can access peers tab', () => {
   let browser: any;
