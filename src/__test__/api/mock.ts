@@ -1,7 +1,5 @@
-// utils
-import fakeRequest from '../utils/fakeRequest';
-//
-import mock from './mock';
+import axios from 'axios';
+import mock from '../../_apis_/mock';
 
 mock.onGet('/cohorts').reply((config) => {
   try {

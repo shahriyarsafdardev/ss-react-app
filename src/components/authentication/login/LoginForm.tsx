@@ -1,3 +1,8 @@
+// mock api
+import '../../../_apis_';
+import '../../../__test__/api/mock';
+
+import { mockTesting } from '_apis_/account';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useSnackbar } from 'notistack5';
@@ -144,6 +149,7 @@ export default function LoginForm() {
         >
           Login
         </LoadingButton>
+        <button id="testBtn">Run mock</button>
       </Form>
     </FormikProvider>
   );

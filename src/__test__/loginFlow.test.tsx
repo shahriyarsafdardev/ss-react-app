@@ -7,7 +7,7 @@ describe('When user tries to login', () => {
   let page: any;
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({ headless: true });
+    browser = await puppeteer.launch({ headless: false });
     page = await browser.newPage();
   });
 
@@ -15,28 +15,33 @@ describe('When user tries to login', () => {
     await browser.close();
   });
 
-  test('unsuccessful login with invalid credentials', async () => {
-    await page.goto('http://localhost:3000/');
-    await page.waitForSelector("input[name='email']");
+  // test('unsuccessful login with invalid credentials', async () => {
+  //   await page.goto('http://localhost:3000/');
+  //   await page.waitForSelector("input[name='email']");
 
-    await page.click("input[name='email']");
-    await page.type("input[name='email']", 'aqibmaqqbool@gmail.com');
+  //   await page.click("input[name='email']");
+  //   await page.type("input[name='email']", 'aqibmaqqbool@gmail.com');
 
-    await page.click("input[name='password']");
-    await page.type("input[name='password']", 'wrongPass');
+  //   await page.click("input[name='password']");
+  //   await page.type("input[name='password']", 'wrongPass');
 
-    await page.click("button[type='submit']");
+  //   await page.click("button[type='submit']");
 
-    await page.waitForSelector('.MuiAlert-standardError');
+  //   await page.waitForSelector('.MuiAlert-standardError');
 
-    const element = await page.$('.MuiAlert-standardError');
-    const value = await page.evaluate((el: any) => el.textContent, element);
-    console.log(value);
-    await expect(value).toContain('Wrong password');
-  });
+  //   const element = await page.$('.MuiAlert-standardError');
+  //   const value = await page.evaluate((el: any) => el.textContent, element);
+  //   console.log(value);
+  //   await expect(value).toContain('Wrong password');
+  // });
 
   test('successful login with valid credentials', async () => {
     await page.goto('http://localhost:3000/');
+
+    await page.waitForSelector('#testBtn');
+
+    await page.click("button[id='testBtn']");
+
     await page.waitForSelector("input[name='email']");
 
     await page.click("input[name='email']");

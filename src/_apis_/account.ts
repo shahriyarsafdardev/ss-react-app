@@ -51,31 +51,33 @@ const users: payloadUser[] = [
 
 // ----------------------------------------------------------------------
 
-mock.onPost('/api/account/login').reply(async (config) => {
-  try {
-    await fakeRequest(1000);
+export const mockTesting = () => {
+  mock.onPost('/api/account/login').reply(async (config) => {
+    try {
+      await fakeRequest(1000);
 
-    const { email, password } = JSON.parse(config.data);
-    const user = users.find((_user) => _user.email === email);
+      const { email, password } = JSON.parse(config.data);
+      const user = users.find((_user) => _user.email === email);
 
-    if (!user) {
-      return [400, { message: 'There is no user corresponding to the email address.' }];
+      if (!user) {
+        return [400, { message: 'There is no user corresponding to the email address.' }];
+      }
+
+      if (user.password !== password) {
+        return [400, { message: 'Wrong password' }];
+      }
+
+      const accessToken = sign({ userId: user.id }, JWT_SECRET, {
+        expiresIn: JWT_EXPIRES_IN
+      });
+
+      return [200, { accessToken, user }];
+    } catch (error) {
+      console.error(error);
+      return [500, { message: 'Internal server error' }];
     }
-
-    if (user.password !== password) {
-      return [400, { message: 'Wrong password' }];
-    }
-
-    const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
-    });
-
-    return [200, { accessToken, user }];
-  } catch (error) {
-    console.error(error);
-    return [500, { message: 'Internal server error' }];
-  }
-});
+  });
+};
 
 // ----------------------------------------------------------------------
 
