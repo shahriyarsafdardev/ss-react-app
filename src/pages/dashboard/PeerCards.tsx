@@ -35,6 +35,8 @@ import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_dashboard/user/list';
 
+import { getPeers } from '../../redux/slices/cohort';
+
 // ----------------------------------------------------------------------
 
 const SkeletonLoad = (
@@ -141,6 +143,7 @@ export default function UserCards() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { users } = useSelector((state: RootState) => state.user);
+  const { peers } = useSelector((state: RootState) => state.cohort);
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -154,6 +157,7 @@ export default function UserCards() {
 
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getPeers('cohort-1'));
   }, [dispatch]);
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -342,14 +346,6 @@ export default function UserCards() {
                         <TableCell align="left">{company}</TableCell>
                         <TableCell align="left">{role}</TableCell>
                         <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                        <TableCell align="left">
-                          {/* <Label
-                            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                            color={(status === 'banned' && 'error') || 'success'}
-                          > */}
-                          {sentenceCase(status)}
-                          {/* </Label> */}
-                        </TableCell>
                       </TableRow>
                     );
                   })}
