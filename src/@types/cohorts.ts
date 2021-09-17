@@ -4,7 +4,7 @@ export type Company = {
   logoUrl: string;
 };
 
-export type Peer = {
+export type StudentProfile = {
   id: string;
   first_name: string;
   last_name: string;
@@ -18,5 +18,5 @@ export type Peer = {
 export type Cohort = {
   id: string;
   name: string;
-  peers: Peer[];
+  peers: StudentProfile[];
 };
