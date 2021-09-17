@@ -33,18 +33,51 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
       peers: [
         {
           id: 'uuid',
-          first_name: 'First Name',
-          last_name: 'Last Name',
+          first_name: 'Marry',
+          last_name: 'Dawn',
           current_company: {
             id: 'uuid',
             name: 'Company',
-            logo_url: 'logo_url'
+            logo_url:
+              'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
-          current_position: 'Position',
+          current_position: 'System Engineer',
           strengths: ['Strength A', 'Strength B', 'Strength C'],
           interests: ['interest A', 'Interest B', 'Interest C'],
           profile_image_url:
-            'https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Madeline-Mann.jpeg'
+            'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
+        },
+        {
+          id: 'uuid',
+          first_name: 'Marry',
+          last_name: 'Dawn',
+          current_company: {
+            id: 'uuid',
+            name: 'Company',
+            logo_url:
+              'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
+          },
+          current_position: 'System Engineer',
+          strengths: ['Strength A', 'Strength B', 'Strength C'],
+          interests: ['interest A', 'Interest B', 'Interest C'],
+          profile_image_url:
+            'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
+        },
+        {
+          id: 'uuid',
+          first_name: 'Marry',
+          last_name: 'Dawn',
+          current_company: {
+            id: 'uuid',
+            name: 'Company',
+            logo_url:
+              'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
+          },
+          current_position: 'System Engineer',
+          strengths: ['Strength A', 'Strength B', 'Strength C'],
+          interests: ['interest A', 'Interest B', 'Interest C'],
+          profile_image_url:
+            'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         }
       ]
     };

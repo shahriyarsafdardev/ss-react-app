@@ -2,7 +2,7 @@
 import { alpha, styled } from '@material-ui/core/styles';
 import { Card, Avatar, Typography } from '@material-ui/core';
 // @types
-import { UserData } from '../../../../@types/user';
+import { StudentProfile } from '../../../../@types/cohorts';
 //
 import SvgIconStyle from '../../../SvgIconStyle';
 
@@ -20,11 +20,8 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    backdropFilter: 'blur(3px)',
-    WebkitBackdropFilter: 'blur(3px)', // Fix on Mobile
     borderTopLeftRadius: theme.shape.borderRadiusMd,
-    borderTopRightRadius: theme.shape.borderRadiusMd,
-    backgroundColor: alpha(theme.palette.primary.darker, 0.72)
+    borderTopRightRadius: theme.shape.borderRadiusMd
   }
 }));
 
@@ -40,12 +37,12 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 type PeerCardProps = {
-  user: UserData;
+  peer: StudentProfile;
   openModal: () => void;
 };
 
-export default function PeerCard({ user, openModal }: PeerCardProps) {
-  const { name, cover, position, avatarUrl } = user;
+export default function PeerCard({ peer, openModal }: PeerCardProps) {
+  const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
     <Card onClick={openModal} style={{ cursor: 'pointer' }}>
@@ -62,8 +59,8 @@ export default function PeerCard({ user, openModal }: PeerCardProps) {
           }}
         />
         <Avatar
-          alt={name}
-          src={avatarUrl}
+          alt={first_name}
+          src={current_company.logo_url}
           sx={{
             width: 64,
             height: 64,
@@ -72,14 +69,14 @@ export default function PeerCard({ user, openModal }: PeerCardProps) {
             transform: 'translateY(-50%)'
           }}
         />
-        <CoverImgStyle alt="cover" src={cover} />
+        <CoverImgStyle alt="cover" src={profile_image_url} />
       </CardMediaStyle>
 
       <Typography variant="subtitle1" align="center" sx={{ mt: 6 }}>
-        {name}
+        {`${first_name} ${last_name}`}
       </Typography>
       <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
-        {position}
+        {current_position}
       </Typography>
     </Card>
   );
