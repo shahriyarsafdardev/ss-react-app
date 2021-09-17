@@ -62,6 +62,14 @@ Params:  {}
 
 Fixture: fixtures/cohort_fixture.json
 
+### Peers details for a Cohort
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/peers
+
+Params:  { cohort_id: uuid } 
+
+Fixture: fixtures/cohort_peers_fixture.json
+
 ## Tooling
 
 ### Install
