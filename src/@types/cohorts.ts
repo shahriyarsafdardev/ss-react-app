@@ -1,7 +1,7 @@
 export type Company = {
   id: string;
   name: string;
-  logoUrl: string;
+  logo_url: string;
 };
 
 export type StudentProfile = {

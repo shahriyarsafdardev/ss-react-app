@@ -143,7 +143,7 @@ export default function UserCards() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { users } = useSelector((state: RootState) => state.user);
-  const { peers } = useSelector((state: RootState) => state.cohort);
+  const { cohorts } = useSelector((state: RootState) => state.cohort);
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
