@@ -30,7 +30,10 @@ const cohortsConfig = (rawCohorts: any) =>
     title: cohort.name,
     path: PATH_DASHBOARD.cohorts.root(cohort.id),
     icon: ICONS.cohorts,
-    children: [{ title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) }]
+    children: [
+      { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+      { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) }
+    ]
   }));
 
 export default cohortsConfig;
