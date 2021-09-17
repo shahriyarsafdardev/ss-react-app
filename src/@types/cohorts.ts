@@ -4,7 +4,7 @@ export type Company = {
   logoUrl: string;
 };
 
-export type PeersData = {
+export type Peer = {
   id: string;
   first_name: string;
   last_name: string;
@@ -15,12 +15,8 @@ export type PeersData = {
   profile_image_url: string;
 };
 
-export type CohortData = {
+export type Cohort = {
   id: string;
   name: string;
-};
-
-export type Cohorts = {
-  cohorts: CohortData[];
-  peers: [];
+  peers: Peer[];
 };
