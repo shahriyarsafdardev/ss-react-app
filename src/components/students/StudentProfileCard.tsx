@@ -1,10 +1,10 @@
 // material
-import { alpha, styled } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { Card, Avatar, Typography } from '@material-ui/core';
 // @types
-import { StudentProfile } from '../../../../@types/cohorts';
+import { StudentProfile } from '../../@types/cohorts';
 //
-import SvgIconStyle from '../../../SvgIconStyle';
+import SvgIconStyle from '../SvgIconStyle';
 
 // ----------------------------------------------------------------------
 
@@ -38,14 +38,14 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 
 type PeerCardProps = {
   peer: StudentProfile;
-  openModal: () => void;
+  modalHandler: () => void;
 };
 
-export default function PeerCard({ peer, openModal }: PeerCardProps) {
+export default function StudentProfileCard({ peer, modalHandler }: PeerCardProps) {
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
-    <Card onClick={openModal} style={{ cursor: 'pointer' }}>
+    <Card onClick={modalHandler} style={{ cursor: 'pointer' }}>
       <CardMediaStyle>
         <SvgIconStyle
           color="paper"

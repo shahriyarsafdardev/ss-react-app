@@ -9,9 +9,9 @@ type UserListHeadProps = {
   orderBy: string;
   rowCount: number;
   headLabel: any[];
-  numSelected: number;
+  numSelected?: number;
   onRequestSort: (id: string) => void;
-  onSelectAllClick: (checked: boolean) => void;
+  onSelectAllClick?: (checked: boolean) => void;
 };
 
 export default function UserListHead({
