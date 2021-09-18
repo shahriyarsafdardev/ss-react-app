@@ -33,11 +33,13 @@ export default function PeersTab() {
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [view, setView] = useState('card');
 
-  const { peers } = useSelector((state: RootState) => state.cohort.cohorts[0]);
+  const { peers } = useSelector(
+    (state: RootState) => state.cohort.cohorts.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   useEffect(() => {
     dispatch(getPeers(cohort_id.toString()));
-  }, [dispatch]);
+  }, [dispatch, cohort_id]);
 
   const showCardView = () => <StudentProfileGrid students={peers} modalHandler={modalHandler} />;
 
@@ -50,10 +52,9 @@ export default function PeersTab() {
 
         <ViewSelector>
           <FormControl>
-            <InputLabel>View</InputLabel>
             <Select label="Category" native onChange={(e: any) => setView(e.target.value)}>
-              <option value="card">Card</option>
-              <option value="list">List</option>
+              <option value="card">Grid View</option>
+              <option value="list">Table View</option>
             </Select>
           </FormControl>
         </ViewSelector>
