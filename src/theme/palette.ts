@@ -98,7 +98,7 @@ const ERROR = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',
-  dark: '#B72136',
+  dark: '#FF4842',
   darker: '#7A0C2E'
 };
 

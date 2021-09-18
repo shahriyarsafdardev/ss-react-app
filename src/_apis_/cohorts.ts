@@ -45,13 +45,13 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength A',
-              color: '#fff234'
+              color: 'error'
             }
           ],
           interests: [
             {
               name: 'Interest A',
-              color: '#ab32ds'
+              color: 'warning'
             }
           ],
           profile_image_url:
@@ -71,13 +71,13 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength A',
-              color: '#fff234'
+              color: 'primary'
             }
           ],
           interests: [
             {
               name: 'Interest A',
-              color: '#ab32ds'
+              color: 'error'
             }
           ],
           profile_image_url:
@@ -97,13 +97,13 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength B',
-              color: '#111111'
+              color: 'default'
             }
           ],
           interests: [
             {
               name: 'Interest B',
-              color: '#111111'
+              color: 'success'
             }
           ],
           profile_image_url:
@@ -138,13 +138,13 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength A',
-              color: '#fff234'
+              color: 'success'
             }
           ],
           interests: [
             {
               name: 'Interest A',
-              color: '#ab32ds'
+              color: 'default'
             }
           ],
           profile_image_url:
@@ -164,13 +164,13 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength B',
-              color: '#111111'
+              color: 'primary'
             }
           ],
           interests: [
             {
               name: 'Interest B',
-              color: '#111111'
+              color: 'error'
             }
           ],
           profile_image_url:
@@ -190,13 +190,13 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength A',
-              color: '#fff234'
+              color: 'error'
             }
           ],
           interests: [
             {
               name: 'Interest A',
-              color: '#ab32ds'
+              color: 'warning'
             }
           ],
           profile_image_url:

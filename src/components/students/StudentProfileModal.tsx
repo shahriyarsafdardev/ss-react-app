@@ -1,7 +1,9 @@
 // modal
 import { Modal } from 'components/animate';
-import { styled } from '@material-ui/core/styles';
+import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
+import { capitalCase } from 'change-case';
+import Label from '../Label';
 
 type StudentProfileModalProps = {
   modalState: boolean;
@@ -44,16 +46,8 @@ const TagsContainer = styled(Box)(() => ({
   flexWrap: 'wrap'
 }));
 
-const ColoredText = styled(Box)((props: any) => ({
-  display: 'flex',
-  fontFamily: 'Public Sans',
-  fontWeight: 'bold',
-  color: props.color,
-  backgroundColor: props.backgroundColor,
-  borderRadius: 10,
-  padding: '3px 10px',
+const StyledLabel = styled(Label)((props: any) => ({
   marginRight: 10,
-  whiteSpace: 'nowrap',
   marginBottom: 10
 }));
 
@@ -61,6 +55,8 @@ export default function StudentProfileModal({
   modalState,
   modalHandler
 }: StudentProfileModalProps) {
+  const theme = useTheme();
+
   return (
     <Modal open={modalState} onClose={() => modalHandler(false)}>
       <StyledContainer>
@@ -95,15 +91,24 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am looking for</Text>
           <TagsContainer>
-            <ColoredText color="#229A16" backgroundColor="rgba(84, 214, 44, 0.16)">
-              mentor
-            </ColoredText>
-            <ColoredText color="#1890FF" backgroundColor="rgba(24, 144, 255, 0.16)">
-              Networking
-            </ColoredText>
-            <ColoredText color="#B78103" backgroundColor="rgba(255, 193, 7, 0.16)">
-              Discuss Materials
-            </ColoredText>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="success"
+            >
+              {capitalCase('mentor')}
+            </StyledLabel>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="primary"
+            >
+              {capitalCase('networking')}
+            </StyledLabel>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="warning"
+            >
+              {capitalCase('Discuss Materials')}
+            </StyledLabel>
           </TagsContainer>
         </StyledRow>
         <StyledRow>
@@ -116,18 +121,30 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am good at</Text>
           <TagsContainer>
-            <ColoredText color="#229A16" backgroundColor="rgba(84, 214, 44, 0.16)">
-              Marketing
-            </ColoredText>
-            <ColoredText color="#1890FF" backgroundColor="rgba(24, 144, 255, 0.16)">
-              Content Recommendation System
-            </ColoredText>
-            <ColoredText color="#FF4842" backgroundColor="rgba(255, 72, 66, 0.16)">
-              Personalization
-            </ColoredText>
-            <ColoredText color="#637381" backgroundColor="#C4CDD5">
-              User tracking
-            </ColoredText>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="success"
+            >
+              {capitalCase('marketing')}
+            </StyledLabel>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="primary"
+            >
+              {capitalCase('Content Recommendation System')}
+            </StyledLabel>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="error"
+            >
+              {capitalCase('Personalization')}
+            </StyledLabel>
+            <StyledLabel
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="default"
+            >
+              {capitalCase(' User tracking')}
+            </StyledLabel>
           </TagsContainer>
         </StyledRow>
       </StyledContainer>

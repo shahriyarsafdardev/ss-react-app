@@ -1,6 +1,6 @@
 import { Stack, Avatar, TableRow, TableCell, Typography } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
-import { sentenceCase } from 'change-case';
+import { useTheme, styled } from '@material-ui/core/styles';
+import { capitalCase } from 'change-case';
 import { StudentProfile } from '../../@types/cohorts';
 import Label from '../Label';
 
@@ -46,17 +46,17 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={(index % 2 && 'warning') || 'success'}
+          color={strengths[0].color}
         >
-          {sentenceCase(strengths[0])}
+          {capitalCase(strengths[0]?.name)}
         </Label>
       </TableCell>
       <TableCell align="left">
         <Label
           variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={(index % 3 && 'error') || 'success'}
+          color={interests[0].color}
         >
-          {sentenceCase(interests[0])}
+          {capitalCase(interests[0]?.name)}
         </Label>
       </TableCell>
     </TableRow>

@@ -83,13 +83,20 @@ const RootStyle = styled('span')(
 interface LabelProps extends BoxProps {
   color?: LabelColor;
   variant?: LabelVariant;
+  className?: string;
 }
 
-export default function Label({ color = 'default', variant = 'ghost', children, sx }: LabelProps) {
+export default function Label({
+  color = 'default',
+  variant = 'ghost',
+  children,
+  sx,
+  className
+}: LabelProps) {
   const theme = useTheme();
 
   return (
-    <RootStyle styleProps={{ color, variant }} sx={sx} theme={theme}>
+    <RootStyle styleProps={{ color, variant }} sx={sx} theme={theme} className={className}>
       {children}
     </RootStyle>
   );
