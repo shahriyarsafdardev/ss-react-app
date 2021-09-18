@@ -32,11 +32,12 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
       id: 'cohort-1',
       peers: [
         {
-          id: 'uuid',
+          id: '1',
           first_name: 'Marry',
           last_name: 'Dawn',
+          email: 'abc@gmail.com',
           current_company: {
-            id: 'uuid',
+            id: '1',
             name: 'Company',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
@@ -58,11 +59,12 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
         {
-          id: 'uuid',
+          id: '2',
           first_name: 'Test1',
           last_name: 'Testing1',
+          email: 'abc@gmail.com',
           current_company: {
-            id: 'uuid',
+            id: '2',
             name: 'Company',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
@@ -84,9 +86,10 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
         {
-          id: 'uuid',
+          id: '3',
           first_name: 'Test2',
           last_name: 'Testing2',
+          email: 'abc@gmail.com',
           current_company: {
             id: 'uuid',
             name: 'Company',
@@ -125,11 +128,12 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
       id: 'cohort-2',
       peers: [
         {
-          id: 'uuid',
+          id: '1',
           first_name: 'Person',
           last_name: 'A',
+          email: 'abc@gmail.com',
           current_company: {
-            id: 'uuid',
+            id: '1',
             name: 'Company',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
@@ -151,11 +155,12 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
         {
-          id: 'uuid',
+          id: '2',
           first_name: 'Person',
           last_name: 'B',
+          email: 'abc@gmail.com',
           current_company: {
-            id: 'uuid',
+            id: '2',
             name: 'Company',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
@@ -177,11 +182,12 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
         {
-          id: 'uuid',
+          id: '3',
           first_name: 'Person',
           last_name: 'C',
+          email: 'abc@gmail.com',
           current_company: {
-            id: 'uuid',
+            id: '3',
             name: 'Company',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'

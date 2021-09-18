@@ -64,9 +64,9 @@ export default function StudentProfileModal({
     last_name,
     current_company,
     profile_image_url,
-    current_position,
     strengths,
-    interests
+    interests,
+    email
   } = modalUser;
   return (
     <Modal open={modalState} onClose={() => modalHandler({})}>
@@ -80,7 +80,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>Adobe</Text>
+          <Text>{current_company?.name}</Text>
         </StyledRow>
         <StyledRow>
           <img
@@ -90,7 +90,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>nihalhakim@gmail.com</Text>
+          <Text>{email}</Text>
         </StyledRow>
         <StyledRow>
           <img
