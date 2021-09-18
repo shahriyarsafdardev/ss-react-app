@@ -8,6 +8,7 @@ import Label from '../Label';
 type StudentProfileModalProps = {
   modalState: boolean;
   modalHandler: Function;
+  modalUser: any;
 };
 
 const StyledContainer = styled(Box)(() => ({
@@ -53,12 +54,22 @@ const StyledLabel = styled(Label)((props: any) => ({
 
 export default function StudentProfileModal({
   modalState,
-  modalHandler
+  modalHandler,
+  modalUser
 }: StudentProfileModalProps) {
   const theme = useTheme();
-
+  const {
+    id,
+    first_name,
+    last_name,
+    current_company,
+    profile_image_url,
+    current_position,
+    strengths,
+    interests
+  } = modalUser;
   return (
-    <Modal open={modalState} onClose={() => modalHandler(false)}>
+    <Modal open={modalState} onClose={() => modalHandler({})}>
       <StyledContainer>
         <Title>Information</Title>
         <StyledRow>
@@ -91,24 +102,16 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am looking for</Text>
           <TagsContainer>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="success"
-            >
-              {capitalCase('mentor')}
-            </StyledLabel>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="primary"
-            >
-              {capitalCase('networking')}
-            </StyledLabel>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="warning"
-            >
-              {capitalCase('Discuss Materials')}
-            </StyledLabel>
+            {strengths?.length > 0 &&
+              strengths?.map((strength: any, index: number) => (
+                <StyledLabel
+                  key={index}
+                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                  color={strength.color}
+                >
+                  {capitalCase(strength?.name)}
+                </StyledLabel>
+              ))}
           </TagsContainer>
         </StyledRow>
         <StyledRow>
@@ -121,30 +124,16 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am good at</Text>
           <TagsContainer>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="success"
-            >
-              {capitalCase('marketing')}
-            </StyledLabel>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="primary"
-            >
-              {capitalCase('Content Recommendation System')}
-            </StyledLabel>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="error"
-            >
-              {capitalCase('Personalization')}
-            </StyledLabel>
-            <StyledLabel
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="default"
-            >
-              {capitalCase(' User tracking')}
-            </StyledLabel>
+            {interests?.length > 0 &&
+              interests?.map((interest: any, index: number) => (
+                <StyledLabel
+                  key={index}
+                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                  color={interest.color}
+                >
+                  {capitalCase(interest?.name)}
+                </StyledLabel>
+              ))}
           </TagsContainer>
         </StyledRow>
       </StyledContainer>
@@ -158,7 +147,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>Message Nihal on Discord here</Text>
+          <Text>Message {first_name} on Discord here</Text>
         </StyledRow>
         <StyledRow>
           <img
@@ -168,7 +157,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>Connect with Nihal on LinkedIn Here</Text>
+          <Text>Connect with {first_name} on LinkedIn Here</Text>
         </StyledRow>
       </StyledContainer>
     </Modal>

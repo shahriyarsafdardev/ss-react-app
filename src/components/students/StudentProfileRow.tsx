@@ -30,7 +30,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       key={id}
       tabIndex={-1}
       role="checkbox"
-      onClick={() => modalHandler(true)}
+      onClick={() => modalHandler(row)}
       style={{ cursor: 'pointer' }}
     >
       <TableCell component="th" scope="row" padding="none">

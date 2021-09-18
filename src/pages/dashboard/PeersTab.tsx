@@ -29,7 +29,7 @@ const ViewSelector = styled('div')(() => ({
 export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const [modalState, modalHandler] = useState(false);
+  const [modalState, modalHandler] = useState({});
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [view, setView] = useState('card');
 
@@ -58,7 +58,11 @@ export default function PeersTab() {
           </FormControl>
         </ViewSelector>
 
-        <StudentProfileModal modalState={modalState} modalHandler={modalHandler} />
+        <StudentProfileModal
+          modalState={Object.keys(modalState).length > 0}
+          modalHandler={modalHandler}
+          modalUser={modalState}
+        />
 
         {view === 'card' ? showCardView() : showTableView()}
       </Container>

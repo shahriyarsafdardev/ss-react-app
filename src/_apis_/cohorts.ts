@@ -59,8 +59,8 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
         },
         {
           id: 'uuid',
-          first_name: 'Marry',
-          last_name: 'Dawn',
+          first_name: 'Test1',
+          last_name: 'Testing1',
           current_company: {
             id: 'uuid',
             name: 'Company',
@@ -85,8 +85,8 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
         },
         {
           id: 'uuid',
-          first_name: 'Marry',
-          last_name: 'Dawn',
+          first_name: 'Test2',
+          last_name: 'Testing2',
           current_company: {
             id: 'uuid',
             name: 'Company',
