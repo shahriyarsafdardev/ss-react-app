@@ -44,14 +44,9 @@ const TagsContainer = styled(Box)(() => ({
   display: 'flex',
   flex: 1,
   alignItems: 'center',
-  flexWrap: 'wrap'
+  flexWrap: 'wrap',
+  gap: 10
 }));
-
-const StyledLabel = styled(Label)((props: any) => ({
-  marginRight: 10,
-  marginBottom: 10
-}));
-
 export default function StudentProfileModal({
   modalState,
   modalHandler,
@@ -104,13 +99,13 @@ export default function StudentProfileModal({
           <TagsContainer>
             {strengths?.length > 0 &&
               strengths?.map((strength: any, index: number) => (
-                <StyledLabel
+                <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                   color={strength.color}
                 >
                   {capitalCase(strength?.name)}
-                </StyledLabel>
+                </Label>
               ))}
           </TagsContainer>
         </StyledRow>
@@ -126,13 +121,13 @@ export default function StudentProfileModal({
           <TagsContainer>
             {interests?.length > 0 &&
               interests?.map((interest: any, index: number) => (
-                <StyledLabel
+                <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                   color={interest.color}
                 >
                   {capitalCase(interest?.name)}
-                </StyledLabel>
+                </Label>
               ))}
           </TagsContainer>
         </StyledRow>
