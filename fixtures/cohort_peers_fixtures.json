@@ -11,8 +11,18 @@
         "logo_url": "logo_url"
       },
       "current_position": "Position",
-      "strengths": ["Strength A", "Strength B", "Strength C"],
-      "interests": ["interest A", "Interest B", "Interest C"],
+      "strengths": [
+        {
+          "name": "Strength B",
+          "color": "#111111"
+        }
+      ],
+      "interests": [
+        {
+          "name": "Interest B",
+          "color": "#111111"
+        }
+      ],
       "profile_image_url": "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Madeline-Mann.jpeg"
     }
   ]

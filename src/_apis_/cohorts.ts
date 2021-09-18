@@ -42,8 +42,18 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength A',
+              color: '#fff234'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest A',
+              color: '#ab32ds'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
@@ -58,8 +68,18 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength A',
+              color: '#fff234'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest A',
+              color: '#ab32ds'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
@@ -74,8 +94,18 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength B',
+              color: '#111111'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest B',
+              color: '#111111'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         }
@@ -105,8 +135,18 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength A',
+              color: '#fff234'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest A',
+              color: '#ab32ds'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
@@ -121,8 +161,18 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength B',
+              color: '#111111'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest B',
+              color: '#111111'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         },
@@ -137,8 +187,18 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
           current_position: 'System Engineer',
-          strengths: ['Strength A', 'Strength B', 'Strength C'],
-          interests: ['interest A', 'Interest B', 'Interest C'],
+          strengths: [
+            {
+              name: 'Strength A',
+              color: '#fff234'
+            }
+          ],
+          interests: [
+            {
+              name: 'Interest A',
+              color: '#ab32ds'
+            }
+          ],
           profile_image_url:
             'https://www.kindpng.com/picc/m/163-1636340_user-avatar-icon-avatar-transparent-user-icon-png.png'
         }
