@@ -6,7 +6,7 @@ import { StudentProfile } from '../../@types/cohorts';
 
 type StudentProfileGridProps = {
   students: StudentProfile[];
-  modalHandler: VoidFunction;
+  modalHandler: Function;
 };
 
 export default function StudentProfileGrid({ students, modalHandler }: StudentProfileGridProps) {

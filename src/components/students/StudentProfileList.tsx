@@ -9,6 +9,7 @@ import StudentProfileRow from './StudentProfileRow';
 
 type StudentProfileListProps = {
   students: StudentProfile[];
+  modalHandler: Function;
 };
 
 const TABLE_HEAD = [
@@ -16,10 +17,10 @@ const TABLE_HEAD = [
   { id: 'company', label: 'Company', alignRight: false },
   { id: 'currentRole', label: 'Current Role', alignRight: false },
   { id: 'goodAt', label: 'What I am good at', alignRight: false },
-  { id: 'lokkingFor', label: 'What I am looking for', alignRight: false }
+  { id: 'lookingFor', label: 'What I am looking for', alignRight: false }
 ];
 
-export default function StudentProfileList({ students }: StudentProfileListProps) {
+export default function StudentProfileList({ students, modalHandler }: StudentProfileListProps) {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -63,7 +64,12 @@ export default function StudentProfileList({ students }: StudentProfileListProps
             />
             <TableBody>
               {students.map((row: any, index) => (
-                <StudentProfileRow key={row.id} row={row} index={index} />
+                <StudentProfileRow
+                  key={row.id}
+                  row={row}
+                  index={index}
+                  modalHandler={modalHandler}
+                />
               ))}
             </TableBody>
           </Table>

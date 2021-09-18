@@ -6,7 +6,6 @@ import { styled } from '@material-ui/core/styles';
 
 // redux
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import { getUsers } from '../../redux/slices/user';
 
 // hooks
 import useSettings from '../../hooks/useSettings';
@@ -31,21 +30,19 @@ export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const [modalState, modalHandler] = useState(false);
-  const toggleModal = () => setOpenModal(!modalState);
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [view, setView] = useState('card');
 
   const { peers } = useSelector((state: RootState) => state.cohort.cohorts[0]);
 
   useEffect(() => {
-    dispatch(getUsers());
     dispatch(getPeers(cohort_id.toString()));
   }, [dispatch]);
 
   const showCardView = () => <StudentProfileGrid students={peers} modalHandler={modalHandler} />;
 
-  const showTableView = () => <StudentProfileList students={peers} />;
-  console.log(modalState);
+  const showTableView = () => <StudentProfileList students={peers} modalHandler={modalHandler} />;
+
   return (
     <Page title="Peers | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -61,7 +58,7 @@ export default function PeersTab() {
           </FormControl>
         </ViewSelector>
 
-        <StudentProfileModal modalState={modalState} toggleModal={toggleModal} />
+        <StudentProfileModal modalState={modalState} modalHandler={modalHandler} />
 
         {view === 'card' ? showCardView() : showTableView()}
       </Container>

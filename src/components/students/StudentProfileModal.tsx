@@ -1,11 +1,11 @@
 // modal
 import { Modal } from 'components/animate';
-import { styled, useTheme } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 
 type StudentProfileModalProps = {
   modalState: boolean;
-  toggleModal: VoidFunction;
+  modalHandler: Function;
 };
 
 const StyledContainer = styled(Box)(() => ({
@@ -57,9 +57,12 @@ const ColoredText = styled(Box)((props: any) => ({
   marginBottom: 10
 }));
 
-export default function StudentProfileModal({ modalState, toggleModal }: StudentProfileModalProps) {
+export default function StudentProfileModal({
+  modalState,
+  modalHandler
+}: StudentProfileModalProps) {
   return (
-    <Modal open={modalState} onClose={toggleModal}>
+    <Modal open={modalState} onClose={() => modalHandler(false)}>
       <StyledContainer>
         <Title>Information</Title>
         <StyledRow>

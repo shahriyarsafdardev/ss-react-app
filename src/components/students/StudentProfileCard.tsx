@@ -36,16 +36,16 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type PeerCardProps = {
+type StudentProfileCardProps = {
   peer: StudentProfile;
-  modalHandler: () => void;
+  modalHandler: any;
 };
 
-export default function StudentProfileCard({ peer, modalHandler }: PeerCardProps) {
+export default function StudentProfileCard({ peer, modalHandler }: StudentProfileCardProps) {
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
-    <Card onClick={modalHandler} style={{ cursor: 'pointer' }}>
+    <Card onClick={() => modalHandler(true)} style={{ cursor: 'pointer' }}>
       <CardMediaStyle>
         <SvgIconStyle
           color="paper"

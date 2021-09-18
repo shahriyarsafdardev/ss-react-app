@@ -7,9 +7,10 @@ import Label from '../Label';
 type StudentProfileRowProps = {
   row: StudentProfile;
   index: number;
+  modalHandler: Function;
 };
 
-export default function StudentProfileRow({ row, index }: StudentProfileRowProps) {
+export default function StudentProfileRow({ row, index, modalHandler }: StudentProfileRowProps) {
   const theme = useTheme();
 
   const {
@@ -24,7 +25,14 @@ export default function StudentProfileRow({ row, index }: StudentProfileRowProps
   } = row;
 
   return (
-    <TableRow hover key={id} tabIndex={-1} role="checkbox">
+    <TableRow
+      hover
+      key={id}
+      tabIndex={-1}
+      role="checkbox"
+      onClick={() => modalHandler(true)}
+      style={{ cursor: 'pointer' }}
+    >
       <TableCell component="th" scope="row" padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={first_name} src={profile_image_url} />
