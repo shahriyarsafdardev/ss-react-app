@@ -97,8 +97,8 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am looking for</Text>
           <TagsContainer>
-            {strengths?.length > 0 &&
-              strengths?.map((strength: any, index: number) => (
+            {interests?.length > 0 &&
+              interests?.map((strength: any, index: number) => (
                 <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -119,8 +119,8 @@ export default function StudentProfileModal({
           />
           <Text style={{ marginRight: 10 }}>What I am good at</Text>
           <TagsContainer>
-            {interests?.length > 0 &&
-              interests?.map((interest: any, index: number) => (
+            {strengths?.length > 0 &&
+              strengths?.map((interest: any, index: number) => (
                 <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
