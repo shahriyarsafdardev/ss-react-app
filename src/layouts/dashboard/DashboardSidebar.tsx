@@ -48,7 +48,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 const LogoContainer = styled(Box)(({ theme }) => ({
-  padding: '1.5rem'
+  padding: '2.5rem'
 }));
 
 const AccountStyle = styled('div')(({ theme }) => ({
@@ -181,7 +181,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         )}
       </Stack> */}
       <LogoContainer>
-        <img src="/static/ScholarSite.svg" alt="logo.svg" />
+        <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
       </LogoContainer>
 
       <NavSection
