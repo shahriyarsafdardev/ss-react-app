@@ -65,7 +65,7 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           email: 'abc@gmail.com',
           current_company: {
             id: '2',
-            name: 'Company',
+            name: 'Company b',
             logo_url:
               'https://99designs-blog.imgix.net/blog/wp-content/uploads/2018/05/Target_Corporation_logo_vector.svg.png'
           },
