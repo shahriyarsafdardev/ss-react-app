@@ -47,9 +47,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-const SideBarTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  fontWeight: 500,
+const LogoContainer = styled(Box)(({ theme }) => ({
   padding: '1.5rem'
 }));
 
@@ -182,9 +180,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           </Link>
         )}
       </Stack> */}
-      <SideBarTitle gutterBottom variant="h4">
-        ScholarSite
-      </SideBarTitle>
+      <LogoContainer>
+        <img src="/static/ScholarSite.svg" alt="logo.svg" />
+      </LogoContainer>
 
       <NavSection
         cohortsData={cohortsConfig(cohorts)}
