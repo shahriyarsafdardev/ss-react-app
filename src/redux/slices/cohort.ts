@@ -29,6 +29,7 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, peers: action.payload.peers };
       }
     },
+
     getSessionsSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id

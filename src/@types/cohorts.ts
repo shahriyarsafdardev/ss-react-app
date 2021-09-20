@@ -45,6 +45,14 @@ export type Session = {
   survey: Survey;
 };
 
+export type SessionListItem = {
+  id: string;
+  name: string;
+  length: string;
+  datetime: string;
+  number: number;
+};
+
 export type Cohort = {
   id: string;
   name: string;

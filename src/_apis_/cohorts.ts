@@ -276,6 +276,66 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
               }
             ]
           }
+        },
+        {
+          id: 'uuid',
+          name: 'Session number 2 testing',
+          number: 2,
+          length: '120m',
+          datetime: "2017-02-11'T'18:31:44",
+          description: 'block of html',
+          summary: 'block of html',
+          slides: [
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/p/r/problem_management_approach_good_ppt_example_Slide01.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide13.jpg'
+          ],
+          survey: {
+            submitted: true,
+            contents: [
+              {
+                type: 'multiple-choice',
+                title: '1. How did you rate the course?',
+                options: ['Loved it', 'It was okay'],
+                submitted_answer: 'Loved it'
+              },
+              {
+                type: 'input',
+                title: '1. Describe your favourite part?',
+                submitted_answer: 'My favourite part was ...'
+              }
+            ]
+          }
+        },
+        {
+          id: 'uuid',
+          name: 'Session number 3 testing',
+          number: 3,
+          length: '120m',
+          datetime: "2017-02-11'T'18:31:44",
+          description: 'block of html',
+          summary: 'block of html',
+          slides: [
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/p/r/problem_management_approach_good_ppt_example_Slide01.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide13.jpg'
+          ],
+          survey: {
+            submitted: true,
+            contents: [
+              {
+                type: 'multiple-choice',
+                title: '1. How did you rate the course?',
+                options: ['Loved it', 'It was okay'],
+                submitted_answer: 'Loved it'
+              },
+              {
+                type: 'input',
+                title: '1. Describe your favourite part?',
+                submitted_answer: 'My favourite part was ...'
+              }
+            ]
+          }
         }
       ]
     };
