@@ -1,9 +1,10 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
-import axios from '../utils/axios';
+import axios from 'axios';
 import { isValidToken, setSession } from '../utils/jwt';
 // @types
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/authentication';
+import { ROOT_URL } from '../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -117,10 +118,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
+    const response = await axios.post(`${ROOT_URL}/users/sign_in`, {
       email,
       password
     });
+    console.log(response.data);
     const { accessToken, user } = response.data;
 
     setSession(accessToken);

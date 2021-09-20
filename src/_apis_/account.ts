@@ -6,7 +6,7 @@ import { verify, sign } from '../utils/jwt';
 import { User } from '../@types/account';
 //
 import mock from './mock';
-
+import { ROOT_URL } from '../routes/paths';
 // ----------------------------------------------------------------------
 
 const JWT_SECRET = 'minimal-secret-key';
@@ -33,7 +33,7 @@ const users: User[] = [
 
 // ----------------------------------------------------------------------
 
-mock.onPost('/api/account/login').reply(async (config) => {
+mock.onPost(`${ROOT_URL}/users/sign_in`).reply(async (config) => {
   try {
     await fakeRequest(1000);
 
