@@ -90,7 +90,7 @@ export default function PeersTab() {
   return (
     <Page title="Peers | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs heading="Peers Tab" links={[]} />
+        <HeaderBreadcrumbs heading="Peers" links={[]} />
 
         <ViewSelector>
           <FormControl>

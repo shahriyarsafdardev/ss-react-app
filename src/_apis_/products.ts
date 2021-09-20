@@ -39,7 +39,7 @@ const PRODUCT_COLOR = [
   '#FFFFFF',
   '#FFC0CB',
   '#FF4842',
-  '#1890FF',
+  '#4D4DCD',
   '#94D82D',
   '#FFC107'
 ];
