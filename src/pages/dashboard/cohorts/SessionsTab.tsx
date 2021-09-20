@@ -5,16 +5,13 @@ import { styled } from '@material-ui/core/styles';
 // redux
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getUsers } from '../../../redux/slices/user';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 // components
 import Page from '../../../components/Page';
-import { PeerCard } from '../../../components/_dashboard/cohort/cards';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import Description from '../../../components/cohorts/sessions/Description';
-
+import { getSessions } from '../../../redux/slices/cohort';
 // ----------------------------------------------------------------------
 
 const SkeletonLoad = (
@@ -27,7 +24,7 @@ const SkeletonLoad = (
   </>
 );
 
-export default function Sessions() {
+export default function SessionsTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { users } = useSelector((state: RootState) => state.user);
@@ -35,6 +32,7 @@ export default function Sessions() {
 
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(getSessions('cohort-1'));
   }, [dispatch]);
 
   const SessionTab = styled(Tab)((props) => ({
@@ -51,14 +49,27 @@ export default function Sessions() {
     backgroundColor: '#F4F6F8',
     borderTopLeftRadius: '10px',
     borderTopRightRadius: '10px',
-    paddingTop: '20px',
     justifyContent: 'center',
     '.MuiTabs-flexContainer': {
       justifyContent: 'center'
+    },
+    button: {
+      '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
+        padding: '15px'
+      },
+      color: '#6C7885',
+      '&.Mui-selected': {
+        color: '#212B36'
+      }
     }
   }));
 
-  const tabsContent = [<Description key="hello" />];
+  const tabsContent = [
+    <Description key="hello" innerContent="Description" />,
+    <Description key="hello" innerContent="Summary Notes" />,
+    <Description key="hello" innerContent="Slides" />,
+    <Description key="hello" innerContent="Survey" />
+  ];
 
   return (
     <Page title="Peers | Minimal-UI">

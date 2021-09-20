@@ -22,7 +22,7 @@ mock.onGet('/cohorts').reply((config) => {
 mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
   try {
     const peersData = {
-      id: 'cohort-1',
+      cohort_id: 'cohort-1',
       peers: [
         {
           id: '1',
@@ -236,6 +236,51 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
     };
 
     return [200, { peersData }];
+  } catch (error) {
+    console.error(error);
+    return [500, { message: 'Internal server error' }];
+  }
+});
+
+mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
+  try {
+    const sessionsData = {
+      cohort_id: 'cohort-1',
+      sessions: [
+        {
+          id: 'uuid',
+          name: 'Network Effects and Economics of Digital Platforms',
+          number: 1,
+          length: '120m',
+          datetime: "2017-02-11'T'18:31:44",
+          description: 'block of html',
+          summary: 'block of html',
+          slides: [
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/p/r/problem_management_approach_good_ppt_example_Slide01.jpg',
+            'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide13.jpg'
+          ],
+          survey: {
+            submitted: true,
+            contents: [
+              {
+                type: 'multiple-choice',
+                title: '1. How did you rate the course?',
+                options: ['Loved it', 'It was okay'],
+                submitted_answer: 'Loved it'
+              },
+              {
+                type: 'input',
+                title: '1. Describe your favourite part?',
+                submitted_answer: 'My favourite part was ...'
+              }
+            ]
+          }
+        }
+      ]
+    };
+
+    return [200, { sessionsData }];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];

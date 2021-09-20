@@ -21,9 +21,33 @@ type Tag = {
 };
 
 type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
+export type SurveyContent = {
+  type: string;
+  title: string;
+  options: string[];
+  submitted_answer: string;
+};
+
+export type Survey = {
+  submitted: boolean;
+  contents: SurveyContent[];
+};
+
+export type Session = {
+  id: string;
+  name: string;
+  number: number;
+  length: string;
+  datetime: string;
+  description: string;
+  summary: string;
+  slides: string[];
+  survey: Survey;
+};
 
 export type Cohort = {
   id: string;
   name: string;
   peers: StudentProfile[];
+  sessions: Session[];
 };

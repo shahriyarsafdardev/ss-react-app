@@ -22,11 +22,20 @@ const slice = createSlice({
     },
     getPeersSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
-        (cohort) => cohort.id === action.payload.id
+        (cohort) => cohort.id === action.payload.cohort_id
       );
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = { ...updated, peers: action.payload.peers };
+      }
+    },
+    getSessionsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
     }
   }
@@ -50,6 +59,17 @@ export function getPeers(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/peers`);
       dispatch(slice.actions.getPeersSuccess(response.data.peersData));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getSessions(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/sessions`);
+      dispatch(slice.actions.getSessionsSuccess(response.data.sessionsData));
     } catch (error) {
       console.log(error);
     }

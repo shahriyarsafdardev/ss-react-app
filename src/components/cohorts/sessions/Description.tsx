@@ -1,26 +1,17 @@
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  DialogActions,
-  List,
-  BoxProps,
-  Collapse,
-  ListItemText,
-  ListItemIcon,
-  ListSubheader,
-  ListItemButton,
-  ListItemButtonProps
-} from '@material-ui/core';
+import { Container, Typography, List, ListItemText } from '@material-ui/core';
 
-export default function Description() {
+type DescriptionProps = {
+  innerContent: string;
+};
+
+export default function Description({ innerContent }: DescriptionProps) {
   return (
     <Container>
-      <Typography variant="h3">About this session</Typography>
-      <List>
+      <Typography variant="h3">{innerContent}</Typography>
+      {/* <Typography variant="h3">About this session</Typography> */}
+      {/* <List>
         <ListItemText>Hey there</ListItemText>
-      </List>
+      </List> */}
     </Container>
   );
 }

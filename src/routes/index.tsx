@@ -113,7 +113,7 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: '/peers', element: <PeersTab /> },
-            { path: '/sessions', element: <Sessions /> }
+            { path: '/sessions', element: <SessionsTab /> }
           ]
         },
         {
@@ -262,7 +262,7 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
-const Sessions = Loadable(lazy(() => import('../pages/dashboard/cohorts/Sessions')));
+const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/SessionsTab')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
