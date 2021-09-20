@@ -43,15 +43,15 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Design Thinking',
-              color: 'primary'
+              color: 'blue'
             },
             {
               name: 'UX Design',
-              color: 'primary'
+              color: 'blue'
             },
             {
               name: 'Product Design',
-              color: 'primary'
+              color: 'blue'
             }
           ],
           interests: [
@@ -79,11 +79,11 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Payment Methods',
-              color: 'primary'
+              color: 'blue'
             },
             {
               name: 'Econometrics and Statistics',
-              color: 'primary'
+              color: 'blue'
             }
           ],
           interests: [
@@ -115,11 +115,11 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
           strengths: [
             {
               name: 'Product Testing',
-              color: 'primary'
+              color: 'blue'
             },
             {
               name: 'Web Analytics',
-              color: 'primary'
+              color: 'blue'
             }
           ],
           interests: [
@@ -196,7 +196,7 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
           strengths: [
             {
               name: 'Strength B',
-              color: 'primary'
+              color: 'blue'
             }
           ],
           interests: [

@@ -93,7 +93,7 @@ function NavItem({
   const isActiveRoot = path ? !!matchPath({ path, end: false }, pathname) : false;
   console.log('index is: ', index);
   const [open, setOpen] = useState(isActiveRoot);
-
+  console.log(theme);
   const handleOpen = () => {
     setOpen(!open);
   };

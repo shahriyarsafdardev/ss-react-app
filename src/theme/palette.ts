@@ -62,9 +62,16 @@ declare module '@material-ui/core' {
 const PRIMARY = {
   lighter: '#C8FACD',
   light: '#5BE584',
-  main: '#00AB55',
+  main: '#4D4DCD',
   dark: '#007B55',
   darker: '#005249'
+};
+const Blue = {
+  lighter: '#CCDFFF',
+  light: '#6697FF',
+  main: '#1890FF',
+  dark: '#1890FF',
+  darker: '#00137A'
 };
 const SECONDARY = {
   lighter: '#D6E4FF',
@@ -147,6 +154,7 @@ const COMMON = {
   success: { ...SUCCESS, contrastText: GREY[800] },
   warning: { ...WARNING, contrastText: GREY[800] },
   error: { ...ERROR, contrastText: '#fff' },
+  blue: { ...Blue, contrastText: '#fff' },
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,
