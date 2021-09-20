@@ -9,7 +9,7 @@ type SessionRowProps = {
 
 const ListItem = styled('div')((props) => ({
   borderBottom: '1px solid #E5E5E5',
-  padding: '5px 10px',
+  padding: '5px 0',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(77, 77, 205, 0.06)'

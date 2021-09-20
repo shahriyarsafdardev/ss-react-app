@@ -4,7 +4,7 @@ const VideoContainer = styled('div')((props) => ({
   marginBottom: '3rem',
 
   video: {
-    width: '90%',
+    width: '100%',
     borderRadius: '25px'
   }
 }));

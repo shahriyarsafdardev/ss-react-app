@@ -1,17 +1,21 @@
-import { Container, Typography, List, ListItemText } from '@material-ui/core';
+import { Container } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+
+import { ReactNode } from 'react';
 
 type DescriptionProps = {
-  innerContent: string;
+  innerContent: ReactNode;
 };
 
+const DescriptionContainer = styled(Container)((props) => ({
+  h2: {
+    lineHeight: '80px'
+  },
+  ul: {
+    marginLeft: '25px'
+  }
+}));
+
 export default function Description({ innerContent }: DescriptionProps) {
-  return (
-    <Container>
-      <Typography variant="h3">{innerContent}</Typography>
-      {/* <Typography variant="h3">About this session</Typography> */}
-      {/* <List>
-        <ListItemText>Hey there</ListItemText>
-      </List> */}
-    </Container>
-  );
+  return <DescriptionContainer>{innerContent}</DescriptionContainer>;
 }

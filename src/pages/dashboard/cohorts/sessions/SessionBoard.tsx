@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Container, Grid, Skeleton, Tabs, Tab, Box } from '@material-ui/core';
+import { Container, Tabs, Tab } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import HeaderBreadcrumbs from '../../../../components/HeaderBreadcrumbs';
-import Description from '../../../../components/cohorts/sessions/Description';
+import { Description, Summary } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
+
+// Currently using this sample html data to populate our tabs
+import { descriptionData, summaryData } from './SampleData';
 
 // Video player
 import VideoPreview from './VideoPreview';
@@ -33,7 +35,7 @@ const SessionTabs = styled(Tabs)((props) => ({
   },
   button: {
     '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
-      padding: '15px'
+      paddingTop: '15px'
     },
     color: '#6C7885',
     '&.Mui-selected': {
@@ -48,21 +50,29 @@ const SessionsContainer = styled(Container)((props) => ({
   alignItems: 'center'
 }));
 
+const SessionTitle = styled('h2')((props) => ({
+  fontWeight: 'bolder',
+  minHeight: '90px',
+  marginLeft: '24px'
+}));
+
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabsContent = [
-    <Description key="hello" innerContent="Description" />,
-    <Description key="hello" innerContent="Summary Notes" />,
-    <Description key="hello" innerContent="Slides" />,
-    <Description key="hello" innerContent="Survey" />
+    <Description key="description" innerContent={descriptionData()} />,
+    <Summary key="summary" innerContent={summaryData()} />
+    // <Description key="hello" innerContent="Summary Notes" />,
+    // <Description key="hello" innerContent="Slides" />,
+    // <Description key="hello" innerContent="Survey" />
   ];
 
   if (!session) return null;
 
   return (
     <Container>
-      <HeaderBreadcrumbs heading={session.name} links={[]} />
+      {/* <HeaderBreadcrumbs heading={session.name} links={[]} /> */}
+      <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
         <VideoPreview />
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
