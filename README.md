@@ -13,6 +13,7 @@ The initial designs for the Student Portal are shown [here](https://www.figma.co
 A prototype is shown [here](https://www.figma.com/proto/bcAdfEQCTLfnF8HCHdy6Iq/Student-Prototype?node-id=7%3A3758&scaling=scale-down&page-id=0%3A1&starting-point-node-id=30%3A9406).
 
 As you can see, we are using a set of MaterialUI components which are already integrated within this directory. This should allow us to focus on code quality and testing rather than spending time on styling details.
+
 ## Development
 
 We would like to build this project using test driven development. Thic process will rely on both:
@@ -29,7 +30,7 @@ These tests will rely on a set of fixtured included within the `./fixtures/` dir
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/sign_in
 
-Params:  { email: string, password: string } 
+Params: { email: string, password: string }
 
 Successful response fixture: fixtures/successful_authentication.json
 
@@ -39,18 +40,17 @@ Failed response fixture: fixtures/failed_authentication.json
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/fetch_user
 
-Params:  {} 
+Params: {}
 
 Successful response fixture: fixtures/successful_user_fetch.json
 
 Failed response fixture: fixtures/failed_user_fetch.json
 
-
 ### Cohort List
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts
 
-Params:  {}
+Params: {}
 
 Fixture: fixtures/cohorts_fixture.json
 
@@ -58,7 +58,7 @@ Fixture: fixtures/cohorts_fixture.json
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid
 
-Params:  {} 
+Params: {}
 
 Fixture: fixtures/cohort_fixture.json
 
@@ -66,9 +66,17 @@ Fixture: fixtures/cohort_fixture.json
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/peers
 
-Params:  { cohort_id: uuid } 
+Params: { cohort_id: uuid }
 
 Fixture: fixtures/cohort_peers_fixture.json
+
+### Cohort Session Details
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/sessions
+
+Params: { cohort_id: uuid }
+
+Fixture: fixtures/cohort_sessions_fixture.json
 
 ## Tooling
 
