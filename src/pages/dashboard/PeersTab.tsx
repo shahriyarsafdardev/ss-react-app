@@ -35,6 +35,36 @@ const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
 }));
 
+const StyledSelect = styled(Select)(() => ({
+  borderRadius: 19,
+  backgroundColor: '#F4F6F8',
+  fontSize: '1.5rem',
+  '&:hover:not(.Mui-disabled):before': {
+    border: 'unset'
+  },
+  '&:before': {
+    border: 'unset'
+  },
+  '&:hover': {
+    border: 'unset'
+  },
+  '&:after': {
+    borderBottom: 'unset'
+  },
+  '& .Mui-focused': {
+    backgroundColor: 'unset'
+  },
+  '.css-d0xgh5-MuiSelect-select-MuiInputBase-input-MuiFilledInput-input': {
+    padding: '10px 20px',
+    '&:focus': {
+      backgroundColor: 'unset'
+    }
+  },
+  '.css-jfl0wa-MuiSvgIcon-root-MuiSelect-icon': {
+    color: '#212B36'
+  }
+}));
+
 export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
@@ -139,10 +169,20 @@ export default function PeersTab() {
 
         <ViewSelector>
           <FormControl>
-            <Select label="Category" native onChange={(e: any) => setView(e.target.value)}>
-              <option value="card">Grid View</option>
-              <option value="list">Table View</option>
-            </Select>
+            <StyledSelect
+              displayEmpty
+              onChange={(e: any) => setView(e.target.value)}
+              inputProps={{ 'aria-label': 'Without label' }}
+              value={view}
+              variant="filled"
+            >
+              <MenuItem key="card" value="card">
+                Grid View
+              </MenuItem>
+              <MenuItem key="list" value="list">
+                Table View
+              </MenuItem>
+            </StyledSelect>
           </FormControl>
           <FormControl sx={{ marginLeft: 1, width: 110 }}>
             <InputLabel id="multiple-checkbox-label">Company</InputLabel>
@@ -154,7 +194,6 @@ export default function PeersTab() {
               onChange={handleChange}
               input={<OutlinedInput label="company" />}
               renderValue={(selected) => selected.join(', ')}
-              // MenuProps={MenuProps}
             >
               {companies?.map((name: any) => (
                 <MenuItem key={name} value={name}>
@@ -174,7 +213,6 @@ export default function PeersTab() {
               onChange={handleStrengthChange}
               input={<OutlinedInput label="strength" />}
               renderValue={(selected) => selected.join(', ')}
-              // MenuProps={MenuProps}
             >
               {strengths?.map((name: any) => (
                 <MenuItem key={name} value={name}>
@@ -194,7 +232,6 @@ export default function PeersTab() {
               onChange={handleInterestChange}
               input={<OutlinedInput label="interest" />}
               renderValue={(selected) => selected.join(', ')}
-              // MenuProps={MenuProps}
             >
               {interests?.map((name: any) => (
                 <MenuItem key={name} value={name}>
