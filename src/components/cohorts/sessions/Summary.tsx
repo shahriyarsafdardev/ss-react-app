@@ -1,10 +1,8 @@
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
-import { ReactNode } from 'react';
-
 type SummaryProps = {
-  innerContent: ReactNode;
+  innerContent: string;
 };
 
 const SummaryContainer = styled(Container)((props) => ({
@@ -17,5 +15,9 @@ const SummaryContainer = styled(Container)((props) => ({
 }));
 
 export default function Summary({ innerContent }: SummaryProps) {
-  return <SummaryContainer>{innerContent}</SummaryContainer>;
+  return (
+    <SummaryContainer>
+      <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+    </SummaryContainer>
+  );
 }

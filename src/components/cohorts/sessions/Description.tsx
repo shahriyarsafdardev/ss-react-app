@@ -1,10 +1,8 @@
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
-import { ReactNode } from 'react';
-
 type DescriptionProps = {
-  innerContent: ReactNode;
+  innerContent: string;
 };
 
 const DescriptionContainer = styled(Container)((props) => ({
@@ -17,5 +15,9 @@ const DescriptionContainer = styled(Container)((props) => ({
 }));
 
 export default function Description({ innerContent }: DescriptionProps) {
-  return <DescriptionContainer>{innerContent}</DescriptionContainer>;
+  return (
+    <DescriptionContainer>
+      <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+    </DescriptionContainer>
+  );
 }

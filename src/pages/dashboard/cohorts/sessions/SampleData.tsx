@@ -1,5 +1,5 @@
-export const descriptionData = () => (
-  <div>
+export const descriptionData = () =>
+  `<div>
     <h2>About this session</h2>
     <ul>
       <li>
@@ -25,11 +25,10 @@ export const descriptionData = () => (
         when the platform does not set prices.
       </li>
     </ul>
-  </div>
-);
+  </div>`;
 
-export const summaryData = () => (
-  <div>
+export const summaryData = () =>
+  `<div>
     <h2>Summary</h2>
     <ul>
       <li>
@@ -55,5 +54,4 @@ export const summaryData = () => (
         when the platform does not set prices.
       </li>
     </ul>
-  </div>
-);
+  </div>`;
