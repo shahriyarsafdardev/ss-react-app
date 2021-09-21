@@ -251,8 +251,8 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           id: 'uuid',
           name: 'Network Effects and Economics of Digital Platforms',
           number: 1,
-          length: '120m',
-          datetime: "2017-02-11'T'18:31:44",
+          length: '150m',
+          datetime: '2021-10-13 02:38:46.101611',
           description: 'block of html',
           summary: 'block of html',
           slides: [
@@ -281,8 +281,8 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           id: 'uuid',
           name: 'Session number 2 testing',
           number: 2,
-          length: '120m',
-          datetime: "2017-02-11'T'18:31:44",
+          length: '80m',
+          datetime: '2020-11-26 19:45:46.101611',
           description: 'block of html',
           summary: 'block of html',
           slides: [
@@ -312,7 +312,7 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           name: 'Session number 3 testing',
           number: 3,
           length: '120m',
-          datetime: "2017-02-11'T'18:31:44",
+          datetime: '2020-11-22 19:45:46.101611',
           description: 'block of html',
           summary: 'block of html',
           slides: [
