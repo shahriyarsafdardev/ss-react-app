@@ -9,6 +9,7 @@ describe('When user tries to login', () => {
   beforeAll(async () => {
     browser = await puppeteer.launch({ headless: true });
     page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0);
   });
 
   afterAll(async () => {

@@ -18,6 +18,7 @@ describe('A valid user can access peers tab', () => {
       }
     });
     page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0);
   });
 
   afterAll(async () => {
