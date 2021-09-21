@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { Description, Summary } from '../../../../components/cohorts/sessions';
+import { Description, Summary, SurveyForm } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 
 // Currently using this sample html data to populate our tabs
@@ -62,10 +62,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   const tabsContent = [
     <Description key="description" innerContent={descriptionData()} />,
-    <Summary key="summary" innerContent={summaryData()} />
-    // <Description key="hello" innerContent="Summary Notes" />,
-    // <Description key="hello" innerContent="Slides" />,
-    // <Description key="hello" innerContent="Survey" />
+    <Summary key="summary" innerContent={summaryData()} />,
+    <div key="slidesTab" />,
+    <SurveyForm key="surveyForm" surveyData={session?.survey} />
   ];
 
   if (!session) return null;

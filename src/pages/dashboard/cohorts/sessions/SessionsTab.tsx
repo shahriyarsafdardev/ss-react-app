@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 // material
-import { Container, Grid, Skeleton, Tabs, Tab, Box } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 // redux

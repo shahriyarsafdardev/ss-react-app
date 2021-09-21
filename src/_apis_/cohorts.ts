@@ -265,13 +265,13 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
             contents: [
               {
                 type: 'multiple-choice',
-                title: '1. How did you rate the course?',
+                title: '1 - How did you rate the course?',
                 options: ['Loved it', 'It was okay'],
                 submitted_answer: 'Loved it'
               },
               {
-                type: 'input',
-                title: '1. Describe your favourite part?',
+                type: 'text-input',
+                title: '2 - Describe your favourite part?',
                 submitted_answer: 'My favourite part was ...'
               }
             ]
@@ -300,7 +300,7 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
                 submitted_answer: 'Loved it'
               },
               {
-                type: 'input',
+                type: 'text-input',
                 title: '1. Describe your favourite part?',
                 submitted_answer: 'My favourite part was ...'
               }
@@ -330,7 +330,7 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
                 submitted_answer: 'Loved it'
               },
               {
-                type: 'input',
+                type: 'text-input',
                 title: '1. Describe your favourite part?',
                 submitted_answer: 'My favourite part was ...'
               }

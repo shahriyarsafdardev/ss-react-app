@@ -24,7 +24,7 @@
             "submitted_answer": "Loved it"
           },
           {
-            "type": "input",
+            "type": "text-input",
             "title": "1. Describe your favourite part?",
             "submitted_answer": "My favourite part was ..."
           }
