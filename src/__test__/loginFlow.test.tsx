@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-jest.setTimeout(36000);
+jest.setTimeout(200000);
 
 describe('When user tries to login', () => {
   let browser: any;
@@ -43,7 +43,7 @@ describe('When user tries to login', () => {
     await page.type("input[name='email']", 'aqibmaqqbool@gmail.com');
 
     await page.click("input[name='password']");
-    await page.type("input[name='password']", "aqib1234");
+    await page.type("input[name='password']", 'aqib1234');
 
     await page.click("button[type='submit']");
 

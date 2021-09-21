@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-jest.setTimeout(100000);
+jest.setTimeout(200000);
 
 const width = 1400;
 const height = 1000;
