@@ -45,7 +45,11 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
-    <Card onClick={() => modalHandler(peer)} style={{ cursor: 'pointer', paddingBottom: 25 }}>
+    <Card
+      onClick={() => modalHandler(peer)}
+      style={{ cursor: 'pointer', paddingBottom: 25 }}
+      id={`peer-grid-${peer.id}`}
+    >
       <CardMediaStyle>
         <SvgIconStyle
           color="paper"

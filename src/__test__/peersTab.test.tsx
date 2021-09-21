@@ -51,9 +51,45 @@ describe('A valid user can access peers tab', () => {
 
     await page.waitForSelector('#cohort-tab-title');
 
-    const value = await page.evaluate(
-      () => document.getElementById('cohort-tab-title')?.textContent
-    );
+    let value = await page.evaluate(() => document.getElementById('cohort-tab-title')?.textContent);
     await expect(value).toContain('Peers');
+
+    value = await page.evaluate(
+      () => document.getElementById('peer-grid-container')?.children?.length
+    );
+    await expect(value).toBe(3);
+
+    const { fullName, currentPosition } = await page.evaluate(() => {
+      const value = document.getElementById('peer-grid-1');
+      return {
+        fullName: value?.children[1]?.textContent,
+        currentPosition: value?.children[2]?.textContent
+      };
+    });
+    await expect(fullName).toContain('Alex Morris');
+    await expect(currentPosition).toContain('Product Designer');
+
+    await page.click('#select-view');
+    await page.click('#table-view');
+
+    value = await page.evaluate(
+      () => document.getElementById('peer-list-container')?.children?.length
+    );
+    await expect(value).toBe(3);
+    const { name, companyName, currentRole, strength, interest } = await page.evaluate(() => {
+      const value = document.getElementById('peer-list-container')?.children[0];
+      return {
+        name: value?.children[0]?.textContent,
+        companyName: value?.children[1]?.textContent,
+        currentRole: value?.children[2]?.textContent,
+        strength: value?.children[3]?.textContent,
+        interest: value?.children[4]?.textContent
+      };
+    });
+    await expect(name).toContain('Morris');
+    await expect(companyName).toContain('Upwork');
+    await expect(currentRole).toContain('Product Designer');
+    await expect(strength).toContain('Design Thinking');
+    await expect(interest).toContain('Networking');
   });
 });

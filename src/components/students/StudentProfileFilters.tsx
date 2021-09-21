@@ -78,11 +78,12 @@ export default function StudentProfileFilters({
           inputProps={{ 'aria-label': 'Without label' }}
           value={view}
           variant="filled"
+          id="select-view"
         >
-          <MenuItem key="card" value="card">
+          <MenuItem key="card" value="card" id="grid-view">
             Grid View
           </MenuItem>
-          <MenuItem key="list" value="list">
+          <MenuItem key="list" value="list" id="table-view">
             Table View
           </MenuItem>
         </StyledSelect>
