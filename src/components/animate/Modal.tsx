@@ -1,15 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 // material
-import { Dialog, Box, Paper, DialogProps } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import Modal from 'react-modal';
 //
 import { varFadeInUp } from './variants';
 
 // ----------------------------------------------------------------------
 
-interface ModalAnimateProps extends DialogProps {
+interface ModalAnimateProps {
   animate?: object;
   onClose?: VoidFunction;
+  open: boolean;
+  children: React.ReactNode | React.ReactNode[];
+  id: string;
 }
 
 const customStyles = {
@@ -36,7 +39,8 @@ export default function ModalAnimate({
   open = false,
   animate,
   onClose,
-  children
+  children,
+  id
 }: ModalAnimateProps) {
   return (
     <AnimatePresence>
@@ -52,7 +56,7 @@ export default function ModalAnimate({
               justifyContent: 'center'
             }}
           >
-            <Box>{children}</Box>
+            <Box id={id}>{children}</Box>
           </Box>
         </Modal>
       )}

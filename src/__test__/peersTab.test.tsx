@@ -11,7 +11,7 @@ describe('A valid user can access peers tab', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       defaultViewport: {
         width,
         height
@@ -54,6 +54,7 @@ describe('A valid user can access peers tab', () => {
     let value = await page.evaluate(() => document.getElementById('cohort-tab-title')?.textContent);
     await expect(value).toContain('Peers');
 
+    // test grid view
     value = await page.evaluate(
       () => document.getElementById('peer-grid-container')?.children?.length
     );
@@ -69,6 +70,7 @@ describe('A valid user can access peers tab', () => {
     await expect(fullName).toContain('Alex Morris');
     await expect(currentPosition).toContain('Product Designer');
 
+    // test  list view
     await page.click('#select-view');
     await page.click('#table-view');
 
@@ -91,5 +93,23 @@ describe('A valid user can access peers tab', () => {
     await expect(currentRole).toContain('Product Designer');
     await expect(strength).toContain('Design Thinking');
     await expect(interest).toContain('Networking');
+
+    // test modal
+    const { modalCompanyName, modalEmail, modalStrength, modalInterest } = await page.evaluate(
+      () => {
+        document.getElementById('student-row-1')?.click();
+        const value = document.getElementById('student-modal')?.children[0];
+        return {
+          modalCompanyName: value?.children[1]?.textContent,
+          modalEmail: value?.children[2]?.textContent,
+          modalInterest: value?.children[3].children[2].children[0].textContent,
+          modalStrength: value?.children[4].children[2].children[0].textContent
+        };
+      }
+    );
+    await expect(modalEmail).toContain('alexmorris@upwork.com');
+    await expect(modalCompanyName).toContain('Upwork');
+    await expect(modalStrength).toContain('Design Thinking');
+    await expect(modalInterest).toContain('Networking');
   });
 });
