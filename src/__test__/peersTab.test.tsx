@@ -73,7 +73,7 @@ describe('A valid user can access peers tab', () => {
     await expect(fullName).toContain('Alex Morris');
     await expect(currentPosition).toContain('Product Designer');
     await expect(imgUrl).toContain(
-      'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f8e0dbed-48c7-4b17-908b-618b271b52dd/1516925807774.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210919%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210919T205726Z&X-Amz-Expires=86400&X-Amz-Signature=75fd4fce726a9c386f3142d2dceb352bad9e9d27f4bee587d5b39b07aa4bc5c6&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%221516925807774.jpeg%22'
+      'https://media-exp1.licdn.com/dms/image/C5103AQFUWNtSayYCFA/profile-displayphoto-shrink_800_800/0/1516925807774?e=1637798400&v=beta&t=iqk1HIMxR-tRqnjCjLnX1GnpfKQ1VHTrFnjUACGvLFs'
     );
 
     // test  list view
@@ -84,21 +84,31 @@ describe('A valid user can access peers tab', () => {
       () => document.getElementById('peer-list-container')?.children?.length
     );
     await expect(value).toBe(3);
-    const { name, companyName, currentRole, strength, interest } = await page.evaluate(() => {
-      const value = document.getElementById('peer-list-container')?.children[0];
-      return {
-        name: value?.children[0]?.textContent,
-        companyName: value?.children[1]?.textContent,
-        currentRole: value?.children[2]?.textContent,
-        strength: value?.children[3]?.textContent,
-        interest: value?.children[4]?.textContent
-      };
-    });
+
+    const { name, companyName, currentRole, strength, interest, profileImageUrl } =
+      await page.evaluate(() => {
+        const el: any =
+          document.getElementById('peer-list-container')?.children[0].children[0].children[0]
+            .children[0]?.children[0];
+        const value = document.getElementById('peer-list-container')?.children[0];
+
+        return {
+          name: value?.children[0]?.textContent,
+          companyName: value?.children[1]?.textContent,
+          currentRole: value?.children[2]?.textContent,
+          strength: value?.children[3]?.textContent,
+          interest: value?.children[4]?.textContent,
+          profileImageUrl: el?.src
+        };
+      });
     await expect(name).toContain('Morris');
     await expect(companyName).toContain('Upwork');
     await expect(currentRole).toContain('Product Designer');
     await expect(strength).toContain('Design Thinking');
     await expect(interest).toContain('Networking');
+    await expect(profileImageUrl).toContain(
+      'https://media-exp1.licdn.com/dms/image/C5103AQFUWNtSayYCFA/profile-displayphoto-shrink_800_800/0/1516925807774?e=1637798400&v=beta&t=iqk1HIMxR-tRqnjCjLnX1GnpfKQ1VHTrFnjUACGvLFs'
+    );
 
     // test modal
     const { modalCompanyName, modalEmail, modalStrength, modalInterest } = await page.evaluate(
