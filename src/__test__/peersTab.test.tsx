@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 
-jest.setTimeout(36000);
+jest.setTimeout(100000);
 
 const width = 1400;
 const height = 1000;
@@ -11,7 +11,7 @@ describe('A valid user can access peers tab', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       defaultViewport: {
         width,
         height
@@ -24,7 +24,7 @@ describe('A valid user can access peers tab', () => {
     await browser.close();
   });
 
-  test('successful login with valid credentials', async () => {
+  test('user clicks on peers tab after login', async () => {
     await page.goto('http://localhost:3000/');
     await page.waitForSelector("input[name='email']");
 
@@ -36,23 +36,23 @@ describe('A valid user can access peers tab', () => {
 
     await page.click("button[type='submit']");
 
-    await page.waitForSelector('#cohort-2');
+    await page.waitForSelector('#cohort-1');
 
     await page.evaluate(() => {
-      document.getElementById('cohort-2')?.click();
+      document.getElementById('cohort-1')?.click();
     });
 
-    await page.waitForSelector('#peers-0');
+    await page.waitForSelector('#peers-1');
 
     await page.evaluate(() => {
-      document.getElementById('peers-0')?.click();
+      document.getElementById('peers-1')?.click();
     });
 
     await page.waitForSelector('#cohort-tab-title');
 
     const value = await page.evaluate(
-      () => document.getElementById('cohort-tab-title')?.children[0].textContent
+      () => document.getElementById('cohort-tab-title')?.textContent
     );
-    await expect(value).toContain('Peers Tab');
+    await expect(value).toContain('Peers');
   });
 });

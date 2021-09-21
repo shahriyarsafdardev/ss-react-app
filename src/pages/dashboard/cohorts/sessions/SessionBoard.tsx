@@ -34,6 +34,7 @@ const SessionTabs = styled(Tabs)((props) => ({
     justifyContent: 'center'
   },
   button: {
+    justifyContent: 'center',
     '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
       paddingTop: '15px'
     },

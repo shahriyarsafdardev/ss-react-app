@@ -122,7 +122,7 @@ export default function PeersTab() {
   return (
     <Page title="Peers | Minimal-UI">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs heading="Peers" links={[]} />
+        <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
