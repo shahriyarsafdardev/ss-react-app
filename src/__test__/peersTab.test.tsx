@@ -127,5 +127,9 @@ describe('A valid user can access peers tab', () => {
     await expect(modalCompanyName).toContain('Upwork');
     await expect(modalStrength).toContain('Design Thinking');
     await expect(modalInterest).toContain('Networking');
+    // close modal
+    await page.evaluate(() =>
+      document.querySelector('[data-testid=modal-test-id]')?.parentElement?.click()
+    );
   });
 });
