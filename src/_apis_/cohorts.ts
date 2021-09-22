@@ -58,7 +58,7 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
             }
           ],
           profile_image_url:
-            'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f8e0dbed-48c7-4b17-908b-618b271b52dd/1516925807774.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210919%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210919T205726Z&X-Amz-Expires=86400&X-Amz-Signature=75fd4fce726a9c386f3142d2dceb352bad9e9d27f4bee587d5b39b07aa4bc5c6&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%221516925807774.jpeg%22'
+            'https://media-exp1.licdn.com/dms/image/C5103AQFUWNtSayYCFA/profile-displayphoto-shrink_800_800/0/1516925807774?e=1637798400&v=beta&t=iqk1HIMxR-tRqnjCjLnX1GnpfKQ1VHTrFnjUACGvLFs'
         },
         {
           id: '2',

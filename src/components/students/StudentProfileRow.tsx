@@ -32,6 +32,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       role="checkbox"
       onClick={() => modalHandler(row)}
       style={{ cursor: 'pointer' }}
+      id={`student-row-${id}`}
     >
       <TableCell component="th" scope="row" padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>

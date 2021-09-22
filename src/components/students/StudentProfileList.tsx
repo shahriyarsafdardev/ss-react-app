@@ -62,7 +62,7 @@ export default function StudentProfileList({ students, modalHandler }: StudentPr
               onRequestSort={handleRequestSort}
               onSelectAllClick={handleSelectAllClick}
             />
-            <TableBody>
+            <TableBody id="peer-list-container">
               {students.map((row: any, index) => (
                 <StudentProfileRow
                   key={row.id}

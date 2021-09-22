@@ -64,7 +64,7 @@ export default function StudentProfileModal({
     email
   } = modalUser;
   return (
-    <Modal open={modalState} onClose={() => modalHandler({})}>
+    <Modal open={modalState} onClose={() => modalHandler({})} id="student-modal">
       <StyledContainer>
         <Title>Information</Title>
         <StyledRow>
