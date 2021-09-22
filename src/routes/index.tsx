@@ -112,6 +112,7 @@ export default function Router() {
           path: 'cohorts/:cohortID',
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
+            { path: '/home', element: <HomeTab /> },
             { path: '/peers', element: <PeersTab /> },
             { path: '/sessions', element: <SessionsTab /> }
           ]
@@ -262,6 +263,8 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
+const HomeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/Home/HomeTab')));
+
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
