@@ -49,7 +49,7 @@ export default function SessionRow({ session, index, onClick }: SessionRowProps)
   };
 
   return (
-    <ListItem onClick={() => onClick(index)}>
+    <ListItem data-session-row="session-row" onClick={() => onClick(index)}>
       <SessionDetails>{`Session ${session.number} | ${session.length}`}</SessionDetails>
       <Title>{trimTitle(session.name)}</Title>
       <SessionDetails>

@@ -2,7 +2,8 @@ import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 type DescriptionProps = {
-  innerContent: string;
+  innerContent: string | undefined;
+  id?: string;
 };
 
 const DescriptionContainer = styled(Container)((props) => ({
@@ -14,9 +15,11 @@ const DescriptionContainer = styled(Container)((props) => ({
   }
 }));
 
-export default function Description({ innerContent }: DescriptionProps) {
+export default function Description({ innerContent, id = '' }: DescriptionProps) {
+  if (!innerContent) return null;
+
   return (
-    <DescriptionContainer>
+    <DescriptionContainer id={id}>
       <div dangerouslySetInnerHTML={{ __html: innerContent }} />
     </DescriptionContainer>
   );

@@ -253,7 +253,16 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           number: 1,
           length: '150m',
           datetime: '2021-10-13 02:38:46.101611',
-          description: 'block of html',
+          description: `<div>
+                          <h2>About First Session</h2>
+                          <ul>
+                            <li>
+                              (Insights from Gary Beasley) Building a marketplace is notoriously difficult. It requires
+                              you to build trust, secure/test at least one side of the marketplace, and charge little to
+                              nothing to gain initial traction.
+                            </li>
+                          </ul>
+                        </div>`,
           summary: 'block of html',
           slides: [
             'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
@@ -283,7 +292,16 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           number: 2,
           length: '80m',
           datetime: '2020-11-26 19:45:46.101611',
-          description: 'block of html',
+          description: `<div>
+                          <h2>About Second Session</h2>
+                          <ul>
+                            <li>
+                              (Insights from Gary Beasley) Building a marketplace is notoriously difficult. It requires
+                              you to build trust, secure/test at least one side of the marketplace, and charge little to
+                              nothing to gain initial traction.
+                            </li>
+                          </ul>
+                        </div>`,
           summary: 'block of html',
           slides: [
             'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
@@ -313,7 +331,16 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
           number: 3,
           length: '120m',
           datetime: '2020-11-22 19:45:46.101611',
-          description: 'block of html',
+          description: `<div>
+                          <h2>About Third Session</h2>
+                          <ul>
+                            <li>
+                              (Insights from Gary Beasley) Building a marketplace is notoriously difficult. It requires
+                              you to build trust, secure/test at least one side of the marketplace, and charge little to
+                              nothing to gain initial traction.
+                            </li>
+                          </ul>
+                        </div>`,
           summary: 'block of html',
           slides: [
             'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg',
