@@ -32,7 +32,7 @@ describe('When user tries to login', () => {
 
     const element = await page.$('.MuiAlert-standardError');
     const value = await page.evaluate((el: any) => el.textContent, element);
-    console.log(value);
+
     await expect(value).toContain('Wrong password');
   });
 

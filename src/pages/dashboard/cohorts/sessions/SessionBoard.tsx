@@ -72,7 +72,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   return (
     <Container>
       {/* <HeaderBreadcrumbs heading={session.name} links={[]} /> */}
-      <SessionTitle>{session.name}</SessionTitle>
+      <SessionTitle data-name="session-title">{session.name}</SessionTitle>
       <SessionsContainer>
         <VideoPreview />
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>

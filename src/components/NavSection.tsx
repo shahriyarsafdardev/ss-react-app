@@ -91,9 +91,9 @@ function NavItem({
   const { pathname } = useLocation();
   const { title, path, icon, info, children } = item;
   const isActiveRoot = path ? !!matchPath({ path, end: false }, pathname) : false;
-  console.log('index is: ', index);
+
   const [open, setOpen] = useState(isActiveRoot);
-  console.log(theme);
+
   const handleOpen = () => {
     setOpen(!open);
   };
