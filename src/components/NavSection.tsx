@@ -32,6 +32,7 @@ const ListSubheaderStyle = styled((props) => (
 interface ListItemStyleProps extends ListItemButtonProps {
   component?: ReactNode;
   to?: string;
+  name?: string;
 }
 
 const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => ({
@@ -77,14 +78,22 @@ type NavItemProps = {
   }[];
 };
 
-function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | undefined }) {
+function NavItem({
+  item,
+  isShow,
+  index
+}: {
+  index?: number;
+  item: NavItemProps;
+  isShow?: boolean | undefined;
+}) {
   const theme = useTheme();
   const { pathname } = useLocation();
   const { title, path, icon, info, children } = item;
   const isActiveRoot = path ? !!matchPath({ path, end: false }, pathname) : false;
-
+  console.log('index is: ', index);
   const [open, setOpen] = useState(isActiveRoot);
-
+  console.log(theme);
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -106,7 +115,9 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
       <>
         <ListItemStyle
           disableGutters
+          name="sidebar-items"
           onClick={handleOpen}
+          id={index ? `cohort-${index}` : ''}
           sx={{
             ...(isActiveRoot && activeRootStyle)
           }}
@@ -129,7 +140,7 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
         {isShow && (
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {children.map((item) => {
+              {children.map((item, index) => {
                 const { title, path } = item;
                 const isActiveSub = path ? !!matchPath({ path, end: false }, pathname) : false;
 
@@ -137,6 +148,7 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
                   <ListItemStyle
                     disableGutters
                     key={title}
+                    id={`${title}-${index}`}
                     component={RouterLink}
                     to={path}
                     sx={{
@@ -195,13 +207,19 @@ function NavItem({ item, isShow }: { item: NavItemProps; isShow?: boolean | unde
 
 interface NavSectionProps extends BoxProps {
   isShow?: boolean | undefined;
+  cohortsData?: any | undefined;
   navConfig: {
     subheader: string;
     items: NavItemProps[];
   }[];
 }
 
-export default function NavSection({ navConfig, isShow = true, ...other }: NavSectionProps) {
+export default function NavSection({
+  navConfig,
+  cohortsData = [],
+  isShow = true,
+  ...other
+}: NavSectionProps) {
   return (
     <Box {...other}>
       {navConfig.map((list) => {
@@ -215,6 +233,11 @@ export default function NavSection({ navConfig, isShow = true, ...other }: NavSe
           </List>
         );
       })}
+      <List key={cohortsData} disablePadding>
+        {cohortsData.map((item: NavItemProps, index: number) => (
+          <NavItem index={index + 1} key={item.title} item={item} isShow={isShow} />
+        ))}
+      </List>
     </Box>
   );
 }

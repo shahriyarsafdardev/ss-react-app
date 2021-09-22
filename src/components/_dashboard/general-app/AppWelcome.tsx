@@ -35,7 +35,7 @@ export default function AppWelcome({ displayName }: AppWelcomeProps) {
           color: 'grey.800'
         }}
       >
-        <Typography gutterBottom variant="h4">
+        <Typography id="user-title" gutterBottom variant="h4">
           Welcome back,
           <br /> {!displayName ? '...' : displayName}!
         </Typography>

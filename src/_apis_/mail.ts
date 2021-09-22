@@ -74,7 +74,7 @@ const labels: MailLabel[] = [
     type: 'custom',
     name: 'promotions',
     unreadCount: 2,
-    color: '#1890FF'
+    color: '#4D4DCD'
   },
   {
     id: 'id_forums',

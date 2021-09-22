@@ -62,9 +62,16 @@ declare module '@material-ui/core' {
 const PRIMARY = {
   lighter: '#C8FACD',
   light: '#5BE584',
-  main: '#00AB55',
+  main: '#4D4DCD',
   dark: '#007B55',
   darker: '#005249'
+};
+const Blue = {
+  lighter: '#CCDFFF',
+  light: '#6697FF',
+  main: '#1890FF',
+  dark: '#1890FF',
+  darker: '#00137A'
 };
 const SECONDARY = {
   lighter: '#D6E4FF',
@@ -76,7 +83,7 @@ const SECONDARY = {
 const INFO = {
   lighter: '#D0F2FF',
   light: '#74CAFF',
-  main: '#1890FF',
+  main: '#4D4DCD',
   dark: '#0C53B7',
   darker: '#04297A'
 };
@@ -98,7 +105,7 @@ const ERROR = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
   main: '#FF4842',
-  dark: '#B72136',
+  dark: '#FF4842',
   darker: '#7A0C2E'
 };
 
@@ -147,6 +154,7 @@ const COMMON = {
   success: { ...SUCCESS, contrastText: GREY[800] },
   warning: { ...WARNING, contrastText: GREY[800] },
   error: { ...ERROR, contrastText: '#fff' },
+  blue: { ...Blue, contrastText: '#fff' },
   grey: GREY,
   gradients: GRADIENTS,
   chart: CHART_COLORS,
@@ -165,7 +173,7 @@ const COMMON = {
 const palette = {
   light: {
     ...COMMON,
-    text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
+    text: { primary: '#212B36', secondary: GREY[600], disabled: GREY[500] },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action }
   },

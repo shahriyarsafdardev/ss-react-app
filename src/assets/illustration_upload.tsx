@@ -111,20 +111,20 @@ export default function UploadIllustration({ ...other }: BoxProps) {
             transform="rotate(4.6 241.52 160.258)"
           />
           <path
-            fill="#1890FF"
+            fill="#4D4DCD"
             fillRule="nonzero"
             d="M235.800489 122.985499L251.947989 122.985499 251.947989 139.132999 235.800489 139.132999z"
             transform="rotate(4.6 243.874 131.06)"
           />
           <path
-            fill="#1890FF"
+            fill="#4D4DCD"
             fillRule="nonzero"
             d="M234.234488 142.413498L250.381988 142.413498 250.381988 158.560998 234.234488 158.560998z"
             opacity="0.5"
             transform="rotate(4.6 242.308 150.487)"
           />
           <path
-            fill="#1890FF"
+            fill="#4D4DCD"
             fillRule="nonzero"
             d="M232.672488 161.846499L248.819988 161.846499 248.819988 177.993999 232.672488 177.993999z"
             opacity="0.3"

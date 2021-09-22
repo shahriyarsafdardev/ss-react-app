@@ -5,7 +5,7 @@ function path(root: string, sublink: string) {
 }
 
 const ROOTS_AUTH = '/auth';
-const ROOTS_DASHBOARD = '/dashboard';
+const ROOTS_DASHBOARD = '';
 
 // ----------------------------------------------------------------------
 
@@ -33,9 +33,10 @@ export const PATH_PAGE = {
 };
 
 export const PATH_DASHBOARD = {
-  root: ROOTS_DASHBOARD,
+  root: '/',
   general: {
-    app: path(ROOTS_DASHBOARD, '/app'),
+    app: path(ROOTS_DASHBOARD, '/'),
+    discover: path(ROOTS_DASHBOARD, '/discover'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
@@ -60,6 +61,11 @@ export const PATH_DASHBOARD = {
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
     editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account')
+  },
+  cohorts: {
+    root: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}`),
+    sessions: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/sessions`),
+    peers: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/peers`)
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),

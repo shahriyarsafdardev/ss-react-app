@@ -28,7 +28,7 @@ import ColorSinglePicker from '../../ColorSinglePicker';
 
 const COLOR_OPTIONS = [
   '#00AB55', // theme.palette.primary.main,
-  '#1890FF', // theme.palette.info.main,
+  '#4D4DCD', // theme.palette.info.main,
   '#94D82D', // theme.palette.success.main,
   '#FFC107', // theme.palette.warning.main,
   '#FF4842', // theme.palette.error.main
@@ -41,7 +41,7 @@ const getInitialValues = (event: EventInput, range: { start: Date; end: Date } |
   const _event = {
     title: '',
     description: '',
-    textColor: '#1890FF',
+    textColor: '#4D4DCD',
     allDay: false,
     start: range ? new Date(range.start) : new Date(),
     end: range ? new Date(range.end) : new Date()

@@ -19,7 +19,7 @@ const PRIMARY_COLOR = [
     name: 'purple',
     lighter: '#EBD6FD',
     light: '#B985F4',
-    main: '#7635dc',
+    main: '#4D4DCD',
     dark: '#431A9E',
     darker: '#200A69',
     contrastText: '#fff'
@@ -39,8 +39,8 @@ const PRIMARY_COLOR = [
     name: 'blue',
     lighter: '#CCDFFF',
     light: '#6697FF',
-    main: '#0045FF',
-    dark: '#0027B7',
+    main: '#4D4DCD',
+    dark: '#4D4DCD',
     darker: '#00137A',
     contrastText: '#fff'
   },
@@ -100,13 +100,13 @@ function SetColor(themeColor: ThemeColor) {
 const initialState: SettingsContextProps = {
   themeMode: 'light',
   themeDirection: 'ltr',
-  themeColor: 'default',
+  themeColor: 'purple',
   themeStretch: false,
   onChangeMode: () => {},
   onChangeDirection: () => {},
   onChangeColor: () => {},
   onToggleStretch: () => {},
-  setColor: PRIMARY_COLOR[0],
+  setColor: PRIMARY_COLOR[1],
   colorOption: []
 };
 

@@ -9,6 +9,7 @@ import userReducer from './slices/user';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
+import cohortReducer from './slices/cohort';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   user: userReducer,
   calendar: calendarReducer,
+  cohort: cohortReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });
