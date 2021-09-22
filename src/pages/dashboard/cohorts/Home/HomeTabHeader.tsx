@@ -44,7 +44,7 @@ export default function HomeTabHeader({
     <>
       <Title>Welcome to The Economics of the Internet</Title>
       <BorderLinearProgress variant="determinate" value={50} />
-      {stepper(0)}
+      {stepper(activeStep - 1)}
       {children}
     </>
   );
