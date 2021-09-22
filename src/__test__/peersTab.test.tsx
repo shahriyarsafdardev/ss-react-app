@@ -11,7 +11,7 @@ describe('A valid user can access peers tab', () => {
 
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       defaultViewport: {
         width,
         height
