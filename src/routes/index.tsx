@@ -263,7 +263,7 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
-const HomeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/Home/HomeTab')));
+const HomeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/Home')));
 
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));

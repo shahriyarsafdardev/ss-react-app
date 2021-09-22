@@ -8,7 +8,7 @@ import { Session } from '../../../../@types/cohorts';
 import { descriptionData, summaryData } from './SampleData';
 
 // Video player
-import VideoPreview from './VideoPreview';
+import VideoPreview from '../../../../components/cohorts/VideoPreview';
 // ----------------------------------------------------------------------
 
 type SessionBoardProps = {
