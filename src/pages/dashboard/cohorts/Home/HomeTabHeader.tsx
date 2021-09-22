@@ -40,10 +40,12 @@ export default function HomeTabHeader({
   children?: React.ReactNode;
   activeStep: number;
 }) {
+  // eslint-disable-next-line no-nested-ternary
+  const progress = activeStep === 1 ? 10 : activeStep === 2 ? 33 : activeStep === 3 ? 67 : 100;
   return (
     <>
       <Title>Welcome to The Economics of the Internet</Title>
-      <BorderLinearProgress variant="determinate" value={50} />
+      <BorderLinearProgress variant="determinate" value={progress} />
       {stepper(activeStep - 1)}
       {children}
     </>
