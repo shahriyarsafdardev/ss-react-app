@@ -15,7 +15,7 @@ type SessionBoardProps = {
   session: Session | undefined;
 };
 
-const SessionTab = styled(Tab)((props) => ({
+const SessionTab = styled(Tab)(({ theme }) => ({
   color: '#595853',
   justifyContent: 'space-between',
   width: '20%',
@@ -24,12 +24,20 @@ const SessionTab = styled(Tab)((props) => ({
   }
 }));
 
-const SessionTabs = styled(Tabs)((props) => ({
+const SessionTabs = styled(Tabs)(({ theme }) => ({
   width: '100%',
   backgroundColor: '#F4F6F8',
   borderTopLeftRadius: '10px',
   borderTopRightRadius: '10px',
   justifyContent: 'center',
+  [theme.breakpoints.down('sm')]: {
+    '.css-m16jg1-MuiButtonBase-root-MuiTab-root': {
+      width: 'auto'
+    },
+    '.css-m16jg1-MuiButtonBase-root-MuiTab-root:not(:last-child)': {
+      marginRight: 10
+    }
+  },
   '.MuiTabs-flexContainer': {
     justifyContent: 'center'
   },
@@ -44,11 +52,19 @@ const SessionTabs = styled(Tabs)((props) => ({
     }
   }
 }));
+const Wrapper = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    padding: 0
+  }
+}));
 
-const SessionsContainer = styled(Container)((props) => ({
+const SessionsContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center'
+  alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    padding: 0
+  }
 }));
 
 const SessionTitle = styled('h2')((props) => ({
@@ -70,7 +86,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   if (!session) return null;
 
   return (
-    <Container>
+    <Wrapper>
       {/* <HeaderBreadcrumbs heading={session.name} links={[]} /> */}
       <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
@@ -84,6 +100,6 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
         {tabsContent[currentTab]}
       </SessionsContainer>
-    </Container>
+    </Wrapper>
   );
 }

@@ -14,8 +14,21 @@ import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
 // ----------------------------------------------------------------------
 
-const SessionsContainer = styled(Container)((props) => ({
-  display: 'flex'
+const SessionsContainer = styled(Container)(({ theme }) => ({
+  display: 'flex',
+  [theme.breakpoints.down('sm')]: {
+    display: 'block'
+  }
+}));
+
+const SessionsInnerContainer = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
+    marginLeft: 0,
+    '.MuiGrid-item': {
+      paddingLeft: 0
+    }
+  }
 }));
 
 export default function SessionsTab() {
@@ -41,14 +54,14 @@ export default function SessionsTab() {
   return (
     <Page title="Sessions | Minimal-UI">
       <SessionsContainer>
-        <Grid container>
-          <Grid item md={8}>
+        <SessionsInnerContainer container sm={12} xs={12} spacing={12}>
+          <Grid item md={8} sm={12}>
             <SessionBoard session={sessions && sessions[selectedSession]} />
           </Grid>
-          <Grid item md={4}>
+          <Grid item md={4} sm={12}>
             <SessionList onClick={setSelectedSession} sessionsList={trimmedSessionData} />
           </Grid>
-        </Grid>
+        </SessionsInnerContainer>
       </SessionsContainer>
     </Page>
   );
