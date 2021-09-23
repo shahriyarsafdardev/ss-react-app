@@ -9,6 +9,7 @@ import { styled } from '@material-ui/core/styles';
 import HomeTabHeader from './HomeTabHeader';
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
 import Step3 from './BuildYourProfile';
+import StepsCompleted from './StepsCompleted';
 
 // redux
 import axios from '../../../../utils/axios';
@@ -81,7 +82,9 @@ export default function HomeTab() {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 />;
+        return <Step3 setActiveStep={setActiveStep} />;
+      case 4:
+        return <StepsCompleted />;
       default:
         return <div>default</div>;
     }
