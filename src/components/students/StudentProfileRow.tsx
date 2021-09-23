@@ -45,20 +45,28 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <TableCell align="left">{current_company.name}</TableCell>
       <TableCell align="left">{current_position}</TableCell>
       <TableCell align="left">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={strengths[0].color}
-        >
-          {capitalCase(strengths[0]?.name)}
-        </Label>
+        {strengths?.length > 0 &&
+          strengths?.map((interest: any, index: number) => (
+            <Label
+              key={index}
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color={interest.color}
+            >
+              {capitalCase(interest?.name)}
+            </Label>
+          ))}
       </TableCell>
       <TableCell align="left">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={interests[0].color}
-        >
-          {capitalCase(interests[0]?.name)}
-        </Label>
+        {interests?.length > 0 &&
+          interests?.map((interest: any, index: number) => (
+            <Label
+              key={index}
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color={interest.color}
+            >
+              {capitalCase(interest?.name)}
+            </Label>
+          ))}
       </TableCell>
     </TableRow>
   );
