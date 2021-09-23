@@ -17,12 +17,12 @@ export default function VideoPreview({
   className?: string;
   video_url?: string;
 }) {
-  const default_video_source = 'https://media.w3.org/2010/05/bunny/movie.mp4';
-
   return (
     <VideoContainer className={className}>
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <video src={video_url || default_video_source} preload="auto" controls autoPlay={false} />
+      {video_url && (
+        // eslint-disable-next-line jsx-a11y/media-has-caption
+        <video src={video_url} preload="auto" controls autoPlay={false} />
+      )}
     </VideoContainer>
   );
 }

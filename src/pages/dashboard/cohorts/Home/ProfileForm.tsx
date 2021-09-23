@@ -14,7 +14,6 @@ interface InitialState {
   email: string;
   firstName: string;
   lastName: string;
-  afterSubmit?: string;
   currentComapny?: string;
   interests: string[];
   strengths: string[];
@@ -35,11 +34,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function BuildYourProfile({
-  setActiveStep
-}: {
-  setActiveStep: (step: number) => void;
-}) {
+export default function ProfileForm({ onSubmit }: { onSubmit: Function }) {
   const UpdateUserSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -62,9 +57,8 @@ export default function BuildYourProfile({
     },
 
     validationSchema: UpdateUserSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      console.log(values);
-      setActiveStep(4);
+    onSubmit: async (values) => {
+      await onSubmit(values);
     }
   });
 

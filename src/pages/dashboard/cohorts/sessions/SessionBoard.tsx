@@ -74,7 +74,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       {/* <HeaderBreadcrumbs heading={session.name} links={[]} /> */}
       <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
-        <VideoPreview />
+        <VideoPreview video_url="https://media.w3.org/2010/05/bunny/movie.mp4" />
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Description" />
           <SessionTab label="Summary Notes" />
