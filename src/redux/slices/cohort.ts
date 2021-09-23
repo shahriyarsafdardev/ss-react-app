@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { dispatch } from '../store';
 import { Cohort } from '../../@types/cohorts';
 
 // utils
-import axios from '../../utils/axios';
+import { ROOT_URL } from '../../routes/paths';
 
 type CohortState = {
   cohorts: Cohort[];
@@ -47,8 +48,13 @@ export default slice.reducer;
 export function getCohorts() {
   return async () => {
     try {
-      const response = await axios.get('/cohorts');
-      dispatch(slice.actions.getCohortsSuccess(response.data.cohortsData));
+      const data = [
+        {
+          id: 'cohort-1',
+          name: 'The Economics of Digital Platforms'
+        }
+      ];
+      dispatch(slice.actions.getCohortsSuccess(data));
     } catch (error) {
       console.log(error);
     }
@@ -58,8 +64,8 @@ export function getCohorts() {
 export function getPeers(cohortID: string) {
   return async () => {
     try {
-      const response = await axios.get(`/cohorts/${cohortID}/peers`);
-      dispatch(slice.actions.getPeersSuccess(response.data.peersData));
+      const response = await axios.get(`${ROOT_URL}/cohorts/${cohortID}/peers.json`);
+      dispatch(slice.actions.getPeersSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +75,7 @@ export function getPeers(cohortID: string) {
 export function getSessions(cohortID: string) {
   return async () => {
     try {
-      const response = await axios.get(`/cohorts/${cohortID}/sessions`);
+      const response = await axios.get(`${ROOT_URL}/cohorts/${cohortID}/sessions`);
       dispatch(slice.actions.getSessionsSuccess(response.data.sessionsData));
     } catch (error) {
       console.log(error);
