@@ -86,19 +86,11 @@ Params: { cohort_id: uuid }
 
 Fixture: fixtures/cohort_home_fixture.json
 
-### Cohort Registration, on first step completion
+### Cohort Registration, on each step completion
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/first_step_completed
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/step_completed
 
-Params: { cohort_id: uuid }
-
-Fixture: fixtures/cohort_on_first_step_completion.json
-
-### Cohort Registration, on second step completion
-
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/second_step_completed
-
-Params: { cohort_id: uuid }
+Params: { cohort_id: uuid, step_number: number }
 
 Fixture: N/A
 
