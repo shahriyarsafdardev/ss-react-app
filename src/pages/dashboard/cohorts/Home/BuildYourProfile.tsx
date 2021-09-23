@@ -30,8 +30,7 @@ const LeftCard = styled(Card)(() => ({
 }));
 
 const RightCard = styled(Card)(() => ({
-  width: '67%',
-  marginRight: '1.5rem'
+  width: '67%'
 }));
 
 const ImageUploadDescription = styled(Typography)(() => ({
