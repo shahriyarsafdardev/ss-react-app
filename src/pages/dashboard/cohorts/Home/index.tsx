@@ -23,12 +23,15 @@ type HomeResponse = {
   last_recorded_step: number;
 };
 
-const StyledButton = styled(LoadingButton)(() => ({
+const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   width: 250,
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
   }
 }));
 
@@ -41,9 +44,12 @@ const Step2Container = styled(Box)(() => ({
   marginTop: '3rem'
 }));
 
-const StyledVideoPreview = styled(VideoPreview)(() => ({
+const StyledVideoPreview = styled(VideoPreview)(({ theme }) => ({
   width: '75%',
-  margin: '3rem auto 1.5rem'
+  margin: '3rem auto 1.5rem',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
 }));
 
 const DiscordDescription = styled(Typography)(() => ({
