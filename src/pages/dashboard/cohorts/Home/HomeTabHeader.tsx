@@ -60,11 +60,15 @@ export default function HomeTabHeader({
   return (
     <>
       <Title>{cohortTitle}</Title>
-      <ProgressBarContainer>
-        <BorderLinearProgress variant="determinate" value={progress} />
-        <CurrentStep>{activeStep}/3</CurrentStep>
-      </ProgressBarContainer>
-      {stepper(activeStep - 1)}
+      {activeStep < 4 && (
+        <>
+          <ProgressBarContainer>
+            <BorderLinearProgress variant="determinate" value={progress} />
+            <CurrentStep>{activeStep}/3</CurrentStep>
+          </ProgressBarContainer>
+          {stepper(activeStep - 1)}
+        </>
+      )}
       {children}
     </>
   );
