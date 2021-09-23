@@ -346,3 +346,34 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
     return [500, { message: 'Internal server error' }];
   }
 });
+
+mock.onGet('/cohorts/cohort-1/home').reply((config) => {
+  try {
+    const homeData = {
+      setup_completed: false,
+      intro_video_url:
+        'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.mp4',
+      discord_invitation_link: 'https://discordapp.com/scholarsite',
+      last_recorded_step: 0
+    };
+
+    return [200, { ...homeData }];
+  } catch (error) {
+    console.error(error);
+    return [500, {}];
+  }
+});
+
+mock.onGet('cohorts/cohort_uuid/registration/first_step_completed').reply((config) =>
+  // here we update DB to mark first step as completed
+  [200, {}]
+);
+
+mock.onGet('cohorts/cohort_uuid/registration/second_step_completed').reply((config) => [200, {}]);
+
+mock.onPost('/cohorts/cohort_uuid/registration/save_user_profile').reply((config) => {
+  const { cohort_id, first_name, last_name, email, current_company, interests, strengths } =
+    JSON.parse(config.data);
+  // store above information of user in user profile
+  return [200, {}];
+});
