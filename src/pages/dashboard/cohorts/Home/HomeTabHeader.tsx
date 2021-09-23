@@ -36,14 +36,22 @@ const Title = styled(Typography)(() => ({
   marginBottom: '2rem'
 }));
 
+const StyledStepper = styled(Stepper)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    '.css-wb2j8e-MuiStepLabel-label.MuiStepLabel-alternativeLabel': {
+      display: 'none'
+    }
+  }
+}));
+
 const stepper = (activeStep: number) => (
-  <Stepper activeStep={activeStep} alternativeLabel>
+  <StyledStepper activeStep={activeStep} alternativeLabel>
     {steps.map((label) => (
       <Step key={label}>
         <StepLabel>{label}</StepLabel>
       </Step>
     ))}
-  </Stepper>
+  </StyledStepper>
 );
 
 export default function HomeTabHeader({
