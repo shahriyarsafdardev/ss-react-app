@@ -35,16 +35,18 @@ const stepper = (activeStep: number) => (
 
 export default function HomeTabHeader({
   children,
-  activeStep
+  activeStep,
+  cohortTitle
 }: {
   children?: React.ReactNode;
   activeStep: number;
+  cohortTitle: string;
 }) {
   // eslint-disable-next-line no-nested-ternary
   const progress = activeStep === 1 ? 10 : activeStep === 2 ? 33 : activeStep === 3 ? 67 : 100;
   return (
     <>
-      <Title>Welcome to The Economics of the Internet</Title>
+      <Title>{cohortTitle}</Title>
       <BorderLinearProgress variant="determinate" value={progress} />
       {stepper(activeStep - 1)}
       {children}

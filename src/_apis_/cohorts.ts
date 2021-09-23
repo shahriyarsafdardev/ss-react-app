@@ -352,7 +352,7 @@ mock.onGet('/cohorts/cohort-1/home').reply((config) => {
     const homeData = {
       setup_completed: false,
       intro_video_url:
-        'https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.mp4',
+        'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4',
       discord_invitation_link: 'https://discordapp.com/scholarsite',
       last_recorded_step: 0
     };
@@ -364,12 +364,12 @@ mock.onGet('/cohorts/cohort-1/home').reply((config) => {
   }
 });
 
-mock.onGet('cohorts/cohort_uuid/registration/first_step_completed').reply((config) =>
+mock.onGet('/cohorts/cohort-1/registration/step_completed').reply((config) => {
+  const { step_number } = config.params;
+  // params: cohort_id: string
   // here we update DB to mark first step as completed
-  [200, {}]
-);
-
-mock.onGet('cohorts/cohort_uuid/registration/second_step_completed').reply((config) => [200, {}]);
+  return [200, {}];
+});
 
 mock.onPost('/cohorts/cohort_uuid/registration/save_user_profile').reply((config) => {
   const { cohort_id, first_name, last_name, email, current_company, interests, strengths } =
