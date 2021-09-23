@@ -7,6 +7,10 @@ export default function LoadingButton(theme: Theme) {
     MuiLoadingButton: {
       styleOverrides: {
         root: {
+          '&:hover': {
+            backgroundColor: '#4D4DCD',
+            opacity: 0.9
+          },
           '&.MuiButton-text': {
             '& .MuiLoadingButton-startIconPendingStart': {
               marginLeft: 0

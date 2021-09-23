@@ -44,6 +44,7 @@ const StyledVideoPreview = styled(VideoPreview)(() => ({
   width: '75%',
   margin: '3rem auto 1.5rem'
 }));
+
 const DiscordDescription = styled(Typography)(() => ({
   marginBottom: '1.5rem'
 }));
