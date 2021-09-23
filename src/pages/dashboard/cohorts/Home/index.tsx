@@ -8,19 +8,29 @@ import { styled } from '@material-ui/core/styles';
 // components
 import HomeTabHeader from './HomeTabHeader';
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
-import Step3 from './BuildYourProfile';
+import Step3 from './ProfileForm';
 import StepsCompleted from './StepsCompleted';
 
-// redux
+// axios
 import axios from '../../../../utils/axios';
-import { RootState, useSelector } from '../../../../redux/store';
-import { Cohort } from '../../../../@types/cohorts';
 
 type HomeResponse = {
+  cohort_id: string;
+  cohort_title: string;
   setup_completed: boolean;
   intro_video_url: string;
   discord_invitation_link: string;
   last_recorded_step: number;
+};
+
+type UserProfileProps = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  currentComapny: string;
+  photoURL: string;
+  interests: [];
+  strengths: [];
 };
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
@@ -56,18 +66,9 @@ const DiscordDescription = styled(Typography)(() => ({
   marginBottom: '1.5rem'
 }));
 
-const emptyCohort: Cohort = {
-  id: '',
-  name: '',
-  peers: [],
-  sessions: []
-};
-
 export default function HomeTab() {
   const [activeStep, setActiveStep] = useState(1);
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const [stateCohort, setCohort] = useState<Cohort | undefined>(emptyCohort);
-  const { cohorts } = useSelector((state: RootState) => state.cohort);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
 
   useEffect(() => {
@@ -78,8 +79,13 @@ export default function HomeTab() {
         payload.last_recorded_step && setActiveStep(payload.last_recorded_step + 1);
         setHomeConfig(payload);
       });
-    setCohort(cohorts.find((cohort) => cohort.id === cohort_id));
-  }, [cohort_id, cohorts]);
+  }, [cohort_id]);
+
+  const onFormSubmitHandler = async (values: UserProfileProps) => {
+    await axios
+      .post(`/cohorts/${cohort_id}/registration/save_user_profile`, { ...values })
+      .then((res) => setActiveStep(4));
+  };
 
   const selectStep = () => {
     switch (activeStep) {
@@ -88,11 +94,11 @@ export default function HomeTab() {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 setActiveStep={setActiveStep} />;
+        return <Step3 onSubmit={onFormSubmitHandler} />;
       case 4:
         return <StepsCompleted />;
       default:
-        return <div>default</div>;
+        return <div />;
     }
   };
 
@@ -137,7 +143,10 @@ export default function HomeTab() {
 
   return (
     <Container>
-      <HomeTabHeader cohortTitle={stateCohort?.name || 'Cohort Title...'} activeStep={activeStep} />
+      <HomeTabHeader
+        cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
+        activeStep={activeStep}
+      />
       {selectStep()}
     </Container>
   );

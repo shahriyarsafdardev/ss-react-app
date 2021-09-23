@@ -1,4 +1,5 @@
 import mock from './mock';
+import fakeRequest from '../utils/fakeRequest';
 
 mock.onGet('/cohorts').reply((config) => {
   try {
@@ -350,6 +351,8 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
 mock.onGet('/cohorts/cohort-1/home').reply((config) => {
   try {
     const homeData = {
+      cohort_id: 'uuid',
+      cohort_title: 'Network Effects and Economics of Digital Platforms',
       setup_completed: false,
       intro_video_url:
         'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4',
@@ -371,9 +374,10 @@ mock.onGet('/cohorts/cohort-1/registration/step_completed').reply((config) => {
   return [200, {}];
 });
 
-mock.onPost('/cohorts/cohort_uuid/registration/save_user_profile').reply((config) => {
+mock.onPost('/cohorts/cohort-1/registration/save_user_profile').reply(async (config) => {
   const { cohort_id, first_name, last_name, email, current_company, interests, strengths } =
     JSON.parse(config.data);
+  await fakeRequest(3000);
   // store above information of user in user profile
   return [200, {}];
 });
