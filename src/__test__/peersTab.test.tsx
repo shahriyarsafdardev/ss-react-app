@@ -43,10 +43,10 @@ describe('A valid user can access peers tab', () => {
       document.getElementById('cohort-1')?.click();
     });
 
-    await page.waitForSelector('#peers-1');
+    await page.waitForSelector('#peers-2');
 
     await page.evaluate(() => {
-      document.getElementById('peers-1')?.click();
+      document.getElementById('peers-2')?.click();
     });
 
     await page.waitForSelector('#cohort-tab-title');

@@ -1,0 +1,5 @@
+// if status is 200, navigate to next step
+// if status is something else (500), show error in snackbar
+{
+  "status": "200/500"
+}

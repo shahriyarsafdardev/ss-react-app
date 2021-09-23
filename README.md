@@ -78,6 +78,46 @@ Params: { cohort_id: uuid }
 
 Fixture: fixtures/cohort_sessions_fixture.json
 
+### Cohort Home Details
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/home
+
+Params: { cohort_id: uuid }
+
+Fixture: fixtures/cohort_home_fixture.json
+
+### Cohort Registration, on first step completion
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/first_step_completed
+
+Params: { cohort_id: uuid }
+
+Fixture: fixtures/cohort_on_first_step_completion.json
+
+### Cohort Registration, on second step completion
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/second_step_completed
+
+Params: { cohort_id: uuid }
+
+Fixture: N/A
+
+### Saving a User profile details for a cohort
+
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/save_user_profile
+
+Params: {
+cohort_id: uuid,
+first_name: string,
+last_name: string,
+email: string,
+current_company: string,
+interests: string[],
+strengths: string[]
+}
+
+Fixture: N/A
+
 ## Tooling
 
 ### Install
