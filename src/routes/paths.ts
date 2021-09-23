@@ -6,7 +6,7 @@ function path(root: string, sublink: string) {
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '';
-export const ROOT_URL = 'http://localhost:3000';
+export const ROOT_URL = 'https://scholarsite-staging.herokuapp.com';
 
 // ----------------------------------------------------------------------
 
