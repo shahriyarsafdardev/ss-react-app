@@ -28,6 +28,13 @@ const Title = styled(Typography)(() => ({
   marginBottom: '2rem'
 }));
 
+const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  width: 100,
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
+
 export default function BuildYourProfile({
   setActiveStep
 }: {
@@ -152,9 +159,9 @@ export default function BuildYourProfile({
                 </Stack>
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                  <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
                     Save
-                  </LoadingButton>
+                  </StyledLoadingButton>
                 </Box>
               </Card>
             </Grid>
