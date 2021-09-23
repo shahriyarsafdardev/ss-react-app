@@ -55,9 +55,12 @@ describe('A valid user can access peers tab', () => {
     await expect(value).toContain('Peers');
 
     // test grid view
+    await page.waitForSelector('#peer-grid-container');
+
     value = await page.evaluate(
       () => document.getElementById('peer-grid-container')?.children?.length
     );
+
     await expect(value).toBe(3);
 
     const { fullName, currentPosition, imgUrl } = await page.evaluate(() => {
@@ -79,6 +82,8 @@ describe('A valid user can access peers tab', () => {
     // test  list view
     await page.click('#select-view');
     await page.click('#table-view');
+
+    await page.waitForSelector('#peer-list-container');
 
     value = await page.evaluate(
       () => document.getElementById('peer-list-container')?.children?.length
