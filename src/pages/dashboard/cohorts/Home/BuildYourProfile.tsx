@@ -20,7 +20,11 @@ interface InitialState {
   photoURL: File | any;
 }
 
-export default function BuildYourProfile() {
+export default function BuildYourProfile({
+  setActiveStep
+}: {
+  setActiveStep: (step: number) => void;
+}) {
   const UpdateUserSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -45,6 +49,7 @@ export default function BuildYourProfile() {
     validationSchema: UpdateUserSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       console.log(values);
+      setActiveStep(4);
     }
   });
 
