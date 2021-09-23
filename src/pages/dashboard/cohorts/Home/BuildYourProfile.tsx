@@ -105,7 +105,7 @@ export default function BuildYourProfile() {
                   <TextField
                     fullWidth
                     label="First Name"
-                    {...getFieldProps('firsrtName')}
+                    {...getFieldProps('firstName')}
                     error={Boolean(touched.firstName && errors.firstName)}
                     helperText={touched.firstName && errors.firstName}
                   />
