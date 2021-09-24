@@ -16,16 +16,69 @@ type SessionListSidebarProps = {
   setSelectedSession: Function;
 };
 
+type StyledSettingsBoxProps = {
+  theme?: any;
+  open: boolean;
+};
+
 const DRAWER_WIDTH = 260;
-const StyledSettingsBox = styled(Box)(({ theme }) => ({
+const StyledSettingsBox = styled(Box)(({ theme, open }: StyledSettingsBoxProps) => ({
   display: 'none',
   [theme.breakpoints.down('sm')]: {
-    display: 'block'
+    display: 'block',
+    top: 12,
+    bottom: 12,
+    right: 0,
+    position: 'fixed',
+    zIndex: 2001,
+    ...(open && { right: 12 })
   }
 }));
 
-const SessionListMobileConatiner = styled(Box)(({ theme }) => ({
+const SessionListMobileConatiner = styled(Box)(() => ({
   padding: 5
+}));
+
+const TooltipContainer = styled(Box)(({ theme }) => ({
+  left: -44,
+  top: '50%',
+  position: 'absolute',
+  backgroundColor: '#fff',
+  borderRadius: '24px 0 16px 24px',
+  boxShadow: theme.customShadows.z12,
+  padding: 4,
+  paddingLeft: 4,
+  paddingRight: 4,
+  marginTop: -24,
+  color: '#212B36'
+}));
+
+const StyledIconButton = styled(MIconButton)(({ theme }) => ({
+  padding: 0,
+  width: 40,
+  height: 40,
+  transition: theme.transitions.create('all'),
+  '&:hover': {
+    color: theme.palette.primary.main,
+    backgroundColor: 'transparent'
+  }
+}));
+
+const StyledPaper = styled(Paper)(({ theme, open }: StyledSettingsBoxProps) => ({
+  height: '100%',
+  width: '0',
+  overflow: 'hidden',
+  boxShadow: theme.customShadows.z24,
+  transition: theme.transitions.create('width'),
+  ...(open && { width: DRAWER_WIDTH })
+}));
+
+const StyledScrollBar = styled(Scrollbar)(() => ({
+  height: '100%'
+}));
+
+const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1
 }));
 
 export default function SessionListSidebar({
@@ -56,67 +109,22 @@ export default function SessionListSidebar({
 
   return (
     <>
-      <Backdrop
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-        onClick={handleClose}
-      />
-      <StyledSettingsBox
-        sx={{
-          top: 12,
-          bottom: 12,
-          right: 0,
-          position: 'fixed',
-          zIndex: 2001,
-          ...(open && { right: 12 })
-        }}
-      >
-        <Box
-          sx={{
-            p: 0.5,
-            px: '4px',
-            mt: -3,
-            left: -44,
-            top: '50%',
-            color: 'grey.800',
-            position: 'absolute',
-            bgcolor: 'common.white',
-            borderRadius: '24px 0 16px 24px',
-            boxShadow: (theme) => theme.customShadows.z12
-          }}
-        >
+      <StyledBackdrop open={open} onClick={handleClose} />
+      <StyledSettingsBox open={open}>
+        <TooltipContainer>
           <Tooltip title="Settings">
-            <MIconButton
-              color="inherit"
-              onClick={handleToggle}
-              sx={{
-                p: 0,
-                width: 40,
-                height: 40,
-                transition: (theme) => theme.transitions.create('all'),
-                '&:hover': { color: 'primary.main', bgcolor: 'transparent' }
-              }}
-            >
+            <StyledIconButton color="inherit" onClick={handleToggle}>
               <Icon icon={open ? closeFill : options2Fill} width={20} height={20} />
-            </MIconButton>
+            </StyledIconButton>
           </Tooltip>
-        </Box>
-        <Paper
-          sx={{
-            height: 1,
-            width: '0px',
-            overflow: 'hidden',
-            boxShadow: (theme) => theme.customShadows.z24,
-            transition: (theme) => theme.transitions.create('width'),
-            ...(open && { width: DRAWER_WIDTH })
-          }}
-        >
-          <Scrollbar sx={{ height: 1 }}>
+        </TooltipContainer>
+        <StyledPaper open={open}>
+          <StyledScrollBar>
             <SessionListMobileConatiner>
               <SessionList onClick={gotoSession} sessionsList={sessionsList} />
             </SessionListMobileConatiner>
-          </Scrollbar>
-        </Paper>
+          </StyledScrollBar>
+        </StyledPaper>
       </StyledSettingsBox>
     </>
   );
