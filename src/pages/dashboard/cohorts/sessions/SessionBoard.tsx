@@ -30,12 +30,15 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
   borderTopLeftRadius: '10px',
   borderTopRightRadius: '10px',
   justifyContent: 'center',
+  overflow: 'unset',
   [theme.breakpoints.down('sm')]: {
     '.css-m16jg1-MuiButtonBase-root-MuiTab-root': {
-      width: 'auto'
+      width: '25%',
+      minWidth: 60,
+      fontSize: 12
     },
     '.css-m16jg1-MuiButtonBase-root-MuiTab-root:not(:last-child)': {
-      marginRight: 10
+      marginRight: 0
     }
   },
   '.MuiTabs-flexContainer': {
