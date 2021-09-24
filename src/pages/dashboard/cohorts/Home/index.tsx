@@ -1,9 +1,11 @@
+// hooks
 import { useState, useEffect } from 'react';
 
 // material
 import { Box, Container, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import useAuth from '../../../../hooks/useAuth';
 
 // components
 import HomeTabHeader from './HomeTabHeader';
@@ -70,16 +72,17 @@ export default function HomeTab() {
   const [activeStep, setActiveStep] = useState(1);
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
+  const { user } = useAuth();
 
   useEffect(() => {
     axios
-      .get(`/cohorts/${cohort_id}/home`, { params: { cohort_id } })
+      .get(`/cohorts/${cohort_id}/home.json`, { params: { cohort_id, participant_id: user?.id } })
       .then((res) => res.data)
       .then((payload) => {
         payload.last_recorded_step && setActiveStep(payload.last_recorded_step + 1);
         setHomeConfig(payload);
       });
-  }, [cohort_id]);
+  }, [cohort_id, user?.id]);
 
   const onFormSubmitHandler = async (values: UserProfileProps) => {
     await axios
@@ -103,7 +106,7 @@ export default function HomeTab() {
   };
 
   const sendStepCompletionRequest = (stepNumber: number) =>
-    axios.get(`/cohorts/${cohort_id}/registration/step_completed`, {
+    axios.get(`/cohorts/${cohort_id}/registration/step_completed.json`, {
       params: { cohort_id, step_number: stepNumber }
     });
 
