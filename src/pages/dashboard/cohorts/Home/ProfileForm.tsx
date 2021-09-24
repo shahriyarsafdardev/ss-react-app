@@ -34,7 +34,21 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function ProfileForm({ onSubmit }: { onSubmit: Function }) {
+export default function ProfileForm({
+  onSubmit,
+  userProfile
+}: {
+  onSubmit: Function;
+  userProfile?: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image_url: string;
+    current_company: string;
+    strengths: string[];
+    interests: string[];
+  };
+}) {
   const UpdateUserSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -44,17 +58,19 @@ export default function ProfileForm({ onSubmit }: { onSubmit: Function }) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
 
+  const getProfileValues = () => ({
+    email: userProfile?.email || '',
+    firstName: userProfile?.first_name || '',
+    lastName: userProfile?.last_name || '',
+    currentComapny: userProfile?.current_company || '',
+    photoURL: userProfile?.profile_image_url || null,
+    interests: userProfile?.interests || [],
+    strengths: userProfile?.strengths || []
+  });
+
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
-    initialValues: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      currentComapny: '',
-      photoURL: '',
-      interests: [],
-      strengths: []
-    },
+    initialValues: getProfileValues(),
 
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {

@@ -51,7 +51,7 @@ const users: payloadUser[] = [
 
 // ----------------------------------------------------------------------
 
-mock.onPost('/api/account/login').reply(async (config) => {
+mock.onPost('/users/login').reply(async (config) => {
   try {
     await fakeRequest(1000);
 
