@@ -82,7 +82,7 @@ Fixture: fixtures/cohort_sessions_fixture.json
 
 URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/home
 
-Params: { cohort_id: uuid }
+Params: { cohort_id: uuid, participant_id: uuid }
 
 Fixture: fixtures/cohort_home_fixture.json
 
