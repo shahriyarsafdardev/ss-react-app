@@ -4,9 +4,6 @@ import { styled } from '@material-ui/core/styles';
 import { Description, Summary, SurveyForm } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 
-// Currently using this sample html data to populate our tabs
-import { descriptionData, summaryData } from './SampleData';
-
 // Video player
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
 // ----------------------------------------------------------------------
@@ -61,8 +58,8 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabsContent = [
-    <Description key="description" innerContent={descriptionData()} />,
-    <Summary key="summary" innerContent={summaryData()} />,
+    <Description key="description" innerContent={session?.description || ''} />,
+    <Summary key="summary" innerContent={session?.summary || ''} />,
     <div key="slidesTab" />,
     <SurveyForm key="surveyForm" surveyData={session?.survey} />
   ];
