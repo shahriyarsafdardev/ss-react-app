@@ -98,10 +98,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
 
-        if (accessToken && isValidToken(accessToken)) {
+        if (accessToken) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
+          const response = await axios.get('/users/my_account');
           const { user } = response.data;
 
           dispatch({
