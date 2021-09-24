@@ -12,12 +12,12 @@ import { fData } from '../../../../utils/formatNumber';
 
 interface InitialState {
   email: string;
-  firstName: string;
-  lastName: string;
-  currentComapny?: string;
+  first_name: string;
+  last_name: string;
+  current_company?: string;
   interests: string[];
   strengths: string[];
-  photoURL: File | any;
+  profile_image_url: File | any;
 }
 const Title = styled(Typography)(() => ({
   fontSize: 24,
@@ -50,27 +50,28 @@ export default function ProfileForm({
   };
 }) {
   const UpdateUserSchema = Yup.object().shape({
-    firstName: Yup.string()
+    first_name: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    last_name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
-  });
-
-  const getProfileValues = () => ({
-    email: userProfile?.email || '',
-    firstName: userProfile?.first_name || '',
-    lastName: userProfile?.last_name || '',
-    currentComapny: userProfile?.current_company || '',
-    photoURL: userProfile?.profile_image_url || null,
-    interests: userProfile?.interests || [],
-    strengths: userProfile?.strengths || []
   });
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
-    initialValues: getProfileValues(),
+    initialValues: userProfile || {
+      email: '',
+      first_name: '',
+      last_name: '',
+      current_company: '',
+      profile_image_url: null,
+      interests: [],
+      strengths: []
+    },
 
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
@@ -85,7 +86,7 @@ export default function ProfileForm({
     (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        setFieldValue('photoURL', {
+        setFieldValue('profile_image_url', {
           ...file,
           preview: URL.createObjectURL(file)
         });
@@ -104,10 +105,10 @@ export default function ProfileForm({
               <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
                 <UploadAvatar
                   accept="image/*"
-                  file={values.photoURL}
+                  file={values.profile_image_url}
                   maxSize={3145728}
                   onDrop={handleDrop}
-                  error={Boolean(touched.photoURL && errors.photoURL)}
+                  error={Boolean(touched.profile_image_url && errors.profile_image_url)}
                   caption={
                     <Typography
                       variant="caption"
@@ -125,7 +126,7 @@ export default function ProfileForm({
                   }
                 />
                 <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-                  {touched.photoURL && errors.photoURL}
+                  {touched.profile_image_url && errors.profile_image_url}
                 </FormHelperText>
               </Card>
             </Grid>
@@ -137,16 +138,16 @@ export default function ProfileForm({
                     <TextField
                       fullWidth
                       label="First Name"
-                      {...getFieldProps('firstName')}
-                      error={Boolean(touched.firstName && errors.firstName)}
-                      helperText={touched.firstName && errors.firstName}
+                      {...getFieldProps('first_name')}
+                      error={Boolean(touched.first_name && errors.first_name)}
+                      helperText={touched.first_name && errors.first_name}
                     />
                     <TextField
                       fullWidth
                       label="Last Name"
-                      {...getFieldProps('lastName')}
-                      error={Boolean(touched.lastName && errors.lastName)}
-                      helperText={touched.lastName && errors.lastName}
+                      {...getFieldProps('last_name')}
+                      error={Boolean(touched.last_name && errors.last_name)}
+                      helperText={touched.last_name && errors.last_name}
                     />
                   </Stack>
 
