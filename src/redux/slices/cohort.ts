@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from '../../utils/axios';
 import { dispatch } from '../store';
 import { Cohort } from '../../@types/cohorts';
+
+// utils
+import axios from '../../utils/axios';
 
 type CohortState = {
   cohorts: Cohort[];
@@ -45,13 +47,8 @@ export default slice.reducer;
 export function getCohorts() {
   return async () => {
     try {
-      const data = [
-        {
-          id: 'cohort-1',
-          name: 'The Economics of Digital Platforms'
-        }
-      ];
-      dispatch(slice.actions.getCohortsSuccess(data));
+      const response = await axios.get('/cohorts.json');
+      dispatch(slice.actions.getCohortsSuccess(response.data.cohorts));
     } catch (error) {
       console.log(error);
     }
@@ -72,8 +69,8 @@ export function getPeers(cohortID: string) {
 export function getSessions(cohortID: string) {
   return async () => {
     try {
-      const response = await axios.get(`/cohorts/${cohortID}/sessions`);
-      dispatch(slice.actions.getSessionsSuccess(response.data.sessionsData));
+      const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
+      dispatch(slice.actions.getSessionsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
