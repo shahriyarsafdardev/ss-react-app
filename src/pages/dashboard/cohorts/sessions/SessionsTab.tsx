@@ -22,6 +22,8 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const { sessions } = useSelector((state: RootState) => state.cohort.cohorts[0]);
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+
   let trimmedSessionData: SessionListItem[] = [];
 
   if (sessions && sessions.length) {
@@ -35,8 +37,8 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
-    dispatch(getSessions('cohort-1'));
-  }, [dispatch]);
+    dispatch(getSessions(cohort_id));
+  }, [cohort_id, dispatch]);
 
   return (
     <Page title="Sessions | Minimal-UI">
