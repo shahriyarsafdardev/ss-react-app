@@ -1,7 +1,7 @@
 import mock from './mock';
 import fakeRequest from '../utils/fakeRequest';
 
-mock.onGet('/cohorts').reply((config) => {
+mock.onGet('/cohorts.json').reply((config) => {
   try {
     const cohortsData = [
       {
@@ -13,14 +13,14 @@ mock.onGet('/cohorts').reply((config) => {
       //   name: 'The Economics of Space'
       // }
     ];
-    return [200, { cohortsData }];
+    return [200, { cohorts: cohortsData }];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];
   }
 });
 
-mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
+mock.onGet('/cohorts/cohort-1/peers.json').reply((config) => {
   try {
     const peersData = {
       cohort_id: 'cohort-1',
@@ -140,14 +140,14 @@ mock.onGet('/cohorts/cohort-1/peers').reply((config) => {
       ]
     };
 
-    return [200, { peersData }];
+    return [200, peersData];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];
   }
 });
 
-mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
+mock.onGet('/cohorts/cohort-2/peers.json').reply((config) => {
   try {
     const peersData = {
       id: 'cohort-2',
@@ -236,14 +236,14 @@ mock.onGet('/cohorts/cohort-2/peers').reply((config) => {
       ]
     };
 
-    return [200, { peersData }];
+    return [200, peersData];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];
   }
 });
 
-mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
+mock.onGet('/cohorts/cohort-1/sessions.json').reply((config) => {
   try {
     const sessionsData = {
       cohort_id: 'cohort-1',
@@ -341,14 +341,14 @@ mock.onGet('/cohorts/cohort-1/sessions').reply((config) => {
       ]
     };
 
-    return [200, { sessionsData }];
+    return [200, sessionsData];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];
   }
 });
 
-mock.onGet('/cohorts/cohort-1/home').reply((config) => {
+mock.onGet('/cohorts/cohort-1/home.json').reply((config) => {
   try {
     const homeData = {
       cohort_id: 'uuid',
@@ -357,7 +357,16 @@ mock.onGet('/cohorts/cohort-1/home').reply((config) => {
       intro_video_url:
         'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4',
       discord_invitation_link: 'https://discordapp.com/scholarsite',
-      last_recorded_step: 0
+      last_recorded_step: 2,
+      participant_profile: {
+        first_name: 'Aqib',
+        last_name: 'Maqbool',
+        email: 'aqibmaqqbool@gmail.com',
+        profile_image_url: 'https://i.ytimg.com/vi/54uJnsWo3tw/hqdefault.jpg',
+        current_company: 'Test company',
+        strengths: ['Confidence'],
+        interests: ['Science']
+      }
     };
 
     return [200, { ...homeData }];

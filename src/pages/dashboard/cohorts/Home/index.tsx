@@ -20,9 +20,19 @@ type HomeResponse = {
   cohort_id: string;
   cohort_title: string;
   setup_completed: boolean;
+  enrollment_id: string;
   intro_video_url: string;
   discord_invitation_link: string;
   last_recorded_step: number;
+  participant_profile: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image_url: string;
+    current_company: string;
+    strengths: string[];
+    interests: string[];
+  };
 };
 
 type UserProfileProps = {
@@ -84,9 +94,13 @@ export default function HomeTab() {
       });
   }, [cohort_id, user?.id]);
 
+  console.log(homeConfig);
   const onFormSubmitHandler = async (values: UserProfileProps) => {
     await axios
-      .post(`/cohorts/${cohort_id}/registration/save_user_profile`, { ...values })
+      .post(`/cohorts/${cohort_id}/save_user_profile`, {
+        ...values,
+        enrollment_id: homeConfig?.enrollment_id
+      })
       .then((res) => setActiveStep(4));
   };
 
@@ -97,7 +111,9 @@ export default function HomeTab() {
       case 2:
         return <Step2 />;
       case 3:
-        return <Step3 onSubmit={onFormSubmitHandler} />;
+        return (
+          <Step3 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />
+        );
       case 4:
         return <StepsCompleted />;
       default:
@@ -106,8 +122,10 @@ export default function HomeTab() {
   };
 
   const sendStepCompletionRequest = (stepNumber: number) =>
-    axios.get(`/cohorts/${cohort_id}/registration/step_completed.json`, {
-      params: { cohort_id, step_number: stepNumber }
+    axios.post(`/cohorts/${cohort_id}/step_completed.json`, {
+      cohort_id,
+      step_number: stepNumber,
+      enrollment_id: homeConfig?.enrollment_id
     });
 
   const onStepComplete = (stepNumber: number) => {
