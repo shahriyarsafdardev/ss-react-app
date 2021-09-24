@@ -122,7 +122,7 @@ export default function HomeTab() {
   };
 
   const sendStepCompletionRequest = (stepNumber: number) =>
-    axios.post(`/cohorts/${cohort_id}/step_completed.json`, {
+    axios.post(`/cohorts/${cohort_id}/step_completed`, {
       cohort_id,
       step_number: stepNumber,
       enrollment_id: homeConfig?.enrollment_id
