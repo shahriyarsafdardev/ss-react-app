@@ -23,6 +23,7 @@ const SessionTab = styled(Tab)(({ theme }) => ({
 
 const SessionTabs = styled(Tabs)(({ theme }) => ({
   width: '100%',
+  marginBottom: '20px',
   backgroundColor: '#F4F6F8',
   borderTopLeftRadius: '10px',
   borderTopRightRadius: '10px',

@@ -9,12 +9,18 @@ type SessionRowProps = {
 };
 
 const ListItem = styled('div')((props) => ({
+  display: 'flex',
   borderBottom: '1px solid #E5E5E5',
   padding: '5px 0',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(77, 77, 205, 0.06)'
   }
+}));
+
+const ListIcon = styled('div')((props) => ({
+  width: '50px',
+  padding: 8
 }));
 
 const Title = styled('p')((props) => ({
@@ -35,14 +41,15 @@ const SessionDetails = styled('div')((props) => ({
 const TRIM_LENGTH = 25;
 
 export default function SessionRow({ session, index, onClick }: SessionRowProps) {
+  const sessionDate = new Date(session.time);
+  const todayDate = new Date();
+  const isPastSession = sessionDate < todayDate;
+
   const trimTitle = (title: string) =>
     title.length > TRIM_LENGTH ? `${title.slice(0, TRIM_LENGTH)}...` : title;
 
   const sessionTime = (date: string) => {
-    const sessionDate = new Date(date);
-    const todayDate = new Date();
-
-    if (sessionDate < todayDate) {
+    if (isPastSession) {
       return `Recorded on ${moment(date).format('DD MMMM YYYY')}`;
     }
     return `Live ${moment(date).fromNow()} | ${moment(date).format('DD MMMM YYYY')}`;
@@ -50,12 +57,20 @@ export default function SessionRow({ session, index, onClick }: SessionRowProps)
 
   return (
     <ListItem onClick={() => onClick(index)}>
-      <SessionDetails>{`Session ${session.number} | ${session.length}`}</SessionDetails>
-      <Title>{trimTitle(session.name)}</Title>
-      <SessionDetails>
-        <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" />
-        {sessionTime(session.datetime)}
-      </SessionDetails>
+      <ListIcon>
+        <img
+          src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}
+          alt="clock-icon"
+        />
+      </ListIcon>
+      <div>
+        <SessionDetails>{`Session ${session.number} | ${session.length}`}</SessionDetails>
+        <Title>{trimTitle(session.name)}</Title>
+        <SessionDetails>
+          <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" />
+          {sessionTime(session.time)}
+        </SessionDetails>
+      </div>
     </ListItem>
   );
 }

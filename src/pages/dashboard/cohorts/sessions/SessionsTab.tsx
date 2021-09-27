@@ -50,7 +50,7 @@ export default function SessionsTab() {
     trimmedSessionData = sessions.map((session) => ({
       id: session.id,
       name: session.name,
-      datetime: session.datetime,
+      time: session.time,
       length: session.length,
       number: session.number
     }));

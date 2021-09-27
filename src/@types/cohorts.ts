@@ -38,7 +38,7 @@ export type Session = {
   name: string;
   number: number;
   length: string;
-  datetime: string;
+  time: string;
   description: string;
   summary: string;
   slides: string[];
@@ -49,7 +49,7 @@ export type SessionListItem = {
   id: string;
   name: string;
   length: string;
-  datetime: string;
+  time: string;
   number: number;
 };
 
