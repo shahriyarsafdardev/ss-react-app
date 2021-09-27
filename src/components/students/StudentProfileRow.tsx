@@ -23,7 +23,6 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
     strengths,
     interests
   } = row;
-
   return (
     <TableRow
       hover
@@ -49,9 +48,9 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
           <Label
             key={index}
             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-            color={strengths[0]?.color}
+            color="success"
           >
-            {capitalCase(strengths[0]?.name)}
+            {capitalCase(strengths[0])}
           </Label>
         )}
       </TableCell>
@@ -60,9 +59,9 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
           <Label
             key={index}
             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-            color={interests[0]?.color}
+            color="secondary"
           >
-            {capitalCase(interests[0]?.name)}
+            {capitalCase(interests[0])}
           </Label>
         )}
       </TableCell>

@@ -102,9 +102,9 @@ export default function StudentProfileModal({
                 <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                  color={strength.color}
+                  color="secondary"
                 >
-                  {capitalCase(strength?.name)}
+                  {capitalCase(strength)}
                 </Label>
               ))}
           </TagsContainer>
@@ -124,9 +124,9 @@ export default function StudentProfileModal({
                 <Label
                   key={index}
                   variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                  color={interest.color}
+                  color="success"
                 >
-                  {capitalCase(interest?.name)}
+                  {capitalCase(interest)}
                 </Label>
               ))}
           </TagsContainer>

@@ -1,8 +1,21 @@
+import { useState, useCallback, useEffect } from 'react';
 import * as Yup from 'yup';
-import { useCallback } from 'react';
+
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { Box, Grid, Card, Stack, TextField, Typography, FormHelperText } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Card,
+  Stack,
+  TextField,
+  Typography,
+  FormHelperText,
+  Checkbox,
+  ListItemText,
+  MenuItem,
+  Select
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { styled } from '@material-ui/core/styles';
@@ -10,8 +23,11 @@ import { UploadAvatar } from '../../../../components/upload';
 // utils
 import { fData } from '../../../../utils/formatNumber';
 
+// axios
+import axios from '../../../../utils/axios';
+
 interface InitialState {
-  email: string;
+  linkedin_url: string;
   first_name: string;
   last_name: string;
   current_company?: string;
@@ -34,6 +50,13 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
+const StyledSelect = styled(Select)(({ theme }) => ({
+  maxWidth: '48.5%',
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: 'unset'
+  }
+}));
+
 export default function ProfileForm({
   onSubmit,
   userProfile
@@ -42,29 +65,28 @@ export default function ProfileForm({
   userProfile?: {
     first_name: string;
     last_name: string;
-    email: string;
+    linkedin_url: string;
     profile_image_url: string;
     current_company: string;
     strengths: string[];
     interests: string[];
   };
 }) {
+  const [strengths, setStrengths] = useState<string[]>();
+  const [interests, setInterests] = useState<string[]>([]);
+  const [companies, setCompanies] = useState<string[]>();
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('First name required'),
-    last_name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Last name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required')
+    last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
     initialValues: userProfile || {
-      email: '',
+      linkedin_url: '',
       first_name: '',
       last_name: '',
       current_company: '',
@@ -75,6 +97,7 @@ export default function ProfileForm({
 
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
+      console.log(values);
       await onSubmit(values);
     }
   });
@@ -94,7 +117,16 @@ export default function ProfileForm({
     },
     [setFieldValue]
   );
-
+  useEffect(() => {
+    axios
+      .get('/cohorts/select_fields_data.json')
+      .then((res) => res.data)
+      .then((payload) => {
+        payload?.strengths && setStrengths(payload.strengths);
+        payload?.companies && setCompanies(payload.companies);
+        payload?.interests && setInterests(payload.interests);
+      });
+  }, []);
   return (
     <>
       <Title>Build your profile</Title>
@@ -132,7 +164,7 @@ export default function ProfileForm({
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <Card sx={{ p: 3 }}>
+              <Card sx={{ p: 3, height: 1 }}>
                 <Stack spacing={{ xs: 2, md: 3 }}>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
@@ -152,20 +184,57 @@ export default function ProfileForm({
                   </Stack>
 
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <StyledSelect
+                      fullWidth
+                      labelId="strength-label"
+                      id="multiple-checkbox-strength"
+                      multiple
+                      {...getFieldProps('strengths')}
+                      renderValue={(selected: any) => selected.join(', ')}
+                    >
+                      {strengths?.map((name: any) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox checked={values?.strengths?.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </StyledSelect>
                     <TextField
                       fullWidth
-                      label="Email Address"
-                      {...getFieldProps('email')}
-                      error={Boolean(touched.email && errors.email)}
-                      helperText={touched.email && errors.email}
+                      label="Linkedin Url"
+                      {...getFieldProps('linkedin_url')}
+                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                      helperText={touched.linkedin_url && errors.linkedin_url}
                     />
-                    <TextField
+                  </Stack>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <StyledSelect
                       fullWidth
-                      label="Email Address"
-                      {...getFieldProps('email')}
-                      error={Boolean(touched.email && errors.email)}
-                      helperText={touched.email && errors.email}
-                    />
+                      labelId="company-label"
+                      id="multiple-checkbox-company"
+                      {...getFieldProps('current_company')}
+                    >
+                      {companies?.map((name: any) => (
+                        <MenuItem key={name} value={name}>
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </StyledSelect>
+                    <StyledSelect
+                      fullWidth
+                      labelId="interest-label"
+                      id="multiple-checkbox-interest"
+                      multiple
+                      {...getFieldProps('interests')}
+                      renderValue={(selected: any) => selected.join(', ')}
+                    >
+                      {interests?.map((name: any) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox checked={values?.interests?.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </StyledSelect>
                   </Stack>
                 </Stack>
 
