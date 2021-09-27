@@ -7,6 +7,7 @@ import { styled } from '@material-ui/core/styles';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { SessionListItem } from '../../../../@types/cohorts';
+import SessionListSidebar from './SessionListSidebar';
 
 // components
 import Page from '../../../../components/Page';
@@ -14,8 +15,27 @@ import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
 // ----------------------------------------------------------------------
 
-const SessionsContainer = styled(Container)((props) => ({
-  display: 'flex'
+const SessionsContainer = styled(Container)(({ theme }) => ({
+  display: 'flex',
+  [theme.breakpoints.down('sm')]: {
+    display: 'block'
+  }
+}));
+
+const SessionsInnerContainer = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
+    marginLeft: 0,
+    '.MuiGrid-item': {
+      paddingLeft: 0
+    }
+  }
+}));
+
+const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'none'
+  }
 }));
 
 export default function SessionsTab() {
@@ -43,14 +63,18 @@ export default function SessionsTab() {
   return (
     <Page title="Sessions | Minimal-UI">
       <SessionsContainer>
-        <Grid container>
-          <Grid item md={8}>
+        <SessionsInnerContainer container sm={12} xs={12}>
+          <Grid item md={8} sm={12}>
             <SessionBoard session={sessions && sessions[selectedSession]} />
           </Grid>
-          <Grid item md={4}>
+          <SessionListDesktopContainer item md={4}>
             <SessionList onClick={setSelectedSession} sessionsList={trimmedSessionData} />
-          </Grid>
-        </Grid>
+          </SessionListDesktopContainer>
+        </SessionsInnerContainer>
+        <SessionListSidebar
+          setSelectedSession={setSelectedSession}
+          sessionsList={trimmedSessionData}
+        />
       </SessionsContainer>
     </Page>
   );
