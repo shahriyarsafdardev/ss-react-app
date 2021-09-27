@@ -5,7 +5,10 @@ type DescriptionProps = {
   innerContent: string;
 };
 
-const DescriptionContainer = styled(Container)((props) => ({
+const DescriptionContainer = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    padding: 0
+  },
   h2: {
     lineHeight: '80px'
   },
