@@ -10,8 +10,8 @@ export type StudentProfile = {
   last_name: string;
   current_company: Company;
   current_position: string;
-  strengths: Tag[];
-  interests: Tag[];
+  strengths: string[];
+  interests: string[];
   profile_image_url: string;
 };
 

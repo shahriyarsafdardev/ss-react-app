@@ -47,7 +47,6 @@ export default function StudentProfileList({ students, modalHandler }: StudentPr
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   return (
     <div>
       <Scrollbar>

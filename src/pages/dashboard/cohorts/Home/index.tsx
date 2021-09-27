@@ -27,7 +27,7 @@ type HomeResponse = {
   participant_profile: {
     first_name: string;
     last_name: string;
-    email: string;
+    linkedin_url: string;
     profile_image_url: string;
     current_company: string;
     strengths: string[];
