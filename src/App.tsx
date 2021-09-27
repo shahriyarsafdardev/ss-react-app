@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 // routes
 import Router from './routes';
 // theme
@@ -13,11 +14,18 @@ import GoogleAnalytics from './components/GoogleAnalytics';
 import NotistackProvider from './components/NotistackProvider';
 import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
+import { useDispatch } from './redux/store';
+import { getCohorts } from './redux/slices/cohort';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
   const { isInitialized } = useAuth();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCohorts());
+  }, [dispatch]);
 
   return (
     <ThemeConfig>

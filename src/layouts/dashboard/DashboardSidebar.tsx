@@ -13,9 +13,8 @@ import {
   CardActionArea
 } from '@material-ui/core';
 // redux
-import { RootState, useDispatch, useSelector } from '../../redux/store';
+import { RootState, useSelector } from '../../redux/store';
 // hooks
-import useAuth from '../../hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // routes
 import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
@@ -25,8 +24,6 @@ import MyAvatar from '../../components/MyAvatar';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
-
-import { getCohorts } from '../../redux/slices/cohort';
 
 //
 import sidebarConfig from './SidebarConfig';
@@ -111,8 +108,6 @@ type DashboardSidebarProps = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
-  // const { user } = useAuth();
-  const dispatch = useDispatch();
   const { cohorts } = useSelector((state: RootState) => state.cohort);
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
@@ -123,10 +118,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       onCloseSidebar();
     }
   }, [pathname]);
-
-  useEffect(() => {
-    dispatch(getCohorts());
-  }, [dispatch]);
 
   const renderContent = (
     <Scrollbar
