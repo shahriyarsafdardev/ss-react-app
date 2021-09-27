@@ -36,10 +36,13 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
     },
     'button:not(:last-child)': {
       marginRight: '0px !important'
+    },
+    '.MuiTabs-flexContainer': {
+      justifyContent: 'center'
     }
   },
   '.MuiTabs-flexContainer': {
-    justifyContent: 'center'
+    justifyContent: 'space-between'
   },
   button: {
     justifyContent: 'center',
