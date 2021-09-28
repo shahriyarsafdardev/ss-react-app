@@ -22,23 +22,40 @@ const RootStyle = styled(Page)(({ theme }) => ({
   }
 }));
 
-const SectionStyle = styled(Card)(({ theme }) => ({
+const SectionStyle = styled(Box)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 900,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2)
+  margin: theme.spacing(5, 0, 2, 2)
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
-  margin: 'auto',
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: theme.spacing(12, 0)
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+  fontSize: '1.5rem',
+  fontWeight: 'bold',
+  marginBottom: 12,
+  [theme.breakpoints.down('md')]: {
+    marginBottom: 19
+  }
+}));
+
+const StyledStack = styled(Stack)(({ theme }) => ({
+  marginBottom: '2.75rem',
+  marginTop: 0,
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: '1.5rem',
+    marginTop: '1rem'
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -48,56 +65,27 @@ export default function Login() {
 
   return (
     <RootStyle title="Login | Minimal-UI">
-      <AuthLayout>
-        Don’t have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-          Get started
-        </Link>
-      </AuthLayout>
-
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Hi, Welcome Back
-          </Typography>
-          <img src="/static/illustrations/illustration_login.png" alt="login" />
+          <img src="/static/scholarsite_home.svg" alt="login" style={{ height: '90vh' }} />
         </SectionStyle>
       </MHidden>
 
       <Container maxWidth="sm">
         <ContentStyle>
-          <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Typography variant="h4" gutterBottom>
-                Sign in to Minimal
-              </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
-            </Box>
-
-            <Tooltip title={capitalCase(method)}>
-              <Box
-                component="img"
-                src={`/static/auth/ic_${method}.png`}
-                sx={{ width: 32, height: 32 }}
-              />
-            </Tooltip>
-          </Stack>
-
-          <Alert severity="info" sx={{ mb: 3 }}>
-            Use email : <strong>demo@minimals.cc</strong> / password :
-            <strong>&nbsp;demo1234</strong>
-          </Alert>
-
-          <LoginForm />
-
-          <MHidden width="smUp">
-            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              Don’t have an account?&nbsp;
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Get started
-              </Link>
-            </Typography>
+          <MHidden width="mdUp">
+            <img src="/static/ScholarSite.svg" alt="login" width={140} />
           </MHidden>
+          <StyledStack direction="row" alignItems="center" >
+            <Box sx={{ flexGrow: 1 }}>
+              <Title gutterBottom>Welcome to your Student Portal</Title>
+              <Typography sx={{ color: 'text.secondary' }}>
+                ScholarSite’s student portal can be used to access your cohort content, network and
+                meesages at any time!
+              </Typography>
+            </Box>
+          </StyledStack>
+          <LoginForm />
         </ContentStyle>
       </Container>
     </RootStyle>
