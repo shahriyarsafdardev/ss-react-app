@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { Description, Summary, SurveyForm } from '../../../../components/cohorts/sessions';
+import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 
 // Video player
@@ -83,7 +83,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
-    <div key="slidesTab" />,
+    <Slides key="slidesTab" />,
     <SurveyForm key="surveyForm" surveyData={session?.survey} />
   ];
 
