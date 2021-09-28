@@ -43,51 +43,31 @@ export default function UserAccount() {
 
   const [currentTab, setCurrentTab] = useState('general');
 
-  useEffect(() => {
-    dispatch(getCards());
-    dispatch(getAddressBook());
-    dispatch(getInvoices());
-    dispatch(getNotifications());
-    dispatch(getProfile());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getCards());
+  //   dispatch(getAddressBook());
+  //   dispatch(getInvoices());
+  //   dispatch(getNotifications());
+  //   dispatch(getProfile());
+  // }, [dispatch]);
 
-  if (!myProfile) {
-    return null;
-  }
+  // if (!myProfile) {
+  //   return null;
+  // }
 
-  if (!cards) {
-    return null;
-  }
+  // if (!cards) {
+  //   return null;
+  // }
 
-  if (!notifications) {
-    return null;
-  }
+  // if (!notifications) {
+  //   return null;
+  // }
 
   const ACCOUNT_TABS = [
     {
       value: 'general',
       icon: <Icon icon={roundAccountBox} width={20} height={20} />,
       component: <AccountGeneral />
-    },
-    {
-      value: 'billing',
-      icon: <Icon icon={roundReceipt} width={20} height={20} />,
-      component: <AccountBilling cards={cards} addressBook={addressBook} invoices={invoices} />
-    },
-    {
-      value: 'notifications',
-      icon: <Icon icon={bellFill} width={20} height={20} />,
-      component: <AccountNotifications notifications={notifications} />
-    },
-    {
-      value: 'social_links',
-      icon: <Icon icon={shareFill} width={20} height={20} />,
-      component: <AccountSocialLinks myProfile={myProfile} />
-    },
-    {
-      value: 'change_password',
-      icon: <Icon icon={roundVpnKey} width={20} height={20} />,
-      component: <AccountChangePassword />
     }
   ];
 

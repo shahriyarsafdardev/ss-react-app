@@ -19,6 +19,7 @@ import {
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { styled } from '@material-ui/core/styles';
+import Label from 'components/Label';
 import { UploadAvatar } from '../../../../components/upload';
 // utils
 import { fData } from '../../../../utils/formatNumber';
@@ -45,16 +46,26 @@ const Title = styled(Typography)(() => ({
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 100,
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     width: '100%'
   }
 }));
 
 const StyledSelect = styled(Select)(({ theme }) => ({
   maxWidth: '48.5%',
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     maxWidth: 'unset'
   }
+}));
+
+const Count = styled(Box)(({ theme }) => ({
+  height: 22,
+  background: 'rgba(145, 158, 171, 0.16)',
+  borderRadius: 6,
+  color: theme.palette.grey[600],
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  padding: '0px 8px'
 }));
 
 export default function ProfileForm({
@@ -186,15 +197,12 @@ export default function ProfileForm({
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <StyledSelect
                       fullWidth
-                      labelId="strength-label"
-                      id="multiple-checkbox-strength"
-                      multiple
-                      {...getFieldProps('strengths')}
-                      renderValue={(selected: any) => selected.join(', ')}
+                      labelId="company-label"
+                      id="multiple-checkbox-company"
+                      {...getFieldProps('current_company')}
                     >
-                      {strengths?.map((name: any) => (
+                      {companies?.map((name: any) => (
                         <MenuItem key={name} value={name}>
-                          <Checkbox checked={values?.strengths?.indexOf(name) > -1} />
                           <ListItemText primary={name} />
                         </MenuItem>
                       ))}
@@ -210,12 +218,27 @@ export default function ProfileForm({
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <StyledSelect
                       fullWidth
-                      labelId="company-label"
-                      id="multiple-checkbox-company"
-                      {...getFieldProps('current_company')}
+                      labelId="strength-label"
+                      id="multiple-checkbox-strength"
+                      multiple
+                      {...getFieldProps('strengths')}
+                      renderValue={(selected: any) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          {selected.map(
+                            (value: string, index: number) =>
+                              index < 2 && (
+                                <Label key={value} variant="ghost" color="success">
+                                  {value}
+                                </Label>
+                              )
+                          )}
+                          {selected.length > 2 && <Count>+{selected.length - 2}</Count>}
+                        </Box>
+                      )}
                     >
-                      {companies?.map((name: any) => (
+                      {strengths?.map((name: any) => (
                         <MenuItem key={name} value={name}>
+                          <Checkbox checked={values?.strengths?.indexOf(name) > -1} />
                           <ListItemText primary={name} />
                         </MenuItem>
                       ))}
@@ -226,7 +249,19 @@ export default function ProfileForm({
                       id="multiple-checkbox-interest"
                       multiple
                       {...getFieldProps('interests')}
-                      renderValue={(selected: any) => selected.join(', ')}
+                      renderValue={(selected: any) => (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          {selected.map(
+                            (value: string, index: number) =>
+                              index < 2 && (
+                                <Label key={value} variant="ghost" color="secondary">
+                                  {value}
+                                </Label>
+                              )
+                          )}
+                          {selected.length > 2 && <Count>+{selected.length - 2}</Count>}
+                        </Box>
+                      )}
                     >
                       {interests?.map((name: any) => (
                         <MenuItem key={name} value={name}>
