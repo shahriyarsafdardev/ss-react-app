@@ -220,22 +220,14 @@ export default function NavSection({
   isShow = true,
   ...other
 }: NavSectionProps) {
+  const combinedItems = [navConfig[0].items[0], ...cohortsData, ...navConfig[0].items.slice(1)];
+
   return (
     <Box {...other}>
-      {navConfig.map((list) => {
-        const { subheader, items } = list;
-        return (
-          <List key={subheader} disablePadding>
-            {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
-            {items.map((item: NavItemProps) => (
-              <NavItem key={item.title} item={item} isShow={isShow} />
-            ))}
-          </List>
-        );
-      })}
-      <List key={cohortsData} disablePadding>
-        {cohortsData.map((item: NavItemProps, index: number) => (
-          <NavItem index={index + 1} key={item.title} item={item} isShow={isShow} />
+      <List key={navConfig[0].subheader} disablePadding>
+        {isShow && <ListSubheaderStyle>{navConfig[0].subheader}</ListSubheaderStyle>}
+        {combinedItems.map((item: NavItemProps) => (
+          <NavItem key={item.title} item={item} isShow={isShow} />
         ))}
       </List>
     </Box>
