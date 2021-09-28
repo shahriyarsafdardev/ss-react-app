@@ -41,7 +41,7 @@ export default function PeersTab() {
 
   const createSelectMenu = (items: string) => {
     const newItems: any = peers
-      ? peers?.map((peer: any) => peer[items]?.map((item: any) => item.name))
+      ? peers?.map((peer: any) => peer[items]?.map((item: any) => item))
       : [];
     return Array.from<any>(new Set([].concat(...newItems)));
   };
@@ -95,16 +95,38 @@ export default function PeersTab() {
     dispatch(getPeers(cohort_id.toString()));
   }, [dispatch, cohort_id]);
 
-  const filtereStudents = peers?.filter(
-    (peer: any) =>
-      selectedCompanies?.includes(peer.current_company?.name) ||
-      selectedInterests?.filter((interest) =>
-        peer.interests.find((item: any) => item.name === interest)
-      ).length ||
-      selectedStrengths?.filter((strength) =>
-        peer.strengths.find((item: any) => item.name === strength)
-      ).length
-  );
+  const appyFilters = () => {
+    let filteredStudents: any = peers;
+
+    if (selectedCompanies.length > 0) {
+      filteredStudents = filteredStudents?.filter((student: any) =>
+        selectedCompanies?.includes(student?.current_company?.name)
+      );
+    }
+
+    if (selectedInterests.length > 0) {
+      filteredStudents = filteredStudents?.filter(
+        (student: any) =>
+          selectedInterests?.filter((interest) =>
+            student?.interests?.find((item: any) => item === interest)
+          ).length
+      );
+    }
+
+    if (selectedStrengths.length > 0) {
+      filteredStudents = filteredStudents?.filter(
+        (student: any) =>
+          selectedStrengths?.filter((strength) =>
+            student.strengths.find((item: any) => item === strength)
+          ).length
+      );
+    }
+
+    console.log(filteredStudents);
+    return filteredStudents;
+  };
+  const filtereStudents = appyFilters();
+
   const showCardView = () => (
     <StudentProfileGrid
       students={filtereStudents?.length ? filtereStudents : peers}

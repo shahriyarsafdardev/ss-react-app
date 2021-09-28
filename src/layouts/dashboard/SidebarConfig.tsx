@@ -24,7 +24,8 @@ const ICONS = {
   dashboard: getIcon('ic_dashboard'),
   booking: getIcon('ic_booking'),
   discover: getIcon('ic_discover'),
-  cohorts: getIcon('ic_cohorts')
+  cohorts: getIcon('ic_cohorts'),
+  contact: getIcon('ic_contact')
 };
 
 const sidebarConfig = [
@@ -37,6 +38,11 @@ const sidebarConfig = [
         title: 'discover',
         path: PATH_DASHBOARD.general.discover,
         icon: ICONS.discover
+      },
+      {
+        title: 'contact us',
+        path: PATH_DASHBOARD.general.contactUs,
+        icon: ICONS.contact
       }
     ]
   }

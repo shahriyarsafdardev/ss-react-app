@@ -78,6 +78,7 @@ export default function Router() {
       children: [
         { path: '/', element: <GeneralApp /> },
         { path: '/discover', element: <GeneralApp /> },
+        { path: '/contact-us', element: <ContactUs /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -277,6 +278,7 @@ const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
+const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
