@@ -39,9 +39,10 @@ export type Session = {
   number: number;
   length: string;
   time: string;
+  recording_url: string;
   description: string;
   summary: string;
-  slides: string[];
+  presentation_pdf_url: string;
   survey: Survey;
 };
 

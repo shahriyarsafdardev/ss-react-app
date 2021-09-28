@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { Description, Summary, SurveyForm } from '../../../../components/cohorts/sessions';
+import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 
 // Video player
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
+
+// Video Place Holder
+import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
+
 // ----------------------------------------------------------------------
 
 type SessionBoardProps = {
@@ -83,7 +87,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
-    <div key="slidesTab" />,
+    <Slides key="slidesTab" />,
     <SurveyForm key="surveyForm" surveyData={session?.survey} />
   ];
 
@@ -91,10 +95,14 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   return (
     <Wrapper>
-      {/* <HeaderBreadcrumbs heading={session.name} links={[]} /> */}
       <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
-        <VideoPreview video_url="https://media.w3.org/2010/05/bunny/movie.mp4" />
+        {session.recording_url && session.recording_url !== '' ? (
+          <VideoPreview video_url={session.recording_url} />
+        ) : (
+          <VideoPlaceHolder sessionTimeValue={session.time} />
+        )}
+
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Description" />
           <SessionTab label="Summary Notes" />

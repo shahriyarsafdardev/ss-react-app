@@ -63,7 +63,7 @@ export default function SessionsTab() {
   return (
     <Page title="Sessions | Minimal-UI">
       <SessionsContainer>
-        <SessionsInnerContainer container sm={12} xs={12}>
+        <SessionsInnerContainer container>
           <Grid item md={8} sm={12}>
             <SessionBoard session={sessions && sessions[selectedSession]} />
           </Grid>
