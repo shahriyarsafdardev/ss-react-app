@@ -58,7 +58,7 @@ const DatePreview = ({ date }: { date: Date }) => {
         </Typography>
         <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
         <Typography variant="body2" className={classes.content}>
-          at {moment(date).format('HH:mm')} PST
+          at {moment(date).format('HH:mm')}
         </Typography>
       </div>
     </div>
