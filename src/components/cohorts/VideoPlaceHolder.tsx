@@ -9,13 +9,15 @@ const useStyes = makeStyles(() => ({
     height: '400px',
     marginBottom: '3rem',
     backgroundColor: '#F3F3FB',
-    borderRadius: '25px'
+    borderRadius: '25px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '3rem'
+    alignItems: 'center'
   },
   timerRow: {
     display: 'flex',
@@ -54,7 +56,7 @@ const DatePreview = ({ date }: { date: Date }) => {
         <Typography variant="body2" className={classes.content}>
           This session starts on the
         </Typography>
-        <Typography variant="h3">{moment(date).format('Do MMMM')}</Typography>
+        <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
         <Typography variant="body2" className={classes.content}>
           at {moment(date).format('HH:mm')} PST
         </Typography>
