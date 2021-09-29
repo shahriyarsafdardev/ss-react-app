@@ -68,6 +68,11 @@ export default function UserAccount() {
       value: 'general',
       icon: <Icon icon={roundAccountBox} width={20} height={20} />,
       component: <AccountGeneral />
+    },
+    {
+      value: 'change_password',
+      icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+      component: <AccountChangePassword />
     }
   ];
 

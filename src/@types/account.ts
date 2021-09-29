@@ -16,6 +16,10 @@ export type payloadUser = {
   about: string | null;
   role: string;
   isPublic: boolean;
+  current_company: string;
+  strengths: string[];
+  interests: string[];
+  linkedin_url: string;
 };
 
 export type User = {

@@ -29,6 +29,7 @@ export type JWTContextType = {
   logout: () => Promise<void>;
   resetPassword: (email: string) => void;
   updateProfile: VoidFunction;
+  changePassword: (email: string) => Promise<void>;
 };
 
 export type FirebaseContextType = {

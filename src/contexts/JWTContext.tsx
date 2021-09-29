@@ -176,6 +176,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = (email: string) => console.log(email);
 
+  const changePassword = async (password: string) => {
+    const response = await axios.post(`/users/change_password`, {
+      password
+    });
+    console.log(response);
+  };
+
   const updateProfile = () => {};
 
   return (
@@ -187,7 +194,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         register,
         resetPassword,
-        updateProfile
+        updateProfile,
+        changePassword
       }}
     >
       {children}

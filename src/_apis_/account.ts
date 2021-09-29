@@ -28,7 +28,11 @@ const users: payloadUser[] = [
     zipCode: '94116',
     about: 'Praesent turpis. Phasellus viverra nulla ut metus varius laoreet. Phasellus tempus.',
     role: 'admin',
-    isPublic: true
+    isPublic: true,
+    current_company: 'Adobe',
+    strengths: ['Strength B', 'Strength C'],
+    interests: ['Interest A'],
+    linkedin_url: 'https://linkedin.com/demo'
   },
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-1',
@@ -45,7 +49,11 @@ const users: payloadUser[] = [
     zipCode: '94116',
     about: 'Praesent turpis. Phasellus viverra nulla ut metus varius laoreet. Phasellus tempus.',
     role: 'admin',
-    isPublic: true
+    isPublic: true,
+    current_company: 'Adobe',
+    strengths: ['Strength B', 'Strength C'],
+    interests: ['Interest A'],
+    linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev'
   }
 ];
 
@@ -105,7 +113,11 @@ mock.onPost('/api/account/register').reply(async (config) => {
       zipCode: null,
       about: null,
       role: 'user',
-      isPublic: true
+      isPublic: true,
+      current_company: '',
+      strengths: [],
+      interests: [],
+      linkedin_url: ''
     };
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
@@ -121,8 +133,33 @@ mock.onPost('/api/account/register').reply(async (config) => {
 
 // ----------------------------------------------------------------------
 
-mock.onGet('/api/account/my-account').reply((config) => {
+mock.onGet('/users/my_account').reply((config) => {
   try {
+    const { Authorization } = config.headers;
+
+    if (!Authorization) {
+      return [401, { message: 'Authorization token missing' }];
+    }
+
+    const accessToken = Authorization.split(' ')[1];
+    const data: any = verify(accessToken, JWT_SECRET);
+    const userId = typeof data === 'object' ? data?.userId : '';
+    const user = users.find((_user) => _user.id === userId);
+
+    if (!user) {
+      return [401, { message: 'Invalid authorization token' }];
+    }
+
+    return [200, { user }];
+  } catch (error) {
+    console.error(error);
+    return [500, { message: 'Internal server error' }];
+  }
+});
+
+mock.onGet('/users/change_password').reply(async (config) => {
+  try {
+    await fakeRequest(500);
     const { Authorization } = config.headers;
 
     if (!Authorization) {
