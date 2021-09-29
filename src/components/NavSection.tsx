@@ -75,6 +75,7 @@ type NavItemProps = {
   children?: {
     title: string;
     path: string;
+    externalUrl?: boolean;
   }[];
 };
 
@@ -141,7 +142,7 @@ function NavItem({
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {children.map((item, index) => {
-                const { title, path } = item;
+                const { title, path, externalUrl } = item;
                 const isActiveSub = path ? !!matchPath({ path, end: false }, pathname) : false;
 
                 return (
@@ -150,7 +151,12 @@ function NavItem({
                     key={title}
                     id={`${title}-${index}`}
                     component={RouterLink}
-                    to={path}
+                    onClick={() => {
+                      if (externalUrl) {
+                        window.open(path, '_blank');
+                      }
+                    }}
+                    to={externalUrl ? '' : path}
                     sx={{
                       ...(isActiveSub && activeSubStyle)
                     }}
