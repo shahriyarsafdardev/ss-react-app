@@ -1,6 +1,5 @@
 // hooks
 import { useState, useEffect } from 'react';
-
 // material
 import { Box, Container, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -12,6 +11,7 @@ import HomeTabHeader from './HomeTabHeader';
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
 import Step3 from './ProfileForm';
 import StepsCompleted from './StepsCompleted';
+import LoadindScreen from '../../../../components/LoadingScreen';
 
 // axios
 import axios from '../../../../utils/axios';
@@ -163,12 +163,18 @@ export default function HomeTab() {
   );
 
   return (
-    <Container>
-      <HomeTabHeader
-        cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
-        activeStep={activeStep}
-      />
-      {selectStep()}
-    </Container>
+    <>
+      {!homeConfig ? (
+        <LoadindScreen />
+      ) : (
+        <Container>
+          <HomeTabHeader
+            cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
+            activeStep={activeStep}
+          />
+          {selectStep()}
+        </Container>
+      )}
+    </>
   );
 }
