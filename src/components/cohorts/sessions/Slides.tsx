@@ -26,6 +26,13 @@ const StyledButton = styled(Button)((props) => ({
   }
 }));
 
+const StyledPage = styled(Page)(() => ({
+  '.react-pdf__Page__canvas': {
+    width: '100% !important',
+    height: 'auto !important'
+  }
+}));
+
 const Navigation = ({ pageNumber, numPages, pageHandler }: NavigationProps) => (
   <NavigationContainer>
     <StyledButton disabled={pageNumber === 1} onClick={() => pageHandler(pageNumber - 1)}>
@@ -56,7 +63,7 @@ export default function Slides() {
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}
         >
-          <Page pageNumber={pageNumber} />
+          <StyledPage pageNumber={pageNumber} />
         </Document>
         {numPages !== null && (
           <Navigation pageNumber={pageNumber} numPages={numPages} pageHandler={setPageNumber} />
