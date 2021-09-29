@@ -87,7 +87,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
-    <Slides key="slidesTab" />,
+    <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />,
     <SurveyForm key="surveyForm" surveyData={session?.survey} />
   ];
 

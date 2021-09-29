@@ -3,6 +3,7 @@ import { Button, Container } from '@material-ui/core';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
+import Message from '../../Message';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -45,7 +46,7 @@ const Navigation = ({ pageNumber, numPages, pageHandler }: NavigationProps) => (
   </NavigationContainer>
 );
 
-export default function Slides() {
+export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -53,22 +54,30 @@ export default function Slides() {
     setNumPages(numPages);
   }
 
+  const pdfSlider = () => (
+    <div>
+      <Document
+        file={{
+          url: 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP+S21+Session+2.pptx.pdf'
+        }}
+        onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={console.error}
+      >
+        <StyledPage pageNumber={pageNumber} />
+      </Document>
+      {numPages !== null && (
+        <Navigation pageNumber={pageNumber} numPages={numPages} pageHandler={setPageNumber} />
+      )}
+    </div>
+  );
+
   return (
     <Container>
-      <div>
-        <Document
-          file={{
-            url: 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP+S21+Session+2.pptx.pdf'
-          }}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={console.error}
-        >
-          <StyledPage pageNumber={pageNumber} />
-        </Document>
-        {numPages !== null && (
-          <Navigation pageNumber={pageNumber} numPages={numPages} pageHandler={setPageNumber} />
-        )}
-      </div>
+      {pdfUrl && pdfUrl !== '' ? (
+        pdfSlider()
+      ) : (
+        <Message content="The presentation slides will be available shortly after this session." />
+      )}
     </Container>
   );
 }
