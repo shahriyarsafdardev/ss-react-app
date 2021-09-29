@@ -16,6 +16,10 @@ type StudentProfileRowProps = {
   modalHandler: Function;
 };
 
+const StyledTableCell = styled(TableCell)(() => ({
+  borderBottom: '1px solid rgba(224, 224, 224, 1)'
+}));
+
 export default function StudentProfileRow({ row, index, modalHandler }: StudentProfileRowProps) {
   const theme = useTheme();
 
@@ -39,17 +43,17 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       style={{ cursor: 'pointer' }}
       id={`student-row-${id}`}
     >
-      <TableCell component="th" scope="row" padding="none">
+      <StyledTableCell component="th" scope="row" padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={first_name} src={profile_image_url} />
           <Typography variant="subtitle2" noWrap>
             {last_name}
           </Typography>
         </Stack>
-      </TableCell>
-      <TableCell align="left">{current_company.name}</TableCell>
-      <TableCell align="left">{current_position}</TableCell>
-      <TableCell align="left">
+      </StyledTableCell>
+      <StyledTableCell align="left">{current_company.name}</StyledTableCell>
+      <StyledTableCell align="left">{current_position}</StyledTableCell>
+      <StyledTableCell align="left">
         <LabelContainer>
           {strengths?.length > 0 &&
             strengths.map((strength) => (
@@ -62,8 +66,8 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
               </Label>
             ))}
         </LabelContainer>
-      </TableCell>
-      <TableCell align="left">
+      </StyledTableCell>
+      <StyledTableCell align="left">
         <LabelContainer>
           {interests?.length > 0 &&
             interests.map((interest) => (
@@ -76,7 +80,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
               </Label>
             ))}
         </LabelContainer>
-      </TableCell>
+      </StyledTableCell>
     </TableRow>
   );
 }
