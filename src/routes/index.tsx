@@ -10,7 +10,7 @@ import AuthGuard from '../guards/AuthGuard';
 // import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
-
+import RedirectToCohort from '../components/cohorts/RedirectToCohort';
 // ----------------------------------------------------------------------
 
 const Loadable = (Component: React.ElementType) => (props: any) => {
@@ -76,7 +76,7 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { path: '/', element: <GeneralApp /> },
+        { path: '/', element: <RedirectToCohort /> },
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },

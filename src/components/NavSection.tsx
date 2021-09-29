@@ -220,7 +220,7 @@ export default function NavSection({
   isShow = true,
   ...other
 }: NavSectionProps) {
-  const combinedItems = [navConfig[0].items[0], ...cohortsData, ...navConfig[0].items.slice(1)];
+  const combinedItems = [...cohortsData, ...navConfig[0].items];
 
   return (
     <Box {...other}>

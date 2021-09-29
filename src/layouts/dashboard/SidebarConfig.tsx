@@ -35,11 +35,6 @@ const sidebarConfig = [
     subheader: 'general',
     items: [
       {
-        title: 'discover',
-        path: PATH_DASHBOARD.general.discover,
-        icon: ICONS.discover
-      },
-      {
         title: 'contact us',
         path: PATH_DASHBOARD.general.contactUs,
         icon: ICONS.contact
