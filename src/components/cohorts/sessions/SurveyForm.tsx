@@ -27,7 +27,7 @@ export default function SurveyForm({ surveyData }: SurveyFormProps) {
 
   return (
     <Container>
-      {surveyData && Object.keys(surveyData).length === 0 ? (
+      {surveyData && Object.keys(surveyData).length !== 0 ? (
         survey()
       ) : (
         <Message content="The feedback survey will be available at any time after the session is complete." />

@@ -84,11 +84,28 @@ const SessionTitle = styled('h2')((props) => ({
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
 
+  const tempSurveyData = {
+    submitted: true,
+    contents: [
+      {
+        type: 'multiple-choice',
+        title: '1. How did you rate the course?',
+        options: ['Loved it', 'It was okay'],
+        submitted_answer: 'Loved it'
+      },
+      {
+        type: 'text-input',
+        title: '1. Describe your favourite part?',
+        submitted_answer: 'My favourite part was ...'
+      }
+    ]
+  };
+
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
     <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />,
-    <SurveyForm key="surveyForm" surveyData={session?.survey} />
+    <SurveyForm key="surveyForm" surveyData={tempSurveyData} />
   ];
 
   if (!session) return null;

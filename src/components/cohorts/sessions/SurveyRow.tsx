@@ -48,7 +48,7 @@ function TextInput({ submitted_answer }: TextInputProps) {
 function RadioButtons({ item }: RadioButtonsProps) {
   return (
     <RadioGroup aria-label="gender" defaultValue={item.submitted_answer} name="radio-buttons-group">
-      {item.options.map((option, index) => (
+      {item?.options?.map((option, index) => (
         <FormControlLabel key={index} value={option} control={<Radio />} label={option} />
       ))}
     </RadioGroup>
