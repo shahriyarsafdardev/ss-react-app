@@ -1,8 +1,14 @@
-import { Stack, Avatar, TableRow, TableCell, Typography } from '@material-ui/core';
+import { Stack, Avatar, TableRow, TableCell, Typography, Box } from '@material-ui/core';
 import { useTheme, styled } from '@material-ui/core/styles';
 import { capitalCase } from 'change-case';
 import { StudentProfile } from '../../@types/cohorts';
 import Label from '../Label';
+
+const LabelContainer = styled(Box)(() => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: 5
+}));
 
 type StudentProfileRowProps = {
   row: StudentProfile;
@@ -44,26 +50,32 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <TableCell align="left">{current_company.name}</TableCell>
       <TableCell align="left">{current_position}</TableCell>
       <TableCell align="left">
-        {strengths?.length > 0 && (
-          <Label
-            key={index}
-            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-            color="success"
-          >
-            {capitalCase(strengths[0])}
-          </Label>
-        )}
+        <LabelContainer>
+          {strengths?.length > 0 &&
+            strengths.map((strength) => (
+              <Label
+                key={index}
+                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                color="success"
+              >
+                {capitalCase(strength)}
+              </Label>
+            ))}
+        </LabelContainer>
       </TableCell>
       <TableCell align="left">
-        {interests?.length > 0 && (
-          <Label
-            key={index}
-            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-            color="secondary"
-          >
-            {capitalCase(interests[0])}
-          </Label>
-        )}
+        <LabelContainer>
+          {interests?.length > 0 &&
+            interests.map((interest) => (
+              <Label
+                key={index}
+                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                color="secondary"
+              >
+                {capitalCase(interest)}
+              </Label>
+            ))}
+        </LabelContainer>
       </TableCell>
     </TableRow>
   );
