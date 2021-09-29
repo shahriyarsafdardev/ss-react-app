@@ -1,12 +1,17 @@
 import { styled } from '@material-ui/core/styles';
 import React from 'react';
 
-const VideoContainer = styled('div')((props) => ({
+const VideoContainer = styled('div')(({ theme }) => ({
   marginBottom: '3rem',
 
   video: {
-    width: '100%',
-    borderRadius: '25px'
+    width: '600px',
+    height: '338px',
+    borderRadius: '25px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: 'auto'
+    }
   }
 }));
 
