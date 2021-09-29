@@ -39,15 +39,10 @@ const SessionDetails = styled('div')((props) => ({
   }
 }));
 
-const TRIM_LENGTH = 25;
-
 export default function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
   const sessionDate = new Date(session.time);
   const todayDate = new Date();
   const isPastSession = sessionDate < todayDate;
-
-  const trimTitle = (title: string) =>
-    title.length > TRIM_LENGTH ? `${title.slice(0, TRIM_LENGTH)}...` : title;
 
   const sessionTime = (date: string) => {
     if (isPastSession) {
@@ -69,7 +64,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
       </ListIcon>
       <div>
         <SessionDetails>{`Session ${session.number} | ${session.length}`}</SessionDetails>
-        <Title>{trimTitle(session.name)}</Title>
+        <Title>{session.name}</Title>
         <SessionDetails>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" />
           {sessionTime(session.time)}
