@@ -1,21 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
+import CreatableSelect from 'react-select/creatable';
 import * as Yup from 'yup';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import {
-  Box,
-  Grid,
-  Card,
-  Stack,
-  TextField,
-  Typography,
-  FormHelperText,
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  Select
-} from '@material-ui/core';
+import { Box, Grid, Card, Stack, TextField, Typography, FormHelperText } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { styled } from '@material-ui/core/styles';
@@ -51,22 +40,39 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-const StyledSelect = styled(Select)(({ theme }) => ({
-  maxWidth: '48.5%',
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 'unset'
-  }
-}));
-
-const Count = styled(Box)(({ theme }) => ({
-  height: 22,
-  background: 'rgba(145, 158, 171, 0.16)',
-  borderRadius: 6,
-  color: theme.palette.grey[600],
-  fontSize: '0.75rem',
-  fontWeight: 'bold',
-  padding: '0px 8px'
-}));
+const customStyles = {
+  container: (provided: any, state: any) => ({
+    ...provided,
+    width: '100%',
+    height: '29px'
+  }),
+  control: (provided: any, state: any) => ({
+    ...provided,
+    height: '55px',
+    borderRadius: '6px',
+    borderColor: state.isFocused ? '1939B7' : '#CFD8DC',
+    ':hover': {
+      borderColor: '#071A33',
+      borderRadius: 8
+    }
+  }),
+  multiValue: (provided: any) => ({
+    ...provided,
+    backgroundColor: 'rgba(51, 102, 255, 0.16)',
+    height: 22,
+    borderRadius: '8px'
+  }),
+  multiValueLabel: (provided: any) => ({
+    ...provided,
+    color: '#1939B7',
+    fontWeight: 'bold',
+    fontSize: '0.75rem'
+  }),
+  indicatorSeparator: (provided: any) => ({
+    ...provided,
+    display: 'none'
+  })
+};
 
 export default function ProfileForm({
   onSubmit,
@@ -93,6 +99,8 @@ export default function ProfileForm({
       .required('First name required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
+
+  const interestOptions = interests?.map((interest) => ({ value: interest, label: interest }));
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -193,83 +201,25 @@ export default function ProfileForm({
                       helperText={touched.last_name && errors.last_name}
                     />
                   </Stack>
-
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <StyledSelect
-                      fullWidth
-                      labelId="company-label"
-                      id="multiple-checkbox-company"
-                      {...getFieldProps('current_company')}
-                    >
-                      {companies?.map((name: any) => (
-                        <MenuItem key={name} value={name}>
-                          <ListItemText primary={name} />
-                        </MenuItem>
-                      ))}
-                    </StyledSelect>
-                    <TextField
-                      fullWidth
-                      label="Linkedin Url"
-                      {...getFieldProps('linkedin_url')}
-                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                      helperText={touched.linkedin_url && errors.linkedin_url}
+                    <CreatableSelect
+                      styles={customStyles}
+                      options={interestOptions}
+                      isClearable={true}
+                      backspaceRemovesValue={true}
+                      isMulti
+                      isSearchable
+                      // onChange={handleChange}
                     />
-                  </Stack>
-                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <StyledSelect
-                      fullWidth
-                      labelId="strength-label"
-                      id="multiple-checkbox-strength"
-                      multiple
-                      {...getFieldProps('strengths')}
-                      renderValue={(selected: any) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map(
-                            (value: string, index: number) =>
-                              index < 2 && (
-                                <Label key={value} variant="ghost" color="success">
-                                  {value}
-                                </Label>
-                              )
-                          )}
-                          {selected.length > 2 && <Count>+{selected.length - 2}</Count>}
-                        </Box>
-                      )}
-                    >
-                      {strengths?.map((name: any) => (
-                        <MenuItem key={name} value={name}>
-                          <Checkbox checked={values?.strengths?.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
-                        </MenuItem>
-                      ))}
-                    </StyledSelect>
-                    <StyledSelect
-                      fullWidth
-                      labelId="interest-label"
-                      id="multiple-checkbox-interest"
-                      multiple
-                      {...getFieldProps('interests')}
-                      renderValue={(selected: any) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                          {selected.map(
-                            (value: string, index: number) =>
-                              index < 2 && (
-                                <Label key={value} variant="ghost" color="secondary">
-                                  {value}
-                                </Label>
-                              )
-                          )}
-                          {selected.length > 2 && <Count>+{selected.length - 2}</Count>}
-                        </Box>
-                      )}
-                    >
-                      {interests?.map((name: any) => (
-                        <MenuItem key={name} value={name}>
-                          <Checkbox checked={values?.interests?.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
-                        </MenuItem>
-                      ))}
-                    </StyledSelect>
+                    <CreatableSelect
+                      styles={customStyles}
+                      options={interestOptions}
+                      isClearable={true}
+                      backspaceRemovesValue={true}
+                      isMulti
+                      isSearchable
+                      // onChange={handleChange}
+                    />
                   </Stack>
                 </Stack>
 
