@@ -68,11 +68,16 @@ export default function SessionsTab() {
             <SessionBoard session={sessions && sessions[selectedSession]} />
           </Grid>
           <SessionListDesktopContainer item md={4}>
-            <SessionList onClick={setSelectedSession} sessionsList={trimmedSessionData} />
+            <SessionList
+              onClick={setSelectedSession}
+              selectedSession={selectedSession}
+              sessionsList={trimmedSessionData}
+            />
           </SessionListDesktopContainer>
         </SessionsInnerContainer>
         <SessionListSidebar
           setSelectedSession={setSelectedSession}
+          selectedSession={selectedSession}
           sessionsList={trimmedSessionData}
         />
       </SessionsContainer>

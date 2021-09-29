@@ -6,6 +6,7 @@ type SessionRowProps = {
   session: SessionListItem;
   onClick: Function;
   index: number;
+  isSelected: boolean;
 };
 
 const ListItem = styled('div')((props) => ({
@@ -14,7 +15,7 @@ const ListItem = styled('div')((props) => ({
   padding: '5px 0',
   cursor: 'pointer',
   '&:hover': {
-    backgroundColor: 'rgba(77, 77, 205, 0.06)'
+    backgroundColor: 'rgba(77, 77, 205, 0.07)'
   }
 }));
 
@@ -40,7 +41,7 @@ const SessionDetails = styled('div')((props) => ({
 
 const TRIM_LENGTH = 25;
 
-export default function SessionRow({ session, index, onClick }: SessionRowProps) {
+export default function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
   const sessionDate = new Date(session.time);
   const todayDate = new Date();
   const isPastSession = sessionDate < todayDate;
@@ -56,7 +57,10 @@ export default function SessionRow({ session, index, onClick }: SessionRowProps)
   };
 
   return (
-    <ListItem onClick={() => onClick(index)}>
+    <ListItem
+      style={isSelected ? { backgroundColor: 'rgba(77, 77, 205, 0.03)' } : undefined}
+      onClick={() => onClick(index)}
+    >
       <ListIcon>
         <img
           src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}

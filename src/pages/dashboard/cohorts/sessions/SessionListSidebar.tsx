@@ -14,6 +14,7 @@ import { SessionListItem } from '../../../../@types/cohorts';
 type SessionListSidebarProps = {
   sessionsList: SessionListItem[];
   setSelectedSession: Function;
+  selectedSession: number;
 };
 
 type StyledSettingsBoxProps = {
@@ -83,6 +84,7 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
 
 export default function SessionListSidebar({
   setSelectedSession,
+  selectedSession,
   sessionsList
 }: SessionListSidebarProps) {
   const [open, setOpen] = useState(false);
@@ -121,7 +123,11 @@ export default function SessionListSidebar({
         <StyledPaper open={open}>
           <StyledScrollBar>
             <SessionListMobileConatiner>
-              <SessionList onClick={gotoSession} sessionsList={sessionsList} />
+              <SessionList
+                onClick={gotoSession}
+                selectedSession={selectedSession}
+                sessionsList={sessionsList}
+              />
             </SessionListMobileConatiner>
           </StyledScrollBar>
         </StyledPaper>
