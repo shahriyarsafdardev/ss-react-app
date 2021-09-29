@@ -72,7 +72,7 @@ export default function UserAccount() {
   ];
 
   return (
-    <Page title="User: Account Settings | Minimal-UI">
+    <Page title="ScholarSite | Settings">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Account"

@@ -61,7 +61,7 @@ export default function SessionsTab() {
   }, [cohort_id, dispatch]);
 
   return (
-    <Page title="Sessions | Minimal-UI">
+    <Page title="ScholarSite | Sessions">
       <SessionsContainer>
         <SessionsInnerContainer container>
           <Grid item md={8} sm={12}>

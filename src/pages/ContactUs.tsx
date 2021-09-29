@@ -1,6 +1,7 @@
 import { Grid, Box, Card, CardMedia, CardContent, Typography, Theme } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
+import Page from '../components/Page';
 
 type ContactCardProps = {
   name: string;
@@ -107,16 +108,18 @@ export default function ContactUs() {
   ];
 
   return (
-    <ContactContainer>
-      <Typography variant="h3">Contact Us</Typography>
-      <ContactNote />
-      <StyledGrid container>
-        {contactInfoDetails.map((info) => (
-          <Grid item key={info.email} sm={12} md={3}>
-            <ContactCard {...info} />
-          </Grid>
-        ))}
-      </StyledGrid>
-    </ContactContainer>
+    <Page title="ScholarSite | Contact Us">
+      <ContactContainer>
+        <Typography variant="h3">Contact Us</Typography>
+        <ContactNote />
+        <StyledGrid container>
+          {contactInfoDetails.map((info) => (
+            <Grid item key={info.email} sm={12} md={3}>
+              <ContactCard {...info} />
+            </Grid>
+          ))}
+        </StyledGrid>
+      </ContactContainer>
+    </Page>
   );
 }

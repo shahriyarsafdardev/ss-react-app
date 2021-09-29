@@ -12,6 +12,7 @@ import VideoPreview from '../../../../components/cohorts/VideoPreview';
 import Step3 from './ProfileForm';
 import StepsCompleted from './StepsCompleted';
 import LoadindScreen from '../../../../components/LoadingScreen';
+import Page from '../../../../components/Page';
 
 // axios
 import axios from '../../../../utils/axios';
@@ -167,13 +168,15 @@ export default function HomeTab() {
       {!homeConfig ? (
         <LoadindScreen />
       ) : (
-        <Container>
-          <HomeTabHeader
-            cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
-            activeStep={activeStep}
-          />
-          {selectStep()}
-        </Container>
+        <Page title="ScholarSite | Home">
+          <Container>
+            <HomeTabHeader
+              cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
+              activeStep={activeStep}
+            />
+            {selectStep()}
+          </Container>
+        </Page>
       )}
     </>
   );

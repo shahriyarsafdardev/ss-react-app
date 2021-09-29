@@ -64,7 +64,7 @@ export default function Login() {
   const { method } = useAuth();
 
   return (
-    <RootStyle title="Login | Minimal-UI">
+    <RootStyle title="ScholarSite | Login">
       <MHidden width="mdDown">
         <SectionStyle>
           <img src="/static/scholarsite_home.svg" alt="login" style={{ height: '90vh' }} />

@@ -129,20 +129,28 @@ export default function PeersTab() {
 
   const showCardView = () => (
     <StudentProfileGrid
-      students={filtereStudents?.length ? filtereStudents : peers}
+      students={
+        selectedCompanies.length || selectedInterests.length || selectedStrengths.length
+          ? filtereStudents
+          : peers
+      }
       modalHandler={modalHandler}
     />
   );
 
   const showTableView = () => (
     <StudentProfileList
-      students={filtereStudents?.length ? filtereStudents : peers}
+      students={
+        selectedCompanies.length || selectedInterests.length || selectedStrengths.length
+          ? filtereStudents
+          : peers
+      }
       modalHandler={modalHandler}
     />
   );
 
   return (
-    <Page title="Peers | Minimal-UI">
+    <Page title="ScholarSite | Peers">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
         <StudentProfileModal
