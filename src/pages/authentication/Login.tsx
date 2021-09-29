@@ -76,7 +76,7 @@ export default function Login() {
           <MHidden width="mdUp">
             <img src="/static/ScholarSite.svg" alt="login" width={140} />
           </MHidden>
-          <StyledStack direction="row" alignItems="center" >
+          <StyledStack direction="row" alignItems="center">
             <Box sx={{ flexGrow: 1 }}>
               <Title gutterBottom>Welcome to your Student Portal</Title>
               <Typography sx={{ color: 'text.secondary' }}>
