@@ -1,7 +1,7 @@
 // modal
 import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
 import Label from '../Label';
 
@@ -61,6 +61,7 @@ export default function StudentProfileModal({
     profile_image_url,
     strengths,
     interests,
+    linkedin_url,
     email
   } = modalUser;
   return (
@@ -152,7 +153,10 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>Connect with {first_name} on LinkedIn Here</Text>
+          <Link href={linkedin_url} target="_blank">
+            {' '}
+            <Text>Connect with {first_name} on LinkedIn Here</Text>
+          </Link>
         </StyledRow>
       </StyledContainer>
     </Modal>
