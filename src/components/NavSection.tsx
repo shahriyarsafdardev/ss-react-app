@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
@@ -91,9 +91,13 @@ function NavItem({
   const theme = useTheme();
   const { pathname } = useLocation();
   const { title, path, icon, info, children } = item;
-  const isActiveRoot = path ? !!matchPath({ path, end: false }, pathname) : false;
+  const isActiveRoot = pathname.includes(path);
 
   const [open, setOpen] = useState(isActiveRoot);
+
+  useEffect(() => {
+    setOpen(isActiveRoot);
+  }, [isActiveRoot, pathname]);
 
   const handleOpen = () => {
     setOpen(!open);
