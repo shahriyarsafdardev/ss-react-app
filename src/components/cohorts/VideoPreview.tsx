@@ -26,7 +26,7 @@ export default function VideoPreview({
     <VideoContainer className={className}>
       {video_url && (
         // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video src={video_url} preload="auto" controls autoPlay={false} />
+        <video src={video_url} preload="auto" controls controlsList="nodownload" autoPlay={false} />
       )}
     </VideoContainer>
   );
