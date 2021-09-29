@@ -62,6 +62,7 @@ export default function StudentProfileModal({
     strengths,
     interests,
     linkedin_url,
+    discord_url,
     email
   } = modalUser;
   return (
@@ -143,7 +144,9 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>Message {first_name} on Discord here</Text>
+          <Link href={discord_url} target="_blank">
+            <Text>Message {first_name} on Discord here</Text>
+          </Link>
         </StyledRow>
         <StyledRow>
           <img
