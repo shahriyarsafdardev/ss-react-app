@@ -1,14 +1,17 @@
 [
   {
     "id": "uuid",
-    "name": "The Economics of Digital Platforms"
+    "name": "The Economics of Digital Platforms",
+    "isOnboarded": false
   },
   {
     "id": "uuid",
-    "name": "Investing in the BlockChain"
+    "name": "Investing in the BlockChain",
+    "isOnboarded": true
   },
   {
     "id": "uuid",
-    "name": "How can data science drive decision making?"
+    "name": "How can data science drive decision making?",
+    "isOnboarded": false
   }
 ]

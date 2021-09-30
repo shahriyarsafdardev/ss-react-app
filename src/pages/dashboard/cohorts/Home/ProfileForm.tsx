@@ -147,7 +147,6 @@ export default function ProfileForm({
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
-      console.log(values);
       await onSubmit(values);
     }
   });
@@ -186,7 +185,7 @@ export default function ProfileForm({
         payload?.interests && setInterests(payload.interests);
       });
   }, []);
-  console.log(values);
+
   return (
     <>
       <Title>Build your profile</Title>

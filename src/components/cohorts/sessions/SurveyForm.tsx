@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { Container, Button } from '@material-ui/core';
-import { Console } from 'console';
 import useAuth from '../../../hooks/useAuth';
 
 import { Survey } from '../../../@types/cohorts';
@@ -61,6 +60,7 @@ export default function SurveyForm({ sessionId }: SessionsId) {
         <SurveyRow
           key={`survey-row-${index}`}
           item={surveyRow}
+          submitted_answer={response[surveyRow?.id]}
           onChange={(val: string) => {
             setQuestionResponse(val, surveyRow?.id);
           }}

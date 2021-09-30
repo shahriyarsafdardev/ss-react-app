@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
-// material
 import { Container, Grid } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-
-// redux
+import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { SessionListItem } from '../../../../@types/cohorts';
 import SessionListSidebar from './SessionListSidebar';
-
-// components
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
@@ -41,7 +37,10 @@ const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
 export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
-  const { sessions } = useSelector((state: RootState) => state.cohort.cohorts[0]);
+  const cohort = useSelector((state: RootState) => state.cohort.cohorts[0]);
+
+  const { sessions } = cohort;
+
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
   let trimmedSessionData: SessionListItem[] = [];
@@ -62,6 +61,7 @@ export default function SessionsTab() {
 
   return (
     <Page title="ScholarSite | Sessions">
+      {cohort.isOnboarded === false && <OnboardingModal />}
       <SessionsContainer>
         <SessionsInnerContainer container>
           <Grid item md={8} sm={12}>

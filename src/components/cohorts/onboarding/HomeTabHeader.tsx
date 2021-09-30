@@ -6,7 +6,12 @@ import { Typography, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 
-const steps = ['Watch Welcome Video', 'Join Discord Server', 'Build Your Profile'];
+const steps = [
+  'Watch Welcome Video',
+  'Survey Questions',
+  'Join Discord Server',
+  'Build Your Profile'
+];
 
 const ProgressBarContainer = styled(Box)(() => ({
   display: 'flex',
@@ -57,22 +62,26 @@ const stepper = (activeStep: number) => (
 export default function HomeTabHeader({
   children,
   activeStep,
-  cohortTitle
+  cohortTitle,
+  showProgressBar = true
 }: {
   children?: React.ReactNode;
   activeStep: number;
   cohortTitle: string;
+  showProgressBar?: boolean;
 }) {
   // eslint-disable-next-line no-nested-ternary
   const progress = activeStep === 1 ? 10 : activeStep === 2 ? 33 : activeStep === 3 ? 67 : 100;
   return (
     <>
       <Title>{cohortTitle}</Title>
-      {activeStep < 4 && (
+      {showProgressBar && (
         <>
           <ProgressBarContainer>
             <BorderLinearProgress variant="determinate" value={progress} />
-            <CurrentStep>{activeStep}/3</CurrentStep>
+            <CurrentStep>
+              {activeStep}/{steps.length}
+            </CurrentStep>
           </ProgressBarContainer>
           {stepper(activeStep - 1)}
         </>
