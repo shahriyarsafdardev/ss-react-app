@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Container } from '@material-ui/core';
+import { Button, Container, Box } from '@material-ui/core';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
@@ -27,10 +27,25 @@ const StyledButton = styled(Button)((props) => ({
   }
 }));
 
-const StyledPage = styled(Page)(() => ({
+const StyledPage = styled(Page)(({ theme }) => ({
   '.react-pdf__Page__canvas': {
     width: '100% !important',
-    height: 'auto !important'
+    height: '347px !important'
+  },
+  [theme.breakpoints.down('sm')]: {
+    '.react-pdf__Page__canvas': {
+      height: '200px !important'
+    }
+  }
+}));
+
+const PdfDocument = styled(Document)(({ theme }) => ({
+  height: '347px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    height: '200px'
   }
 }));
 
@@ -56,7 +71,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
 
   const pdfSlider = () => (
     <div>
-      <Document
+      <PdfDocument
         file={{
           url: 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP+S21+Session+2.pptx.pdf'
         }}
@@ -64,7 +79,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
         onLoadError={console.error}
       >
         <StyledPage pageNumber={pageNumber} />
-      </Document>
+      </PdfDocument>
       {numPages !== null && (
         <Navigation pageNumber={pageNumber} numPages={numPages} pageHandler={setPageNumber} />
       )}
