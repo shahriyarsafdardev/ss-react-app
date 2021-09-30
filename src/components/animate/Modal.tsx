@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 // material
 import { Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import Modal from 'react-modal';
 //
 import { varFadeInUp } from './variants';
@@ -16,25 +17,45 @@ interface ModalAnimateProps {
 }
 
 const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    background: 'none',
-    border: 'none',
-    padding: 0,
-    borderRadius: 0,
-    width: '50%'
-  },
   overlay: {
     background: 'linear-gradient(75deg, rgba(22, 28, 36, 0.48) 0%, rgb(22, 28, 36) 100%)',
-    zIndex: 1300
+    zIndex: 1300,
+    overflow: 'auto'
   }
 };
-
+const StyledModal = styled(Modal)(({ theme }) => ({
+  top: '50%',
+  left: '50%',
+  right: 'auto',
+  bottom: 'auto',
+  marginRight: '-50%',
+  transform: 'translate(-50%, -43%)',
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  borderRadius: 0,
+  width: '50%',
+  position: 'absolute',
+  inset: '50% auto auto 50%',
+  outline: 'none',
+  [theme.breakpoints.down('sm')]: {
+    width: '90%'
+  }
+}));
+const Cross = styled(Box)(({ theme }) => ({
+  background: '#FFFFFF',
+  borderRadius: '50%',
+  width: 40,
+  height: 40,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 10,
+  marginLeft: 'auto',
+  [theme.breakpoints.down('sm')]: {
+    dispay: 'flex'
+  }
+}));
 export default function ModalAnimate({
   open = false,
   animate,
@@ -45,7 +66,7 @@ export default function ModalAnimate({
   return (
     <AnimatePresence>
       {open && (
-        <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>
+        <StyledModal isOpen={open} onRequestClose={onClose} style={customStyles}>
           <Box
             component={motion.div}
             {...(animate || varFadeInUp)}
@@ -56,9 +77,12 @@ export default function ModalAnimate({
               justifyContent: 'center'
             }}
           >
+            <Cross onClick={onClose}>
+              <img src="/static/cross.svg" alt="close-modal" />
+            </Cross>
             <Box id={id}>{children}</Box>
           </Box>
-        </Modal>
+        </StyledModal>
       )}
     </AnimatePresence>
   );

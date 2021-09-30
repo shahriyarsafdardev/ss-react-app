@@ -40,12 +40,27 @@ const Text = styled(Typography)(() => ({
   whiteSpace: 'nowrap'
 }));
 
-const TagsContainer = styled(Box)(() => ({
+const TagsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: 10
+  gap: 10,
+  [theme.breakpoints.down('sm')]: {
+    display: 'none'
+  }
+}));
+
+const TagsContainerMobile = styled(Box)(({ theme }) => ({
+  display: 'none',
+  flex: 1,
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: 10,
+  marginBottom: 20,
+  [theme.breakpoints.down('sm')]: {
+    display: 'flex'
+  }
 }));
 export default function StudentProfileModal({
   modalState,
@@ -111,6 +126,18 @@ export default function StudentProfileModal({
               ))}
           </TagsContainer>
         </StyledRow>
+        <TagsContainerMobile>
+          {interests?.length > 0 &&
+            interests?.map((strength: any, index: number) => (
+              <Label
+                key={index}
+                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                color="secondary"
+              >
+                {capitalCase(strength)}
+              </Label>
+            ))}
+        </TagsContainerMobile>
         <StyledRow>
           <img
             alt="sketch icon"
@@ -133,6 +160,18 @@ export default function StudentProfileModal({
               ))}
           </TagsContainer>
         </StyledRow>
+        <TagsContainerMobile>
+          {strengths?.length > 0 &&
+            strengths?.map((interest: any, index: number) => (
+              <Label
+                key={index}
+                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                color="success"
+              >
+                {capitalCase(interest)}
+              </Label>
+            ))}
+        </TagsContainerMobile>
       </StyledContainer>
       <StyledContainer>
         <Title>Social</Title>
