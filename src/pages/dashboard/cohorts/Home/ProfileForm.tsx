@@ -114,7 +114,7 @@ export default function ProfileForm({
     first_name: string;
     last_name: string;
     linkedin_url: string;
-    profile_image_url: string;
+    profile_image_url: File | any;
     current_company: string;
     strengths: string[];
     interests: string[];
@@ -169,7 +169,7 @@ export default function ProfileForm({
       const file = acceptedFiles[0];
       if (file) {
         setFieldValue('profile_image_url', {
-          ...file,
+          image: file,
           preview: URL.createObjectURL(file)
         });
       }
