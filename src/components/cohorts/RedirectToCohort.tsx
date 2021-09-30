@@ -6,8 +6,7 @@ export default function RedirectToCohort() {
   let navigationUrl = '/';
 
   if (cohorts.length > 0) {
-    navigationUrl = `/cohorts/${cohorts[0].id}/home`;
+    navigationUrl = `/cohorts/${cohorts[0].id}/sessions`;
   }
-
   return <Navigate to={navigationUrl} replace />;
 }

@@ -18,13 +18,13 @@
         "submitted": true,
         "contents": [
           {
-            "type": "multiple-choice",
+            "question_type": "multiple-choice",
             "title": "1. How did you rate the course?",
             "options": ["Loved it", "It was okay"],
             "submitted_answer": "Loved it"
           },
           {
-            "type": "text-input",
+            "question_type": "text-input",
             "title": "1. Describe your favourite part?",
             "submitted_answer": "My favourite part was ..."
           }

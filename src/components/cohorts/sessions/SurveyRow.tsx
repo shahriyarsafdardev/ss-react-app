@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // material
 import { styled } from '@material-ui/core/styles';
 import { Radio, RadioGroup, FormControlLabel, TextField } from '@material-ui/core';
@@ -8,12 +8,14 @@ import { SurveyContent } from '../../../@types/cohorts';
 
 type SurveyRowProps = {
   item: SurveyContent;
-  onChange: any;
+  onChange: Function;
+  submitted_answer: string;
 };
 
 type RadioButtonsProps = {
   item: SurveyContent;
   onChange: any;
+  submitted_answer: string;
 };
 
 type TextInputProps = {
@@ -36,26 +38,28 @@ const ANSWER_TYPES = {
 };
 
 function TextInput({ submitted_answer, onChange }: TextInputProps) {
-  const [text, setText] = useState(submitted_answer);
   return (
     <TextField
+      key="text-answer"
       style={{ marginTop: '10px' }}
       fullWidth
-      value={text}
+      value={submitted_answer}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Text Only"
     />
   );
 }
 
-function RadioButtons({ item, onChange }: RadioButtonsProps) {
+function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
   return (
-    <RadioGroup aria-label="gender" defaultValue={item.submitted_answer} name="radio-buttons-group">
+    <RadioGroup aria-label="gender" name="radio-buttons-group">
       {item?.options?.map((option, index) => (
         <FormControlLabel
           key={index}
           value={option}
-          control={<Radio onChange={() => onChange(option)} />}
+          control={
+            <Radio checked={option === submitted_answer} onChange={() => onChange(option)} />
+          }
           label={option}
         />
       ))}
@@ -63,13 +67,26 @@ function RadioButtons({ item, onChange }: RadioButtonsProps) {
   );
 }
 
-export default function SurveyRow({ item, onChange }: SurveyRowProps) {
+export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
+  const [text, setText] = useState(item.submitted_answer || '');
+
+  useEffect(() => {
+    setText(submitted_answer || '');
+  }, [submitted_answer]);
+
+  const handleChange = (value: string) => {
+    setText(value);
+    if (typeof onChange === 'function') {
+      onChange(value);
+    }
+  };
+
   const answerFields = () => {
     if (item.question_type === ANSWER_TYPES.MULTIPLE_CHOICE) {
-      return <RadioButtons item={item} onChange={onChange} />;
+      return <RadioButtons item={item} onChange={handleChange} submitted_answer={text} />;
     }
     if (item.question_type === ANSWER_TYPES.TEXT_INPUT) {
-      return <TextInput onChange={onChange} submitted_answer={item.submitted_answer} />;
+      return <TextInput onChange={handleChange} submitted_answer={text} />;
     }
     return '';
   };

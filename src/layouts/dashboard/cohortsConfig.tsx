@@ -18,7 +18,6 @@ const cohortsConfig = (rawCohorts: any) =>
     path: PATH_DASHBOARD.cohorts.root(cohort.id),
     icon: ICONS.cohorts,
     children: [
-      { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
       { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
       { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
       { title: 'discord', path: 'https://discord.com/', externalUrl: true }

@@ -13,7 +13,7 @@ interface ModalAnimateProps {
   onClose?: VoidFunction;
   open: boolean;
   children: React.ReactNode | React.ReactNode[];
-  id: string;
+  id?: string;
 }
 
 const customStyles = {
@@ -34,7 +34,7 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   border: 'none',
   padding: 0,
   borderRadius: 0,
-  width: '50%',
+  width: '60%',
   position: 'absolute',
   inset: '50% auto auto 50%',
   outline: 'none',
@@ -77,9 +77,11 @@ export default function ModalAnimate({
               justifyContent: 'center'
             }}
           >
-            <Cross onClick={onClose}>
-              <img src="/static/cross.svg" alt="close-modal" />
-            </Cross>
+            {onClose && (
+              <Cross onClick={onClose}>
+                <img src="/static/cross.svg" alt="close-modal" />
+              </Cross>
+            )}
             <Box id={id}>{children}</Box>
           </Box>
         </StyledModal>

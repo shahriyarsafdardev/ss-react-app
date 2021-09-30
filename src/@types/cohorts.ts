@@ -57,6 +57,7 @@ export type SessionListItem = {
 export type Cohort = {
   id: string;
   name: string;
+  isOnboarded: boolean;
   peers: StudentProfile[];
   sessions: Session[];
 };
