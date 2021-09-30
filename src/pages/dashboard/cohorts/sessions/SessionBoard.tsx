@@ -105,7 +105,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
     <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />,
-    <SurveyForm key="surveyForm" surveyData={tempSurveyData} />
+    <SurveyForm key="surveyForm" sessionId={session?.id} />
   ];
 
   if (!session) return null;

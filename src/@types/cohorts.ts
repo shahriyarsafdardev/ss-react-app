@@ -22,7 +22,7 @@ type Tag = {
 
 type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 export type SurveyContent = {
-  type: string;
+  question_type: string;
   title: string;
   options?: string[];
   submitted_answer: string;
