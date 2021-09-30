@@ -21,7 +21,7 @@ type HomeResponse = {
   cohort_id: string;
   cohort_title: string;
   setup_completed: boolean;
-  enrollment_id: string;
+  enrollment_id: string | any;
   intro_video_url: string;
   discord_invitation_link: string;
   last_recorded_step: number;
@@ -44,6 +44,17 @@ type UserProfileProps = {
   photoURL: string;
   interests: [];
   strengths: [];
+};
+
+type ParticipantProfile = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  linkedin_url: string;
+  profile_image_url: File | any;
+  current_company: string;
+  strengths: string[] | any;
+  interests: string[] | any;
 };
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
@@ -96,12 +107,22 @@ export default function HomeTab() {
   }, [cohort_id, user?.id]);
 
   console.log(homeConfig);
-  const onFormSubmitHandler = async (values: UserProfileProps) => {
+  const onFormSubmitHandler = async (values: ParticipantProfile) => {
+    const uploadData = new FormData();
+
+    uploadData.append('enrollment_id', homeConfig?.enrollment_id);
+    uploadData.append('email', values.email);
+    uploadData.append('first_name', values.first_name);
+    uploadData.append('last_name', values.last_name);
+    uploadData.append('linkedin_url', values.linkedin_url);
+    uploadData.append('current_company', values.current_company);
+    uploadData.append('strengths', values.strengths);
+    uploadData.append('interests', values.interests);
+    uploadData.append('image', values.profile_image_url.image);
+    console.log(values.profile_image_url);
+    console.log(values);
     await axios
-      .post(`/cohorts/${cohort_id}/save_user_profile`, {
-        ...values,
-        enrollment_id: homeConfig?.enrollment_id
-      })
+      .post(`/cohorts/${cohort_id}/save_user_profile`, uploadData)
       .then((res) => setActiveStep(4));
   };
 
