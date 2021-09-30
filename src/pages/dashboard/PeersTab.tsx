@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // material
 import { Container } from '@material-ui/core';
@@ -95,9 +95,23 @@ export default function PeersTab() {
     dispatch(getPeers(cohort_id.toString()));
   }, [dispatch, cohort_id]);
 
-  const appyFilters = () => {
-    let filteredStudents: any = peers;
+  useEffect(() => {
+    const filtereStudents = applyFilters();
+    const filteredInterests = filtereStudents?.map((student: any) => student?.interests)?.flat(1);
+    const filterInterestsList: any = filteredInterests?.filter(
+      (x: any, i: any, a: any) => a.indexOf(x) === i
+    );
+    const filteredStrengths = filtereStudents?.map((student: any) => student?.strengths)?.flat(1);
+    const filterStrengthsList: any = filteredStrengths?.filter(
+      (x: any, i: any, a: any) => a.indexOf(x) === i
+    );
+    setInterests(filterInterestsList);
+    setStrengths(filterStrengthsList);
+  }, [selectedCompanies]);
 
+  const applyFilters = useCallback(() => {
+    console.log('inside');
+    let filteredStudents: any = peers;
     if (selectedCompanies.length > 0) {
       filteredStudents = filteredStudents?.filter((student: any) =>
         selectedCompanies?.includes(student?.current_company?.name)
@@ -121,17 +135,14 @@ export default function PeersTab() {
           ).length
       );
     }
-
-    console.log(filteredStudents);
     return filteredStudents;
-  };
-  const filtereStudents = appyFilters();
+  }, [selectedCompanies, selectedStrengths, selectedInterests, peers]);
 
   const showCardView = () => (
     <StudentProfileGrid
       students={
         selectedCompanies.length || selectedInterests.length || selectedStrengths.length
-          ? filtereStudents
+          ? applyFilters()
           : peers
       }
       modalHandler={modalHandler}
@@ -142,7 +153,7 @@ export default function PeersTab() {
     <StudentProfileList
       students={
         selectedCompanies.length || selectedInterests.length || selectedStrengths.length
-          ? filtereStudents
+          ? applyFilters()
           : peers
       }
       modalHandler={modalHandler}
