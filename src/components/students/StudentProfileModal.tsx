@@ -74,6 +74,7 @@ export default function StudentProfileModal({
     last_name,
     current_company,
     profile_image_url,
+    phone,
     strengths,
     interests,
     linkedin_url,
@@ -104,74 +105,92 @@ export default function StudentProfileModal({
           />
           <Text>{email}</Text>
         </StyledRow>
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/done_all.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text style={{ marginRight: 10 }}>What I am looking for</Text>
-          <TagsContainer>
-            {interests?.length > 0 &&
-              interests?.map((strength: any, index: number) => (
-                <Label
-                  key={index}
-                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                  color="secondary"
-                >
-                  {capitalCase(strength)}
-                </Label>
-              ))}
-          </TagsContainer>
-        </StyledRow>
-        <TagsContainerMobile>
-          {interests?.length > 0 &&
-            interests?.map((strength: any, index: number) => (
-              <Label
-                key={index}
-                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color="secondary"
-              >
-                {capitalCase(strength)}
-              </Label>
-            ))}
-        </TagsContainerMobile>
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/star.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text style={{ marginRight: 10 }}>What I am good at</Text>
-          <TagsContainer>
-            {strengths?.length > 0 &&
-              strengths?.map((interest: any, index: number) => (
-                <Label
-                  key={index}
-                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                  color="success"
-                >
-                  {capitalCase(interest)}
-                </Label>
-              ))}
-          </TagsContainer>
-        </StyledRow>
-        <TagsContainerMobile>
-          {strengths?.length > 0 &&
-            strengths?.map((interest: any, index: number) => (
-              <Label
-                key={index}
-                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color="success"
-              >
-                {capitalCase(interest)}
-              </Label>
-            ))}
-        </TagsContainerMobile>
+        {interests?.length > 0 && (
+          <>
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/peers/done_all.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <Text style={{ marginRight: 10 }}>What I am looking for</Text>
+              <TagsContainer>
+                {interests?.map((strength: any, index: number) => (
+                  <Label
+                    key={index}
+                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                    color="secondary"
+                  >
+                    {capitalCase(strength)}
+                  </Label>
+                ))}
+              </TagsContainer>
+            </StyledRow>
+            <TagsContainerMobile>
+              {interests?.length > 0 &&
+                interests?.map((strength: any, index: number) => (
+                  <Label
+                    key={index}
+                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                    color="secondary"
+                  >
+                    {capitalCase(strength)}
+                  </Label>
+                ))}
+            </TagsContainerMobile>
+          </>
+        )}
+        {strengths?.length > 0 && (
+          <>
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/peers/star.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <Text style={{ marginRight: 10 }}>What I am good at</Text>
+              <TagsContainer>
+                {strengths?.map((interest: any, index: number) => (
+                  <Label
+                    key={index}
+                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                    color="success"
+                  >
+                    {capitalCase(interest)}
+                  </Label>
+                ))}
+              </TagsContainer>
+            </StyledRow>
+            <TagsContainerMobile>
+              {strengths?.length > 0 &&
+                strengths?.map((interest: any, index: number) => (
+                  <Label
+                    key={index}
+                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                    color="success"
+                  >
+                    {capitalCase(interest)}
+                  </Label>
+                ))}
+            </TagsContainerMobile>
+          </>
+        )}
+        {phone && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/contact/smartphone.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text>{phone}</Text>
+          </StyledRow>
+        )}
       </StyledContainer>
       <StyledContainer>
         <Title>Social</Title>

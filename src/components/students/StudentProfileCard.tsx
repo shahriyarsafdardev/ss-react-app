@@ -2,7 +2,7 @@
 import { styled } from '@material-ui/core/styles';
 import { Card, Avatar, Typography } from '@material-ui/core';
 // @types
-import { StudentProfile } from '../../@types/cohorts';
+import { StudentProfile, Company } from '../../@types/cohorts';
 //
 import SvgIconStyle from '../SvgIconStyle';
 
@@ -35,9 +35,16 @@ const CoverImgStyle = styled('img')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
+type ContactProps = {
+  id?: string;
+  first_name: string;
+  last_name: string;
+  current_company: Company;
+  current_position: string;
+  profile_image_url: string;
+};
 type StudentProfileCardProps = {
-  peer: StudentProfile;
+  peer: StudentProfile | ContactProps;
   modalHandler: any;
 };
 
@@ -48,7 +55,7 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
     <Card
       onClick={() => modalHandler(peer)}
       style={{ cursor: 'pointer', paddingBottom: 25 }}
-      id={`peer-grid-${peer.id}`}
+      id={peer.id ? `peer-grid-${peer.id}` : ''}
     >
       <CardMediaStyle>
         <SvgIconStyle
