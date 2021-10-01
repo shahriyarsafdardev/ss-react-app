@@ -37,6 +37,7 @@ export type Session = {
   id: string;
   name: string;
   number: number;
+  survey_completed: boolean;
   length: string;
   time: string;
   recording_url: string;

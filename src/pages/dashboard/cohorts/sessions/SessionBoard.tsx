@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Container, Tabs, Tab } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { Modal } from 'components/animate';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 
@@ -19,7 +20,7 @@ type SessionBoardProps = {
 const SessionTab = styled(Tab)(({ theme }) => ({
   color: '#595853',
   justifyContent: 'space-between',
-  width: '20%',
+  width: '27%',
   '.MuiButtonBase-root .Mui-selected': {
     fontWeight: '700'
   }
@@ -35,7 +36,7 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
   overflow: 'unset !important',
   [theme.breakpoints.down('sm')]: {
     button: {
-      width: '25%',
+      width: '30%',
       minWidth: 60,
       fontSize: 12
     },
@@ -84,34 +85,46 @@ const SessionTitle = styled('h2')((props) => ({
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
 
-  const tempSurveyData = {
-    submitted: true,
-    contents: [
-      {
-        type: 'multiple-choice',
-        title: '1. How did you rate the course?',
-        options: ['Loved it', 'It was okay'],
-        submitted_answer: 'Loved it'
-      },
-      {
-        type: 'text-input',
-        title: '1. Describe your favourite part?',
-        submitted_answer: 'My favourite part was ...'
+  const SurveyModal = () => {
+    const [modalState, setModalState] = useState(true);
+
+    return (
+      <Modal open={modalState}>
+        <SurveyForm
+          key="surveyForm"
+          onComplete={() => setModalState(false)}
+          sessionId={session?.id}
+        />
+      </Modal>
+    );
+  };
+
+  const shouldDisplaySurveyModal = () => {
+    if (session?.survey_completed === true) return false;
+
+    if (session && session.time) {
+      const sessionTime = new Date(session.time);
+      const currentTime = new Date();
+
+      if (sessionTime < currentTime) {
+        return true;
       }
-    ]
+      return false;
+    }
+    return false;
   };
 
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
-    <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />,
-    <SurveyForm key="surveyForm" sessionId={session?.id} />
+    <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />
   ];
 
   if (!session) return null;
 
   return (
     <Wrapper>
+      {shouldDisplaySurveyModal() && <SurveyModal />}
       <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
         {session.recording_url && session.recording_url !== '' ? (
@@ -124,7 +137,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <SessionTab label="Description" />
           <SessionTab label="Summary Notes" />
           <SessionTab label="Slides" />
-          <SessionTab label="Survey" />
+          {/* <SessionTab label="Survey" /> */}
         </SessionTabs>
 
         {tabsContent[currentTab]}

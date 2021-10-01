@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, Box } from '@material-ui/core';
+import LoadingScreen from 'components/LoadingScreen';
 import useAuth from '../../../hooks/useAuth';
 
-import { Survey } from '../../../@types/cohorts';
 import SurveyRow from './SurveyRow';
-import Message from '../../Message';
 
 // axios
 import axios from '../../../utils/axios';
@@ -15,13 +14,21 @@ const SubmitButton = styled(Button)(() => ({
   padding: '10px 90px'
 }));
 
-type SessionsId = {
+const StyledContainer = styled(Container)(() => ({
+  backgroundColor: 'white',
+  borderRadius: '25px',
+  padding: '20px 10px'
+}));
+
+export default function SurveyForm({
+  sessionId,
+  onComplete
+}: {
   sessionId: string | undefined;
-};
-export default function SurveyForm({ sessionId }: SessionsId) {
+  onComplete: Function;
+}) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-  const [message, setMessage] = useState('You can only return feedback once session is complete');
   const [surveyData, setSurveyData] = useState([]);
   const [response, setResponse] = useState<any>({});
   const [loading, setLoading] = useState(true);
@@ -41,7 +48,6 @@ export default function SurveyForm({ sessionId }: SessionsId) {
 
   const submitResponse = () => {
     setLoading(true);
-    setMessage('Submitting your response...');
 
     axios
       .post(`/cohort_sessions/submit_survey_responses.json`, {
@@ -49,8 +55,14 @@ export default function SurveyForm({ sessionId }: SessionsId) {
         current_user_id: user?.id
       })
       .then((res) => {
+        setLoading(false);
         enqueueSnackbar(res.data.message, { variant: 'success' });
-        setMessage(res.data.message);
+        onComplete();
+      })
+      .catch((err) => {
+        setLoading(false);
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        onComplete();
       });
   };
 
@@ -73,12 +85,14 @@ export default function SurveyForm({ sessionId }: SessionsId) {
   );
 
   return (
-    <Container>
+    <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length !== 0 ? (
         survey()
       ) : (
-        <Message content={message} />
+        <Box padding="200px">
+          <LoadingScreen />
+        </Box>
       )}
-    </Container>
+    </StyledContainer>
   );
 }
