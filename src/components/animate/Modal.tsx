@@ -29,7 +29,7 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   right: 'auto',
   bottom: 'auto',
   marginRight: '-50%',
-  transform: 'translate(-50%, -50%)',
+  transform: 'translate(-50%, -55%)',
   background: 'none',
   border: 'none',
   padding: 0,

@@ -89,11 +89,12 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     const [modalState, setModalState] = useState(true);
 
     return (
-      <Modal open={modalState}>
+      <Modal open={modalState} onClose={() => setModalState(false)}>
         <SurveyForm
           key="surveyForm"
           onComplete={() => setModalState(false)}
           sessionId={session?.id}
+          sessionName={session?.name}
         />
       </Modal>
     );
