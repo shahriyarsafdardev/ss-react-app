@@ -61,7 +61,7 @@ const customStyles = {
   container: (provided: any, state: any) => ({
     ...provided,
     width: '100%',
-    height: '29px'
+    minHeight: '29px'
   }),
   control: (provided: any, state: any) => ({
     ...provided,
@@ -71,7 +71,15 @@ const customStyles = {
     ':hover': {
       borderColor: '#071A33',
       borderRadius: 8
-    }
+    },
+    overflowY: 'scroll'
+  }),
+  dropdownIndicator: (provided: any) => ({
+    ...provided,
+    position: 'sticky',
+    top: 10,
+    right: 0,
+    zIndex: 10
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
@@ -223,7 +231,7 @@ export default function ProfileForm({
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <Card sx={{ p: 3, height: 1 }}>
+              <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
                 <Stack spacing={{ xs: 2, md: 3 }}>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
@@ -267,7 +275,7 @@ export default function ProfileForm({
                       defaultValue={defaultInterests}
                       styles={blueCustomsStyle}
                       options={interestOptions}
-                      isClearable={true}
+                      isClearable={false}
                       backspaceRemovesValue={true}
                       isMulti
                       isSearchable
@@ -282,7 +290,7 @@ export default function ProfileForm({
                       defaultValue={defaultStrengths}
                       styles={greenCustomsStyle}
                       options={strengthsOptions}
-                      isClearable={true}
+                      isClearable={false}
                       backspaceRemovesValue={true}
                       isMulti
                       isSearchable

@@ -18,7 +18,8 @@ type SessionBoardProps = {
 
 const SessionTab = styled(Tab)(({ theme }) => ({
   color: '#595853',
-  justifyContent: 'space-between',
+  justifyContent: 'space-around',
+  marginRight: 0,
   width: '20%',
   '.MuiButtonBase-root .Mui-selected': {
     fontWeight: '700'
@@ -44,6 +45,33 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
     },
     '.MuiTabs-flexContainer': {
       justifyContent: 'center'
+    }
+  },
+  [theme.breakpoints.between(900, 1000)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(1200, 1300)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(600, 700)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
     }
   },
   '.MuiTabs-flexContainer': {

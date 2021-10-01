@@ -11,6 +11,18 @@ const VideoContainer = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       height: 'auto'
+    },
+    [theme.breakpoints.between(600, 650)]: {
+      width: '520px',
+      height: 'auto'
+    },
+    [theme.breakpoints.between(900, 1000)]: {
+      width: '540px',
+      height: 'auto'
+    },
+    [theme.breakpoints.between(1200, 1400)]: {
+      width: '500px',
+      height: 'auto'
     }
   }
 }));
