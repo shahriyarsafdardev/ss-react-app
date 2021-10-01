@@ -61,7 +61,8 @@ const customStyles = {
   container: (provided: any, state: any) => ({
     ...provided,
     width: '100%',
-    height: '29px'
+    height: '29px',
+    marginBottom: '24px !important'
   }),
   control: (provided: any, state: any) => ({
     ...provided,
@@ -256,44 +257,56 @@ export default function ProfileForm({
                     </StyledSelect>
                     <TextField
                       fullWidth
-                      label="Linkedin Url"
-                      {...getFieldProps('linkedin_url')}
+                      label="Current position"
+                      {...getFieldProps('current_position')}
                       error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                       helperText={touched.linkedin_url && errors.linkedin_url}
                     />
                   </Stack>
-                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <CreatableSelect
-                      defaultValue={defaultInterests}
-                      styles={blueCustomsStyle}
-                      options={interestOptions}
-                      isClearable={true}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'interests',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
-                    />
-                    <CreatableSelect
-                      defaultValue={defaultStrengths}
-                      styles={greenCustomsStyle}
-                      options={strengthsOptions}
-                      isClearable={true}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'strengths',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
-                    />
-                  </Stack>
+                  <TextField
+                    fullWidth
+                    label="Linkedin Url"
+                    {...getFieldProps('linkedin_url')}
+                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                    helperText={touched.linkedin_url && errors.linkedin_url}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Discord Url"
+                    {...getFieldProps('discord_url')}
+                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                    helperText={touched.linkedin_url && errors.linkedin_url}
+                  />
+                  <CreatableSelect
+                    defaultValue={defaultInterests}
+                    styles={blueCustomsStyle}
+                    options={interestOptions}
+                    isClearable={true}
+                    backspaceRemovesValue={true}
+                    isMulti
+                    isSearchable
+                    onChange={(selected) => {
+                      setFieldValue(
+                        'interests',
+                        Array.isArray(selected) ? selected.map((s) => s.value) : []
+                      );
+                    }}
+                  />
+                  <CreatableSelect
+                    defaultValue={defaultStrengths}
+                    styles={greenCustomsStyle}
+                    options={strengthsOptions}
+                    isClearable={true}
+                    backspaceRemovesValue={true}
+                    isMulti
+                    isSearchable
+                    onChange={(selected) => {
+                      setFieldValue(
+                        'strengths',
+                        Array.isArray(selected) ? selected.map((s) => s.value) : []
+                      );
+                    }}
+                  />
                 </Stack>
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
