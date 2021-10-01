@@ -225,7 +225,7 @@ export default function OnboardingModal() {
   };
 
   return (
-    <Modal open={modal}>
+    <Modal open={modal} zIndex={1400}>
       <StyledContainer>
         <HomeTabHeader
           cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}

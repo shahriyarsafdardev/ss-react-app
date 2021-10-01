@@ -14,6 +14,7 @@ interface ModalAnimateProps {
   open: boolean;
   children: React.ReactNode | React.ReactNode[];
   id?: string;
+  zIndex?: number;
 }
 
 const customStyles = {
@@ -62,12 +63,20 @@ export default function ModalAnimate({
   animate,
   onClose,
   children,
+  zIndex,
   id
 }: ModalAnimateProps) {
   return (
     <AnimatePresence>
       {open && (
-        <StyledModal isOpen={open} onRequestClose={onClose} style={customStyles}>
+        <StyledModal
+          isOpen={open}
+          onRequestClose={onClose}
+          style={{
+            ...customStyles,
+            ...(zIndex && { overlay: { ...customStyles.overlay, zIndex } })
+          }}
+        >
           <Box
             component={motion.div}
             {...(animate || varFadeInUp)}
