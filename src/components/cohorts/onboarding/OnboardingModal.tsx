@@ -4,6 +4,8 @@ import { Box, Container, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
+import { useSnackbar } from 'notistack5';
+// components
 import VideoPreview from 'components/cohorts/VideoPreview';
 import { LoadingButton } from '@material-ui/lab';
 import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
@@ -84,6 +86,7 @@ const DiscordDescription = styled(Typography)(() => ({
 export default function OnboardingModal() {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
@@ -169,6 +172,7 @@ export default function OnboardingModal() {
       })
       .then((res) => {
         setModal(false);
+        enqueueSnackbar('Profile has been updated', { variant: 'success' });
         dispatch(updateOnboardingStatus(cohort_id));
       });
   };

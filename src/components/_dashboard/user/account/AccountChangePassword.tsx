@@ -32,16 +32,15 @@ export default function AccountChangePassword() {
       confirmNewPassword: ''
     },
     validationSchema: ChangePassWordSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       changePassword(values.newPassword);
       setSubmitting(false);
-
+      resetForm();
       enqueueSnackbar('Profile has been updated', { variant: 'success' });
     }
   });
 
   const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
-
   return (
     <Card sx={{ p: 3 }}>
       <FormikProvider value={formik}>
