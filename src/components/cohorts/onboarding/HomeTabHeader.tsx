@@ -6,13 +6,6 @@ import { Typography, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 
-const steps = [
-  'Watch Welcome Video',
-  'Survey Questions',
-  'Join Discord Server',
-  'Build Your Profile'
-];
-
 const ProgressBarContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
@@ -49,19 +42,10 @@ const StyledStepper = styled(Stepper)(({ theme }) => ({
   }
 }));
 
-const stepper = (activeStep: number) => (
-  <StyledStepper activeStep={activeStep} alternativeLabel>
-    {steps.map((label) => (
-      <Step key={label}>
-        <StepLabel>{label}</StepLabel>
-      </Step>
-    ))}
-  </StyledStepper>
-);
-
 export default function HomeTabHeader({
   children,
   activeStep,
+  totalSteps,
   cohortTitle,
   showProgressBar = true
 }: {
@@ -69,21 +53,26 @@ export default function HomeTabHeader({
   activeStep: number;
   cohortTitle: string;
   showProgressBar?: boolean;
+  totalSteps: number;
 }) {
   // eslint-disable-next-line no-nested-ternary
-  const progress = activeStep === 1 ? 10 : activeStep === 2 ? 33 : activeStep === 3 ? 67 : 100;
+  const progress = () => {
+    if (totalSteps === 0) {
+      return 0;
+    }
+    return (activeStep / totalSteps) * 100;
+  };
   return (
     <>
       <Title>{cohortTitle}</Title>
       {showProgressBar && (
         <>
           <ProgressBarContainer>
-            <BorderLinearProgress variant="determinate" value={progress} />
+            <BorderLinearProgress variant="determinate" value={progress()} />
             <CurrentStep>
-              {activeStep}/{steps.length}
+              {activeStep}/{totalSteps}
             </CurrentStep>
           </ProgressBarContainer>
-          {stepper(activeStep - 1)}
         </>
       )}
       {children}

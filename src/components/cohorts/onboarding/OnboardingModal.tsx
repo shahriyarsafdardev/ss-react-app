@@ -22,7 +22,6 @@ type HomeResponse = {
   intro_video_url: string;
   discord_invitation_link: string;
   last_recorded_step: number;
-  last_recorded_question: number;
   participant_profile: {
     first_name: string;
     last_name: string;
@@ -139,6 +138,8 @@ export default function OnboardingModal() {
     }
   ];
 
+  const totalSteps = questions.length + 3;
+
   useEffect(() => {
     axios
       .get(`/cohorts/${cohort_id}/home.json`, { params: { cohort_id, participant_id: user?.id } })
@@ -150,25 +151,28 @@ export default function OnboardingModal() {
   }, [cohort_id, user?.id]);
 
   const sendStepCompletionRequest = (stepNumber: number) =>
-    axios.post(`/cohorts/${cohort_id}/step_completed`, {
+    axios.post(`/cohorts/${cohort_id}/step_completed.json`, {
       cohort_id,
       step_number: stepNumber,
       enrollment_id: homeConfig?.enrollment_id
     });
 
-  const onStepComplete = (stepNumber: number) => {
-    if (stepNumber === 3) {
-      window.open(homeConfig?.discord_invitation_link, '_blank');
-    }
-    setActiveStep(stepNumber + 1);
-    sendStepCompletionRequest(stepNumber);
+  const onStepChange = (stepNumber: number) => {
+    // if (stepNumber === 3) {
+    //   window.open(homeConfig?.discord_invitation_link, '_blank');
+    // }
+    console.log('now step number', activeStep);
+    sendStepCompletionRequest(activeStep);
+
+    setActiveStep(stepNumber);
   };
 
   const onFormSubmitHandler = async (values: UserProfileProps) => {
     await axios
       .post(`/cohorts/${cohort_id}/save_user_profile`, {
         ...values,
-        enrollment_id: homeConfig?.enrollment_id
+        enrollment_id: homeConfig?.enrollment_id,
+        step_number: activeStep
       })
       .then((res) => {
         setModal(false);
@@ -180,7 +184,7 @@ export default function OnboardingModal() {
   const Step1 = () => (
     <Step1Container>
       <StyledVideoPreview video_url={homeConfig?.intro_video_url} />
-      <StyledButton variant="contained" onClick={() => onStepComplete(1)}>
+      <StyledButton variant="contained" onClick={() => onStepChange(2)}>
         Next Step
       </StyledButton>
     </Step1Container>
@@ -197,35 +201,36 @@ export default function OnboardingModal() {
       <DiscordDescription>
         Discord is a nice plataform to chat to the Cohort. Try to use now!
       </DiscordDescription>
-      <StyledButton variant="contained" onClick={() => onStepComplete(3)}>
+      <StyledButton variant="contained" onClick={() => onStepChange(totalSteps - 1)}>
         Join Discord Server
       </StyledButton>
     </Step2Container>
   );
 
   const selectStep = () => {
-    switch (activeStep) {
-      case 1:
-        return <Step1 />;
-      case 2:
-        return (
-          <SurveyQuestionForm
-            last_recorded_question={homeConfig?.last_recorded_question}
-            questionsData={questions}
-            onComplete={() => onStepComplete(2)}
-          />
-        );
-      case 3:
-        return <Step3 />;
-      case 4:
-        return (
-          <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />
-        );
-      // case 5:
-      //   return <StepsCompleted />;
-      default:
-        return <div />;
+    if (activeStep === 1) {
+      return <Step1 />;
     }
+
+    if (activeStep === totalSteps - 1) {
+      return <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />;
+    }
+
+    if (activeStep === totalSteps - 2) {
+      return <Step3 />;
+    }
+
+    if (activeStep > 1 && activeStep < totalSteps) {
+      return (
+        <SurveyQuestionForm
+          last_recorded_question={(homeConfig?.last_recorded_step || 1) - 1}
+          questionsData={questions}
+          onStepChange={(diff: number) => onStepChange(activeStep + diff)}
+        />
+      );
+    }
+
+    return <div>All steps are completed!</div>;
   };
 
   return (
@@ -234,7 +239,8 @@ export default function OnboardingModal() {
         <HomeTabHeader
           cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
           activeStep={activeStep}
-          showProgressBar={activeStep !== 2}
+          totalSteps={totalSteps}
+          showProgressBar={true}
         />
         {selectStep()}
       </StyledContainer>

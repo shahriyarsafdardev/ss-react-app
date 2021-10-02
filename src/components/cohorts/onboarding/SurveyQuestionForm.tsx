@@ -1,35 +1,12 @@
 import { Typography, Box, Container } from '@material-ui/core';
-import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { styled } from '@material-ui/core/styles';
 import { useEffect, useState } from 'react';
 import { LoadingButton } from '@material-ui/lab';
 import SurveyRow from '../sessions/SurveyRow';
 
-const ProgressBarContainer = styled(Box)(() => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: 30
-}));
-
 const StyledContainer = styled(Container)(({ theme }) => ({
   minHeight: '60vh',
   position: 'relative'
-}));
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  width: '100%',
-  height: 4,
-  borderRadius: 5,
-  marginRight: 8,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 400 : 800]
-  }
-}));
-
-const CurrentStep = styled(Typography)(() => ({
-  fontSize: 12,
-  color: '#6C7885',
-  textAlign: 'right'
 }));
 
 const QuestionRow = styled(SurveyRow)(() => ({
@@ -53,11 +30,11 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
 export default function SurveyQuestionForm({
   last_recorded_question,
   questionsData,
-  onComplete
+  onStepChange
 }: {
   last_recorded_question?: number | undefined;
   questionsData: any;
-  onComplete: Function;
+  onStepChange: Function;
 }) {
   const [questions, setQuestions] = useState(questionsData);
   const totalQuestions = questions.length;
@@ -81,23 +58,18 @@ export default function SurveyQuestionForm({
     setAnswer('');
   };
 
-  const progress = () => {
-    if (totalQuestions > 0) {
-      return (currentQuestion / totalQuestions) * 100;
-    }
-    return 0;
-  };
-
   const handlePrevious = () => {
     // here we'll send answer for this question to the backend
     updateQuestionData();
     setCurrentQuestion(currentQuestion - 1);
+    onStepChange(-1);
   };
 
   const handleNext = () => {
     updateQuestionData();
+    onStepChange(1);
+
     if (currentQuestion + 1 >= totalQuestions) {
-      onComplete();
       return;
     }
     // here we'll send answer for this question to the backend
@@ -107,15 +79,6 @@ export default function SurveyQuestionForm({
 
   return (
     <StyledContainer>
-      <Typography variant="subtitle1">
-        Intake Questionaire: First we just have to ask a few questions
-      </Typography>
-      <ProgressBarContainer>
-        <BorderLinearProgress variant="determinate" value={progress()} />
-        <CurrentStep>
-          {currentQuestion + 1}/{totalQuestions}
-        </CurrentStep>
-      </ProgressBarContainer>
       {questions[currentQuestion] && (
         <QuestionRow
           item={questions[currentQuestion]}
