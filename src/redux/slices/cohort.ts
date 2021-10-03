@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
 import { Cohort } from '../../@types/cohorts';
+import { setSession } from '../../utils/jwt';
 
 // utils
 import axios from '../../utils/axios';
@@ -11,6 +12,10 @@ type CohortState = {
 
 const initialState: CohortState = {
   cohorts: []
+};
+const setAuthorizationToken = () => {
+  const accessToken = window.localStorage.getItem('accessToken');
+  setSession(accessToken);
 };
 
 const slice = createSlice({
@@ -57,6 +62,7 @@ export default slice.reducer;
 export function getCohorts() {
   return async () => {
     try {
+      setAuthorizationToken();
       const response = await axios.get('/cohorts.json');
       dispatch(slice.actions.getCohortsSuccess(response.data.cohorts));
     } catch (error) {
@@ -90,6 +96,7 @@ export function getSessions(cohortID: string) {
 export function updateOnboardingStatus(cohortID: string) {
   return async () => {
     try {
+      setAuthorizationToken();
       dispatch(slice.actions.updateOnboardingStatusSuccess(cohortID));
     } catch (error) {
       console.log(error);
