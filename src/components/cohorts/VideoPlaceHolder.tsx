@@ -138,9 +138,8 @@ const ExpiredSession = () => {
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_dots.svg" alt="date-icon" />
         <Typography variant="subtitle1" className={classes.content2}>
-          The session has expired. Recording will be available soon!
+          This live session has concluded, the recording will be available soon!
         </Typography>
-        <Button className={classes.primaryBtn}>CTA</Button>
       </div>
     </div>
   );
@@ -156,7 +155,7 @@ const renderPlaceHolder = (sessionTimeValue: string) => {
     if (Math.floor((Math.abs(difference) / (1000 * 60 * 60)) % 24) < 2) {
       return <SessionInProgress />;
     }
-    return null;
+    return <ExpiredSession />;
   }
 
   const daysRemaining = Math.floor(difference / (1000 * 60 * 60 * 24));

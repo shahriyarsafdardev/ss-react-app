@@ -101,6 +101,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   };
 
   const shouldDisplaySurveyModal = () => {
+    console.log(session);
     if (session?.survey_completed === true) return false;
 
     if (session && session.time) {
@@ -135,9 +136,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         )}
 
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
-          <SessionTab label="Description" />
+          <SessionTab label="Resources" />
           <SessionTab label="Summary Notes" />
-          <SessionTab label="Slides" />
+          <SessionTab label="Session Slides" />
           {/* <SessionTab label="Survey" /> */}
         </SessionTabs>
 

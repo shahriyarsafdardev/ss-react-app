@@ -82,6 +82,53 @@ const DiscordDescription = styled(Typography)(() => ({
   marginBottom: '1.5rem'
 }));
 
+const questions = [
+  {
+    question_type: 'multiple-choice',
+    title: '1. How did you hear about this cohort?',
+    options: [
+      'Google Search',
+      'Email Marketing',
+      'Social Media',
+      'Recommended by a friend or colleague',
+      'Personally invited by someone in the Scholarsite team',
+      'Other'
+    ],
+    submitted_answer: null
+  },
+  {
+    question_type: 'multiple-choice',
+    title: '2. Who is paying for this course?',
+    options: ['I am', 'My employer is', 'Other'],
+    submitted_answer: null
+  },
+  {
+    question_type: 'multiple-choice',
+    title:
+      '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
+    options: ['Yes', 'No', 'Maybe?'],
+    submitted_answer: null
+  },
+  {
+    question_type: 'multiple-choice',
+    title: '4. What are you looking to find within the Scholarsite community?',
+    options: [
+      'Find a mentor',
+      'Mentor others',
+      'Grow my network',
+      'Discuss materials',
+      'Not interested'
+    ],
+    submitted_answer: null
+  },
+
+  {
+    question_type: 'text-input',
+    title: '5. What topics can fellow cohort members ask you question on?*',
+    submitted_answer: null
+  }
+];
+
 export default function OnboardingModal() {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user } = useAuth();
@@ -90,53 +137,6 @@ export default function OnboardingModal() {
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
-
-  const questions = [
-    {
-      question_type: 'multiple-choice',
-      title: '1. How did you hear about this cohort?',
-      options: [
-        'Google Search',
-        'Email Marketing',
-        'Social Media',
-        'Recommended by a friend or colleague',
-        'Personally invited by someone in the Scholarsite team',
-        'Other'
-      ],
-      submitted_answer: null
-    },
-    {
-      question_type: 'multiple-choice',
-      title: '2. Who is paying for this course?',
-      options: ['I am', 'My employer is', 'Other'],
-      submitted_answer: null
-    },
-    {
-      question_type: 'multiple-choice',
-      title:
-        '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
-      options: ['Yes', 'No', 'Maybe?'],
-      submitted_answer: null
-    },
-    {
-      question_type: 'multiple-choice',
-      title: '4. What are you looking to find within the Scholarsite community?',
-      options: [
-        'Find a mentor',
-        'Mentor others',
-        'Grow my network',
-        'Discuss materials',
-        'Not interested'
-      ],
-      submitted_answer: null
-    },
-
-    {
-      question_type: 'text-input',
-      title: '5. What topics can fellow cohort members ask you question on?*',
-      submitted_answer: null
-    }
-  ];
 
   const totalSteps = questions.length + 3;
 

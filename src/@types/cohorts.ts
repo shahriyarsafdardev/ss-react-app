@@ -45,6 +45,7 @@ export type Session = {
   summary: string;
   presentation_pdf_url: string;
   survey: Survey;
+  resources: string;
 };
 
 export type SessionListItem = {
