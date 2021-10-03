@@ -95,6 +95,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           onComplete={() => setModalState(false)}
           sessionId={session?.id}
           sessionName={session?.name}
+          session={session}
         />
       </Modal>
     );

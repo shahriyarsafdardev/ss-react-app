@@ -6,6 +6,8 @@ import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
 
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
+import { Session } from '../../../@types/cohorts';
+
 import useAuth from '../../../hooks/useAuth';
 
 // axios
@@ -51,7 +53,7 @@ const CurrentStep = styled(Typography)(() => ({
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  width: 250,
+  flex: 1,
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
@@ -64,11 +66,13 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
 export default function SurveyForm({
   sessionId,
   onComplete,
-  sessionName
+  sessionName,
+  session
 }: {
   sessionId: string | undefined;
   onComplete: Function;
   sessionName: string | undefined;
+  session: Session | undefined;
 }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -140,8 +144,11 @@ export default function SurveyForm({
     <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
-          <Typography variant="subtitle1">
-            Feedback for <strong>{sessionName}</strong>
+          <Typography variant="h6">
+            <strong>We would love to hear your feedback!</strong>
+          </Typography>
+          <Typography variant="body2">
+            Session #{session?.number} - {sessionName}
           </Typography>
           <ProgressBarContainer>
             <BorderLinearProgress variant="determinate" value={progress()} />
@@ -157,7 +164,14 @@ export default function SurveyForm({
             />
           )}
 
-          <Box position="absolute" display="flex" justifyContent="center" width="100%" bottom="0">
+          <Box
+            position="absolute"
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            bottom="0"
+            paddingRight="50px"
+          >
             <StyledButton
               variant="contained"
               disabled={currentQuestion === 0}

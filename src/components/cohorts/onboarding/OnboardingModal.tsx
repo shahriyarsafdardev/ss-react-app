@@ -108,25 +108,25 @@ const questions = [
       '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
     submitted_answer: null
-  },
-  {
-    question_type: 'multiple-choice',
-    title: '4. What are you looking to find within the Scholarsite community?',
-    options: [
-      'Find a mentor',
-      'Mentor others',
-      'Grow my network',
-      'Discuss materials',
-      'Not interested'
-    ],
-    submitted_answer: null
-  },
-
-  {
-    question_type: 'text-input',
-    title: '5. What topics can fellow cohort members ask you question on?*',
-    submitted_answer: null
   }
+  // {
+  //   question_type: 'multiple-choice',
+  //   title: '4. What are you looking to find within the Scholarsite community?',
+  //   options: [
+  //     'Find a mentor',
+  //     'Mentor others',
+  //     'Grow my network',
+  //     'Discuss materials',
+  //     'Not interested'
+  //   ],
+  //   submitted_answer: null
+  // },
+
+  // {
+  //   question_type: 'text-input',
+  //   title: '5. What topics can fellow cohort members ask you question on?*',
+  //   submitted_answer: null
+  // }
 ];
 
 export default function OnboardingModal() {
@@ -206,6 +206,8 @@ export default function OnboardingModal() {
       </StyledButton>
     </Step2Container>
   );
+
+  console.log(activeStep);
 
   const selectStep = () => {
     if (activeStep === 1) {
