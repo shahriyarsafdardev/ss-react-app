@@ -14,9 +14,12 @@ import {
   Select,
   MenuItem,
   ListItemText,
-  FormHelperText
+  FormHelperText,
+  InputLabel,
+  FormControl
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+
 // hooks
 import { styled } from '@material-ui/core/styles';
 import Label from 'components/Label';
@@ -29,9 +32,11 @@ import axios from '../../../../utils/axios';
 
 interface InitialState {
   linkedin_url: string;
+  discord_url?: string;
   first_name: string;
   last_name: string;
   current_company?: string;
+  current_position?: string;
   interests: string[];
   strengths: string[];
   profile_image_url: File | any;
@@ -117,6 +122,7 @@ export default function ProfileForm({
     linkedin_url: string;
     profile_image_url: File | any;
     current_company: string;
+    current_position: string;
     strengths: string[];
     interests: string[];
   };
@@ -139,9 +145,11 @@ export default function ProfileForm({
     enableReinitialize: true,
     initialValues: userProfile || {
       linkedin_url: '',
+      discord_url: '',
       first_name: '',
       last_name: '',
       current_company: '',
+      current_position: '',
       profile_image_url: null,
       interests: [],
       strengths: []
@@ -159,6 +167,7 @@ export default function ProfileForm({
     value: interest,
     label: interest
   }));
+
   const defaultStrengths = values.strengths?.map((strength) => ({
     value: strength,
     label: strength
@@ -176,6 +185,7 @@ export default function ProfileForm({
     },
     [setFieldValue]
   );
+
   useEffect(() => {
     axios
       .get('/cohorts/select_fields_data.json')
@@ -243,24 +253,26 @@ export default function ProfileForm({
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <StyledSelect
-                      fullWidth
-                      labelId="company-label"
-                      id="multiple-checkbox-company"
-                      {...getFieldProps('current_company')}
-                    >
-                      {companies?.map((name: any) => (
-                        <MenuItem key={name} value={name}>
-                          <ListItemText primary={name} />
-                        </MenuItem>
-                      ))}
-                    </StyledSelect>
+                    <FormControl fullWidth>
+                      <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
+                      <Select
+                        fullWidth
+                        label="Company"
+                        labelId="company-label"
+                        id="multiple-checkbox-company"
+                        {...getFieldProps('current_company')}
+                      >
+                        {companies?.map((name: any) => (
+                          <MenuItem key={name} value={name}>
+                            <ListItemText primary={name} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                     <TextField
                       fullWidth
                       label="Current position"
                       {...getFieldProps('current_position')}
-                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                      helperText={touched.linkedin_url && errors.linkedin_url}
                     />
                   </Stack>
                   <TextField

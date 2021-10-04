@@ -215,7 +215,8 @@ export default function OnboardingModal() {
     }
 
     if (activeStep === totalSteps - 1) {
-      return <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />;
+      // return <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />;
+      return <></>;
     }
 
     if (activeStep === totalSteps - 2) {
