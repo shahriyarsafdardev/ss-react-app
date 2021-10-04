@@ -45,8 +45,7 @@ const Title = styled(Typography)(() => ({
   fontSize: 24,
   color: '#071A33',
   fontWeight: 'bold',
-  marginTop: '3rem',
-  marginBottom: '2rem'
+  margin: '1rem 0'
 }));
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
