@@ -20,7 +20,7 @@ const cohortsConfig = (rawCohorts: any) =>
     children: [
       { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
       { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'discord', path: 'https://discord.com/', externalUrl: true }
+      { title: 'discord', path: cohort.discord_directory_url, externalUrl: true }
     ]
   }));
 
