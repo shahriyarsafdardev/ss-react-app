@@ -60,13 +60,14 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
         <img
           src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}
           alt="clock-icon"
+          width={25}
         />
       </ListIcon>
       <div>
         <SessionDetails>{`Session ${session.number} | ${session.length}`}</SessionDetails>
         <Title>{session.name}</Title>
         <SessionDetails>
-          <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" />
+          <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
           {sessionTime(session.time)}
         </SessionDetails>
       </div>
