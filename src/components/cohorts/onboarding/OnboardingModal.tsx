@@ -129,25 +129,25 @@ const questions = [
       '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
     submitted_answer: null
+  },
+  {
+    question_type: 'multi-select',
+    title: '4. What are you looking to find within the Scholarsite community?',
+    options: [
+      'Find a mentor',
+      'Mentor others',
+      'Grow my network',
+      'Discuss materials',
+      'Not interested'
+    ],
+    submitted_answer: null
+  },
+  {
+    question_type: 'create-multi-select',
+    title: '5. What topics can fellow cohort members ask you question on?*',
+    options: ['Economics', 'Crypto', 'Digital Economics'],
+    submitted_answer: null
   }
-  // {
-  //   question_type: 'multiple-choice',
-  //   title: '4. What are you looking to find within the Scholarsite community?',
-  //   options: [
-  //     'Find a mentor',
-  //     'Mentor others',
-  //     'Grow my network',
-  //     'Discuss materials',
-  //     'Not interested'
-  //   ],
-  //   submitted_answer: null
-  // },
-
-  // {
-  //   question_type: 'text-input',
-  //   title: '5. What topics can fellow cohort members ask you question on?*',
-  //   submitted_answer: null
-  // }
 ];
 
 export default function OnboardingModal() {
@@ -301,10 +301,10 @@ export default function OnboardingModal() {
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
       <Grid container>
-        <Grid item md={3}>
+        <Grid item md={5}>
           <CohortAuthorPreview />
         </Grid>
-        <Grid item md={9}>
+        <Grid item md={7}>
           <StyledContainer>
             <HomeTabHeader
               cohortTitle={headContent()}
@@ -313,15 +313,17 @@ export default function OnboardingModal() {
               showProgressBar={true}
             />
             {selectStep()}
-            <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
-              <StyledButton
-                variant="contained"
-                style={{ marginLeft: '30px' }}
-                onClick={() => onStepChange(activeStep)}
-              >
-                Next
-              </StyledButton>
-            </div>
+            {activeStep !== totalSteps - 1 && (
+              <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
+                <StyledButton
+                  variant="contained"
+                  style={{ marginLeft: '30px' }}
+                  onClick={() => onStepChange(activeStep)}
+                >
+                  Next
+                </StyledButton>
+              </div>
+            )}
           </StyledContainer>
         </Grid>
       </Grid>
