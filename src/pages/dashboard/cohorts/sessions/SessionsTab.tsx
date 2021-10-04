@@ -61,7 +61,7 @@ export default function SessionsTab() {
 
   return (
     <Page title="ScholarSite | Sessions">
-      {cohort.isOnboarded && <OnboardingModal />}
+      {/* {cohort.isOnboarded && <OnboardingModal />} */}
       <SessionsContainer>
         <SessionsInnerContainer container>
           <Grid item md={8} sm={12}>

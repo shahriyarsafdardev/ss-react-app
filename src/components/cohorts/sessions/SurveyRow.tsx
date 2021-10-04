@@ -25,11 +25,8 @@ type TextInputProps = {
 
 const RowContainer = styled('div')(() => ({
   width: '100%',
-  padding: '20px 0',
-  borderTop: '1px solid #E5E5E5',
-  '&:first-child': {
-    borderTop: 'none'
-  }
+  paddingBottom: '1.5rem',
+  marginBottom: '1.5rem'
 }));
 
 const ANSWER_TYPES = {
@@ -94,6 +91,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
   return (
     <RowContainer>
       <h3>{item.title}</h3>
+      <br />
       {answerFields()}
     </RowContainer>
   );

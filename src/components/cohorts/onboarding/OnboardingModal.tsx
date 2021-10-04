@@ -239,7 +239,9 @@ export default function OnboardingModal() {
     <Modal open={modal} zIndex={1400}>
       <StyledContainer>
         <HomeTabHeader
-          cohortTitle={homeConfig?.cohort_title || 'Cohort Title...'}
+          cohortTitle={
+            homeConfig?.cohort_title ? `Hi Adrian! Welcome to ${homeConfig?.cohort_title}!` : ''
+          }
           activeStep={activeStep}
           totalSteps={totalSteps}
           showProgressBar={true}

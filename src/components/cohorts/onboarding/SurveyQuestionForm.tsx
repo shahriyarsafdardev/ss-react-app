@@ -5,7 +5,7 @@ import { LoadingButton } from '@material-ui/lab';
 import SurveyRow from '../sessions/SurveyRow';
 
 const StyledContainer = styled(Container)(({ theme }) => ({
-  minHeight: '60vh',
+  minHeight: '72vh',
   position: 'relative'
 }));
 

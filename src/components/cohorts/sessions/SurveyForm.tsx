@@ -25,7 +25,7 @@ const StyledContainer = styled(Container)(() => ({
 }));
 
 const QuestionContainer = styled(Container)(({ theme }) => ({
-  minHeight: '60vh',
+  minHeight: '72vh',
   position: 'relative'
 }));
 
@@ -144,12 +144,14 @@ export default function SurveyForm({
     <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
-          <Typography variant="h6">
-            <strong>We would love to hear your feedback!</strong>
+          <br />
+          <Typography variant="h3">
+            <strong>Session #3 Feedback Survey</strong>
           </Typography>
           <Typography variant="body2">
-            Session #{session?.number} - {sessionName}
+            Did you enjoy session #{session?.number}? We would love to hear your feedback!
           </Typography>
+          <br />
           <ProgressBarContainer>
             <BorderLinearProgress variant="determinate" value={progress()} />
             <CurrentStep>
@@ -177,10 +179,10 @@ export default function SurveyForm({
               disabled={currentQuestion === 0}
               onClick={() => setCurrentQuestion(currentQuestion - 1)}
             >
-              Previous Step
+              Previous Question
             </StyledButton>
             <StyledButton variant="contained" style={{ marginLeft: '30px' }} onClick={handleNext}>
-              {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Step'}
+              {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
             </StyledButton>
           </Box>
         </QuestionContainer>

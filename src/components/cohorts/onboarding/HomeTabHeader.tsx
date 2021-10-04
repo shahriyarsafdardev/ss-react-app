@@ -31,6 +31,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 const Title = styled(Typography)(() => ({
   fontWeight: 'bold',
   fontSize: 32,
+  marginBottom: '0.5rem'
+}));
+
+const SubTitle = styled(Typography)(() => ({
+  fontWeight: 'normal',
+  fontSize: 20,
   marginBottom: '2rem'
 }));
 
@@ -65,6 +71,11 @@ export default function HomeTabHeader({
   return (
     <>
       <Title>{cohortTitle}</Title>
+      {cohortTitle ? (
+        <SubTitle>Before we get started you'll need to fill in a few details</SubTitle>
+      ) : (
+        ''
+      )}
       {showProgressBar && (
         <>
           <ProgressBarContainer>
