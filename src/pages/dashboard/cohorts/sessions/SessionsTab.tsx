@@ -29,7 +29,7 @@ const SessionsInnerContainer = styled(Grid)(({ theme }) => ({
 }));
 
 const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     display: 'none'
   }
 }));

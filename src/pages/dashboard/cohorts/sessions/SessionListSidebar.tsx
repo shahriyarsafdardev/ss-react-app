@@ -25,7 +25,7 @@ type StyledSettingsBoxProps = {
 const DRAWER_WIDTH = 260;
 const StyledSettingsBox = styled(Box)(({ theme, open }: StyledSettingsBoxProps) => ({
   display: 'none',
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     display: 'block',
     top: 12,
     bottom: 12,
