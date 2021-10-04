@@ -1,5 +1,6 @@
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import Message from '../../Message';
 
 type DescriptionProps = {
   innerContent: string;
@@ -20,7 +21,11 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
 export default function Description({ innerContent }: DescriptionProps) {
   return (
     <DescriptionContainer>
-      <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+      {innerContent && innerContent !== '' ? (
+        <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+      ) : (
+        <Message content="The session resources will be available 2 days before the session." />
+      )}
     </DescriptionContainer>
   );
 }

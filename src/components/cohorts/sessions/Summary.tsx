@@ -1,5 +1,6 @@
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import Message from '../../Message';
 
 type SummaryProps = {
   innerContent: string;
@@ -17,7 +18,11 @@ const SummaryContainer = styled(Container)((props) => ({
 export default function Summary({ innerContent }: SummaryProps) {
   return (
     <SummaryContainer>
-      <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+      {innerContent && innerContent !== '' ? (
+        <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+      ) : (
+        <Message content="The session summary will be available shortly after this session." />
+      )}
     </SummaryContainer>
   );
 }
