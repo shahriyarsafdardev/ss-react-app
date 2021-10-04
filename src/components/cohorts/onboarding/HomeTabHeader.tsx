@@ -8,8 +8,7 @@ import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearP
 
 const ProgressBarContainer = styled(Box)(() => ({
   display: 'flex',
-  alignItems: 'center',
-  marginBottom: 30
+  alignItems: 'center'
 }));
 
 const CurrentStep = styled(Typography)(() => ({
@@ -35,9 +34,9 @@ const Title = styled(Typography)(() => ({
 }));
 
 const SubTitle = styled(Typography)(() => ({
-  fontWeight: 'normal',
+  fontWeight: 'bold',
   fontSize: 20,
-  marginBottom: '2rem'
+  marginBottom: '1rem'
 }));
 
 const StyledStepper = styled(Stepper)(({ theme }) => ({
@@ -70,12 +69,7 @@ export default function HomeTabHeader({
   };
   return (
     <>
-      <Title>{cohortTitle}</Title>
-      {cohortTitle ? (
-        <SubTitle>Before we get started you'll need to fill in a few details</SubTitle>
-      ) : (
-        ''
-      )}
+      {cohortTitle ? <SubTitle>{cohortTitle}</SubTitle> : ''}
       {showProgressBar && (
         <>
           <ProgressBarContainer>
