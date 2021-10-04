@@ -20,12 +20,12 @@ import { getCohorts } from './redux/slices/cohort';
 // ----------------------------------------------------------------------
 
 export default function App() {
-  const { isInitialized } = useAuth();
+  const { isInitialized, isAuthenticated } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCohorts());
-  }, [dispatch]);
+    if (isAuthenticated) dispatch(getCohorts());
+  }, [dispatch, isAuthenticated]);
 
   return (
     <ThemeConfig>

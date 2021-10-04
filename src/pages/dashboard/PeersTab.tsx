@@ -36,7 +36,8 @@ export default function PeersTab() {
   const [view, setView] = useState('card');
 
   const { peers } = useSelector(
-    (state: RootState) => state.cohort.cohorts.filter((cohort) => cohort_id === cohort.id)[0]
+    (state: RootState) =>
+      state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0] || {}
   );
 
   const createSelectMenu = (items: string) => {

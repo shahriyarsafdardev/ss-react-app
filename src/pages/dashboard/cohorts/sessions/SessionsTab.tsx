@@ -37,9 +37,9 @@ const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
 export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
-  const cohort = useSelector((state: RootState) => state.cohort.cohorts[0]);
+  const cohort = useSelector((state: RootState) => state.cohort?.cohorts[0]);
 
-  const { sessions } = cohort;
+  const { sessions } = cohort || {};
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
@@ -56,6 +56,7 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
+    console.log('id', cohort_id);
     dispatch(getSessions(cohort_id));
   }, [cohort_id, dispatch]);
 
