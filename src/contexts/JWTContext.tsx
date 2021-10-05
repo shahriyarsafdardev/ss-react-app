@@ -174,13 +174,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: Types.Logout });
   };
 
-  const resetPassword = (email: string) => console.log(email);
+  const resetPassword = async (email: string) => {
+    console.log('sending reset request');
+    const response = await axios.post(`/users/reset_password`, {
+      email
+    });
+  };
 
   const changePassword = async (password: string) => {
     const response = await axios.post(`/users/change_password`, {
       password
     });
-    console.log(response);
   };
 
   const updateProfile = () => {};

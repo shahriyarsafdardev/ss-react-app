@@ -34,13 +34,13 @@ export default function ResetPasswordForm({ onSent, onGetEmail }: ResetPasswordF
     validationSchema: ResetPasswordSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        resetPassword?.(values.email);
+        await resetPassword?.(values.email);
         if (isMountedRef.current) {
           onSent();
           onGetEmail(formik.values.email);
           setSubmitting(false);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
         if (isMountedRef.current) {
           setErrors({ afterSubmit: error.message });
