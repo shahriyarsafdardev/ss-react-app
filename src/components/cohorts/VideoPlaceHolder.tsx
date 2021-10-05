@@ -7,7 +7,6 @@ const useStyes = makeStyles(() => ({
   container: {
     width: '100%',
     height: '400px',
-    marginBottom: '3rem',
     backgroundColor: '#F3F3FB',
     borderRadius: '25px',
     display: 'flex',
@@ -92,9 +91,11 @@ const TimerField = ({
 
 const TimerPreview = ({ time }: { time: Date }) => {
   const classes = useStyes();
+  let d = time;
+  d = new Date(d.setMinutes(d.getMinutes()));
 
   const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: time,
+    expiryTimestamp: d,
     autoStart: true
   });
 
@@ -102,7 +103,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
-        <Typography variant="subtitle1">This session starts in</Typography>
+        <Typography variant="subtitle1">This session is starting soon!</Typography>
         <Box className={classes.timerRow}>
           <TimerField text="Hours" value={hours} showSeparator={true} />
           <TimerField text="Minutes" value={minutes} showSeparator={true} />

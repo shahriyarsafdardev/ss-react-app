@@ -145,11 +145,8 @@ export default function SurveyForm({
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
           <br />
-          <Typography variant="h3">
-            <strong>Session #3 Feedback Survey</strong>
-          </Typography>
-          <Typography variant="body2">
-            Did you enjoy session #{session?.number}? We would love to hear your feedback!
+          <Typography variant="h4">
+            <strong>Feedback Survey</strong>
           </Typography>
           <br />
           <ProgressBarContainer>
