@@ -7,6 +7,11 @@ import { StudentProfile, Company } from '../../@types/cohorts';
 import SvgIconStyle from '../SvgIconStyle';
 
 // ----------------------------------------------------------------------
+const StyledCard = styled(Card)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%'
+}));
 
 const CardMediaStyle = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -53,7 +58,7 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
-    <Card
+    <StyledCard
       onClick={() => modalHandler(peer)}
       style={{ cursor: 'pointer', paddingBottom: 25 }}
       id={peer.id ? `peer-grid-${peer.id}` : ''}
@@ -94,6 +99,6 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
       <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
         {current_position}
       </Typography>
-    </Card>
+    </StyledCard>
   );
 }
