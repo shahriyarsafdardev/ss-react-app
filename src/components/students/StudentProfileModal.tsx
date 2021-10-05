@@ -192,7 +192,7 @@ export default function StudentProfileModal({
           </StyledRow>
         )}
       </StyledContainer>
-      {linkedin_url && discord_url && (
+      {(linkedin_url || discord_url) && (
         <StyledContainer>
           <Title>Social</Title>
           {discord_url && (

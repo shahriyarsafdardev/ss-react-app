@@ -19,9 +19,11 @@ const ListItem = styled('div')((props) => ({
   }
 }));
 
-const ListIcon = styled('div')((props) => ({
-  width: '50px',
-  padding: 8
+const ListIcon = styled('div')(({ theme }) => ({
+  padding: 10,
+  [theme.breakpoints.down('md')]: {
+    padding: 6
+  }
 }));
 
 const Title = styled('p')((props) => ({
@@ -53,7 +55,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
 
   return (
     <ListItem
-      style={isSelected ? { backgroundColor: 'rgba(77, 77, 205, 0.03)' } : undefined}
+      style={{ ...(isSelected && { backgroundColor: 'rgba(77, 77, 205, 0.03)' }) }}
       onClick={() => onClick(index)}
     >
       <ListIcon>
@@ -61,6 +63,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
           src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}
           alt="clock-icon"
           width={25}
+          style={{ maxWidth: 'unset' }}
         />
       </ListIcon>
       <div>
