@@ -5,6 +5,8 @@ import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetStore } from 'redux/rootReducer';
 // material
 import { alpha } from '@material-ui/core/styles';
 import { Button, Box, Divider, MenuItem, Typography } from '@material-ui/core';
@@ -37,6 +39,7 @@ export default function AccountPopover() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,6 +50,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
+      dispatch(resetStore());
       await logout?.();
       if (isMountedRef.current) {
         navigate('/');

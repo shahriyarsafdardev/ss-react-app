@@ -27,7 +27,7 @@ const productPersistConfig = {
   whitelist: ['sortBy', 'checkout']
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   mail: mailReducer,
   chat: chatReducer,
   blog: blogReducer,
@@ -38,4 +38,15 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer)
 });
 
+const rootReducer = (state: any, action: any) => {
+  if (action.type === 'RESET_STORE') {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
+
 export { rootPersistConfig, rootReducer };
+
+export const resetStore = () => ({
+  type: 'RESET_STORE'
+});
