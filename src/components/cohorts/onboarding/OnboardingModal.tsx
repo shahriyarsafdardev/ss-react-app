@@ -77,7 +77,7 @@ const ContentContainer = styled('div')(({ theme }) => ({
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  width: 250,
+  width: '250px !important',
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
@@ -93,8 +93,8 @@ const Step1Container = styled(Box)(() => ({
 
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
-  margin: '2rem 0',
-  padding: '2rem 0',
+  margin: '5px 0',
+  padding: '1rem 0',
   backgroundColor: '#F4F6F8'
 }));
 
@@ -166,7 +166,7 @@ export default function OnboardingModal() {
   const [activeStep, setActiveStep] = useState(0);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
-  const [currentAnswer, setCurrentAnswer] = useState(null);
+  const [currentAnswer, setCurrentAnswer] = useState<any>(null);
 
   const totalSteps = questions.length + 3;
 
@@ -246,12 +246,6 @@ export default function OnboardingModal() {
     </Step2Container>
   );
 
-  const handleNext = () => {
-    sendStepCompletionRequest(activeStep, currentAnswer || '');
-    setActiveStep(activeStep + 1);
-    setCurrentAnswer(null);
-  };
-
   const OnBoardingQuestions = () => (
     <div style={{ height: '50vh', paddingTop: '50px' }}>
       <SurveyRow
@@ -320,6 +314,11 @@ export default function OnboardingModal() {
           <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
             <StyledButton
               variant="contained"
+              disabled={
+                activeStep > 0 &&
+                activeStep < totalSteps - 2 &&
+                (!currentAnswer || currentAnswer.length === 0)
+              }
               style={{ marginLeft: '30px' }}
               onClick={() => onStepChange(activeStep)}
             >
