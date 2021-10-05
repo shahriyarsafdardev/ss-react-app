@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'components/animate';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
@@ -83,6 +83,14 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     backgroundColor: '#4D4DCD',
     opacity: 0.8
   },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
+
+const DiscordButton = styled(Button)(({ theme }) => ({
+  padding: 11,
+  width: '250px !important',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
   }
@@ -240,15 +248,14 @@ export default function OnboardingModal() {
       <DiscordDescription>
         Discord is a nice platform to chat to the Cohort. Try to use now!
       </DiscordDescription>
-      <StyledButton
-        variant="contained"
-        style={{ backgroundColor: '#5B0F8D' }}
+      <DiscordButton
+        variant="outlined"
         onClick={() => {
           window.open(homeConfig?.discord_invitation_link, '_blank');
         }}
       >
         Join Discord Server
-      </StyledButton>
+      </DiscordButton>
     </Step2Container>
   );
 

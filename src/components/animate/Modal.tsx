@@ -37,6 +37,7 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   borderRadius: 0,
   width: '80%',
   maxHeight: '80vh',
+  maxWidth: '1232px',
   position: 'absolute',
   inset: '50% auto auto 50%',
   outline: 'none',
