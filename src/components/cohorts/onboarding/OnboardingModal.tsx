@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'components/animate';
-import { Box, Container, Typography, Grid } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import VideoPreview from 'components/cohorts/VideoPreview';
 import { LoadingButton } from '@material-ui/lab';
 import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
 import { useDispatch } from 'redux/store';
@@ -45,26 +44,34 @@ type UserProfileProps = {
 
 const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
-  borderRadius: '25px',
-  maxHeight: '70vh'
+  borderRadius: '25px'
 }));
 
-const CohortAuthorPreview = styled('div')(() => ({
-  height: '100%',
+const CohortAuthorPreview = styled('div')(({ theme }) => ({
+  height: '70vh',
+  width: '430px',
+  alignSelf: 'center',
   backgroundImage: `url("/static/cohorts-home/author-preview.png")`,
   backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
+  backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
-  borderBottomLeftRadius: '25px'
+  borderBottomLeftRadius: '25px',
+  [theme.breakpoints.down(1000)]: {
+    display: 'none'
+  }
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
+const ContentContainer = styled('div')(({ theme }) => ({
+  flex: '1',
   backgroundColor: 'white',
-  height: '80vh',
+  height: '70vh',
   padding: '50px',
   borderTopRightRadius: '25px',
   position: 'relative',
-  borderBottomRightRadius: '25px'
+  borderBottomRightRadius: '25px',
+  [theme.breakpoints.down(1000)]: {
+    borderRadius: '25px'
+  }
 }));
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
@@ -95,6 +102,9 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
   margin: '3rem auto 1.5rem',
   borderRadius: '25px',
   [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  },
+  [theme.breakpoints.between(1000, 1300)]: {
     width: '100%'
   }
 }));
@@ -211,7 +221,7 @@ export default function OnboardingModal() {
 
   const Step1 = () => (
     <Step1Container>
-      <StyledVideoPreview src={homeConfig?.intro_video_url} />
+      <StyledVideoPreview src={homeConfig?.intro_video_url} controls />
     </Step1Container>
   );
 
@@ -299,33 +309,27 @@ export default function OnboardingModal() {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <Grid container>
-        <Grid item md={5}>
-          <CohortAuthorPreview />
-        </Grid>
-        <Grid item md={7}>
-          <StyledContainer>
-            <HomeTabHeader
-              cohortTitle={headContent()}
-              activeStep={activeStep}
-              totalSteps={totalSteps}
-              showProgressBar={true}
-            />
-            {selectStep()}
-            {activeStep !== totalSteps - 1 && (
-              <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
-                <StyledButton
-                  variant="contained"
-                  style={{ marginLeft: '30px' }}
-                  onClick={() => onStepChange(activeStep)}
-                >
-                  Next
-                </StyledButton>
-              </div>
-            )}
-          </StyledContainer>
-        </Grid>
-      </Grid>
+      <CohortAuthorPreview />
+      <ContentContainer>
+        <HomeTabHeader
+          cohortTitle={headContent()}
+          activeStep={activeStep}
+          totalSteps={totalSteps}
+          showProgressBar={true}
+        />
+        {selectStep()}
+        {activeStep !== totalSteps - 1 && (
+          <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
+            <StyledButton
+              variant="contained"
+              style={{ marginLeft: '30px' }}
+              onClick={() => onStepChange(activeStep)}
+            >
+              Next
+            </StyledButton>
+          </div>
+        )}
+      </ContentContainer>
     </OnboardingStepsContainer>
   );
 
