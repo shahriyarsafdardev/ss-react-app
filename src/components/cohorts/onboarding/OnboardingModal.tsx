@@ -24,6 +24,7 @@ type HomeResponse = {
     first_name: string;
     last_name: string;
     linkedin_url: string;
+    discord_url: string;
     profile_image_url: string;
     current_position: string;
     current_company: string;
@@ -226,7 +227,7 @@ export default function OnboardingModal() {
     console.log(values);
     await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
       setModal(false);
-      enqueueSnackbar(res.data.message, { variant: res.data.variant });
+      enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
       dispatch(updateOnboardingStatus(cohort_id));
     });
   };
@@ -277,7 +278,12 @@ export default function OnboardingModal() {
     if (activeStep === totalSteps - 1) {
       return (
         <div>
-          <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />;
+          <Step4
+            userProfile={homeConfig?.participant_profile}
+            isOnboardingModal={true}
+            onSubmit={onFormSubmitHandler}
+          />
+          ;
         </div>
       );
     }
