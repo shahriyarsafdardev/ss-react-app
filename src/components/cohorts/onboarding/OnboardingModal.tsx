@@ -144,8 +144,8 @@ const questions = [
   },
   {
     question_type: 'create-multi-select',
-    title: '5. What topics can fellow cohort members ask you question on?*',
-    options: ['Economics', 'Crypto', 'Digital Economics'],
+    title: '5. What topics can fellow cohort members ask you question on?',
+    options: ['Economics', 'Management', 'Hiring', 'Statistics'],
     submitted_answer: null
   }
 ];
@@ -224,7 +224,7 @@ export default function OnboardingModal() {
         style={{ margin: '0 auto 1.5rem' }}
       />
       <DiscordDescription>
-        Discord is a nice plataform to chat to the Cohort. Try to use now!
+        Discord is a nice platform to chat to the Cohort. Try to use now!
       </DiscordDescription>
       <StyledButton
         variant="contained"
@@ -288,7 +288,7 @@ export default function OnboardingModal() {
     }
 
     if (activeStep === totalSteps - 2) {
-      return 'Next, make sure you join the Discord server so you can interact with the cohort!';
+      return 'Lastly, make sure you join the Discord server so you can interact with the cohort!';
     }
 
     if (activeStep >= 1 && activeStep <= totalSteps - 3) {

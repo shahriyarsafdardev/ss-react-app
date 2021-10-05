@@ -58,7 +58,7 @@ export default function StepsCompleted() {
         </ImageContainer>
         <StyledStepsCompleted>All steps completed</StyledStepsCompleted>
         <StyledDescription>
-          You have completed all the initial steps on the plataform!
+          You have completed all the initial steps on the platform!
         </StyledDescription>
       </Container>
     </StepsCompletedContainer>
