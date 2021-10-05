@@ -18,7 +18,15 @@ import { LoginForm } from '../../components/authentication/login';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}));
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  [theme.breakpoints.up('xl')]: {
+    marginLeft: '50px',
+    marginRight: '50px'
   }
 }));
 
@@ -71,7 +79,7 @@ export default function Login() {
         </SectionStyle>
       </MHidden>
 
-      <Container maxWidth="sm">
+      <StyledContainer maxWidth="sm">
         <ContentStyle>
           <MHidden width="mdUp">
             <img src="/static/ScholarSite.svg" alt="login" width={140} />
@@ -87,7 +95,7 @@ export default function Login() {
           </StyledStack>
           <LoginForm />
         </ContentStyle>
-      </Container>
+      </StyledContainer>
     </RootStyle>
   );
 }
