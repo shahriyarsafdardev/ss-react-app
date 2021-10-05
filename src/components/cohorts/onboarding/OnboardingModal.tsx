@@ -217,14 +217,9 @@ export default function OnboardingModal() {
     values.first_name && uploadData.append('first_name', values.first_name);
     values.last_name && uploadData.append('last_name', values.last_name);
     values.linkedin_url && uploadData.append('linkedin_url', values.linkedin_url);
-    values.discord_url && uploadData.append('discord_url', values.discord_url);
     values.current_company && uploadData.append('current_company', values.current_company);
     values.current_position && uploadData.append('current_position', values.current_position);
-    values.strengths && uploadData.append('strengths', values.strengths);
-    values.interests && uploadData.append('interests', values.interests);
     values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
-    console.log(values.profile_image_url);
-    console.log(values);
     await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
       setModal(false);
       enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
