@@ -194,7 +194,7 @@ export default function StudentProfileModal({
       </StyledContainer>
       {(linkedin_url || discord_url) && (
         <StyledContainer>
-          <Title>Social</Title>
+          <Title>Socials</Title>
           {discord_url && (
             <StyledRow>
               <img
@@ -205,7 +205,7 @@ export default function StudentProfileModal({
                 style={{ marginRight: 15 }}
               />
               <Link href={discord_url} target="_blank">
-                <Text>Message {first_name} on Discord here</Text>
+                <Text>Message {first_name} on Discord</Text>
               </Link>
             </StyledRow>
           )}
@@ -220,7 +220,7 @@ export default function StudentProfileModal({
               />
               <Link href={linkedin_url} target="_blank">
                 {' '}
-                <Text>Connect with {first_name} on LinkedIn Here</Text>
+                <Text>Connect with {first_name} on LinkedIn</Text>
               </Link>
             </StyledRow>
           )}
