@@ -87,6 +87,10 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
       <Typography variant="subtitle1" align="center" sx={{ mt: 6 }}>
         {`${first_name} ${last_name}`}
       </Typography>
+
+      <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
+        {current_company?.name}
+      </Typography>
       <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
         {current_position}
       </Typography>
