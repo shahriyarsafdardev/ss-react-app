@@ -45,13 +45,15 @@ type ParticipantProfile = {
   interests: string[] | any;
 };
 
+const MODAL_HEIGHT = '600px';
+
 const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
   borderRadius: '25px'
 }));
 
 const CohortAuthorPreview = styled('div')(({ theme }) => ({
-  height: '70vh',
+  height: MODAL_HEIGHT,
   width: '430px',
   alignSelf: 'center',
   backgroundImage: `url("/static/cohorts-home/author-preview.png")`,
@@ -67,14 +69,20 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
 const ContentContainer = styled('div')(({ theme }) => ({
   flex: '1',
   backgroundColor: 'white',
-  height: '70vh',
+  height: MODAL_HEIGHT,
   padding: '50px',
+  boxSizing: 'border-box',
   borderTopRightRadius: '25px',
   borderBottomRightRadius: '25px',
   [theme.breakpoints.down(1250)]: {
     borderRadius: '25px',
     height: '100%'
   }
+}));
+
+const QuestionWrapper = styled('div')(() => ({
+  height: '70%',
+  paddingTop: '10px'
 }));
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
@@ -261,13 +269,13 @@ export default function OnboardingModal() {
   );
 
   const OnBoardingQuestions = () => (
-    <div style={{ height: '45vh', paddingTop: '50px' }}>
+    <QuestionWrapper>
       <SurveyRow
         item={questions[activeStep - 1]}
         submitted_answer={currentAnswer || ''}
         onChange={setCurrentAnswer}
       />
-    </div>
+    </QuestionWrapper>
   );
 
   const selectStep = () => {
@@ -283,7 +291,6 @@ export default function OnboardingModal() {
             isOnboardingModal={true}
             onSubmit={onFormSubmitHandler}
           />
-          ;
         </div>
       );
     }
