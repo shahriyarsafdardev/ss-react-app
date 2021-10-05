@@ -70,7 +70,8 @@ const ContentContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   borderBottomRightRadius: '25px',
   [theme.breakpoints.down(1250)]: {
-    borderRadius: '25px'
+    borderRadius: '25px',
+    height: '100%'
   }
 }));
 
