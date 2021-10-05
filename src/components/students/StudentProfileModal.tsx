@@ -192,38 +192,40 @@ export default function StudentProfileModal({
           </StyledRow>
         )}
       </StyledContainer>
-      <StyledContainer>
-        <Title>Social</Title>
-        {discord_url && (
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/peers/discord.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Link href={discord_url} target="_blank">
-              <Text>Message {first_name} on Discord here</Text>
-            </Link>
-          </StyledRow>
-        )}
-        {linkedin_url && (
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/peers/linkedin.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Link href={linkedin_url} target="_blank">
-              {' '}
-              <Text>Connect with {first_name} on LinkedIn Here</Text>
-            </Link>
-          </StyledRow>
-        )}
-      </StyledContainer>
+      {linkedin_url && discord_url && (
+        <StyledContainer>
+          <Title>Social</Title>
+          {discord_url && (
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/peers/discord.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <Link href={discord_url} target="_blank">
+                <Text>Message {first_name} on Discord here</Text>
+              </Link>
+            </StyledRow>
+          )}
+          {linkedin_url && (
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/peers/linkedin.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <Link href={linkedin_url} target="_blank">
+                {' '}
+                <Text>Connect with {first_name} on LinkedIn Here</Text>
+              </Link>
+            </StyledRow>
+          )}
+        </StyledContainer>
+      )}
     </Modal>
   );
 }
