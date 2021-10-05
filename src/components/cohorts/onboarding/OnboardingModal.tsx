@@ -67,7 +67,6 @@ const ContentContainer = styled('div')(({ theme }) => ({
   height: '70vh',
   padding: '50px',
   borderTopRightRadius: '25px',
-  position: 'relative',
   borderBottomRightRadius: '25px',
   [theme.breakpoints.down(1250)]: {
     borderRadius: '25px',
@@ -93,7 +92,8 @@ const Step1Container = styled(Box)(() => ({
 
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
-  margin: '5px 0',
+  margin: '20px 0',
+  height: '40vh',
   padding: '1rem 0',
   backgroundColor: '#F4F6F8'
 }));
@@ -114,7 +114,7 @@ const DiscordDescription = styled(Typography)(() => ({
 const questions = [
   {
     question_type: 'multiple-choice',
-    title: '1. How did you hear about this cohort?',
+    title: 'How did you hear about this cohort?',
     options: [
       'Google Search',
       'Email Marketing',
@@ -127,20 +127,20 @@ const questions = [
   },
   {
     question_type: 'multiple-choice',
-    title: '2. Who is paying for this course?',
+    title: 'Who is paying for this course?',
     options: ['I am', 'My employer is', 'Other'],
     submitted_answer: null
   },
   {
     question_type: 'multiple-choice',
     title:
-      '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
+      'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
     submitted_answer: null
   },
   {
     question_type: 'multi-select',
-    title: '4. What are you looking to find within the Scholarsite community?',
+    title: 'What are you looking to find within the Scholarsite community?',
     options: [
       'Find a mentor',
       'Mentor others',
@@ -152,7 +152,7 @@ const questions = [
   },
   {
     question_type: 'create-multi-select',
-    title: '5. What topics can fellow cohort members ask you question on?',
+    title: 'What topics can fellow cohort members ask you question on?',
     options: ['Economics', 'Management', 'Hiring', 'Statistics'],
     submitted_answer: null
   }
@@ -189,10 +189,6 @@ export default function OnboardingModal() {
     });
 
   const onStepChange = (stepNumber: number) => {
-    // if (stepNumber === 3) {
-    //   window.open(homeConfig?.discord_invitation_link, '_blank');
-    // }
-
     if (stepNumber > 0 && stepNumber < totalSteps - 2) {
       sendStepCompletionRequest(activeStep, currentAnswer || '');
       setCurrentAnswer(null);
@@ -311,7 +307,7 @@ export default function OnboardingModal() {
         />
         {selectStep()}
         {activeStep !== totalSteps - 1 && (
-          <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <StyledButton
               variant="contained"
               disabled={
