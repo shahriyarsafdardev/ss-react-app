@@ -233,7 +233,7 @@ export default function ProfileForm({
             </Grid>
 
             <Grid item xs={12} md={8}>
-              <Card sx={{ p: 3, height: 1 }}>
+              <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
                 <Stack spacing={{ xs: 2, md: 3 }}>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
@@ -288,36 +288,49 @@ export default function ProfileForm({
                     error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                     helperText={touched.linkedin_url && errors.linkedin_url}
                   />
-                  <CreatableSelect
-                    defaultValue={defaultInterests}
-                    styles={blueCustomsStyle}
-                    options={interestOptions}
-                    isClearable={true}
-                    backspaceRemovesValue={true}
-                    isMulti
-                    isSearchable
-                    onChange={(selected) => {
-                      setFieldValue(
-                        'interests',
-                        Array.isArray(selected) ? selected.map((s) => s.value) : []
-                      );
-                    }}
-                  />
-                  <CreatableSelect
-                    defaultValue={defaultStrengths}
-                    styles={greenCustomsStyle}
-                    options={strengthsOptions}
-                    isClearable={true}
-                    backspaceRemovesValue={true}
-                    isMulti
-                    isSearchable
-                    onChange={(selected) => {
-                      setFieldValue(
-                        'strengths',
-                        Array.isArray(selected) ? selected.map((s) => s.value) : []
-                      );
-                    }}
-                  />
+
+                  <Stack direction={{ xs: 'column' }} spacing={1}>
+                    <Typography>
+                      How would you like to engage with the ScholarSite community?
+                    </Typography>
+
+                    <CreatableSelect
+                      defaultValue={defaultInterests}
+                      // styles={blueCustomsStyle}
+                      options={interestOptions}
+                      isClearable={false}
+                      backspaceRemovesValue={true}
+                      isMulti
+                      isSearchable
+                      onChange={(selected) => {
+                        setFieldValue(
+                          'interests',
+                          Array.isArray(selected) ? selected.map((s) => s.value) : []
+                        );
+                      }}
+                    />
+                  </Stack>
+
+                  <Stack direction={{ xs: 'column' }} spacing={1}>
+                    <Typography>
+                      What topics can fellow cohort members ask you questions on?
+                    </Typography>
+                    <CreatableSelect
+                      defaultValue={defaultStrengths}
+                      // styles={greenCustomsStyle}
+                      options={strengthsOptions}
+                      isClearable={false}
+                      backspaceRemovesValue={true}
+                      isMulti
+                      isSearchable
+                      onChange={(selected) => {
+                        setFieldValue(
+                          'strengths',
+                          Array.isArray(selected) ? selected.map((s) => s.value) : []
+                        );
+                      }}
+                    />
+                  </Stack>
                 </Stack>
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>

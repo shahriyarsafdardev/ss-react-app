@@ -231,7 +231,6 @@ export default function OnboardingModal() {
         style={{ backgroundColor: '#5B0F8D' }}
         onClick={() => {
           window.open(homeConfig?.discord_invitation_link, '_blank');
-          onStepChange(totalSteps - 1);
         }}
       >
         Join Discord Server

@@ -10,6 +10,7 @@ import SvgIconStyle from '../SvgIconStyle';
 
 const CardMediaStyle = styled('div')(({ theme }) => ({
   display: 'flex',
+  height: '300px',
   position: 'relative',
   justifyContent: 'center',
   paddingTop: 'calc(100% * 9 / 16)',
@@ -77,7 +78,7 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
             height: 64,
             zIndex: 11,
             position: 'absolute',
-            transform: 'translateY(-50%)'
+            bottom: -34
           }}
         />
         <CoverImgStyle alt="cover" src={profile_image_url} />

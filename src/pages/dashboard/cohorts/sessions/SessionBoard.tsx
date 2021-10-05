@@ -136,9 +136,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
       if (currentTime > surveyReleaseTime) {
         return true;
-        // }
       }
-      return false;
     }
     return false;
   };

@@ -79,14 +79,14 @@ export default function StudentProfileFilters({
         </Select>
       </FormControl>
       <FormControl sx={{ marginLeft: 1, width: 180 }}>
-        <InputLabel id="multiple-checkbox-label">Filter by Strength</InputLabel>
+        <InputLabel id="multiple-checkbox-label">Filter by Strengths</InputLabel>
         <Select
           labelId="strength-label"
           id="multiple-checkbox-strength"
           multiple
           value={selectedStrengths}
           onChange={handleStrengthChange}
-          label="Filter by Strength"
+          label="Filter by Strengths"
           renderValue={(selected) => selected.join(', ')}
         >
           {strengths?.map((name: any) => (
@@ -98,14 +98,14 @@ export default function StudentProfileFilters({
         </Select>
       </FormControl>
       <FormControl sx={{ marginLeft: 1, width: 180 }}>
-        <InputLabel id="multiple-checkbox-label">Filter by Interest</InputLabel>
+        <InputLabel id="multiple-checkbox-label">Filter by Interests</InputLabel>
         <Select
           labelId="interest-label"
           id="multiple-checkbox-interest"
           multiple
           value={selectedInterests}
           onChange={handleInterestChange}
-          label="Filter by Interest<"
+          label="Filter by Interests"
           renderValue={(selected) => selected.join(', ')}
         >
           {interests?.map((name: any) => (

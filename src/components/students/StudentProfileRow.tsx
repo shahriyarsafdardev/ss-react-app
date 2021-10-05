@@ -47,7 +47,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={first_name} src={profile_image_url} />
           <Typography variant="subtitle2" noWrap>
-            {last_name}
+            {first_name} {last_name}
           </Typography>
         </Stack>
       </StyledTableCell>
