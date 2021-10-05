@@ -19,8 +19,9 @@ type SessionBoardProps = {
 
 const SessionTab = styled(Tab)(({ theme }) => ({
   color: '#595853',
-  justifyContent: 'space-between',
-  width: '27%',
+  justifyContent: 'space-around',
+  marginRight: 0,
+  width: '20%',
   '.MuiButtonBase-root .Mui-selected': {
     fontWeight: '700'
   }
@@ -45,6 +46,33 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
     },
     '.MuiTabs-flexContainer': {
       justifyContent: 'center'
+    }
+  },
+  [theme.breakpoints.between(900, 1000)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(1200, 1300)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(600, 700)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
     }
   },
   '.MuiTabs-flexContainer': {
@@ -89,6 +117,19 @@ const SessionsContainer = styled(Container)(({ theme }) => ({
   alignItems: 'center',
   [theme.breakpoints.down('sm')]: {
     padding: 0
+  }
+}));
+
+const StyledVideoPreview = styled(VideoPreview)(({ theme }) => ({
+  video: {
+    [theme.breakpoints.between(900, 1000)]: {
+      width: '520px',
+      height: 'auto'
+    },
+    [theme.breakpoints.between(1200, 1400)]: {
+      width: '520px',
+      height: 'auto'
+    }
   }
 }));
 
@@ -165,7 +206,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <SessionTitle>{session.name}</SessionTitle>
         </Box>
         {session.recording_url && session.recording_url !== '' ? (
-          <VideoPreview video_url={session.recording_url} />
+          <StyledVideoPreview video_url={session.recording_url} />
         ) : (
           <VideoPlaceHolder sessionTimeValue={session.time} />
         )}
