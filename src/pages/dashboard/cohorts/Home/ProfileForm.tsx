@@ -87,13 +87,15 @@ const customStyles = {
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,
-    color: '#1939B7',
     fontWeight: 'bold',
     fontSize: '0.75rem'
   }),
   indicatorSeparator: (provided: any) => ({
     ...provided,
     display: 'none'
+  }),
+  placeholder: (provided: any, state: any) => ({
+    display: state.isFocused ? 'none' : 'block'
   })
 };
 
@@ -303,7 +305,7 @@ export default function ProfileForm({
 
                     <CreatableSelect
                       defaultValue={defaultInterests}
-                      // styles={blueCustomsStyle}
+                      styles={customStyles}
                       placeholder={<div>Start typing whatever comes to mind!</div>}
                       options={interestOptions}
                       isClearable={false}
@@ -325,7 +327,7 @@ export default function ProfileForm({
                     </Typography>
                     <CreatableSelect
                       defaultValue={defaultStrengths}
-                      // styles={greenCustomsStyle}
+                      styles={customStyles}
                       placeholder={<div>Start typing whatever comes to mind!</div>}
                       options={strengthsOptions}
                       isClearable={false}
