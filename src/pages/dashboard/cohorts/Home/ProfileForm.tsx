@@ -65,8 +65,7 @@ const customStyles = {
   container: (provided: any, state: any) => ({
     ...provided,
     width: '100%',
-    height: '29px',
-    marginBottom: '24px !important'
+    minHeight: '29px'
   }),
   control: (provided: any, state: any) => ({
     ...provided,
@@ -76,7 +75,15 @@ const customStyles = {
     ':hover': {
       borderColor: '#071A33',
       borderRadius: 8
-    }
+    },
+    overflowY: 'scroll'
+  }),
+  dropdownIndicator: (provided: any) => ({
+    ...provided,
+    position: 'sticky',
+    top: 10,
+    right: 0,
+    zIndex: 10
   }),
   multiValueLabel: (provided: any) => ({
     ...provided,

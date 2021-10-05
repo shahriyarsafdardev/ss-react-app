@@ -30,22 +30,43 @@ const StyledButton = styled(Button)((props) => ({
 const StyledPage = styled(Page)(({ theme }) => ({
   '.react-pdf__Page__canvas': {
     width: '100% !important',
-    height: '347px !important'
+    height: 'auto !important'
   },
-  [theme.breakpoints.down('sm')]: {
-    '.react-pdf__Page__canvas': {
-      height: '200px !important'
-    }
+  [theme.breakpoints.between(1200, 1400)]: {
+    height: 'auto !important'
+  },
+  [theme.breakpoints.between(600, 700)]: {
+    height: 'auto !important'
   }
 }));
 
 const PdfDocument = styled(Document)(({ theme }) => ({
-  height: '347px',
+  height: 'auto',
+  minHeight: '347px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  margin: '0.75rem 0rem',
   [theme.breakpoints.down('sm')]: {
-    height: '200px'
+    height: 'auto'
+  },
+  [theme.breakpoints.between(1200, 1400)]: {
+    width: '100%',
+    height: 'auto',
+    minHeight: '280px !important'
+  },
+  [theme.breakpoints.between(900, 1000)]: {
+    width: '100%',
+    height: 'auto',
+    minHeight: '280px !important'
+  },
+  [theme.breakpoints.between(300, 400)]: {
+    height: 'auto !important',
+    minHeight: '200px !important'
+  },
+  [theme.breakpoints.between(401, 700)]: {
+    height: 'auto !important',
+    minHeight: '250px !important'
   }
 }));
 
