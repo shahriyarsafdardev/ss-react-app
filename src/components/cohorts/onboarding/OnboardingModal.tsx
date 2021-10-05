@@ -32,14 +32,16 @@ type HomeResponse = {
   };
 };
 
-type UserProfileProps = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  currentComapny: string;
-  photoURL: string;
-  interests: [];
-  strengths: [];
+type ParticipantProfile = {
+  first_name: string;
+  last_name: string;
+  linkedin_url: string;
+  discord_url: string;
+  profile_image_url: File | any;
+  current_company: string;
+  current_position: string;
+  strengths: string[] | any;
+  interests: string[] | any;
 };
 
 const OnboardingStepsContainer = styled('div')(() => ({
@@ -199,18 +201,26 @@ export default function OnboardingModal() {
     setActiveStep(stepNumber + 1);
   };
 
-  const onFormSubmitHandler = async (values: UserProfileProps) => {
-    await axios
-      .post(`/cohorts/${cohort_id}/save_user_profile`, {
-        ...values,
-        enrollment_id: homeConfig?.enrollment_id,
-        step_number: activeStep
-      })
-      .then((res) => {
-        setModal(false);
-        enqueueSnackbar('Profile has been updated', { variant: 'success' });
-        dispatch(updateOnboardingStatus(cohort_id));
-      });
+  const onFormSubmitHandler = async (values: ParticipantProfile) => {
+    const uploadData = new FormData();
+    uploadData.append('enrollment_id', homeConfig?.enrollment_id);
+    uploadData.append('step_number', activeStep.toString());
+    values.first_name && uploadData.append('first_name', values.first_name);
+    values.last_name && uploadData.append('last_name', values.last_name);
+    values.linkedin_url && uploadData.append('linkedin_url', values.linkedin_url);
+    values.discord_url && uploadData.append('discord_url', values.discord_url);
+    values.current_company && uploadData.append('current_company', values.current_company);
+    values.current_position && uploadData.append('current_position', values.current_position);
+    values.strengths && uploadData.append('strengths', values.strengths);
+    values.interests && uploadData.append('interests', values.interests);
+    values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
+    console.log(values.profile_image_url);
+    console.log(values);
+    await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
+      setModal(false);
+      enqueueSnackbar(res.data.message, { variant: res.data.variant });
+      dispatch(updateOnboardingStatus(cohort_id));
+    });
   };
 
   const Step1 = () => (
