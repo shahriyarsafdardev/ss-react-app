@@ -2,8 +2,6 @@ import { styled } from '@material-ui/core/styles';
 import React from 'react';
 
 const VideoContainer = styled('div')(({ theme }) => ({
-  marginBottom: '3rem',
-
   video: {
     width: '600px',
     height: '338px',

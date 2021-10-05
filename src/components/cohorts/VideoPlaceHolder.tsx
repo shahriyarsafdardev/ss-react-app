@@ -7,7 +7,6 @@ const useStyes = makeStyles(() => ({
   container: {
     width: '100%',
     height: '400px',
-    marginBottom: '3rem',
     backgroundColor: '#F3F3FB',
     borderRadius: '25px',
     display: 'flex',
@@ -92,9 +91,11 @@ const TimerField = ({
 
 const TimerPreview = ({ time }: { time: Date }) => {
   const classes = useStyes();
+  let d = time;
+  d = new Date(d.setMinutes(d.getMinutes() - 130));
 
   const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: time,
+    expiryTimestamp: d,
     autoStart: true
   });
 

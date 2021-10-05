@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Container, Tabs, Tab } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
@@ -28,7 +28,7 @@ const SessionTab = styled(Tab)(({ theme }) => ({
 
 const SessionTabs = styled(Tabs)(({ theme }) => ({
   width: '100%',
-  marginBottom: '20px',
+  margin: '20px 0',
   backgroundColor: '#F4F6F8',
   borderTopLeftRadius: '10px',
   borderTopRightRadius: '10px',
@@ -61,6 +61,22 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
     }
   }
 }));
+
+const FeedbackButton = styled('div')(({ theme }) => ({
+  cursor: 'pointer',
+  backgroundColor: '#D0F2FF',
+  display: 'flex',
+  padding: '20px',
+  borderRadius: '8px',
+  marginTop: '25px',
+  '.img-content': {
+    width: '40px',
+    [theme.breakpoints.down('sm')]: {
+      width: '80px'
+    }
+  }
+}));
+
 const Wrapper = styled(Container)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     padding: 0
@@ -84,25 +100,21 @@ const SessionTitle = styled('h2')((props) => ({
 
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
+  const [modalState, setModal] = useState(false);
 
-  const SurveyModal = () => {
-    const [modalState, setModalState] = useState(true);
-
-    return (
-      <Modal open={modalState} onClose={() => setModalState(false)}>
-        <SurveyForm
-          key="surveyForm"
-          onComplete={() => setModalState(false)}
-          sessionId={session?.id}
-          sessionName={session?.name}
-          session={session}
-        />
-      </Modal>
-    );
-  };
+  const SurveyModal = ({ state, setState }: { state: boolean; setState: Function }) => (
+    <Modal open={state} onClose={() => setState(false)}>
+      <SurveyForm
+        key="surveyForm"
+        onComplete={() => setState(false)}
+        sessionId={session?.id}
+        sessionName={session?.name}
+        session={session}
+      />
+    </Modal>
+  );
 
   const shouldDisplaySurveyModal = () => {
-    console.log(session);
     if (session?.survey_completed === true) return false;
 
     if (session && session.time) {
@@ -110,7 +122,11 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       const currentTime = new Date();
 
       if (sessionTime < currentTime) {
+        const diff = +currentTime - +sessionTime;
+
+        // if (diff / 3600 <= 1) {
         return true;
+        // }
       }
       return false;
     }
@@ -127,7 +143,8 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   return (
     <Wrapper>
-      {shouldDisplaySurveyModal() && <SurveyModal />}
+      {/* {shouldDisplaySurveyModal() && <SurveyModal />} */}
+      <SurveyModal state={modalState} setState={setModal} />
       <SessionTitle>{session.name}</SessionTitle>
       <SessionsContainer>
         {session.recording_url && session.recording_url !== '' ? (
@@ -136,6 +153,19 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <VideoPlaceHolder sessionTimeValue={session.time} />
         )}
 
+        {shouldDisplaySurveyModal() && (
+          <FeedbackButton onClick={() => setModal(true)}>
+            <Box className="img-content">
+              <img src="/static/icons/navbar/ic_sun.svg" alt="" />
+            </Box>
+            <Box className="text-content">
+              <Typography>
+                Once you have finished watching the session, feel free to provide your feedback.
+              </Typography>
+              <Typography>Click here to provide feedback.</Typography>
+            </Box>
+          </FeedbackButton>
+        )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" />
           <SessionTab label="Summary Notes" />
