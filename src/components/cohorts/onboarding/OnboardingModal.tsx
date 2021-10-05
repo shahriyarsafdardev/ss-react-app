@@ -260,7 +260,7 @@ export default function OnboardingModal() {
   );
 
   const OnBoardingQuestions = () => (
-    <div style={{ height: '50vh', paddingTop: '50px' }}>
+    <div style={{ height: '45vh', paddingTop: '50px' }}>
       <SurveyRow
         item={questions[activeStep - 1]}
         submitted_answer={currentAnswer || ''}
