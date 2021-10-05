@@ -94,8 +94,7 @@ const SessionsContainer = styled(Container)(({ theme }) => ({
 
 const SessionTitle = styled('h2')((props) => ({
   fontWeight: 'bolder',
-  minHeight: '90px',
-  marginLeft: '24px'
+  minHeight: '50px'
 }));
 
 export default function SessionBoard({ session }: SessionBoardProps) {
@@ -160,8 +159,11 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           setSurveyComplete(true);
         }}
       />
-      <SessionTitle>{session.name}</SessionTitle>
+
       <SessionsContainer>
+        <Box width="100%">
+          <SessionTitle>{session.name}</SessionTitle>
+        </Box>
         {session.recording_url && session.recording_url !== '' ? (
           <VideoPreview video_url={session.recording_url} />
         ) : (

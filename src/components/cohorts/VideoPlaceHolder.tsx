@@ -139,7 +139,7 @@ const ExpiredSession = () => {
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_dots.svg" alt="date-icon" />
         <Typography variant="subtitle1" className={classes.content2}>
-          This live session has concluded, the recording will be available soon!
+          This live session has finished, the recording will be available soon!
         </Typography>
       </div>
     </div>

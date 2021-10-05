@@ -45,7 +45,9 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       fullWidth
       value={submitted_answer}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Text Only"
+      placeholder="Start typing whatever comes to mind!"
+      multiline
+      rows={4}
     />
   );
 }
@@ -126,8 +128,9 @@ function CreateMultiSelect({
       <CreatableSelect
         defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
         options={options?.map((option) => ({ value: option, label: option }))}
-        isClearable={true}
+        isClearable={false}
         backspaceRemovesValue={true}
+        placeholder={<div>Start typing whatever comes to mind!</div>}
         isMulti
         isSearchable
         onChange={handleChange}

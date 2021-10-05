@@ -281,13 +281,13 @@ export default function ProfileForm({
                     error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                     helperText={touched.linkedin_url && errors.linkedin_url}
                   />
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     label="Discord Url"
                     {...getFieldProps('discord_url')}
                     error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                     helperText={touched.linkedin_url && errors.linkedin_url}
-                  />
+                  /> */}
 
                   <Stack direction={{ xs: 'column' }} spacing={1}>
                     <Typography>
@@ -297,6 +297,7 @@ export default function ProfileForm({
                     <CreatableSelect
                       defaultValue={defaultInterests}
                       // styles={blueCustomsStyle}
+                      placeholder={<div>Start typing whatever comes to mind!</div>}
                       options={interestOptions}
                       isClearable={false}
                       backspaceRemovesValue={true}
@@ -318,6 +319,7 @@ export default function ProfileForm({
                     <CreatableSelect
                       defaultValue={defaultStrengths}
                       // styles={greenCustomsStyle}
+                      placeholder={<div>Start typing whatever comes to mind!</div>}
                       options={strengthsOptions}
                       isClearable={false}
                       backspaceRemovesValue={true}
