@@ -56,7 +56,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
   borderBottomLeftRadius: '25px',
-  [theme.breakpoints.down(1000)]: {
+  [theme.breakpoints.down(1250)]: {
     display: 'none'
   }
 }));
@@ -69,7 +69,7 @@ const ContentContainer = styled('div')(({ theme }) => ({
   borderTopRightRadius: '25px',
   position: 'relative',
   borderBottomRightRadius: '25px',
-  [theme.breakpoints.down(1000)]: {
+  [theme.breakpoints.down(1250)]: {
     borderRadius: '25px'
   }
 }));
@@ -102,9 +102,6 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
   margin: '3rem auto 1.5rem',
   borderRadius: '25px',
   [theme.breakpoints.down('sm')]: {
-    width: '100%'
-  },
-  [theme.breakpoints.between(1000, 1300)]: {
     width: '100%'
   }
 }));
