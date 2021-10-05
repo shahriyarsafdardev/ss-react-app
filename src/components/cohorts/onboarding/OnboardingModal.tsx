@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'components/animate';
-import { Box, Container, Typography, Grid } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import VideoPreview from 'components/cohorts/VideoPreview';
 import { LoadingButton } from '@material-ui/lab';
 import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
 import { useDispatch } from 'redux/store';
@@ -25,6 +24,7 @@ type HomeResponse = {
     first_name: string;
     last_name: string;
     linkedin_url: string;
+    discord_url: string;
     profile_image_url: string;
     current_position: string;
     current_company: string;
@@ -33,47 +33,65 @@ type HomeResponse = {
   };
 };
 
-type UserProfileProps = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  currentComapny: string;
-  photoURL: string;
-  interests: [];
-  strengths: [];
+type ParticipantProfile = {
+  first_name: string;
+  last_name: string;
+  linkedin_url: string;
+  discord_url: string;
+  profile_image_url: File | any;
+  current_company: string;
+  current_position: string;
+  strengths: string[] | any;
+  interests: string[] | any;
 };
 
 const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
-  borderRadius: '25px',
-  maxHeight: '70vh'
+  borderRadius: '25px'
 }));
 
-const CohortAuthorPreview = styled('div')(() => ({
-  height: '100%',
+const CohortAuthorPreview = styled('div')(({ theme }) => ({
+  height: '70vh',
+  width: '430px',
+  alignSelf: 'center',
   backgroundImage: `url("/static/cohorts-home/author-preview.png")`,
   backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
+  backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
-  borderBottomLeftRadius: '25px'
+  borderBottomLeftRadius: '25px',
+  [theme.breakpoints.down(1250)]: {
+    display: 'none'
+  }
 }));
 
-const StyledContainer = styled(Container)(({ theme }) => ({
+const ContentContainer = styled('div')(({ theme }) => ({
+  flex: '1',
   backgroundColor: 'white',
-  height: '80vh',
+  height: '70vh',
   padding: '50px',
   borderTopRightRadius: '25px',
-  position: 'relative',
-  borderBottomRightRadius: '25px'
+  borderBottomRightRadius: '25px',
+  [theme.breakpoints.down(1250)]: {
+    borderRadius: '25px',
+    height: '100%'
+  }
 }));
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  width: 250,
+  width: '250px !important',
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
   },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
+
+const DiscordButton = styled(Button)(({ theme }) => ({
+  padding: 11,
+  width: '250px !important',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
   }
@@ -85,8 +103,9 @@ const Step1Container = styled(Box)(() => ({
 
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
-  margin: '2rem 0',
-  padding: '2rem 0',
+  margin: '20px 0',
+  height: '40vh',
+  padding: '1rem 0',
   backgroundColor: '#F4F6F8'
 }));
 
@@ -106,7 +125,7 @@ const DiscordDescription = styled(Typography)(() => ({
 const questions = [
   {
     question_type: 'multiple-choice',
-    title: '1. How did you hear about this cohort?',
+    title: 'How did you hear about this cohort?',
     options: [
       'Google Search',
       'Email Marketing',
@@ -119,20 +138,20 @@ const questions = [
   },
   {
     question_type: 'multiple-choice',
-    title: '2. Who is paying for this course?',
+    title: 'Who is paying for this course?',
     options: ['I am', 'My employer is', 'Other'],
     submitted_answer: null
   },
   {
     question_type: 'multiple-choice',
     title:
-      '3. Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
+      'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
     submitted_answer: null
   },
   {
     question_type: 'multi-select',
-    title: '4. What are you looking to find within the Scholarsite community?',
+    title: 'What are you looking to find within the Scholarsite community?',
     options: [
       'Find a mentor',
       'Mentor others',
@@ -144,7 +163,7 @@ const questions = [
   },
   {
     question_type: 'create-multi-select',
-    title: '5. What topics can fellow cohort members ask you question on?',
+    title: 'What topics can fellow cohort members ask you question on?',
     options: ['Economics', 'Management', 'Hiring', 'Statistics'],
     submitted_answer: null
   }
@@ -158,7 +177,7 @@ export default function OnboardingModal() {
   const [activeStep, setActiveStep] = useState(0);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
-  const [currentAnswer, setCurrentAnswer] = useState(null);
+  const [currentAnswer, setCurrentAnswer] = useState<any>(null);
 
   const totalSteps = questions.length + 3;
 
@@ -181,10 +200,6 @@ export default function OnboardingModal() {
     });
 
   const onStepChange = (stepNumber: number) => {
-    // if (stepNumber === 3) {
-    //   window.open(homeConfig?.discord_invitation_link, '_blank');
-    // }
-
     if (stepNumber > 0 && stepNumber < totalSteps - 2) {
       sendStepCompletionRequest(activeStep, currentAnswer || '');
       setCurrentAnswer(null);
@@ -195,23 +210,31 @@ export default function OnboardingModal() {
     setActiveStep(stepNumber + 1);
   };
 
-  const onFormSubmitHandler = async (values: UserProfileProps) => {
-    await axios
-      .post(`/cohorts/${cohort_id}/save_user_profile`, {
-        ...values,
-        enrollment_id: homeConfig?.enrollment_id,
-        step_number: activeStep
-      })
-      .then((res) => {
-        setModal(false);
-        enqueueSnackbar('Profile has been updated', { variant: 'success' });
-        dispatch(updateOnboardingStatus(cohort_id));
-      });
+  const onFormSubmitHandler = async (values: ParticipantProfile) => {
+    const uploadData = new FormData();
+    uploadData.append('enrollment_id', homeConfig?.enrollment_id);
+    uploadData.append('step_number', activeStep.toString());
+    values.first_name && uploadData.append('first_name', values.first_name);
+    values.last_name && uploadData.append('last_name', values.last_name);
+    values.linkedin_url && uploadData.append('linkedin_url', values.linkedin_url);
+    values.discord_url && uploadData.append('discord_url', values.discord_url);
+    values.current_company && uploadData.append('current_company', values.current_company);
+    values.current_position && uploadData.append('current_position', values.current_position);
+    values.strengths && uploadData.append('strengths', values.strengths);
+    values.interests && uploadData.append('interests', values.interests);
+    values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
+    console.log(values.profile_image_url);
+    console.log(values);
+    await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
+      setModal(false);
+      enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
+      dispatch(updateOnboardingStatus(cohort_id));
+    });
   };
 
   const Step1 = () => (
     <Step1Container>
-      <StyledVideoPreview src={homeConfig?.intro_video_url} />
+      <StyledVideoPreview src={homeConfig?.intro_video_url} controls />
     </Step1Container>
   );
 
@@ -226,26 +249,19 @@ export default function OnboardingModal() {
       <DiscordDescription>
         Discord is a nice platform to chat to the Cohort. Try to use now!
       </DiscordDescription>
-      <StyledButton
-        variant="contained"
-        style={{ backgroundColor: '#5B0F8D' }}
+      <DiscordButton
+        variant="outlined"
         onClick={() => {
           window.open(homeConfig?.discord_invitation_link, '_blank');
         }}
       >
         Join Discord Server
-      </StyledButton>
+      </DiscordButton>
     </Step2Container>
   );
 
-  const handleNext = () => {
-    sendStepCompletionRequest(activeStep, currentAnswer || '');
-    setActiveStep(activeStep + 1);
-    setCurrentAnswer(null);
-  };
-
   const OnBoardingQuestions = () => (
-    <div style={{ height: '50vh', paddingTop: '50px' }}>
+    <div style={{ height: '45vh', paddingTop: '50px' }}>
       <SurveyRow
         item={questions[activeStep - 1]}
         submitted_answer={currentAnswer || ''}
@@ -262,7 +278,12 @@ export default function OnboardingModal() {
     if (activeStep === totalSteps - 1) {
       return (
         <div>
-          <Step4 userProfile={homeConfig?.participant_profile} onSubmit={onFormSubmitHandler} />;
+          <Step4
+            userProfile={homeConfig?.participant_profile}
+            isOnboardingModal={true}
+            onSubmit={onFormSubmitHandler}
+          />
+          ;
         </div>
       );
     }
@@ -299,33 +320,32 @@ export default function OnboardingModal() {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <Grid container>
-        <Grid item md={5}>
-          <CohortAuthorPreview />
-        </Grid>
-        <Grid item md={7}>
-          <StyledContainer>
-            <HomeTabHeader
-              cohortTitle={headContent()}
-              activeStep={activeStep}
-              totalSteps={totalSteps}
-              showProgressBar={true}
-            />
-            {selectStep()}
-            {activeStep !== totalSteps - 1 && (
-              <div style={{ position: 'absolute', bottom: '15px', right: '15px' }}>
-                <StyledButton
-                  variant="contained"
-                  style={{ marginLeft: '30px' }}
-                  onClick={() => onStepChange(activeStep)}
-                >
-                  Next
-                </StyledButton>
-              </div>
-            )}
-          </StyledContainer>
-        </Grid>
-      </Grid>
+      <CohortAuthorPreview />
+      <ContentContainer>
+        <HomeTabHeader
+          cohortTitle={headContent()}
+          activeStep={activeStep}
+          totalSteps={totalSteps}
+          showProgressBar={true}
+        />
+        {selectStep()}
+        {activeStep !== totalSteps - 1 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <StyledButton
+              variant="contained"
+              disabled={
+                activeStep > 0 &&
+                activeStep < totalSteps - 2 &&
+                (!currentAnswer || currentAnswer.length === 0)
+              }
+              style={{ marginLeft: '30px' }}
+              onClick={() => onStepChange(activeStep)}
+            >
+              Next
+            </StyledButton>
+          </div>
+        )}
+      </ContentContainer>
     </OnboardingStepsContainer>
   );
 

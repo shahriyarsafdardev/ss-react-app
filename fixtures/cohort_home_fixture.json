@@ -10,6 +10,7 @@
     "first_name": "string",
     "last_name": "string",
     "linkedin_url": "string",
+    "discord_url": "string",
     "profile_image_url": "url string",
     "current_company": "string",
     "strengths": ["array of string"],

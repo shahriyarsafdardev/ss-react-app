@@ -55,13 +55,12 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
-    console.log('id', cohort_id);
     dispatch(getSessions(cohort_id));
   }, [cohort_id, dispatch]);
 
   return (
     <Page title="ScholarSite | Sessions">
-      {/* {!cohort?.isOnboarded && <OnboardingModal />} */}
+      {cohort && !cohort.isOnboarded && <OnboardingModal />}
       <SessionsContainer>
         <SessionsInnerContainer container>
           <Grid item md={8} sm={12}>

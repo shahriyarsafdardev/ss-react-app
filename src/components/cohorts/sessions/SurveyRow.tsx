@@ -30,6 +30,15 @@ const RowContainer = styled('div')(() => ({
   marginBottom: '1.5rem'
 }));
 
+const QuestionText = styled('p')(() => ({
+  fontWeight: 500,
+  fontSize: '17px',
+  lineHeight: '22px',
+  fontFamily: 'Public Sans',
+  fontStyle: 'normal',
+  color: '#071A33'
+}));
+
 const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
@@ -180,7 +189,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
 
   return (
     <RowContainer>
-      <h3>{item.title}</h3>
+      <QuestionText>{item.title}</QuestionText>
       <br />
       {answerFields()}
     </RowContainer>

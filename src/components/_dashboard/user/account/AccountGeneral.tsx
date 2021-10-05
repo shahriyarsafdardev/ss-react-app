@@ -2,7 +2,6 @@ import { useSnackbar } from 'notistack5';
 
 // components
 import ProfileForm from 'pages/dashboard/cohorts/Home/ProfileForm';
-
 import useAuth from '../../../../hooks/useAuth';
 
 // axios
@@ -56,5 +55,11 @@ export default function AccountGeneral() {
       .post(`users/update_user_profile.json`, uploadData)
       .then((res) => enqueueSnackbar(res.data.message, { variant: res.data.variant }));
   };
-  return <ProfileForm userProfile={participantProfileConfig} onSubmit={onFormSubmitHandler} />;
+  return (
+    <ProfileForm
+      userProfile={participantProfileConfig}
+      isOnboardingModal={false}
+      onSubmit={onFormSubmitHandler}
+    />
+  );
 }

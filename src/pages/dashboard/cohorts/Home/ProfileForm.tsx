@@ -119,13 +119,16 @@ const blueCustomsStyle = {
 
 export default function ProfileForm({
   onSubmit,
-  userProfile
+  userProfile,
+  isOnboardingModal = false
 }: {
   onSubmit: Function;
+  isOnboardingModal: boolean;
   userProfile?: {
     first_name: string;
     last_name: string;
     linkedin_url: string;
+    discord_url: string;
     profile_image_url: File | any;
     current_company: string;
     current_position: string;
@@ -205,7 +208,7 @@ export default function ProfileForm({
 
   return (
     <>
-      <Title>Build your profile</Title>
+      <br />
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={3}>
@@ -288,58 +291,62 @@ export default function ProfileForm({
                     error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                     helperText={touched.linkedin_url && errors.linkedin_url}
                   />
-                  {/* <TextField
-                    fullWidth
-                    label="Discord Url"
-                    {...getFieldProps('discord_url')}
-                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                    helperText={touched.linkedin_url && errors.linkedin_url}
-                  /> */}
 
-                  <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      How would you like to engage with the ScholarSite community?
-                    </Typography>
+                  {!isOnboardingModal && (
+                    <>
+                      {/* <TextField
+                        fullWidth
+                        label="Discord Url"
+                        {...getFieldProps('discord_url')}
+                        error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                        helperText={touched.linkedin_url && errors.linkedin_url}
+                      /> */}
+                      <Stack direction={{ xs: 'column' }} spacing={1}>
+                        <Typography>
+                          How would you like to engage with the ScholarSite community?
+                        </Typography>
 
-                    <CreatableSelect
-                      defaultValue={defaultInterests}
-                      // styles={blueCustomsStyle}
-                      placeholder={<div>Start typing whatever comes to mind!</div>}
-                      options={interestOptions}
-                      isClearable={false}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'interests',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
-                    />
-                  </Stack>
+                        <CreatableSelect
+                          defaultValue={defaultInterests}
+                          // styles={blueCustomsStyle}
+                          placeholder={<div>Start typing whatever comes to mind!</div>}
+                          options={interestOptions}
+                          isClearable={false}
+                          backspaceRemovesValue={true}
+                          isMulti
+                          isSearchable
+                          onChange={(selected) => {
+                            setFieldValue(
+                              'interests',
+                              Array.isArray(selected) ? selected.map((s) => s.value) : []
+                            );
+                          }}
+                        />
+                      </Stack>
 
-                  <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      What topics can fellow cohort members ask you questions on?
-                    </Typography>
-                    <CreatableSelect
-                      defaultValue={defaultStrengths}
-                      // styles={greenCustomsStyle}
-                      placeholder={<div>Start typing whatever comes to mind!</div>}
-                      options={strengthsOptions}
-                      isClearable={false}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'strengths',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
-                    />
-                  </Stack>
+                      <Stack direction={{ xs: 'column' }} spacing={1}>
+                        <Typography>
+                          What topics can fellow cohort members ask you questions on?
+                        </Typography>
+                        <CreatableSelect
+                          defaultValue={defaultStrengths}
+                          // styles={greenCustomsStyle}
+                          placeholder={<div>Start typing whatever comes to mind!</div>}
+                          options={strengthsOptions}
+                          isClearable={false}
+                          backspaceRemovesValue={true}
+                          isMulti
+                          isSearchable
+                          onChange={(selected) => {
+                            setFieldValue(
+                              'strengths',
+                              Array.isArray(selected) ? selected.map((s) => s.value) : []
+                            );
+                          }}
+                        />
+                      </Stack>
+                    </>
+                  )}
                 </Stack>
 
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
