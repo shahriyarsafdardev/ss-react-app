@@ -37,12 +37,11 @@ const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
 export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
-  const cohort = useSelector((state: RootState) => state.cohort?.cohorts[0]);
-
-  const { sessions } = cohort || {};
-
   const cohort_id = window.location.pathname.split('/')[2] || '';
-
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { sessions } = cohort || {};
   let trimmedSessionData: SessionListItem[] = [];
 
   if (sessions && sessions.length) {
