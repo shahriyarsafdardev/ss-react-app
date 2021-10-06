@@ -136,39 +136,22 @@ const StyledVideoPreview = styled(VideoPreview)(({ theme }) => ({
   }
 }));
 
-const SessionTitle = styled('h2')(({ theme }) => ({
+const SessionTitle = styled('span')(({ theme }) => ({
   fontWeight: 'bolder',
   minHeight: '50px',
+  fontSize: '1.5rem',
   [theme.breakpoints.down('md')]: {
     fontSize: 24
   }
 }));
 
-const SessionNumber = styled('h2')(({ theme }) => ({
+const SessionNumber = styled('span')(({ theme }) => ({
   fontWeight: 400,
   minHeight: '50px',
+  marginRight: 1,
+  fontSize: '1.5rem',
   [theme.breakpoints.down('md')]: {
-    display: 'none'
-  }
-}));
-
-const SessionNumberMobile = styled('h2')(({ theme }) => ({
-  display: 'none',
-  fontWeight: 400,
-  minHeight: '50px',
-  marginRight: 5,
-  [theme.breakpoints.down('md')]: {
-    display: 'block',
     fontSize: 24
-  }
-}));
-
-const TitleContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
-    justifyContent: 'unset'
   }
 }));
 
@@ -236,11 +219,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       />
 
       <SessionsContainer>
-        <TitleContainer>
-          <SessionNumber>{`Session ${session.number} | `}</SessionNumber>
-          <SessionNumberMobile>{`#${session.number} `} </SessionNumberMobile>
+        <Box width="100%" marginBottom={2}>
+          <SessionNumber>{`Session ${session.number} |`} </SessionNumber>
           <SessionTitle>{session.name}</SessionTitle>
-        </TitleContainer>
+        </Box>
         {session.recording_url && session.recording_url !== '' ? (
           <StyledVideoPreview video_url={session.recording_url} />
         ) : (

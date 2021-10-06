@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import SessionRow from './SessionRow';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -16,7 +16,9 @@ const ListContainer = styled('div')((props) => ({
 export default function SessionList({ sessionsList, onClick, selectedSession }: SessionListProps) {
   return (
     <ListContainer>
-      <Typography variant="h4">All Sessions</Typography>
+      <Box marginBottom={2}>
+        <Typography variant="h4">All Sessions</Typography>
+      </Box>
       {sessionsList.map((session, index) => (
         <SessionRow
           key={session.id}
