@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Container, Grid, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import useSettings from 'hooks/useSettings';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 
 const ContactContainer = styled('div')((props) => ({
   padding: '0 20px'
 }));
+
 const ContactInfoNote = styled('div')(({ theme }) => ({
   backgroundColor: '#D0F2FF',
   display: 'flex',
@@ -41,6 +43,7 @@ const ContactNote = () => (
 );
 
 export default function ContactUs() {
+  const { themeStretch } = useSettings();
   const [modalState, modalHandler] = useState({});
   const contactInfoDetails = [
     {
@@ -107,7 +110,7 @@ export default function ContactUs() {
 
   return (
     <Page title="ScholarSite | Contact Us">
-      <ContactContainer>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <Typography variant="h3">Contact Us</Typography>
         <ContactNote />
         <StudentProfileModal
@@ -122,7 +125,7 @@ export default function ContactUs() {
             </Grid>
           ))}
         </StyledGrid>
-      </ContactContainer>
+      </Container>
     </Page>
   );
 }
