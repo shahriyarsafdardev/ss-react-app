@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import axios from 'utils/axios';
+import LoadingScreen from 'components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { SessionListItem } from '../../../../@types/cohorts';
@@ -33,6 +34,12 @@ const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     display: 'none'
   }
+}));
+
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
 }));
 
 export default function SessionsTab() {
@@ -69,25 +76,31 @@ export default function SessionsTab() {
   return (
     <Page title="ScholarSite | Sessions">
       {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
-      <SessionsContainer>
-        <SessionsInnerContainer container>
-          <Grid item md={8} sm={12}>
-            <SessionBoard session={sessions && sessions[selectedSession]} />
-          </Grid>
-          <SessionListDesktopContainer item md={4}>
-            <SessionList
-              onClick={setSelectedSession}
-              selectedSession={selectedSession}
-              sessionsList={trimmedSessionData}
-            />
-          </SessionListDesktopContainer>
-        </SessionsInnerContainer>
-        <SessionListSidebar
-          setSelectedSession={setSelectedSession}
-          selectedSession={selectedSession}
-          sessionsList={trimmedSessionData}
-        />
-      </SessionsContainer>
+      {sessions ? (
+        <SessionsContainer>
+          <SessionsInnerContainer container>
+            <Grid item md={8} sm={12}>
+              <SessionBoard session={sessions && sessions[selectedSession]} />
+            </Grid>
+            <SessionListDesktopContainer item md={4}>
+              <SessionList
+                onClick={setSelectedSession}
+                selectedSession={selectedSession}
+                sessionsList={trimmedSessionData}
+              />
+            </SessionListDesktopContainer>
+          </SessionsInnerContainer>
+          <SessionListSidebar
+            setSelectedSession={setSelectedSession}
+            selectedSession={selectedSession}
+            sessionsList={trimmedSessionData}
+          />
+        </SessionsContainer>
+      ) : (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      )}
     </Page>
   );
 }
