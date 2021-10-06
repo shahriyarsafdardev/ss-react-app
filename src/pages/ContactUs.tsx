@@ -94,7 +94,7 @@ export default function ContactUs() {
     {
       first_name: 'Adrian',
       last_name: 'Sarstedt',
-      current_position: 'Head of Operations',
+      current_position: 'Co-Founder & CTO',
       email: 'adrian@scholarsite.io',
       phone: '+1 415 818 4841',
       profile_image_url: '/static/contact/Adrian.png',

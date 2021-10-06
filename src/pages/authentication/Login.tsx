@@ -89,7 +89,7 @@ export default function Login() {
               <Title gutterBottom>Welcome to your Student Portal</Title>
               <Typography sx={{ color: 'text.secondary' }}>
                 ScholarSite’s student portal can be used to access your cohort content, network and
-                meesages at any time!
+                messages at any time!
               </Typography>
             </Box>
           </StyledStack>

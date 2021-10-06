@@ -74,15 +74,6 @@ export default function StudentProfileList({ students, modalHandler }: StudentPr
           </Table>
         </TableContainer>
       </Scrollbar>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={students.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(e, page) => setPage(page)}
-        onRowsPerPageChange={(e) => handleChangeRowsPerPage}
-      />
     </div>
   );
 }
