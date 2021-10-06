@@ -121,17 +121,13 @@ const SessionsContainer = styled(Container)(({ theme }) => ({
 }));
 
 const StyledVideoPreview = styled(VideoPreview)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
-  },
+  height: 'auto',
+  width: '100%',
   video: {
-    [theme.breakpoints.between(900, 1000)]: {
-      width: '520px',
-      height: 'auto'
-    },
-    [theme.breakpoints.between(1200, 1400)]: {
-      width: '520px',
-      height: 'auto'
+    height: 'auto',
+    width: '100%',
+    [theme.breakpoints.between(800, 900)]: {
+      width: '88%'
     }
   }
 }));

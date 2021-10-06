@@ -53,7 +53,7 @@ const PdfDocument = styled(Document)(({ theme }) => ({
   [theme.breakpoints.between(1200, 1400)]: {
     width: '100%',
     height: 'auto',
-    minHeight: '280px !important'
+    minHeight: '310px !important'
   },
   [theme.breakpoints.between(900, 1000)]: {
     width: '100%',
