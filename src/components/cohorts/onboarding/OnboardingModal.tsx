@@ -45,7 +45,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   height: MODAL_HEIGHT,
   width: '430px',
   alignSelf: 'center',
-  backgroundImage: `url("/static/cohorts-home/author-preview.png")`,
+  backgroundImage: `url("https://scholarsite-public.s3.eu-west-2.amazonaws.com/author-preview-min.png")`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
@@ -230,7 +230,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     <Step1Container>
       <StyledVideoPreview
         src="https://scholarsite-public.s3.eu-west-2.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
-        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/andrei-julian-thumbnail.png"
+        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/andrei-julian-thumbnail.jpeg"
         controls
       />
     </Step1Container>
