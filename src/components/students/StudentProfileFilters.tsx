@@ -26,6 +26,15 @@ type StudentProfileFiltersProps = {
   setView: (value: string) => void;
   view: string;
 };
+
+const FilterFormControl = styled(FormControl)(({ theme }) => ({
+  marginRight: '8px',
+  width: '180px',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '8px'
+  }
+}));
+
 export default function StudentProfileFilters({
   companies,
   selectedCompanies,
@@ -41,7 +50,7 @@ export default function StudentProfileFilters({
 }: StudentProfileFiltersProps) {
   return (
     <ViewSelector>
-      <FormControl>
+      <FilterFormControl>
         <InputLabel id="view-label">View</InputLabel>
         <Select
           displayEmpty
@@ -58,8 +67,8 @@ export default function StudentProfileFilters({
             Table View
           </MenuItem>
         </Select>
-      </FormControl>
-      <FormControl sx={{ marginLeft: 1, width: 180 }}>
+      </FilterFormControl>
+      <FilterFormControl>
         <InputLabel id="multiple-checkbox-label">Filter by Company</InputLabel>
         <Select
           labelId="multiple-checkbox-label"
@@ -78,8 +87,8 @@ export default function StudentProfileFilters({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
-      <FormControl sx={{ marginLeft: 1, width: 180 }}>
+      </FilterFormControl>
+      <FilterFormControl>
         <InputLabel id="multiple-checkbox-label">Filter by Strengths</InputLabel>
         <Select
           labelId="strength-label"
@@ -98,8 +107,8 @@ export default function StudentProfileFilters({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
-      <FormControl sx={{ marginLeft: 1, width: 180 }}>
+      </FilterFormControl>
+      <FilterFormControl>
         <InputLabel id="multiple-checkbox-label">Filter by Interests</InputLabel>
         <Select
           labelId="interest-label"
@@ -118,7 +127,7 @@ export default function StudentProfileFilters({
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
+      </FilterFormControl>
     </ViewSelector>
   );
 }
