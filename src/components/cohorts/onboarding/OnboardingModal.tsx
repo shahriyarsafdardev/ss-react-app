@@ -166,7 +166,7 @@ const questions = [
   }
 ];
 
-export default function OnboardingModal() {
+export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -221,11 +221,15 @@ export default function OnboardingModal() {
     values.interests && uploadData.append('interests', values.interests);
     values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
 
+    onSubmit();
+
     await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
+      console.log(res.data);
+      console.log('cohort_id', cohort_id);
       setModal(false);
       enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
       dispatch(updateOnboardingStatus(cohort_id));
-      updateProfile({ ...values, profile_image_url: values.profile_image_url.preview });
+      updateProfile({ ...res.data });
     });
   };
 
@@ -244,7 +248,8 @@ export default function OnboardingModal() {
         style={{ margin: '0 auto 1.5rem' }}
       />
       <DiscordDescription>
-        Discord is a nice platform to chat to the Cohort. Try to use now!
+        All cohort communication will be done through the Discord platform. <br />
+        Please join the BINFX server by clicking the button below.
       </DiscordDescription>
       <DiscordButton
         variant="outlined"
@@ -297,7 +302,7 @@ export default function OnboardingModal() {
 
   const headContent = () => {
     if (activeStep === 0) {
-      return `Welcome to ${homeConfig?.cohort_title}`;
+      return `Welcome to BINFX F21! Here is a message from your instructors!`;
     }
 
     if (activeStep === totalSteps - 1) {
@@ -305,7 +310,7 @@ export default function OnboardingModal() {
     }
 
     if (activeStep === totalSteps - 2) {
-      return 'Lastly, make sure you join the Discord server so you can interact with the cohort!';
+      return 'Next, make sure you join the Discord server so you can interact with the cohort!';
     }
 
     if (activeStep >= 1 && activeStep <= totalSteps - 3) {

@@ -21,7 +21,7 @@ type ParticipantProfile = {
 
 // ----------------------------------------------------------------------
 export default function AccountGeneral() {
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
   console.log(user);
@@ -51,9 +51,10 @@ export default function AccountGeneral() {
     uploadData.append('image', values.profile_image_url.image);
     console.log(values.profile_image_url);
     console.log(values);
-    await axios
-      .post(`users/update_user_profile.json`, uploadData)
-      .then((res) => enqueueSnackbar(res.data.message, { variant: res.data.variant }));
+    await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
+      enqueueSnackbar(res.data.message, { variant: res.data.variant });
+      updateProfile({ ...res.data.user });
+    });
   };
   return (
     <ProfileForm

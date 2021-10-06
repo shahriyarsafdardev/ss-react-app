@@ -231,8 +231,7 @@ export default function ProfileForm({
                         color: 'text.secondary'
                       }}
                     >
-                      Allowed *.jpeg, *.jpg, *.png, *.gif
-                      <br /> max size of {fData(3145728)}
+                      Profile Picture
                     </Typography>
                   }
                 />
