@@ -89,10 +89,11 @@ function NavItem({
   isShow?: boolean | undefined;
 }) {
   const theme = useTheme();
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   const { title, path, icon, info, children } = item;
   const isActiveRoot = pathname.includes(path);
-
+  console.log(location);
   const [open, setOpen] = useState(isActiveRoot);
 
   useEffect(() => {
