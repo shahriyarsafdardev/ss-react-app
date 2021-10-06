@@ -41,9 +41,6 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
       minWidth: 60,
       fontSize: 12
     },
-    'button:not(:last-child)': {
-      marginRight: '0px !important'
-    },
     '.MuiTabs-flexContainer': {
       justifyContent: 'center'
     }
@@ -76,12 +73,13 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
     }
   },
   '.MuiTabs-flexContainer': {
-    justifyContent: 'space-between'
+    justifyContent: 'space-evenly'
   },
   button: {
     justifyContent: 'center',
     '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
-      paddingTop: '15px'
+      paddingTop: '15px',
+      marginRight: '0 !important'
     },
     color: '#6C7885',
     '&.Mui-selected': {
