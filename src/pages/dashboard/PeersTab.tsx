@@ -146,25 +146,11 @@ export default function PeersTab() {
   }, [selectedCompanies, selectedStrengths, selectedInterests, peers]);
 
   const showCardView = () => (
-    <StudentProfileGrid
-      students={
-        selectedCompanies.length || selectedInterests.length || selectedStrengths.length
-          ? applyFilters()
-          : peers
-      }
-      modalHandler={modalHandler}
-    />
+    <StudentProfileGrid students={applyFilters()} modalHandler={modalHandler} />
   );
 
   const showTableView = () => (
-    <StudentProfileList
-      students={
-        selectedCompanies.length || selectedInterests.length || selectedStrengths.length
-          ? applyFilters()
-          : peers
-      }
-      modalHandler={modalHandler}
-    />
+    <StudentProfileList students={applyFilters()} modalHandler={modalHandler} />
   );
 
   return (

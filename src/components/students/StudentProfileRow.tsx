@@ -77,20 +77,12 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <StyledTableCell align="left">
         <LabelContainer>
           {trimmedStrengths.data && (
-            <Label
-              key={index}
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="success"
-            >
+            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="success">
               {capitalCase(trimmedStrengths.data)}
             </Label>
           )}
           {trimmedStrengths.other > 0 && (
-            <Label
-              key={index}
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="success"
-            >
+            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="success">
               +{trimmedStrengths.other}{' '}
             </Label>
           )}
@@ -99,20 +91,12 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <StyledTableCell align="left">
         <LabelContainer>
           {trimmedInterests.data && (
-            <Label
-              key={index}
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="secondary"
-            >
+            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="secondary">
               {capitalCase(trimmedInterests.data)}
             </Label>
           )}
           {trimmedInterests.other > 0 && (
-            <Label
-              key={index}
-              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-              color="secondary"
-            >
+            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="secondary">
               +{trimmedInterests.other}
             </Label>
           )}
