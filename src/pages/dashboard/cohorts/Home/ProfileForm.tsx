@@ -62,59 +62,63 @@ const StyledSelect = styled(Select)(({ theme }) => ({
 }));
 
 const customStyles = {
-  container: (provided: any, state: any) => ({
-    ...provided,
-    width: '100%',
-    minHeight: '29px'
-  }),
-  control: (provided: any, state: any) => ({
-    ...provided,
-    height: '55px',
-    borderRadius: '6px',
-    borderColor: state.isFocused ? '1939B7' : '#CFD8DC',
-    ':hover': {
-      borderColor: '#071A33',
-      borderRadius: 8
-    },
-    overflowY: 'scroll'
-  }),
-  dropdownIndicator: (provided: any) => ({
-    ...provided,
-    position: 'sticky',
-    top: 10,
-    right: 0,
-    zIndex: 10
-  }),
-  multiValueLabel: (provided: any) => ({
-    ...provided,
-    color: '#1939B7',
-    fontWeight: 'bold',
-    fontSize: '0.75rem'
-  }),
-  indicatorSeparator: (provided: any) => ({
-    ...provided,
-    display: 'none'
+  // container: (provided: any, state: any) => ({
+  //   ...provided,
+  //   width: '100%',
+  //   minHeight: '29px'
+  // }),
+  // control: (provided: any, state: any) => ({
+  //   ...provided,
+  //   height: '55px',
+  //   borderRadius: '6px',
+  //   borderColor: state.isFocused ? '1939B7' : '#CFD8DC',
+  //   ':hover': {
+  //     borderColor: '#071A33',
+  //     borderRadius: 8
+  //   },
+  //   overflowY: 'scroll'
+  // }),
+  // dropdownIndicator: (provided: any) => ({
+  //   ...provided,
+  //   position: 'sticky',
+  //   top: 10,
+  //   right: 0,
+  //   zIndex: 10
+  // }),
+  // multiValueLabel: (provided: any) => ({
+  //   ...provided,
+  //   color: '#1939B7',
+  //   fontWeight: 'bold',
+  //   fontSize: '0.75rem'
+  // }),
+  // indicatorSeparator: (provided: any) => ({
+  //   ...provided,
+  //   display: 'none'
+  // })
+  placeholder: (provided: any, state: any) => ({
+    display: state.isFocused ? 'none' : 'block',
+    color: 'rgb(128, 128, 128)'
   })
 };
 
 const greenCustomsStyle = {
-  ...customStyles,
-  multiValue: (provided: any) => ({
-    ...provided,
-    backgroundColor: 'rgba(84, 214, 44, 0.24)',
-    height: 22,
-    borderRadius: '8px'
-  })
+  ...customStyles
+  // multiValue: (provided: any) => ({
+  //   ...provided,
+  //   backgroundColor: 'rgba(84, 214, 44, 0.24)',
+  //   height: 22,
+  //   borderRadius: '8px'
+  // })
 };
 
 const blueCustomsStyle = {
-  ...customStyles,
-  multiValue: (provided: any) => ({
-    ...provided,
-    backgroundColor: 'rgba(51, 102, 255, 0.16)',
-    height: 22,
-    borderRadius: '8px'
-  })
+  ...customStyles
+  // multiValue: (provided: any) => ({
+  //   ...provided,
+  //   backgroundColor: 'rgba(51, 102, 255, 0.16)',
+  //   height: 22,
+  //   borderRadius: '8px'
+  // })
 };
 
 export default function ProfileForm({
@@ -261,7 +265,7 @@ export default function ProfileForm({
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth disabled={isOnboardingModal}>
                       <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
                       <Select
                         fullWidth
@@ -307,7 +311,7 @@ export default function ProfileForm({
 
                         <CreatableSelect
                           defaultValue={defaultInterests}
-                          // styles={blueCustomsStyle}
+                          styles={blueCustomsStyle}
                           placeholder={<div>Start typing whatever comes to mind!</div>}
                           options={interestOptions}
                           isClearable={false}
@@ -329,7 +333,7 @@ export default function ProfileForm({
                         </Typography>
                         <CreatableSelect
                           defaultValue={defaultStrengths}
-                          // styles={greenCustomsStyle}
+                          styles={greenCustomsStyle}
                           placeholder={<div>Start typing whatever comes to mind!</div>}
                           options={strengthsOptions}
                           isClearable={false}

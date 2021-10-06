@@ -46,6 +46,13 @@ const ANSWER_TYPES = {
   CREATE_MULTI_SELECT: 'create-multi-select'
 };
 
+const customStyles = {
+  placeholder: (provided: any, state: any) => ({
+    display: state.isFocused ? 'none' : 'block',
+    color: 'rgb(128, 128, 128)'
+  })
+};
+
 function TextInput({ submitted_answer, onChange }: TextInputProps) {
   return (
     <TextField
@@ -138,6 +145,7 @@ function CreateMultiSelect({
         defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
         options={options?.map((option) => ({ value: option, label: option }))}
         isClearable={false}
+        styles={customStyles}
         backspaceRemovesValue={true}
         placeholder={<div>Start typing whatever comes to mind!</div>}
         isMulti
