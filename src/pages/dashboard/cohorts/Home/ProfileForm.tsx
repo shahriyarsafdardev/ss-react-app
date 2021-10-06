@@ -283,16 +283,16 @@ export default function ProfileForm({
                     </FormControl>
                     <TextField
                       fullWidth
-                      label="Current position"
-                      {...getFieldProps('current_position')}
+                      label="Linkedin Url"
+                      {...getFieldProps('linkedin_url')}
+                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                      helperText={touched.linkedin_url && errors.linkedin_url}
                     />
                   </Stack>
                   <TextField
                     fullWidth
-                    label="Linkedin Url"
-                    {...getFieldProps('linkedin_url')}
-                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                    helperText={touched.linkedin_url && errors.linkedin_url}
+                    label="Current position"
+                    {...getFieldProps('current_position')}
                   />
 
                   {!isOnboardingModal && (

@@ -101,7 +101,6 @@ const Step1Container = styled(Box)(() => ({
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
   margin: '20px 0',
-  height: '40vh',
   padding: '1rem 0',
   backgroundColor: '#F4F6F8'
 }));
@@ -149,13 +148,7 @@ const questions = [
   {
     question_type: 'multi-select',
     title: 'What are you looking to find within the Scholarsite community?',
-    options: [
-      'Find a mentor',
-      'Mentor others',
-      'Grow my network',
-      'Discuss materials',
-      'Not interested'
-    ],
+    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
     submitted_answer: null
   },
   {
@@ -314,7 +307,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep >= 1 && activeStep <= totalSteps - 3) {
-      return ' Now we just want to ask you a few questions so we can get to know you better';
+      return "First off, we'd like to ask you a few questions so we can get to know you better";
     }
     return '';
   };
