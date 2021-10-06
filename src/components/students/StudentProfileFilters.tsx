@@ -69,9 +69,10 @@ export default function StudentProfileFilters({
           onChange={handleCompanyChange}
           label="Filter by Company"
           renderValue={(selected) => selected.join(', ')}
+          MenuProps={{ sx: { maxHeight: 500 } }}
         >
           {companies?.map((name: any) => (
-            <MenuItem key={name} value={name}>
+            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
               <Checkbox checked={selectedCompanies.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
@@ -88,9 +89,10 @@ export default function StudentProfileFilters({
           onChange={handleStrengthChange}
           label="Filter by Strengths"
           renderValue={(selected) => selected.join(', ')}
+          MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
         >
           {strengths?.map((name: any) => (
-            <MenuItem key={name} value={name}>
+            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
               <Checkbox checked={selectedStrengths.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
@@ -107,9 +109,10 @@ export default function StudentProfileFilters({
           onChange={handleInterestChange}
           label="Filter by Interests"
           renderValue={(selected) => selected.join(', ')}
+          MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
         >
           {interests?.map((name: any) => (
-            <MenuItem key={name} value={name}>
+            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
               <Checkbox checked={selectedInterests.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
