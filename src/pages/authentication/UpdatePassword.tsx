@@ -61,10 +61,8 @@ export default function UpdatePassword() {
             </>
           ) : (
             <Box sx={{ textAlign: 'center' }}>
-              <SentIcon sx={{ mb: 5, mx: 'auto', height: 160 }} />
-
               <Typography variant="h3" gutterBottom>
-                Password update Successfully
+                Your password has been updated successfully!
               </Typography>
 
               <Button
@@ -74,7 +72,7 @@ export default function UpdatePassword() {
                 to={PATH_AUTH.login}
                 sx={{ mt: 5 }}
               >
-                Back
+                Login with your new password
               </Button>
             </Box>
           )}
