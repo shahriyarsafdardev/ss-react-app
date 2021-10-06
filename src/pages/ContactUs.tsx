@@ -51,12 +51,12 @@ export default function ContactUs() {
       last_name: 'Obeto',
       current_position: 'Head of Community',
       email: 'joe@scholarsite.io',
-      phone: '+1 734 720 2996',
+      phone: '+1 415 691 5146',
       profile_image_url: '/static/contact/Joe.jpeg',
       linkedin_url: 'https://www.linkedin.com/in/obetojoachim/',
       current_company: {
         id: '',
-        name: 'Scholar Site',
+        name: 'ScholarSite',
         logo_url: '/static/contact/companyLogo.svg'
       },
       discord_url: 'https://discordapp.com/users/893656080914186251'
@@ -66,12 +66,12 @@ export default function ContactUs() {
       last_name: 'Nunn',
       current_position: 'Head of Operations',
       email: 'olivia@scholarsite.io',
-      phone: '+1 734 720 2996',
+      phone: '+1 347 225 3144',
       profile_image_url: '/static/contact/Olivia.png',
       linkedin_url: 'https://www.linkedin.com/in/olivia-nunn-29845990/',
       current_company: {
         id: '',
-        name: 'Scholar Site',
+        name: 'ScholarSite',
         logo_url: '/static/contact/companyLogo.svg'
       },
       discord_url: 'https://discordapp.com/users/893656080914186251'
@@ -86,7 +86,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/nicholasrudder/',
       current_company: {
         id: '',
-        name: 'Scholar Site',
+        name: 'ScholarSite',
         logo_url: '/static/contact/companyLogo.svg'
       },
       discord_url: 'https://discordapp.com/users/875140709898928130'
@@ -101,7 +101,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/adrian-sarstedt-375623133/',
       current_company: {
         id: '',
-        name: 'Scholar Site',
+        name: 'ScholarSite',
         logo_url: '/static/contact/companyLogo.svg'
       },
       discord_url: 'https://discordapp.com/users/811400748020662284'
