@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import LoadingScreen from 'components/LoadingScreen';
 import { RootState, useSelector } from '../../redux/store';
 
 export default function RedirectToCohort() {
@@ -7,6 +8,8 @@ export default function RedirectToCohort() {
 
   if (cohorts.length > 0) {
     navigationUrl = `/cohorts/${cohorts[0].id}/sessions`;
+  } else {
+    return <LoadingScreen />;
   }
   return <Navigate to={navigationUrl} replace />;
 }
