@@ -17,8 +17,7 @@ type StudentProfileRowProps = {
 };
 
 const StyledTableCell = styled(TableCell)(() => ({
-  borderBottom: '1px solid rgba(224, 224, 224, 1)',
-  padding: 'auto 0'
+  borderBottom: '1px solid rgba(224, 224, 224, 1)'
 }));
 
 const CONTENT_LIMIT = 15;
@@ -63,7 +62,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       style={{ cursor: 'pointer' }}
       id={`student-row-${id}`}
     >
-      <StyledTableCell component="th" scope="row" padding="none">
+      <StyledTableCell component="th" scope="row" style={{ width: 200 }} padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={first_name} src={profile_image_url} />
           <Typography variant="subtitle2" noWrap>
@@ -71,7 +70,9 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
           </Typography>
         </Stack>
       </StyledTableCell>
-      <StyledTableCell align="left">{trimString(current_company.name)}</StyledTableCell>
+      <StyledTableCell align="left" style={{ width: 150 }}>
+        {trimString(current_company.name)}
+      </StyledTableCell>
       <StyledTableCell align="left">{trimString(current_position)}</StyledTableCell>
       <StyledTableCell align="left">
         <LabelContainer>
