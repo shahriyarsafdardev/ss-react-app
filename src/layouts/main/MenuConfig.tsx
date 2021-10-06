@@ -47,6 +47,7 @@ const menuConfig = [
           { title: 'Login', path: PATH_AUTH.loginUnprotected },
           { title: 'Register', path: PATH_AUTH.registerUnprotected },
           { title: 'Reset password', path: PATH_AUTH.resetPassword },
+          { title: 'Update password', path: PATH_AUTH.updatePassword },
           { title: 'Verify code', path: PATH_AUTH.verify }
         ]
       },

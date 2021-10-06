@@ -74,7 +74,7 @@ export default function ResetPasswordForm({ onSent, onGetEmail }: ResetPasswordF
             variant="contained"
             loading={isSubmitting}
           >
-            Reset Password
+            Send Email
           </LoadingButton>
         </Stack>
       </Form>
