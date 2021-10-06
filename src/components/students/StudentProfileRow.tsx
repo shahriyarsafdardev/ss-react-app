@@ -29,17 +29,11 @@ const trimString = (data: string) => {
   return '';
 };
 
-const ARRAY_LIMIT = 10;
-const trimArray = (data: string[]) => {
-  if (Array.isArray(data)) {
-    let currentContentSize = 0;
-    const trimmedData = data.filter((datum: string) => {
-      currentContentSize += datum.length;
-      return currentContentSize <= ARRAY_LIMIT;
-    });
-    return { data: trimmedData, other: data.length - trimmedData.length };
+const trimArray = (data: any) => {
+  if (Array.isArray(data) && data.length > 0) {
+    return { data: data[0], other: data.length - 1 };
   }
-  return { data, other: 0 };
+  return { data: '', other: 0 };
 };
 
 export default function StudentProfileRow({ row, index, modalHandler }: StudentProfileRowProps) {
@@ -81,16 +75,15 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <StyledTableCell align="left">{trimString(current_position)}</StyledTableCell>
       <StyledTableCell align="left">
         <LabelContainer>
-          {trimmedStrengths.data.length > 0 &&
-            trimmedStrengths.data.map((strength: string) => (
-              <Label
-                key={index}
-                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color="success"
-              >
-                {capitalCase(strength)}
-              </Label>
-            ))}
+          {trimmedStrengths.data && (
+            <Label
+              key={index}
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="success"
+            >
+              {capitalCase(trimmedStrengths.data)}
+            </Label>
+          )}
           {trimmedStrengths.other > 0 && (
             <Label
               key={index}
@@ -104,16 +97,15 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       </StyledTableCell>
       <StyledTableCell align="left">
         <LabelContainer>
-          {trimmedInterests.data.length > 0 &&
-            trimmedInterests.data.map((interest: string) => (
-              <Label
-                key={index}
-                variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                color="secondary"
-              >
-                {capitalCase(interest)}
-              </Label>
-            ))}
+          {trimmedInterests.data && (
+            <Label
+              key={index}
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="secondary"
+            >
+              {capitalCase(trimmedInterests.data)}
+            </Label>
+          )}
           {trimmedInterests.other > 0 && (
             <Label
               key={index}
