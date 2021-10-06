@@ -135,3 +135,15 @@ export type AccountBillingFormikProps = FormikProps<{
   cardExpired: string;
   cardCvv: string;
 }>;
+
+export type ParticipantProfile = {
+  first_name: string;
+  last_name: string;
+  linkedin_url: string;
+  discord_url: string;
+  profile_image_url: File | any;
+  current_company: string;
+  current_position: string;
+  strengths: string[] | any;
+  interests: string[] | any;
+};

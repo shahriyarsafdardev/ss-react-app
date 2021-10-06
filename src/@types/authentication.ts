@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import { ParticipantProfile } from './user';
 
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -28,7 +29,7 @@ export type JWTContextType = {
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => void;
-  updateProfile: VoidFunction;
+  updateProfile: (user: ParticipantProfile) => void;
   changePassword: (email: string) => Promise<void>;
 };
 

@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
 import axios from '../utils/axios';
+import { ParticipantProfile } from '../@types/user';
+
 import { isValidToken, setSession } from '../utils/jwt';
 // @types
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/authentication';
@@ -186,7 +188,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const updateProfile = () => {};
+  const updateProfile = async (user: ParticipantProfile) => {
+    dispatch({
+      type: Types.Initial,
+      payload: {
+        isAuthenticated: true,
+        user
+      }
+    });
+  };
 
   return (
     <AuthContext.Provider

@@ -9,6 +9,7 @@ import { LoadingButton } from '@material-ui/lab';
 import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
 import { useDispatch } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
+import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
 import SurveyRow from '../sessions/SurveyRow';
 
@@ -31,18 +32,6 @@ type HomeResponse = {
     strengths: string[];
     interests: string[];
   };
-};
-
-type ParticipantProfile = {
-  first_name: string;
-  last_name: string;
-  linkedin_url: string;
-  discord_url: string;
-  profile_image_url: File | any;
-  current_company: string;
-  current_position: string;
-  strengths: string[] | any;
-  interests: string[] | any;
 };
 
 const MODAL_HEIGHT = '600px';
@@ -179,7 +168,7 @@ const questions = [
 
 export default function OnboardingModal() {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(0);
@@ -231,12 +220,12 @@ export default function OnboardingModal() {
     values.strengths && uploadData.append('strengths', values.strengths);
     values.interests && uploadData.append('interests', values.interests);
     values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
-    console.log(values.profile_image_url);
-    console.log(values);
+
     await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
       setModal(false);
       enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
       dispatch(updateOnboardingStatus(cohort_id));
+      updateProfile({ ...values, profile_image_url: values.profile_image_url.preview });
     });
   };
 
