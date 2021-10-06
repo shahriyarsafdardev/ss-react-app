@@ -20,7 +20,8 @@ const cohortsConfig = (rawCohorts: any) =>
     children: [
       { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
       { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'discord', path: cohort.discord_directory_url, externalUrl: true }
+      { title: 'discord', path: cohort.discord_directory_url, externalUrl: true },
+      { title: 'Q&A', path: 'https://app.scholarsite.io/andrei-hagiu/questions', externalUrl: true }
     ]
   }));
 
