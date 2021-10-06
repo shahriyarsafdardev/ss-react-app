@@ -20,7 +20,7 @@ const StyledTableCell = styled(TableCell)(() => ({
   borderBottom: '1px solid rgba(224, 224, 224, 1)'
 }));
 
-const CONTENT_LIMIT = 15;
+const CONTENT_LIMIT = 25;
 const trimString = (data: string) => {
   if (typeof data === 'string') {
     return data.length > CONTENT_LIMIT ? `${data.slice(0, CONTENT_LIMIT)}...` : data;
