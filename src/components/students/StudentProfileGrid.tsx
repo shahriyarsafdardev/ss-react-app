@@ -13,7 +13,7 @@ export default function StudentProfileGrid({ students, modalHandler }: StudentPr
   return (
     <Grid container spacing={3} id="peer-grid-container">
       {students?.map((peer) => (
-        <Grid key={peer.id} item xs={12} sm={6} md={4}>
+        <Grid key={peer.id} item xs={12} sm={4} md={3}>
           <StudentProfileCard peer={peer} modalHandler={modalHandler} />
         </Grid>
       ))}

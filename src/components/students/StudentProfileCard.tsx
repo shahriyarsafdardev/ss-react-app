@@ -10,7 +10,7 @@ import SvgIconStyle from '../SvgIconStyle';
 
 const CardMediaStyle = styled('div')(({ theme }) => ({
   display: 'flex',
-  height: '300px',
+  height: '230px',
   position: 'relative',
   justifyContent: 'center',
   paddingTop: 'calc(100% * 9 / 16)',
@@ -24,6 +24,12 @@ const CardMediaStyle = styled('div')(({ theme }) => ({
     borderTopLeftRadius: theme.shape.borderRadiusMd,
     borderTopRightRadius: theme.shape.borderRadiusMd
   }
+}));
+
+const StyledCard = styled(Card)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%'
 }));
 
 const CoverImgStyle = styled('img')(({ theme }) => ({
@@ -53,7 +59,7 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   return (
-    <Card
+    <StyledCard
       onClick={() => modalHandler(peer)}
       style={{ cursor: 'pointer', paddingBottom: 25 }}
       id={peer.id ? `peer-grid-${peer.id}` : ''}
@@ -88,12 +94,12 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
         {`${first_name} ${last_name}`}
       </Typography>
 
-      <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
+      <Typography variant="body2" align="center" sx={{ color: 'text.primary', paddingX: '10px' }}>
         {current_company?.name}
       </Typography>
-      <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
+      <Typography variant="body2" align="center" sx={{ color: 'text.secondary', paddingX: '15px' }}>
         {current_position}
       </Typography>
-    </Card>
+    </StyledCard>
   );
 }
