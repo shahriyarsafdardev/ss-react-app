@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 // material
-import { Container } from '@material-ui/core';
-
+import { Container, Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
+import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 
 // hooks
@@ -21,6 +22,11 @@ import {
   StudentProfileModal
 } from '../../components/students';
 // ----------------------------------------------------------------------
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
 
 export default function PeersTab() {
   const { themeStretch } = useSettings();
@@ -163,28 +169,34 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
-        <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
-        <StudentProfileModal
-          modalState={Object.keys(modalState).length > 0}
-          modalHandler={modalHandler}
-          modalUser={modalState}
-        />
-        <StudentProfileFilters
-          companies={companies}
-          selectedCompanies={selectedCompanies}
-          strengths={strengths}
-          selectedStrengths={selectedStrengths}
-          interests={interests}
-          selectedInterests={selectedInterests}
-          handleCompanyChange={handleChange}
-          handleStrengthChange={handleStrengthChange}
-          handleInterestChange={handleInterestChange}
-          setView={setView}
-          view={view}
-        />
-        {view === 'card' ? showCardView() : showTableView()}
-      </Container>
+      {peers ? (
+        <Container maxWidth={themeStretch ? false : 'lg'}>
+          <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
+          <StudentProfileModal
+            modalState={Object.keys(modalState).length > 0}
+            modalHandler={modalHandler}
+            modalUser={modalState}
+          />
+          <StudentProfileFilters
+            companies={companies}
+            selectedCompanies={selectedCompanies}
+            strengths={strengths}
+            selectedStrengths={selectedStrengths}
+            interests={interests}
+            selectedInterests={selectedInterests}
+            handleCompanyChange={handleChange}
+            handleStrengthChange={handleStrengthChange}
+            handleInterestChange={handleInterestChange}
+            setView={setView}
+            view={view}
+          />
+          {view === 'card' ? showCardView() : showTableView()}
+        </Container>
+      ) : (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      )}
     </Page>
   );
 }

@@ -6,9 +6,7 @@ import { Box, BoxProps } from '@material-ui/core';
 
 export default function Logo({ sx }: BoxProps) {
   const theme = useTheme();
-  const PRIMARY_LIGHT = theme.palette.primary.light;
   const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARK = theme.palette.primary.dark;
 
   return (
     <Box sx={{ width: 40, height: 40, ...sx }}>
@@ -22,8 +20,8 @@ export default function Logo({ sx }: BoxProps) {
             y2="19.9911"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
+            <stop stopColor="#7474D0" />
+            <stop offset="1" stopColor="#4D4DCD" />
           </linearGradient>
           <linearGradient
             id="paint1_linear"
@@ -33,8 +31,8 @@ export default function Logo({ sx }: BoxProps) {
             y2="14.0176"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
+            <stop stopColor="#7474D0" />
+            <stop offset="1" stopColor="#4D4DCD" />
           </linearGradient>
         </defs>
         <g fill={PRIMARY_MAIN} fillRule="evenodd" stroke="none" strokeWidth="1">
