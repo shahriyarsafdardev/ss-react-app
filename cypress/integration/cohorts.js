@@ -30,12 +30,14 @@ describe('todo app', () => {
     cy.get('[data-testid=email]').type(email);
     cy.get('[data-testid=password]').type(password);
 
-    // const email = 'aqibmaqqbool@gmail.com';
-    // cy.get("input[name='email']").type(email).should('have.value', email);
-    // cy.get("input[name='password']").type('aqib1234');
-    cy.fixture('cohorts/login.json').as('loginData');
+    cy.intercept('POST', `${serverUrl}/users/login`, { fixture: 'cohorts/login.json' }).as('login');
+    cy.fixture('cohorts/cohorts.json').as('cohortsData');
     console.log('url ->>>', serverUrl);
-    cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+    cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
+
+    // cy.fixture('cohorts/login.json').as('loginData');
+    // console.log('url ->>>', serverUrl);
+    // cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
     cy.get('[data-testid=loginBtn]').click();
     // cy.get('.MuiLoadingButton-root').click();
 
@@ -47,13 +49,10 @@ describe('todo app', () => {
     // await page.click("input[name='password']");
     // await page.type("input[name='password']", 'aqib1234');
     // cy.route('post', `${serverUrl}/login.json`, '@loginData').as('login');
-    cy.fixture('cohorts/cohorts.json').as('cohortsData');
-    console.log('url ->>>', serverUrl);
-    cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
+
     // cy.intercept('GET', `${serverUrl}/cohorts.json`, {
     //   fixture: 'cohorts/cohorts.json'
     // }).as('cohorts');
-    cy.wait('@cohorts');
     // cy.route(
     //   'GET',
     //   'https://scholarsite-staging.herokuapp.com/api/v1/cohorts.json',
