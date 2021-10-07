@@ -9,8 +9,13 @@ describe('login flow', () => {
   it('should log user into app', () => {
     cy.fixture('cohorts/cohorts.json').as('cohortsData');
     cy.fixture('cohorts/login.json').as('loginData');
-
+    cy.fixture('session/sessions.json').as('sessionData');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
+    cy.route(
+      'GET',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions.json`,
+      '@sessionData'
+    ).as('sessions');
     cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
 
     cy.visit('/');
