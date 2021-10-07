@@ -1,6 +1,19 @@
-[
-  {
-    "id": "cohort-1",
-    "name": "The Economics of Digital Platforms"
-  }
-]
+{
+  "data": [
+    200,
+    {
+      "cohorts": [
+        {
+          "id": "cohort-1",
+          "name": "The Economics of Digital Platforms"
+        },
+
+        {
+          "id": "cohort-2",
+          "name": "Hello"
+        }
+      ]
+    }
+  ],
+  "status": "success"
+}
