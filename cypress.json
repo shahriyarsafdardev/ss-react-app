@@ -1,0 +1,7 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "env": {
+    "serverUrl": "https://scholarsite-staging.herokuapp.com/api/v1"
+  },
+  "ignoreTestFiles": "*e2e*"
+}
