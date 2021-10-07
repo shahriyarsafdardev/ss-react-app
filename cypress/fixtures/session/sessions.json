@@ -3,7 +3,7 @@
   "sessions": [
     {
       "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
-      "name": "Network Effects and Economies of Scale",
+      "name": "Test Cohort 1",
       "description": "\u003cul\u003e\u003cli\u003eGain economic frameworks to understand and manage network businesses\u003c/li\u003e\u003cli\u003eUnderstand cost/benefit aspects of platform-based network businesses\u003c/li\u003e\u003cli\u003eIdentify strategic considerations for two-sided and multi-sided platform businesses\u003c/li\u003e\u003c/ul\u003e",
       "recording_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4",
       "time": "2021-09-27T13:00:00.000Z",
@@ -16,34 +16,8 @@
       "resources": []
     },
     {
-      "id": "85e935e9-2365-48f3-8109-946607c32be0",
-      "name": "Designing Digital Platforms",
-      "description": "\u003cul\u003e\u003cli\u003eIdentify the building blocks of designing platform marketplaces\u003c/li\u003e\u003cli\u003eGrasp frameworks for pricing strategies and the workings of online auctions\u003c/li\u003e\u003cli\u003eUnderstand the role of big data as a strategic asset in platform marketplaces\u003c/li\u003e\u003c/ul\u003e",
-      "recording_url": "",
-      "time": "2021-09-30T03:00:00.000Z",
-      "number": 2,
-      "summary": "\u003cp\u003eThis lecture describes the main components of a variety of digital platform business models. In addition to spelling out the economic forces behind the most common business models, we will explore key components to revenue generation that include pricing, product versioning, marketplace fees, auctions and their role in the digital economy, and how big-Data can become an important strategic asset\u003c/p\u003e",
-      "length": "120m",
-      "presentation_pdf_url": null,
-      "survey_completed": false,
-      "resources": []
-    },
-    {
-      "id": "e68218f4-f6a3-43fe-bbff-9a39ee848a30",
-      "name": "Trust in Online Markets",
-      "description": "\u003cul\u003e\u003cli\u003eIdentify the workings and failings of online feedback and review systems\u003c/li\u003e\u003cli\u003eUnderstand how a customer’s journey data helps complement online feedback\u003c/li\u003e\u003cli\u003eRealize how recommender and ranking algorithms create value\u003c/li\u003e\u003c/ul\u003e",
-      "recording_url": "",
-      "time": "2021-10-02T03:00:00.000Z",
-      "number": 3,
-      "summary": "\u003cp\u003eThis lecture explores reviews and feedback mechanisms that play the role of fostering trust in online marketplaces. We will see how these systems often, if not always, include significant biases and strategies for removing bias from feedback and reputation systems are explored. We will also discuss the role of recommender systems in a variety of digital platforms.\u003c/p\u003e",
-      "length": "120m",
-      "presentation_pdf_url": null,
-      "survey_completed": true,
-      "resources": []
-    },
-    {
       "id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
-      "name": "Customer Acquisition, LTV and Advertising ROI",
+      "name": "Test Cohort 2",
       "description": "\u003cul\u003e\u003cli\u003eLearn frameworks for evaluating customer value and engagement\u003c/li\u003e\u003cli\u003eIdentify the challenges of using online advertising to grow your business\u003c/li\u003e\u003cli\u003eUnderstand how to correctly account for biases in measuring ad ROI\u003c/li\u003e\u003c/ul\u003e",
       "recording_url": "",
       "time": "2021-10-05T03:00:00.000Z",
@@ -56,7 +30,7 @@
     },
     {
       "id": "34921bef-e92d-4523-851c-ba084148d49c",
-      "name": "Regulating the Digital Economy",
+      "name": "Test Cohort 3",
       "description": "\u003cul\u003e\u003cli\u003eLearn the fundamentals of Net Neutrality and its impact on the online ecosystem\u003c/li\u003e\u003cli\u003eAppreciate the subtleties of nascent competition and the role of Acqui-hiring\u003c/li\u003e\u003cli\u003eUnderstand the debate around online privacy and the impacts privacy regulation\u003c/li\u003e\u003c/ul\u003e",
       "recording_url": "",
       "time": "2021-10-07T12:00:00.000Z",
