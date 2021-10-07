@@ -83,7 +83,10 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     width: '100%'
-  }
+  },
+  position: 'absolute',
+  bottom: '30px',
+  right: '50px'
 }));
 
 const DiscordButton = styled(Button)(({ theme }) => ({
@@ -101,13 +104,15 @@ const Step1Container = styled(Box)(() => ({
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
   margin: '20px 0',
+  marginBottom: '50px',
   padding: '1rem 0',
   backgroundColor: '#F4F6F8'
 }));
 
 const StyledVideoPreview = styled('video')(({ theme }) => ({
-  width: '75%',
-  margin: '3rem auto 1.5rem',
+  width: '92%',
+  marginBottom: '100px',
+  marginTop: '20px',
   borderRadius: '25px',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
@@ -328,7 +333,18 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
         {selectStep()}
         {activeStep !== totalSteps - 1 && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'absolute', bottom: '10px', right: '0px' }}>
+            {/* <StyledButton
+              variant="contained"
+              disabled={activeStep == 0}
+              style={{ marginLeft: '30px', width: '100px !important' }}
+              onClick={() => {
+                setActiveStep(activeStep - 1);
+              }}
+            >
+              Back
+            </StyledButton> */}
+            {/* <div style={{ position: 'absolute', bottom: '0px', right: '0px' }}>Hello</div> */}
             <StyledButton
               variant="contained"
               disabled={
@@ -336,7 +352,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
                 activeStep < totalSteps - 2 &&
                 (!currentAnswer || currentAnswer.length === 0)
               }
-              style={{ marginLeft: '30px' }}
+              // style={{
+              //   marginLeft: '30px',
+              //   width: '100px !important',
+              //   display: 'absolute !important',
+              //   bottom: '10px !important',
+              //   right: '0px !important'
+              // }}
               onClick={() => onStepChange(activeStep)}
             >
               Next
