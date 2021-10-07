@@ -7,8 +7,10 @@
   "discord_invitation_link": "https://discordapp.com/scholarsite",
   "last_recorded_step": 0,
   "participant_profile": {
+    "email": "string",
     "first_name": "string",
     "last_name": "string",
+    "current_position": "string",
     "linkedin_url": "string",
     "discord_url": "string",
     "profile_image_url": "url string",

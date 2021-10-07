@@ -3,27 +3,20 @@
   "peers": [
     {
       "id": "uuid",
-      "first_name": "First Name",
-      "last_name": "Last Name",
+      "email": "string",
+      "first_name": "string",
+      "last_name": "string",
+      "discord_url": "string",
+      "linkedin_url": "string",
       "current_company": {
         "id": "uuid",
-        "name": "Company",
-        "logo_url": "logo_url"
+        "name": "string",
+        "logo_url": "string"
       },
-      "current_position": "Position",
-      "strengths": [
-        {
-          "name": "Strength B",
-          "color": "#111111"
-        }
-      ],
-      "interests": [
-        {
-          "name": "Interest B",
-          "color": "#111111"
-        }
-      ],
-      "profile_image_url": "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Madeline-Mann.jpeg"
+      "current_position": "string",
+      "strengths": "string[]",
+      "interests": "string[]",
+      "profile_image_url": "string"
     }
   ]
 }

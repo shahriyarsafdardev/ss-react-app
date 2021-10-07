@@ -3,34 +3,17 @@
   "sessions": [
     {
       "id": "uuid",
-      "name": "Network Effects and Economics of Digital Platforms",
-      "number": 1,
-      "length": "120m",
-      "survey_completed": false,
+      "name": "string",
+      "number": "number",
+      "length": "string",
+      "survey_completed": "boolean",
       "time": "2020-11-26 19:45:46.101611",
       "description": "block of html",
       "summary": "block of html",
-      "slides": [
-        "https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide48.jpg",
-        "https://www.slideteam.net/media/catalog/product/cache/960x720/p/r/problem_management_approach_good_ppt_example_Slide01.jpg",
-        "https://www.slideteam.net/media/catalog/product/cache/960x720/e/x/example_presentation_of_product_powerpoint_presentation_slides_Slide13.jpg"
-      ],
-      "survey": {
-        "submitted": true,
-        "contents": [
-          {
-            "question_type": "multiple-choice",
-            "title": "1. How did you rate the course?",
-            "options": ["Loved it", "It was okay"],
-            "submitted_answer": "Loved it"
-          },
-          {
-            "question_type": "text-input",
-            "title": "1. Describe your favourite part?",
-            "submitted_answer": "My favourite part was ..."
-          }
-        ]
-      }
+      "presentation_pdf_name": "string",
+      "presentation_pdf_url": "string",
+      "recording_url": "string",
+      "resources": "string"
     }
   ]
 }

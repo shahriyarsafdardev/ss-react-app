@@ -1,17 +1,8 @@
 [
   {
     "id": "uuid",
-    "name": "The Economics of Digital Platforms",
-    "isOnboarded": false
-  },
-  {
-    "id": "uuid",
-    "name": "Investing in the BlockChain",
-    "isOnboarded": true
-  },
-  {
-    "id": "uuid",
-    "name": "How can data science drive decision making?",
-    "isOnboarded": false
+    "name": "string",
+    "discord_directory_url": "string",
+    "isOnboarded": "boolean"
   }
 ]
