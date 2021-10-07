@@ -25,7 +25,7 @@ const customStyles = {
   }
 };
 const StyledModal = styled(Modal)(({ theme }) => ({
-  top: '30%',
+  top: '55%',
   left: '50%',
   right: 'auto',
   bottom: 'auto',

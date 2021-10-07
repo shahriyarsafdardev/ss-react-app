@@ -76,24 +76,31 @@ const QuestionWrapper = styled('div')(() => ({
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  width: '250px !important',
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
   },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
+  [theme.breakpoints.up('sm')]: {
+    position: 'absolute',
+    bottom: '30px',
+    right: '50px',
+    width: '250px !important'
   },
-  position: 'absolute',
-  bottom: '30px',
-  right: '50px'
+  [theme.breakpoints.down('sm')]: {
+    position: null,
+    bottom: null,
+    right: null,
+    width: '100%'
+  }
 }));
 
 const DiscordButton = styled(Button)(({ theme }) => ({
   padding: 11,
-  width: '250px !important',
+  [theme.breakpoints.up('sm')]: {
+    width: '250px !important'
+  },
   [theme.breakpoints.down('sm')]: {
-    width: '100%'
+    width: '90%'
   }
 }));
 
@@ -103,6 +110,7 @@ const Step1Container = styled(Box)(() => ({
 
 const Step2Container = styled(Box)(() => ({
   textAlign: 'center',
+  borderRadius: '10px',
   margin: '20px 0',
   marginBottom: '50px',
   padding: '1rem 0',
@@ -120,7 +128,9 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
 }));
 
 const DiscordDescription = styled(Typography)(() => ({
-  marginBottom: '1.5rem'
+  marginBottom: '1.5rem',
+  marginLeft: '1.5rem',
+  marginRight: '1.5rem'
 }));
 
 const questions = [
@@ -333,37 +343,24 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
         {selectStep()}
         {activeStep !== totalSteps - 1 && (
-          <div style={{ display: 'absolute', bottom: '10px', right: '0px' }}>
-            {/* <StyledButton
-              variant="contained"
-              disabled={activeStep == 0}
-              style={{ marginLeft: '30px', width: '100px !important' }}
-              onClick={() => {
-                setActiveStep(activeStep - 1);
-              }}
-            >
-              Back
-            </StyledButton> */}
-            {/* <div style={{ position: 'absolute', bottom: '0px', right: '0px' }}>Hello</div> */}
-            <StyledButton
-              variant="contained"
-              disabled={
-                activeStep > 0 &&
-                activeStep < totalSteps - 2 &&
-                (!currentAnswer || currentAnswer.length === 0)
-              }
-              // style={{
-              //   marginLeft: '30px',
-              //   width: '100px !important',
-              //   display: 'absolute !important',
-              //   bottom: '10px !important',
-              //   right: '0px !important'
-              // }}
-              onClick={() => onStepChange(activeStep)}
-            >
-              Next
-            </StyledButton>
-          </div>
+          <StyledButton
+            variant="contained"
+            disabled={
+              activeStep > 0 &&
+              activeStep < totalSteps - 2 &&
+              (!currentAnswer || currentAnswer.length === 0)
+            }
+            // style={{
+            //   marginLeft: '30px',
+            //   width: '100px !important',
+            //   display: 'absolute !important',
+            //   bottom: '10px !important',
+            //   right: '0px !important'
+            // }}
+            onClick={() => onStepChange(activeStep)}
+          >
+            Next
+          </StyledButton>
         )}
       </ContentContainer>
     </OnboardingStepsContainer>
