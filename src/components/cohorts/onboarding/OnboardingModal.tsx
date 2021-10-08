@@ -219,7 +219,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const Step1 = () => (
     <Step1Container>
       <StyledVideoPreview
-        src="https://scholarsite-public.s3.eu-west-2.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
+        src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
         poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/andrei-julian-thumbnail.jpeg"
         controls
       />
