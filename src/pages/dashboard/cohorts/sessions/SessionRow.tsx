@@ -55,6 +55,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
 
   return (
     <ListItem
+      id={`session-list-${index}`}
       style={{ ...(isSelected && { backgroundColor: 'rgba(77, 77, 205, 0.03)' }) }}
       onClick={() => onClick(index)}
     >

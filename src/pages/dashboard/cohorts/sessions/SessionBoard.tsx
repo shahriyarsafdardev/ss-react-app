@@ -246,8 +246,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
       <SessionsContainer>
         <Box width="100%" marginBottom={2}>
-          <SessionNumber>{`Session ${session.number} |`} </SessionNumber>
-          <SessionTitle>{session.name}</SessionTitle>
+          <SessionNumber data-testid="session-number">
+            {`Session ${session.number} |`}{' '}
+          </SessionNumber>
+          <SessionTitle data-testid="session-title">{session.name}</SessionTitle>
         </Box>
         {session.recording_url && session.recording_url !== '' ? (
           <StyledVideoPreview
