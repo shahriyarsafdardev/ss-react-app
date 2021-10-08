@@ -11,7 +11,7 @@ import { useDispatch } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
-import SurveyRow from '../sessions/SurveyRow';
+import { Question1, Question2, Question3, Question4, Question5 } from './Questions';
 
 type HomeResponse = {
   cohort_id: string;
@@ -69,11 +69,6 @@ const ContentContainer = styled('div')(({ theme }) => ({
   }
 }));
 
-const QuestionWrapper = styled('div')(() => ({
-  height: '70%',
-  paddingTop: '10px'
-}));
-
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   '&:hover': {
@@ -81,15 +76,9 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     opacity: 0.8
   },
   [theme.breakpoints.up('sm')]: {
-    position: 'absolute',
-    bottom: '30px',
-    right: '50px',
     width: '250px !important'
   },
   [theme.breakpoints.down('sm')]: {
-    position: null,
-    bottom: null,
-    right: null,
     width: '100%'
   }
 }));
@@ -119,7 +108,7 @@ const Step2Container = styled(Box)(() => ({
 
 const StyledVideoPreview = styled('video')(({ theme }) => ({
   width: '92%',
-  marginBottom: '100px',
+  marginBottom: '35px',
   marginTop: '20px',
   borderRadius: '25px',
   [theme.breakpoints.down('sm')]: {
@@ -133,47 +122,6 @@ const DiscordDescription = styled(Typography)(() => ({
   marginRight: '1.5rem'
 }));
 
-const questions = [
-  {
-    question_type: 'multiple-choice',
-    title: 'How did you hear about this cohort?',
-    options: [
-      'Google Search',
-      'Email Marketing',
-      'Social Media',
-      'Recommended by a friend or colleague',
-      'Personally invited by someone in the Scholarsite team',
-      'Other'
-    ],
-    submitted_answer: null
-  },
-  {
-    question_type: 'multiple-choice',
-    title: 'Who is paying for this course?',
-    options: ['I am', 'My employer is', 'Other'],
-    submitted_answer: null
-  },
-  {
-    question_type: 'multiple-choice',
-    title:
-      'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
-    options: ['Yes', 'No', 'Maybe?'],
-    submitted_answer: null
-  },
-  {
-    question_type: 'multi-select',
-    title: 'What are you looking to find within the Scholarsite community?',
-    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
-    submitted_answer: null
-  },
-  {
-    question_type: 'create-multi-select',
-    title: 'What topics can fellow cohort members ask you question on?',
-    options: ['Economics', 'Management', 'Hiring', 'Statistics'],
-    submitted_answer: null
-  }
-];
-
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
@@ -182,9 +130,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [activeStep, setActiveStep] = useState(0);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
-  const [currentAnswer, setCurrentAnswer] = useState<any>(null);
-
-  const totalSteps = questions.length + 3;
+  const [responses, setResponses] = useState<any>([]);
+  const totalSteps = 8;
 
   useEffect(() => {
     axios
@@ -205,9 +152,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     });
 
   const onStepChange = (stepNumber: number) => {
-    if (stepNumber > 0 && stepNumber < totalSteps - 2) {
-      sendStepCompletionRequest(activeStep, currentAnswer || '');
-      setCurrentAnswer(null);
+    if (stepNumber >= 1 && stepNumber <= 5) {
+      sendStepCompletionRequest(activeStep, responses[stepNumber] || '');
     } else {
       sendStepCompletionRequest(activeStep);
     }
@@ -232,8 +178,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     onSubmit();
 
     await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
-      console.log(res.data);
-      console.log('cohort_id', cohort_id);
       setModal(false);
       enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
       dispatch(updateOnboardingStatus(cohort_id));
@@ -274,22 +218,39 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     </Step2Container>
   );
 
-  const OnBoardingQuestions = () => (
-    <QuestionWrapper>
-      <SurveyRow
-        item={questions[activeStep - 1]}
-        submitted_answer={currentAnswer || ''}
-        onChange={setCurrentAnswer}
-      />
-    </QuestionWrapper>
-  );
+  const updateAnswers = (answer: any) => {
+    const newResponse = [...responses];
+    newResponse[activeStep] = answer;
+    setResponses(newResponse);
+  };
 
   const selectStep = () => {
     if (activeStep === 0) {
       return <Step1 />;
     }
 
-    if (activeStep === totalSteps - 1) {
+    if (activeStep === 1) {
+      return <Question1 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
+    }
+
+    if (activeStep === 2) {
+      return <Question2 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
+    }
+    if (activeStep === 3) {
+      return <Question3 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
+    }
+    if (activeStep === 4) {
+      return <Question4 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
+    }
+    if (activeStep === 5) {
+      return <Question5 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
+    }
+
+    if (activeStep === 6) {
+      return <Step3 />;
+    }
+
+    if (activeStep === 7) {
       return (
         <div>
           <Step4
@@ -301,14 +262,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       );
     }
 
-    if (activeStep === totalSteps - 2) {
-      return <Step3 />;
-    }
-
-    if (activeStep >= 1 && activeStep < totalSteps) {
-      return OnBoardingQuestions();
-    }
-
     return <div>All steps are completed!</div>;
   };
 
@@ -317,17 +270,18 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return `Welcome to BINFX F21! Here is a message from your instructors!`;
     }
 
-    if (activeStep === totalSteps - 1) {
-      return 'Finally, fill out your profile for the directory.';
+    if (activeStep >= 1 && activeStep <= 5) {
+      return "First off, we'd like to ask you a few questions so we can get to know you better";
     }
 
-    if (activeStep === totalSteps - 2) {
+    if (activeStep === 6) {
       return 'Next, make sure you join the Discord server so you can interact with the cohort!';
     }
 
-    if (activeStep >= 1 && activeStep <= totalSteps - 3) {
-      return "First off, we'd like to ask you a few questions so we can get to know you better";
+    if (activeStep === 7) {
+      return 'Finally, fill out your profile for the directory.';
     }
+
     return '';
   };
 
@@ -342,26 +296,35 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           showProgressBar={true}
         />
         {selectStep()}
-        {activeStep !== totalSteps - 1 && (
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: activeStep !== 7 ? 'space-between' : 'center',
+            marginTop: activeStep !== 7 ? '0px' : '20px'
+          }}
+        >
           <StyledButton
+            disabled={activeStep <= 0}
             variant="contained"
-            disabled={
-              activeStep > 0 &&
-              activeStep < totalSteps - 2 &&
-              (!currentAnswer || currentAnswer.length === 0)
-            }
-            // style={{
-            //   marginLeft: '30px',
-            //   width: '100px !important',
-            //   display: 'absolute !important',
-            //   bottom: '10px !important',
-            //   right: '0px !important'
-            // }}
-            onClick={() => onStepChange(activeStep)}
+            onClick={() => setActiveStep(activeStep - 1)}
           >
-            Next
+            Previous
           </StyledButton>
-        )}
+
+          {activeStep !== totalSteps - 1 && (
+            <StyledButton
+              variant="contained"
+              disabled={
+                activeStep > 0 &&
+                activeStep < 6 &&
+                (!responses[activeStep] || responses[activeStep].length === 0)
+              }
+              onClick={() => onStepChange(activeStep)}
+            >
+              Next
+            </StyledButton>
+          )}
+        </Box>
       </ContentContainer>
     </OnboardingStepsContainer>
   );
