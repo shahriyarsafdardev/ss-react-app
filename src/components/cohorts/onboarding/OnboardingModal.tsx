@@ -69,17 +69,47 @@ const ContentContainer = styled('div')(({ theme }) => ({
   }
 }));
 
+const ButtonsContainer = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.up('sm')]: {
+    display: 'flex',
+    flex_direction: 'column'
+  }
+}));
+
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  '&:hover': {
-    backgroundColor: '#4D4DCD',
-    opacity: 0.8
+  '&.next': {
+    [theme.breakpoints.up('sm')]: {
+      position: 'absolute',
+      right: '50px',
+      bottom: '30px',
+      width: '200px !important'
+    },
+    '&:hover': {
+      backgroundColor: '#4D4DCD',
+      opacity: 0.8,
+      color: 'white'
+    }
   },
-  [theme.breakpoints.up('sm')]: {
-    width: '250px !important'
+  '&.previous': {
+    [theme.breakpoints.up('sm')]: {
+      position: 'absolute',
+      right: '280px',
+      bottom: '30px',
+      width: '200px !important'
+    },
+    '&:hover': {
+      backgroundColor: 'white',
+      opacity: 0.8
+    }
   },
+
   [theme.breakpoints.down('sm')]: {
-    width: '100%'
+    position: null,
+    bottom: null,
+    right: null,
+    width: '100%',
+    marginTop: '10px'
   }
 }));
 
@@ -296,16 +326,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           showProgressBar={true}
         />
         {selectStep()}
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: activeStep !== 7 ? 'space-between' : 'center',
-            marginTop: activeStep !== 7 ? '0px' : '20px'
-          }}
-        >
+        <ButtonsContainer>
           <StyledButton
             disabled={activeStep <= 0}
-            variant="contained"
+            className="previous"
+            variant="outlined"
             onClick={() => setActiveStep(activeStep - 1)}
           >
             Previous
@@ -314,6 +339,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           {activeStep !== totalSteps - 1 && (
             <StyledButton
               variant="contained"
+              className="next"
               disabled={
                 activeStep > 0 &&
                 activeStep < 6 &&
@@ -324,7 +350,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               Next
             </StyledButton>
           )}
-        </Box>
+        </ButtonsContainer>
       </ContentContainer>
     </OnboardingStepsContainer>
   );
