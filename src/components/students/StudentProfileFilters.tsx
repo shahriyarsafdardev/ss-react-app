@@ -67,7 +67,7 @@ export default function StudentProfileFilters({
   };
 
   return (
-    <ViewSelector>
+    <ViewSelector data-testid="user-filters">
       <FilterFormControl>
         <InputLabel id="view-label">View</InputLabel>
         <Select
