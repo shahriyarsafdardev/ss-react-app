@@ -123,9 +123,11 @@ const blueCustomsStyle = {
 
 export default function ProfileForm({
   onSubmit,
+  showSubmitButton = true,
   userProfile,
   isOnboardingModal = false
 }: {
+  showSubmitButton?: boolean;
   onSubmit: Function;
   isOnboardingModal: boolean;
   userProfile?: {
@@ -214,7 +216,7 @@ export default function ProfileForm({
     <>
       <br />
       <FormikProvider value={formik}>
-        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+        <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
@@ -351,12 +353,13 @@ export default function ProfileForm({
                     </>
                   )}
                 </Stack>
-
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                    Save
-                  </StyledLoadingButton>
-                </Box>
+                {showSubmitButton && (
+                  <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                    <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                      Save
+                    </StyledLoadingButton>
+                  </Box>
+                )}
               </Card>
             </Grid>
           </Grid>

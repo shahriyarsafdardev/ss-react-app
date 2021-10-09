@@ -211,6 +211,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       setModal(false);
       enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
       dispatch(updateOnboardingStatus(cohort_id));
+
       updateProfile({ ...res.data });
     });
   };
@@ -287,6 +288,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             userProfile={homeConfig?.participant_profile}
             isOnboardingModal={true}
             onSubmit={onFormSubmitHandler}
+            showSubmitButton={false}
           />
         </div>
       );
@@ -348,6 +350,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               onClick={() => onStepChange(activeStep)}
             >
               Next
+            </StyledButton>
+          )}
+          {activeStep === 7 && (
+            <StyledButton form="profile-form" type="submit" variant="contained" className="next">
+              Submit
             </StyledButton>
           )}
         </ButtonsContainer>
