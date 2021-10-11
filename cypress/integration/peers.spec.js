@@ -104,6 +104,40 @@ describe('peers tab flow', () => {
       expect(modalContainer.children()[1].children[2].children[1].children[0].textContent).to.eq(
         'Connect with Daniel on LinkedIn'
       );
+      cy.get('[data-testid=close-modal]').click();
+    });
+  });
+  it('should test peers with filters', () => {
+    cy.get('[data-testid=user-filters]').children().eq(1).click();
+    cy.get('[data-value=Upwork]').click();
+    // cy.get('.css-dzh2z7-MuiBackdrop-root-MuiModal-backdrop').click();
+    cy.get('#peer-list-container').children().should('have.length', 1);
+    // cy.get('[data-testid=user-filters]').children().eq(1).click();
+    cy.get('[data-value=Upwork]').click();
+    cy.get('[data-value=Dropbox]').click();
+    cy.get('#peer-list-container').children().should('have.length', 2);
+    cy.get('[data-value=Amazon]').click();
+    cy.get('[data-value=Adobe]').click();
+    cy.get('#peer-list-container').children().should('have.length', 4);
+    cy.get('.MuiBackdrop-root').click({
+      multiple: true,
+      force: true
+    });
+    cy.get('[data-testid=user-filters]').children().eq(2).click();
+    cy.get('[data-value=Teststrength1]').click();
+    cy.get('#peer-list-container').children().should('have.length', 1);
+    cy.get('[data-value=Test1]').click();
+    cy.get('#peer-list-container').children().should('have.length', 2);
+    cy.get('.MuiBackdrop-root').click({
+      multiple: true,
+      force: true
+    });
+    cy.get('[data-testid=user-filters]').children().eq(3).click();
+    cy.get('[data-value=Testinterest1]').click();
+    cy.get('#peer-list-container').children().should('have.length', 1);
+    cy.get('.MuiBackdrop-root').click({
+      multiple: true,
+      force: true
     });
   });
 });

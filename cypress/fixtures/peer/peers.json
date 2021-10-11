@@ -55,8 +55,8 @@
         "name": "Amazon",
         "logo_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/Amazon-logo-b7cd3a"
       },
-      "strengths": ["aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa"],
-      "interests": ["aaaaa", "aaaaa", "aaaaa", "aaaaa"],
+      "strengths": ["aaaaa", "aaaaa", "Test1", "aaaaa", "aaaaa", "aaaaa", "aaaaa"],
+      "interests": ["aaaaa", "aaaaa", "Testinterest1", "aaaaa"],
       "linkedin_url": "https://www.linkedin.com/in/patricia-dodson-274b59123/",
       "current_position": "Principal Product Manager - Technical",
       "discord_url": "https://discordapp.com/users/876858764312080415",
@@ -73,7 +73,7 @@
         "logo_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/Dropbox-logo-f53d01"
       },
       "strengths": [
-        "aaaaa",
+        "Teststrength1",
         "aaaaa",
         "aaaaa",
         "aaaaa",
