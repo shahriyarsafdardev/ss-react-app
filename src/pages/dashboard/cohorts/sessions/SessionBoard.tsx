@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
@@ -157,7 +158,11 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [modalState, setModal] = useState(false);
   const [surveyComplete, setSurveyComplete] = useState(false);
+  const feedBackModal = new URLSearchParams(useLocation().search).get('feedBackModal');
 
+  useEffect(() => {
+    feedBackModal && setModal(true);
+  }, [feedBackModal]);
   console.log(session?.survey_completed);
 
   const SurveyModal = ({
