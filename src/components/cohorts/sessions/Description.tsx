@@ -22,7 +22,7 @@ export default function Description({ innerContent }: DescriptionProps) {
   return (
     <DescriptionContainer>
       {innerContent && innerContent !== '' ? (
-        <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+        <div className="ql-editor" dangerouslySetInnerHTML={{ __html: innerContent }} />
       ) : (
         <Message content="The session resources will be available 2 days before the session." />
       )}
