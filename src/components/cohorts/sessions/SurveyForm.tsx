@@ -139,15 +139,9 @@ export default function SurveyForm({
     }
   }, [setCurrentQuestion, currentQuestion, surveyData]);
 
-  useEffect(() => {
-    console.log(response);
-    console.log(surveyData);
-  }, [response]);
-
   const setQuestionResponse = (value: string, question_id: string) => {
     const newResponses = { ...response };
     newResponses[question_id] = value;
-    console.log(response);
     setResponse(newResponses);
   };
 
@@ -208,7 +202,6 @@ export default function SurveyForm({
               submitted_answer={response[questionID]}
               onChange={(answer: string) => {
                 setQuestionResponse(answer, questionID);
-                console.log(answer);
               }}
             />
           )}
