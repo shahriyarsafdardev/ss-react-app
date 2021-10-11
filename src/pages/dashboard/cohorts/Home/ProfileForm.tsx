@@ -219,7 +219,7 @@ export default function ProfileForm({
         <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
-              <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+              <Card id="temp" sx={{ py: isOnboardingModal ? 6 : 10, px: 3, textAlign: 'center' }}>
                 <UploadAvatar
                   accept="image/*"
                   file={values.profile_image_url}

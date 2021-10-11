@@ -50,7 +50,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
   borderBottomLeftRadius: '25px',
-  [theme.breakpoints.down(1250)]: {
+  [theme.breakpoints.down(1270)]: {
     display: 'none'
   }
 }));
@@ -63,14 +63,14 @@ const ContentContainer = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   borderTopRightRadius: '25px',
   borderBottomRightRadius: '25px',
-  [theme.breakpoints.down(1250)]: {
+  [theme.breakpoints.down(1270)]: {
     borderRadius: '25px',
     height: '100%'
   }
 }));
 
 const ButtonsContainer = styled(Box)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('md')]: {
     display: 'flex',
     flex_direction: 'column'
   }
@@ -79,7 +79,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   '&.next': {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       position: 'absolute',
       right: '50px',
       bottom: '30px',
@@ -92,7 +92,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     }
   },
   '&.previous': {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       position: 'absolute',
       right: '280px',
       bottom: '30px',
@@ -104,7 +104,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     }
   },
 
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down('md')]: {
     position: null,
     bottom: null,
     right: null,
@@ -232,7 +232,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         src="/static/cohorts-home/workplace.svg"
         alt="workplace.svg"
         width={150}
-        style={{ margin: '0 auto 1.5rem' }}
+        style={{ margin: '0 auto 1rem' }}
       />
       <DiscordDescription>
         All cohort communication will be done through the Discord platform. <br />
@@ -283,7 +283,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
     if (activeStep === 7) {
       return (
-        <div>
+        <div style={{ padding: '2.5rem 0' }}>
           <Step4
             userProfile={homeConfig?.participant_profile}
             isOnboardingModal={true}
