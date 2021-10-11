@@ -122,6 +122,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
         </Box>
         <Button
           className={classes.primaryBtn}
+          target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
         >
           Join Zoom
@@ -138,10 +139,21 @@ const SessionInProgress = () => {
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_recorder.svg" alt="date-icon" />
-        <Typography variant="subtitle1" className={classes.content2}>
-          The session has already started, access the link below to join!
-        </Typography>
-        <Button className={classes.primaryBtn}>Join Zoom</Button>
+        <Box className={classes.content2}>
+          <Typography variant="subtitle1">
+            The session has already started, access the link below to join!
+          </Typography>
+          <Typography variant="subtitle2" className={classes.marginTop}>
+            Passcode: 864988
+          </Typography>
+        </Box>
+        <Button
+          className={classes.primaryBtn}
+          target="_blank"
+          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+        >
+          Join Zoom
+        </Button>
       </div>
     </div>
   );
