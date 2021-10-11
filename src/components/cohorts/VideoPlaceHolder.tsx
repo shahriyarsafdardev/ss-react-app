@@ -35,6 +35,7 @@ const useStyes = makeStyles(() => ({
     marginTop: '5px'
   },
   fieldBox: {
+    width: '80px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -83,17 +84,14 @@ const TimerField = ({
   const formatted = value < 10 ? `0${value}` : value;
 
   return (
-    <div className={classes.fieldBox}>
-      <Typography variant="subtitle2" className={classes.content}>
-        {text}
-      </Typography>
-
-      <div style={{ display: 'flex' }}>
-        {showSeparator && <Typography variant="h2">{` :`}</Typography>}
-
-        <Typography width="62px" variant="h2">
-          {formatted}
+    <div style={{ display: 'flex' }}>
+      {showSeparator && <Typography style={{ marginTop: 'auto' }} variant="h2">{` :`}</Typography>}
+      <div className={classes.fieldBox}>
+        <Typography variant="subtitle2" className={classes.content}>
+          {text}
         </Typography>
+
+        <Typography variant="h2">{formatted}</Typography>
       </div>
     </div>
   );
