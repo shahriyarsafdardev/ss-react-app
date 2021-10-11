@@ -19,7 +19,7 @@ export default function Summary({ innerContent }: SummaryProps) {
   return (
     <SummaryContainer>
       {innerContent && innerContent !== '' ? (
-        <div dangerouslySetInnerHTML={{ __html: innerContent }} />
+        <div className="ql-editor" dangerouslySetInnerHTML={{ __html: innerContent }} />
       ) : (
         <Message content="The session summary will be available shortly after this session." />
       )}
