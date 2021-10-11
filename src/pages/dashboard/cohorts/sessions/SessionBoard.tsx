@@ -185,7 +185,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       const sessionTime = new Date(session.time);
       const currentTime = new Date();
       const surveyReleaseTime = sessionTime;
-      surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 2);
+      surveyReleaseTime.setMinutes(surveyReleaseTime.getMinutes() + 90);
 
       if (currentTime > surveyReleaseTime) {
         return true;
