@@ -156,6 +156,7 @@ const SessionNumber = styled('span')(({ theme }) => ({
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [modalState, setModal] = useState(true);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const SurveyModal = ({
     state,
@@ -178,7 +179,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   );
 
   const shouldDisplaySurveyModal = () => {
-    if (session?.survey_completed) return false;
+    if (feedbackSubmitted || session?.survey_completed) return false;
 
     if (session && session.time) {
       const sessionTime = new Date(session.time);
@@ -209,6 +210,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           setState={setModal}
           onComplete={() => {
             setModal(false);
+            setFeedbackSubmitted(true);
           }}
         />
       )}
@@ -224,7 +226,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <VideoPlaceHolder sessionTimeValue={session.time} />
         )}
 
-        {/* {shouldDisplaySurveyModal() && (
+        {shouldDisplaySurveyModal() && (
           <FeedbackButton onClick={() => setModal(true)}>
             <Box className="img-content">
               <img src="/static/icons/navbar/ic_sun.svg" alt="" />
@@ -236,7 +238,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
               </Typography>
             </Box>
           </FeedbackButton>
-        )} */}
+        )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" />
           <SessionTab label="Summary Notes" />
