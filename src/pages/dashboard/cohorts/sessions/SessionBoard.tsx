@@ -155,10 +155,7 @@ const SessionNumber = styled('span')(({ theme }) => ({
 
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
-  const [modalState, setModal] = useState(false);
-  const [surveyComplete, setSurveyComplete] = useState(false);
-
-  console.log(session?.survey_completed);
+  const [modalState, setModal] = useState(true);
 
   const SurveyModal = ({
     state,
@@ -181,13 +178,13 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   );
 
   const shouldDisplaySurveyModal = () => {
-    if (surveyComplete || session?.survey_completed) return false;
+    if (session?.survey_completed) return false;
 
     if (session && session.time) {
       const sessionTime = new Date(session.time);
       const currentTime = new Date();
       const surveyReleaseTime = sessionTime;
-      surveyReleaseTime.setHours(surveyReleaseTime.getHours() - 1);
+      surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 2);
 
       if (currentTime > surveyReleaseTime) {
         return true;
@@ -206,15 +203,15 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   return (
     <Wrapper>
-      {/* {shouldDisplaySurveyModal() && <SurveyModal />} */}
-      <SurveyModal
-        state={modalState}
-        setState={setModal}
-        onComplete={() => {
-          setModal(false);
-          setSurveyComplete(true);
-        }}
-      />
+      {shouldDisplaySurveyModal() && (
+        <SurveyModal
+          state={modalState}
+          setState={setModal}
+          onComplete={() => {
+            setModal(false);
+          }}
+        />
+      )}
 
       <SessionsContainer>
         <Box width="100%" marginBottom={2}>
@@ -227,7 +224,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <VideoPlaceHolder sessionTimeValue={session.time} />
         )}
 
-        {shouldDisplaySurveyModal() && (
+        {/* {shouldDisplaySurveyModal() && (
           <FeedbackButton onClick={() => setModal(true)}>
             <Box className="img-content">
               <img src="/static/icons/navbar/ic_sun.svg" alt="" />
@@ -239,7 +236,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
               </Typography>
             </Box>
           </FeedbackButton>
-        )}
+        )} */}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" />
           <SessionTab label="Summary Notes" />
