@@ -35,16 +35,19 @@ const useStyes = makeStyles(() => ({
     marginTop: '5px'
   },
   fieldBox: {
-    width: '90px',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingLeft: '2px'
   },
   primaryBtn: {
     backgroundColor: '#4D4DCD',
     padding: '12px 120px',
-    color: 'white'
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#4D4DCD',
+      opacity: 0.9
+    }
   }
 }));
 
@@ -84,10 +87,14 @@ const TimerField = ({
       <Typography variant="subtitle2" className={classes.content}>
         {text}
       </Typography>
-      <Typography variant="h2">
-        {formatted}
-        {showSeparator && ' :'}
-      </Typography>
+
+      <div style={{ display: 'flex' }}>
+        {showSeparator && <Typography variant="h2">{` :`}</Typography>}
+
+        <Typography width="62px" variant="h2">
+          {formatted}
+        </Typography>
+      </div>
     </div>
   );
 };
@@ -111,9 +118,9 @@ const TimerPreview = ({ time }: { time: Date }) => {
           Passcode: 864988
         </Typography>
         <Box className={classes.timerRow}>
-          <TimerField text="Hours" value={hours} showSeparator={true} />
+          <TimerField text="Hours" value={hours} />
           <TimerField text="Minutes" value={minutes} showSeparator={true} />
-          <TimerField text="Seconds" value={seconds} />
+          <TimerField text="Seconds" value={seconds} showSeparator={true} />
         </Box>
         <Button
           className={classes.primaryBtn}
