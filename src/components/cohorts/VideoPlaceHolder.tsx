@@ -31,6 +31,9 @@ const useStyes = makeStyles(() => ({
     paddingTop: '20px',
     paddingBottom: '40px'
   },
+  marginTop: {
+    marginTop: '5px'
+  },
   fieldBox: {
     width: '90px',
     display: 'flex',
@@ -104,12 +107,20 @@ const TimerPreview = ({ time }: { time: Date }) => {
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
         <Typography variant="subtitle1">This session is starting soon!</Typography>
+        <Typography variant="subtitle2" className={classes.marginTop}>
+          Passcode: 864988
+        </Typography>
         <Box className={classes.timerRow}>
           <TimerField text="Hours" value={hours} showSeparator={true} />
           <TimerField text="Minutes" value={minutes} showSeparator={true} />
           <TimerField text="Seconds" value={seconds} />
         </Box>
-        <Button className={classes.primaryBtn}>Join Zoom</Button>
+        <Button
+          className={classes.primaryBtn}
+          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+        >
+          Join Zoom
+        </Button>
       </div>
     </div>
   );

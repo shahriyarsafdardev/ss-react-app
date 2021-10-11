@@ -63,6 +63,25 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
+const SessionTitle = styled('span')(({ theme }) => ({
+  fontWeight: 'bolder',
+  minHeight: '50px',
+  fontSize: '1.5rem',
+  [theme.breakpoints.down('md')]: {
+    fontSize: 24
+  }
+}));
+
+const SessionNumber = styled('span')(({ theme }) => ({
+  fontWeight: 400,
+  minHeight: '50px',
+  marginRight: 1,
+  fontSize: '1.5rem',
+  [theme.breakpoints.down('md')]: {
+    fontSize: 24
+  }
+}));
+
 export default function SurveyForm({
   sessionId,
   onComplete,
@@ -98,11 +117,16 @@ export default function SurveyForm({
     }
   }, [setCurrentQuestion, currentQuestion, surveyData]);
 
-  useEffect(() => {}, [response]);
+  useEffect(() => {
+    console.log(response);
+    console.log(surveyData);
+  }, [response]);
 
   const setQuestionResponse = (value: string, question_id: string) => {
-    response[question_id] = value;
-    setResponse(response);
+    const newResponses = { ...response };
+    newResponses[question_id] = value;
+    console.log(response);
+    setResponse(newResponses);
   };
 
   const submitResponse = () => {
@@ -145,9 +169,10 @@ export default function SurveyForm({
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
           <br />
-          <Typography variant="h4">
-            <strong>Feedback Survey</strong>
-          </Typography>
+          <Box width="100%" marginBottom={2}>
+            <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
+            <SessionTitle>Feedback Survey</SessionTitle>
+          </Box>
           <br />
           <ProgressBarContainer>
             <BorderLinearProgress variant="determinate" value={progress()} />
@@ -159,7 +184,10 @@ export default function SurveyForm({
             <SurveyRow
               item={surveyData[currentQuestion]}
               submitted_answer={response[questionID]}
-              onChange={(answer: string) => setQuestionResponse(answer, questionID)}
+              onChange={(answer: string) => {
+                setQuestionResponse(answer, questionID);
+                console.log(answer);
+              }}
             />
           )}
 
@@ -172,13 +200,18 @@ export default function SurveyForm({
             paddingRight="50px"
           >
             <StyledButton
-              variant="contained"
+              variant="outlined"
               disabled={currentQuestion === 0}
               onClick={() => setCurrentQuestion(currentQuestion - 1)}
             >
               Previous Question
             </StyledButton>
-            <StyledButton variant="contained" style={{ marginLeft: '30px' }} onClick={handleNext}>
+            <StyledButton
+              variant="contained"
+              style={{ marginLeft: '30px' }}
+              onClick={handleNext}
+              disabled={response[questionID] === undefined}
+            >
               {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
             </StyledButton>
           </Box>
