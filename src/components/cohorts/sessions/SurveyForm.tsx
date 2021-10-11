@@ -54,12 +54,34 @@ const CurrentStep = styled(Typography)(() => ({
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   flex: 1,
+  '&.right-btn': {
+    marginLeft: '30px !important',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '10px',
+      marginLeft: '0 !important'
+    }
+  },
   '&:hover': {
     backgroundColor: '#4D4DCD',
     opacity: 0.8
   },
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.up('md')]: {
     width: '100%'
+  }
+}));
+
+const ButtonsContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  display: 'flex',
+  justifyContent: 'center',
+  width: '100%',
+  bottom: '0',
+  right: '0',
+
+  [theme.breakpoints.down('md')]: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '0 15px'
   }
 }));
 
@@ -191,14 +213,7 @@ export default function SurveyForm({
             />
           )}
 
-          <Box
-            position="absolute"
-            display="flex"
-            justifyContent="center"
-            width="100%"
-            bottom="0"
-            paddingRight="50px"
-          >
+          <ButtonsContainer>
             <StyledButton
               variant="outlined"
               disabled={currentQuestion === 0}
@@ -208,13 +223,13 @@ export default function SurveyForm({
             </StyledButton>
             <StyledButton
               variant="contained"
-              style={{ marginLeft: '30px' }}
+              className="right-btn"
               onClick={handleNext}
               disabled={response[questionID] === undefined}
             >
               {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
             </StyledButton>
-          </Box>
+          </ButtonsContainer>
         </QuestionContainer>
       ) : (
         <Box padding="200px">
