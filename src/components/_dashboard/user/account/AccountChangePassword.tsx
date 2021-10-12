@@ -54,6 +54,9 @@ export default function AccountChangePassword() {
               label="New Password"
               error={Boolean(touched.newPassword && errors.newPassword)}
               helperText={touched.newPassword && errors.newPassword}
+              inputProps={{
+                'data-testid': 'new-password'
+              }}
             />
 
             <TextField
@@ -64,9 +67,17 @@ export default function AccountChangePassword() {
               label="Confirm New Password"
               error={Boolean(touched.confirmNewPassword && errors.confirmNewPassword)}
               helperText={touched.confirmNewPassword && errors.confirmNewPassword}
+              inputProps={{
+                'data-testid': 'confirm-new-password'
+              }}
             />
 
-            <StyledButton type="submit" variant="contained" loading={isSubmitting}>
+            <StyledButton
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+              id="btn-submit-change-password"
+            >
               Save Changes
             </StyledButton>
           </Stack>

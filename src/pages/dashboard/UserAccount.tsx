@@ -100,6 +100,7 @@ export default function UserAccount() {
               disableRipple
               key={tab.value}
               label={capitalCase(tab.value)}
+              id={tab.value}
               icon={tab.icon}
               value={tab.value}
             />

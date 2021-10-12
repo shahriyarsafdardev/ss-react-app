@@ -369,7 +369,12 @@ export default function ProfileForm({
                 </Stack>
                 {showSubmitButton && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                    <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                    <StyledLoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                      id="btn-submit"
+                    >
                       Save
                     </StyledLoadingButton>
                   </Box>

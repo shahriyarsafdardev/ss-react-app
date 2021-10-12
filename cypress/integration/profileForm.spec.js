@@ -77,4 +77,30 @@ describe('Profile Form', () => {
       force: true
     });
   });
+  it('should update the company and show mocked response', () => {
+    cy.fixture('AccountSettings/profileForm.json').as('updatedProfile');
+    cy.get('#multiple-checkbox-company').click();
+    cy.get('[data-value="Test company 1"]').click();
+    cy.route('POST', `${serverUrl}/users/update_user_profile.json`, '@updatedProfile').as(
+      'update_user_profile'
+    );
+    cy.get('#interest-multiselect').click();
+    cy.get('#react-select-2-input').type('Test {enter}');
+    cy.get('#react-select-2-input').type('Test {enter}');
+
+    cy.get('#strength-multiselect').click();
+    cy.get('#react-select-3-input').type('Test A {enter}');
+    cy.get('#react-select-3-input').type('Test B {enter}');
+    cy.get('#btn-submit').click();
+    cy.wait(2000);
+    cy.get('#change_password').click();
+  });
+  it('should change the password', () => {
+    cy.fixture('AccountSettings/changePassword.json').as('passwordChange');
+    cy.route('POST', `${serverUrl}/users/change_password`, '@passwordChange').as('change_password');
+    cy.get('#change_password').click();
+    cy.get('[data-testid=new-password]').type('123456');
+    cy.get('[data-testid=confirm-new-password]').type('123456');
+    cy.get('#btn-submit-change-password').click();
+  });
 });
