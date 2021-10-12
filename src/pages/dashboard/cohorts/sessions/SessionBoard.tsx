@@ -8,9 +8,6 @@ import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { updateSessionModalState } from '../../../../redux/slices/sessionFeedback';
 import { updateSessionFeedbackStatus } from '../../../../redux/slices/cohort';
 
-// Video player
-import VideoPreview from '../../../../components/cohorts/VideoPreview';
-
 // Video Place Holder
 import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
 
@@ -122,20 +119,9 @@ const SessionsContainer = styled(Container)(({ theme }) => ({
   }
 }));
 
-const StyledVideoPreview = styled(VideoPreview)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
-  },
-  video: {
-    [theme.breakpoints.between(900, 1000)]: {
-      width: '520px',
-      height: 'auto'
-    },
-    [theme.breakpoints.between(1200, 1400)]: {
-      width: '520px',
-      height: 'auto'
-    }
-  }
+const StyledVideoPreview = styled('video')(({ theme }) => ({
+  maxWidth: '100%',
+  borderRadius: '20px'
 }));
 
 const SessionTitle = styled('span')(({ theme }) => ({
@@ -237,7 +223,13 @@ export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
           <SessionTitle>{session.name}</SessionTitle>
         </Box>
         {session.recording_url && session.recording_url !== '' ? (
-          <StyledVideoPreview video_url={session.recording_url} />
+          <StyledVideoPreview
+            src={session.recording_url}
+            poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/BINFX+-+Session+1+20211011.pptx.png"
+            controls
+            controlsList="nodownload"
+            autoPlay={false}
+          />
         ) : (
           <VideoPlaceHolder sessionTimeValue={session.time} />
         )}
