@@ -55,8 +55,14 @@ describe('Profile Form', () => {
   });
   it('should update the company and show mocked response', () => {
     cy.fixture('AccountSettings/profileForm.json').as('updatedProfile');
-    cy.get('#multiple-checkbox-company').click();
-    cy.get('[data-value="Test company 1"]').click();
+    cy.get('#multiple-checkbox-company').click({
+      multiple: true,
+      force: true
+    });
+    cy.get('[data-value="Test company 1"]').click({
+      multiple: true,
+      force: true
+    });
     cy.route('POST', `${serverUrl}/users/update_user_profile.json`, '@updatedProfile').as(
       'update_user_profile'
     );
