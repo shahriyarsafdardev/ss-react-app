@@ -7,31 +7,7 @@ describe('peers tab flow', () => {
     cy.viewport(1400, 700);
   });
   it('should log user into app', () => {
-    cy.fixture('cohorts/cohorts.json').as('cohortsData');
-    cy.fixture('login/login.json').as('loginData');
-    cy.fixture('session/sessions.json').as('sessionData');
-    cy.fixture('session/onboarding.json').as('onboardingData');
-    cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
-    cy.route(
-      'GET',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions.json`,
-      '@sessionData'
-    ).as('sessions');
-    cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
-    cy.route('GET', `${serverUrl}/cohorts/onboarding_complete.json`, '@onboardingData').as(
-      'onboarding_complete'
-    );
-
-    cy.visit('/');
-    const email = 'aqibmaqqbool@gmail.com';
-    const password = 'aqib1234';
-    cy.get('[data-testid=email]').type(email);
-    cy.get('[data-testid=password]').type(password);
-
-    cy.get('[data-testid=loginBtn]').click();
-
-    cy.wait('@login');
-    cy.wait(3000);
+    cy.login();
   });
 
   it('should take user to peers tab', () => {

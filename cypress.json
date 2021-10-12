@@ -3,5 +3,6 @@
   "env": {
     "serverUrl": "https://scholarsite-staging.herokuapp.com/api/v1"
   },
-  "ignoreTestFiles": "*e2e*"
+  "ignoreTestFiles": "*e2e*",
+  "video": false
 }
