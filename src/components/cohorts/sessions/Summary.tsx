@@ -7,9 +7,6 @@ type SummaryProps = {
 };
 
 const SummaryContainer = styled(Container)((props) => ({
-  h2: {
-    lineHeight: '80px'
-  },
   ul: {
     marginLeft: '25px'
   }
