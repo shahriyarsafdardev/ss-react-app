@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, Container, Box } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
+import Modal from 'components/animate/Modal';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
@@ -11,12 +12,15 @@ type NavigationProps = {
   pageNumber: number;
   numPages: number | null;
   pageHandler: Function;
+  setViewType: Function;
+  viewType: string;
 };
 
 const NavigationContainer = styled('div')((props) => ({
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  position: 'relative'
 }));
 
 const StyledButton = styled(Button)((props) => ({
@@ -70,7 +74,25 @@ const PdfDocument = styled(Document)(({ theme }) => ({
   }
 }));
 
-const Navigation = ({ pageNumber, numPages, pageHandler }: NavigationProps) => (
+const ViewToggler = styled(Button)(() => ({
+  position: 'absolute',
+  right: '5px',
+  bottom: '5px',
+  backgroundColor: '#4D4DCD',
+  color: '#FFFFFF',
+  '&:hover': {
+    backgroundColor: '#4D4DCD',
+    opacity: 0.9
+  }
+}));
+
+const Navigation = ({
+  pageNumber,
+  numPages,
+  pageHandler,
+  viewType,
+  setViewType
+}: NavigationProps) => (
   <NavigationContainer>
     <StyledButton disabled={pageNumber === 1} onClick={() => pageHandler(pageNumber - 1)}>
       <img src="/static/icons/ic_chevron_left.svg" alt="" />
@@ -79,12 +101,23 @@ const Navigation = ({ pageNumber, numPages, pageHandler }: NavigationProps) => (
     <StyledButton disabled={pageNumber === numPages} onClick={() => pageHandler(pageNumber + 1)}>
       <img src="/static/icons/ic_chevron_right.svg" alt="" />
     </StyledButton>
+    {viewType === VIEW_TYPES.STANDARD_VIEW && (
+      <ViewToggler onClick={() => setViewType(VIEW_TYPES.FULL_VIEW)}>
+        Full Screen Preview
+      </ViewToggler>
+    )}
   </NavigationContainer>
 );
+
+const VIEW_TYPES = {
+  STANDARD_VIEW: 'standard',
+  FULL_VIEW: 'full'
+};
 
 export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [viewType, setViewType] = useState<string>(VIEW_TYPES.STANDARD_VIEW);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -102,15 +135,35 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
         <StyledPage pageNumber={pageNumber} />
       </PdfDocument>
       {numPages !== null && (
-        <Navigation pageNumber={pageNumber} numPages={numPages} pageHandler={setPageNumber} />
+        <div>
+          <Navigation
+            viewType={viewType}
+            pageNumber={pageNumber}
+            numPages={numPages}
+            setViewType={setViewType}
+            pageHandler={setPageNumber}
+          />
+        </div>
       )}
     </div>
   );
 
+  const renderView = () =>
+    viewType === VIEW_TYPES.STANDARD_VIEW ? (
+      pdfSlider()
+    ) : (
+      <div>
+        <Modal open={true} onClose={() => setViewType(VIEW_TYPES.STANDARD_VIEW)}>
+          {pdfSlider()}
+        </Modal>
+      </div>
+    );
+
   return (
     <Container>
+      {/* // eslint-disable-next-line no-nested-ternary */}
       {pdfUrl && pdfUrl !== '' ? (
-        pdfSlider()
+        renderView()
       ) : (
         <Message content="The presentation slides will be available shortly after this session." />
       )}

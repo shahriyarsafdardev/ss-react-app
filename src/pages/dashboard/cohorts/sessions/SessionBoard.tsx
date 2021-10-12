@@ -259,7 +259,6 @@ export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
           <SessionTab label="Resources" />
           <SessionTab label="Summary Notes" />
           <SessionTab label="Session Slides" />
-          {/* <SessionTab label="Survey" /> */}
         </SessionTabs>
 
         {tabsContent[currentTab]}
