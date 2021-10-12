@@ -64,6 +64,15 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let sessionNumber = Number(params.get('session'));
+    sessionNumber--;
+    if (sessions && sessionNumber && sessionNumber >= 0 && sessionNumber < sessions.length) {
+      setSelectedSession(sessionNumber);
+    }
+  }, [sessions]);
+
+  useEffect(() => {
     dispatch(getSessions(cohort_id));
     axios
       .get('/cohorts/onboarding_complete.json')
