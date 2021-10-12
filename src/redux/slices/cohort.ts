@@ -53,6 +53,23 @@ const slice = createSlice({
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = { ...updated, isOnboarded: true };
       }
+    },
+
+    updateSessionFeedbackStatusSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetSessionIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
+
+        if (targetSessionIndex !== -1) {
+          updated[targetSessionIndex].survey_completed = true;
+          state.cohorts[targetCohortIndex].sessions = updated;
+        }
+      }
     }
   }
 });
@@ -98,6 +115,16 @@ export function updateOnboardingStatus(cohortID: string) {
     try {
       setAuthorizationToken();
       dispatch(slice.actions.updateOnboardingStatusSuccess(cohortID));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateSessionFeedbackStatus(cohortID: string, sessionID: string) {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateSessionFeedbackStatusSuccess({ cohortID, sessionID }));
     } catch (error) {
       console.log(error);
     }

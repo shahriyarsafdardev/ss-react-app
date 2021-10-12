@@ -10,6 +10,7 @@ import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import cohortReducer from './slices/cohort';
+import sessionFeedbackReducer from './slices/sessionFeedback';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ const appReducer = combineReducers({
   user: userReducer,
   calendar: calendarReducer,
   cohort: cohortReducer,
+  sessionFeedback: sessionFeedbackReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });

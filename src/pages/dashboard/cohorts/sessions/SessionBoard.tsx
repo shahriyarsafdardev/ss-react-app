@@ -4,6 +4,9 @@ import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
+import { RootState, useDispatch, useSelector } from '../../../../redux/store';
+import { updateSessionModalState } from '../../../../redux/slices/sessionFeedback';
+import { updateSessionFeedbackStatus } from '../../../../redux/slices/cohort';
 
 // Video player
 import VideoPreview from '../../../../components/cohorts/VideoPreview';
@@ -15,6 +18,7 @@ import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
 
 type SessionBoardProps = {
   session: Session | undefined;
+  cohortId: string;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -153,21 +157,23 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session }: SessionBoardProps) {
+export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
-  const [modalState, setModal] = useState(true);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const dispatch = useDispatch();
+  const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
+  const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
 
   const SurveyModal = ({
     state,
-    setState,
+    onClose,
     onComplete
   }: {
     state: boolean;
-    setState: Function;
+    onClose: Function;
     onComplete: Function;
   }) => (
-    <Modal open={state} onClose={() => setState(false)}>
+    <Modal open={state} onClose={() => onClose()}>
       <SurveyForm
         key="surveyForm"
         onComplete={onComplete}
@@ -195,14 +201,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   };
 
   useEffect(() => {
-    const updateStates = async () => {
-      setFeedbackSubmitted(session?.survey_completed || false);
-      setModal(shouldDisplaySurveyModal());
-    };
-    updateStates();
+    setFeedbackSubmitted(false);
+    setModal(!feedbacks[session?.id || '']);
   }, [session]);
-
-  console.log('i am here:', modalState);
 
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
@@ -217,10 +218,15 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       {shouldDisplaySurveyModal() && (
         <SurveyModal
           state={modalState}
-          setState={setModal}
+          onClose={() => {
+            setModal(false);
+            dispatch(updateSessionModalState(session.id));
+          }}
           onComplete={() => {
             setModal(false);
             setFeedbackSubmitted(true);
+            dispatch(updateSessionFeedbackStatus(cohortId, session.id));
+            dispatch(updateSessionModalState(session.id));
           }}
         />
       )}
