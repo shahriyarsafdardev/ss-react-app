@@ -1,0 +1,80 @@
+const serverUrl = Cypress.env('serverUrl');
+
+describe('Profile Form', () => {
+  beforeEach(() => {
+    // network stub
+    cy.server();
+    cy.viewport(1400, 700);
+  });
+  it('should log user into app', () => {
+    cy.fixture('cohorts/cohorts.json').as('cohortsData');
+    cy.fixture('login/login.json').as('loginData');
+    cy.fixture('session/sessions.json').as('sessionData');
+    cy.fixture('session/onboarding.json').as('onboardingData');
+    cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
+    cy.route(
+      'GET',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions.json`,
+      '@sessionData'
+    ).as('sessions');
+    cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+    cy.route('GET', `${serverUrl}/cohorts/onboarding_complete.json`, '@onboardingData').as(
+      'onboarding_complete'
+    );
+
+    cy.visit('/');
+    const email = 'aqibmaqqbool@gmail.com';
+    const password = 'aqib1234';
+    cy.get('[data-testid=email]').type(email);
+    cy.get('[data-testid=password]').type(password);
+
+    cy.get('[data-testid=loginBtn]').click();
+
+    cy.wait('@login');
+    cy.wait(3000);
+  });
+  it('should open user profile form', () => {
+    cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
+    cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
+      'select_fields_data'
+    );
+    cy.get('[alt="Aqib Maqbool"]').click();
+    cy.get('#user-settings').click();
+  });
+  it('should check the input fields have right data', () => {
+    cy.get('[data-testid=first-name]').should('have.value', 'Aqib');
+    cy.get('[data-testid=last-name]').should('have.value', 'Maqbool');
+    cy.get('[data-testid=current-position]').should('have.value', 'Economist');
+    cy.get('[data-testid=linkedin-url]').should(
+      'have.value',
+      'https://linkedin.com/aqibmaqqbool_react_dev'
+    );
+    cy.wait(3000);
+  });
+  it('should check the select fields for right data', () => {
+    cy.get('#multiple-checkbox-company').click();
+    cy.get('#menu-current_company').then((companyList) => {
+      expect(companyList.children()[2].children[0].children).to.have.length(10);
+    });
+    cy.get('.MuiBackdrop-root').click({
+      multiple: true,
+      force: true
+    });
+    cy.get('#interest-multiselect').click();
+    cy.get('#react-select-2-listbox').then((interestList) => {
+      expect(interestList.children()[0].children).to.have.length(4);
+    });
+    cy.get('#root').click({
+      multiple: true,
+      force: true
+    });
+    cy.get('#strength-multiselect').click();
+    cy.get('#react-select-3-listbox').then((strengthList) => {
+      expect(strengthList.children()[0].children).to.have.length(6);
+    });
+    cy.get('#root').click({
+      multiple: true,
+      force: true
+    });
+  });
+});

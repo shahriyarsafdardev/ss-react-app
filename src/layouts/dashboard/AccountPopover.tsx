@@ -112,6 +112,7 @@ export default function AccountPopover() {
         {MENU_OPTIONS.map((option) => (
           <MenuItem
             key={option.label}
+            id="user-settings"
             to={option.linkTo}
             component={RouterLink}
             onClick={handleClose}
