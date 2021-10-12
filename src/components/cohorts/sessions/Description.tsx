@@ -10,9 +10,6 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     padding: 0
   },
-  h2: {
-    lineHeight: '80px'
-  },
   ul: {
     marginLeft: '25px'
   }
