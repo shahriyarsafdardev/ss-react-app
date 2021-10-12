@@ -194,6 +194,16 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     return false;
   };
 
+  useEffect(() => {
+    const updateStates = async () => {
+      setFeedbackSubmitted(session?.survey_completed || false);
+      setModal(shouldDisplaySurveyModal());
+    };
+    updateStates();
+  }, [session]);
+
+  console.log('i am here:', modalState);
+
   const tabsContent = [
     <Description key="description" innerContent={session?.description || ''} />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
