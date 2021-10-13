@@ -39,7 +39,7 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   maxHeight: '80vh',
   maxWidth: '1232px',
   position: 'absolute',
-  inset: '45% auto auto 50%',
+  inset: '50% auto auto 50%',
   outline: 'none',
   [theme.breakpoints.down('sm')]: {
     width: '90%'
