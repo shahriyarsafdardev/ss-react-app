@@ -21,7 +21,6 @@ type NavigationProps = {
 
 const NavigationContainer = styled('div')((props) => ({
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center'
 }));
 
@@ -128,7 +127,9 @@ const Navigation = ({
   const classes = useStyles();
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      style={{ justifyContent: viewType === VIEW_TYPES.STANDARD_VIEW ? 'space-between' : 'center' }}
+    >
       <Box className={classes.navigation}>
         <StyledButton disabled={pageNumber === 1} onClick={() => pageHandler(pageNumber - 1)}>
           <img src="/static/icons/ic_chevron_left.svg" alt="" />
