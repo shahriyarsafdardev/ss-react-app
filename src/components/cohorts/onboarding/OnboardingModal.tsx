@@ -280,6 +280,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               className="previous"
               variant="outlined"
               onClick={() => setActiveStep(activeStep - 1)}
+              id="btn-next"
             >
               Previous
             </StyledButton>

@@ -1,0 +1,21 @@
+{
+  "cohort_id": "9550cc85-305a-438c-a115-e791a16c91f0",
+  "cohort_title": "The Economics of Digital Platforms",
+  "enrollment_id": "f1b1b3f1-afad-4aec-8a4f-240698ac246c",
+  "setup_completed": true,
+  "intro_video_url": "https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4",
+  "discord_invitation_link": "https://discord.com/",
+  "last_recorded_step": 0,
+  "participant_profile": {
+    "first_name": "Aqib",
+    "last_name": "Maqbool",
+    "email": "aqibmaqqbool@gmail.com",
+    "linkedin_url": "https://linkedin.com/aqibmaqqbool_react_dev",
+    "discord_url": "Test url",
+    "current_position": "Economist",
+    "current_company": "Adobe",
+    "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+    "strengths": ["Strength B", "Strength C"],
+    "interests": ["Interest A"]
+  }
+}

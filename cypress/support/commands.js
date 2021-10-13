@@ -41,7 +41,15 @@ Cypress.Commands.add('login', () => {
 //
 //
 // -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
+Cypress.Commands.add('form', () => {
+  cy.get('[data-testid=first-name]').should('have.value', 'Aqib');
+  cy.get('[data-testid=last-name]').should('have.value', 'Maqbool');
+  cy.get('[data-testid=current-position]').should('have.value', 'Economist');
+  cy.get('[data-testid=linkedin-url]').should(
+    'have.value',
+    'https://linkedin.com/aqibmaqqbool_react_dev'
+  );
+});
 //
 //
 // -- This is a dual command --

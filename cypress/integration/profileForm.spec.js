@@ -10,21 +10,15 @@ describe('Profile Form', () => {
   });
   it('should open user profile form', () => {
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
-    cy.wait(1000);
     cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
       'select_fields_data'
     );
     cy.get('[alt="Aqib Maqbool"]').click();
     cy.get('#user-settings').click();
+    cy.wait(1000);
   });
   it('should check the input fields have right data', () => {
-    cy.get('[data-testid=first-name]').should('have.value', 'Aqib');
-    cy.get('[data-testid=last-name]').should('have.value', 'Maqbool');
-    cy.get('[data-testid=current-position]').should('have.value', 'Economist');
-    cy.get('[data-testid=linkedin-url]').should(
-      'have.value',
-      'https://linkedin.com/aqibmaqqbool_react_dev'
-    );
+    cy.form();
     cy.wait(3000);
   });
   it('should check the select fields for right data', () => {
@@ -69,10 +63,16 @@ describe('Profile Form', () => {
     cy.get('#interest-multiselect').click();
     cy.get('#react-select-2-input').type('Test {enter}');
     cy.get('#react-select-2-input').type('Test {enter}');
+    cy.get('#interest-multiselect').then((field) => {
+      expect(field.children()[2].children[0].children).to.have.length(4);
+    });
 
     cy.get('#strength-multiselect').click();
     cy.get('#react-select-3-input').type('Test A {enter}');
     cy.get('#react-select-3-input').type('Test B {enter}');
+    cy.get('#strength-multiselect').then((field) => {
+      expect(field.children()[2].children[0].children).to.have.length(5);
+    });
     cy.get('#btn-submit').click();
     cy.wait(2000);
     cy.get('#change_password').click();

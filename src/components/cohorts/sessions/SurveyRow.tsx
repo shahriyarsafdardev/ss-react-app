@@ -76,7 +76,11 @@ function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
           key={index}
           value={option}
           control={
-            <Radio checked={option === submitted_answer} onChange={() => onChange(option)} />
+            <Radio
+              checked={option === submitted_answer}
+              data-checked={option === submitted_answer}
+              onChange={() => onChange(option)}
+            />
           }
           label={option}
         />
@@ -112,9 +116,14 @@ function MultiCheck({
 
   return (
     <div>
-      {options?.map((option) => (
+      {options?.map((option, index) => (
         <div key={option}>
-          <Checkbox value={option} checked={values.has(option)} onChange={handleChange} />
+          <Checkbox
+            value={option}
+            checked={values.has(option)}
+            id={`check-${index}`}
+            onChange={handleChange}
+          />
           <label htmlFor={option}>{option}</label>
         </div>
       ))}
