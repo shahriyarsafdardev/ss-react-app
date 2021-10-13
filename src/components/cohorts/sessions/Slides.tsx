@@ -68,12 +68,12 @@ const PdfDocument = styled(Document)(({ theme }) => ({
   },
   [theme.breakpoints.between(701, 900)]: {
     height: 'auto !important',
-    minHeight: '280px !important'
+    minHeight: '400px !important'
   },
 
   [theme.breakpoints.between(401, 700)]: {
     height: 'auto !important',
-    minHeight: '250px !important'
+    minHeight: '320px !important'
   },
   [theme.breakpoints.between(300, 400)]: {
     height: 'auto !important',
@@ -83,7 +83,9 @@ const PdfDocument = styled(Document)(({ theme }) => ({
 
 const useStyles = makeStyles((theme: Theme) => ({
   modalView: {
-    height: '700px'
+    maxWidth: '900px',
+    height: '550px',
+    margin: 'auto'
   },
   standard: {
     height: '347px'
@@ -118,8 +120,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   errorBox: {
     backgroundColor: '#F6F7F8',
-    height: '100%',
-    width: '100%',
+    height: '90%',
+    width: '90%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -127,10 +129,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   inputBox: {
     padding: '8px',
     margin: '0 3px',
-    width: '80px',
-    [theme.breakpoints.down('sm')]: {
-      width: '50px'
-    }
+    width: '40px'
   }
 }));
 
@@ -178,7 +177,6 @@ const Navigation = ({
           value={currentPage}
           className={classes.inputBox}
           type="number"
-          placeholder="Slide#"
           onChange={(e) => customNavigationHandler(Number(e.target.value))}
         />
         of {numPages}
