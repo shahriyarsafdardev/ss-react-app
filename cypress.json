@@ -4,5 +4,7 @@
     "serverUrl": "https://scholarsite-staging.herokuapp.com/api/v1"
   },
   "ignoreTestFiles": "*e2e*",
-  "video": false
+  "video": false,
+  "viewportWidth": 1400,
+  "viewportHeight": 800
 }

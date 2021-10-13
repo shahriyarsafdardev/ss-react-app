@@ -4,7 +4,6 @@ describe('peers tab flow', () => {
   beforeEach(() => {
     // network stub
     cy.server();
-    cy.viewport(1400, 700);
   });
   it('should log user into app', () => {
     cy.login();

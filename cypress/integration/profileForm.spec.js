@@ -4,13 +4,13 @@ describe('Profile Form', () => {
   beforeEach(() => {
     // network stub
     cy.server();
-    cy.viewport(1400, 700);
   });
   it('should log user into app', () => {
     cy.login();
   });
   it('should open user profile form', () => {
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
+    cy.wait(1000);
     cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
       'select_fields_data'
     );
