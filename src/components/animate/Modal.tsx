@@ -77,6 +77,7 @@ export default function ModalAnimate({
             ...customStyles,
             ...(zIndex && { overlay: { ...customStyles.overlay, zIndex } })
           }}
+          ariaHideApp={false}
         >
           <Box
             component={motion.div}
