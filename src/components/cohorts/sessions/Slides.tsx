@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState } from 'react';
-import { Button, Container, Box, Theme } from '@material-ui/core';
+import { Button, Container, Box, Theme, TextField, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
 
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -17,16 +17,18 @@ type NavigationProps = {
   pageHandler: Function;
   setViewType: Function;
   viewType: string;
+  setError: Function;
 };
 
-const NavigationContainer = styled('div')((props) => ({
+const NavigationContainer = styled('div')(() => ({
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  flexWrap: 'wrap'
 }));
 
-const StyledButton = styled(Button)((props) => ({
-  minWidth: '50px',
-  padding: '10px',
+const StyledButton = styled(Button)(() => ({
+  minWidth: '20px',
+  padding: '10px 6px',
   '&:disabled': {
     opacity: '0.5'
   }
@@ -113,6 +115,22 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     backgroundColor: '#F6F7F8',
     borderRadius: '8px'
+  },
+  errorBox: {
+    backgroundColor: '#F6F7F8',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  inputBox: {
+    padding: '8px',
+    margin: '0 3px',
+    width: '80px',
+    [theme.breakpoints.down('sm')]: {
+      width: '50px'
+    }
   }
 }));
 
@@ -122,22 +140,51 @@ const Navigation = ({
   numPages,
   pageHandler,
   viewType,
-  setViewType
+  setViewType,
+  setError
 }: NavigationProps) => {
   const classes = useStyles();
+  const [currentPage, setCurrentPage] = useState<any>(pageNumber);
+
+  const customNavigationHandler = (index: number) => {
+    if (numPages && typeof index === 'number') {
+      if (index !== 0) setCurrentPage(index);
+
+      if (index === 0) {
+        pageHandler(pageNumber);
+        setCurrentPage('');
+      } else if (index >= 1 && index <= numPages) {
+        pageHandler(index);
+        setError(false);
+      } else {
+        setError(true);
+      }
+    }
+  };
 
   return (
     <NavigationContainer
       style={{ justifyContent: viewType === VIEW_TYPES.STANDARD_VIEW ? 'space-between' : 'center' }}
     >
       <Box className={classes.navigation}>
-        <StyledButton disabled={pageNumber === 1} onClick={() => pageHandler(pageNumber - 1)}>
+        <StyledButton
+          disabled={pageNumber === 1}
+          onClick={() => customNavigationHandler(pageNumber - 1)}
+        >
           <img src="/static/icons/ic_chevron_left.svg" alt="" />
         </StyledButton>
-        <span>{`Page ${pageNumber} of ${numPages}`}</span>
+        Page{' '}
+        <input
+          value={currentPage}
+          className={classes.inputBox}
+          type="number"
+          placeholder="Slide#"
+          onChange={(e) => customNavigationHandler(Number(e.target.value))}
+        />
+        of {numPages}
         <StyledButton
           disabled={pageNumber === numPages}
-          onClick={() => pageHandler(pageNumber + 1)}
+          onClick={() => customNavigationHandler(pageNumber + 1)}
         >
           <img src="/static/icons/ic_chevron_right.svg" alt="" />
         </StyledButton>
@@ -183,6 +230,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [viewType, setViewType] = useState<string>(VIEW_TYPES.STANDARD_VIEW);
+  const [error, setError] = useState(false);
 
   const classes = useStyles();
 
@@ -200,10 +248,16 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={console.error}
       >
-        <StyledPage pageNumber={pageNumber} />
+        {error ? (
+          <div className={classes.errorBox}>
+            <Typography variant="h4">That slide does not exist</Typography>
+          </div>
+        ) : (
+          <StyledPage pageNumber={pageNumber} />
+        )}
       </PdfDocument>
       {numPages !== null && (
-        <div style={{ position: 'relative' }}>
+        <div>
           <Navigation
             pdfUrl={pdfUrl}
             viewType={viewType}
@@ -211,6 +265,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
             numPages={numPages}
             setViewType={setViewType}
             pageHandler={setPageNumber}
+            setError={setError}
           />
         </div>
       )}
