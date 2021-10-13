@@ -241,7 +241,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
       <PdfDocument
         className={type === VIEW_TYPES.STANDARD_VIEW ? classes.standard : classes.modalView}
         file={{
-          url: 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP+S21+Session+2.pptx.pdf'
+          url: pdfUrl
         }}
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={console.error}
