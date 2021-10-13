@@ -82,7 +82,9 @@ describe('Profile Form', () => {
     cy.route('POST', `${serverUrl}/users/change_password`, '@passwordChange').as('change_password');
     cy.get('#change_password').click();
     cy.get('[data-testid=new-password]').type('123456');
+    cy.get('[data-testid=new-password]').should('have.value', '123456');
     cy.get('[data-testid=confirm-new-password]').type('123456');
+    cy.get('[data-testid=confirm-new-password]').should('have.value', '123456');
     cy.get('#btn-submit-change-password').click();
   });
 });

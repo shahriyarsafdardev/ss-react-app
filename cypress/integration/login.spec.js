@@ -7,7 +7,6 @@ describe('login flow', () => {
   });
 
   it('should log user into app', () => {
-    cy.wait(200000);
     cy.login();
   });
   it('should have correct Credentials', () => {

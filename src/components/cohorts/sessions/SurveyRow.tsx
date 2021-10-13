@@ -64,6 +64,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       placeholder="Start typing whatever comes to mind!"
       multiline
       rows={4}
+      id="survey-text"
     />
   );
 }
