@@ -32,7 +32,10 @@ const users: payloadUser[] = [
     current_company: 'Adobe',
     strengths: ['Strength B', 'Strength C'],
     interests: ['Interest A'],
-    linkedin_url: 'https://linkedin.com/demo'
+    linkedin_url: 'https://linkedin.com/demo',
+    stream_id: '',
+    stream_token: '',
+    full_name: 'Jaydon Frankie'
   },
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-1',
@@ -53,7 +56,10 @@ const users: payloadUser[] = [
     current_company: 'Adobe',
     strengths: ['Strength B', 'Strength C'],
     interests: ['Interest A'],
-    linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev'
+    linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev',
+    stream_id: '',
+    stream_token: '',
+    full_name: 'Aqib Maqbool'
   }
 ];
 
@@ -117,7 +123,10 @@ mock.onPost('/api/account/register').reply(async (config) => {
       current_company: '',
       strengths: [],
       interests: [],
-      linkedin_url: ''
+      linkedin_url: '',
+      stream_id: '',
+      stream_token: '',
+      full_name: ''
     };
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {

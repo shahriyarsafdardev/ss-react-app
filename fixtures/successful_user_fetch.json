@@ -10,6 +10,9 @@
     "discord_url": "string",
     "interests": "string[]",
     "linkedin_url": "string",
-    "strengths": "string[]"
+    "strengths": "string[]",
+    "stream_id": "string[]",
+    "stream_token": "string[]",
+    "full_name": "string[]"
   }
 }

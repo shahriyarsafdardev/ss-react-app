@@ -20,6 +20,9 @@ export type payloadUser = {
   strengths: string[];
   interests: string[];
   linkedin_url: string;
+  stream_id: string;
+  stream_token: string;
+  full_name: string;
 };
 
 export type User = {

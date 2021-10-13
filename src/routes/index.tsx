@@ -80,6 +80,7 @@ export default function Router() {
         { path: '/', element: <RedirectToCohort /> },
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
+        { path: '/chatting', element: <Chatting /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -279,6 +280,7 @@ const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
+const Chatting = Loadable(lazy(() => import('../pages/Chatting')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));

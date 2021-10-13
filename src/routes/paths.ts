@@ -6,8 +6,8 @@ function path(root: string, sublink: string) {
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '';
-// export const ROOT_URL = 'http://localhost:8000/api/v1';
-export const ROOT_URL = 'https://app.scholarsite.io/api/v1';
+export const ROOT_URL = 'http://localhost:3000/api/v1';
+// export const ROOT_URL = 'https://app.scholarsite.io/api/v1';
 // staging url = 'https://scholarsite-staging.herokuapp.com/api/v1';
 // local url = 'http://localhost:3000/api/v1';
 
@@ -30,6 +30,7 @@ export const PATH_PAGE = {
   payment: '/payment',
   about: '/about-us',
   contact: '/contact-us',
+  chat: '/chat',
   faqs: '/faqs',
   page404: '/404',
   page500: '/500',
@@ -42,6 +43,7 @@ export const PATH_DASHBOARD = {
     app: path(ROOTS_DASHBOARD, '/'),
     discover: path(ROOTS_DASHBOARD, '/discover'),
     contactUs: path(ROOTS_DASHBOARD, '/contact-us'),
+    chatting: path(ROOTS_DASHBOARD, '/chatting'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
