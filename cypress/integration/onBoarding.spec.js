@@ -1,6 +1,6 @@
 const serverUrl = Cypress.env('serverUrl');
 
-describe('peers tab flow', () => {
+describe('onboarding flow', () => {
   beforeEach(() => {
     // network stub
     cy.server();
@@ -36,7 +36,7 @@ describe('peers tab flow', () => {
     cy.get('[data-testid=email]').type(email);
     cy.get('[data-testid=password]').type(password);
 
-    cy.get('[data-testid=loginBtn]').click();
+    cy.get('[data-testid=loginBtn]').click({ multiple: true, force: true });
 
     cy.wait('@login');
     cy.wait(3000);
@@ -65,30 +65,30 @@ describe('peers tab flow', () => {
       '@homeOnComplete'
     ).as('home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0');
 
-    cy.get('#btn-next').click();
-    cy.contains('Google Search').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
+    cy.contains('Google Search').click({ multiple: true, force: true });
     cy.contains('Google Search').then((radio) => {
       expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
     });
-    cy.get('#btn-next').click();
-    cy.contains('My employer is').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
+    cy.contains('My employer is').click({ multiple: true, force: true });
     cy.contains('My employer is').then((radio) => {
       expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
     });
-    cy.get('#btn-next').click();
-    cy.contains('Maybe?').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
+    cy.contains('Maybe?').click({ multiple: true, force: true });
     cy.contains('Maybe?').then((radio) => {
       expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
     });
-    cy.get('#btn-next').click();
-    cy.get('#check-2').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
+    cy.get('#check-2').click({ multiple: true, force: true });
     cy.get('#check-2').should('be.checked');
-    cy.get('#btn-next').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
     cy.get('#react-select-2-placeholder').type('Economics {enter} ');
     cy.get('#react-select-3-input').type('Hiring {enter} ');
-    cy.get('#btn-next').click();
-    cy.get('#btn-next').click();
+    cy.get('#btn-next').click({ multiple: true, force: true });
+    cy.get('#btn-next').click({ multiple: true, force: true });
     cy.form();
-    cy.get('#btn-submit').click();
+    cy.get('#btn-submit').click({ multiple: true, force: true });
   });
 });

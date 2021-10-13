@@ -280,7 +280,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               className="previous"
               variant="outlined"
               onClick={() => setActiveStep(activeStep - 1)}
-              id="btn-next"
             >
               Previous
             </StyledButton>
@@ -296,12 +295,19 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
                 (!responses[activeStep] || responses[activeStep].length === 0)
               }
               onClick={() => onStepChange(activeStep)}
+              id="btn-next"
             >
               Next
             </StyledButton>
           )}
           {activeStep === 6 && (
-            <StyledButton form="profile-form" type="submit" variant="contained" className="next">
+            <StyledButton
+              form="profile-form"
+              type="submit"
+              variant="contained"
+              className="next"
+              id="btn-submit"
+            >
               Submit
             </StyledButton>
           )}
