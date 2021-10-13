@@ -75,7 +75,7 @@ export default function SessionsTab() {
   useEffect(() => {
     dispatch(getSessions(cohort_id));
     axios
-      .get('/cohorts/onboarding_complete.json')
+      .get(`/cohorts/${cohort_id}/onboarding_complete.json`)
       .then((res) => res.data)
       .then((payload) => {
         setHasOnboarded(payload);
