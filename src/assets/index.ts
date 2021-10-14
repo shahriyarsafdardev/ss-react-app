@@ -15,3 +15,11 @@ export { default as SentIcon } from './icon_sent';
 export { default as PlanFreeIcon } from './icon_plan_free';
 export { default as PlanStarterIcon } from './icon_plan_starter';
 export { default as PlanPremiumIcon } from './icon_plan_premium';
+
+export { ChannelInfoIcon } from './ChannelInfoIcon';
+export { ChannelSaveIcon } from './ChannelSaveIcon';
+export { CreateChannelIcon } from './CreateChannelIcon';
+export { HamburgerIcon } from './HamburgerIcon';
+export { SendIcon } from './SendIcon';
+export { XButton } from './XButton';
+export { XButtonBackground } from './XButtonBackground';

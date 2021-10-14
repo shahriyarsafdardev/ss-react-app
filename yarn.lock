@@ -15206,10 +15206,10 @@ stream-chat-css@^1.0.17:
   resolved "https://registry.yarnpkg.com/stream-chat-css/-/stream-chat-css-1.0.17.tgz#aad79b5c8e6f62334305d73e8cffe8ad2ac46f0e"
   integrity sha512-CgfqyWAqFa2QMBn3Srk4sBnMdjMhd/ufErplnGeYZFlzL/C1czRmr2MN/ZgxWwW5uLO7ArGyETRqslYZxFMN1Q==
 
-stream-chat-react@^6.9.1:
-  version "6.9.1"
-  resolved "https://registry.yarnpkg.com/stream-chat-react/-/stream-chat-react-6.9.1.tgz#2c75ac97d8cda15739ee9e1fadcd6345e1db1283"
-  integrity sha512-NdVH+sNkXdO3WBYy66LDQrO+ply0sEmudBdwC+81didnTpOZ5u/cp7pJ0YoODkKHwLmCEOt/jVOsVSbZiR4pvw==
+stream-chat-react@^6.10.0:
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/stream-chat-react/-/stream-chat-react-6.10.0.tgz#012b0e112abdfa9ab09834b3776521cf69150805"
+  integrity sha512-JqSgDskI15y8BKyu22iyib6YbcQ3RySMli3xZzv9i/2J7IiAASmdPiT1zFNw6URv/TAN2f1cskHIWJkrvkQ/9Q==
   dependencies:
     "@braintree/sanitize-url" "5.0.0"
     custom-event "^1.0.1"
