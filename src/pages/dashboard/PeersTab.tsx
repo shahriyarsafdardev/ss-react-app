@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-
+// utils
+import { sendAmplitudeData, EVENT_TYPES } from 'utils/amplitude';
 // material
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -7,10 +8,8 @@ import { styled } from '@material-ui/core/styles';
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-
 // hooks
 import useSettings from '../../hooks/useSettings';
-
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -70,6 +69,12 @@ export default function PeersTab() {
     setSelectedStrengths([]);
     setSelectedInterests([]);
   }, [peers, cohort_id]);
+
+  useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.peers_tab
+    });
+  }, []);
 
   const handleChange = (event: any) => {
     const {

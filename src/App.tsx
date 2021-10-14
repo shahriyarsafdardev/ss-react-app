@@ -1,4 +1,7 @@
 import { useEffect } from 'react';
+
+// event tracker
+import { initAmplitude } from 'utils/amplitude';
 // routes
 import Router from './routes';
 // theme
@@ -24,7 +27,10 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAuthenticated) dispatch(getCohorts());
+    if (isAuthenticated) {
+      dispatch(getCohorts());
+      initAmplitude();
+    }
   }, [dispatch, isAuthenticated]);
 
   return (
