@@ -185,7 +185,7 @@ const ExpiredSession = () => {
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_dots.svg" alt="date-icon" />
-        <Typography variant="subtitle1" className={classes.content2}>
+        <Typography variant="subtitle1" className={classes.content2} data-testid="session-ended">
           This live session has finished, the recording will be available soon!
         </Typography>
       </div>
@@ -222,5 +222,9 @@ const renderPlaceHolder = (sessionTimeValue: string) => {
 export default function VideoPlaceHolder({ sessionTimeValue }: { sessionTimeValue: string }) {
   const classes = useStyes();
 
-  return <div className={classes.container}>{renderPlaceHolder(sessionTimeValue)}</div>;
+  return (
+    <div className={classes.container} data-testid="video-place-holder">
+      {renderPlaceHolder(sessionTimeValue)}
+    </div>
+  );
 }

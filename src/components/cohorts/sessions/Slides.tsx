@@ -260,7 +260,7 @@ export default function Slides({
   }
 
   const pdfSlider = (type: string) => (
-    <div>
+    <div data-testid="session-pdf-slides">
       <PdfDocument
         className={type === VIEW_TYPES.STANDARD_VIEW ? classes.standard : classes.modalView}
         file={{

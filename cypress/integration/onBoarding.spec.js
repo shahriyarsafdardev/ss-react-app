@@ -6,7 +6,6 @@ describe('onboarding flow', () => {
     cy.server();
   });
   it('should log user into app', () => {
-    // cy.wait(200000);
     cy.fixture('cohorts/cohorts.json').as('cohortsData');
     cy.fixture('login/login.json').as('loginData');
     cy.fixture('session/sessions.json').as('sessionData');

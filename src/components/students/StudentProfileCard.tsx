@@ -95,14 +95,29 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
         <CoverImgStyle alt="cover" src={profile_image_url} />
       </CardMediaStyle>
 
-      <Typography variant="subtitle1" align="center" sx={{ mt: 6 }}>
+      <Typography
+        variant="subtitle1"
+        align="center"
+        sx={{ mt: 6 }}
+        data-testid={`peer${peer.id ? `-${peer.id}` : ''}-name`}
+      >
         {`${first_name} ${last_name}`}
       </Typography>
 
-      <Typography variant="body2" align="center" sx={{ color: 'text.primary', paddingX: '10px' }}>
+      <Typography
+        variant="body2"
+        align="center"
+        sx={{ color: 'text.primary', paddingX: '10px' }}
+        data-testid={`peer${peer.id ? `-${peer.id}` : ''}-company`}
+      >
         {current_company?.name}
       </Typography>
-      <Typography variant="body2" align="center" sx={{ color: 'text.secondary', paddingX: '15px' }}>
+      <Typography
+        variant="body2"
+        align="center"
+        sx={{ color: 'text.secondary', paddingX: '15px' }}
+        data-testid={`peer${peer.id ? `-${peer.id}` : ''}-position`}
+      >
         {current_position}
       </Typography>
     </StyledCard>

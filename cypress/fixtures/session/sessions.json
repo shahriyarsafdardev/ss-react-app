@@ -10,7 +10,7 @@
       "number": 1,
       "summary": "\u003cp\u003eThis lecture covers some of the most fundamental principles behind what makes digital platforms powerful business models. Aside from the economic forces of Network effects and economies of scale, we will cover the workings of two- and multi-sided platforms, the challenge of single- vs. multi-homing, and the role of switching costs in customer retention.\u003c/p\u003e",
       "length": "120m",
-      "presentation_pdf_name": "EODP S21 Session 2.pptx.pdf",
+      "presentation_pdf_name": "EODP Session 2.pptx.pdf",
       "presentation_pdf_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211007%2Feu-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20211007T184346Z\u0026X-Amz-Expires=604800\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=964da94909380159ed95c6cedd5be73e113a6f56a86c019295540190a164468a",
       "survey_completed": true,
       "resources": []
@@ -18,11 +18,11 @@
     {
       "id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
       "name": "Test Cohort 2",
-      "description": "\u003cul\u003e\u003cli\u003eLearn frameworks for evaluating customer value and engagement\u003c/li\u003e\u003cli\u003eIdentify the challenges of using online advertising to grow your business\u003c/li\u003e\u003cli\u003eUnderstand how to correctly account for biases in measuring ad ROI\u003c/li\u003e\u003c/ul\u003e",
+      "description": "",
       "recording_url": "",
       "time": "2021-10-05T03:00:00.000Z",
       "number": 2,
-      "summary": "\u003cp\u003eThis lecture describes the many challenges of implementing and measuring the success of growth strategies behind customer acquisition and retention. The most problematic aspects of measuring ROI on digital (or any) advertising efforts will be uncovered and tools to overcome these challenges will be presented.\u003c/p\u003e",
+      "summary": "",
       "length": "120m",
       "presentation_pdf_url": null,
       "survey_completed": false,
