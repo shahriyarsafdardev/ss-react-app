@@ -1,15 +1,3 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
 Cypress.Commands.add('login', () => {
   const serverUrl = Cypress.env('serverUrl');
   cy.fixture('cohorts/cohorts.json').as('cohortsData');
@@ -35,12 +23,8 @@ Cypress.Commands.add('login', () => {
 
   cy.get('[data-testid=loginBtn]').click();
 
-  cy.wait('@login');
-  cy.wait(3000);
+  cy.wait(['@login', '@cohorts', '@sessions', '@onboarding_complete']);
 });
-//
-//
-// -- This is a child command --
 Cypress.Commands.add('form', () => {
   cy.get('[data-testid=first-name]').should('have.value', 'Aqib');
   cy.get('[data-testid=last-name]').should('have.value', 'Maqbool');
@@ -50,11 +34,3 @@ Cypress.Commands.add('form', () => {
     'https://linkedin.com/aqibmaqqbool_react_dev'
   );
 });
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })

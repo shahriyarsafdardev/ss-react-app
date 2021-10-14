@@ -10,7 +10,7 @@ describe('login flow', () => {
     cy.login();
   });
   it('should have correct Credentials', () => {
-    cy.get('[alt="Aqib Maqbool"]').click();
+    cy.get('[alt="Aqib Maqbool"]').click({ force: true });
 
     cy.get('[data-testid=user-name]').should('have.text', 'Aqib Maqbool');
 
