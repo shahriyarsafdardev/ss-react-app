@@ -25,9 +25,7 @@ describe('onboarding flow', () => {
       'GET',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=8864c717-587d-472a-929a-8e5f298024da-1`,
       '@home'
-    ).as(
-      'home.json?cohort_id=9550cc85-305a-438c-a115-e791a1…icipant_id=8864c717-587d-472a-929a-8e5f298024da-1'
-    );
+    ).as('homeData');
 
     cy.visit('/');
     const email = 'aqibmaqqbool@gmail.com';
@@ -37,8 +35,8 @@ describe('onboarding flow', () => {
 
     cy.get('[data-testid=loginBtn]').click({ multiple: true, force: true });
 
-    cy.wait('@login');
-    cy.wait(3000);
+    cy.wait(['@login', '@homeData']);
+    // cy.wait(3000);
   });
   it('should complete onboarding', () => {
     cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');

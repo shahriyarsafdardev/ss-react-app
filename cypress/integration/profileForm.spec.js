@@ -15,11 +15,11 @@ describe('Profile Form', () => {
     );
     cy.get('[alt="Aqib Maqbool"]').click();
     cy.get('#user-settings').click();
-    cy.wait(1000);
+    cy.wait('@select_fields_data');
   });
   it('should check the input fields have right data', () => {
     cy.form();
-    cy.wait(3000);
+    // cy.wait(3000);
   });
   it('should check the select fields for right data', () => {
     cy.get('#multiple-checkbox-company').click();
@@ -74,7 +74,7 @@ describe('Profile Form', () => {
       expect(field.children()[2].children[0].children).to.have.length(5);
     });
     cy.get('#btn-submit').click();
-    cy.wait(2000);
+    cy.wait('@update_user_profile');
     cy.get('#change_password').click();
   });
   it('should change the password', () => {
