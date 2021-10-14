@@ -1,10 +1,14 @@
 const serverUrl = Cypress.env('serverUrl');
 
+// FEEDBACK
+// Think we should use test ids here, rather than a list
+
 describe('peers tab flow', () => {
   beforeEach(() => {
     // network stub
     cy.server();
   });
+
   it('should log user into app', () => {
     cy.login();
   });
@@ -33,6 +37,7 @@ describe('peers tab flow', () => {
       );
     });
   });
+
   it('should take user to list view', () => {
     cy.get('[data-testid=user-filters]').children().eq(0).click();
     cy.get('#table-view').click();
@@ -52,6 +57,7 @@ describe('peers tab flow', () => {
       expect(peerContainer.children()[4].children[0].children[0].textContent).to.eq('Aaaaa');
     });
   });
+
   it('should open the modal', () => {
     cy.get('#student-row-9550cc85-305a-438c-a115-e791a16c91f0').click();
 
@@ -82,12 +88,13 @@ describe('peers tab flow', () => {
       cy.get('[data-testid=close-modal]').click();
     });
   });
-  it('should test peers with filters', () => {
+
+  // FEEDBACK
+  // need to break this block down into and it block for each type of filter
+  it('alows users to filter by company', () => {
     cy.get('[data-testid=user-filters]').children().eq(1).click();
     cy.get('[data-value=Upwork]').click();
-    // cy.get('.css-dzh2z7-MuiBackdrop-root-MuiModal-backdrop').click();
     cy.get('#peer-list-container').children().should('have.length', 1);
-    // cy.get('[data-testid=user-filters]').children().eq(1).click();
     cy.get('[data-value=Upwork]').click();
     cy.get('[data-value=Dropbox]').click();
     cy.get('#peer-list-container').children().should('have.length', 2);
