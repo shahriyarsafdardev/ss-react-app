@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Container, Box, Theme, TextField, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
+import { SLIDE_EVENTS } from 'utils/amplitude';
 import Message from '../../Message';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -18,6 +19,7 @@ type NavigationProps = {
   setViewType: Function;
   viewType: string;
   setError: Function;
+  trackEventHandler: Function;
 };
 
 const NavigationContainer = styled('div')(() => ({
@@ -140,7 +142,8 @@ const Navigation = ({
   pageHandler,
   viewType,
   setViewType,
-  setError
+  setError,
+  trackEventHandler
 }: NavigationProps) => {
   const classes = useStyles();
   const [currentPage, setCurrentPage] = useState<any>(pageNumber);
@@ -168,7 +171,10 @@ const Navigation = ({
       <Box className={classes.navigation}>
         <StyledButton
           disabled={pageNumber === 1}
-          onClick={() => customNavigationHandler(pageNumber - 1)}
+          onClick={() => {
+            customNavigationHandler(pageNumber - 1);
+            trackEventHandler(SLIDE_EVENTS.navigated_left);
+          }}
         >
           <img src="/static/icons/ic_chevron_left.svg" alt="" />
         </StyledButton>
@@ -182,7 +188,10 @@ const Navigation = ({
         of {numPages}
         <StyledButton
           disabled={pageNumber === numPages}
-          onClick={() => customNavigationHandler(pageNumber + 1)}
+          onClick={() => {
+            customNavigationHandler(pageNumber + 1);
+            trackEventHandler(SLIDE_EVENTS.navigated_right);
+          }}
         >
           <img src="/static/icons/ic_chevron_right.svg" alt="" />
         </StyledButton>
@@ -195,6 +204,7 @@ const Navigation = ({
             className={`${classes.actionBtn} ${classes.downloadBtn}`}
             rel="noreferrer"
             target="_blank"
+            onClick={() => trackEventHandler(SLIDE_EVENTS.downloaded_pdf)}
             download
           >
             {/* // eslint-disable-next-line jsx-a11y/alt-text */}
@@ -207,7 +217,10 @@ const Navigation = ({
 
           <a
             className={`${classes.actionBtn} ${classes.fullScreen}`}
-            onClick={() => setViewType(VIEW_TYPES.FULL_VIEW)}
+            onClick={() => {
+              setViewType(VIEW_TYPES.FULL_VIEW);
+              trackEventHandler(SLIDE_EVENTS.full_screen_view);
+            }}
             href="#"
           >
             {/* // eslint-disable-next-line jsx-a11y/alt-text */}
@@ -224,11 +237,21 @@ const VIEW_TYPES = {
   FULL_VIEW: 'full'
 };
 
-export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
+export default function Slides({
+  pdfUrl,
+  onTrack
+}: {
+  pdfUrl: string | undefined;
+  onTrack: Function;
+}) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [viewType, setViewType] = useState<string>(VIEW_TYPES.STANDARD_VIEW);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (pdfUrl) onTrack(SLIDE_EVENTS.opened);
+  }, [pdfUrl]);
 
   const classes = useStyles();
 
@@ -264,6 +287,7 @@ export default function Slides({ pdfUrl }: { pdfUrl: string | undefined }) {
             setViewType={setViewType}
             pageHandler={setPageNumber}
             setError={setError}
+            trackEventHandler={(eventType: string) => onTrack(eventType)}
           />
         </div>
       )}

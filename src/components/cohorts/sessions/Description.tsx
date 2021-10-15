@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Message from '../../Message';
 
 type DescriptionProps = {
   innerContent: string;
+  onTrack: Function;
 };
 
 const DescriptionContainer = styled(Container)(({ theme }) => ({
@@ -15,7 +17,13 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
   }
 }));
 
-export default function Description({ innerContent }: DescriptionProps) {
+export default function Description({ innerContent, onTrack }: DescriptionProps) {
+  useEffect(() => {
+    if (innerContent) {
+      onTrack();
+    }
+  }, [innerContent]);
+
   return (
     <DescriptionContainer>
       {innerContent && innerContent !== '' ? (

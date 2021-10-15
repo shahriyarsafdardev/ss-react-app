@@ -4,6 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import axios from 'utils/axios';
 import LoadingScreen from 'components/LoadingScreen';
+import { sendAmplitudeData, EVENT_TYPES } from 'utils/amplitude';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { SessionListItem } from '../../../../@types/cohorts';
@@ -64,6 +65,12 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.sessions_tab
+    });
+  }, []);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let sessionNumber = Number(params.get('session'));
     sessionNumber--;
@@ -89,7 +96,12 @@ export default function SessionsTab() {
         <SessionsContainer>
           <SessionsInnerContainer container>
             <Grid item md={8} sm={12}>
-              <SessionBoard session={sessions && sessions[selectedSession]} cohortId={cohort_id} />
+              <SessionBoard
+                session={sessions && sessions[selectedSession]}
+                cohortId={cohort_id}
+                cohortName={cohort.name}
+                sessionNumber={selectedSession + 1}
+              />
             </Grid>
             <SessionListDesktopContainer item md={4}>
               <SessionList
