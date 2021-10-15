@@ -27,5 +27,6 @@ export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
 export const EVENT_TYPES = {
   page_view: 'Page view',
   peers_tab: 'Peers Tab',
-  opened_modal: 'Peer modal viewed'
+  opened_modal: 'Peer modal viewed',
+  peers_filters: 'Peer Filters'
 };

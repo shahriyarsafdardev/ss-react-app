@@ -4,10 +4,10 @@ import {
   FormControl,
   Checkbox,
   MenuItem,
-  ListItemText,
-  OutlinedInput
+  ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { sendAmplitudeData, EVENT_TYPES } from 'utils/amplitude';
 
 const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
@@ -48,6 +48,13 @@ export default function StudentProfileFilters({
   setView,
   view
 }: StudentProfileFiltersProps) {
+  const trackFilters = (type: string, value: string | string[]) => {
+    sendAmplitudeData(EVENT_TYPES.peers_filters, {
+      type,
+      value
+    });
+  };
+
   return (
     <ViewSelector>
       <FilterFormControl>
@@ -56,7 +63,10 @@ export default function StudentProfileFilters({
           displayEmpty
           labelId="view-label"
           id="view-label"
-          onChange={(e: any) => setView(e.target.value)}
+          onChange={(e: any) => {
+            setView(e.target.value);
+            trackFilters('view', e.target.value);
+          }}
           label="View"
           value={view}
         >
@@ -75,7 +85,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox"
           multiple
           value={selectedCompanies}
-          onChange={handleCompanyChange}
+          onChange={(e) => {
+            handleCompanyChange(e);
+            trackFilters('companies', e.target.value);
+          }}
           label="Filter by Company"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500 } }}
@@ -95,7 +108,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox-strength"
           multiple
           value={selectedStrengths}
-          onChange={handleStrengthChange}
+          onChange={(e) => {
+            handleStrengthChange(e);
+            trackFilters('strengths', e.target.value);
+          }}
           label="Filter by Strengths"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
@@ -115,7 +131,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox-interest"
           multiple
           value={selectedInterests}
-          onChange={handleInterestChange}
+          onChange={(e) => {
+            handleInterestChange(e);
+            trackFilters('interests', e.target.value);
+          }}
           label="Filter by Interests"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}

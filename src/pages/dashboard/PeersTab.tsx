@@ -80,28 +80,22 @@ export default function PeersTab() {
     const {
       target: { value }
     } = event;
-    setSelectedCompanies(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedCompanies(value);
   };
   const handleStrengthChange = (event: any) => {
     const {
       target: { value }
     } = event;
-    setSelectedStrengths(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedStrengths(value);
   };
   const handleInterestChange = (event: any) => {
     const {
       target: { value }
     } = event;
-    setSelectedInterests(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedInterests(value);
   };
   useEffect(() => {
     dispatch(getPeers(cohort_id.toString()));
