@@ -20,11 +20,24 @@ describe('Sessions Tab', () => {
   beforeEach(() => {
     // network stub
     cy.server();
-    cy.login();
   });
 
   it('shows a list of all sessions', () => {
+    cy.login();
     // assert that the list is shown with the correct content
+    cy.get('#sessions-list-container').children().should('have.length', 3);
+    cy.get('[data-testid=session-list-number-0]').should('contain', 'Session 1');
+    cy.get('[data-testid=session-list-title-0]').should('contain', 'Test Cohort 1');
+    cy.get('[data-testid=session-list-time-container-0]').should(
+      'contain',
+      'Recorded on 27 September 2021'
+    );
+    cy.get('[data-testid=session-list-number-1]').should('contain', 'Session 2');
+    cy.get('[data-testid=session-list-title-1]').should('contain', 'Test Cohort 2');
+    cy.get('[data-testid=session-list-time-container-1]').should(
+      'contain',
+      'Recorded on 05 October 2021'
+    );
   });
 
   it('it shows the details of the first session by default', () => {
@@ -40,7 +53,6 @@ describe('Sessions Tab', () => {
     // Session description
     cy.get('[data-testid=session-description]').should('be.visible');
     // Need to check inner html that it matches the api
-
     // Session Summary
     cy.get('[data-testid=session-notes]').click();
     cy.get('[data-testid=summary-notes]').should('be.visible');

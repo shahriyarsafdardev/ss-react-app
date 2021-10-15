@@ -19,15 +19,17 @@ export default function SessionList({ sessionsList, onClick, selectedSession }: 
       <Box marginBottom={2}>
         <Typography variant="h4">All Sessions</Typography>
       </Box>
-      {sessionsList.map((session, index) => (
-        <SessionRow
-          key={session.id}
-          isSelected={index === selectedSession}
-          onClick={onClick}
-          index={index}
-          session={session}
-        />
-      ))}
+      <Box data-testId="sessions-list-container" id="sessions-list-container">
+        {sessionsList.map((session, index) => (
+          <SessionRow
+            key={session.id}
+            isSelected={index === selectedSession}
+            onClick={onClick}
+            index={index}
+            session={session}
+          />
+        ))}
+      </Box>
     </ListContainer>
   );
 }
