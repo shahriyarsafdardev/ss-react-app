@@ -48,6 +48,11 @@ export const SESSION_EVENTS = {
   slides_tab: 'Slides Tab'
 };
 
+export const RESOURCES_EVENTS = {
+  opened: 'Opened',
+  opened_link: 'Opened Link'
+};
+
 export const SLIDE_EVENTS = {
   opened: 'Opened',
   downloaded_pdf: 'Download PDF',

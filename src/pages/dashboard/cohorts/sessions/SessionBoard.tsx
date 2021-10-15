@@ -224,7 +224,7 @@ export default function SessionBoard({
   const tabsContent = [
     <Description
       key="description"
-      onTrack={() => trackFor(SESSION_EVENTS.resources_tab, 'Opened')}
+      onTrack={(eventData: string) => trackFor(SESSION_EVENTS.resources_tab, eventData)}
       innerContent={session?.description || ''}
     />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
