@@ -46,9 +46,8 @@ const MessagingChannelHeader: React.FC<Props> = (props) => {
 
   const [channelName, setChannelName] = useState(channel.data?.name || '');
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const members = Object.values(channel.state.members || {}).filter(
     (member) => member.user?.id !== client?.user?.id
@@ -64,12 +63,6 @@ const MessagingChannelHeader: React.FC<Props> = (props) => {
 
     setIsEditing(false);
   };
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef?.current.focus();
-    }
-  }, [isEditing]);
 
   useEffect(() => {
     if (!channelName) {
@@ -132,24 +125,6 @@ const MessagingChannelHeader: React.FC<Props> = (props) => {
 
     return null;
   };
-  const EditHeader = () => (
-    <form
-      style={{ flex: 1 }}
-      onSubmit={(event) => {
-        event.preventDefault();
-        inputRef?.current?.blur();
-      }}
-    >
-      <input
-        className="channel-header__edit-input"
-        onBlur={updateChannel}
-        onChange={(event) => setChannelName(event.target.value)}
-        placeholder="Type a new name for the chat"
-        ref={inputRef}
-        value={channelName}
-      />
-    </form>
-  );
 
   return (
     <div className="messaging__channel-header">
@@ -167,11 +142,21 @@ const MessagingChannelHeader: React.FC<Props> = (props) => {
       {!isEditing ? (
         <div className="channel-header__name">{channelName || title}</div>
       ) : (
-        <EditHeader />
+        <input
+          type="text"
+          className="channel-header__edit-input"
+          onChange={(event) => setChannelName(event.target.value)}
+          placeholder="Type a new name for the chat"
+          value={channelName}
+        />
       )}
       <div className="messaging__channel-header__right">
         <TypingIndicator />
-        {!isEditing ? <ChannelInfoIcon {...{ isEditing, setIsEditing }} /> : <ChannelSaveIcon />}
+        {!isEditing ? (
+          <ChannelInfoIcon {...{ isEditing, setIsEditing }} />
+        ) : (
+          !loading && <ChannelSaveIcon updateChannel={updateChannel} setLoading={setLoading} />
+        )}
       </div>
     </div>
   );
