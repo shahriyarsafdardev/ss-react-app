@@ -19,7 +19,7 @@ export default function SessionList({ sessionsList, onClick, selectedSession }: 
       <Box marginBottom={2}>
         <Typography variant="h4">All Sessions</Typography>
       </Box>
-      <Box data-testId="sessions-list-container" id="sessions-list-container">
+      <Box data-testid="sessions-list-container" id="sessions-list-container">
         {sessionsList.map((session, index) => (
           <SessionRow
             key={session.id}

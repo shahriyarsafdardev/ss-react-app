@@ -53,27 +53,38 @@ describe('Sessions Tab', () => {
     // Session description
     cy.get('[data-testid=session-description]').should('be.visible');
     // Need to check inner html that it matches the api
+    //Matches inner HTML of description with API response
+    cy.get('[data-testid=session-description]').then((description) => {
+      const html = description.html();
+      expect(html).to.eq(
+        '<h3><strong>Pre-Readings:</strong></h3><p><br></p><ul><li><a href="https://platformchronicles.substack.com/p/network-effects-and-defensibility" rel="noopener noreferrer" target="_blank">Seven Questions to Evaluate Network Effect Moats - Platform Chronicles</a></li><li><a href="https://www.youtube.com/watch?app=desktop&amp;v=_xHsHWblK6U" rel="noopener noreferrer" target="_blank">Tactics for Improving Marketplace Quality [Video] - Josh Breinlinger</a> (<strong>our guest for today!</strong>)</li></ul><p><br></p><h3><strong>Supplementary Materials: </strong></h3><p><br></p><ul><li><a href="https://platformchronicles.substack.com/p/how-defensible-are-zooms-network" rel="noopener noreferrer" target="_blank">How Defensible are Zoom\'s Network Effects - Platform Chronicles</a></li><li><a href="https://www.nfx.com/post/network-effects-manual/" rel="noopener noreferrer" target="_blank">The Network Effects Manual: 13 Different Network Effects (and counting) - NfX</a></li></ul>'
+      );
+    });
     // Session Summary
     cy.get('[data-testid=session-notes]').click();
     cy.get('[data-testid=summary-notes]').should('be.visible');
     // Need to check inner html that it matches the api
+    //Matches inner HTML of summary with API response
+    cy.get('[data-testid=summary-notes]').then((summary) => {
+      const html = summary.html();
+      expect(html).to.eq(
+        '<ul><li>Gain economic frameworks to understand and manage network d</li><li>Understand cost/benefit aspects of platform-based network businesses</li><li class="ql-indent-1">Identify strategic considerations for two-sided and multi-sided platform businesses</li><li class="ql-indent-1">This lecture covers some of the most fundamental principles behind what makes digital platforms powerful business models.</li></ul>'
+      );
+    });
 
+    //session slides
     cy.get('[data-testid=session-slides]').click();
-    cy.get('.react-pdf__Page__canvas', { timeout: 20000 }).should('be.visible');
+    cy.get('.react-pdf__Page__canvas', { timeout: 30000 }).should('be.visible');
   });
 
-  it('it shows the details of the second session when it is clicked', () => {});
-
-  it('should have correct session name for session 2', () => {
+  it('it shows the details of the second session when it is clicked', () => {
     cy.get('#session-list-1').click({ force: true });
-
+    //session number and name
     cy.get('[data-testid=session-number]').should('have.text', 'Session 2 | ');
-
     cy.get('[data-testid=session-title]').should('have.text', 'Test Cohort 2');
     cy.get('[data-testid=close-modal]').click();
-  });
 
-  it('should check the resources are not visible and correct message is displayed for session 2', () => {
+    //session description
     cy.get('[data-testid=session-resources]').click();
     //it should ensure description should not be displayed
     cy.get('[data-testid=session-description]').should('not.exist');
@@ -83,8 +94,8 @@ describe('Sessions Tab', () => {
       'have.text',
       'The session resources will be available 2 days before the session.'
     );
-  });
-  it('should check the summary notes are not visible and correct message is displayed for session 2', () => {
+
+    //session summary
     cy.get('[data-testid=session-notes]').click();
     //it should ensure summary should not be displayed
     cy.get('[data-testid=summary-notes]').should('not.exist');
@@ -93,8 +104,8 @@ describe('Sessions Tab', () => {
       'have.text',
       'The session summary will be available shortly after this session.'
     );
-  });
-  it('should check the slides are not visible and correct message is displayed for session 2', () => {
+
+    //session slides
     cy.get('[data-testid=session-slides]').click();
     //it should ensure pdf slides should not be displayed
     cy.get('[data-testid=session-pdf-slides]').should('not.exist');
@@ -103,13 +114,32 @@ describe('Sessions Tab', () => {
       'have.text',
       'The presentation slides will be available shortly after this session.'
     );
-  });
-  it('should check the video is not visible and place holder is displayed for session 2', () => {
+
+    //session video placeholder
     cy.get('[data-testid=session-video]').should('not.exist');
     cy.get('[data-testid=video-place-holder]').should('be.visible');
     cy.get('[data-testid=session-ended]').should(
       'have.text',
       'This live session has finished, the recording will be available soon!'
     );
+  });
+
+  it('it shows the details of the third session when it is clicked', () => {
+    cy.get('#session-list-2').click({ force: true });
+    //session number and name
+    cy.get('[data-testid=session-number]').should('have.text', 'Session 3 | ');
+    cy.get('[data-testid=session-title]').should('have.text', 'Test Cohort 3');
+
+    //session video placeholder
+    //Date for this session is set to 18th october "2022" so that our tests dont
+    //fail when date passes and place holder changes
+    cy.get('[data-testid=session-video]').should('not.exist');
+    cy.get('[data-testid=upcoming-session-placeholder]').should('be.visible');
+    //should have correct message
+    cy.get('[data-testid=upcoming-session-placeholder]').contains('This session starts on the');
+    //should have correct date
+    cy.get('[data-testid=upcoming-session-placeholder]').contains('18th October');
+    //should have correct time
+    cy.get('[data-testid=upcoming-session-placeholder]').contains('at 17:00');
   });
 });

@@ -64,7 +64,9 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       placeholder="Start typing whatever comes to mind!"
       multiline
       rows={4}
-      id="survey-text"
+      inputProps={{
+        'data-testid': 'survey-text'
+      }}
     />
   );
 }
@@ -81,6 +83,7 @@ function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
               checked={option === submitted_answer}
               data-checked={option === submitted_answer}
               onChange={() => onChange(option)}
+              data-testid={`option-${index + 1}`}
             />
           }
           label={option}
@@ -123,6 +126,7 @@ function MultiCheck({
             value={option}
             checked={values.has(option)}
             id={`check-${index}`}
+            data-testid={`check-${index + 1}`}
             onChange={handleChange}
           />
           <label htmlFor={option}>{option}</label>
@@ -161,6 +165,7 @@ function CreateMultiSelect({
         isMulti
         isSearchable
         onChange={handleChange}
+        id="create-select"
       />
     </div>
   );

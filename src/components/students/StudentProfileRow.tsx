@@ -60,7 +60,7 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       role="checkbox"
       onClick={() => modalHandler(row)}
       style={{ cursor: 'pointer' }}
-      id={`student-row-${id}`}
+      data-testid={`student-row-${id}`}
     >
       <StyledTableCell component="th" scope="row" style={{ width: 200 }} padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>

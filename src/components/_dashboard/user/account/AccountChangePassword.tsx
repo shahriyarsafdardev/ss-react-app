@@ -76,7 +76,7 @@ export default function AccountChangePassword() {
               type="submit"
               variant="contained"
               loading={isSubmitting}
-              id="btn-submit-change-password"
+              data-testid="btn-submit-change-password"
             >
               Save Changes
             </StyledButton>

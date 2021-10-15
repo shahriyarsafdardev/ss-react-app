@@ -280,6 +280,7 @@ export default function ProfileForm({
                         label="Company"
                         labelId="company-label"
                         id="multiple-checkbox-company"
+                        data-testid="current-company"
                         {...getFieldProps('current_company')}
                       >
                         {companies?.map((name: any) => (

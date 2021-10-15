@@ -24,26 +24,29 @@ describe('Survey Modal Flow', () => {
       `${serverUrl}/cohort_sessions/submit_survey_responses.json`,
       '@submitResponse'
     ).as('submit_survey_responses');
-    cy.contains(/^Strongly Agree$/).click();
-    cy.contains(/^Strongly Agree$/).then((radio) => {
-      expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
-    });
-    cy.get('#btn-next').click();
-    cy.contains(/^Agree$/).click();
-    cy.contains(/^Agree$/).then((radio) => {
-      expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
-    });
-    cy.get('#btn-next').click();
-    cy.contains(/^Neutral$/).click();
-    cy.contains(/^Neutral$/).then((radio) => {
-      expect(radio[0].children[0].getAttribute('data-checked')).to.eq('true');
-    });
-    cy.get('#btn-next').click();
-    cy.get('#survey-text').type('Session was so good');
-    cy.get('#survey-text').should('have.text', 'Session was so good');
-    cy.get('#btn-next').click();
-    cy.get('#survey-text').type('Everything was fine');
-    cy.get('#survey-text').should('have.text', 'Everything was fine');
-    cy.get('#btn-next').click();
+    //it selects option 1
+    cy.get('[data-testid=option-1]').click();
+    //it checks if right option is selected
+    cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
+    cy.get('[data-testid=btn-next]').click();
+    //it selects option 2
+    cy.get('[data-testid=option-2]').click();
+    //it checks if right option is selected
+    cy.get('[data-testid=option-2]').should('have.attr', 'data-checked').and('equal', 'true');
+    cy.get('[data-testid=btn-next]').click();
+    //it selects option 3
+    cy.get('[data-testid=option-3]').click();
+    //it checks if right option is selected
+    cy.get('[data-testid=option-3]').should('have.attr', 'data-checked').and('equal', 'true');
+    cy.get('[data-testid=btn-next]').click();
+    //it types text in textfield
+    cy.get('[data-testid=survey-text]').type('Session was so good');
+    //it checks if correct text is typed
+    cy.get('[data-testid=survey-text]').should('have.text', 'Session was so good');
+    cy.get('[data-testid=btn-next]').click();
+    cy.get('[data-testid=survey-text]').type('Everything was fine');
+    //it checks if correct text is typed
+    cy.get('[data-testid=survey-text]').should('have.text', 'Everything was fine');
+    cy.get('[data-testid=btn-next]').click();
   });
 });

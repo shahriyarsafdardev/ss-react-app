@@ -56,7 +56,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
   return (
     <ListItem
       id={`session-list-${index}`}
-      data-testId={`session-list-${index}`}
+      data-testid={`session-list-${index}`}
       style={{ ...(isSelected && { backgroundColor: 'rgba(77, 77, 205, 0.03)' }) }}
       onClick={() => onClick(index)}
     >
@@ -70,10 +70,10 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
       </ListIcon>
       <div>
         <SessionDetails
-          data-testId={`session-list-number-${index}`}
+          data-testid={`session-list-number-${index}`}
         >{`Session ${session.number} | ${session.length}`}</SessionDetails>
-        <Title data-testId={`session-list-title-${index}`}>{session.name}</Title>
-        <SessionDetails data-testId={`session-list-time-container-${index}`}>
+        <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
+        <SessionDetails data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
           {sessionTime(session.time)}
         </SessionDetails>

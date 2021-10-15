@@ -101,6 +101,7 @@ export default function UserAccount() {
               key={tab.value}
               label={capitalCase(tab.value)}
               id={tab.value}
+              data-testid={tab.value}
               icon={tab.icon}
               value={tab.value}
             />

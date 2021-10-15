@@ -295,7 +295,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
                 (!responses[activeStep] || responses[activeStep].length === 0)
               }
               onClick={() => onStepChange(activeStep)}
-              id="btn-next"
+              data-testid="btn-next"
             >
               Next
             </StyledButton>
@@ -306,7 +306,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               type="submit"
               variant="contained"
               className="next"
-              id="btn-submit"
+              data-testid="btn-submit"
             >
               Submit
             </StyledButton>

@@ -69,7 +69,7 @@ const DatePreview = ({ date }: { date: Date }) => {
   const classes = useStyes();
 
   return (
-    <div>
+    <div data-testid="upcoming-session-placeholder">
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_date.svg" alt="date-icon" />
         <Typography variant="body2" className={classes.content}>
