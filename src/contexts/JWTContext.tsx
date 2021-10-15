@@ -47,7 +47,8 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
       newUser = {
         ...newUser,
         displayName: `${newUser?.first_name} ${newUser?.last_name}`,
-        photoURL: newUser?.profile_image_url
+        photoURL: newUser?.profile_image_url,
+        type: 'student'
       };
       return {
         isAuthenticated: action.payload.isAuthenticated,
@@ -59,7 +60,8 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
       newUser = {
         ...newUser,
         displayName: `${newUser?.first_name} ${newUser?.last_name}`,
-        photoURL: newUser?.profile_image_url
+        photoURL: newUser?.profile_image_url,
+        type: 'student'
       };
       return {
         ...state,

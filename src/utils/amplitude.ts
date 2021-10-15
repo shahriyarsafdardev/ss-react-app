@@ -20,6 +20,11 @@ export const setAmplitudeUserProperties = (properties: any) => {
   amplitudeInstance().setUserProperties(properties);
 };
 
+export const addAmplitudeUserProperty = (key: string, value: string) => {
+  const identificationData = new amplitude.Identify().set(key, value);
+  amplitudeInstance().identify(identificationData);
+};
+
 export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
   amplitudeInstance().logEvent(eventType, eventProperties);
 };
