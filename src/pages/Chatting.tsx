@@ -1,31 +1,62 @@
 import { useState, useEffect } from 'react';
 import { Container, Typography } from '@material-ui/core';
-import { StreamChat } from 'stream-chat';
-import {
-  Chat,
-  Channel,
-  ChannelHeader,
-  ChannelList,
-  LoadingIndicator,
-  MessageInput,
-  MessageList,
-  Thread,
-  Window
-} from 'stream-chat-react';
+import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
+import { Chat, enTranslations, LoadingIndicator, Streami18n } from 'stream-chat-react';
+
+import './Chatting.css';
+
+import { ChannelContainer } from '../components/stream-chat/ChannelContainer/ChannelContainer';
+import { ChannelListContainer } from '../components/stream-chat/ChannelListContainer/ChannelListContainer';
+
 import useAuth from '../hooks/useAuth';
 import Page from '../components/Page';
 import 'stream-chat-react/dist/css/index.css';
 
+const apiKey = '4zev2wpcm6r7';
+const theme = 'light';
+
+const i18nInstance = new Streami18n({
+  language: 'en',
+  translationsForLanguage: {
+    ...enTranslations
+  }
+});
+
+export type TeamAttachmentType = Record<string, unknown>;
+export type TeamChannelType = Record<string, unknown>;
+export type TeamCommandType = LiteralStringForUnion;
+export type TeamEventType = Record<string, unknown>;
+export type TeamMessageType = Record<string, unknown>;
+export type TeamReactionType = Record<string, unknown>;
+export type TeamUserType = { image?: string };
+
+const options = { state: true, watch: true, presence: true };
+
 export default function Chatting() {
-  const [chatClient, setChatClient] = useState<any>(null);
-  const [sort, setSort] = useState<any>({ last_message_at: -1 });
+  const [client, setChatClient] = useState<any>(null);
+  const [isMobileNavVisible, setMobileNav] = useState(false);
+  const [createType, setCreateType] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { user } = useAuth();
-  const filters = { type: 'messaging', members: { $in: [user?.stream_id] } };
+
+  const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
+  const filters: ChannelFilters[] = [
+    { type: 'team', members: { $in: [user?.stream_id] } },
+    { type: 'messaging', members: { $in: [user?.stream_id] } }
+  ];
 
   useEffect(() => {
     const initChat = async () => {
-      const client = StreamChat.getInstance('4zev2wpcm6r7');
-
+      const client = StreamChat.getInstance<
+        TeamAttachmentType,
+        TeamChannelType,
+        TeamCommandType,
+        TeamEventType,
+        TeamMessageType,
+        TeamReactionType,
+        TeamUserType
+      >(apiKey!);
       await client.disconnectUser();
       await client.connectUser(
         {
@@ -39,9 +70,23 @@ export default function Chatting() {
     };
 
     initChat();
+    return () => {
+      client?.disconnectUser();
+    };
   }, []);
 
-  if (!chatClient) {
+  useEffect(() => {
+    const mobileChannelList = document.querySelector('#mobile-channel-list');
+    if (isMobileNavVisible && mobileChannelList) {
+      mobileChannelList.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    } else if (!isMobileNavVisible && mobileChannelList) {
+      mobileChannelList.classList.remove('show');
+      document.body.style.overflow = 'auto';
+    }
+  }, [isMobileNavVisible]);
+
+  if (!client) {
     return <LoadingIndicator />;
   }
 
@@ -49,23 +94,30 @@ export default function Chatting() {
     <Page title="ScholarSite | Contact Us">
       <Container maxWidth="lg">
         <Typography variant="h3">Chat with Friends</Typography>
-        <Chat client={chatClient} theme="messaging light">
-          {chatClient ? (
-            <>
-              <ChannelList sort={sort} />
-              <Channel>
-                <Window>
-                  <ChannelHeader />
-                  <MessageList />
-                  <MessageInput />
-                </Window>
-                <Thread />
-              </Channel>
-            </>
-          ) : (
-            <LoadingIndicator />
-          )}
-        </Chat>
+        <div className="app__wrapper">
+          <Chat {...{ client, i18nInstance }} theme="team light">
+            <ChannelListContainer
+              {...{
+                isCreating,
+                filters,
+                options,
+                setCreateType,
+                setIsCreating,
+                setIsEditing,
+                sort
+              }}
+            />
+            <ChannelContainer
+              {...{
+                createType,
+                isCreating,
+                isEditing,
+                setIsCreating,
+                setIsEditing
+              }}
+            />
+          </Chat>
+        </div>
       </Container>
     </Page>
   );
