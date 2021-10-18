@@ -125,6 +125,7 @@ describe('Sessions Tab', () => {
   });
 
   it('it shows the details of the third session when it is clicked', () => {
+    cy.clock(new Date(2021, 8, 16).getTime());
     cy.get('#session-list-2').click({ force: true });
     //session number and name
     cy.get('[data-testid=session-number]').should('have.text', 'Session 3 | ');
