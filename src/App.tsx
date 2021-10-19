@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 // event tracker
-import { initAmplitude, addAmplitudeUserProperty } from 'utils/amplitude';
+import { initAmplitude, setAmplitudeUserProperties } from 'utils/amplitude';
 // routes
 import Router from './routes';
 // theme
@@ -30,9 +30,10 @@ export default function App() {
     if (isAuthenticated) {
       dispatch(getCohorts());
       initAmplitude();
-      if (user?.type) {
-        addAmplitudeUserProperty('type', user.type);
-      }
+      setAmplitudeUserProperties({
+        'Full Name': user?.displayName,
+        type: user?.type
+      });
     }
   }, [dispatch, isAuthenticated]);
 
