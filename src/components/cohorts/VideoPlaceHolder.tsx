@@ -1,7 +1,10 @@
+import { useContext } from 'react';
 import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
+import { trackFor, SESSION_EVENTS } from 'utils/amplitude';
+import { CohortContext, SessionContext } from 'contexts/CohortContext';
 
 const useStyes = makeStyles(() => ({
   container: {
@@ -52,6 +55,10 @@ const useStyes = makeStyles(() => ({
   }
 }));
 
+const OnZoomButtonClick = (name: string, sessionNumber: number) => {
+  trackFor(name, sessionNumber, SESSION_EVENTS.zoom_preview, SESSION_EVENTS.opened_zoom_link);
+};
+
 const DatePreview = ({ date }: { date: Date }) => {
   const classes = useStyes();
 
@@ -101,6 +108,8 @@ const TimerPreview = ({ time }: { time: Date }) => {
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
+  const { name } = useContext(CohortContext);
+  const { sessionNumber } = useContext(SessionContext);
 
   const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: d,
@@ -121,6 +130,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
           <TimerField text="Seconds" value={seconds} showSeparator={true} />
         </Box>
         <Button
+          onClick={() => OnZoomButtonClick(name, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
@@ -134,6 +144,8 @@ const TimerPreview = ({ time }: { time: Date }) => {
 
 const SessionInProgress = () => {
   const classes = useStyes();
+  const { name } = useContext(CohortContext);
+  const { sessionNumber } = useContext(SessionContext);
 
   return (
     <div>
@@ -149,6 +161,7 @@ const SessionInProgress = () => {
         </Box>
         <Button
           className={classes.primaryBtn}
+          onClick={() => OnZoomButtonClick(name, sessionNumber)}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
         >

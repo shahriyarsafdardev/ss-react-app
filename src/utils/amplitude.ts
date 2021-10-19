@@ -45,18 +45,57 @@ export const SESSION_EVENTS = {
   category: 'category',
   action: 'action',
   resources_tab: 'Resources Tab',
-  slides_tab: 'Slides Tab'
+  slides_tab: 'Slides Tab',
+  zoom_preview: 'Zoom Preview',
+  opened_zoom_link: 'Opened Zoom Link'
 };
 
 export const RESOURCES_EVENTS = {
-  opened: 'Opened',
+  opened: 'Opened Tab',
   opened_link: 'Opened Link'
 };
 
 export const SLIDE_EVENTS = {
-  opened: 'Opened',
+  opened: 'Opened Tab',
   downloaded_pdf: 'Download PDF',
   full_screen_view: 'Opened Full Screen View',
   navigated_left: 'Navigated Left',
   navigated_right: 'Navigated Right'
+};
+
+export const trackFor = (
+  cohortName: string,
+  sessionNumber: number,
+  eventType: string,
+  eventData?: string
+) => {
+  const amplitudeData = {
+    [SESSION_EVENTS.cohort_name]: cohortName,
+    [SESSION_EVENTS.cohort_intake_number]: '10',
+    [SESSION_EVENTS.session_number]: sessionNumber
+  };
+
+  switch (eventType) {
+    case SESSION_EVENTS.resources_tab:
+      sendAmplitudeData(SESSION_EVENTS.event_name, {
+        ...amplitudeData,
+        [SESSION_EVENTS.category]: SESSION_EVENTS.resources_tab,
+        [SESSION_EVENTS.action]: eventData
+      });
+      break;
+    case SESSION_EVENTS.slides_tab:
+      sendAmplitudeData(SESSION_EVENTS.event_name, {
+        ...amplitudeData,
+        [SESSION_EVENTS.category]: SESSION_EVENTS.slides_tab,
+        [SESSION_EVENTS.action]: eventData
+      });
+      break;
+    case SESSION_EVENTS.zoom_preview:
+      sendAmplitudeData(SESSION_EVENTS.event_name, {
+        ...amplitudeData,
+        [SESSION_EVENTS.category]: SESSION_EVENTS.zoom_preview,
+        [SESSION_EVENTS.action]: eventData
+      });
+      break;
+  }
 };

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
-import { sendAmplitudeData, SESSION_EVENTS } from 'utils/amplitude';
+import { SESSION_EVENTS, trackFor } from 'utils/amplitude';
+import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -16,9 +17,6 @@ import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
 
 type SessionBoardProps = {
   session: Session | undefined;
-  cohortId: string;
-  cohortName: string;
-  sessionNumber: number;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -146,17 +144,14 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({
-  session,
-  cohortId,
-  cohortName,
-  sessionNumber
-}: SessionBoardProps) {
+export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
   const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
+  const { id, name } = useContext(CohortContext);
+  const { sessionNumber } = useContext(SessionContext);
 
   const SurveyModal = ({
     state,
@@ -194,28 +189,6 @@ export default function SessionBoard({
     return false;
   };
 
-  const trackFor = (eventType: string, eventData?: string) => {
-    const amplitudeData = {
-      [SESSION_EVENTS.cohort_name]: cohortName,
-      [SESSION_EVENTS.cohort_intake_number]: '10',
-      [SESSION_EVENTS.session_number]: sessionNumber
-    };
-
-    if (eventType === SESSION_EVENTS.resources_tab) {
-      sendAmplitudeData(SESSION_EVENTS.event_name, {
-        ...amplitudeData,
-        [SESSION_EVENTS.category]: SESSION_EVENTS.resources_tab,
-        [SESSION_EVENTS.action]: eventData
-      });
-    } else if (eventType === SESSION_EVENTS.slides_tab) {
-      sendAmplitudeData(SESSION_EVENTS.event_name, {
-        ...amplitudeData,
-        [SESSION_EVENTS.category]: SESSION_EVENTS.slides_tab,
-        [SESSION_EVENTS.action]: eventData
-      });
-    }
-  };
-
   useEffect(() => {
     setFeedbackSubmitted(false);
     setModal(!feedbacks[session?.id || '']);
@@ -224,13 +197,17 @@ export default function SessionBoard({
   const tabsContent = [
     <Description
       key="description"
-      onTrack={(eventData: string) => trackFor(SESSION_EVENTS.resources_tab, eventData)}
+      onTrack={(eventData: string) =>
+        trackFor(name, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+      }
       innerContent={session?.description || ''}
     />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
     <Slides
       key="slidesTab"
-      onTrack={(eventData: string) => trackFor(SESSION_EVENTS.slides_tab, eventData)}
+      onTrack={(eventData: string) =>
+        trackFor(name, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
+      }
       pdfUrl={session?.presentation_pdf_url}
     />
   ];
@@ -249,7 +226,7 @@ export default function SessionBoard({
           onComplete={() => {
             setModal(false);
             setFeedbackSubmitted(true);
-            dispatch(updateSessionFeedbackStatus(cohortId, session.id));
+            dispatch(updateSessionFeedbackStatus(id, session.id));
             dispatch(updateSessionModalState(session.id));
           }}
         />
