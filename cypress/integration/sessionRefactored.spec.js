@@ -6,17 +6,18 @@ import sessionFixture from '../fixtures/session/sessions.json';
 // import json from fixtures
 
 describe('Sessions Tab', () => {
-  beforeEach(() => {
+  before(() => {
     // network stub
     cy.server();
+    cy.login();
   });
   // assert that the list is shown with the correct content
-  it('list the correct number of sessions', () => {
-    cy.login();
-    // expect(length).to.eq(json.sessions.length);
-    cy.get('#sessions-list-container')
-      .children()
-      .should('have.length', sessionFixture.sessions.length);
+  describe('List Session', () => {
+    it('list the correct number of sessions', () => {
+      cy.get('#sessions-list-container')
+        .children()
+        .should('have.length', sessionFixture.sessions.length);
+    });
   });
 
   it('list the session number of each session', () => {
@@ -53,10 +54,12 @@ describe('Sessions Tab', () => {
   });
 
   context('When the current time is before the session start time', () => {
-    it('show a clock icon', () => {
+    before(() => {
       cy.clock(1633399200000);
       cy.get('#session-list-1').click({ force: true });
+    });
 
+    it('show a clock icon', () => {
       cy.get('[data-testid=session-icon-1]').should('have.attr', 'src').and('equal', clockIcon);
     });
 
@@ -64,14 +67,4 @@ describe('Sessions Tab', () => {
       cy.get('[data-testid=session-list-time-container-1]').should('contain', sessionLive);
     });
   });
-
-  // context('When the current time is before the session start time', () => {
-  //   it('show a clock icon', () => {
-  //     expect(icon3).to.eq(clockIcon);
-  //   });
-
-  //   it('include a message showing the session is upcoming', () => {
-  //     expect(message3).to.eq('Live in 1 day');
-  //   });
-  // });
 });
