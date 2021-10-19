@@ -15,6 +15,7 @@
 
 // We also need to assert that the VideoPlaceHolder component is working as expected
 const serverUrl = Cypress.env('serverUrl');
+import sessiondata from '../fixtures/session/sessions.json';
 
 describe('Sessions Tab', () => {
   beforeEach(() => {
@@ -24,6 +25,7 @@ describe('Sessions Tab', () => {
 
   it('shows a list of all sessions', () => {
     cy.login();
+    console.log(sessiondata);
     // assert that the list is shown with the correct content
     cy.get('#sessions-list-container').children().should('have.length', 3);
     cy.get('[data-testid=session-list-number-0]').should('contain', 'Session 1');

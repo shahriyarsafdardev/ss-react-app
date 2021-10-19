@@ -64,6 +64,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
         <img
           src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}
           alt="clock-icon"
+          data-testid={`session-icon-${index}`}
           width={35}
           style={{ maxWidth: 'unset' }}
         />
