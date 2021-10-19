@@ -125,22 +125,48 @@ describe('Sessions Tab', () => {
   });
 
   it('it shows the details of the third session when it is clicked', () => {
-    cy.clock(new Date(2021, 8, 16).getTime());
+    cy.clock(1629140400000);
     cy.get('#session-list-2').click({ force: true });
     //session number and name
     cy.get('[data-testid=session-number]').should('have.text', 'Session 3 | ');
     cy.get('[data-testid=session-title]').should('have.text', 'Test Cohort 3');
 
     //session video placeholder
-    //Date for this session is set to 18th october "2022" so that our tests dont
-    //fail when date passes and place holder changes
+    //Upcoming session video placeholder
     cy.get('[data-testid=session-video]').should('not.exist');
     cy.get('[data-testid=upcoming-session-placeholder]').should('be.visible');
     //should have correct message
     cy.get('[data-testid=upcoming-session-placeholder]').contains('This session starts on the');
     //should have correct date
-    cy.get('[data-testid=upcoming-session-placeholder]').contains('18th October');
+    cy.get('[data-testid=upcoming-session-placeholder]').contains('17th October');
     //should have correct time
-    cy.get('[data-testid=upcoming-session-placeholder]').contains('at 17:00');
+    // cy.get('[data-testid=upcoming-session-placeholder]').contains('at 17:00');
+    cy.clock().invoke('restore');
+  });
+  it('it should test the video place holder when 0 days are remaining for session', () => {
+    cy.clock(1633399200000);
+    cy.get('#session-list-1').click({ force: true });
+
+    cy.get('[data-testid=session-video]').should('not.exist');
+    //should have correct message
+    cy.get('[data-testid=video-place-holder]').contains('This session is starting soon!');
+    //should have correct remaining time
+    cy.get('[data-testid=video-place-holder]').contains('01');
+    //should have button for zoom link
+    cy.get('[data-testid=video-place-holder]').contains('Join Zoom');
+    cy.clock().invoke('restore');
+  });
+  it('it should test the video place holder when session is in progress', () => {
+    cy.clock(1634473800000);
+    cy.get('#session-list-2').click({ force: true });
+
+    cy.get('[data-testid=session-video]').should('not.exist');
+    //should have correct message
+    cy.get('[data-testid=video-place-holder]').contains(
+      'The session has already started, access the link below to join!'
+    );
+    //should have button for zoom link
+    cy.get('[data-testid=video-place-holder]').contains('Join Zoom');
+    cy.clock().invoke('restore');
   });
 });
