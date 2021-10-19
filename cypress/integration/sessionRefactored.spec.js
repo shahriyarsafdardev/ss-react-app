@@ -2,6 +2,7 @@ import moment from 'moment';
 
 const videoCameraIcon = '/static/icons/ic_recorder.svg';
 const clockIcon = '/static/icons/ic_clock.svg';
+const inviteLink = 'https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09';
 
 import sessionFixture from '../fixtures/session/sessions.json';
 
@@ -53,9 +54,7 @@ describe('Sessions Tab', () => {
         // We want to replace this random number with the session time from the fixture - 60 minutes or 1 hour
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time - 1 * hours);
-        var timestring1 = sessionFixture.sessions[0].time;
-        var startdate = moment(timestring1);
-        var returned_endate = moment(startdate).subtract(1, 'hours');
+        var returned_endate = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
         cy.clock(new Date(returned_endate.format()));
         cy.get('#session-list-1').click({ force: true });
       });
@@ -74,9 +73,7 @@ describe('Sessions Tab', () => {
         // We want to replace this random number with the session time from the fixture - 60 minutes or 1 hour
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time + 1 * hours);
-        var timestring1 = sessionFixture.sessions[0].time;
-        var startdate = moment(timestring1);
-        var returned_endate = moment(startdate).add(1, 'hours');
+        var returned_endate = moment(sessionFixture.sessions[0].time).add(1, 'hours');
         cy.clock(new Date(returned_endate.format()));
         cy.get('#session-list-0').click({ force: true });
       });
@@ -99,42 +96,104 @@ describe('Sessions Tab', () => {
   describe('Session Content View', () => {
     describe('Session Main Display', () => {
       context('Before the session', () => {
-        before(() => {});
+        before(() => {
+          var returnedTime = moment(sessionFixture.sessions[1].time).subtract(1, 'hours');
+          cy.clock(new Date(returnedTime.format()));
+          cy.get('#session-list-1').click({ force: true });
+        });
 
-        it('Shows the correct info message', () => {});
+        it('Shows the correct info message', () => {
+          cy.get('[data-testid=video-place-holder]').contains('This session is starting soon!');
+        });
 
-        it('Shows the session start date and time', () => {});
+        it('Shows the session countdown', () => {
+          cy.get('[data-testid=hours]').should('have.text', '01');
+          cy.get('[data-testid=minutes]').should('have.text', '00');
+          cy.get('[data-testid=seconds]').should('have.text', '00');
+        });
+
+        it('shows an invite link', () => {
+          cy.get('[data-testid=session-invite]')
+            .should('have.attr', 'href')
+            .and('equal', inviteLink);
+        });
       });
 
       context('One day before the session starts', () => {
-        before(() => {});
+        before(() => {
+          var returnedTime = moment(sessionFixture.sessions[2].time).subtract(1, 'days');
 
-        it('Shows the correct info message', () => {});
+          // console.log(returnedTime.format('Do MMMM'), returnedTime.format('HH:mm'));
+          cy.clock(new Date(returnedTime.format()));
+          cy.get('#session-list-2').click({ force: true });
+        });
 
-        it('Shows a countdown', () => {});
+        it('Shows the correct info message', () => {
+          cy.get('[data-testid=upcoming-session-placeholder]').contains(
+            'This session starts on the'
+          );
+        });
 
-        it('Shows an invite link', () => {});
+        it('Shows start date', () => {
+          const currentDate = moment(sessionFixture.sessions[2].time);
+          var sessionDate = currentDate.format('Do MMMM');
+          var sessionTime = currentDate.format('HH:mm');
+
+          cy.get('[data-testid=upcoming-session-placeholder]').contains(sessionDate);
+          cy.get('[data-testid=upcoming-session-placeholder]').contains(sessionTime);
+        });
       });
 
       context('During the session', () => {
-        before(() => {});
+        before(() => {
+          var returnedTime = moment(sessionFixture.sessions[1].time).add(30, 'minutes');
+          cy.clock(new Date(returnedTime.format()));
+          cy.get('#session-list-1').click({ force: true });
+        });
 
-        it('Shows the correct info message', () => {});
+        it('Shows the correct info message', () => {
+          cy.get('[data-testid=video-place-holder]').contains(
+            'The session has already started, access the link below to join!'
+          );
+        });
 
-        it('shows an invite link', () => {});
+        it('shows an invite link', () => {
+          cy.get('[data-testid=session-invite]')
+            .should('have.attr', 'href')
+            .and('equal', inviteLink);
+        });
       });
 
       context('After the session', () => {
-        before(() => {});
+        before(() => {
+          var returnedTime = moment(sessionFixture.sessions[2].time).add(5, 'hours');
+          cy.clock(new Date(returnedTime.format()));
+          cy.get('#session-list-2').click({ force: true });
+        });
 
-        it('Shows the correct info message', () => {});
+        it('Shows the correct info message', () => {
+          cy.get('[data-testid=session-ended]').should(
+            'have.text',
+            'This live session has finished, the recording will be available soon!'
+          );
+        });
       });
 
       context('After the recording has been uploaded', () => {
         // switch to session with video
-        before(() => {});
+        before(() => {
+          cy.get('#session-list-0').click({ force: true });
+        });
 
-        it('Shows the session recording in a video player', () => {});
+        it('Shows the session recording in a video player', () => {
+          cy.get('[data-testid=session-video]').should('be.visible');
+          cy.get('[data-testid=session-video-url]')
+            .should('have.attr', 'src')
+            .and(
+              'equal',
+              'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4'
+            );
+        });
       });
     });
   });

@@ -87,11 +87,13 @@ const DatePreview = ({ date }: { date: Date }) => {
 const TimerField = ({
   text,
   value,
-  showSeparator = false
+  showSeparator = false,
+  testId
 }: {
   text: string;
   value: number;
   showSeparator?: boolean;
+  testId: string;
 }) => {
   const classes = useStyes();
   const formatted = value < 10 ? `0${value}` : value;
@@ -104,7 +106,9 @@ const TimerField = ({
           {text}
         </Typography>
 
-        <Typography variant="h2">{formatted}</Typography>
+        <Typography variant="h2" data-testid={testId}>
+          {formatted}
+        </Typography>
       </div>
     </div>
   );
@@ -131,15 +135,16 @@ const TimerPreview = ({ time }: { time: Date }) => {
           Passcode: 864988
         </Typography>
         <Box className={classes.timerRow}>
-          <TimerField text="Hours" value={hours} />
-          <TimerField text="Minutes" value={minutes} showSeparator={true} />
-          <TimerField text="Seconds" value={seconds} showSeparator={true} />
+          <TimerField text="Hours" value={hours} testId="hours" />
+          <TimerField text="Minutes" value={minutes} showSeparator={true} testId="minutes" />
+          <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
         </Box>
         <Button
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          data-testid="session-invite"
         >
           Join Zoom
         </Button>
@@ -170,6 +175,7 @@ const SessionInProgress = () => {
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          data-testid="session-invite"
         >
           Join Zoom
         </Button>
