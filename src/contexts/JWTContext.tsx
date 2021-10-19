@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
+import { setAmplitudeUserId } from 'utils/amplitude';
 import axios from '../utils/axios';
 import { ParticipantProfile } from '../@types/user';
 
@@ -142,7 +143,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password
     });
+
     const { accessToken, user } = response.data;
+
+    setAmplitudeUserId(user.id);
 
     setSession(accessToken);
     dispatch({

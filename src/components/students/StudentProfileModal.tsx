@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 // modal
 import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
+import { CohortContext } from 'contexts/CohortContext';
+import { trackForPeersPage, PEERS_PAGE_EVENTS } from 'utils/amplitude';
 import Label from '../Label';
 
 type StudentProfileModalProps = {
@@ -68,6 +71,8 @@ export default function StudentProfileModal({
   modalUser
 }: StudentProfileModalProps) {
   const theme = useTheme();
+  const { name } = useContext(CohortContext);
+
   const {
     id,
     first_name,
@@ -218,7 +223,17 @@ export default function StudentProfileModal({
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <Link href={linkedin_url} target="_blank">
+              <Link
+                href={linkedin_url}
+                onClick={() =>
+                  trackForPeersPage(
+                    name,
+                    PEERS_PAGE_EVENTS.member_details_modal,
+                    PEERS_PAGE_EVENTS.opened_linked_in
+                  )
+                }
+                target="_blank"
+              >
                 {' '}
                 <Text>Connect with {first_name} on LinkedIn</Text>
               </Link>

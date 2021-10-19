@@ -1,16 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-
+// utils
+import {
+  sendAmplitudeData,
+  EVENT_TYPES,
+  trackForPeersPage,
+  PEERS_PAGE_EVENTS
+} from 'utils/amplitude';
 // material
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
+import { CohortContext } from 'contexts/CohortContext';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-
 // hooks
 import useSettings from '../../hooks/useSettings';
-
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -39,12 +44,13 @@ export default function PeersTab() {
   const [selectedStrengths, setSelectedStrengths] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [view, setView] = useState('card');
+  const [view, setView] = useState('grid');
 
-  const { peers } = useSelector(
-    (state: RootState) =>
-      state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0] || {}
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+
+  const { peers } = cohort || { peers: [] };
 
   const createSelectMenu = (items: string) => {
     const newItems: any = peers
@@ -71,32 +77,32 @@ export default function PeersTab() {
     setSelectedInterests([]);
   }, [peers, cohort_id]);
 
+  useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.peers_tab
+    });
+  }, []);
+
   const handleChange = (event: any) => {
     const {
       target: { value }
     } = event;
-    setSelectedCompanies(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedCompanies(value);
   };
   const handleStrengthChange = (event: any) => {
     const {
       target: { value }
     } = event;
-    setSelectedStrengths(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedStrengths(value);
   };
   const handleInterestChange = (event: any) => {
     const {
       target: { value }
     } = event;
-    setSelectedInterests(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+
+    setSelectedInterests(value);
   };
   useEffect(() => {
     dispatch(getPeers(cohort_id.toString()));
@@ -117,7 +123,6 @@ export default function PeersTab() {
   }, [selectedCompanies]);
 
   const applyFilters = useCallback(() => {
-    console.log('inside');
     let filteredStudents: any = peers;
     if (selectedCompanies.length > 0) {
       filteredStudents = filteredStudents?.filter((student: any) =>
@@ -145,44 +150,65 @@ export default function PeersTab() {
     return filteredStudents;
   }, [selectedCompanies, selectedStrengths, selectedInterests, peers]);
 
+  const trackModalEvent = () =>
+    trackForPeersPage(
+      cohort.name,
+      `${view} view`.toUpperCase(),
+      PEERS_PAGE_EVENTS.modal_open_event
+    );
+
   const showCardView = () => (
-    <StudentProfileGrid students={applyFilters()} modalHandler={modalHandler} />
+    <StudentProfileGrid
+      students={applyFilters()}
+      modalHandler={(peer: any) => {
+        modalHandler(peer);
+        trackModalEvent();
+      }}
+    />
   );
 
   const showTableView = () => (
-    <StudentProfileList students={applyFilters()} modalHandler={modalHandler} />
+    <StudentProfileList
+      students={applyFilters()}
+      modalHandler={(peer: any) => {
+        modalHandler(peer);
+        trackModalEvent();
+      }}
+    />
   );
 
   return (
     <Page title="ScholarSite | Peers">
-      {peers ? (
-        <Container maxWidth={themeStretch ? false : 'lg'}>
-          <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
-          <StudentProfileModal
-            modalState={Object.keys(modalState).length > 0}
-            modalHandler={modalHandler}
-            modalUser={modalState}
-          />
-          <StudentProfileFilters
-            companies={companies}
-            selectedCompanies={selectedCompanies}
-            strengths={strengths}
-            selectedStrengths={selectedStrengths}
-            interests={interests}
-            selectedInterests={selectedInterests}
-            handleCompanyChange={handleChange}
-            handleStrengthChange={handleStrengthChange}
-            handleInterestChange={handleInterestChange}
-            setView={setView}
-            view={view}
-          />
-          {view === 'card' ? showCardView() : showTableView()}
-        </Container>
-      ) : (
-        <LoadingContainer>
-          <LoadingScreen />
-        </LoadingContainer>
-      )}
+      <CohortContext.Provider value={{ id: cohort?.id, name: cohort?.name }}>
+        {peers ? (
+          <Container maxWidth={themeStretch ? false : 'lg'}>
+            <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
+            <StudentProfileModal
+              modalState={Object.keys(modalState).length > 0}
+              modalHandler={modalHandler}
+              modalUser={modalState}
+            />
+            <StudentProfileFilters
+              companies={companies}
+              selectedCompanies={selectedCompanies}
+              strengths={strengths}
+              selectedStrengths={selectedStrengths}
+              interests={interests}
+              selectedInterests={selectedInterests}
+              handleCompanyChange={handleChange}
+              handleStrengthChange={handleStrengthChange}
+              handleInterestChange={handleInterestChange}
+              setView={setView}
+              view={view}
+            />
+            {view === 'grid' ? showCardView() : showTableView()}
+          </Container>
+        ) : (
+          <LoadingContainer>
+            <LoadingScreen />
+          </LoadingContainer>
+        )}
+      </CohortContext.Provider>
     </Page>
   );
 }

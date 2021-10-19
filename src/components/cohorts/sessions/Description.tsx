@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { RESOURCES_EVENTS } from 'utils/amplitude';
 import Message from '../../Message';
 
 type DescriptionProps = {
   innerContent: string;
+  onTrack: Function;
 };
 
 const DescriptionContainer = styled(Container)(({ theme }) => ({
@@ -15,9 +18,26 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
   }
 }));
 
-export default function Description({ innerContent }: DescriptionProps) {
+export default function Description({ innerContent, onTrack }: DescriptionProps) {
+  useEffect(() => {
+    if (innerContent) {
+      onTrack(RESOURCES_EVENTS.opened);
+
+      const resources = document.getElementById('resources')?.getElementsByTagName('a');
+
+      if (resources) {
+        const resourcesArray = Array.from(resources);
+        resourcesArray.forEach((el) => {
+          el.addEventListener('click', () => {
+            onTrack(RESOURCES_EVENTS.opened_link);
+          });
+        });
+      }
+    }
+  }, [innerContent]);
+
   return (
-    <DescriptionContainer>
+    <DescriptionContainer id="resources">
       {innerContent && innerContent !== '' ? (
         <div className="ql-editor" dangerouslySetInnerHTML={{ __html: innerContent }} />
       ) : (

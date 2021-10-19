@@ -1,13 +1,15 @@
+import { useContext } from 'react';
 import {
   Select,
   InputLabel,
   FormControl,
   Checkbox,
   MenuItem,
-  ListItemText,
-  OutlinedInput
+  ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { trackForPeersPage, PEERS_PAGE_EVENTS } from 'utils/amplitude';
+import { CohortContext } from 'contexts/CohortContext';
 
 const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
@@ -48,6 +50,21 @@ export default function StudentProfileFilters({
   setView,
   view
 }: StudentProfileFiltersProps) {
+  const { name } = useContext(CohortContext);
+
+  const trackFilters = (type: string) => {
+    trackForPeersPage(name, `${view} view`.toUpperCase(), type);
+  };
+
+  const onViewSwitch = (selectedView: string) => {
+    trackForPeersPage(
+      name,
+      PEERS_PAGE_EVENTS.view_selection,
+      `Switched to ${selectedView.toUpperCase()} view`
+    );
+    setView(selectedView);
+  };
+
   return (
     <ViewSelector>
       <FilterFormControl>
@@ -56,11 +73,13 @@ export default function StudentProfileFilters({
           displayEmpty
           labelId="view-label"
           id="view-label"
-          onChange={(e: any) => setView(e.target.value)}
+          onChange={(e: any) => {
+            onViewSwitch(e.target.value);
+          }}
           label="View"
           value={view}
         >
-          <MenuItem key="card" value="card" id="grid-view">
+          <MenuItem key="grid" value="grid" id="grid-view">
             Grid View
           </MenuItem>
           <MenuItem key="list" value="list" id="table-view">
@@ -75,7 +94,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox"
           multiple
           value={selectedCompanies}
-          onChange={handleCompanyChange}
+          onChange={(e) => {
+            handleCompanyChange(e);
+            trackFilters('Company Filter');
+          }}
           label="Filter by Company"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500 } }}
@@ -95,7 +117,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox-strength"
           multiple
           value={selectedStrengths}
-          onChange={handleStrengthChange}
+          onChange={(e) => {
+            handleStrengthChange(e);
+            trackFilters('Strength Filter');
+          }}
           label="Filter by Strengths"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
@@ -115,7 +140,10 @@ export default function StudentProfileFilters({
           id="multiple-checkbox-interest"
           multiple
           value={selectedInterests}
-          onChange={handleInterestChange}
+          onChange={(e) => {
+            handleInterestChange(e);
+            trackFilters('Interests Filter');
+          }}
           label="Filter by Interests"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}

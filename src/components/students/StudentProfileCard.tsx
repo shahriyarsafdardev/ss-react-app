@@ -1,9 +1,10 @@
 // material
 import { styled } from '@material-ui/core/styles';
 import { Card, Avatar, Typography } from '@material-ui/core';
+
 // @types
 import { StudentProfile, Company } from '../../@types/cohorts';
-//
+
 import SvgIconStyle from '../SvgIconStyle';
 
 // ----------------------------------------------------------------------
@@ -58,9 +59,13 @@ type StudentProfileCardProps = {
 export default function StudentProfileCard({ peer, modalHandler }: StudentProfileCardProps) {
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
+  const onClickHandler = () => {
+    modalHandler(peer);
+  };
+
   return (
     <StyledCard
-      onClick={() => modalHandler(peer)}
+      onClick={onClickHandler}
       style={{ cursor: 'pointer', paddingBottom: 25 }}
       id={peer.id ? `peer-grid-${peer.id}` : ''}
     >

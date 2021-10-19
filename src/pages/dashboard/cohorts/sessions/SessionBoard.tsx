@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
+import { SESSION_EVENTS, trackForSessionPage } from 'utils/amplitude';
+import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -15,7 +17,6 @@ import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
 
 type SessionBoardProps = {
   session: Session | undefined;
-  cohortId: string;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -143,12 +144,14 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
+export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
   const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
+  const { id, name } = useContext(CohortContext);
+  const { sessionNumber } = useContext(SessionContext);
 
   const SurveyModal = ({
     state,
@@ -192,9 +195,21 @@ export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
   }, [session]);
 
   const tabsContent = [
-    <Description key="description" innerContent={session?.description || ''} />,
+    <Description
+      key="description"
+      onTrack={(eventData: string) =>
+        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+      }
+      innerContent={session?.description || ''}
+    />,
     <Summary key="summary" innerContent={session?.summary || ''} />,
-    <Slides key="slidesTab" pdfUrl={session?.presentation_pdf_url} />
+    <Slides
+      key="slidesTab"
+      onTrack={(eventData: string) =>
+        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
+      }
+      pdfUrl={session?.presentation_pdf_url}
+    />
   ];
 
   if (!session) return null;
@@ -211,7 +226,7 @@ export default function SessionBoard({ session, cohortId }: SessionBoardProps) {
           onComplete={() => {
             setModal(false);
             setFeedbackSubmitted(true);
-            dispatch(updateSessionFeedbackStatus(cohortId, session.id));
+            dispatch(updateSessionFeedbackStatus(id, session.id));
             dispatch(updateSessionModalState(session.id));
           }}
         />

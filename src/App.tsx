@@ -1,4 +1,7 @@
 import { useEffect } from 'react';
+
+// event tracker
+import { initAmplitude, setAmplitudeUserProperties } from 'utils/amplitude';
 // routes
 import Router from './routes';
 // theme
@@ -20,11 +23,18 @@ import { getCohorts } from './redux/slices/cohort';
 // ----------------------------------------------------------------------
 
 export default function App() {
-  const { isInitialized, isAuthenticated } = useAuth();
+  const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAuthenticated) dispatch(getCohorts());
+    if (isAuthenticated) {
+      dispatch(getCohorts());
+      initAmplitude();
+      setAmplitudeUserProperties({
+        'Full Name': user?.displayName,
+        type: user?.type
+      });
+    }
   }, [dispatch, isAuthenticated]);
 
   return (
