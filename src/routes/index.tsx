@@ -80,7 +80,6 @@ export default function Router() {
         { path: '/', element: <RedirectToCohort /> },
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
-        { path: '/chatting', element: <Chatting /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -116,7 +115,8 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: '/peers', element: <PeersTab /> },
-            { path: '/sessions', element: <SessionsTab /> }
+            { path: '/sessions', element: <SessionsTab /> },
+            { path: '/chatting', element: <Chatting /> }
           ]
         },
         {

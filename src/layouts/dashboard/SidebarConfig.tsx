@@ -35,11 +35,6 @@ const sidebarConfig = [
     subheader: 'general',
     items: [
       {
-        title: 'chat',
-        path: PATH_DASHBOARD.general.chatting,
-        icon: ICONS.chat
-      },
-      {
         title: 'contact us',
         path: PATH_DASHBOARD.general.contactUs,
         icon: ICONS.contact

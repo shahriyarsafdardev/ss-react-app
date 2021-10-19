@@ -63,4 +63,5 @@ export type Cohort = {
   intake: number;
   peers: StudentProfile[];
   sessions: Session[];
+  enrollments: String[];
 };

@@ -24,7 +24,6 @@ export default function AccountGeneral() {
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(user);
   const participantProfileConfig: ParticipantProfile | undefined = {
     linkedin_url: user?.linkedin_url || '',
     discord_url: user?.discord_url || '',
@@ -49,8 +48,6 @@ export default function AccountGeneral() {
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('image', values.profile_image_url.image);
-    console.log(values.profile_image_url);
-    console.log(values);
     await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });
       updateProfile({ ...res.data.user });

@@ -88,11 +88,12 @@ const UserItem: React.FC<ItemProps> = (props) => {
 
 type Props = {
   filters: ChannelFilters[];
+  cohortUsers: any;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
 };
 
 export const UserList: React.FC<Props> = (props) => {
-  const { filters, setSelectedUsers } = props;
+  const { filters, setSelectedUsers, cohortUsers } = props;
 
   const { client } = useChatContext<
     TeamAttachmentType,
@@ -116,7 +117,7 @@ export const UserList: React.FC<Props> = (props) => {
 
       try {
         const response = await client.queryUsers(
-          { id: { $ne: client.userID || '' }, ...filters },
+          { id: { $in: cohortUsers }, ...filters },
           { id: 1 },
           { limit: 8 }
         );

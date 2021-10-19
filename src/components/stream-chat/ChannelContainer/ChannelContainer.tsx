@@ -28,6 +28,8 @@ type Props = {
   createType: string;
   isCreating: boolean;
   isEditing?: boolean;
+  cohortID: string;
+  cohortUsers: any;
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -57,7 +59,8 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
 };
 
 export const ChannelContainer: React.FC<Props> = (props) => {
-  const { createType, isCreating, isEditing, setIsCreating, setIsEditing } = props;
+  const { createType, isCreating, isEditing, setIsCreating, setIsEditing, cohortID, cohortUsers } =
+    props;
 
   const { channel } = useChatContext<
     TeamAttachmentType,
@@ -76,7 +79,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
 
     return (
       <div className="channel__container">
-        <CreateChannel {...{ createType, filters, setIsCreating }} />
+        <CreateChannel {...{ createType, filters, cohortID, cohortUsers, setIsCreating }} />
       </div>
     );
   }
@@ -94,7 +97,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
 
     return (
       <div className="channel__container">
-        <EditChannel {...{ filters, setIsEditing }} />
+        <EditChannel {...{ filters, cohortUsers, setIsEditing }} />
       </div>
     );
   }

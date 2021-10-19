@@ -43,7 +43,6 @@ export const PATH_DASHBOARD = {
     app: path(ROOTS_DASHBOARD, '/'),
     discover: path(ROOTS_DASHBOARD, '/discover'),
     contactUs: path(ROOTS_DASHBOARD, '/contact-us'),
-    chatting: path(ROOTS_DASHBOARD, '/chatting'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
@@ -73,6 +72,7 @@ export const PATH_DASHBOARD = {
     root: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}`),
     sessions: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/sessions`),
     peers: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/peers`),
+    chatting: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/chatting`),
     home: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/home`)
   },
   eCommerce: {

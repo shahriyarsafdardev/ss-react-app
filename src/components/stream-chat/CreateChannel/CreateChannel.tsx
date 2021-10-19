@@ -48,11 +48,13 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
 type Props = {
   createType: string;
   filters: ChannelFilters[];
+  cohortID: string;
+  cohortUsers: any;
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const CreateChannel: React.FC<Props> = (props) => {
-  const { createType, filters, setIsCreating } = props;
+  const { createType, filters, setIsCreating, cohortID, cohortUsers } = props;
 
   const { client, setActiveChannel } = useChatContext<
     TeamAttachmentType,
@@ -75,7 +77,8 @@ export const CreateChannel: React.FC<Props> = (props) => {
       const newChannel = await client.channel(createType, channelName, {
         name: channelName,
         members: selectedUsers,
-        demo: 'team'
+        demo: 'team',
+        team: cohortID
       });
 
       await newChannel.watch();
@@ -96,7 +99,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       {createType === 'team' && <ChannelNameInput {...{ channelName, setChannelName }} />}
-      <UserList {...{ filters, setSelectedUsers }} />
+      <UserList {...{ filters, setSelectedUsers, cohortUsers }} />
       <div
         className="create-channel__button-wrapper"
         role="button"

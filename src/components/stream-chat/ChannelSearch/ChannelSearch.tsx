@@ -20,7 +20,14 @@ import type {
   TeamUserType
 } from '../../../pages/Chatting';
 
-export const ChannelSearch = () => {
+type Props = {
+  cohortID: string;
+  cohortUsers: any;
+};
+
+export const ChannelSearch: React.FC<Props> = (props) => {
+  const { cohortID, cohortUsers } = props;
+
   const { client, setActiveChannel } = useChatContext<
     TeamAttachmentType,
     TeamChannelType,
@@ -124,6 +131,7 @@ export const ChannelSearch = () => {
       const channelResponse = client.queryChannels(
         {
           type: 'team',
+          team: cohortID,
           name: { $autocomplete: text }
         },
         {},
@@ -132,13 +140,10 @@ export const ChannelSearch = () => {
 
       const userResponse = client.queryUsers(
         {
-          id: { $ne: client.userID || '' },
-          $and: [
-            { name: { $autocomplete: text } },
-            { name: { $nin: ['Daniel Smith', 'Kevin Rosen', 'Jen Alexander'] } }
-          ]
+          id: { $in: cohortUsers },
+          $and: [{ name: { $autocomplete: text } }]
         },
-        { id: 1 },
+        {},
         { limit: 5 }
       );
 

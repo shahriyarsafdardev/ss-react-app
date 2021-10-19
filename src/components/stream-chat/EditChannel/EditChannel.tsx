@@ -42,11 +42,12 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
 
 type Props = {
   filters: ChannelFilters[];
+  cohortUsers: any;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const EditChannel: React.FC<Props> = (props) => {
-  const { filters, setIsEditing } = props;
+  const { filters, setIsEditing, cohortUsers } = props;
 
   const { channel } = useChatContext<
     TeamAttachmentType,
@@ -92,7 +93,7 @@ export const EditChannel: React.FC<Props> = (props) => {
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, setSelectedUsers }} />
+      <UserList {...{ filters, cohortUsers, setSelectedUsers }} />
       <div
         className="edit-channel__button-wrapper"
         role="button"

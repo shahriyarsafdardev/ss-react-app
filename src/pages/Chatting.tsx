@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Container, Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, LoadingIndicator, Streami18n } from 'stream-chat-react';
+import { RootState, useSelector } from '../redux/store';
 
 import './Chatting.css';
 
@@ -13,7 +14,6 @@ import Page from '../components/Page';
 import 'stream-chat-react/dist/css/index.css';
 
 const apiKey = '4zev2wpcm6r7';
-const theme = 'light';
 
 const i18nInstance = new Streami18n({
   language: 'en',
@@ -39,11 +39,15 @@ export default function Chatting() {
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useAuth();
-
+  const cohortID = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
+  const cohortUsers = cohort.enrollments;
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
   const filters: ChannelFilters[] = [
-    { type: 'team', members: { $in: [user?.stream_id] } },
-    { type: 'messaging', members: { $in: [user?.stream_id] } }
+    { type: 'team', members: { $in: [user?.stream_id] }, team: cohortID },
+    { type: 'messaging', members: { $in: [user?.stream_id] }, team: cohortID }
   ];
 
   useEffect(() => {
@@ -70,9 +74,6 @@ export default function Chatting() {
     };
 
     initChat();
-    return () => {
-      client?.disconnectUser();
-    };
   }, []);
 
   useEffect(() => {
@@ -91,10 +92,9 @@ export default function Chatting() {
   }
 
   return (
-    <Page title="ScholarSite | Contact Us">
+    <Page title="ScholarSite | Messaging">
       <Container maxWidth="lg">
-        <Typography variant="h3">Chat with Friends</Typography>
-        <div className="app__wrapper">
+        <div key={cohortID} className="chat_wrapper">
           <Chat {...{ client, i18nInstance }} theme="team light">
             <ChannelListContainer
               {...{
@@ -104,6 +104,8 @@ export default function Chatting() {
                 setCreateType,
                 setIsCreating,
                 setIsEditing,
+                cohortID,
+                cohortUsers,
                 sort
               }}
             />
@@ -113,7 +115,9 @@ export default function Chatting() {
                 isCreating,
                 isEditing,
                 setIsCreating,
-                setIsEditing
+                setIsEditing,
+                cohortID,
+                cohortUsers
               }}
             />
           </Chat>
