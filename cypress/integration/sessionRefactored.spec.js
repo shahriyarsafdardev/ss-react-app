@@ -52,14 +52,15 @@ describe('Sessions Tab', () => {
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time - 1 * hours);
         cy.clock(1633399200000);
+        cy.get('#session-list-1').click({ force: true });
         cy.get('#session-list-0').click({ force: true });
       });
 
-      it('Shows a clock icon', () => {
+      xit('Shows a clock icon', () => {
         cy.get('[data-testid=session-icon-0]').should('have.attr', 'src').and('equal', clockIcon);
       });
 
-      it('Shows an info message', () => {
+      xit('Shows an info message', () => {
         cy.get('[data-testid=session-list-time-container-0]').should('contain', 'Live in an hour');
       });
     });
@@ -70,20 +71,64 @@ describe('Sessions Tab', () => {
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time + 1 * hours);
         cy.clock(1633399200000);
+        cy.get('#session-list-1').click({ force: true });
         cy.get('#session-list-0').click({ force: true });
       });
 
-      it('Shows a video camera icon', () => {
+      xit('Shows a video camera icon', () => {
         cy.get('[data-testid=session-icon-0]')
           .should('have.attr', 'src')
           .and('equal', videoCameraIcon);
       });
 
-      it('Shows an info message', () => {
+      xit('Shows an info message', () => {
         cy.get('[data-testid=session-list-time-container-0]').should(
           'contain',
           'Recorded on 27 September 2021'
         );
+      });
+    });
+  });
+
+  describe('Session Content View', () => {
+    describe('Session Main Display', () => {
+      context('Before the session', () => {
+        before(() => {});
+
+        it('Shows the correct info message', () => {});
+
+        it('Shows the session start date and time', () => {});
+      });
+
+      context('One day before the session starts', () => {
+        before(() => {});
+
+        it('Shows the correct info message', () => {});
+
+        it('Shows a countdown', () => {});
+
+        it('Shows an invite link', () => {});
+      });
+
+      context('During the session', () => {
+        before(() => {});
+
+        it('Shows the correct info message', () => {});
+
+        it('shows an invite link', () => {});
+      });
+
+      context('After the session', () => {
+        before(() => {});
+
+        it('Shows the correct info message', () => {});
+      });
+
+      context('After the recording has been uploaded', () => {
+        // switch to session with video
+        before(() => {});
+
+        it('Shows the session recording in a video player', () => {});
       });
     });
   });
