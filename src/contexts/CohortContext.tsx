@@ -3,9 +3,11 @@ import { createContext } from 'react';
 const defaultCohortValue: {
   id: string;
   name: string;
+  intake: number | null;
 } = {
   id: '',
-  name: ''
+  name: '',
+  intake: null
 };
 export const CohortContext = createContext(defaultCohortValue);
 

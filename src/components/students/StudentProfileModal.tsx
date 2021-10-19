@@ -71,7 +71,7 @@ export default function StudentProfileModal({
   modalUser
 }: StudentProfileModalProps) {
   const theme = useTheme();
-  const { name } = useContext(CohortContext);
+  const { name, intake } = useContext(CohortContext);
 
   const {
     id,
@@ -228,6 +228,7 @@ export default function StudentProfileModal({
                 onClick={() =>
                   trackForPeersPage(
                     name,
+                    intake,
                     PEERS_PAGE_EVENTS.member_details_modal,
                     PEERS_PAGE_EVENTS.opened_linked_in
                   )

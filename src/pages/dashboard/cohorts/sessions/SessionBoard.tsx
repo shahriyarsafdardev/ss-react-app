@@ -150,7 +150,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
   const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
-  const { id, name } = useContext(CohortContext);
+  const { id, name, intake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   const SurveyModal = ({
@@ -198,7 +198,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Description
       key="description"
       onTrack={(eventData: string) =>
-        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        trackForSessionPage(name, intake, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
       }
       innerContent={session?.description || ''}
     />,
@@ -206,7 +206,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Slides
       key="slidesTab"
       onTrack={(eventData: string) =>
-        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
+        trackForSessionPage(name, intake, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
       }
       pdfUrl={session?.presentation_pdf_url}
     />

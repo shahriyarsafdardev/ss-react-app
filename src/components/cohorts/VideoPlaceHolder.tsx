@@ -55,9 +55,10 @@ const useStyes = makeStyles(() => ({
   }
 }));
 
-const OnZoomButtonClick = (name: string, sessionNumber: number) => {
+const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
   trackForSessionPage(
     name,
+    intake,
     sessionNumber,
     SESSION_EVENTS.zoom_preview,
     SESSION_EVENTS.opened_zoom_link
@@ -113,7 +114,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
-  const { name } = useContext(CohortContext);
+  const { name, intake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   const { seconds, minutes, hours } = useTimer({
@@ -135,7 +136,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
           <TimerField text="Seconds" value={seconds} showSeparator={true} />
         </Box>
         <Button
-          onClick={() => OnZoomButtonClick(name, sessionNumber)}
+          onClick={() => OnZoomButtonClick(name, intake, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
@@ -149,7 +150,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
 
 const SessionInProgress = () => {
   const classes = useStyes();
-  const { name } = useContext(CohortContext);
+  const { name, intake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   return (
@@ -166,7 +167,7 @@ const SessionInProgress = () => {
         </Box>
         <Button
           className={classes.primaryBtn}
-          onClick={() => OnZoomButtonClick(name, sessionNumber)}
+          onClick={() => OnZoomButtonClick(name, intake, sessionNumber)}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
         >

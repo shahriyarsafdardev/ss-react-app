@@ -153,6 +153,7 @@ export default function PeersTab() {
   const trackModalEvent = () =>
     trackForPeersPage(
       cohort.name,
+      cohort.intake,
       `${view} view`.toUpperCase(),
       PEERS_PAGE_EVENTS.modal_open_event
     );
@@ -179,7 +180,9 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      <CohortContext.Provider value={{ id: cohort?.id, name: cohort?.name }}>
+      <CohortContext.Provider
+        value={{ id: cohort?.id, name: cohort?.name, intake: cohort?.intake }}
+      >
         {peers ? (
           <Container maxWidth={themeStretch ? false : 'lg'}>
             <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />

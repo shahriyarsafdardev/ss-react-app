@@ -50,15 +50,16 @@ export default function StudentProfileFilters({
   setView,
   view
 }: StudentProfileFiltersProps) {
-  const { name } = useContext(CohortContext);
+  const { name, intake } = useContext(CohortContext);
 
   const trackFilters = (type: string) => {
-    trackForPeersPage(name, `${view} view`.toUpperCase(), type);
+    trackForPeersPage(name, intake, `${view} view`.toUpperCase(), type);
   };
 
   const onViewSwitch = (selectedView: string) => {
     trackForPeersPage(
       name,
+      intake,
       PEERS_PAGE_EVENTS.view_selection,
       `Switched to ${selectedView.toUpperCase()} view`
     );

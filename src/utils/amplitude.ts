@@ -65,13 +65,14 @@ export const SLIDE_EVENTS = {
 
 export const trackForSessionPage = (
   cohortName: string,
+  intake: number | null,
   sessionNumber: number,
   eventType: string,
   eventData?: string
 ) => {
   const amplitudeData = {
     [SESSION_EVENTS.cohort_name]: cohortName,
-    [SESSION_EVENTS.cohort_intake_number]: '10',
+    [SESSION_EVENTS.cohort_intake_number]: intake,
     [SESSION_EVENTS.session_number]: sessionNumber
   };
 
@@ -92,10 +93,15 @@ export const PEERS_PAGE_EVENTS = {
   opened_linked_in: 'Opened LinkedIn'
 };
 
-export const trackForPeersPage = (cohortName: string, eventType: string, eventData?: string) => {
+export const trackForPeersPage = (
+  cohortName: string,
+  intake: number | null,
+  eventType: string,
+  eventData?: string
+) => {
   const amplitudeData = {
     [SESSION_EVENTS.cohort_name]: cohortName,
-    [SESSION_EVENTS.cohort_intake_number]: '10'
+    [SESSION_EVENTS.cohort_intake_number]: intake
   };
 
   sendAmplitudeData(PEERS_PAGE_EVENTS.peers_page_action, {
