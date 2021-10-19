@@ -38,7 +38,7 @@ export const EVENT_TYPES = {
 };
 
 export const SESSION_EVENTS = {
-  event_name: 'Sessions Page Action',
+  session_page_action: 'Sessions Page Action',
   cohort_name: 'cohort-name',
   cohort_intake_number: 'cohort-intake-number',
   session_number: 'session-number',
@@ -63,7 +63,7 @@ export const SLIDE_EVENTS = {
   navigated_right: 'Navigated Right'
 };
 
-export const trackFor = (
+export const trackForSessionPage = (
   cohortName: string,
   sessionNumber: number,
   eventType: string,
@@ -75,27 +75,32 @@ export const trackFor = (
     [SESSION_EVENTS.session_number]: sessionNumber
   };
 
-  switch (eventType) {
-    case SESSION_EVENTS.resources_tab:
-      sendAmplitudeData(SESSION_EVENTS.event_name, {
-        ...amplitudeData,
-        [SESSION_EVENTS.category]: SESSION_EVENTS.resources_tab,
-        [SESSION_EVENTS.action]: eventData
-      });
-      break;
-    case SESSION_EVENTS.slides_tab:
-      sendAmplitudeData(SESSION_EVENTS.event_name, {
-        ...amplitudeData,
-        [SESSION_EVENTS.category]: SESSION_EVENTS.slides_tab,
-        [SESSION_EVENTS.action]: eventData
-      });
-      break;
-    case SESSION_EVENTS.zoom_preview:
-      sendAmplitudeData(SESSION_EVENTS.event_name, {
-        ...amplitudeData,
-        [SESSION_EVENTS.category]: SESSION_EVENTS.zoom_preview,
-        [SESSION_EVENTS.action]: eventData
-      });
-      break;
-  }
+  sendAmplitudeData(SESSION_EVENTS.session_page_action, {
+    ...amplitudeData,
+    [SESSION_EVENTS.category]: eventType,
+    [SESSION_EVENTS.action]: eventData
+  });
+};
+
+export const PEERS_PAGE_EVENTS = {
+  peers_page_action: 'Peers Page Action',
+  grid_view: 'Grid View',
+  filters_applied: 'Filters applied',
+  view_selection: 'View Selection',
+  modal_open_event: 'Opened Member Details Modal',
+  member_details_modal: 'Member Details Modal',
+  opened_linked_in: 'Opened LinkedIn'
+};
+
+export const trackForPeersPage = (cohortName: string, eventType: string, eventData?: string) => {
+  const amplitudeData = {
+    [SESSION_EVENTS.cohort_name]: cohortName,
+    [SESSION_EVENTS.cohort_intake_number]: '10'
+  };
+
+  sendAmplitudeData(PEERS_PAGE_EVENTS.peers_page_action, {
+    ...amplitudeData,
+    [SESSION_EVENTS.category]: eventType,
+    [SESSION_EVENTS.action]: eventData
+  });
 };

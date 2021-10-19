@@ -3,7 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
-import { trackFor, SESSION_EVENTS } from 'utils/amplitude';
+import { trackForSessionPage, SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 
 const useStyes = makeStyles(() => ({
@@ -56,7 +56,12 @@ const useStyes = makeStyles(() => ({
 }));
 
 const OnZoomButtonClick = (name: string, sessionNumber: number) => {
-  trackFor(name, sessionNumber, SESSION_EVENTS.zoom_preview, SESSION_EVENTS.opened_zoom_link);
+  trackForSessionPage(
+    name,
+    sessionNumber,
+    SESSION_EVENTS.zoom_preview,
+    SESSION_EVENTS.opened_zoom_link
+  );
 };
 
 const DatePreview = ({ date }: { date: Date }) => {

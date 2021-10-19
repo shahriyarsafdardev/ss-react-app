@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   Select,
   InputLabel,
@@ -7,7 +8,8 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { sendAmplitudeData, EVENT_TYPES } from 'utils/amplitude';
+import { trackForPeersPage, PEERS_PAGE_EVENTS } from 'utils/amplitude';
+import { CohortContext } from 'contexts/CohortContext';
 
 const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
@@ -48,11 +50,19 @@ export default function StudentProfileFilters({
   setView,
   view
 }: StudentProfileFiltersProps) {
-  const trackFilters = (type: string, value: string | string[]) => {
-    sendAmplitudeData(EVENT_TYPES.peers_filters, {
-      type,
-      value
-    });
+  const { name } = useContext(CohortContext);
+
+  const trackFilters = (type: string) => {
+    trackForPeersPage(name, `${view} view`.toUpperCase(), type);
+  };
+
+  const onViewSwitch = (selectedView: string) => {
+    trackForPeersPage(
+      name,
+      PEERS_PAGE_EVENTS.view_selection,
+      `Switched to ${selectedView.toUpperCase()} view`
+    );
+    setView(selectedView);
   };
 
   return (
@@ -64,13 +74,12 @@ export default function StudentProfileFilters({
           labelId="view-label"
           id="view-label"
           onChange={(e: any) => {
-            setView(e.target.value);
-            trackFilters('view', e.target.value);
+            onViewSwitch(e.target.value);
           }}
           label="View"
           value={view}
         >
-          <MenuItem key="card" value="card" id="grid-view">
+          <MenuItem key="grid" value="grid" id="grid-view">
             Grid View
           </MenuItem>
           <MenuItem key="list" value="list" id="table-view">
@@ -87,7 +96,7 @@ export default function StudentProfileFilters({
           value={selectedCompanies}
           onChange={(e) => {
             handleCompanyChange(e);
-            trackFilters('companies', e.target.value);
+            trackFilters('Company Filter');
           }}
           label="Filter by Company"
           renderValue={(selected) => selected.join(', ')}
@@ -110,7 +119,7 @@ export default function StudentProfileFilters({
           value={selectedStrengths}
           onChange={(e) => {
             handleStrengthChange(e);
-            trackFilters('strengths', e.target.value);
+            trackFilters('Strength Filter');
           }}
           label="Filter by Strengths"
           renderValue={(selected) => selected.join(', ')}
@@ -133,7 +142,7 @@ export default function StudentProfileFilters({
           value={selectedInterests}
           onChange={(e) => {
             handleInterestChange(e);
-            trackFilters('interests', e.target.value);
+            trackFilters('Interests Filter');
           }}
           label="Filter by Interests"
           renderValue={(selected) => selected.join(', ')}

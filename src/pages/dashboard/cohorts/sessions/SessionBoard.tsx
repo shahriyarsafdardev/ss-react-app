@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
-import { SESSION_EVENTS, trackFor } from 'utils/amplitude';
+import { SESSION_EVENTS, trackForSessionPage } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
@@ -198,7 +198,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Description
       key="description"
       onTrack={(eventData: string) =>
-        trackFor(name, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.resources_tab, eventData)
       }
       innerContent={session?.description || ''}
     />,
@@ -206,7 +206,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Slides
       key="slidesTab"
       onTrack={(eventData: string) =>
-        trackFor(name, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
+        trackForSessionPage(name, sessionNumber, SESSION_EVENTS.slides_tab, eventData)
       }
       pdfUrl={session?.presentation_pdf_url}
     />
