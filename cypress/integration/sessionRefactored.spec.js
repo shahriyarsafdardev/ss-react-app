@@ -54,8 +54,8 @@ describe('Sessions Tab', () => {
         // We want to replace this random number with the session time from the fixture - 60 minutes or 1 hour
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time - 1 * hours);
-        var returnedTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
-        cy.clock(new Date(returnedTime.format()));
+        var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
+        cy.clock(new Date(dateTime.format()));
         cy.get('#session-list-1').click({ force: true });
       });
 
@@ -73,8 +73,8 @@ describe('Sessions Tab', () => {
         // We want to replace this random number with the session time from the fixture - 60 minutes or 1 hour
         // This will likely take some processing which I will leave to you
         // cy.clock(sessionFixture.sessions[0].time + 1 * hours);
-        var returnedTime = moment(sessionFixture.sessions[0].time).add(1, 'hours');
-        cy.clock(new Date(returnedTime.format()));
+        var dateTime = moment(sessionFixture.sessions[0].time).add(1, 'hours');
+        cy.clock(new Date(dateTime.format()));
         cy.get('#session-list-0').click({ force: true });
       });
 
@@ -97,9 +97,10 @@ describe('Sessions Tab', () => {
     describe('Session Main Display', () => {
       context('Before the session', () => {
         before(() => {
-          var returnedTime = moment(sessionFixture.sessions[1].time).subtract(1, 'hours');
-          cy.clock(new Date(returnedTime.format()));
           cy.get('#session-list-1').click({ force: true });
+          var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
+          cy.clock(new Date(dateTime.format()));
+          cy.get('#session-list-0').click({ force: true });
         });
 
         it('Shows the correct info message', () => {
@@ -121,11 +122,12 @@ describe('Sessions Tab', () => {
 
       context('One day before the session starts', () => {
         before(() => {
-          var returnedTime = moment(sessionFixture.sessions[2].time).subtract(1, 'days');
+          cy.get('#session-list-1').click({ force: true });
+          var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'days');
 
-          // console.log(returnedTime.format('Do MMMM'), returnedTime.format('HH:mm'));
-          cy.clock(new Date(returnedTime.format()));
-          cy.get('#session-list-2').click({ force: true });
+          // console.log(dateTime.format('Do MMMM'), dateTime.format('HH:mm'));
+          cy.clock(new Date(dateTime.format()));
+          cy.get('#session-list-0').click({ force: true });
         });
 
         it('Shows the correct info message', () => {
@@ -135,7 +137,7 @@ describe('Sessions Tab', () => {
         });
 
         it('Shows start date', () => {
-          const currentSessionDate = moment(sessionFixture.sessions[2].time);
+          const currentSessionDate = moment(sessionFixture.sessions[0].time);
           var sessionDate = currentSessionDate.format('Do MMMM');
           var sessionTime = currentSessionDate.format('HH:mm');
 
@@ -146,9 +148,11 @@ describe('Sessions Tab', () => {
 
       context('During the session', () => {
         before(() => {
-          var returnedTime = moment(sessionFixture.sessions[1].time).add(30, 'minutes');
-          cy.clock(new Date(returnedTime.format()));
           cy.get('#session-list-1').click({ force: true });
+
+          var dateTime = moment(sessionFixture.sessions[0].time).add(30, 'minutes');
+          cy.clock(new Date(dateTime.format()));
+          cy.get('#session-list-0').click({ force: true });
         });
 
         it('Shows the correct info message', () => {
@@ -166,9 +170,10 @@ describe('Sessions Tab', () => {
 
       context('After the session', () => {
         before(() => {
-          var returnedTime = moment(sessionFixture.sessions[2].time).add(5, 'hours');
-          cy.clock(new Date(returnedTime.format()));
-          cy.get('#session-list-2').click({ force: true });
+          cy.get('#session-list-1').click({ force: true });
+          var dateTime = moment(sessionFixture.sessions[0].time).add(5, 'hours');
+          cy.clock(new Date(dateTime.format()));
+          cy.get('#session-list-0').click({ force: true });
         });
 
         it('Shows the correct info message', () => {
@@ -182,7 +187,9 @@ describe('Sessions Tab', () => {
       context('After the recording has been uploaded', () => {
         // switch to session with video
         before(() => {
-          cy.get('#session-list-0').click({ force: true });
+          cy.clock().invoke('restore');
+
+          cy.get('#session-list-2').click({ force: true });
         });
 
         it('Shows the session recording in a video player', () => {
@@ -194,6 +201,89 @@ describe('Sessions Tab', () => {
               'https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4'
             );
         });
+      });
+    });
+  });
+  describe('Resources Tab', () => {
+    before(() => {
+      cy.get('#session-list-0').click({ force: true });
+    });
+    context('When the resources are present', () => {
+      it('Renders the provided html', () => {
+        cy.get('[data-testid=session-description]').then((description) => {
+          const html = description.html();
+          expect(html).to.eq(sessionFixture.sessions[0].description);
+        });
+      });
+    });
+    context('When the resources are not present', () => {
+      it('Renders the correct info message', () => {
+        cy.get('#session-list-2').click({ force: true });
+        //it should ensure the correct message is displayed if summary is null
+        cy.get('[data-testid=session-message]').should(
+          'have.text',
+          'The session resources will be available 2 days before the session.'
+        );
+      });
+    });
+  });
+  describe('Summary Tab', () => {
+    context('When a summary are present', () => {
+      before(() => {
+        cy.get('#session-list-0').click({ force: true });
+        cy.get('[data-testid=session-notes]').click();
+      });
+
+      it('Renders the provided html', () => {
+        cy.get('[data-testid=summary-notes]').then((summary) => {
+          const html = summary.html();
+          expect(html).to.eq(sessionFixture.sessions[0].summary);
+        });
+      });
+    });
+    context('When a summary is not present', () => {
+      before(() => {
+        cy.get('#session-list-2').click({ force: true });
+        cy.get('[data-testid=session-notes]').click();
+      });
+      it('Renders the correct info message', () => {
+        cy.get('[data-testid=session-message]').should(
+          'have.text',
+          'The session summary will be available shortly after this session.'
+        );
+      });
+    });
+  });
+  describe('Session Slides Tab', () => {
+    context('When the session slides are present', () => {
+      before(() => {
+        cy.get('#session-list-0').click({ force: true });
+        cy.get('[data-testid=session-slides]').click();
+      });
+      it('Renders the pdf viewer component', () => {
+        cy.get('.react-pdf__Page__canvas', { timeout: 30000 }).should('be.visible');
+      });
+      it('Allows users to navigate left and right', () => {
+        //right navigation
+        cy.get('[data-testid=slides-right]').click();
+        cy.get('[data-testid=slides-page-number]').should('have.text', 'Page 2 of 46');
+        //left navigation
+        cy.get('[data-testid=slides-left]').click();
+        cy.get('[data-testid=slides-page-number]').should('have.text', 'Page 1 of 46');
+      });
+      it('Allows users to enter full screen');
+      it('Allows users to download');
+    });
+    context('When the session slides are not present', () => {
+      before(() => {
+        cy.get('#session-list-2').click({ force: true });
+        cy.get('[data-testid=session-slides]').click();
+      });
+      it('Renders the correct info message', () => {
+        cy.get('[data-testid=session-message]').should(
+          'have.text',
+          'The presentation slides will be available shortly after this session.'
+        );
       });
     });
   });

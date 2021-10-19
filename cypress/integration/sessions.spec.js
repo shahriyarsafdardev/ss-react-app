@@ -58,9 +58,7 @@ describe('Sessions Tab', () => {
     //Matches inner HTML of description with API response
     cy.get('[data-testid=session-description]').then((description) => {
       const html = description.html();
-      expect(html).to.eq(
-        '<h3><strong>Pre-Readings:</strong></h3><p><br></p><ul><li><a href="https://platformchronicles.substack.com/p/network-effects-and-defensibility" rel="noopener noreferrer" target="_blank">Seven Questions to Evaluate Network Effect Moats - Platform Chronicles</a></li><li><a href="https://www.youtube.com/watch?app=desktop&amp;v=_xHsHWblK6U" rel="noopener noreferrer" target="_blank">Tactics for Improving Marketplace Quality [Video] - Josh Breinlinger</a> (<strong>our guest for today!</strong>)</li></ul><p><br></p><h3><strong>Supplementary Materials: </strong></h3><p><br></p><ul><li><a href="https://platformchronicles.substack.com/p/how-defensible-are-zooms-network" rel="noopener noreferrer" target="_blank">How Defensible are Zoom\'s Network Effects - Platform Chronicles</a></li><li><a href="https://www.nfx.com/post/network-effects-manual/" rel="noopener noreferrer" target="_blank">The Network Effects Manual: 13 Different Network Effects (and counting) - NfX</a></li></ul>'
-      );
+      expect(html).to.eq(sessiondata.sessions[0].description);
     });
     // Session Summary
     cy.get('[data-testid=session-notes]').click();

@@ -175,11 +175,13 @@ const Navigation = ({
             customNavigationHandler(pageNumber - 1);
             trackEventHandler(SLIDE_EVENTS.navigated_left);
           }}
+          data-testid="slides-left"
         >
           <img src="/static/icons/ic_chevron_left.svg" alt="" />
         </StyledButton>
         Page{' '}
         <input
+          data-testid="slides-page-number"
           value={currentPage}
           className={classes.inputBox}
           type="number"
@@ -187,6 +189,7 @@ const Navigation = ({
         />
         of {numPages}
         <StyledButton
+          data-testid="slides-right"
           disabled={pageNumber === numPages}
           onClick={() => {
             customNavigationHandler(pageNumber + 1);
@@ -222,6 +225,7 @@ const Navigation = ({
               trackEventHandler(SLIDE_EVENTS.full_screen_view);
             }}
             href="#"
+            data-testid="slides-full-screen"
           >
             {/* // eslint-disable-next-line jsx-a11y/alt-text */}
             <img src="/static/cohorts-home/sessions/full-view.svg" width="20px" alt="full-screen" />
