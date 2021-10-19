@@ -5,7 +5,7 @@ import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
 import { CohortContext } from 'contexts/CohortContext';
-import { trackForPeersPage, PEERS_PAGE_EVENTS } from 'utils/amplitude';
+import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
 import Label from '../Label';
 
 type StudentProfileModalProps = {
@@ -71,7 +71,7 @@ export default function StudentProfileModal({
   modalUser
 }: StudentProfileModalProps) {
   const theme = useTheme();
-  const { name, intake } = useContext(CohortContext);
+  const { cohortName, cohortIntake } = useContext(CohortContext);
 
   const {
     id,
@@ -226,9 +226,9 @@ export default function StudentProfileModal({
               <Link
                 href={linkedin_url}
                 onClick={() =>
-                  trackForPeersPage(
-                    name,
-                    intake,
+                  trackPeersPageEvent(
+                    cohortName,
+                    cohortIntake,
                     PEERS_PAGE_EVENTS.member_details_modal,
                     PEERS_PAGE_EVENTS.opened_linked_in
                   )

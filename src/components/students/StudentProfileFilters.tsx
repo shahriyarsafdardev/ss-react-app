@@ -8,7 +8,7 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { trackForPeersPage, PEERS_PAGE_EVENTS } from 'utils/amplitude';
+import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
 import { CohortContext } from 'contexts/CohortContext';
 
 const ViewSelector = styled('div')(() => ({
@@ -50,16 +50,16 @@ export default function StudentProfileFilters({
   setView,
   view
 }: StudentProfileFiltersProps) {
-  const { name, intake } = useContext(CohortContext);
+  const { cohortName, cohortIntake } = useContext(CohortContext);
 
   const trackFilters = (type: string) => {
-    trackForPeersPage(name, intake, `${view} view`.toUpperCase(), type);
+    trackPeersPageEvent(cohortName, cohortIntake, `${view} view`.toUpperCase(), type);
   };
 
   const onViewSwitch = (selectedView: string) => {
-    trackForPeersPage(
-      name,
-      intake,
+    trackPeersPageEvent(
+      cohortName,
+      cohortIntake,
       PEERS_PAGE_EVENTS.view_selection,
       `Switched to ${selectedView.toUpperCase()} view`
     );

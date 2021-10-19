@@ -3,7 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
-import { trackForSessionPage, SESSION_EVENTS } from 'utils/amplitude';
+import { trackSessionsPageEvent, SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 
 const useStyes = makeStyles(() => ({
@@ -56,7 +56,7 @@ const useStyes = makeStyles(() => ({
 }));
 
 const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
-  trackForSessionPage(
+  trackSessionsPageEvent(
     name,
     intake,
     sessionNumber,
@@ -114,7 +114,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
-  const { name, intake } = useContext(CohortContext);
+  const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   const { seconds, minutes, hours } = useTimer({
@@ -136,7 +136,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
           <TimerField text="Seconds" value={seconds} showSeparator={true} />
         </Box>
         <Button
-          onClick={() => OnZoomButtonClick(name, intake, sessionNumber)}
+          onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
@@ -150,7 +150,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
 
 const SessionInProgress = () => {
   const classes = useStyes();
-  const { name, intake } = useContext(CohortContext);
+  const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   return (
@@ -167,7 +167,7 @@ const SessionInProgress = () => {
         </Box>
         <Button
           className={classes.primaryBtn}
-          onClick={() => OnZoomButtonClick(name, intake, sessionNumber)}
+          onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           target="_blank"
           href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
         >

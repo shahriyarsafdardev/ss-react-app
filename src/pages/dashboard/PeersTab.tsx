@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   sendAmplitudeData,
   EVENT_TYPES,
-  trackForPeersPage,
+  trackPeersPageEvent,
   PEERS_PAGE_EVENTS
 } from 'utils/amplitude';
 // material
@@ -151,9 +151,9 @@ export default function PeersTab() {
   }, [selectedCompanies, selectedStrengths, selectedInterests, peers]);
 
   const trackModalEvent = () =>
-    trackForPeersPage(
-      cohort.name,
-      cohort.intake,
+    trackPeersPageEvent(
+      cohort?.name,
+      cohort?.intake,
       `${view} view`.toUpperCase(),
       PEERS_PAGE_EVENTS.modal_open_event
     );

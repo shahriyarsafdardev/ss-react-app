@@ -63,7 +63,7 @@ export const SLIDE_EVENTS = {
   navigated_right: 'Navigated Right'
 };
 
-export const trackForSessionPage = (
+export const trackSessionsPageEvent = (
   cohortName: string,
   intake: number | null,
   sessionNumber: number,
@@ -93,7 +93,7 @@ export const PEERS_PAGE_EVENTS = {
   opened_linked_in: 'Opened LinkedIn'
 };
 
-export const trackForPeersPage = (
+export const trackPeersPageEvent = (
   cohortName: string,
   intake: number | null,
   eventType: string,

@@ -91,7 +91,7 @@ export default function SessionsTab() {
   }, [cohort_id, dispatch]);
 
   return (
-    <CohortContext.Provider value={{ id: cohort?.id, name: cohort?.name, intake: cohort.intake }}>
+    <CohortContext.Provider value={{ id: cohort?.id, name: cohort?.name, intake: cohort?.intake }}>
       <Page title="ScholarSite | Sessions">
         {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         {sessions ? (
