@@ -4,6 +4,9 @@ const videoCameraIcon = '/static/icons/ic_recorder.svg';
 const clockIcon = '/static/icons/ic_clock.svg';
 const inviteLink = 'https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09';
 
+const emptySession = 0; // The resources, summary notes, slides and recording are set to null in this fixture
+const populatedSession = 1; // The resources, summary notes, slides and recording are present in this fixture
+
 import sessionFixture from '../fixtures/session/sessions.json';
 
 describe('Sessions Tab', () => {
@@ -95,7 +98,7 @@ describe('Sessions Tab', () => {
 
   describe('Session Content View', () => {
     describe('Session Main Display', () => {
-      context('Before the session', () => {
+      context('Multiple days before the session', () => {
         before(() => {
           cy.get('#session-list-1').click({ force: true });
           var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
@@ -113,7 +116,7 @@ describe('Sessions Tab', () => {
           cy.get('[data-testid=seconds]').should('have.text', '00');
         });
 
-        it('shows an invite link', () => {
+        it('Shows the invite link', () => {
           cy.get('[data-testid=session-invite]')
             .should('have.attr', 'href')
             .and('equal', inviteLink);
@@ -124,8 +127,6 @@ describe('Sessions Tab', () => {
         before(() => {
           cy.get('#session-list-1').click({ force: true });
           var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'days');
-
-          // console.log(dateTime.format('Do MMMM'), dateTime.format('HH:mm'));
           cy.clock(new Date(dateTime.format()));
           cy.get('#session-list-0').click({ force: true });
         });
@@ -136,7 +137,7 @@ describe('Sessions Tab', () => {
           );
         });
 
-        it('Shows start date', () => {
+        it('Shows the start date', () => {
           const currentSessionDate = moment(sessionFixture.sessions[0].time);
           var sessionDate = currentSessionDate.format('Do MMMM');
           var sessionTime = currentSessionDate.format('HH:mm');
@@ -161,7 +162,7 @@ describe('Sessions Tab', () => {
           );
         });
 
-        it('shows an invite link', () => {
+        it('Shows the invite link', () => {
           cy.get('[data-testid=session-invite]')
             .should('have.attr', 'href')
             .and('equal', inviteLink);
@@ -185,10 +186,8 @@ describe('Sessions Tab', () => {
       });
 
       context('After the recording has been uploaded', () => {
-        // switch to session with video
         before(() => {
           cy.clock().invoke('restore');
-
           cy.get('#session-list-2').click({ force: true });
         });
 
@@ -204,10 +203,12 @@ describe('Sessions Tab', () => {
       });
     });
   });
+
   describe('Resources Tab', () => {
     before(() => {
       cy.get('#session-list-0').click({ force: true });
     });
+
     context('When the resources are present', () => {
       it('Renders the provided html', () => {
         cy.get('[data-testid=session-description]').then((description) => {
@@ -216,10 +217,10 @@ describe('Sessions Tab', () => {
         });
       });
     });
+
     context('When the resources are not present', () => {
       it('Renders the correct info message', () => {
         cy.get('#session-list-2').click({ force: true });
-        //it should ensure the correct message is displayed if summary is null
         cy.get('[data-testid=session-message]').should(
           'have.text',
           'The session resources will be available 2 days before the session.'
@@ -227,6 +228,7 @@ describe('Sessions Tab', () => {
       });
     });
   });
+
   describe('Summary Tab', () => {
     context('When a summary are present', () => {
       before(() => {
@@ -241,11 +243,13 @@ describe('Sessions Tab', () => {
         });
       });
     });
+
     context('When a summary is not present', () => {
       before(() => {
         cy.get('#session-list-2').click({ force: true });
         cy.get('[data-testid=session-notes]').click();
       });
+
       it('Renders the correct info message', () => {
         cy.get('[data-testid=session-message]').should(
           'have.text',
@@ -254,31 +258,35 @@ describe('Sessions Tab', () => {
       });
     });
   });
+
   describe('Session Slides Tab', () => {
     context('When the session slides are present', () => {
       before(() => {
         cy.get('#session-list-0').click({ force: true });
         cy.get('[data-testid=session-slides]').click();
       });
+
       it('Renders the pdf viewer component', () => {
         cy.get('.react-pdf__Page__canvas', { timeout: 30000 }).should('be.visible');
       });
+
       it('Allows users to navigate left and right', () => {
-        //right navigation
         cy.get('[data-testid=slides-right]').click();
         cy.get('[data-testid=slides-page-number]').should('have.text', 'Page 2 of 46');
-        //left navigation
         cy.get('[data-testid=slides-left]').click();
         cy.get('[data-testid=slides-page-number]').should('have.text', 'Page 1 of 46');
       });
+
       it('Allows users to enter full screen');
       it('Allows users to download');
     });
+
     context('When the session slides are not present', () => {
       before(() => {
         cy.get('#session-list-2').click({ force: true });
         cy.get('[data-testid=session-slides]').click();
       });
+
       it('Renders the correct info message', () => {
         cy.get('[data-testid=session-message]').should(
           'have.text',
