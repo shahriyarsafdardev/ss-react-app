@@ -12,6 +12,7 @@ type StudentProfileModalProps = {
   modalState: boolean;
   modalHandler: Function;
   modalUser: any;
+  cohortID: string;
 };
 
 const StyledContainer = styled(Box)(() => ({
@@ -68,7 +69,8 @@ const TagsContainerMobile = styled(Box)(({ theme }) => ({
 export default function StudentProfileModal({
   modalState,
   modalHandler,
-  modalUser
+  modalUser,
+  cohortID
 }: StudentProfileModalProps) {
   const theme = useTheme();
   const { cohortName, cohortIntake } = useContext(CohortContext);
@@ -237,6 +239,21 @@ export default function StudentProfileModal({
               >
                 {' '}
                 <Text>Connect with {first_name} on LinkedIn</Text>
+              </Link>
+            </StyledRow>
+          )}
+          {cohortID !== 'testing' && (
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/icons/navbar/ic_chat.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <Link href={`/cohorts/${cohortID}/chatting?direct=true&receiver_id=${id}`}>
+                {' '}
+                <Text>Message {first_name} in Schoalrsite</Text>
               </Link>
             </StyledRow>
           )}

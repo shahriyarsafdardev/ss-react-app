@@ -1,4 +1,6 @@
-import { ChannelList, ChannelListProps } from 'stream-chat-react';
+import { useEffect, useState } from 'react';
+import { ChannelList, ChannelListProps, useChatContext } from 'stream-chat-react';
+import { useLocation } from 'react-router-dom';
 
 import './ChannelListContainer.css';
 
@@ -9,6 +11,15 @@ import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
 
 import { SideBarLogo } from '../../../assets';
+import type {
+  TeamAttachmentType,
+  TeamChannelType,
+  TeamCommandType,
+  TeamEventType,
+  TeamMessageType,
+  TeamReactionType,
+  TeamUserType
+} from '../../../pages/Chatting';
 
 type Props = Omit<ChannelListProps, 'filters'> & {
   setCreateType: React.Dispatch<React.SetStateAction<string>>;
@@ -46,6 +57,41 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     cohortUsers,
     sort
   } = props;
+
+  const url = new URLSearchParams(useLocation().search);
+  const { client, setActiveChannel } = useChatContext<
+    TeamAttachmentType,
+    TeamChannelType,
+    TeamCommandType,
+    TeamEventType,
+    TeamMessageType,
+    TeamReactionType,
+    TeamUserType
+  >();
+  const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([
+    client.userID || '',
+    url.get('receiver_id') || ''
+  ]);
+
+  useEffect(() => {
+    const initChannel = async () => {
+      if (url.get('direct') && url.get('receiver_id')) {
+        try {
+          const newChannel = await client.channel('messaging', '', {
+            name: '',
+            members: selectedUsers,
+            team: cohortID
+          });
+          console.log('channel set');
+          await newChannel.watch();
+          setActiveChannel(newChannel);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    };
+    initChannel();
+  }, []);
 
   return (
     <div className="channel-list__container">

@@ -180,38 +180,35 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      <CohortContext.Provider
-        value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
-      >
-        {peers ? (
-          <Container maxWidth={themeStretch ? false : 'lg'}>
-            <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
-            <StudentProfileModal
-              modalState={Object.keys(modalState).length > 0}
-              modalHandler={modalHandler}
-              modalUser={modalState}
-            />
-            <StudentProfileFilters
-              companies={companies}
-              selectedCompanies={selectedCompanies}
-              strengths={strengths}
-              selectedStrengths={selectedStrengths}
-              interests={interests}
-              selectedInterests={selectedInterests}
-              handleCompanyChange={handleChange}
-              handleStrengthChange={handleStrengthChange}
-              handleInterestChange={handleInterestChange}
-              setView={setView}
-              view={view}
-            />
-            {view === 'grid' ? showCardView() : showTableView()}
-          </Container>
-        ) : (
-          <LoadingContainer>
-            <LoadingScreen />
-          </LoadingContainer>
-        )}
-      </CohortContext.Provider>
+      {peers ? (
+        <Container maxWidth={themeStretch ? false : 'lg'}>
+          <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
+          <StudentProfileModal
+            modalState={Object.keys(modalState).length > 0}
+            modalHandler={modalHandler}
+            modalUser={modalState}
+            cohortID={cohort_id}
+          />
+          <StudentProfileFilters
+            companies={companies}
+            selectedCompanies={selectedCompanies}
+            strengths={strengths}
+            selectedStrengths={selectedStrengths}
+            interests={interests}
+            selectedInterests={selectedInterests}
+            handleCompanyChange={handleChange}
+            handleStrengthChange={handleStrengthChange}
+            handleInterestChange={handleInterestChange}
+            setView={setView}
+            view={view}
+          />
+          {view === 'card' ? showCardView() : showTableView()}
+        </Container>
+      ) : (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      )}
     </Page>
   );
 }
