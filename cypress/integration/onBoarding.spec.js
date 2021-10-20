@@ -1,19 +1,38 @@
 const serverUrl = Cypress.env('serverUrl');
-var stepNumber = 0;
 
-describe('onboarding flow', () => {
-  beforeEach(() => {
-    // network stub
+describe('Onboarding Flow', () => {
+  const assertStepCompleted = (
+    step_number,
+    answer,
+    cohortId = '9550cc85-305a-438c-a115-e791a16c91f0',
+    enrollmentId = 'f1b1b3f1-afad-4aec-8a4f-240698ac246c'
+  ) => {
+    cy.intercept(
+      'POST',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`
+    ).as('stepComplete');
+    cy.get('[data-testid=btn-next]').click();
+    cy.wait('@stepComplete').then(({ request, response }) => {
+      expect(response.statusCode).to.eq(200);
+      expect(request.body.step_number).to.eq(step_number);
+      expect(request.body.cohort_id).to.eq(cohortId);
+      expect(request.body.enrollment_id).to.eq(enrollmentId);
+      if (answer) {
+        typeof answer === 'string'
+          ? expect(request.body.answer).to.eq(answer)
+          : expect(request.body.answer).to.deep.eq(answer);
+      }
+    });
+  };
+
+  before(() => {
     cy.server();
-  });
 
-  it('should log user into app', () => {
     cy.fixture('cohorts/cohorts.json').as('cohortsData');
     cy.fixture('login/login.json').as('loginData');
     cy.fixture('session/sessions.json').as('sessionData');
     cy.fixture('session/onBoardingNotCompleted.json').as('onboardingData');
     cy.fixture('onboarding/home.json').as('home');
-    cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route(
       'GET',
@@ -29,28 +48,204 @@ describe('onboarding flow', () => {
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=8864c717-587d-472a-929a-8e5f298024da-1`,
       '@home'
     ).as('homeData');
+  });
 
+  it('should log user into app', () => {
     cy.visit('/');
     const email = 'aqibmaqqbool@gmail.com';
     const password = 'aqib1234';
     cy.get('[data-testid=email]').type(email);
     cy.get('[data-testid=password]').type(password);
     cy.get('[data-testid=loginBtn]').click({ multiple: true, force: true });
-
     cy.wait(['@login', '@homeData']);
   });
-  it('should complete onboarding', () => {
-    cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
-    cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
+
+  it('Displays the onboarding modal', () => {
+    // Assert that the modal has appeared
+    cy.get('.ReactModal__Overlay', { timeout: 3000 }).should('be.visible');
+    // Assert that the side image has the correct src
+    cy.get('[data-testid=onboarding-image]')
+      .should('have.css', 'background-image')
+      .and(
+        'include',
+        'https://scholarsite-public.s3.eu-west-2.amazonaws.com/author-preview-min.png'
+      );
+  });
+
+  it('Displays Page 1', () => {
+    // Assert title
+    cy.get('[data-testid=onboard-title]').should(
+      'have.text',
+      'Welcome to BINFX F21! Here is a message from your instructors!'
+    );
+    // Assert src of video
+    cy.get('[data-testid=onboard-video]')
+      .should('have.attr', 'src')
+      .and(
+        'equal',
+        'https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4'
+      );
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    assertStepCompleted(0);
+  });
+
+  it('Displays Page 2', () => {
+    // Assert title
+    cy.get('[data-testid=onboard-title]').should(
+      'have.text',
+      "First off, we'd like to ask you a few questions so we can get to know you better"
+    );
+    // Assert question
+    cy.get('[data-testid=onboard-question]').should(
+      'have.text',
+      'How did you hear about this cohort?'
+    );
+    // Assert options text
+    cy.get('[data-testid=option-1] > input').should('have.value', 'Google Search');
+    cy.get('[data-testid=option-2] > input').should('have.value', 'Email Marketing');
+    cy.get('[data-testid=option-3] > input').should('have.value', 'Social Media');
+    cy.get('[data-testid=option-4] > input').should(
+      'have.value',
+      'Recommended by a friend or colleague'
+    );
+    cy.get('[data-testid=option-5] > input').should(
+      'have.value',
+      'Personally invited by someone in the Scholarsite team'
+    );
+    cy.get('[data-testid=option-6] > input').should('have.value', 'Other');
+    // Select option
+    cy.get('[data-testid=option-1]').click();
+    // Assert selected
+    cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    // Click next button
+    assertStepCompleted(1, 'Google Search');
+    // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
+  });
+
+  it('Displays Page 3', () => {
+    // Assert title
+    cy.get('[data-testid=onboard-title]').should(
+      'have.text',
+      "First off, we'd like to ask you a few questions so we can get to know you better"
+    );
+    // Assert question
+    cy.get('[data-testid=onboard-question]').should('have.text', 'Who is paying for this course?');
+    // Assert options text
+    cy.get('[data-testid=option-1] > input').should('have.value', 'I am');
+    cy.get('[data-testid=option-2] > input').should('have.value', 'My employer is');
+    cy.get('[data-testid=option-3] > input').should('have.value', 'Other');
+    // Select option
+    cy.get('[data-testid=option-2]').click();
+    // Assert selected
+    cy.get('[data-testid=option-2]').should('have.attr', 'data-checked').and('equal', 'true');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    // Click next button
+    assertStepCompleted(2, 'My employer is');
+    // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
+  });
+
+  it('Displays Page 4', () => {
+    // Assert question
+    cy.get('[data-testid=onboard-question]').should(
+      'have.text',
+      'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?'
+    );
+    // Assert options text
+    cy.get('[data-testid=option-1] > input').should('have.value', 'Yes');
+    cy.get('[data-testid=option-2] > input').should('have.value', 'No');
+    cy.get('[data-testid=option-3] > input').should('have.value', 'Maybe?');
+    // Select option
+    cy.get('[data-testid=option-3]').click();
+    // Assert selected
+    cy.get('[data-testid=option-3]').should('have.attr', 'data-checked').and('equal', 'true');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    // Click next button
+    assertStepCompleted(3, 'Maybe?');
+    // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
+  });
+
+  it('Displays Page 5', () => {
+    // Assert question
+    cy.get('[data-testid=onboard-question]').should(
+      'have.text',
+      'What are you looking to find within the Scholarsite community?'
+    );
+    // Assert options text
+    cy.get('[data-testid=check-1] > input').should('have.value', 'Find a mentor');
+    cy.get('[data-testid=check-2] > input').should('have.value', 'Mentor others');
+    cy.get('[data-testid=check-3] > input').should('have.value', 'Grow my network');
+    cy.get('[data-testid=check-4] > input').should('have.value', 'Discuss materials');
+
+    // Select option
+    cy.get('[data-testid=check-2').click();
+    cy.get('[data-testid=check-2').find('input[type="checkbox"]').should('be.checked');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    assertStepCompleted(4, ['Mentor others']);
+  });
+
+  it('Displays Page 6', () => {
+    // Assert question
+    cy.get('[data-testid=onboard-question]').should(
+      'have.text',
+      'What topics can fellow cohort members ask you question on?'
+    );
+    //type Economics and press enter
+    cy.get('#create-select').find('input[type="text"]').type('Economics {enter} ');
+    //type hiring and press enter
+    cy.get('#create-select').find('input[type="text"]').type('Hiring {enter} ');
+    //asert
+    cy.get('#create-select').contains('Hiring');
+    cy.get('#create-select').contains('Economics');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    assertStepCompleted(5, ['Economics', 'Hiring']);
+  });
+
+  it('Displays Page 7', () => {
+    cy.get('[data-testid=onboard-title]').should(
+      'have.text',
+      'Next, make sure you join the Discord server so you can interact with the cohort!'
+    );
+    cy.get('[data-testid=discord-description]').should(
+      'have.text',
+      'All cohort communication will be done through the Discord platform. Please join the BINFX server by clicking the button below.'
+    );
+    cy.get('[data-testid=discord-img]')
+      .should('have.attr', 'src')
+      .and('equal', '/static/cohorts-home/workplace.svg');
+    cy.get('[data-testid=discord-button]').should('have.text', 'Join Discord Server');
+  });
+
+  it('Sends message to backend when next is clicked', () => {
+    cy.server();
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
     cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
       'select_fields_data'
     );
-    cy.route(
-      'POST',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-      '@stepCompleted'
-    ).as('step_completed');
+    assertStepCompleted(6);
+  });
+
+  it('Displays Page 7', () => {
+    cy.form();
+    cy.get('[data-testid=current-company]').contains('Adobe').should('have.text', 'Adobe');
+  });
+
+  it('Submits the form', () => {
+    cy.server();
+    cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
+    cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
     cy.route(
       'POST',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/save_user_profile.json`,
@@ -60,47 +255,32 @@ describe('onboarding flow', () => {
       'GET',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0`,
       '@homeOnComplete'
-    ).as('home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0');
-    cy.get('[data-testid=btn-next]').click();
-    //selects option 1
-    cy.get('[data-testid=option-1]').click();
-    // //it checks if the right option is selected
-    cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
-    // //clicks on next button
-    // stepNumber = 1;
-    cy.get('[data-testid=btn-next]').click();
-
-    // //selects option 2
-    cy.get('[data-testid=option-2]').click();
-    // //it checks if the right option is selected
-    cy.get('[data-testid=option-2]').should('have.attr', 'data-checked').and('equal', 'true');
-    // stepNumber = 2;
-    // //clicks on next button
-    cy.get('[data-testid=btn-next]').click();
-    // //selects option 3
-    // cy.get('[data-testid=option-3]').click();
-    // //it checks if the right option is selected
-    // cy.get('[data-testid=option-3]').should('have.attr', 'data-checked').and('equal', 'true');
-
-    // //clicks on next button
-    // cy.get('[data-testid=btn-next]').click();
-    // cy.get('[data-testid=check-2').click();
-    // cy.get('[data-testid=check-2').find('input[type="checkbox"]').should('be.checked');
-    // cy.get('[data-testid=btn-next]').click();
-    // //type economics and press enter
-    // cy.get('#create-select').find('input[type="text"]').type('Economics {enter} ');
-    // //type hiring and press enter
-    // cy.get('#create-select').find('input[type="text"]').type('Hiring {enter} ');
-    // //check if fields are selected
-    // cy.get('#create-select').contains('Hiring');
-    // cy.get('#create-select').contains('Economics');
-    // //click next
-    // cy.get('[data-testid=btn-next]').click();
-    // cy.get('[data-testid=btn-next]').click();
-    // //calls command to test form
-    // cy.form();
-
-    // cy.get('[data-testid=current-company]').contains('Adobe').should('have.text', 'Adobe');
-    // cy.get('[data-testid=btn-submit]').click();
+    ).as('homeOncompleteData');
+    cy.get('[data-testid=btn-submit]').click();
+    cy.wait('@homeOncompleteData').then(({ response }) => {
+      expect(response.body.cohort_id).to.eq('9550cc85-305a-438c-a115-e791a16c91f0');
+      expect(response.body.cohort_title).to.eq('The Economics of Digital Platforms');
+      expect(response.body.enrollment_id).to.eq('f1b1b3f1-afad-4aec-8a4f-240698ac246c');
+      expect(response.body.setup_completed).to.eq(true);
+      expect(response.body.intro_video_url).to.eq(
+        'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4'
+      );
+      expect(response.body.discord_invitation_link).to.eq('https://discord.com/');
+      expect(response.body.last_recorded_step).to.eq(0);
+      expect(response.body.participant_profile.first_name).to.eq('Aqib');
+      expect(response.body.participant_profile.last_name).to.eq('Maqbool');
+      expect(response.body.participant_profile.email).to.eq('aqibmaqqbool@gmail.com');
+      expect(response.body.participant_profile.linkedin_url).to.eq(
+        'https://linkedin.com/aqibmaqqbool_react_dev'
+      );
+      expect(response.body.participant_profile.discord_url).to.eq('Test url');
+      expect(response.body.participant_profile.current_position).to.eq('Economist');
+      expect(response.body.participant_profile.current_company).to.eq('Adobe');
+      expect(response.body.participant_profile.profile_image_url).to.eq(
+        'https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71'
+      );
+      expect(response.body.participant_profile.interests).to.deep.eq(['Grow my network']);
+      expect(response.body.participant_profile.strengths).to.deep.eq(['Economics', 'Hiring']);
+    });
   });
 });
