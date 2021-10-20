@@ -251,7 +251,7 @@ export default function StudentProfileModal({
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <Link href={`/cohorts/${cohortID}/chatting?direct=true&receiver_id=${id}`}>
+              <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
                 {' '}
                 <Text>Message {first_name} in Schoalrsite</Text>
               </Link>

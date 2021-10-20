@@ -116,7 +116,7 @@ export default function Router() {
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: '/peers', element: <PeersTab /> },
             { path: '/sessions', element: <SessionsTab /> },
-            { path: '/chatting', element: <Chatting /> }
+            { path: '/messaging', element: <Messaging /> }
           ]
         },
         {
@@ -280,7 +280,7 @@ const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
-const Chatting = Loadable(lazy(() => import('../pages/Chatting')));
+const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));

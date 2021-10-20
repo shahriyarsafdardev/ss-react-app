@@ -19,7 +19,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 type Props = Omit<ChannelListProps, 'filters'> & {
   setCreateType: React.Dispatch<React.SetStateAction<string>>;

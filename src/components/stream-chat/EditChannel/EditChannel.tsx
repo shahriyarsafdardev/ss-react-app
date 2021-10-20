@@ -16,7 +16,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 type InputProps = {
   channelName: string;

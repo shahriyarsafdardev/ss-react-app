@@ -17,7 +17,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 export const ThreadMessageInput: React.FC<Props> = (props) => {
   const { giphyState, setGiphyState } = useContext(GiphyContext);

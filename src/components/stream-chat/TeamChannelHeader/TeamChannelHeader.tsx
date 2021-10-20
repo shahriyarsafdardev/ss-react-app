@@ -17,7 +17,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 type Props = {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;

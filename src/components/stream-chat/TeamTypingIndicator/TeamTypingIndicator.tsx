@@ -10,7 +10,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 export const TeamTypingIndicator: React.FC<{ type: string }> = (props) => {
   const { type } = props;

@@ -12,7 +12,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 type SearchResultProps = Pick<ResultsDropdownProps, 'focusedId' | 'setChannel'> & {
   result: ChannelOrUserType;

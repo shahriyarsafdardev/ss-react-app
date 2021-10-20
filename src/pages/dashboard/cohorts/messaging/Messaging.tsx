@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, LoadingIndicator, Streami18n } from 'stream-chat-react';
-import { RootState, useSelector } from '../redux/store';
+import { RootState, useSelector } from '../../../../redux/store';
 
-import './Chatting.css';
+import './Messaging.css';
 
-import { ChannelContainer } from '../components/stream-chat/ChannelContainer/ChannelContainer';
-import { ChannelListContainer } from '../components/stream-chat/ChannelListContainer/ChannelListContainer';
+import { ChannelContainer } from '../../../../components/stream-chat/ChannelContainer/ChannelContainer';
+import { ChannelListContainer } from '../../../../components/stream-chat/ChannelListContainer/ChannelListContainer';
 
-import useAuth from '../hooks/useAuth';
-import Page from '../components/Page';
+import useAuth from '../../../../hooks/useAuth';
+import Page from '../../../../components/Page';
 import 'stream-chat-react/dist/css/index.css';
 
 const apiKey = '4zev2wpcm6r7';
@@ -32,7 +32,7 @@ export type TeamUserType = { image?: string };
 
 const options = { state: true, watch: true, presence: true };
 
-export default function Chatting() {
+export default function Messaging() {
   const [client, setChatClient] = useState<any>(null);
   const [isMobileNavVisible, setMobileNav] = useState(false);
   const [createType, setCreateType] = useState('');

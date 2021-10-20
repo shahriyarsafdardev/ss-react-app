@@ -14,7 +14,7 @@ import type {
   TeamMessageType,
   TeamReactionType,
   TeamUserType
-} from '../../../pages/Chatting';
+} from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
 const ListContainer: React.FC = (props) => {
   const { children } = props;
