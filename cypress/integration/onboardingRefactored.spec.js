@@ -12,7 +12,12 @@ describe('Onboarding Flow', () => {
     cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
     cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
-
+    // cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
+    // cy.route(
+    //   'POST',
+    //   `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
+    //   '@stepCompleted'
+    // ).as('step_completed');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route(
       'GET',
@@ -48,23 +53,10 @@ describe('Onboarding Flow', () => {
     cy.fixture('session/onBoardingNotCompleted.json').as('onboardingData');
     cy.fixture('onboarding/home.json').as('home');
 
-    // cy.intercept(
-    //   'POST',
-    //   `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-    //   (req) => {
-    //     expect(req.body).to.have.property('step_number', stepNumber);
-    //     if (stepNumber) {
-    //       switch (stepNumber) {
-    //         case 1:
-    //           expect(req.body).to.have.property('answer', 'Google Search');
-    //           break;
-    //         case 2:
-    //           expect(req.body).to.have.property('answer', 'My employer is');
-    //       }
-    //     }
-    //     stepNumber++;
-    //   }
-    // );
+    cy.intercept(
+      'POST',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`
+    ).as('stepCompleted');
   });
 
   it('should log user into app', () => {
@@ -106,22 +98,16 @@ describe('Onboarding Flow', () => {
 
   it('Sends message to backend when next is clicked', () => {
     // if you see in network tab cypress is ingtercepting it but not the others steps completed calls
-    cy.server();
-    cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
-    cy.route(
-      'POST',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-      '@stepCompleted'
-    ).as('step_completed');
+    // cy.server();
     // Click next button
     cy.get('[data-testid=btn-next]').click();
     // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
-    // cy.wait('@step_completed').then(({ request, response }) => {
-    //   debugger;
-    //   expect(response.statusCode).to.eq(200);
-    //   expect(request.body.step_number).to.eq(0);
-    //   // expect(response.body.name).to.eq('Jane');
-    // });
+    cy.wait('@stepCompleted').then(({ request, response }) => {
+      debugger;
+      expect(response.statusCode).to.eq(200);
+      expect(request.body.step_number).to.eq(0);
+      // expect(response.body.name).to.eq('Jane');
+    });
   });
 
   it('Displays Page 2', () => {
