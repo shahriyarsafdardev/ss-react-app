@@ -33,7 +33,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     TeamReactionType,
     TeamUserType
   >();
-  const [unreadCount, setUnread] = useState(0);
+  const [unreadCount, setUnread] = useState(channel.countUnread());
   const isActive = activeChannel?.cid === channel.cid;
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     } else {
       setUnread(channel.countUnread());
     }
-  }, [channel, isActive]);
+  }, [channel, isActive, channel.countUnread()]);
 
   const ChannelPreview = () => (
     <p className="channel-preview__item">
