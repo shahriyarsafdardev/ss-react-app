@@ -19,26 +19,13 @@
       "id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
       "name": "Test Cohort 2",
       "description": "",
-      "recording_url": "",
+      "recording_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4",
       "time": "2021-10-05T03:00:00.000Z",
       "number": 2,
       "summary": "",
       "length": "120m",
       "presentation_pdf_url": null,
       "survey_completed": false,
-      "resources": []
-    },
-    {
-      "id": "34921bef-e92d-4523-851c-ba084148d49c",
-      "name": "Test Cohort 3",
-      "description": "",
-      "recording_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4",
-      "time": "2021-10-17T12:00:00.000Z",
-      "number": 3,
-      "summary": "",
-      "length": "120m",
-      "presentation_pdf_url": null,
-      "survey_completed": true,
       "resources": []
     }
   ]

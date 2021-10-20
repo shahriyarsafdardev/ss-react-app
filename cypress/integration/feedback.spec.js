@@ -7,7 +7,7 @@ describe('Survey Modal Flow', () => {
   });
 
   it('should log user into app', () => {
-    cy.wait(200000);
+    // cy.wait(200000);
     cy.fixture('feedback/feedbackQuestions.json').as('questions');
     cy.route(
       'GET',

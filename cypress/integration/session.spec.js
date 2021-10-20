@@ -4,8 +4,8 @@ const videoCameraIcon = '/static/icons/ic_recorder.svg';
 const clockIcon = '/static/icons/ic_clock.svg';
 const inviteLink = 'https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09';
 
-const emptySession = 0; // The resources, summary notes, slides and recording are set to null in this fixture
-const populatedSession = 1; // The resources, summary notes, slides and recording are present in this fixture
+const populatedSession = 0; // The resources, summary notes, slides and recording are set to null in this fixture
+const emptySession = 1; // The resources, summary notes, slides and recording are present in this fixture
 
 import sessionFixture from '../fixtures/session/sessions.json';
 
@@ -31,10 +31,6 @@ describe('Sessions Tab', () => {
         'contain',
         sessionFixture.sessions[1].number
       );
-      cy.get('[data-testid=session-list-number-2]').should(
-        'contain',
-        sessionFixture.sessions[2].number
-      );
     });
 
     it('lists the title of each session', () => {
@@ -45,10 +41,6 @@ describe('Sessions Tab', () => {
       cy.get('[data-testid=session-list-title-1]').should(
         'contain',
         sessionFixture.sessions[1].name
-      );
-      cy.get('[data-testid=session-list-title-2]').should(
-        'contain',
-        sessionFixture.sessions[2].name
       );
     });
 
@@ -188,7 +180,8 @@ describe('Sessions Tab', () => {
       context('After the recording has been uploaded', () => {
         before(() => {
           cy.clock().invoke('restore');
-          cy.get('#session-list-2').click({ force: true });
+          cy.get('#session-list-1').click({ force: true });
+          cy.get('[data-testid=close-modal]').click({ force: true });
         });
 
         it('Shows the session recording in a video player', () => {
@@ -206,7 +199,7 @@ describe('Sessions Tab', () => {
 
   describe('Resources Tab', () => {
     before(() => {
-      cy.get('#session-list-0').click({ force: true });
+      cy.get(`#session-list-${populatedSession}`).click({ force: true });
     });
 
     context('When the resources are present', () => {
@@ -220,7 +213,7 @@ describe('Sessions Tab', () => {
 
     context('When the resources are not present', () => {
       it('Renders the correct info message', () => {
-        cy.get('#session-list-2').click({ force: true });
+        cy.get(`#session-list-${emptySession}`).click({ force: true });
         cy.get('[data-testid=session-message]').should(
           'have.text',
           'The session resources will be available 2 days before the session.'
@@ -232,7 +225,7 @@ describe('Sessions Tab', () => {
   describe('Summary Tab', () => {
     context('When a summary are present', () => {
       before(() => {
-        cy.get('#session-list-0').click({ force: true });
+        cy.get(`#session-list-${populatedSession}`).click({ force: true });
         cy.get('[data-testid=session-notes]').click();
       });
 
@@ -246,7 +239,7 @@ describe('Sessions Tab', () => {
 
     context('When a summary is not present', () => {
       before(() => {
-        cy.get('#session-list-2').click({ force: true });
+        cy.get(`#session-list-${emptySession}`).click({ force: true });
         cy.get('[data-testid=session-notes]').click();
       });
 
@@ -262,7 +255,7 @@ describe('Sessions Tab', () => {
   describe('Session Slides Tab', () => {
     context('When the session slides are present', () => {
       before(() => {
-        cy.get('#session-list-0').click({ force: true });
+        cy.get(`#session-list-${populatedSession}`).click({ force: true });
         cy.get('[data-testid=session-slides]').click();
       });
 
@@ -283,7 +276,7 @@ describe('Sessions Tab', () => {
 
     context('When the session slides are not present', () => {
       before(() => {
-        cy.get('#session-list-2').click({ force: true });
+        cy.get(`#session-list-${emptySession}`).click({ force: true });
         cy.get('[data-testid=session-slides]').click();
       });
 
