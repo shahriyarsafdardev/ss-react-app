@@ -13,6 +13,7 @@ describe('onboarding flow', () => {
     cy.fixture('session/sessions.json').as('sessionData');
     cy.fixture('session/onBoardingNotCompleted.json').as('onboardingData');
     cy.fixture('onboarding/home.json').as('home');
+    cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route(
       'GET',
@@ -39,18 +40,17 @@ describe('onboarding flow', () => {
     cy.wait(['@login', '@homeData']);
   });
   it('should complete onboarding', () => {
-    // cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
     cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
     cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
     cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
       'select_fields_data'
     );
-    // cy.route(
-    //   'POST',
-    //   `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-    //   '@stepCompleted'
-    // ).as('step_completed');
+    cy.route(
+      'POST',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
+      '@stepCompleted'
+    ).as('step_completed');
     cy.route(
       'POST',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/save_user_profile.json`,
@@ -61,23 +61,6 @@ describe('onboarding flow', () => {
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0`,
       '@homeOnComplete'
     ).as('home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0');
-    cy.intercept(
-      'POST',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-      (req) => {
-        expect(req.body).to.have.property('step_number', stepNumber);
-        if (stepNumber) {
-          switch (stepNumber) {
-            case 1:
-              expect(req.body).to.have.property('answer', 'Google Search');
-              break;
-            case 2:
-              expect(req.body).to.have.property('answer', 'My employer is');
-          }
-        }
-        stepNumber++;
-      }
-    );
     cy.get('[data-testid=btn-next]').click();
     //selects option 1
     cy.get('[data-testid=option-1]').click();

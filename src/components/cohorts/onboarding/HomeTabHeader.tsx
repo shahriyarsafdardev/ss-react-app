@@ -69,7 +69,7 @@ export default function HomeTabHeader({
   };
   return (
     <>
-      {cohortTitle ? <SubTitle>{cohortTitle}</SubTitle> : ''}
+      {cohortTitle ? <SubTitle data-testid="onboard-title">{cohortTitle}</SubTitle> : ''}
       {showProgressBar && (
         <>
           <ProgressBarContainer>

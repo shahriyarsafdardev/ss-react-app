@@ -212,7 +212,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
 
   return (
     <RowContainer>
-      <QuestionText>{item.title}</QuestionText>
+      <QuestionText data-testid="onboard-question">{item.title}</QuestionText>
       <br />
       {answerFields()}
     </RowContainer>

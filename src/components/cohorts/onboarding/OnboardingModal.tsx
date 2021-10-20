@@ -195,6 +195,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const Step1 = () => (
     <Step1Container>
       <StyledVideoPreview
+        data-testid="onboard-video"
         src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
         poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-thumbnail-3.jpg"
         controls
@@ -264,7 +265,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <CohortAuthorPreview />
+      <CohortAuthorPreview data-testid="onboarding-image" />
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
