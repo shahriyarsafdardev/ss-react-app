@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
 
 import './TeamChannelPreview.css';
@@ -32,10 +33,21 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     TeamReactionType,
     TeamUserType
   >();
+  const [unreadCount, setUnread] = useState(0);
+  const isActive = activeChannel?.cid === channel.cid;
+
+  useEffect(() => {
+    if (isActive) {
+      setUnread(0);
+    } else {
+      setUnread(channel.countUnread());
+    }
+  }, [channel, isActive]);
 
   const ChannelPreview = () => (
     <p className="channel-preview__item">
       # {channel?.data?.name || channel?.data?.id || 'random'}
+      {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
     </p>
   );
 
@@ -54,7 +66,10 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
             name={member.user?.name || member.user?.id}
             size={24}
           />
-          <p>{member?.user?.name || member?.user?.id || defaultName}</p>
+          <p>
+            <span>{member?.user?.name || member?.user?.id || defaultName}</span>
+            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+          </p>
           <TeamTypingIndicator type="list" />
         </div>
       );
@@ -75,8 +90,11 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
           size={18}
         />
         <p>
-          {members[0].user?.name || members[0].user?.id || defaultName},{' '}
-          {members[1].user?.name || members[1].user?.id || defaultName}
+          <span>
+            {members[0].user?.name || members[0].user?.id || defaultName},{' '}
+            {members[1].user?.name || members[1].user?.id || defaultName}
+          </span>
+          {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
         </p>
       </div>
     );
@@ -84,6 +102,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
 
   return (
     <div
+      key={unreadCount}
       className={
         channel?.id === activeChannel?.id
           ? 'channel-preview__wrapper__selected'
