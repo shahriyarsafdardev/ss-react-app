@@ -1,6 +1,18 @@
 const serverUrl = Cypress.env('serverUrl');
 
 describe('Onboarding Flow', () => {
+  const assertStepCompleted = (step_number) => {
+    cy.intercept(
+      'POST',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`
+    ).as('stepComplete');
+    cy.get('[data-testid=btn-next]').click();
+    cy.wait('@stepComplete').then(({ request, response }) => {
+      expect(response.statusCode).to.eq(200);
+      expect(request.body.step_number).to.eq(step_number);
+    });
+  };
+
   before(() => {
     cy.server();
 
@@ -12,12 +24,6 @@ describe('Onboarding Flow', () => {
     cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
     cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
     cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
-    // cy.fixture('onboarding/stepCompleted.json').as('stepCompleted');
-    // cy.route(
-    //   'POST',
-    //   `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`,
-    //   '@stepCompleted'
-    // ).as('step_completed');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route(
       'GET',
@@ -46,17 +52,6 @@ describe('Onboarding Flow', () => {
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0`,
       '@homeOnComplete'
     ).as('home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0');
-
-    cy.fixture('cohorts/cohorts.json').as('cohortsData');
-    cy.fixture('login/login.json').as('loginData');
-    cy.fixture('session/sessions.json').as('sessionData');
-    cy.fixture('session/onBoardingNotCompleted.json').as('onboardingData');
-    cy.fixture('onboarding/home.json').as('home');
-
-    cy.intercept(
-      'POST',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`
-    ).as('stepCompleted');
   });
 
   it('should log user into app', () => {
@@ -100,14 +95,8 @@ describe('Onboarding Flow', () => {
     // if you see in network tab cypress is ingtercepting it but not the others steps completed calls
     // cy.server();
     // Click next button
-    cy.get('[data-testid=btn-next]').click();
+    assertStepCompleted(0);
     // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
-    cy.wait('@stepCompleted').then(({ request, response }) => {
-      debugger;
-      expect(response.statusCode).to.eq(200);
-      expect(request.body.step_number).to.eq(0);
-      // expect(response.body.name).to.eq('Jane');
-    });
   });
 
   it('Displays Page 2', () => {
@@ -139,11 +128,11 @@ describe('Onboarding Flow', () => {
     // Assert selected
     cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
     // Click next
-    cy.get('[data-testid=btn-next]').click();
   });
 
   it('Sends message to backend when next is clicked', () => {
     // Click next button
+    assertStepCompleted(1);
     // Here we need to assert that the `/cohorts/${cohort_id}/step_completed.json` endpoint is actually being hit
   });
 
