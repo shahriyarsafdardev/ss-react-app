@@ -20,6 +20,8 @@ import ThemeLocalization from './components/ThemeLocalization';
 import { useDispatch } from './redux/store';
 import { getCohorts } from './redux/slices/cohort';
 
+require('dotenv').config({ path: '../.env' });
+
 // ----------------------------------------------------------------------
 
 export default function App() {

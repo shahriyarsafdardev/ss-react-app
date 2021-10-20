@@ -181,7 +181,7 @@ export default function PeersTab() {
   return (
     <Page title="ScholarSite | Peers">
       <CohortContext.Provider
-        value={{ id: cohort?.id, name: cohort?.name, intake: cohort?.intake }}
+        value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
       >
         {peers ? (
           <Container maxWidth={themeStretch ? false : 'lg'}>
