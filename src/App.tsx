@@ -33,7 +33,7 @@ export default function App() {
       dispatch(getCohorts());
       initAmplitude();
       setAmplitudeUserProperties({
-        'Full Name': user?.displayName,
+        full_name: user?.displayName,
         type: user?.type
       });
     }
