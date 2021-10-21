@@ -116,11 +116,7 @@ export const UserList: React.FC<Props> = (props) => {
       setLoading(true);
 
       try {
-        const response = await client.queryUsers(
-          { id: { $in: cohortUsers }, ...filters },
-          { id: 1 },
-          { limit: 8 }
-        );
+        const response = await client.queryUsers({ id: { $in: cohortUsers }, ...filters });
 
         if (response.users.length) {
           setUsers(response.users);
