@@ -2,7 +2,7 @@
   display: flex;
   flex: 1;
   box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
-  height: calc(100vh - 100px) !important;
+  height: calc(100vh - 120px) !important;
   @media screen and (max-width: 760px) {
     height: 100% !important;
   }
