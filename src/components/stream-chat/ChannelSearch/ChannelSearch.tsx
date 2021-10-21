@@ -137,16 +137,19 @@ export const ChannelSearch: React.FC<Props> = (props) => {
         {},
         { limit: 5 }
       );
-
-      const userResponse = client.queryUsers(
-        {
-          id: { $in: cohortUsers },
-          $and: [{ name: { $autocomplete: text } }]
-        },
-        {},
-        { limit: 5 }
-      );
-
+      let userResponse;
+      if (cohortUsers.length === 0) {
+        userResponse = { users: [], duration: '1.12ms' };
+      } else {
+        userResponse = client.queryUsers(
+          {
+            id: { $in: cohortUsers },
+            $and: [{ name: { $autocomplete: text } }]
+          },
+          {},
+          { limit: 5 }
+        );
+      }
       const [channels, { users }] = await Promise.all([channelResponse, userResponse]);
 
       if (channels.length) setTeamChannels(channels);
@@ -155,7 +158,6 @@ export const ChannelSearch: React.FC<Props> = (props) => {
     } catch (event) {
       setQuery('');
     }
-
     setLoading(false);
   };
 
