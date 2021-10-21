@@ -28,11 +28,18 @@
   font-family: Helvetica Neue, sans-serif;
   font-size: 14px;
   color: #525f7f;
-  padding-left: 16px;
+  padding: 0 16px;
   height: 100%;
   width: 100%;
   text-overflow: ellipsis;
   border-bottom: 1px solid #e9ecef;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
 }
 
 .channel-preview__item.multi {
@@ -71,11 +78,15 @@
 }
 
 .channel-preview__item .unread-count {
-  position: relative;
-  bottom: 6px;
   font-weight: 600;
-  background: orangered;
-  border-radius: 50%;
-  padding-left: 2px;
-  padding-right: 3px;
+  background: #4d4dcd;
+  color: white;
+  border-radius: 2px;
+  padding: 0 5px;
+  min-width: 24px;
+  min-height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
 }

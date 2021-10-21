@@ -61,15 +61,18 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
       const member = members[0];
       return (
         <div className="channel-preview__item single">
-          <Avatar
-            image={member.user?.image}
-            name={member.user?.name || member.user?.id}
-            size={24}
-          />
-          <p>
+          <div className="user-info">
+            <Avatar
+              image={member.user?.image}
+              name={member.user?.name || member.user?.id}
+              size={24}
+            />
+
             <span>{member?.user?.name || member?.user?.id || defaultName}</span>
-            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
-          </p>
+          </div>
+
+          {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+
           {/* <TeamTypingIndicator type="list" /> */}
         </div>
       );
