@@ -40,9 +40,7 @@
   display: flex;
   align-items: center;
   text-overflow: ellipsis;
-}
-
-.channel-preview__item.multi {
+  overflow: hidden;
   max-width: 220px;
 }
 
@@ -54,10 +52,10 @@
   margin-right: 0;
 }
 
-.channel-preview__item.multi span:first-child {
+.channel-preview__item.multi .first-icon {
   position: relative;
   z-index: 2;
-  bottom: 6px;
+  bottom: 3px;
 }
 
 .channel-preview__item.multi div:nth-child(2) {

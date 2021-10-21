@@ -80,25 +80,27 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
 
     return (
       <div className="channel-preview__item multi">
-        <span>
+        <div className="user-info">
+          <span className="first-icon">
+            <Avatar
+              image={members[0].user?.image}
+              name={members[0].user?.name || members[0].user?.id}
+              size={18}
+            />
+          </span>
           <Avatar
-            image={members[0].user?.image}
-            name={members[0].user?.name || members[0].user?.id}
+            image={members[1].user?.image}
+            name={members[1].user?.name || members[1].user?.id}
             size={18}
           />
-        </span>
-        <Avatar
-          image={members[1].user?.image}
-          name={members[1].user?.name || members[1].user?.id}
-          size={18}
-        />
-        <p>
-          <span>
-            {members[0].user?.name || members[0].user?.id || defaultName},{' '}
-            {members[1].user?.name || members[1].user?.id || defaultName}
-          </span>
-          {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
-        </p>
+          <p>
+            <span>
+              {members[0].user?.name || members[0].user?.id || defaultName},{' '}
+              {members[1].user?.name || members[1].user?.id || defaultName}
+            </span>
+          </p>
+        </div>
+        {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
       </div>
     );
   };

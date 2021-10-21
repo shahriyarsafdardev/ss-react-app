@@ -66,17 +66,17 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       }}
     >
       <ToolbarStyle>
-        {currentTab && (
-          <Typography variant="h4" style={{ color: '#071A33' }}>
-            {currentTab}
-          </Typography>
-        )}
-
         <MHidden width="lgUp">
           <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <Icon icon={menu2Fill} />
           </IconButton>
         </MHidden>
+
+        {currentTab && (
+          <Typography variant="h4" style={{ color: '#071A33' }}>
+            {currentTab}
+          </Typography>
+        )}
 
         <Box sx={{ flexGrow: 1 }} />
 
