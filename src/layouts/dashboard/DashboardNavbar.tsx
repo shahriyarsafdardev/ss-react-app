@@ -2,16 +2,13 @@ import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 // hooks
+import { useEffect, useState } from 'react';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
-import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import ContactsPopover from './ContactsPopover';
-import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +44,18 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
+  const [currentTab, setCurrentTab] = useState<string | null>(null);
+
+  useEffect(() => {
+    const tab = window.location.href.split('/');
+    if (tab.length > 5) {
+      if (tab.reverse()[0] === 'messaging') {
+        setCurrentTab('Messaging');
+      } else {
+        setCurrentTab(null);
+      }
+    }
+  }, [window.location.href]);
 
   return (
     <RootStyle
@@ -57,6 +66,12 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       }}
     >
       <ToolbarStyle>
+        {currentTab && (
+          <Typography variant="h4" style={{ color: '#071A33' }}>
+            {currentTab}
+          </Typography>
+        )}
+
         <MHidden width="lgUp">
           <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <Icon icon={menu2Fill} />
