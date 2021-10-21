@@ -1,9 +1,8 @@
 .chat_wrapper {
   display: flex;
   flex: 1;
-  border-radius: 16px;
   box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
-  height: 600px !important;
+  height: calc(100vh - 100px) !important;
   @media screen and (max-width: 760px) {
     height: 100% !important;
   }
@@ -60,4 +59,8 @@
     box-shadow: unset;
     transition: unset;
   }
+}
+
+.temp {
+  height: calc(100% + 80px);
 }

@@ -95,9 +95,9 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
 
   return (
     <div className="channel-list__container">
-      <SideBar />
+      {/* <SideBar /> */}
       <div className="channel-list__list__wrapper">
-        <CompanyHeader />
+        {/* <CompanyHeader /> */}
         <ChannelSearch {...{ cohortID, cohortUsers }} />
         <ChannelList
           channelRenderFilterFn={(channels) =>

@@ -12,7 +12,7 @@ import {
 
 import './TeamMessageInput.css';
 
-import { TeamTypingIndicator } from '../TeamTypingIndicator/TeamTypingIndicator';
+// import { TeamTypingIndicator } from '../TeamTypingIndicator/TeamTypingIndicator';
 
 import { GiphyContext } from '../ChannelContainer/ChannelInner';
 
@@ -204,7 +204,7 @@ export const TeamMessageInput: React.FC<Props> = (props) => {
           </div>
         </div>
       </ImageDropzone>
-      <TeamTypingIndicator type="input" />
+      {/* <TeamTypingIndicator type="input" /> */}
       <EmojiPicker />
     </div>
   );

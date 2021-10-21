@@ -1,27 +1,24 @@
 .channel-preview__wrapper {
-  height: 37px;
+  height: 47px;
   display: flex;
   align-items: center;
 }
 
 .channel-preview__wrapper__selected {
-  height: 37px;
+  height: 47px;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  background: rgba(77, 77, 205, 0.04);
   font-weight: bold;
-  margin-right: 16px;
   cursor: pointer;
+}
+.channel-preview__wrapper__selected .channel-preview__item p {
+  color: #5656ce !important;
 }
 
 .channel-preview__wrapper:hover {
-  background: rgba(0, 0, 0, 0.2);
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  background: rgba(77, 77, 205, 0.04);
   font-weight: bold;
-  margin-right: 16px;
   cursor: pointer;
 }
 
@@ -30,11 +27,12 @@
   align-items: center;
   font-family: Helvetica Neue, sans-serif;
   font-size: 14px;
-  color: #ffffff;
-  padding-left: 26px;
+  color: #525f7f;
+  padding-left: 16px;
   height: 100%;
   width: 100%;
   text-overflow: ellipsis;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .channel-preview__item.multi {
@@ -55,16 +53,6 @@
   bottom: 6px;
 }
 
-.channel-preview__item .unread-count {
-  position: relative;
-  bottom: 6px;
-  font-weight: 600;
-  background: orangered;
-  border-radius: 50%;
-  padding-left: 2px;
-  padding-right: 3px;
-}
-
 .channel-preview__item.multi div:nth-child(2) {
   position: relative;
   right: 10px;
@@ -76,4 +64,8 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.channel-preview__item .single {
+  color: black;
 }

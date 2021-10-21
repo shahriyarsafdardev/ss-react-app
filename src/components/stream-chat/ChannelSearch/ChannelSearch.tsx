@@ -164,7 +164,7 @@ export const ChannelSearch: React.FC<Props> = (props) => {
   });
 
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
+    // event.preventDefault();
 
     setLoading(true);
     setFocused(undefined);

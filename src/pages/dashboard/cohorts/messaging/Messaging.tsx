@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, LoadingIndicator, Streami18n } from 'stream-chat-react';
 import { RootState, useSelector } from '../../../../redux/store';
@@ -43,7 +43,7 @@ export default function Messaging() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
-  const cohortUsers = cohort.enrollments;
+  const cohortUsers = cohort?.enrollments || [];
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
   const filters: ChannelFilters[] = [
     { type: 'team', members: { $in: [user?.stream_id] }, team: cohortID },
@@ -92,8 +92,8 @@ export default function Messaging() {
   }
 
   return (
-    <Page title="ScholarSite | Messaging">
-      <Container maxWidth="lg">
+    <Page title="ScholarSite | Messaging" id="page">
+      <Box id="box">
         <div key={cohortID} className="chat_wrapper">
           <Chat {...{ client, i18nInstance }} theme="team light">
             <ChannelListContainer
@@ -122,7 +122,7 @@ export default function Messaging() {
             />
           </Chat>
         </div>
-      </Container>
+      </Box>
     </Page>
   );
 }

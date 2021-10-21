@@ -3,7 +3,7 @@ import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-c
 
 import './TeamChannelPreview.css';
 
-import { TeamTypingIndicator } from '../TeamTypingIndicator/TeamTypingIndicator';
+// import { TeamTypingIndicator } from '../TeamTypingIndicator/TeamTypingIndicator';
 
 import type {
   TeamAttachmentType,
@@ -66,11 +66,8 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
             name={member.user?.name || member.user?.id}
             size={24}
           />
-          <p>
-            <span>{member?.user?.name || member?.user?.id || defaultName}</span>
-            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
-          </p>
-          <TeamTypingIndicator type="list" />
+          <p>{member?.user?.name || member?.user?.id || defaultName}</p>
+          {/* <TeamTypingIndicator type="list" /> */}
         </div>
       );
     }

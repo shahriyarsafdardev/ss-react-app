@@ -1,78 +1,80 @@
-import { useChatContext, useTypingContext } from 'stream-chat-react';
+// import { useChatContext, useTypingContext } from 'stream-chat-react';
 
-import './TeamTypingIndicator.css';
+// import './TeamTypingIndicator.css';
 
-import type {
-  TeamAttachmentType,
-  TeamChannelType,
-  TeamCommandType,
-  TeamEventType,
-  TeamMessageType,
-  TeamReactionType,
-  TeamUserType
-} from '../../../pages/dashboard/cohorts/messaging/Messaging';
+// import type {
+//   TeamAttachmentType,
+//   TeamChannelType,
+//   TeamCommandType,
+//   TeamEventType,
+//   TeamMessageType,
+//   TeamReactionType,
+//   TeamUserType
+// } from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
-export const TeamTypingIndicator: React.FC<{ type: string }> = (props) => {
-  const { type } = props;
+// export const TeamTypingIndicator: React.FC<{ type: string }> = (props) => {
+//   const { type } = props;
 
-  const { client } = useChatContext<
-    TeamAttachmentType,
-    TeamChannelType,
-    TeamCommandType,
-    TeamEventType,
-    TeamMessageType,
-    TeamReactionType,
-    TeamUserType
-  >();
+//   const { client } = useChatContext<
+//     TeamAttachmentType,
+//     TeamChannelType,
+//     TeamCommandType,
+//     TeamEventType,
+//     TeamMessageType,
+//     TeamReactionType,
+//     TeamUserType
+//   >();
 
-  const { typing } = useTypingContext<
-    TeamAttachmentType,
-    TeamChannelType,
-    TeamCommandType,
-    TeamEventType,
-    TeamMessageType,
-    TeamReactionType,
-    TeamUserType
-  >();
+//   // const { typing } = useTypingContext<
+//   //   TeamAttachmentType,
+//   //   TeamChannelType,
+//   //   TeamCommandType,
+//   //   TeamEventType,
+//   //   TeamMessageType,
+//   //   TeamReactionType,
+//   //   TeamUserType
+//   // >();
 
-  if (!client || !typing) return null;
+//   if (!client || !typing) return null;
 
-  if (type === 'list') {
-    return (
-      <div className="typing-indicator__list">
-        <div className="dots">
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
-        </div>
-      </div>
-    );
-  }
+//   if (type === 'list') {
+//     return (
+//       <div className="typing-indicator__list">
+//         <div className="dots">
+//           <div className="dot" />
+//           <div className="dot" />
+//           <div className="dot" />
+//         </div>
+//       </div>
+//     );
+//   }
 
-  const users = Object.values(typing)
-    .filter(({ user }) => user?.id !== client.user?.id)
-    .map(({ user }) => user?.name || user?.id);
+//   const users = Object.values(typing)
+//     .filter(({ user }) => user?.id !== client.user?.id)
+//     .map(({ user }) => user?.name || user?.id);
 
-  if (!users.length) return null;
+//   if (!users.length) return null;
 
-  let text = 'Someone is typing';
+//   let text = 'Someone is typing';
 
-  if (users.length === 1) {
-    text = `${users[0]} is typing`;
-  } else if (users.length === 2) {
-    text = `${users[0]} and ${users[1]} are typing`;
-  } else if (users.length > 2) {
-    text = `${users[0]} and ${users.length - 1} more are typing`;
-  }
+//   if (users.length === 1) {
+//     text = `${users[0]} is typing`;
+//   } else if (users.length === 2) {
+//     text = `${users[0]} and ${users[1]} are typing`;
+//   } else if (users.length > 2) {
+//     text = `${users[0]} and ${users.length - 1} more are typing`;
+//   }
 
-  return (
-    <div className="typing-indicator__input">
-      <div className="dots">
-        <div className="dot" />
-        <div className="dot" />
-        <div className="dot" />
-      </div>
-      <div className="typing-indicator__input__text">{text}</div>
-    </div>
-  );
-};
+//   return (
+//     <div className="typing-indicator__input">
+//       <div className="dots">
+//         <div className="dot" />
+//         <div className="dot" />
+//         <div className="dot" />
+//       </div>
+//       <div className="typing-indicator__input__text">{text}</div>
+//     </div>
+//   );
+// };
+
+export default {};
