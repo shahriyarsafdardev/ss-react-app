@@ -11,6 +11,7 @@ import './Messaging.css';
 import { ChannelContainer } from '../../../../components/stream-chat/ChannelContainer/ChannelContainer';
 import { ChannelListContainer } from '../../../../components/stream-chat/ChannelListContainer/ChannelListContainer';
 
+import SidePanel from './SidePanel';
 import useAuth from '../../../../hooks/useAuth';
 import Page from '../../../../components/Page';
 import 'stream-chat-react/dist/css/index.css';
@@ -23,6 +24,19 @@ const i18nInstance = new Streami18n({
     ...enTranslations
   }
 });
+
+const DesktopView = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}));
+
+const MobileView = styled(Box)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.down('md')]: {
+    display: 'block'
+  }
+}));
 
 export type TeamAttachmentType = Record<string, unknown>;
 export type TeamChannelType = Record<string, unknown>;
@@ -108,19 +122,22 @@ export default function Messaging() {
       <Box id="box">
         <div key={cohortID} className="chat_wrapper">
           <Chat {...{ client, i18nInstance }} theme="team light">
-            <ChannelListContainer
-              {...{
-                isCreating,
-                filters,
-                options,
-                setCreateType,
-                setIsCreating,
-                setIsEditing,
-                cohortID,
-                cohortUsers,
-                sort
-              }}
-            />
+            <DesktopView>
+              <ChannelListContainer
+                {...{
+                  isCreating,
+                  filters,
+                  options,
+                  setCreateType,
+                  setIsCreating,
+                  setIsEditing,
+                  cohortID,
+                  cohortUsers,
+                  sort
+                }}
+              />
+            </DesktopView>
+
             <ChannelContainer
               {...{
                 createType,
@@ -132,6 +149,21 @@ export default function Messaging() {
                 cohortUsers
               }}
             />
+            <MobileView>
+              <SidePanel
+                props={{
+                  isCreating,
+                  filters,
+                  options,
+                  setCreateType,
+                  setIsCreating,
+                  setIsEditing,
+                  cohortID,
+                  cohortUsers,
+                  sort
+                }}
+              />
+            </MobileView>
           </Chat>
         </div>
       </Box>

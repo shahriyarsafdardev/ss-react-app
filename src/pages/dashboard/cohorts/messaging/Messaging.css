@@ -48,13 +48,13 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 960px) {
   .str-chat-channel-list.team {
-    position: unset;
+    position: unset !important;
     left: unset;
     top: unset;
     z-index: unset;
-    min-height: unset;
+    min-height: unset !important;
     overflow-y: unset;
     box-shadow: unset;
     transition: unset;

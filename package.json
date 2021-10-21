@@ -47,6 +47,7 @@
     "@fullcalendar/timegrid": "^5.9.0",
     "@fullcalendar/timeline": "^5.9.0",
     "@iconify/icons-ant-design": "^1.1.0",
+    "@iconify/icons-bx": "^1.1.2",
     "@iconify/icons-eva": "^1.1.0",
     "@iconify/icons-ic": "^1.1.8",
     "@iconify/react": "^1.1.4",
