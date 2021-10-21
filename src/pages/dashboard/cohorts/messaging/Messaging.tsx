@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
-import { Chat, enTranslations, LoadingIndicator, Streami18n } from 'stream-chat-react';
+import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { RootState, useSelector } from '../../../../redux/store';
+import LoadingScreen from '../../../../components/LoadingScreen';
 
 import './Messaging.css';
 
@@ -50,6 +52,12 @@ export default function Messaging() {
     { type: 'messaging', members: { $in: [user?.stream_id] }, team: cohortID }
   ];
 
+  const LoadingContainer = styled(Box)(() => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%'
+  }));
+
   useEffect(() => {
     const initChat = async () => {
       const client = StreamChat.getInstance<
@@ -88,7 +96,11 @@ export default function Messaging() {
   }, [isMobileNavVisible]);
 
   if (!client) {
-    return <LoadingIndicator />;
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
   }
 
   return (
