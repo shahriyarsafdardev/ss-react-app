@@ -66,7 +66,10 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
             name={member.user?.name || member.user?.id}
             size={24}
           />
-          <p>{member?.user?.name || member?.user?.id || defaultName}</p>
+          <p>
+            <span>{member?.user?.name || member?.user?.id || defaultName}</span>
+            {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+          </p>
           {/* <TeamTypingIndicator type="list" /> */}
         </div>
       );

@@ -69,3 +69,13 @@
 .channel-preview__item .single {
   color: black;
 }
+
+.channel-preview__item .unread-count {
+  position: relative;
+  bottom: 6px;
+  font-weight: 600;
+  background: orangered;
+  border-radius: 50%;
+  padding-left: 2px;
+  padding-right: 3px;
+}
