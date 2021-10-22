@@ -51,7 +51,7 @@ const DESCRIPTIONS = [
 
 const TYPES = ['order_placed', 'friend_interactive', 'chat_message', 'mail', 'order_shipped'];
 
-const AVATARS = [null, mockData.image.avatar(2), null, null, null];
+const AVATARS = [null, null, null, null, null];
 
 const UNREADS = [true, true, false, false, false];
 
@@ -162,7 +162,8 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
 export default function NotificationsPopover() {
   const apiKey = '4zev2wpcm6r7';
   const { user } = useAuth();
-
+  const [unread, setUnread] = useState<number | undefined>(0);
+  const [chatClient, setChatClient] = useState<any>(null);
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<TNotificationPopover[]>([]);
@@ -179,35 +180,39 @@ export default function NotificationsPopover() {
         Record<string, unknown>,
         { image?: string }
       >(apiKey!);
-      await client.disconnectUser();
       await client.connectUser(
         {
-          id: user?.stream_id,
-          name: user?.full_name,
-          image: user?.profile_picture_url
+          id: user?.stream_id
         },
         user?.stream_token
       );
-      const result = await client.queryChannels(
-        { members: { $in: [user?.id] } },
-        { has_unread: -1, last_message_at: -1, updated_at: -1 }
-      );
+      client.on((event) => {
+        if (event.total_unread_count !== null) {
+          setUnread(event.total_unread_count);
+        }
+      });
+      const result = (
+        await client.queryChannels(
+          { members: { $in: [user?.id] } },
+          { has_unread: -1, last_message_at: -1, updated_at: -1 }
+        )
+      ).reverse();
       const unreadMessages: { [key: string]: any } = {};
       const channels = result
         .filter((channel) => channel.state.unreadCount > 0)
         .map((channel) => {
           let key: any = '';
-          const name =
-            channel?.data?.name ||
-            Object.values(channel.state.members)
-              .filter(({ user }) => user?.id !== client.userID)
-              .map((member) => (key = member.user?.name));
-          unreadMessages[key] = channel.state.messages
+          const name = Object.values(channel.state.members)
+            .filter(({ user }) => user?.id !== client.userID)
+            .map((member) => (key = member.user?.name));
+          unreadMessages[channel?.data?.name || key] = channel.state.messages
             .filter((m) => m.updated_at > channel.state.read[user?.id].last_read)
-            .map((m) => m.text);
+            .map((m) => m.text)
+            .reverse();
         });
+      let unread = 0;
       Object.keys(unreadMessages).map((messages) => {
-        setTotalUnread(totalUnRead + unreadMessages[messages].length);
+        unread += unreadMessages[messages].length;
         setNotifications(
           unreadMessages[messages].map((message: any, index: any) => ({
             id: mockData.id(index),
@@ -220,10 +225,11 @@ export default function NotificationsPopover() {
           }))
         );
       });
-      await client.disconnectUser();
+      setTotalUnread(unread);
+      setChatClient(client);
     };
     initChat();
-  }, []);
+  }, [unread]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -233,13 +239,9 @@ export default function NotificationsPopover() {
     setOpen(false);
   };
 
-  const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false
-      }))
-    );
+  const handleMarkAllAsRead = async () => {
+    await chatClient.markAllRead();
+    setNotifications([]);
   };
 
   return (

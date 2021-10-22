@@ -83,15 +83,17 @@ export default function Messaging() {
         TeamReactionType,
         TeamUserType
       >(apiKey!);
-      await client.disconnectUser();
-      await client.connectUser(
-        {
-          id: user?.stream_id,
-          name: user?.full_name,
-          image: user?.profile_picture_url
-        },
-        user?.stream_token
-      );
+      if (!client.user) {
+        await client.disconnectUser();
+        await client.connectUser(
+          {
+            id: user?.stream_id,
+            name: user?.full_name,
+            image: user?.profile_picture_url
+          },
+          user?.stream_token
+        );
+      }
       setChatClient(client);
     };
 
