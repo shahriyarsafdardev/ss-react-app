@@ -4,6 +4,7 @@ import { useChatContext } from 'stream-chat-react';
 import './CreateChannel.css';
 
 import type { ChannelFilters } from 'stream-chat';
+import { useSnackbar } from 'notistack5';
 
 import { UserList } from './UserList';
 
@@ -67,11 +68,29 @@ export const CreateChannel: React.FC<Props> = (props) => {
   >();
 
   const [channelName, setChannelName] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([client.userID || '']);
+  const regexForChannelName = /^[a-zA-Z0-9._-]+$/;
 
   const createChannel = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    if (createType === 'team' && !regexForChannelName.test(channelName)) {
+      enqueueSnackbar('Invalid channel name. Only A-Z, a-z, 0-9 and _- are allowed', {
+        variant: 'error'
+      });
+
+      return;
+    }
+
     if (!selectedUsers?.length) return;
+
+    if (createType !== 'team' && selectedUsers && selectedUsers?.length < 2) {
+      enqueueSnackbar('Select at least 1 member for direct chat!', {
+        variant: 'error'
+      });
+
+      return;
+    }
 
     try {
       const newChannel = await client.channel(createType, channelName, {
