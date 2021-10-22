@@ -9,6 +9,7 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
 import AccountPopover from './AccountPopover';
+import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
