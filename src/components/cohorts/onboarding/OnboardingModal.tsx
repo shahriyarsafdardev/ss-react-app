@@ -113,27 +113,8 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-const DiscordButton = styled(Button)(({ theme }) => ({
-  padding: 11,
-  [theme.breakpoints.up('sm')]: {
-    width: '250px !important'
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '90%'
-  }
-}));
-
 const Step1Container = styled(Box)(() => ({
   textAlign: 'center'
-}));
-
-const Step2Container = styled(Box)(() => ({
-  textAlign: 'center',
-  borderRadius: '10px',
-  margin: '20px 0',
-  marginBottom: '50px',
-  padding: '1rem 0',
-  backgroundColor: '#F4F6F8'
 }));
 
 const StyledVideoPreview = styled('video')(({ theme }) => ({
@@ -146,12 +127,6 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
   }
 }));
 
-const DiscordDescription = styled(Typography)(() => ({
-  marginBottom: '1.5rem',
-  marginLeft: '1.5rem',
-  marginRight: '1.5rem'
-}));
-
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
@@ -161,7 +136,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>([]);
-  const totalSteps = 8;
+  const totalSteps = 7;
 
   useEffect(() => {
     axios
@@ -226,29 +201,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     </Step1Container>
   );
 
-  const Step3 = () => (
-    <Step2Container>
-      <img
-        src="/static/cohorts-home/workplace.svg"
-        alt="workplace.svg"
-        width={150}
-        style={{ margin: '0 auto 1.5rem' }}
-      />
-      <DiscordDescription>
-        All cohort communication will be done through the Discord platform. <br />
-        Please join the BINFX server by clicking the button below.
-      </DiscordDescription>
-      <DiscordButton
-        variant="outlined"
-        onClick={() => {
-          window.open(homeConfig?.discord_invitation_link, '_blank');
-        }}
-      >
-        Join Discord Server
-      </DiscordButton>
-    </Step2Container>
-  );
-
   const updateAnswers = (answer: any) => {
     const newResponse = [...responses];
     newResponse[activeStep] = answer;
@@ -278,10 +230,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 6) {
-      return <Step3 />;
-    }
-
-    if (activeStep === 7) {
       return (
         <div>
           <Step4
@@ -307,10 +255,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 6) {
-      return 'Next, make sure you join the Discord server so you can interact with the cohort!';
-    }
-
-    if (activeStep === 7) {
       return 'Finally, fill out your profile for the directory.';
     }
 
@@ -352,7 +296,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               Next
             </StyledButton>
           )}
-          {activeStep === 7 && (
+          {activeStep === 6 && (
             <StyledButton form="profile-form" type="submit" variant="contained" className="next">
               Submit
             </StyledButton>
