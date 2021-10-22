@@ -200,6 +200,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProfile = async (user: ParticipantProfile) => {
+    const { user: stateUser } = state;
+    user = { ...stateUser, ...user };
+
     dispatch({
       type: Types.Initial,
       payload: {
