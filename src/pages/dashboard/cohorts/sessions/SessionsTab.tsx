@@ -17,6 +17,7 @@ import SessionList from './SessionList';
 
 const SessionsContainer = styled(Container)(({ theme }) => ({
   display: 'flex',
+  marginBottom: '50px',
   [theme.breakpoints.down('sm')]: {
     display: 'block'
   }

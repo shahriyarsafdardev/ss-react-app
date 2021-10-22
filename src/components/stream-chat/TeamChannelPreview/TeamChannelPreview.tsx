@@ -55,8 +55,9 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
       ({ user }) => user?.id !== client.userID
     );
     const defaultName = 'Johnny Blaze';
+    if (!members.length) return null;
 
-    if (!members.length || members.length === 1) {
+    if (members && members.length === 1) {
       const member = members[0];
       return (
         <div className="channel-preview__item single">

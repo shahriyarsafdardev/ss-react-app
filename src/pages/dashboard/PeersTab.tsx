@@ -181,7 +181,7 @@ export default function PeersTab() {
   return (
     <Page title="ScholarSite | Peers">
       {peers ? (
-        <Container maxWidth={themeStretch ? false : 'lg'}>
+        <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
           <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
           <StudentProfileModal
             modalState={Object.keys(modalState).length > 0}
