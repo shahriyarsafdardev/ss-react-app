@@ -180,12 +180,15 @@ export default function NotificationsPopover() {
         Record<string, unknown>,
         { image?: string }
       >(apiKey!);
-      await client.connectUser(
-        {
-          id: user?.stream_id
-        },
-        user?.stream_token
-      );
+
+      if (!client.user) {
+        await client.connectUser(
+          {
+            id: user?.stream_id
+          },
+          user?.stream_token
+        );
+      }
       client.on((event) => {
         if (event.total_unread_count !== null) {
           setUnread(event.total_unread_count);
