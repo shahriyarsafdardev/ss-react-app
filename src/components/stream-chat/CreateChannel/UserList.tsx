@@ -116,8 +116,12 @@ export const UserList: React.FC<Props> = (props) => {
       setLoading(true);
 
       try {
-        const response = await client.queryUsers({ id: { $in: cohortUsers }, ...filters });
-
+        let response;
+        if (cohortUsers.length === 0) {
+          response = { users: [], duration: '1.12ms' };
+        } else {
+          response = await client.queryUsers({ id: { $in: cohortUsers } });
+        }
         if (response.users.length) {
           setUsers(response.users);
         } else {
@@ -131,7 +135,7 @@ export const UserList: React.FC<Props> = (props) => {
     };
 
     if (client) getUsers();
-  }, [filters]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (error) {
     return (

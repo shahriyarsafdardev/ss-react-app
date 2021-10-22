@@ -68,22 +68,23 @@ export const EditChannel: React.FC<Props> = (props) => {
     event.preventDefault();
 
     const nameChanged = channelName !== (channel?.data?.name || channel?.data?.id);
+    try {
+      if (nameChanged) {
+        await channel?.updatePartial({
+          set: { name: channelName, text: `Channel name changed to ${channelName}` }
+        });
+      }
+      if (selectedUsers?.length) {
+        const users = selectedUsers.map((user) => user);
+        await channel?.addMembers(users, { text: `Channel updated to ${channelName}` });
+      }
 
-    if (nameChanged) {
-      await channel?.update(
-        { name: channelName },
-        { text: `Channel name changed to ${channelName}` }
-      );
+      setChannelName('');
+      setIsEditing(false);
+      setSelectedUsers(undefined);
+    } catch (err) {
+      console.log(err);
     }
-
-    if (selectedUsers?.length) {
-      const users = selectedUsers.map((user) => user);
-      await channel?.addMembers(users);
-    }
-
-    setChannelName('');
-    setIsEditing(false);
-    setSelectedUsers(undefined);
   };
 
   return (

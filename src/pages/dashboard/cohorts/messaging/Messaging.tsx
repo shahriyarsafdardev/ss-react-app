@@ -93,6 +93,9 @@ export default function Messaging() {
           },
           user?.stream_token
         );
+        await client.updateAppSettings({
+          multi_tenant_enabled: true
+        });
       }
       setChatClient(client);
     };
