@@ -1,10 +1,11 @@
 import { noCase } from 'change-case';
-import { useRef, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
+import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 // material
 import {
   Box,
@@ -20,6 +21,8 @@ import {
   ListItemAvatar,
   ListItemButton
 } from '@material-ui/core';
+import useAuth from '../../hooks/useAuth';
+
 // utils
 import { fToNow } from '../../utils/formatTime';
 import mockData from '../../utils/mock-data';
@@ -157,10 +160,70 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
 }
 
 export default function NotificationsPopover() {
+  const apiKey = '4zev2wpcm6r7';
+  const { user } = useAuth();
+
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const [notifications, setNotifications] = useState<TNotificationPopover[]>([]);
+  const [totalUnRead, setTotalUnread] = useState(0);
+
+  useEffect(() => {
+    const initChat = async () => {
+      const client = StreamChat.getInstance<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        LiteralStringForUnion,
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>,
+        { image?: string }
+      >(apiKey!);
+      await client.disconnectUser();
+      await client.connectUser(
+        {
+          id: user?.stream_id,
+          name: user?.full_name,
+          image: user?.profile_picture_url
+        },
+        user?.stream_token
+      );
+      const result = await client.queryChannels(
+        { members: { $in: [user?.id] } },
+        { has_unread: -1, last_message_at: -1, updated_at: -1 }
+      );
+      const unreadMessages: { [key: string]: any } = {};
+      const channels = result
+        .filter((channel) => channel.state.unreadCount > 0)
+        .map((channel) => {
+          let key: any = '';
+          const name =
+            channel?.data?.name ||
+            Object.values(channel.state.members)
+              .filter(({ user }) => user?.id !== client.userID)
+              .map((member) => (key = member.user?.name));
+          unreadMessages[key] = channel.state.messages
+            .filter((m) => m.updated_at > channel.state.read[user?.id].last_read)
+            .map((m) => m.text);
+        });
+      Object.keys(unreadMessages).map((messages) => {
+        setTotalUnread(totalUnRead + unreadMessages[messages].length);
+        setNotifications(
+          unreadMessages[messages].map((message: any, index: any) => ({
+            id: mockData.id(index),
+            title: `New Message from ${messages}`,
+            description: message,
+            avatar: null,
+            type: 'chat_message',
+            createdAt: mockData.time(index),
+            isUnRead: true
+          }))
+        );
+      });
+      await client.disconnectUser();
+    };
+    initChat();
+  }, []);
 
   const handleOpen = () => {
     setOpen(true);
