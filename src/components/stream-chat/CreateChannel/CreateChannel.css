@@ -76,7 +76,7 @@
 }
 
 .create-channel__button-wrapper p {
-  background: var(--primary-color);
+  background: #4d4dcd;
   font-family: Helvetica Neue, sans-serif;
   font-weight: bold;
   font-size: 18px;
