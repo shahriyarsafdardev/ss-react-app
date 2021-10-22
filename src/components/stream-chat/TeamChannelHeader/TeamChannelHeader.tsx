@@ -4,7 +4,7 @@ import {
   useChannelStateContext,
   useChatContext
 } from 'stream-chat-react';
-
+import useAuth from '../../../hooks/useAuth';
 import './TeamChannelHeader.css';
 
 import { ChannelInfo, PinIcon } from '../../../assets';
@@ -26,6 +26,7 @@ type Props = {
 
 export const TeamChannelHeader: React.FC<Props> = (props) => {
   const { setIsEditing, setPinsOpen } = props;
+  const { user } = useAuth();
 
   const { client } = useChatContext<
     TeamAttachmentType,
@@ -114,7 +115,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
             tabIndex={0}
             onClick={() => setIsEditing(true)}
           >
-            <ChannelInfo />
+            {user?.type === 'admin' ? <ChannelInfo /> : null}
           </span>
         </div>
       )}

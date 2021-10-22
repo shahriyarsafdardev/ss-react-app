@@ -68,7 +68,6 @@
 
 .create-channel__button-wrapper {
   height: 82px;
-  background: #f7f6f8;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -85,4 +84,10 @@
   margin-right: 30px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .channel-name-input__wrapper input {
+    width: 90% !important;
+  }
 }

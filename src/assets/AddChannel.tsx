@@ -18,7 +18,7 @@ export const AddChannel = (
         setIsEditing(false);
       }}
     >
-      <rect width="24" height="24" rx="2" fill="#5353CE" fillOpacity="0.1" />
+      <rect width="24" height="24" rx="2" fill="#4d4dcd" fillOpacity="0.1" />
       <path
         d="M12.5775 7V17"
         stroke="#4D4DCD"

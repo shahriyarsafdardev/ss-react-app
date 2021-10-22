@@ -1,7 +1,9 @@
 import React from 'react';
+import type { ChannelListMessengerProps } from 'stream-chat-react';
+
+import useAuth from '../../../hooks/useAuth';
 
 import './TeamChannelList.css';
-import type { ChannelListMessengerProps } from 'stream-chat-react';
 
 import { AddChannel } from '../../../assets';
 
@@ -13,6 +15,7 @@ export type TeamChannelListProps = ChannelListMessengerProps & {
 };
 
 const ChannelList: React.FC<TeamChannelListProps> = (props) => {
+  const { user } = useAuth();
   const {
     children,
     error = false,
@@ -22,6 +25,22 @@ const ChannelList: React.FC<TeamChannelListProps> = (props) => {
     setIsEditing,
     type
   } = props;
+  const addChannel = () => {
+    if (type === 'team') {
+      return user?.type === 'admin' ? (
+        <AddChannel
+          {...{ setCreateType, setIsCreating, setIsEditing }}
+          type={type === 'team' ? 'team' : 'messaging'}
+        />
+      ) : null;
+    }
+    return (
+      <AddChannel
+        {...{ setCreateType, setIsCreating, setIsEditing }}
+        type={type === 'team' ? 'team' : 'messaging'}
+      />
+    );
+  };
 
   if (error) {
     return type === 'team' ? (
@@ -49,12 +68,9 @@ const ChannelList: React.FC<TeamChannelListProps> = (props) => {
         <p className="team-channel-list__header__title">
           {type === 'team' ? 'Channels' : 'Direct Messages'}
         </p>
-        <AddChannel
-          {...{ setCreateType, setIsCreating, setIsEditing }}
-          type={type === 'team' ? 'team' : 'messaging'}
-        />
+        {addChannel()}
       </div>
-      {children}
+      <div className="lists-container">{children}</div>
     </div>
   );
 };

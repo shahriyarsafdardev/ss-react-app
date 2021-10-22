@@ -1,5 +1,12 @@
 .team-channel-list {
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.lists-container {
+  max-height: 90%;
+  overflow-y: scroll;
 }
 
 .team-channel-list > p {
@@ -23,6 +30,8 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  background: #fff;
+  margin-left: 1px;
   border-top: 1px solid #e9ecef;
   border-bottom: 1px solid #e9ecef;
 }
