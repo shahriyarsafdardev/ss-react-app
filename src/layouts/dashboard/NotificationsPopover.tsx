@@ -25,7 +25,6 @@ import useAuth from '../../hooks/useAuth';
 
 // utils
 import { fToNow } from '../../utils/formatTime';
-import mockData from '../../utils/mock-data';
 // components
 import Scrollbar from '../../components/Scrollbar';
 import MenuPopover from '../../components/MenuPopover';
@@ -33,42 +32,10 @@ import { MIconButton } from '../../components/@material-extend';
 
 // ----------------------------------------------------------------------
 
-const TITLES = [
-  'Your order is placed',
-  'Sylvan King',
-  'You have new message',
-  'You have new mail',
-  'Delivery processing'
-];
-
-const DESCRIPTIONS = [
-  'waiting for shipping',
-  'answered to your comment on the Minimal',
-  '5 unread messages',
-  'sent from Guido Padberg',
-  'Your order is being shipped'
-];
-
-const TYPES = ['order_placed', 'friend_interactive', 'chat_message', 'mail', 'order_shipped'];
-
-const AVATARS = [null, null, null, null, null];
-
-const UNREADS = [true, true, false, false, false];
-
-const MOCK_NOTIFICATIONS = [...Array(5)].map((_, index) => ({
-  id: mockData.id(index),
-  title: TITLES[index],
-  description: DESCRIPTIONS[index],
-  avatar: AVATARS[index],
-  type: TYPES[index],
-  createdAt: mockData.time(index),
-  isUnRead: UNREADS[index]
-}));
-
-// ----------------------------------------------------------------------
-
 type TNotificationPopover = {
   id: string;
+  channel_id: string | null;
+  cohort_id: string | null;
   title: string;
   description: string;
   avatar: string | null;
@@ -122,7 +89,7 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
 
   return (
     <ListItemButton
-      to="#"
+      to={`cohorts/${notification.cohort_id}/messaging?channel_id=${notification.channel_id}&message=${notification.id}`}
       disableGutters
       key={notification.id}
       component={RouterLink}
@@ -191,7 +158,12 @@ export default function NotificationsPopover() {
         );
       }
       client.on((event) => {
-        if (event.total_unread_count !== null) {
+        if (
+          event.total_unread_count !== null &&
+          event.type !== 'user.watching.start' &&
+          event.type !== 'health.check'
+        ) {
+          console.log('new event', event);
           setUnread(event.total_unread_count);
         }
       });
@@ -205,30 +177,43 @@ export default function NotificationsPopover() {
       const channels = result
         .filter((channel) => channel.state.unreadCount > 0)
         .map((channel) => {
-          let key: any = '';
-          const name = Object.values(channel.state.members)
-            .filter(({ user }) => user?.id !== client.userID)
-            .map((member) => (key = member.user?.name));
-          unreadMessages[channel?.data?.name || key] = channel.state.messages
-            .filter((m) => m.updated_at > channel.state.read[user?.id].last_read)
-            .map((m) => m.text)
+          const key: any = channel.id;
+          unreadMessages[channel?.id || key] = channel.state.messages
+            .filter(
+              (m) =>
+                m?.user?.id !== user?.id && m.updated_at > channel.state.read[user?.id].last_read
+            )
+            .map((m) => ({
+              text: m.text,
+              user: m.user?.name,
+              date: m.updated_at,
+              id: m.id,
+              image: m.user?.image,
+              team: channel?.data?.team
+            }))
             .reverse();
         });
       let unread = 0;
-      Object.keys(unreadMessages).map((messages) => {
-        unread += unreadMessages[messages].length;
-        setNotifications(
-          unreadMessages[messages].map((message: any, index: any) => ({
-            id: mockData.id(index),
-            title: `New Message from ${messages}`,
-            description: message,
-            avatar: null,
-            type: 'chat_message',
-            createdAt: mockData.time(index),
-            isUnRead: true
-          }))
-        );
-      });
+      if (Object.keys(unreadMessages).length > 0) {
+        Object.keys(unreadMessages).map((channel_key) => {
+          unread += unreadMessages[channel_key].length;
+          setNotifications(
+            unreadMessages[channel_key].map((message: any, index: any) => ({
+              id: message.id,
+              channel_id: channel_key,
+              cohort_id: message.team,
+              title: `New Message from ${message.user}`,
+              description: message.text,
+              avatar: message.image,
+              type: 'chat_message',
+              createdAt: message.date,
+              isUnRead: true
+            }))
+          );
+        });
+      } else {
+        setNotifications([]);
+      }
       setTotalUnread(unread);
       setChatClient(client);
     };
@@ -316,11 +301,18 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple component={RouterLink} to="#">
-            View All
-          </Button>
-        </Box>
+        {notifications.length > 0 && (
+          <Box sx={{ p: 1 }}>
+            <Button
+              fullWidth
+              disableRipple
+              component={RouterLink}
+              to={`cohorts/${notifications[0].cohort_id}/messaging`}
+            >
+              View All
+            </Button>
+          </Box>
+        )}
       </MenuPopover>
     </>
   );

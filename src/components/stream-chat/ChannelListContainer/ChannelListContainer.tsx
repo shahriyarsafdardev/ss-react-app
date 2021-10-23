@@ -89,10 +89,18 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
         } catch (err) {
           console.log(err);
         }
+      } else if (url.get('channel_id')) {
+        try {
+          const channels = await client.queryChannels({ id: url.get('channel_id') }, {});
+          await channels[0].watch();
+          setActiveChannel(channels[0]);
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
     initChannel();
-  }, []);
+  }, [url.get('channel_id'), url.get('message'), url.get('receiver_id')]);
 
   return (
     <div className="channel-list__container">
