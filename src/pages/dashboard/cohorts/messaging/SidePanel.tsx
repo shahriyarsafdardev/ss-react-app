@@ -21,6 +21,7 @@ type SidePanelProps = {
     cohortID: string;
     cohortUsers: String[];
     sort: any;
+    loggedinUserID: string;
   };
 };
 

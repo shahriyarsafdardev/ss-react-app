@@ -55,6 +55,7 @@ export default function Messaging() {
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useAuth();
+  const loggedinUserID = user?.id;
   const cohortID = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
@@ -138,7 +139,8 @@ export default function Messaging() {
                   setIsEditing,
                   cohortID,
                   cohortUsers,
-                  sort
+                  sort,
+                  loggedinUserID
                 }}
               />
             </DesktopView>
@@ -165,7 +167,8 @@ export default function Messaging() {
                   setIsEditing,
                   cohortID,
                   cohortUsers,
-                  sort
+                  sort,
+                  loggedinUserID
                 }}
               />
             </MobileView>

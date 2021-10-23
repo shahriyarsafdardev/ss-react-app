@@ -118,6 +118,7 @@ export default function ContactUs() {
           modalHandler={modalHandler}
           modalUser={modalState}
           cohortID="testing"
+          dispalyChatLink={false}
         />
         <StyledGrid container spacing={3}>
           {contactInfoDetails.map((info, index) => (

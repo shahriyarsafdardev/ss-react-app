@@ -13,6 +13,7 @@ type StudentProfileModalProps = {
   modalHandler: Function;
   modalUser: any;
   cohortID: string;
+  dispalyChatLink: boolean;
 };
 
 const StyledContainer = styled(Box)(() => ({
@@ -70,7 +71,8 @@ export default function StudentProfileModal({
   modalState,
   modalHandler,
   modalUser,
-  cohortID
+  cohortID,
+  dispalyChatLink
 }: StudentProfileModalProps) {
   const theme = useTheme();
   const { cohortName, cohortIntake } = useContext(CohortContext);
@@ -242,7 +244,7 @@ export default function StudentProfileModal({
               </Link>
             </StyledRow>
           )}
-          {cohortID !== 'testing' && (
+          {dispalyChatLink && (
             <StyledRow>
               <img
                 alt="sketch icon"

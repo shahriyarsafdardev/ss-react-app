@@ -27,6 +27,7 @@ type Props = Omit<ChannelListProps, 'filters'> & {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   filters: ChannelFilters[];
   cohortID: string;
+  loggedinUserID: string;
   cohortUsers: any;
 };
 
@@ -55,7 +56,8 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     setIsEditing,
     cohortID,
     cohortUsers,
-    sort
+    sort,
+    loggedinUserID
   } = props;
 
   const url = new URLSearchParams(useLocation().search);
@@ -69,7 +71,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     TeamUserType
   >();
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([
-    client.userID || '',
+    loggedinUserID || client.userID || '',
     url.get('receiver_id') || ''
   ]);
 
@@ -82,7 +84,6 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
             members: selectedUsers,
             team: cohortID
           });
-          console.log('channel set');
           await newChannel.watch();
           setActiveChannel(newChannel);
         } catch (err) {
@@ -106,6 +107,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           filters={filters[0]}
           options={options}
           sort={sort}
+          setActiveChannelOnMount={false}
           List={(listProps) => (
             <TeamChannelList
               {...listProps}

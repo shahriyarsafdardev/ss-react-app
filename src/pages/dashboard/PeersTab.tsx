@@ -6,6 +6,8 @@ import {
   trackPeersPageEvent,
   PEERS_PAGE_EVENTS
 } from 'utils/amplitude';
+import useAuth from 'hooks/useAuth';
+
 // material
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -36,7 +38,7 @@ const LoadingContainer = styled(Box)(() => ({
 export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const [modalState, modalHandler] = useState({});
+  const [modalState, modalHandler] = useState<any>({});
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>([]);
@@ -44,7 +46,8 @@ export default function PeersTab() {
   const [selectedStrengths, setSelectedStrengths] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [view, setView] = useState('grid');
+  const [view, setView] = useState('card');
+  const { user } = useAuth();
 
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -188,6 +191,7 @@ export default function PeersTab() {
             modalHandler={modalHandler}
             modalUser={modalState}
             cohortID={cohort_id}
+            dispalyChatLink={modalState.id !== user?.id}
           />
           <StudentProfileFilters
             companies={companies}
