@@ -115,6 +115,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
             tabIndex={0}
             onClick={() => setIsEditing(true)}
           >
+            {/* // Show add channle option only to admin user */}
             {user?.type === 'admin' ? <ChannelInfo /> : null}
           </span>
         </div>

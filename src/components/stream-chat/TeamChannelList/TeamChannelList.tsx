@@ -68,6 +68,7 @@ const ChannelList: React.FC<TeamChannelListProps> = (props) => {
         <p className="team-channel-list__header__title">
           {type === 'team' ? 'Channels' : 'Direct Messages'}
         </p>
+        {/* // Show channle info option only to admin user */}
         {addChannel()}
       </div>
       <div className="lists-container">{children}</div>

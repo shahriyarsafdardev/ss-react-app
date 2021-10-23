@@ -201,6 +201,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = async (user: ParticipantProfile) => {
     const { user: stateUser } = state;
+    // only update the new fields, and keep old data as it is
     user = { ...stateUser, ...user };
 
     dispatch({
