@@ -74,7 +74,11 @@ function renderContent(notification: TNotificationPopover) {
   }
   if (notification.type === 'chat_message') {
     return {
-      avatar: <img alt={notification.title} src="/static/icons/ic_notification_chat.svg" />,
+      avatar: notification.avatar ? (
+        <img style={{ height: '100%' }} alt={notification.title} src={notification.avatar} />
+      ) : (
+        <img alt={notification.title} src="/static/icons/ic_notification_chat.svg" />
+      ),
       title
     };
   }
@@ -109,7 +113,7 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
         primary={title}
         secondary={
           <Typography
-            variant="caption"
+            variant="body2"
             sx={{
               mt: 0.5,
               display: 'flex',
@@ -163,7 +167,6 @@ export default function NotificationsPopover() {
           event.type !== 'user.watching.start' &&
           event.type !== 'health.check'
         ) {
-          console.log('new event', event);
           setUnread(event.total_unread_count);
         }
       });
@@ -173,44 +176,45 @@ export default function NotificationsPopover() {
           { has_unread: -1, last_message_at: -1, updated_at: -1 }
         )
       ).reverse();
-      const unreadMessages: { [key: string]: any } = {};
-      const channels = result
-        .filter((channel) => channel.state.unreadCount > 0)
-        .map((channel) => {
-          const key: any = channel.id;
-          unreadMessages[channel?.id || key] = channel.state.messages
-            .filter(
-              (m) =>
-                m?.user?.id !== user?.id && m.updated_at > channel.state.read[user?.id].last_read
-            )
-            .map((m) => ({
-              text: m.text,
-              user: m.user?.name,
-              date: m.updated_at,
-              id: m.id,
-              image: m.user?.image,
-              team: channel?.data?.team
-            }))
-            .reverse();
-        });
-      let unread = 0;
-      if (Object.keys(unreadMessages).length > 0) {
-        Object.keys(unreadMessages).map((channel_key) => {
-          unread += unreadMessages[channel_key].length;
-          setNotifications(
-            unreadMessages[channel_key].map((message: any, index: any) => ({
-              id: message.id,
-              channel_id: channel_key,
-              cohort_id: message.team,
-              title: `New Message from ${message.user}`,
-              description: message.text,
-              avatar: message.image,
-              type: 'chat_message',
-              createdAt: message.date,
-              isUnRead: true
-            }))
-          );
-        });
+      const unreadChannels = result.filter((channel) => channel.state.unreadCount > 0).reverse();
+      let messages: any = [];
+      unreadChannels.map((channel) => {
+        channel.state.messages
+          .filter(
+            (m) => m?.user?.id !== user?.id && m.updated_at > channel.state.read[user?.id].last_read
+          )
+          .map(
+            (m) =>
+              (messages = [
+                {
+                  text: m.text,
+                  user: m.user?.name,
+                  date: m.updated_at,
+                  id: m.id,
+                  image: m.user?.image,
+                  team: channel?.data?.team,
+                  channel_id: channel?.id
+                },
+                ...messages
+              ])
+          )
+          .reverse();
+      });
+      const unread = messages.length;
+      if (Object.keys(messages).length > 0) {
+        setNotifications(
+          messages.map((message: any) => ({
+            id: message.id,
+            channel_id: message.channel_id,
+            cohort_id: message.team,
+            title: `New Message from ${message.user}`,
+            description: message.text,
+            avatar: message.image,
+            type: 'chat_message',
+            createdAt: message.date,
+            isUnRead: true
+          }))
+        );
       } else {
         setNotifications([]);
       }
@@ -272,28 +276,8 @@ export default function NotificationsPopover() {
         <Divider />
 
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
-            ))}
-          </List>
-
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                Before that
-              </ListSubheader>
-            }
-          >
-            {notifications.slice(2, 5).map((notification) => (
+          <List disablePadding>
+            {notifications.slice(0, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
