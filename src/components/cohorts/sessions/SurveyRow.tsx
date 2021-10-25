@@ -29,6 +29,7 @@ type RadioButtonsProps = {
 
 type TextInputProps = {
   submitted_answer: string;
+  placeholder: string;
   onChange: any;
 };
 
@@ -73,7 +74,7 @@ const customStyles = {
     color: 'rgb(128, 128, 128)'
   })
 };
-function TextInput({ submitted_answer, onChange }: TextInputProps) {
+function TextInput({ submitted_answer, onChange, placeholder }: TextInputProps) {
   return (
     <TextField
       key="text-answer"
@@ -81,7 +82,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       fullWidth
       value={submitted_answer}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Start typing whatever comes to mind!"
+      placeholder={placeholder || 'Start typing whatever comes to mind!'}
       multiline
       rows={4}
     />
@@ -213,7 +214,13 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return <RadioButtons item={item} onChange={handleChange} submitted_answer={text} />;
     }
     if (item.question_type === ANSWER_TYPES.TEXT_INPUT) {
-      return <TextInput onChange={handleChange} submitted_answer={text} />;
+      return (
+        <TextInput
+          onChange={handleChange}
+          placeholder={item.options.placeholder}
+          submitted_answer={text}
+        />
+      );
     }
     if (item.question_type === ANSWER_TYPES.MULTI_SELECT) {
       return (
