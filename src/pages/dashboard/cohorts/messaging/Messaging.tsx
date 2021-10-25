@@ -88,7 +88,7 @@ export default function Messaging() {
         await client.disconnectUser();
         await client.connectUser(
           {
-            id: user?.stream_id,
+            id: user?.stream_id || user?.id,
             name: user?.full_name,
             image: user?.profile_picture_url
           },

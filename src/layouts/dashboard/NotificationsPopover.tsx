@@ -155,7 +155,7 @@ export default function NotificationsPopover() {
       if (!client.user) {
         await client.connectUser(
           {
-            id: user?.stream_id
+            id: user?.stream_id || user?.id
           },
           user?.stream_token
         );
