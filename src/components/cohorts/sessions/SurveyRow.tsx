@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Radio, RadioGroup, FormControlLabel, TextField, Checkbox } from '@material-ui/core';
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  TextField,
+  Checkbox,
+  Slider
+} from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
 
 // types
@@ -24,6 +31,11 @@ type TextInputProps = {
   onChange: any;
 };
 
+type SliderProps = {
+  item: SurveyContent;
+  onChange: Function;
+};
+
 const RowContainer = styled('div')(() => ({
   width: '100%',
   paddingBottom: '1.5rem',
@@ -43,7 +55,8 @@ const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
   MULTI_SELECT: 'multi-select',
-  CREATE_MULTI_SELECT: 'create-multi-select'
+  CREATE_MULTI_SELECT: 'create-multi-select',
+  SLIDER_SELECT: 'slider'
 };
 
 const customStyles = {
@@ -52,7 +65,6 @@ const customStyles = {
     color: 'rgb(128, 128, 128)'
   })
 };
-
 function TextInput({ submitted_answer, onChange }: TextInputProps) {
   return (
     <TextField
@@ -67,11 +79,23 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
     />
   );
 }
+function SliderQuestion({ item, onChange }: SliderProps) {
+  return (
+    <Slider
+      step={1}
+      valueLabelDisplay="auto"
+      max={item?.options?.max}
+      defaultValue={item?.options?.max}
+      marks={item?.options?.marks}
+      onChange={(e, newValue) => onChange(newValue)}
+    />
+  );
+}
 
 function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
   return (
     <RadioGroup aria-label="gender" name="radio-buttons-group">
-      {item?.options?.map((option, index) => (
+      {item?.options?.map((option: string, index: number) => (
         <FormControlLabel
           key={index}
           value={option}
@@ -190,6 +214,9 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
           onChange={(e: any) => onChange(e)}
         />
       );
+    }
+    if (item.question_type === ANSWER_TYPES.SLIDER_SELECT) {
+      return <SliderQuestion item={item} onChange={onChange} />;
     }
 
     return '';

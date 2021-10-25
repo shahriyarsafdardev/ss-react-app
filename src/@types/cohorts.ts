@@ -20,16 +20,24 @@ type Tag = {
   color: LabelColor;
 };
 
+type SliderOptions = {
+  max: number;
+  marks: {
+    value: number;
+    label: string;
+  }[];
+};
+
 type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 export type SurveyContent = {
   cohort_session_id?: string;
   id?: string;
   index?: 0;
   mandatory?: true;
-  options?: string[];
+  options?: any;
   question_type: string;
   title: string;
-  submitted_answer: string | null;
+  submitted_answer?: string | null;
 };
 
 export type Survey = {
