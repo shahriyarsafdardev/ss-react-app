@@ -11,8 +11,8 @@
     "interests": "string[]",
     "linkedin_url": "string",
     "strengths": "string[]",
-    "stream_id": "string[]",
-    "stream_token": "string[]",
+    "stream_id": "string",
+    "stream_token": "string",
     "full_name": "string[]"
   },
   "accessToken": "token"

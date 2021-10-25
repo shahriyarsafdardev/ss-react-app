@@ -13,17 +13,36 @@ const ICONS = {
 };
 
 const cohortsConfig = (rawCohorts: any) =>
-  rawCohorts.map((cohort: any) => ({
-    title: cohort.name,
-    path: PATH_DASHBOARD.cohorts.root(cohort.id),
-    icon: ICONS.cohorts,
-    children: [
-      { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
-      { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'discord', path: cohort.discord_directory_url, externalUrl: true },
-      { title: 'Q&A', path: cohort.questions_url, externalUrl: true },
-      { title: 'messaging', path: PATH_DASHBOARD.cohorts.messaging(cohort.id) }
-    ]
-  }));
+  rawCohorts.map((cohort: any) => {
+    const object: any = {
+      title: cohort.name,
+      path: PATH_DASHBOARD.cohorts.root(cohort.id),
+      icon: ICONS.cohorts,
+      children: [
+        { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        { title: 'peers', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
+        { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
+      ]
+    };
+    if (cohort.name === 'Building & Investing in Network Effects') {
+      object.children = [
+        ...object.children,
+        {
+          title: 'discord',
+          path: cohort.discord_directory_url,
+          externalUrl: true
+        }
+      ];
+    } else {
+      object.children = [
+        ...object.children,
+        {
+          title: 'messaging',
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id)
+        }
+      ];
+    }
+    return object;
+  });
 
 export default cohortsConfig;
