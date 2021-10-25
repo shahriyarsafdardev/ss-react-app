@@ -292,9 +292,9 @@ export default function SurveyForm({
                 </Box>
                 <br />
                 <ProgressBarContainer>
-                  <BorderLinearProgress variant="determinate" value={progress()} />
+                  <BorderLinearProgress variant="determinate" value={100} />
                   <CurrentStep>
-                    {currentQuestion + 1}/{totalQuestions}
+                    {totalQuestions}/{totalQuestions}
                   </CurrentStep>
                 </ProgressBarContainer>
                 <Box width="100%" marginBottom={2}>

@@ -102,12 +102,7 @@ export default function SessionsTab() {
                 <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
                   <SessionBoard
                     session={sessions && sessions[selectedSession]}
-                    isLastSession={
-                      !!(
-                        selectedSession &&
-                        selectedSession === sessions[sessions?.length - 1].number - 1
-                      )
-                    }
+                    isLastSession={selectedSession === sessions?.length - 1}
                   />
                 </SessionContext.Provider>
               </Grid>
