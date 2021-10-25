@@ -22,9 +22,13 @@ type Tag = {
 
 type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 export type SurveyContent = {
+  cohort_session_id?: string;
+  id?: string;
+  index?: 0;
+  mandatory?: true;
+  options?: string[];
   question_type: string;
   title: string;
-  options?: string[];
   submitted_answer: string | null;
 };
 
