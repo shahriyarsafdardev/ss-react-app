@@ -38,6 +38,7 @@ export type SurveyContent = {
   question_type: string;
   title: string;
   submitted_answer?: string | null;
+  description?: string;
 };
 
 export type Survey = {

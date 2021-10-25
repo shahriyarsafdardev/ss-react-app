@@ -14,10 +14,6 @@ import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import SurveyRow from './SurveyRow';
 
-const SubmitButton = styled(Button)(() => ({
-  padding: '10px 90px'
-}));
-
 const StyledContainer = styled(Container)(() => ({
   backgroundColor: 'white',
   borderRadius: '25px',
@@ -59,11 +55,15 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       marginTop: '10px',
       marginLeft: '0 !important'
+    },
+    '&:hover': {
+      opacity: 0.8
     }
   },
-  '&:hover': {
-    backgroundColor: '#4D4DCD',
-    opacity: 0.8
+  '&.left-btn': {
+    '&:hover': {
+      backgroundColor: 'transparent'
+    }
   },
   [theme.breakpoints.up('md')]: {
     width: '100%'
@@ -264,6 +264,7 @@ export default function SurveyForm({
               <ButtonsContainer>
                 <StyledButton
                   variant="outlined"
+                  className="left-btn"
                   disabled={currentQuestion === 0}
                   onClick={() => setCurrentQuestion(currentQuestion - 1)}
                 >
@@ -283,7 +284,7 @@ export default function SurveyForm({
               </ButtonsContainer>
             </QuestionContainer>
           ) : (
-            <StyledContainer>
+            <Box>
               <QuestionContainer>
                 <br />
                 <Box width="100%" marginBottom={2}>
@@ -333,7 +334,7 @@ export default function SurveyForm({
                   </CloseButton>
                 </ButtonsContainer>
               </QuestionContainer>
-            </StyledContainer>
+            </Box>
           )}
         </div>
       ) : (

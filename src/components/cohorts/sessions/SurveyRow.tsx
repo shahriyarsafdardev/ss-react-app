@@ -7,7 +7,8 @@ import {
   FormControlLabel,
   TextField,
   Checkbox,
-  Slider
+  Slider,
+  Box
 } from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
 
@@ -49,6 +50,13 @@ const QuestionText = styled('p')(() => ({
   fontFamily: 'Public Sans',
   fontStyle: 'normal',
   color: '#071A33'
+}));
+
+const QuestionDescription = styled(Box)(() => ({
+  color: '#637381',
+  padding: '20px 0',
+  fontSize: '15px',
+  lineHeight: '18px'
 }));
 
 const ANSWER_TYPES = {
@@ -231,6 +239,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
   return (
     <RowContainer>
       <QuestionText>{item.title}</QuestionText>
+      {item.description && <QuestionDescription>{item.description}</QuestionDescription>}
       <br />
       {answerFields()}
     </RowContainer>
