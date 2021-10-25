@@ -99,6 +99,7 @@ function SliderQuestion({ item, onChange }: SliderProps) {
     <Slider
       step={1}
       valueLabelDisplay="auto"
+      min={1}
       max={item?.options?.max}
       defaultValue={item?.options?.max}
       marks={item?.options?.marks}

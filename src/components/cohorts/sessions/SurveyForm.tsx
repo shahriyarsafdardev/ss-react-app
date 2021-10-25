@@ -117,8 +117,8 @@ const Title = styled('p')(({ theme }) => ({
 
 const Content = styled('p')(({ theme }) => ({
   fontWeight: 'normal',
-  minHeight: '50px',
-  fontSize: '1.2rem',
+  paddingTop: '15px',
+  fontSize: '1rem',
   [theme.breakpoints.down('md')]: {
     fontSize: '1rem'
   }
@@ -126,9 +126,8 @@ const Content = styled('p')(({ theme }) => ({
 
 const LinksContent = styled('p')(({ theme }) => ({
   fontWeight: 'normal',
-  marginTop: '20px',
-  minHeight: '50px',
-  fontSize: '1.2rem',
+  marginTop: '15px',
+  fontSize: '1rem',
   [theme.breakpoints.down('md')]: {
     fontSize: '1rem'
   }
@@ -303,7 +302,7 @@ export default function SurveyForm({
                     🎉 Thank you for your feedback and participation, it has been an absolute
                     pleasure having you in the cohort!
                   </Title>
-                  <Content>
+                  {/* <Content>
                     Don’t worry, this is not the end, you will still be able to access your session
                     materials and peers at any time by logging in to the Student Portal. The Discord
                     server will also remain open, we encourage you to keep in touch with the
@@ -312,15 +311,19 @@ export default function SurveyForm({
                   </Content>
                   <LinksContent>
                     Follow us on{' '}
-                    <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
+                    <a href="https://twitter.com/scholar_site" target="_blank" rel="noreferrer">
                       Twitter
                     </a>{' '}
                     and{' '}
-                    <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+                    <a
+                      href="https://www.linkedin.com/school/scholarsite/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       LinkedIn
                     </a>{' '}
                     to stay up to date with upcoming ScholarSite cohorts and news!
-                  </LinksContent>
+                  </LinksContent> */}
                 </Box>
                 <ButtonsContainer>
                   <CloseButton
