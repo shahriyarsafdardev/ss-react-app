@@ -80,6 +80,12 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
   );
 }
 function SliderQuestion({ item, onChange }: SliderProps) {
+  const [value, setValue] = useState(item.options.max);
+
+  useEffect(() => {
+    onChange(value);
+  }, [value]);
+
   return (
     <Slider
       step={1}
@@ -87,7 +93,7 @@ function SliderQuestion({ item, onChange }: SliderProps) {
       max={item?.options?.max}
       defaultValue={item?.options?.max}
       marks={item?.options?.marks}
-      onChange={(e, newValue) => onChange(newValue)}
+      onChange={(e, newValue) => setValue(newValue)}
     />
   );
 }

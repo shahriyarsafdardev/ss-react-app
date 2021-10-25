@@ -93,7 +93,7 @@ function NavItem({
   const { pathname } = location;
   const { title, path, icon, info, children } = item;
   const isActiveRoot = pathname.includes(path);
-  console.log(location);
+
   const [open, setOpen] = useState(isActiveRoot);
 
   useEffect(() => {
