@@ -102,6 +102,14 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     initChannel();
   }, [url.get('channel_id'), url.get('message'), url.get('receiver_id')]);
 
+  const duplicateChat = (channel: any) => {
+    if (channel?.data?.member_count === 2) {
+      const userIDs = Object.values(channel.state.members).map((member: any) => member?.user_id);
+      return cohortUsers.includes(userIDs[0]) || cohortUsers.includes(userIDs[1]);
+    }
+    return false;
+  };
+
   return (
     <div className="channel-list__container">
       {/* <SideBar /> */}
@@ -134,7 +142,9 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
         <ChannelList
           channelRenderFilterFn={(channels) =>
             channels.filter(
-              (channel) => channel.type === 'messaging' && channel.data?.team === cohortID
+              (channel) =>
+                channel.type === 'messaging' &&
+                (channel.data?.team === cohortID || duplicateChat(channel))
             )
           }
           filters={filters[1]}

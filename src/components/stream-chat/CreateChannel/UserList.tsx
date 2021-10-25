@@ -105,7 +105,7 @@ export const UserList: React.FC<Props> = (props) => {
 
       try {
         let newMembers = cohortUsers;
-        if (showMembers) {
+        if (showMembers && channel) {
           const joinedUsers = await channel?.queryMembers({});
           const joinedMembers = joinedUsers?.members.map((member) => member.user);
           setMembers(joinedMembers);
@@ -120,7 +120,6 @@ export const UserList: React.FC<Props> = (props) => {
         }
         if (response.users.length) {
           setUsers(response.users);
-          console.log('got members', response.users);
         } else {
           setListEmpty(true);
         }

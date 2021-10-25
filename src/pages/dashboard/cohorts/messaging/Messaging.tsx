@@ -63,8 +63,8 @@ export default function Messaging() {
   const cohortUsers = cohort?.enrollments || [];
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
   const filters: ChannelFilters[] = [
-    { type: 'team', members: { $in: [user?.stream_id] }, team: cohortID },
-    { type: 'messaging', members: { $in: [user?.stream_id] }, team: cohortID }
+    { type: 'team', members: { $in: [user?.stream_id] } },
+    { type: 'messaging', members: { $in: [user?.stream_id] } }
   ];
 
   const LoadingContainer = styled(Box)(() => ({
