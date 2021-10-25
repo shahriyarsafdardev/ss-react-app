@@ -117,7 +117,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       {createType === 'team' && <ChannelNameInput {...{ channelName, setChannelName }} />}
-      <UserList {...{ filters, setSelectedUsers, cohortUsers }} />
+      <UserList showMembers={false} {...{ filters, setSelectedUsers, cohortUsers }} />
       <div
         className="create-channel__button-wrapper"
         role="button"

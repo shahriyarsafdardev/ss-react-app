@@ -35,7 +35,7 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
     <div className="channel-name-input__wrapper">
       <p>Name</p>
       <input onChange={handleChange} placeholder="channel-name" type="text" value={channelName} />
-      <p>Add Members</p>
+      <p>Channel Members</p>
     </div>
   );
 };
@@ -94,7 +94,7 @@ export const EditChannel: React.FC<Props> = (props) => {
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, cohortUsers, setSelectedUsers }} />
+      <UserList showMembers={true} {...{ filters, cohortUsers, setSelectedUsers }} />
       <div
         className="edit-channel__button-wrapper"
         role="button"

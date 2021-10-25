@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
-
+import useAuth from 'hooks/useAuth';
 import './UserList.css';
-import type { ChannelFilters, UserResponse } from 'stream-chat';
+import moment from 'moment';
+import type { ChannelFilters, ChannelMemberResponse, UserResponse } from 'stream-chat';
 
 import { InviteIcon } from '../../../assets';
 
@@ -35,29 +36,13 @@ type ItemProps = {
   index: number;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   user: UserResponse<TeamUserType>;
+  member: boolean;
 };
 
 const UserItem: React.FC<ItemProps> = (props) => {
-  const { index, setSelectedUsers, user } = props;
+  const { index, setSelectedUsers, user, member } = props;
 
   const [selected, setSelected] = useState(false);
-
-  const getLastActive = (i: number) => {
-    switch (i) {
-      case 0:
-        return '12 min ago';
-      case 1:
-        return '27 min ago';
-      case 2:
-        return '6 hours ago';
-      case 3:
-        return '14 hours ago';
-      case 4:
-        return 'Yesterday';
-      default:
-        return 'Yesterday';
-    }
-  };
 
   const handleClick = () => {
     if (selected) {
@@ -80,8 +65,8 @@ const UserItem: React.FC<ItemProps> = (props) => {
         <Avatar image={user.image} name={user.name || user.id} size={32} />
         <p className="user-item__name">{user.name || user.id}</p>
       </div>
-      <p className="user-item__last-active">{getLastActive(index)}</p>
-      {selected ? <InviteIcon /> : <div className="user-item__invite-empty" />}
+      <p className="user-item__last-active">{moment(user.last_active).fromNow()}</p>
+      {!member && (selected ? <InviteIcon /> : <div className="user-item__invite-empty" />)}
     </div>
   );
 };
@@ -90,12 +75,13 @@ type Props = {
   filters: ChannelFilters[];
   cohortUsers: any;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  showMembers: boolean;
 };
 
 export const UserList: React.FC<Props> = (props) => {
-  const { filters, setSelectedUsers, cohortUsers } = props;
+  const { filters, setSelectedUsers, cohortUsers, showMembers } = props;
 
-  const { client } = useChatContext<
+  const { client, channel } = useChatContext<
     TeamAttachmentType,
     TeamChannelType,
     TeamCommandType,
@@ -105,10 +91,12 @@ export const UserList: React.FC<Props> = (props) => {
     TeamUserType
   >();
 
+  const { user } = useAuth();
   const [error, setError] = useState(false);
   const [listEmpty, setListEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserResponse<TeamUserType>[] | undefined>();
+  const [members, setMembers] = useState<any>();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -116,14 +104,23 @@ export const UserList: React.FC<Props> = (props) => {
       setLoading(true);
 
       try {
+        let newMembers = cohortUsers;
+        if (showMembers) {
+          const joinedUsers = await channel?.queryMembers({});
+          const joinedMembers = joinedUsers?.members.map((member) => member.user);
+          setMembers(joinedMembers);
+          const memberIDs = joinedMembers?.map((member) => member?.id);
+          newMembers = cohortUsers.filter((u: any) => !memberIDs?.includes(u));
+        }
         let response;
         if (cohortUsers.length === 0) {
           response = { users: [], duration: '1.12ms' };
         } else {
-          response = await client.queryUsers({ id: { $in: cohortUsers } });
+          response = await client.queryUsers({ id: { $in: newMembers } });
         }
         if (response.users.length) {
           setUsers(response.users);
+          console.log('got members', response.users);
         } else {
           setListEmpty(true);
         }
@@ -154,15 +151,47 @@ export const UserList: React.FC<Props> = (props) => {
   }
 
   return (
-    <ListContainer>
-      {loading ? (
-        <div className="user-list__message">Loading users...</div>
-      ) : (
-        users?.length &&
-        users.map((user, i) => (
-          <UserItem index={i} key={user.id} setSelectedUsers={setSelectedUsers} user={user} />
-        ))
+    <>
+      {showMembers && (
+        <>
+          <ListContainer>
+            {loading ? (
+              <div className="user-list__message">Loading users...</div>
+            ) : (
+              members?.length &&
+              members.map((member: any, i: number) => (
+                <UserItem
+                  index={i}
+                  key={member.id}
+                  setSelectedUsers={setSelectedUsers}
+                  member={true}
+                  user={member}
+                />
+              ))
+            )}
+          </ListContainer>
+
+          <div className="channel-name-input__wrapper">
+            <p>Add Members</p>
+          </div>
+        </>
       )}
-    </ListContainer>
+      <ListContainer>
+        {loading ? (
+          <div className="user-list__message">Loading users...</div>
+        ) : (
+          users?.length &&
+          users.map((user, i) => (
+            <UserItem
+              index={i}
+              key={user.id}
+              setSelectedUsers={setSelectedUsers}
+              member={false}
+              user={user}
+            />
+          ))
+        )}
+      </ListContainer>
+    </>
   );
 };
