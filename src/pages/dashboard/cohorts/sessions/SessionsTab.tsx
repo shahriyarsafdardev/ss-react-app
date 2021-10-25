@@ -89,7 +89,6 @@ export default function SessionsTab() {
         setHasOnboarded(payload);
       });
   }, [cohort_id, dispatch]);
-
   return (
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
@@ -101,7 +100,15 @@ export default function SessionsTab() {
             <SessionsInnerContainer container>
               <Grid item md={8} sm={12}>
                 <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                  <SessionBoard session={sessions && sessions[selectedSession]} />
+                  <SessionBoard
+                    session={sessions && sessions[selectedSession]}
+                    isLastSession={
+                      !!(
+                        selectedSession &&
+                        selectedSession === sessions[sessions?.length - 1].number - 1
+                      )
+                    }
+                  />
                 </SessionContext.Provider>
               </Grid>
               <SessionListDesktopContainer item md={4}>

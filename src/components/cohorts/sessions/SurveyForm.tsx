@@ -70,6 +70,18 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
+const CloseButton = styled(Button)(({ theme }) => ({
+  padding: 11,
+  fontcolor: 'white',
+  display: 'flex',
+  width: '200px',
+  alignItems: 'center',
+  justifyContent: 'center',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
 const ButtonsContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   display: 'flex',
@@ -94,6 +106,34 @@ const SessionTitle = styled('span')(({ theme }) => ({
   }
 }));
 
+const Title = styled('p')(({ theme }) => ({
+  fontWeight: 'bolder',
+  minHeight: '50px',
+  fontSize: '1.2rem',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '1rem'
+  }
+}));
+
+const Content = styled('p')(({ theme }) => ({
+  fontWeight: 'normal',
+  minHeight: '50px',
+  fontSize: '1.2rem',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '1rem'
+  }
+}));
+
+const LinksContent = styled('p')(({ theme }) => ({
+  fontWeight: 'normal',
+  marginTop: '20px',
+  minHeight: '50px',
+  fontSize: '1.2rem',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '1rem'
+  }
+}));
+
 const SessionNumber = styled('span')(({ theme }) => ({
   fontWeight: 400,
   minHeight: '50px',
@@ -108,12 +148,14 @@ export default function SurveyForm({
   sessionId,
   onComplete,
   sessionName,
-  session
+  session,
+  isLastSession
 }: {
   sessionId: string | undefined;
   onComplete: Function;
   sessionName: string | undefined;
   session: Session | undefined;
+  isLastSession: boolean;
 }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -123,6 +165,7 @@ export default function SurveyForm({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const totalQuestions = surveyData.length;
   const [questionID, setQuestionID] = useState('');
+  const [showLastPage, setLastPage] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -145,8 +188,16 @@ export default function SurveyForm({
     setResponse(newResponses);
   };
 
+  const onSuccessfullResponse = (message: string) => {
+    setLoading(false);
+    enqueueSnackbar(message, { variant: 'success' });
+    onComplete();
+  };
+
   const submitResponse = () => {
-    setLoading(true);
+    if (!isLastSession) {
+      setLoading(true);
+    }
 
     axios
       .post(`/cohort_sessions/submit_survey_responses.json`, {
@@ -154,9 +205,11 @@ export default function SurveyForm({
         current_user_id: user?.id
       })
       .then((res) => {
-        setLoading(false);
-        enqueueSnackbar(res.data.message, { variant: 'success' });
-        onComplete();
+        if (isLastSession) {
+          setLastPage(true);
+        } else {
+          onSuccessfullResponse(res.data.message);
+        }
       })
       .catch((err) => {
         setLoading(false);
@@ -183,49 +236,106 @@ export default function SurveyForm({
   return (
     <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
-        <QuestionContainer key={questionID}>
-          <br />
-          <Box width="100%" marginBottom={2}>
-            <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
-            <SessionTitle>Feedback Survey</SessionTitle>
-          </Box>
-          <br />
-          <ProgressBarContainer>
-            <BorderLinearProgress variant="determinate" value={progress()} />
-            <CurrentStep>
-              {currentQuestion + 1}/{totalQuestions}
-            </CurrentStep>
-          </ProgressBarContainer>
-          {surveyData[currentQuestion] && (
-            <SurveyRow
-              item={surveyData[currentQuestion]}
-              submitted_answer={response[questionID]}
-              onChange={(answer: string) => {
-                setQuestionResponse(answer, questionID);
-              }}
-            />
-          )}
+        <div>
+          {!showLastPage ? (
+            <QuestionContainer key={questionID}>
+              <br />
+              <Box width="100%" marginBottom={2}>
+                <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
+                <SessionTitle>Feedback Survey</SessionTitle>
+              </Box>
+              <br />
+              <ProgressBarContainer>
+                <BorderLinearProgress variant="determinate" value={progress()} />
+                <CurrentStep>
+                  {currentQuestion + 1}/{totalQuestions}
+                </CurrentStep>
+              </ProgressBarContainer>
+              {surveyData[currentQuestion] && (
+                <SurveyRow
+                  item={surveyData[currentQuestion]}
+                  submitted_answer={response[questionID]}
+                  onChange={(answer: string) => {
+                    setQuestionResponse(answer, questionID);
+                  }}
+                />
+              )}
 
-          <ButtonsContainer>
-            <StyledButton
-              variant="outlined"
-              disabled={currentQuestion === 0}
-              onClick={() => setCurrentQuestion(currentQuestion - 1)}
-            >
-              Previous Question
-            </StyledButton>
-            <StyledButton
-              variant="contained"
-              className="right-btn"
-              onClick={handleNext}
-              disabled={
-                surveyData[currentQuestion].mandatory === true && response[questionID] === undefined
-              }
-            >
-              {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
-            </StyledButton>
-          </ButtonsContainer>
-        </QuestionContainer>
+              <ButtonsContainer>
+                <StyledButton
+                  variant="outlined"
+                  disabled={currentQuestion === 0}
+                  onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                >
+                  Previous Question
+                </StyledButton>
+                <StyledButton
+                  variant="contained"
+                  className="right-btn"
+                  onClick={handleNext}
+                  disabled={
+                    surveyData[currentQuestion].mandatory === true &&
+                    response[questionID] === undefined
+                  }
+                >
+                  {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
+                </StyledButton>
+              </ButtonsContainer>
+            </QuestionContainer>
+          ) : (
+            <StyledContainer>
+              <QuestionContainer>
+                <br />
+                <Box width="100%" marginBottom={2}>
+                  <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
+                  <SessionTitle>Feedback Survey</SessionTitle>
+                </Box>
+                <br />
+                <ProgressBarContainer>
+                  <BorderLinearProgress variant="determinate" value={progress()} />
+                  <CurrentStep>
+                    {currentQuestion + 1}/{totalQuestions}
+                  </CurrentStep>
+                </ProgressBarContainer>
+                <Box width="100%" marginBottom={2}>
+                  <Title>
+                    🎉 Thank you for your feedback and participation, it has been an absolute
+                    pleasure having you in the cohort!
+                  </Title>
+                  <Content>
+                    Don’t worry, this is not the end, you will still be able to access your session
+                    materials and peers at any time by logging in to the Student Portal. The Discord
+                    server will also remain open, we encourage you to keep in touch with the
+                    community! You will also recieve your certificate of completion via email within
+                    the next 24 hours.
+                  </Content>
+                  <LinksContent>
+                    Follow us on{' '}
+                    <a href="https://www.twitter.com" target="_blank" rel="noreferrer">
+                      Twitter
+                    </a>{' '}
+                    and{' '}
+                    <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+                      LinkedIn
+                    </a>{' '}
+                    to stay up to date with upcoming ScholarSite cohorts and news!
+                  </LinksContent>
+                </Box>
+                <ButtonsContainer>
+                  <CloseButton
+                    variant="contained"
+                    onClick={() => {
+                      onSuccessfullResponse('Thank you for submitting your feedback');
+                      setLoading(true);
+                    }}
+                  >
+                    Close
+                  </CloseButton>
+                </ButtonsContainer>
+              </QuestionContainer>
+            </StyledContainer>
+          )}
+        </div>
       ) : (
         <Box padding="200px">
           <LoadingScreen />

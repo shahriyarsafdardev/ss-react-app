@@ -17,6 +17,7 @@ import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
 
 type SessionBoardProps = {
   session: Session | undefined;
+  isLastSession: boolean;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -144,7 +145,7 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session }: SessionBoardProps) {
+export default function SessionBoard({ session, isLastSession }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();
@@ -169,6 +170,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         sessionId={session?.id}
         sessionName={session?.name}
         session={session}
+        isLastSession={isLastSession}
       />
     </Modal>
   );
