@@ -16,7 +16,7 @@ import useAuth from '../../../../hooks/useAuth';
 import Page from '../../../../components/Page';
 import 'stream-chat-react/dist/css/index.css';
 
-const apiKey = '4zev2wpcm6r7';
+const apiKey = '9krkq4ck7jwp';
 
 const i18nInstance = new Streami18n({
   language: 'en',

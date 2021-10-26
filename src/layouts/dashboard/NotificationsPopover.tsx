@@ -130,7 +130,7 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
 }
 
 export default function NotificationsPopover() {
-  const apiKey = '4zev2wpcm6r7';
+  const apiKey = '9krkq4ck7jwp';
   const { user } = useAuth();
   const [unread, setUnread] = useState<number | undefined>(0);
   const [chatClient, setChatClient] = useState<any>(null);
