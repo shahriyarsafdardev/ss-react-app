@@ -60,7 +60,6 @@ export default function Messaging() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
-  const cohortUsers = cohort?.enrollments || [];
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
   const filters: ChannelFilters[] = [
     { type: 'team', members: { $in: [user?.stream_id] } },
@@ -138,7 +137,7 @@ export default function Messaging() {
                   setIsCreating,
                   setIsEditing,
                   cohortID,
-                  cohortUsers,
+                  cohortUsers: cohort?.enrollments || [],
                   sort,
                   loggedinUserID
                 }}
@@ -153,7 +152,7 @@ export default function Messaging() {
                 setIsCreating,
                 setIsEditing,
                 cohortID,
-                cohortUsers
+                cohortUsers: cohort?.enrollments || []
               }}
             />
             <MobileView>
@@ -166,7 +165,7 @@ export default function Messaging() {
                   setIsCreating,
                   setIsEditing,
                   cohortID,
-                  cohortUsers,
+                  cohortUsers: cohort?.enrollments || [],
                   sort,
                   loggedinUserID
                 }}

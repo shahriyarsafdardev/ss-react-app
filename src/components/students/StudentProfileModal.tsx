@@ -204,7 +204,7 @@ export default function StudentProfileModal({
       {(linkedin_url || discord_url) && (
         <StyledContainer>
           <Title>Socials</Title>
-          {discord_url && (
+          {discord_url && !dispalyChatLink && (
             <StyledRow>
               <img
                 alt="sketch icon"

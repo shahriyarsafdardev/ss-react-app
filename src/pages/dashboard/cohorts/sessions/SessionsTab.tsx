@@ -56,6 +56,9 @@ export default function SessionsTab() {
   const { sessions } = cohort || {};
   let trimmedSessionData: SessionListItem[] = [];
 
+  console.log('cohort', cohort);
+  console.log('sessions', sessions);
+
   if (sessions && sessions.length) {
     trimmedSessionData = sessions.map((session) => ({
       id: session.id,
