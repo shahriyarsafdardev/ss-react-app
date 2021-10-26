@@ -46,7 +46,7 @@ export default function PeersTab() {
   const [selectedStrengths, setSelectedStrengths] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [view, setView] = useState('card');
+  const [view, setView] = useState('grid');
   const { user } = useAuth();
 
   const cohort = useSelector(
@@ -194,7 +194,7 @@ export default function PeersTab() {
             modalUser={modalState}
             cohortID={cohort_id}
             dispalyChatLink={
-              modalState.id !== user?.id && cohort_id == 'c46fa46a-afe5-4175-adf0-65ba653cf5c8'
+              modalState.id !== user?.id && cohort_id === 'c46fa46a-afe5-4175-adf0-65ba653cf5c8'
             }
           />
           <StudentProfileFilters
@@ -210,7 +210,7 @@ export default function PeersTab() {
             setView={setView}
             view={view}
           />
-          {view === 'card' ? showCardView() : showTableView()}
+          {view === 'grid' ? showCardView() : showTableView()}
         </Container>
       ) : (
         <LoadingContainer>
