@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
+import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { setAmplitudeUserId } from 'utils/amplitude';
 import axios from '../utils/axios';
 import { ParticipantProfile } from '../@types/user';
@@ -95,6 +96,17 @@ const AuthContext = createContext<JWTContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
+  const apiKey = '9krkq4ck7jwp';
+
+  const client = StreamChat.getInstance<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    LiteralStringForUnion,
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>,
+    { image?: string }
+  >(apiKey!);
 
   useEffect(() => {
     const initialize = async () => {
@@ -106,6 +118,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
           const response = await axios.get('/users/my_account');
           const { user } = response.data;
+          connectStream(user);
 
           dispatch({
             type: Types.Initial,
@@ -138,6 +151,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
     initialize();
   }, []);
 
+  const connectStream = async (user: any) => {
+    if (client.user) {
+      await client.disconnectUser();
+    }
+    await client.connectUser(
+      {
+        id: user?.stream_id || user?.id
+      },
+      user?.stream_token
+    );
+  };
+
   const login = async (email: string, password: string) => {
     const response = await axios.post(`/users/login`, {
       email,
@@ -147,7 +172,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const { accessToken, user } = response.data;
 
     setAmplitudeUserId(user.id);
-
+    connectStream(user);
     setSession(accessToken);
     dispatch({
       type: Types.Login,
@@ -178,6 +203,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setSession(null);
     dispatch({ type: Types.Logout });
+    if (client.user) {
+      await client.disconnectUser();
+    }
   };
 
   const resetPassword = async (email: string) => {
