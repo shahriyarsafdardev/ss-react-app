@@ -19,6 +19,7 @@ export { default as PlanPremiumIcon } from './icon_plan_premium';
 export { AddChannel } from './AddChannel';
 export { BoldIcon } from './BoldIcon';
 export { ChannelInfo } from './ChannelInfo';
+export { ChannelDelete } from './ChannelDelete';
 export { CloseCreateChannel } from './CloseCreateChannel';
 export { CloseThreadIcon } from './CloseThreadIcon';
 export { CodeSnippet } from './CodeSnippet';
