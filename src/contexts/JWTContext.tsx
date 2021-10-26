@@ -96,7 +96,7 @@ const AuthContext = createContext<JWTContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
-  const apiKey = '9krkq4ck7jwp';
+  const apiKey = '4zev2wpcm6r7';
 
   const client = StreamChat.getInstance<
     Record<string, unknown>,
