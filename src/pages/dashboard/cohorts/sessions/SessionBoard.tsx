@@ -258,6 +258,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             controls
             controlsList="nodownload"
             autoPlay={false}
+            data-testid="session-video-url"
           />
         ) : (
           <VideoPlaceHolder sessionTimeValue={session.time} />

@@ -11,9 +11,11 @@ Cypress.Commands.add('login', () => {
     '@sessionData'
   ).as('sessions');
   cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
-  cy.route('GET', `${serverUrl}/cohorts/onboarding_complete.json`, '@onboardingData').as(
-    'onboarding_complete'
-  );
+  cy.route(
+    'GET',
+    `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding_complete.json`,
+    '@onboardingData'
+  ).as('onboarding_complete');
 
   cy.visit('/');
   const email = 'aqibmaqqbool@gmail.com';

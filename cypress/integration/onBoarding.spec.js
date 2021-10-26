@@ -40,9 +40,11 @@ describe('Onboarding Flow', () => {
       '@sessionData'
     ).as('sessions');
     cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
-    cy.route('GET', `${serverUrl}/cohorts/onboarding_complete.json`, '@onboardingData').as(
-      'onboarding_complete'
-    );
+    cy.route(
+      'GET',
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding_complete.json`,
+      '@onboardingData'
+    ).as('onboarding_complete');
     cy.route(
       'GET',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=8864c717-587d-472a-929a-8e5f298024da-1`,
@@ -210,22 +212,12 @@ describe('Onboarding Flow', () => {
   });
 
   it('Sends message to backend when next is clicked', () => {
+    cy.server();
+    cy.fixture('FieldsData/selectFieldsData.json').as('fieldsData');
+    cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
+      'select_fields_data'
+    );
     assertStepCompleted(5, ['Economics', 'Hiring']);
-  });
-
-  it('Displays Page 7', () => {
-    cy.get('[data-testid=onboard-title]').should(
-      'have.text',
-      'Next, make sure you join the Discord server so you can interact with the cohort!'
-    );
-    cy.get('[data-testid=discord-description]').should(
-      'have.text',
-      'All cohort communication will be done through the Discord platform. Please join the BINFX server by clicking the button below.'
-    );
-    cy.get('[data-testid=discord-img]')
-      .should('have.attr', 'src')
-      .and('equal', '/static/cohorts-home/workplace.svg');
-    cy.get('[data-testid=discord-button]').should('have.text', 'Join Discord Server');
   });
 
   it('Sends message to backend when next is clicked', () => {
@@ -234,7 +226,6 @@ describe('Onboarding Flow', () => {
     cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldsData').as(
       'select_fields_data'
     );
-    assertStepCompleted(6);
   });
 
   it('Displays Page 7', () => {
@@ -245,42 +236,24 @@ describe('Onboarding Flow', () => {
   it('Submits the form', () => {
     cy.server();
     cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
-    cy.fixture('onboarding/homeOnComplete.json').as('homeOnComplete');
     cy.route(
       'POST',
       `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/save_user_profile.json`,
       '@saveProfile'
     ).as('save_user_profile');
-    cy.route(
-      'GET',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0`,
-      '@homeOnComplete'
-    ).as('homeOncompleteData');
     cy.get('[data-testid=btn-submit]').click();
-    cy.wait('@homeOncompleteData').then(({ response }) => {
-      expect(response.body.cohort_id).to.eq('9550cc85-305a-438c-a115-e791a16c91f0');
-      expect(response.body.cohort_title).to.eq('The Economics of Digital Platforms');
-      expect(response.body.enrollment_id).to.eq('f1b1b3f1-afad-4aec-8a4f-240698ac246c');
-      expect(response.body.setup_completed).to.eq(true);
-      expect(response.body.intro_video_url).to.eq(
-        'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4'
-      );
-      expect(response.body.discord_invitation_link).to.eq('https://discord.com/');
-      expect(response.body.last_recorded_step).to.eq(0);
-      expect(response.body.participant_profile.first_name).to.eq('Aqib');
-      expect(response.body.participant_profile.last_name).to.eq('Maqbool');
-      expect(response.body.participant_profile.email).to.eq('aqibmaqqbool@gmail.com');
-      expect(response.body.participant_profile.linkedin_url).to.eq(
-        'https://linkedin.com/aqibmaqqbool_react_dev'
-      );
-      expect(response.body.participant_profile.discord_url).to.eq('Test url');
-      expect(response.body.participant_profile.current_position).to.eq('Economist');
-      expect(response.body.participant_profile.current_company).to.eq('Adobe');
-      expect(response.body.participant_profile.profile_image_url).to.eq(
+    cy.wait('@save_user_profile').then(({ response }) => {
+      expect(response.body.first_name).to.eq('Aqib');
+      expect(response.body.last_name).to.eq('Maqbool');
+      expect(response.body.linkedin_url).to.eq('https://linkedin.com/aqibmaqqbool_react_dev');
+      expect(response.body.discord_url).to.eq('https://linkedin.com/aqibmaqqbool_react_dev');
+      expect(response.body.current_position).to.eq('Economist');
+      expect(response.body.current_company).to.eq('Adobe');
+      expect(response.body.profile_image_url).to.eq(
         'https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71'
       );
-      expect(response.body.participant_profile.interests).to.deep.eq(['Grow my network']);
-      expect(response.body.participant_profile.strengths).to.deep.eq(['Economics', 'Hiring']);
+      expect(response.body.interests).to.deep.eq(['Grow my network']);
+      expect(response.body.strengths).to.deep.eq(['Economics', 'Hiring']);
     });
   });
 });
