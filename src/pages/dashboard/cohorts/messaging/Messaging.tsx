@@ -84,7 +84,6 @@ export default function Messaging() {
         TeamUserType
       >(apiKey!);
       if (!client.user) {
-        await client.disconnectUser();
         await client.connectUser(
           {
             id: user?.stream_id || user?.id,
@@ -93,9 +92,6 @@ export default function Messaging() {
           },
           user?.stream_token
         );
-        await client.updateAppSettings({
-          multi_tenant_enabled: true
-        });
       }
       setChatClient(client);
     };

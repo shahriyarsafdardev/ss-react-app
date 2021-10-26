@@ -113,7 +113,7 @@ export const UserList: React.FC<Props> = (props) => {
           newMembers = cohortUsers.filter((u: any) => !memberIDs?.includes(u));
         }
         let response;
-        if (cohortUsers.length === 0) {
+        if (newMembers.length === 0) {
           response = { users: [], duration: '1.12ms' };
         } else {
           response = await client.queryUsers({ id: { $in: newMembers } });

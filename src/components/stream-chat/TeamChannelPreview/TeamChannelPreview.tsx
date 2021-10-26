@@ -36,7 +36,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
   const [unreadCount, setUnread] = useState(channel.countUnread());
 
   useEffect(() => {
-    channel.on((event) => {
+    channel?.on((event) => {
       if (event.total_unread_count !== null) {
         setUnread(channel.countUnread());
       }
