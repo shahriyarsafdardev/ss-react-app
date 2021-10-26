@@ -65,7 +65,9 @@ const UserItem: React.FC<ItemProps> = (props) => {
         <Avatar image={user.image} name={user.name || user.id} size={32} />
         <p className="user-item__name">{user.name || user.id}</p>
       </div>
-      <p className="user-item__last-active">{moment(user.last_active).fromNow()}</p>
+      <p className="user-item__last-active">
+        {user.last_active && moment(user.last_active).fromNow()}
+      </p>
       {!member && (selected ? <InviteIcon /> : <div className="user-item__invite-empty" />)}
     </div>
   );
