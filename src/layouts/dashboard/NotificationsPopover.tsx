@@ -105,7 +105,7 @@ function NotificationItem({ notification }: { notification: TNotificationPopover
         })
       }}
     >
-      <ListItemAvatar>
+      <ListItemAvatar style={{ minWidth: '40px', width: '40px' }}>
         <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
       </ListItemAvatar>
       <ListItemText
