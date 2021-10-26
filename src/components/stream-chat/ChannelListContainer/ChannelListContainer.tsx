@@ -125,7 +125,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           filters={filters[0]}
           options={options}
           sort={sort}
-          setActiveChannelOnMount={false}
+          setActiveChannelOnMount={true}
           List={(listProps) => (
             <TeamChannelList
               {...listProps}

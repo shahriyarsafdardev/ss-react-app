@@ -4,10 +4,11 @@ import {
   useChannelStateContext,
   useChatContext
 } from 'stream-chat-react';
+import { useSnackbar } from 'notistack5';
 import useAuth from '../../../hooks/useAuth';
 import './TeamChannelHeader.css';
 
-import { ChannelInfo, PinIcon } from '../../../assets';
+import { ChannelInfo, ChannelDelete, PinIcon } from '../../../assets';
 
 import type {
   TeamAttachmentType,
@@ -26,9 +27,10 @@ type Props = {
 
 export const TeamChannelHeader: React.FC<Props> = (props) => {
   const { setIsEditing, setPinsOpen } = props;
+  const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
-  const { client } = useChatContext<
+  const { client, setActiveChannel } = useChatContext<
     TeamAttachmentType,
     TeamChannelType,
     TeamCommandType,
@@ -60,6 +62,32 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
 
   const teamHeader = `# ${channel?.data?.name || channel?.data?.id || 'random'}`;
 
+  const deleteChannel = async () => {
+    try {
+      await channel.delete();
+      enqueueSnackbar('Channel Deleted', { variant: 'success' });
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar('Action Failed', { variant: 'error' });
+    }
+  };
+
+  const getDeleteButton = () => {
+    if (user?.type === 'admin') {
+      return (
+        <span
+          style={{ display: 'flex', marginLeft: '1rem', cursor: 'pointer' }}
+          role="button"
+          onKeyPress={() => {}}
+          tabIndex={0}
+          onClick={deleteChannel}
+        >
+          <ChannelDelete />
+        </span>
+      );
+    }
+    return null;
+  };
   const getMessagingHeader = () => {
     const members = Object.values(channel.state.members).filter(
       ({ user }) => user?.id !== client.userID
@@ -71,6 +99,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
         <div className="team-channel-header__name-wrapper">
           <Avatar image={null} size={32} />
           <p className="team-channel-header__name user">Johnny Blaze</p>
+          {getDeleteButton()}
         </div>
       );
     }
@@ -91,6 +120,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
         {additionalMembers > 0 && (
           <p className="team-channel-header__name user">{`and ${additionalMembers} more`}</p>
         )}
+        {getDeleteButton()}
       </div>
     );
   };
@@ -108,16 +138,18 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
       ) : (
         <div className="team-channel-header__channel-wrapper">
           <p className="team-channel-header__name">{teamHeader}</p>
-          <span
-            style={{ display: 'flex' }}
-            role="button"
-            onKeyPress={() => {}}
-            tabIndex={0}
-            onClick={() => setIsEditing(true)}
-          >
-            {/* // Show add channle option only to admin user */}
-            {user?.type === 'admin' ? <ChannelInfo /> : null}
-          </span>
+          {user?.type === 'admin' && (
+            <span
+              style={{ display: 'flex' }}
+              role="button"
+              onKeyPress={() => {}}
+              tabIndex={0}
+              onClick={() => setIsEditing(true)}
+            >
+              <ChannelInfo />
+            </span>
+          )}
+          {getDeleteButton()}
         </div>
       )}
       <div className="team-channel-header__right">
