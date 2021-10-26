@@ -53,11 +53,8 @@ export default function SessionsTab() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
-  const { sessions } = cohort || {};
+  const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
-
-  console.log('cohort', cohort);
-  console.log('sessions', sessions);
 
   if (sessions && sessions.length) {
     trimmedSessionData = sessions.map((session) => ({
@@ -85,14 +82,16 @@ export default function SessionsTab() {
   }, [sessions]);
 
   useEffect(() => {
-    dispatch(getSessions(cohort_id));
+    if (cohort && !sessions) {
+      dispatch(getSessions(cohort.id));
+    }
     axios
       .get('/cohorts/onboarding_complete.json')
       .then((res) => res.data)
       .then((payload) => {
         setHasOnboarded(payload);
       });
-  }, [cohort_id, dispatch]);
+  }, [cohort]);
 
   return (
     <CohortContext.Provider

@@ -108,8 +108,10 @@ export default function PeersTab() {
     setSelectedInterests(value);
   };
   useEffect(() => {
-    dispatch(getPeers(cohort_id.toString()));
-  }, [dispatch, cohort_id]);
+    if (cohort && !peers) {
+      dispatch(getPeers(cohort_id.toString()));
+    }
+  }, [dispatch, cohort]);
 
   useEffect(() => {
     const filtereStudents = applyFilters();
