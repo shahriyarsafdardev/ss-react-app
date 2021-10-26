@@ -84,13 +84,13 @@ export default function SessionsTab() {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
+      axios
+        .get(`/cohorts/${cohort.id}/onboarding_complete.json`)
+        .then((res) => res.data)
+        .then((payload) => {
+          setHasOnboarded(payload);
+        });
     }
-    axios
-      .get('/cohorts/onboarding_complete.json')
-      .then((res) => res.data)
-      .then((payload) => {
-        setHasOnboarded(payload);
-      });
   }, [cohort]);
 
   return (
