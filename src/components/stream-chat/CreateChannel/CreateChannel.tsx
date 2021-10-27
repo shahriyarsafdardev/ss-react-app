@@ -127,7 +127,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
         tabIndex={0}
         onClick={createChannel}
       >
-        <p>{createType === 'team' ? 'Create Channel' : 'Create Message Group'}</p>
+        <p>{createType === 'team' ? 'Create Channel' : 'Start Chat'}</p>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   height: MODAL_HEIGHT,
   width: '430px',
   alignSelf: 'center',
-  backgroundImage: `url("https://scholarsite-public.s3.eu-west-2.amazonaws.com/author-preview-min.png")`,
+  backgroundImage: `url("https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-side-banner.jpg")`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
@@ -195,7 +195,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     <Step1Container>
       <StyledVideoPreview
         src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
-        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/andrei-julian-thumbnail.jpeg"
+        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-thumbnail.jpg"
         controls
       />
     </Step1Container>
@@ -247,7 +247,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const headContent = () => {
     if (activeStep === 0) {
-      return `Welcome to BINFX F21! Here is a message from your instructors!`;
+      return `Welcome to EODP F21! Here is a message from your instructor!`;
     }
 
     if (activeStep >= 1 && activeStep <= 5) {
