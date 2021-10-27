@@ -255,7 +255,7 @@ export default function StudentProfileModal({
               />
               <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
                 {' '}
-                <Text>Message {first_name} in Schoalrsite</Text>
+                <Text>Message {first_name} through ScholarSite</Text>
               </Link>
             </StyledRow>
           )}
