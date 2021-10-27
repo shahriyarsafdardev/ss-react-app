@@ -56,6 +56,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
 }));
 
 const ContentContainer = styled('div')(({ theme }) => ({
+  position: 'relative',
   flex: '1',
   backgroundColor: 'white',
   height: MODAL_HEIGHT,
