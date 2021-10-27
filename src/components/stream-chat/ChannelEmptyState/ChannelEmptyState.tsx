@@ -90,12 +90,12 @@ export const ChannelEmptyState = () => {
       {channel?.type === MESSAGE_TYPES.TEAM ? (
         <div>
           <p className="channel-empty__first">
-            Welcome to the
-            {` #${channel?.data?.name || channel?.data?.id}`} Channel
+            Welcome to
+            {` #${channel?.data?.name || channel?.data?.id}`}
           </p>
           <p className="channel-empty__second">
-            This is the start of the {` #${channel?.data?.name || channel?.data?.id}`}{' '}
-            <b>private </b>Channel
+            You can use this channel at any time to engage with your peers, instructor and the
+            ScholarSite team
           </p>
         </div>
       ) : (
