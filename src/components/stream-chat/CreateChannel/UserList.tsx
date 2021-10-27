@@ -108,7 +108,7 @@ export const UserList: React.FC<Props> = (props) => {
       try {
         let newMembers = cohortUsers;
         if (showMembers && channel) {
-          const joinedUsers = await channel?.queryMembers({});
+          const joinedUsers = await channel?.queryMembers({}, { name: 1 });
           const joinedMembers = joinedUsers?.members.map((member) => member.user);
           setMembers(joinedMembers);
           const memberIDs = joinedMembers?.map((member) => member?.id);
@@ -120,7 +120,7 @@ export const UserList: React.FC<Props> = (props) => {
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
-            { created_at: -1 },
+            { name: 1 },
             { limit: 100 }
           );
         }

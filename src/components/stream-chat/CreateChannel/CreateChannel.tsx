@@ -73,6 +73,52 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([client.userID || '']);
   const regexForChannelName = /^[a-zA-Z0-9._-]+$/;
 
+  const createPublicChannel = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (createType === 'team' && !regexForChannelName.test(channelName)) {
+      enqueueSnackbar('Invalid channel name. Only A-Z, a-z, 0-9 and _- are allowed', {
+        variant: 'error'
+      });
+
+      return;
+    }
+    try {
+      let users: any;
+      if (cohortUsers.length === 0) {
+        users = [];
+      } else {
+        const response = await client.queryUsers(
+          { id: { $in: cohortUsers } },
+          { created_at: -1 },
+          { limit: 99 }
+        );
+        if (response.users.length) {
+          const newusers = response.users.map((user) => user.id);
+          users = [client.userID, ...newusers];
+        } else {
+          users = [];
+        }
+      }
+      try {
+        const newChannel = await client.channel(createType, channelName, {
+          name: channelName,
+          members: users,
+          team: cohortID
+        });
+
+        await newChannel.watch();
+
+        setChannelName('');
+        setIsCreating(false);
+        setSelectedUsers([client.userID || '']);
+        setActiveChannel(newChannel);
+      } catch (err) {
+        console.log(err);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const createChannel = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
@@ -120,14 +166,15 @@ export const CreateChannel: React.FC<Props> = (props) => {
       </div>
       {createType === 'team' && <ChannelNameInput {...{ channelName, setChannelName }} />}
       <UserList showMembers={false} {...{ filters, setSelectedUsers, cohortUsers }} />
-      <div
-        className="create-channel__button-wrapper"
-        role="button"
-        onKeyPress={() => {}}
-        tabIndex={0}
-        onClick={createChannel}
-      >
-        <p>{createType === 'team' ? 'Create Channel' : 'Start Chat'}</p>
+      <div className="create-channel__button-wrapper">
+        {createType === 'team' && (
+          <div role="button" onKeyPress={() => {}} tabIndex={0} onClick={createPublicChannel}>
+            <p>Create Public Channel</p>
+          </div>
+        )}
+        <div role="button" onKeyPress={() => {}} tabIndex={0} onClick={createChannel}>
+          <p>{createType === 'team' ? 'Create Channel' : 'Create Message Group'}</p>
+        </div>
       </div>
     </div>
   );
