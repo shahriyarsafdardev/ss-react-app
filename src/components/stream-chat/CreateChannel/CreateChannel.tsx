@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useChatContext } from 'stream-chat-react';
+import { v4 as uuidv4 } from 'uuid';
 
 import './CreateChannel.css';
 
@@ -93,7 +94,8 @@ export const CreateChannel: React.FC<Props> = (props) => {
     }
 
     try {
-      const newChannel = await client.channel(createType, channelName, {
+      const myuuid = uuidv4();
+      const newChannel = await client.channel(createType, channelName + myuuid, {
         name: channelName,
         members: selectedUsers,
         team: cohortID
