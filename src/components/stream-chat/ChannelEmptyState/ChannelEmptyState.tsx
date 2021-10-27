@@ -14,6 +14,11 @@ import type {
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
+const MESSAGE_TYPES = {
+  TEAM: 'team',
+  MESSAGING: 'messaging'
+};
+
 export const ChannelEmptyState = () => {
   const { channel, client } = useChatContext<
     TeamAttachmentType,
@@ -81,13 +86,28 @@ export const ChannelEmptyState = () => {
 
   return (
     <div className="channel-empty__container">
-      {channel?.type === 'team' ? <HashIcon /> : getAvatarGroup()}
-      <p className="channel-empty__first">
-        This is the beginning of your chat history
-        {channel?.type === 'team' ? ' in ' : ' with '}
-        {channel?.type === 'team' ? `#${channel?.data?.name || channel?.data?.id}` : getUserText()}.
-      </p>
-      <p className="channel-empty__second">Send messages, attachments, links, emojis, and more.</p>
+      {channel?.type === MESSAGE_TYPES.TEAM ? <HashIcon /> : getAvatarGroup()}
+      {channel?.type === MESSAGE_TYPES.TEAM ? (
+        <div>
+          <p className="channel-empty__first">
+            Welcome to the
+            {` #${channel?.data?.name || channel?.data?.id}`} Channel
+          </p>
+          <p className="channel-empty__second">
+            This is the start of the {` #${channel?.data?.name || channel?.data?.id}`}{' '}
+            <b>private </b>Channel
+          </p>
+        </div>
+      ) : (
+        <div>
+          <p className="channel-empty__first">
+            This is the beginning of your chat history with {getUserText()}
+          </p>
+          <p className="channel-empty__second">
+            Send messages, attachments, links, emojis, and more.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -153,7 +153,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
         </div>
       )}
       <div className="team-channel-header__right">
-        <p className="team-channel-header__right-text">{getWatcherText(watcher_count)}</p>
+        {/* <p className="team-channel-header__right-text">{getWatcherText(watcher_count)}</p> */}
         <div
           className="team-channel-header__right-pin-wrapper"
           onClick={(event) => {
