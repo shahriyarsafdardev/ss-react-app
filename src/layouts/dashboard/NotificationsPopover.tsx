@@ -5,19 +5,18 @@ import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
 import { StreamChat, LiteralStringForUnion } from 'stream-chat';
+import { styled } from '@material-ui/core/styles';
+
 // material
 import {
   Box,
   List,
   Badge,
   Button,
-  Avatar,
   Tooltip,
   Divider,
   Typography,
   ListItemText,
-  ListSubheader,
-  ListItemAvatar,
   ListItemButton
 } from '@material-ui/core';
 import useAuth from '../../hooks/useAuth';
@@ -42,6 +41,17 @@ type TNotificationPopover = {
   createdAt: Date;
   isUnRead: boolean;
 };
+
+const UserAvatar = styled('div')(() => ({
+  width: '40px',
+  minWidth: '40px',
+  height: '40px',
+  backgroundSize: 'cover',
+  borderRadius: '50%',
+  marginRight: '10px',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center'
+}));
 
 function renderContent(notification: TNotificationPopover) {
   const title = (
@@ -112,9 +122,7 @@ function NotificationItem({
         })
       }}
     >
-      <ListItemAvatar style={{ minWidth: '40px', width: '40px' }}>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
+      <UserAvatar style={{ backgroundImage: `url(${avatar?.props.src}` }} />
       <ListItemText
         primary={title}
         secondary={
