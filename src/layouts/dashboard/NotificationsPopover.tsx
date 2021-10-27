@@ -145,7 +145,7 @@ function NotificationItem({
 }
 
 export default function NotificationsPopover() {
-  const apiKey = '4zev2wpcm6r7';
+  const apiKey = process.env.REACT_APP_STREAM_API_KEY;
   const { user } = useAuth();
   const [unread, setUnread] = useState<number | undefined>(0);
   const [chatClient, setChatClient] = useState<any>(null);
