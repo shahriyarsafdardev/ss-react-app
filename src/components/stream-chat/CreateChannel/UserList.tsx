@@ -116,7 +116,11 @@ export const UserList: React.FC<Props> = (props) => {
         if (newMembers.length === 0) {
           response = { users: [], duration: '1.12ms' };
         } else {
-          response = await client.queryUsers({ id: { $in: newMembers } });
+          response = await client.queryUsers(
+            { id: { $in: newMembers } },
+            { created_at: -1 },
+            { limit: 100 }
+          );
         }
         if (response.users.length) {
           setUsers(response.users);
