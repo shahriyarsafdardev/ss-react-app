@@ -16,11 +16,19 @@
 }
 
 .str-chat__list .str-chat__reverse-infinite-scroll {
-  padding-top: 0px;
+  padding-top: 30px !important;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.str-chat__list .str-chat__reverse-infinite-scroll .str-chat__ul {
+  overflow-y: auto;
 }
 
 .str-chat__date-separator {
-  padding: 20px 40px;
+  padding: 20px 40px !important;
 }
 
 .custom-thread-header {
