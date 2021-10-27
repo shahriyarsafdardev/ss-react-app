@@ -46,7 +46,7 @@ export default function PeersTab() {
   const [selectedStrengths, setSelectedStrengths] = useState<string[]>([]);
   const [interests, setInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [view, setView] = useState('card');
+  const [view, setView] = useState('grid');
   const { user } = useAuth();
 
   const cohort = useSelector(
@@ -206,7 +206,7 @@ export default function PeersTab() {
             setView={setView}
             view={view}
           />
-          {view === 'card' ? showCardView() : showTableView()}
+          {view === 'grid' ? showCardView() : showTableView()}
         </Container>
       ) : (
         <LoadingContainer>
