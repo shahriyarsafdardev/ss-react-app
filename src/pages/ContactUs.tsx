@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Grid, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
+import { RootState, useSelector } from '../redux/store';
 
 const ContactContainer = styled('div')((props) => ({
   padding: '0 20px'
@@ -45,23 +46,22 @@ const ContactNote = () => (
 export default function ContactUs() {
   const { themeStretch } = useSettings();
   const [modalState, modalHandler] = useState({});
+  const [cohortID, setCohortID] = useState('testing');
+  const [displayChatLink, setDisplayChatLink] = useState(false);
+
+  const cohorts = useSelector((state: RootState) => state?.cohort?.cohorts);
+  useEffect(() => {
+    cohorts.forEach((cohort) => {
+      if (cohort.id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61') {
+        setCohortID(cohort.id);
+        setDisplayChatLink(true);
+      }
+    });
+  }, []);
+
   const contactInfoDetails = [
     {
-      first_name: 'Joe',
-      last_name: 'Obeto',
-      current_position: 'Head of Community',
-      email: 'joe@scholarsite.io',
-      phone: '+1 415 691 5146',
-      profile_image_url: '/static/contact/Joe.jpeg',
-      linkedin_url: 'https://www.linkedin.com/in/obetojoachim/',
-      current_company: {
-        id: '',
-        name: 'ScholarSite',
-        logo_url: '/static/contact/companyLogo.svg'
-      },
-      discord_url: 'https://discordapp.com/users/893656080914186251'
-    },
-    {
+      id: '7a815eb7-f6c8-4934-90aa-fc578603f42f',
       first_name: 'Olivia',
       last_name: 'Nunn',
       current_position: 'Head of Operations',
@@ -77,6 +77,7 @@ export default function ContactUs() {
       discord_url: 'https://discordapp.com/users/893656080914186251'
     },
     {
+      id: 'eba5d109-04c1-480c-ae34-1021a6edf36e',
       first_name: 'Nick',
       last_name: 'Rudder',
       email: 'nicholas@scholarsite.io',
@@ -92,6 +93,7 @@ export default function ContactUs() {
       discord_url: 'https://discordapp.com/users/875140709898928130'
     },
     {
+      id: '1214f562-ebde-42cb-9bfa-653abb7e74f7',
       first_name: 'Adrian',
       last_name: 'Sarstedt',
       current_position: 'Co-Founder & CTO',
@@ -117,8 +119,8 @@ export default function ContactUs() {
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
           modalUser={modalState}
-          cohortID="testing"
-          dispalyChatLink={false}
+          cohortID={cohortID}
+          dispalyChatLink={displayChatLink}
         />
         <StyledGrid container spacing={3}>
           {contactInfoDetails.map((info, index) => (
