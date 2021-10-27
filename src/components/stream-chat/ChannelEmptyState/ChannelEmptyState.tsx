@@ -101,7 +101,7 @@ export const ChannelEmptyState = () => {
       ) : (
         <div>
           <p className="channel-empty__first">
-            This is the beginning of your chat history with {getUserText()}
+            This is the beginning of your private chat history with {getUserText()}
           </p>
           <p className="channel-empty__second">
             Send messages, attachments, links, emojis, and more.
