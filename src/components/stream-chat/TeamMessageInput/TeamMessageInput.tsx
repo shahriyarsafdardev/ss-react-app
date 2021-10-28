@@ -20,6 +20,7 @@ import {
   BoldIcon,
   CodeSnippet,
   ItalicsIcon,
+  Attachment,
   LightningBoltSmall,
   SendButton,
   SmileyFace,
@@ -200,6 +201,7 @@ export const TeamMessageInput: React.FC<Props> = (props) => {
                 }}
               />
               <CodeSnippet {...{ codeState, resetIconState, setCodeState }} />
+              <Attachment handleFiles={messageInput.uploadNewFiles} />
             </div>
           </div>
         </div>

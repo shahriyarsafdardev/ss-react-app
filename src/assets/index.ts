@@ -34,4 +34,5 @@ export { SendButton } from './SendButton';
 export { SideBarFlag } from './SideBarFlag';
 export { SideBarLogo } from './SideBarLogo';
 export { SmileyFace } from './SmileyFace';
+export { Attachment } from './Attachment';
 export { StrikeThroughIcon } from './StrikeThroughIcon';
