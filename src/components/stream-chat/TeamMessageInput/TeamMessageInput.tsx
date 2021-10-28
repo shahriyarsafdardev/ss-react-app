@@ -173,9 +173,11 @@ export const TeamMessageInput: React.FC<Props> = (props) => {
       >
         <div className="team-message-input__input">
           <div className="team-message-input__top">
-            {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
-            <UploadsPreview />
-            <ChatAutoComplete onChange={onChange} placeholder={`Message ${getPlaceholder()}`} />
+            <div className="message-preview">
+              {giphyState && !messageInput.numberOfUploads && <GiphyIcon />}
+              <UploadsPreview />
+              <ChatAutoComplete onChange={onChange} placeholder={`Message ${getPlaceholder()}`} />
+            </div>
             <div
               className="team-message-input__button"
               role="button"
