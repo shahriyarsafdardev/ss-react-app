@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Avatar,
   useChannelActionContext,
@@ -5,6 +6,7 @@ import {
   useChatContext
 } from 'stream-chat-react';
 import { useSnackbar } from 'notistack5';
+import ConfirmationAlert from 'components/ConfirmationAlert';
 import useAuth from '../../../hooks/useAuth';
 import './TeamChannelHeader.css';
 
@@ -29,6 +31,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
   const { setIsEditing, setPinsOpen } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
+  const [alertBox, setAlertBox] = useState(false);
 
   const { client, setActiveChannel } = useChatContext<
     TeamAttachmentType,
@@ -80,7 +83,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
           role="button"
           onKeyPress={() => {}}
           tabIndex={0}
-          onClick={deleteChannel}
+          onClick={() => setAlertBox(true)}
         >
           <ChannelDelete />
         </span>
@@ -131,12 +134,26 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
     return `${watchers} users online`;
   };
 
+  const getConfirmationBox = (alertContent: string) => (
+    <ConfirmationAlert
+      open={alertBox}
+      title="Alert"
+      alertText={alertContent}
+      onCancel={() => setAlertBox(false)}
+      onConfirm={() => deleteChannel()}
+    />
+  );
+
   return (
     <div className="team-channel-header__container">
       {channel.type === 'messaging' ? (
-        getMessagingHeader()
+        <>
+          {getConfirmationBox('Are you sure you want to delete this chat?')}
+          {getMessagingHeader()}
+        </>
       ) : (
         <div className="team-channel-header__channel-wrapper">
+          {getConfirmationBox('Are you sure you want to delete this channel?')}
           <p className="team-channel-header__name">{teamHeader}</p>
           {user?.type === 'admin' && (
             <span
