@@ -178,6 +178,7 @@ export const TeamMessageInput: React.FC<Props> = (props) => {
             <div
               className="team-message-input__button"
               role="button"
+              data-testid="send-chat"
               aria-roledescription="button"
               onClick={messageInput.handleSubmit}
               onKeyPress={() => {}}

@@ -57,7 +57,7 @@ export const ChannelEmptyState = () => {
   const getUserText = () => {
     if (members.length === 1) {
       return (
-        <span className="channel-empty__user-name">{`@${
+        <span className="channel-empty__user-name" data-testid="new-chat-user-name">{`@${
           members[0].user?.name || members[0].user?.id
         }`}</span>
       );
@@ -100,7 +100,7 @@ export const ChannelEmptyState = () => {
         </div>
       ) : (
         <div>
-          <p className="channel-empty__first">
+          <p className="channel-empty__first" data-testid="user-new-message">
             This is the beginning of your chat history with {getUserText()}
           </p>
           <p className="channel-empty__second">

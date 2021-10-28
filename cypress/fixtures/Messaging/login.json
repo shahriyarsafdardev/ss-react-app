@@ -1,0 +1,20 @@
+{
+  "user": {
+    "id": "3d724e3f-0c88-4cf9-bd93-c94b61b2cfc2",
+    "type": "admin",
+    "first_name": "Waqas",
+    "last_name": "nazir",
+    "full_name": "Waqas nazir",
+    "email": "waqas@scholar.com",
+    "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir-2",
+    "strengths": ["Management", "Statistics", "wewerwe"],
+    "linkedin_url": null,
+    "discord_url": null,
+    "interests": ["Find a mentor"],
+    "current_company": null,
+    "current_position": null,
+    "stream_id": "3d724e3f-0c88-4cf9-bd93-c94b61b2cfc2",
+    "stream_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiM2Q3MjRlM2YtMGM4OC00Y2Y5LWJkOTMtYzk0YjYxYjJjZmMyIn0.E0t2gYfAbj8b6vnB5ZO_lzEjjLkJsRlLA10EME5gboE"
+  },
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.IjNkNzI0ZTNmLTBjODgtNGNmOS1iZDkzLWM5NGI2MWIyY2ZjMiI.P06redgK3_Jz46OBdLfWxhsZuDPvlY4VY3V71eh-l0U"
+}

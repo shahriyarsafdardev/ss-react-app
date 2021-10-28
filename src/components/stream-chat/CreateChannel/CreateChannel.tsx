@@ -95,7 +95,8 @@ export const CreateChannel: React.FC<Props> = (props) => {
 
     try {
       const myuuid = uuidv4();
-      const newChannel = await client.channel(createType, channelName + myuuid, {
+      const updatedChannelName = createType === 'team' ? channelName + myuuid : channelName;
+      const newChannel = await client.channel(createType, updatedChannelName, {
         name: channelName,
         members: selectedUsers,
         team: cohortID
@@ -126,6 +127,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
         onKeyPress={() => {}}
         tabIndex={0}
         onClick={createChannel}
+        data-testid="start-chat"
       >
         <p>{createType === 'team' ? 'Create Channel' : 'Start Chat'}</p>
       </div>

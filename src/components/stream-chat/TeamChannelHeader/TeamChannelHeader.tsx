@@ -111,7 +111,7 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
           return (
             <div key={i} className="team-channel-header__name-multi">
               <Avatar image={user?.image} name={user?.name || user?.id} size={32} />
-              <p className="team-channel-header__name user">
+              <p className="team-channel-header__name user" data-testid="user-header-name">
                 {user?.name || user?.id || 'Johnny Blaze'}
               </p>
             </div>

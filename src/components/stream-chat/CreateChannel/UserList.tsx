@@ -27,7 +27,7 @@ const ListContainer: React.FC = (props) => {
         <p>Last Active</p>
         <p>Invite</p>
       </div>
-      {children}
+      <div id="users-container">{children}</div>
     </div>
   );
 };
@@ -60,6 +60,7 @@ const UserItem: React.FC<ItemProps> = (props) => {
       onKeyPress={() => {}}
       tabIndex={0}
       onClick={handleClick}
+      data-testid={`user-${index + 1}`}
     >
       <div className="user-item__name-wrapper">
         <Avatar image={user.image} name={user.name || user.id} size={32} />

@@ -71,7 +71,12 @@ const ChannelList: React.FC<TeamChannelListProps> = (props) => {
         {/* // Show channle info option only to admin user */}
         {addChannel()}
       </div>
-      <div className="lists-container">{children}</div>
+      <div
+        data-testid={type === 'team' ? 'team-lists-container' : 'messaging-list-container'}
+        className="lists-container"
+      >
+        {children}
+      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ export const AddChannel = (
   return (
     <svg
       width="24"
+      data-testid={`create-${type}`}
       height="24"
       viewBox="0 0 24 24"
       fill="none"
