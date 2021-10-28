@@ -87,12 +87,19 @@ function renderContent(notification: TNotificationPopover) {
   };
 }
 
-function NotificationItem({ notification }: { notification: TNotificationPopover }) {
+function NotificationItem({
+  notification,
+  onClick
+}: {
+  notification: TNotificationPopover;
+  onClick: any;
+}) {
   const { avatar, title } = renderContent(notification);
 
   return (
     <ListItemButton
       to={`cohorts/${notification.cohort_id}/messaging?channel_id=${notification.channel_id}&message=${notification.id}`}
+      onClick={onClick}
       disableGutters
       key={notification.id}
       component={RouterLink}
@@ -275,7 +282,13 @@ export default function NotificationsPopover() {
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
           <List disablePadding>
             {notifications.slice(0, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+                onClick={() => {
+                  setOpen(false);
+                }}
+              />
             ))}
           </List>
         </Scrollbar>
@@ -289,6 +302,9 @@ export default function NotificationsPopover() {
               disableRipple
               component={RouterLink}
               to={`cohorts/${notifications[0].cohort_id}/messaging`}
+              onClick={() => {
+                setOpen(false);
+              }}
             >
               View All
             </Button>
