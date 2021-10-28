@@ -11,7 +11,9 @@
 }
 
 .lists-container > p {
-  padding: 0 16px;
+  color: #525f7f;
+  padding: 10px 20px;
+  font-size: 12px;
 }
 
 .team-channel-list > p {
