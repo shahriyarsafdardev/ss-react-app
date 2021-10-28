@@ -76,7 +76,7 @@ export const EditChannel: React.FC<Props> = (props) => {
       }
       if (selectedUsers?.length) {
         const users = selectedUsers.map((user) => user);
-        await channel?.addMembers(users, { text: `Channel updated to ${channelName}` });
+        await channel?.addMembers(users);
       }
 
       setChannelName('');
