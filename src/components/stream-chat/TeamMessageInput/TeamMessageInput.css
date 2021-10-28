@@ -20,7 +20,7 @@
   border-color: var(--primary-color);
 }
 
-.message-preview{
+.message-preview {
   display: flex;
   flex-direction: column;
 }
@@ -155,11 +155,14 @@ div.rfu-dropzone:focus {
   margin: 10px !important;
 }
 
-.str-chat__modal-image__wrapper{
+.str-chat__modal-image__wrapper {
   display: flex !important;
   justify-content: center !important;
 }
 
+.css-16jr3vd {
+  z-index: 1200 !important;
+}
 .rfu-image-previewer__image {
   margin-bottom: 0;
 }
