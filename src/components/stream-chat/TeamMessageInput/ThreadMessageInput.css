@@ -75,10 +75,10 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   height: auto;
 }
-
+/* 
 .str-chat__reverse-infinite-scroll ul li:nth-child(2) {
   display: none;
-}
+} */
 
 .str-chat__thread-list .str-chat__message-team {
   padding: 10px;
