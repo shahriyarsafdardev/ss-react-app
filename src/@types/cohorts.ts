@@ -65,6 +65,10 @@ export type Cohort = {
   isOnboarded: boolean;
   intake: number;
   questions_url: string;
+  sideImageUrl: string;
+  welcomeVideoUrl: string;
+  welcomeVideoThumbnailUrl: string;
+  onBoardingTitle: string;
   peers: StudentProfile[];
   sessions: Session[];
   enrollments: String[];

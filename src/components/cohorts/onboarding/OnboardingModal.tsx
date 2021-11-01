@@ -7,7 +7,7 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
-import { useDispatch } from 'redux/store';
+import { useDispatch, useSelector, RootState } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
@@ -45,7 +45,6 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   height: MODAL_HEIGHT,
   width: '430px',
   alignSelf: 'center',
-  backgroundImage: `url("https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-side-banner.jpg")`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
@@ -137,7 +136,16 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>([]);
+  const [welcomeUrl, setWelcomeUrl] = useState('');
+  const [welcomeThumbnailUrl, setWelcomeThumbnailUrl] = useState('');
+  const [onBoardingTitle, setOnBoardingTitle] = useState('');
+  const [sideImage, setSideImage] = useState('');
+
   const totalSteps = 7;
+
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   useEffect(() => {
     axios
@@ -148,6 +156,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         setHomeConfig(payload);
       });
   }, [cohort_id, user?.id]);
+
+  useEffect(() => {
+    setWelcomeThumbnailUrl(cohort.welcomeVideoThumbnailUrl);
+    setWelcomeUrl(cohort.welcomeVideoUrl);
+    setOnBoardingTitle(cohort.onBoardingTitle);
+    setSideImage(cohort.sideImageUrl);
+  }, [cohort]);
 
   const sendStepCompletionRequest = (stepNumber: number, answer?: string) =>
     axios.post(`/cohorts/${cohort_id}/step_completed.json`, {
@@ -194,11 +209,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const Step1 = () => (
     <Step1Container>
-      <StyledVideoPreview
-        src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4"
-        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-thumbnail-3.jpg"
-        controls
-      />
+      <StyledVideoPreview src={welcomeUrl} poster={welcomeThumbnailUrl} controls />
     </Step1Container>
   );
 
@@ -248,7 +259,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const headContent = () => {
     if (activeStep === 0) {
-      return `Welcome to EODP F21! Here is a message from your instructor!`;
+      return onBoardingTitle;
     }
 
     if (activeStep >= 1 && activeStep <= 5) {
@@ -264,7 +275,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <CohortAuthorPreview />
+      <CohortAuthorPreview style={{ backgroundImage: `url("${sideImage}")` }} />
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
