@@ -1,11 +1,10 @@
 import moment from 'moment';
-import { context } from 'msw';
 
 const videoCameraIcon = '/static/icons/ic_recorder.svg';
 const clockIcon = '/static/icons/ic_clock.svg';
 
-const populatedSession = 0; // The resources, summary notes, slides and recording are set to null in this fixture
-const emptySession = 1; // The resources, summary notes, slides and recording are present in this fixture
+const populatedSession = 1; // The resources, summary notes, slides and recording are set to null in this fixture
+const emptySession = 0; // The resources, summary notes, slides and recording are present in this fixture
 
 import sessionFixture from '../fixtures/session/sessions.json';
 
@@ -99,7 +98,7 @@ describe('Sessions Tab', () => {
         it('Shows the invite link', () => {
           cy.get('[data-testid=session-invite]')
             .should('have.attr', 'href')
-            .and('equal', sessionFixture.sessions[0].inviteLink);
+            .and('equal', sessionFixture.sessions[0].zoom_url);
         });
       });
 
@@ -145,7 +144,7 @@ describe('Sessions Tab', () => {
         it('Shows the invite link', () => {
           cy.get('[data-testid=session-invite]')
             .should('have.attr', 'href')
-            .and('equal', sessionFixture.sessions[0].inviteLink);
+            .and('equal', sessionFixture.sessions[0].zoom_url);
         });
       });
 
@@ -177,7 +176,7 @@ describe('Sessions Tab', () => {
             .should('have.attr', 'src')
             .and('equal', sessionFixture.sessions[1].recording_url);
           cy.get('[data-testid=session-video-url]')
-            .should('have.attr', 'thumbnail')
+            .should('have.attr', 'poster')
             .and('equal', sessionFixture.sessions[1].recording_thumbnail_url);
         });
       });
@@ -193,7 +192,7 @@ describe('Sessions Tab', () => {
       it('Renders the provided html', () => {
         cy.get('[data-testid=session-description]').then((description) => {
           const html = description.html();
-          expect(html).to.eq(sessionFixture.sessions[0].description);
+          expect(html).to.eq(sessionFixture.sessions[1].description);
         });
       });
     });
@@ -219,7 +218,7 @@ describe('Sessions Tab', () => {
       it('Renders the provided html', () => {
         cy.get('[data-testid=summary-notes]').then((summary) => {
           const html = summary.html();
-          expect(html).to.eq(sessionFixture.sessions[0].summary);
+          expect(html).to.eq(sessionFixture.sessions[1].summary);
         });
       });
     });
@@ -262,7 +261,7 @@ describe('Sessions Tab', () => {
 
       context('When session.presentation_pdf_downloadable == false', () => {
         before(() => {
-          cy.get(`#session-list-${3}`).click({ force: true });
+          cy.get(`#session-list-${2}`).click({ force: true });
           cy.get('[data-testid=session-slides]').click();
         });
         it('Hides the download button');

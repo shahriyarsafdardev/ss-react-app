@@ -114,7 +114,7 @@ const TimerField = ({
   );
 };
 
-const TimerPreview = ({ time }: { time: Date }) => {
+const TimerPreview = ({ time, zoomUrl }: { time: Date; zoomUrl: string | null }) => {
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
@@ -139,21 +139,23 @@ const TimerPreview = ({ time }: { time: Date }) => {
           <TimerField text="Minutes" value={minutes} showSeparator={true} testId="minutes" />
           <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
         </Box>
-        <Button
-          onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
-          className={classes.primaryBtn}
-          target="_blank"
-          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
-          data-testid="session-invite"
-        >
-          Join Zoom
-        </Button>
+        {zoomUrl && (
+          <Button
+            onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
+            className={classes.primaryBtn}
+            target="_blank"
+            href={`${zoomUrl}`}
+            data-testid="session-invite"
+          >
+            Join Zoom
+          </Button>
+        )}
       </div>
     </div>
   );
 };
 
-const SessionInProgress = () => {
+const SessionInProgress = ({ zoomUrl }: { zoomUrl: string | null }) => {
   const classes = useStyes();
   const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
@@ -170,15 +172,17 @@ const SessionInProgress = () => {
             Passcode: 864988
           </Typography>
         </Box>
-        <Button
-          className={classes.primaryBtn}
-          onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
-          target="_blank"
-          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
-          data-testid="session-invite"
-        >
-          Join Zoom
-        </Button>
+        {zoomUrl && (
+          <Button
+            className={classes.primaryBtn}
+            onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
+            target="_blank"
+            href={`${zoomUrl}`}
+            data-testid="session-invite"
+          >
+            Join Zoom
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -199,7 +203,7 @@ const ExpiredSession = () => {
   );
 };
 
-const renderPlaceHolder = (sessionTimeValue: string) => {
+const renderPlaceHolder = (sessionTimeValue: string, sessionZoomUrl: string | null) => {
   const currentTime = new Date();
   const sessionTime = new Date(sessionTimeValue);
 
@@ -207,7 +211,7 @@ const renderPlaceHolder = (sessionTimeValue: string) => {
 
   if (difference < 0) {
     if (Math.floor((Math.abs(difference) / (1000 * 60 * 60)) % 24) < 2) {
-      return <SessionInProgress />;
+      return <SessionInProgress zoomUrl={sessionZoomUrl} />;
     }
     return <ExpiredSession />;
   }
@@ -219,18 +223,24 @@ const renderPlaceHolder = (sessionTimeValue: string) => {
   }
 
   if (daysRemaining === 0) {
-    return <TimerPreview time={sessionTime} />;
+    return <TimerPreview time={sessionTime} zoomUrl={sessionZoomUrl} />;
   }
 
   return null;
 };
 
-export default function VideoPlaceHolder({ sessionTimeValue }: { sessionTimeValue: string }) {
+export default function VideoPlaceHolder({
+  sessionTimeValue,
+  sessionZoomUrl
+}: {
+  sessionTimeValue: string;
+  sessionZoomUrl: string | null;
+}) {
   const classes = useStyes();
 
   return (
     <div className={classes.container} data-testid="video-place-holder">
-      {renderPlaceHolder(sessionTimeValue)}
+      {renderPlaceHolder(sessionTimeValue, sessionZoomUrl)}
     </div>
   );
 }

@@ -18,8 +18,8 @@ Cypress.Commands.add('login', () => {
   ).as('onboarding_complete');
 
   cy.visit('/');
-  const email = 'aqibmaqqbool@gmail.com';
-  const password = 'aqib1234';
+  const email = 'waqas@scholar.com';
+  const password = '123456';
   cy.get('[data-testid=email]').type(email);
   cy.get('[data-testid=password]').type(password);
 

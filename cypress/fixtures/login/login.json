@@ -1,5 +1,5 @@
 {
-  "accessToken": "23121312",
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.IjNkNzI0ZTNmLTBjODgtNGNmOS1iZDkzLWM5NGI2MWIyY2ZjMiI.P06redgK3_Jz46OBdLfWxhsZuDPvlY4VY3V71eh-l0U",
   "user": {
     "id": "8864c717-587d-472a-929a-8e5f298024da-1",
     "first_name": "Aqib",
@@ -22,6 +22,6 @@
     "linkedin_url": "https://linkedin.com/aqibmaqqbool_react_dev",
     "current_position": "Economist",
     "stream_id": "3d724e3f-0c88-4cf9-bd93-c94b61b2cfc2",
-    "stream_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiM2Q3MjRlM2YtMGM4OC00Y2Y5LWJkOTMtYzk0YjYxYjJjZmMyIn0.E0t2gYfAbj8b6vnB5ZO"
+    "stream_token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiM2Q3MjRlM2YtMGM4OC00Y2Y5LWJkOTMtYzk0YjYxYjJjZmMyIn0.E0t2gYfAbj8b6vnB5ZO_lzEjjLkJsRlLA10EME5gboE"
   }
 }

@@ -40,10 +40,13 @@ export type Session = {
   survey_completed: boolean;
   length: string;
   time: string;
+  zoom_url: string;
   recording_url: string;
+  recording_thumbnail_url: string;
   description: string;
   summary: string;
   presentation_pdf_url: string;
+  presentation_pdf_downloadable: boolean;
   survey: Survey;
   resources: string;
 };

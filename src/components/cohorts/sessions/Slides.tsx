@@ -14,6 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 type NavigationProps = {
   pdfUrl: string | undefined;
   pageNumber: number;
+  pdfDownloadable: boolean | undefined;
   numPages: number | null;
   pageHandler: Function;
   setViewType: Function;
@@ -137,6 +138,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Navigation = ({
   pdfUrl,
+  pdfDownloadable,
   pageNumber,
   numPages,
   pageHandler,
@@ -162,6 +164,25 @@ const Navigation = ({
         setError(true);
       }
     }
+  };
+
+  const pdfDownloadButton = () => {
+    if (pdfDownloadable) {
+      return (
+        <a
+          href={pdfUrl}
+          className={`${classes.actionBtn} ${classes.downloadBtn}`}
+          rel="noreferrer"
+          target="_blank"
+          onClick={() => trackEventHandler(SLIDE_EVENTS.downloaded_pdf)}
+          download
+        >
+          {/* // eslint-disable-next-line jsx-a11y/alt-text */}
+          <img width="20px" src="/static/cohorts-home/sessions/ic_download.svg" alt="full-screen" />
+        </a>
+      );
+    }
+    return null;
   };
 
   return (
@@ -202,22 +223,7 @@ const Navigation = ({
 
       {viewType === VIEW_TYPES.STANDARD_VIEW && (
         <div className={classes.actionsContainer}>
-          {/* <a
-            href={pdfUrl}
-            className={`${classes.actionBtn} ${classes.downloadBtn}`}
-            rel="noreferrer"
-            target="_blank"
-            onClick={() => trackEventHandler(SLIDE_EVENTS.downloaded_pdf)}
-            download
-          >
-
-            <img
-              width="20px"
-              src="/static/cohorts-home/sessions/ic_download.svg"
-              alt="full-screen"
-            />
-          </a> */}
-
+          {pdfDownloadButton()}
           <a
             className={`${classes.actionBtn} ${classes.fullScreen}`}
             onClick={() => {
@@ -243,9 +249,11 @@ const VIEW_TYPES = {
 
 export default function Slides({
   pdfUrl,
+  pdfDownloadable,
   onTrack
 }: {
   pdfUrl: string | undefined;
+  pdfDownloadable: boolean | undefined;
   onTrack: Function;
 }) {
   const [numPages, setNumPages] = useState<number | null>(null);
@@ -285,6 +293,7 @@ export default function Slides({
         <div>
           <Navigation
             pdfUrl={pdfUrl}
+            pdfDownloadable={pdfDownloadable}
             viewType={viewType}
             pageNumber={pageNumber}
             numPages={numPages}
