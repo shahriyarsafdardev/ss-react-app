@@ -176,16 +176,16 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const shouldDisplaySurveyModal = () => {
     if (feedbackSubmitted || session?.survey_completed) return false;
 
-    // if (session && session.time) {
-    //   const sessionTime = new Date(session.time);
-    //   const currentTime = new Date();
-    //   const surveyReleaseTime = sessionTime;
-    //   surveyReleaseTime.setMinutes(surveyReleaseTime.getMinutes() + 60);
+    if (session && session.time) {
+      const sessionTime = new Date(session.time);
+      const currentTime = new Date();
+      const surveyReleaseTime = sessionTime;
+      surveyReleaseTime.setMinutes(surveyReleaseTime.getMinutes() + 60);
 
-    //   if (currentTime > surveyReleaseTime) {
-    //     return true;
-    //   }
-    // }
+      if (currentTime > surveyReleaseTime) {
+        return true;
+      }
+    }
     return false;
   };
 
