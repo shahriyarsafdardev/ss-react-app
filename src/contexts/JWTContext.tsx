@@ -107,6 +107,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
     { image?: string }
   >(apiKey!);
 
+  const envTest = process;
+
+  console.log('env test:', envTest);
+  console.log('process.ev: ', process.env);
+
+  // eslint-disable-next-line no-debugger
+  debugger;
+
   useEffect(() => {
     const initialize = async () => {
       try {
