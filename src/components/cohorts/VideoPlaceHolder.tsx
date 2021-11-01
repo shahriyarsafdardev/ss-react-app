@@ -139,7 +139,7 @@ const TimerPreview = ({ time }: { time: Date }) => {
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
-          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          href="https://us06web.zoom.us/j/2298997414?pwd=NlpiUHBiUEt2VWR3aHh5NEZkbFJIZz09"
         >
           Join Zoom
         </Button>
@@ -169,7 +169,7 @@ const SessionInProgress = () => {
           className={classes.primaryBtn}
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           target="_blank"
-          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          href="https://us06web.zoom.us/j/2298997414?pwd=NlpiUHBiUEt2VWR3aHh5NEZkbFJIZz09"
         >
           Join Zoom
         </Button>
