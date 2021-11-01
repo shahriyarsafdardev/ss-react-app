@@ -114,6 +114,9 @@
 .str-chat__message-team .str-chat__message-attachment-card--content {
   background: #fff;
 }
+.str-chat__message-team-content ul.str-chat__simple-reactions-list {
+  display: none !important;
+}
 
 ul.str-chat__simple-reactions-list {
   display: flex;
@@ -124,6 +127,9 @@ ul.str-chat__simple-reactions-list {
   box-sizing: border-box;
   border-radius: 50vw;
   padding: 6px 6px 4px 6px;
+  margin-left: 100px;
+  margin-bottom: 1rem;
+  margin-top: 0;
   z-index: 3;
 }
 
@@ -134,10 +140,6 @@ ul.str-chat__simple-reactions-list:hover {
 .str-chat__simple-reactions-list-item span {
   display: flex;
   align-items: center;
-}
-
-.str-chat__message-team-content ul {
-  margin-top: 4px;
 }
 
 .emoji-mart-emoji-custom span {

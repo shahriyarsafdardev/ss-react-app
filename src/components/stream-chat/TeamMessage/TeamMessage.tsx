@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
-
+import { ReactionsList } from './ReactionsList';
 import './TeamMessage.css';
 
 type Props = MessageUIComponentProps & {
@@ -20,7 +20,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
   return (
     <div className={message.pinned ? 'pinned-message' : 'unpinned-message'}>
       <MessageTeam {...props} message={message} handleOpenThread={handleOpenThreadOverride} />
-      {/** potentially add replies component here */}
+      <ReactionsList message={message} />
     </div>
   );
 };
