@@ -106,7 +106,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
     <div className="channel__container">
       <Channel
         EmptyStateIndicator={ChannelEmptyState}
-        HeaderComponent={ChannelEmptyState}
+        // HeaderComponent={ChannelEmptyState}
         Input={TeamMessageInput}
         Message={(messageProps) => <TeamMessage {...messageProps} {...{ setPinsOpen }} />}
         ThreadHeader={(threadProps) => <ThreadHeader {...threadProps} {...{ setPinsOpen }} />}
