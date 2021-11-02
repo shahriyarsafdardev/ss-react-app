@@ -16,7 +16,7 @@ import useAuth from '../../../../hooks/useAuth';
 import Page from '../../../../components/Page';
 import 'stream-chat-react/dist/css/index.css';
 
-const apiKey = process.env.REACT_APP_STREAM_API_KEY;
+const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
 const i18nInstance = new Streami18n({
   language: 'en',
   translationsForLanguage: {
