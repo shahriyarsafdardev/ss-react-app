@@ -39,6 +39,10 @@
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
 }
 
+.str-chat__textarea textarea {
+  width: 97% !important;
+}
+
 .custom-thread-header__left {
   display: flex;
   align-items: center;

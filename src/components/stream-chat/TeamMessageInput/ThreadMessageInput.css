@@ -79,7 +79,7 @@
   display: none;
 }
 .str-chat__reverse-infinite-scroll ul li:nth-child(2) {
-  /* display: none; */
+  display: none;
 }
 
 .str-chat__thread-list .str-chat__message-team {
@@ -150,7 +150,6 @@
   outline: none;
   font-family: Helvetica Neue, sans-serif;
   font-size: 15px;
-  line-height: 10px;
 }
 
 .thread-message-input__wrapper .str-chat__textarea textarea:focus {
