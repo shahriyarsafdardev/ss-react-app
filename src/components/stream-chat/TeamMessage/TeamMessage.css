@@ -123,20 +123,21 @@ ul.str-chat__simple-reactions-list {
   align-items: center;
   width: fit-content;
   border: none;
+  padding: 6px 6px 4px 6px;
   margin-left: 100px;
   margin-bottom: 1rem;
   margin-top: 0;
-  padding: 0;
   z-index: 3;
 }
 
 li.str-chat__simple-reactions-list-item {
+  position: relative;
   background: #f5f6f8;
   border: 1px solid #e9e9ea;
   box-sizing: border-box;
   border-radius: 50vw;
   padding: 0.25rem 0.5rem;
-  margin-right: 0.7rem;
+  margin-right: 0.5rem;
 }
 
 li.str-chat__simple-reactions-list-item:hover {
@@ -146,6 +147,12 @@ li.str-chat__simple-reactions-list-item:hover {
 .str-chat__simple-reactions-list-item span {
   display: flex;
   align-items: center;
+}
+
+div.str-chat__simple-reactions-list-tooltip {
+  width: 120px;
+  max-width: 200px;
+  overflow-wrap: break-word;
 }
 
 .emoji-mart-emoji-custom span {

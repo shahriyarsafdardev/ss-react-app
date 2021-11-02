@@ -112,17 +112,17 @@ const UnMemoizedSimpleReactionsList = <
               onKeyPress={() => {}}
               tabIndex={0}
             >
+              {tooltipReactionType === emojiObject.id && (
+                <div className="str-chat__simple-reactions-list-tooltip">
+                  <div className="arrow" />
+                  {getUsersPerReactionType(tooltipReactionType)?.join(', ')}
+                </div>
+              )}
               <Emoji data={emojiData} emoji={emojiObject} size={13} {...emojiSetDef} />
               <span style={{ marginLeft: '.25rem', fontSize: 'x-Small' }}>
                 {reactionCounts[reactionType]}
               </span>
             </span>
-            {tooltipReactionType === emojiObject.id && (
-              <div className="str-chat__simple-reactions-list-tooltip">
-                <div className="arrow" />
-                {getUsersPerReactionType(tooltipReactionType)?.join(', ')}
-              </div>
-            )}
           </li>
         ) : null;
       })}
