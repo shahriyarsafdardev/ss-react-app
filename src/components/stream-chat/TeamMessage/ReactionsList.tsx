@@ -113,7 +113,9 @@ const UnMemoizedSimpleReactionsList = <
               tabIndex={0}
             >
               <Emoji data={emojiData} emoji={emojiObject} size={13} {...emojiSetDef} />
-              <span style={{ marginRight: '.7rem' }}>{reactionCounts[reactionType]}</span>
+              <span style={{ marginLeft: '.25rem', fontSize: 'x-Small' }}>
+                {reactionCounts[reactionType]}
+              </span>
             </span>
             {tooltipReactionType === emojiObject.id && (
               <div className="str-chat__simple-reactions-list-tooltip">
