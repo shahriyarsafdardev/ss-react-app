@@ -18,6 +18,10 @@
   background: none;
 }
 
+.str-chat__message-url-link {
+  white-space: unset !important;
+}
+
 .str-chat__message-team:hover .str-chat__message-team-content {
   background: none;
 }
