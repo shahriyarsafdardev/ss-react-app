@@ -83,6 +83,7 @@ export default function StudentProfileModal({
     last_name,
     current_company,
     profile_image_url,
+    current_position,
     phone,
     strengths,
     interests,
@@ -93,7 +94,9 @@ export default function StudentProfileModal({
   return (
     <Modal open={modalState} onClose={() => modalHandler({})} id="student-modal">
       <StyledContainer>
-        <Title>Information</Title>
+        <Title>
+          {first_name} {last_name}
+        </Title>
         <StyledRow>
           <img
             alt="sketch icon"
@@ -102,7 +105,9 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text data-testid="company-name">{current_company?.name}</Text>
+          <Text data-testid="company-name">
+            {current_position} @ {current_company?.name}
+          </Text>
         </StyledRow>
         <StyledRow>
           <img
