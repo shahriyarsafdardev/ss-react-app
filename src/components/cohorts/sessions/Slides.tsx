@@ -199,7 +199,7 @@ const Navigation = ({
 
       {viewType === VIEW_TYPES.STANDARD_VIEW && (
         <div className={classes.actionsContainer}>
-          <a
+          {/* <a
             href={pdfUrl}
             className={`${classes.actionBtn} ${classes.downloadBtn}`}
             rel="noreferrer"
@@ -207,13 +207,13 @@ const Navigation = ({
             onClick={() => trackEventHandler(SLIDE_EVENTS.downloaded_pdf)}
             download
           >
-            {/* // eslint-disable-next-line jsx-a11y/alt-text */}
+
             <img
               width="20px"
               src="/static/cohorts-home/sessions/ic_download.svg"
               alt="full-screen"
             />
-          </a>
+          </a> */}
 
           <a
             className={`${classes.actionBtn} ${classes.fullScreen}`}

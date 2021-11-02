@@ -230,6 +230,8 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   if (!session) return null;
 
+  console.log(session);
+
   return (
     <Wrapper>
       {shouldDisplaySurveyModal() && (
@@ -256,7 +258,12 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         {session.recording_url && session.recording_url !== '' ? (
           <StyledVideoPreview
             src={session.recording_url}
-            poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/BINFX+-+Session+1+20211011.pptx.png"
+            poster={
+              session.name == 'Network Effects and Economies of Scale' ||
+              session.name == 'Designing Digital Platforms'
+                ? 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-tadelis-recording-thumbnail.png'
+                : 'https://scholarsite-public.s3.eu-west-2.amazonaws.com/BINFX+-+Session+1+20211011.pptx.png'
+            }
             controls
             controlsList="nodownload"
             autoPlay={false}
