@@ -179,7 +179,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     values.current_position && uploadData.append('current_position', values.current_position);
     values.strengths && uploadData.append('strengths', values.strengths);
     values.interests && uploadData.append('interests', values.interests);
-    values.profile_image_url.image && uploadData.append('image', values.profile_image_url.image);
+    values.profile_image_url?.image && uploadData.append('image', values.profile_image_url?.image);
 
     onSubmit();
 
