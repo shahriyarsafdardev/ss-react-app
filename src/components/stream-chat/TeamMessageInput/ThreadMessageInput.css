@@ -78,9 +78,9 @@
 .str-chat__list--thread .channel-empty__container {
   display: none;
 }
-.str-chat__reverse-infinite-scroll ul li:nth-child(2) {
+/* .str-chat__reverse-infinite-scroll .str-chat__ul li:nth-child(2) {
   display: none;
-}
+} */
 
 .str-chat__thread-list .str-chat__message-team {
   padding: 10px;
