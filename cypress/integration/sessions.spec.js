@@ -256,15 +256,23 @@ describe('Sessions Tab', () => {
         cy.get('[data-testid=slides-page-number]').should('have.value', '1');
       });
 
-      it('Allows users to enter full screen');
-      it('Shows the download button');
+      it('Allows users to enter full screen', () => {
+        cy.get('[data-testid=slides-full-screen]').should('be.visible');
+      });
+      it('Shows the download button', () => {
+        cy.get('[data-testid=pdf-download-button]')
+          .should('have.attr', 'href')
+          .and('equal', sessionFixture.sessions[1].presentation_pdf_url);
+      });
 
       context('When session.presentation_pdf_downloadable == false', () => {
         before(() => {
           cy.get(`#session-list-${2}`).click({ force: true });
           cy.get('[data-testid=session-slides]').click();
         });
-        it('Hides the download button');
+        it('Hides the download button', () => {
+          cy.get('[data-testid=pdf-download-button]').should('not.exist');
+        });
       });
     });
 

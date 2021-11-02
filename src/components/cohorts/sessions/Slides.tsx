@@ -176,6 +176,7 @@ const Navigation = ({
           target="_blank"
           onClick={() => trackEventHandler(SLIDE_EVENTS.downloaded_pdf)}
           download
+          data-testid="pdf-download-button"
         >
           {/* // eslint-disable-next-line jsx-a11y/alt-text */}
           <img width="20px" src="/static/cohorts-home/sessions/ic_download.svg" alt="full-screen" />
@@ -222,7 +223,7 @@ const Navigation = ({
       </Box>
 
       {viewType === VIEW_TYPES.STANDARD_VIEW && (
-        <div className={classes.actionsContainer}>
+        <div className={classes.actionsContainer} data-testid="slides-buttons-container">
           {pdfDownloadButton()}
           <a
             className={`${classes.actionBtn} ${classes.fullScreen}`}
