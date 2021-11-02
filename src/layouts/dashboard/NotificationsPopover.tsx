@@ -53,12 +53,19 @@ const UserAvatar = styled('div')(() => ({
   backgroundPosition: 'center'
 }));
 
+const trimString = (data: string) => {
+  if (typeof data === 'string') {
+    return data.length > 200 ? `${data.slice(0, 100)}...` : data;
+  }
+  return '';
+};
+
 function renderContent(notification: TNotificationPopover) {
   const title = (
     <Typography variant="subtitle2">
       {notification.title}
       <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {notification.description}
+        &nbsp; {trimString(notification.description)}
       </Typography>
     </Typography>
   );
