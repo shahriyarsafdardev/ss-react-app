@@ -7,6 +7,7 @@ import {
   PEERS_PAGE_EVENTS
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
+import { useLocation } from 'react-router-dom';
 
 // material
 import { Container, Box } from '@material-ui/core';
@@ -48,6 +49,7 @@ export default function PeersTab() {
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [view, setView] = useState('grid');
   const { user } = useAuth();
+  const url = new URLSearchParams(useLocation().search);
 
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -78,6 +80,13 @@ export default function PeersTab() {
     setSelectedCompanies([]);
     setSelectedStrengths([]);
     setSelectedInterests([]);
+    const user_id = url.get('user_id');
+    if (user_id && peers?.length > 0) {
+      const peer = peers.filter((peer) => peer.id === user_id)[0];
+      if (peer) {
+        modalHandler(peer);
+      }
+    }
   }, [peers, cohort_id]);
 
   useEffect(() => {
