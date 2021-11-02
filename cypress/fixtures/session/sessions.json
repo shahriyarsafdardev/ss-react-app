@@ -1,0 +1,47 @@
+{
+  "cohort_id": "9550cc85-305a-438c-a115-e791a16c91f0",
+  "sessions": [
+    {
+      "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
+      "name": "Session 1",
+      "number": 1,
+      "time": "2021-09-27T13:00:00.000Z",
+      "length": "120m",
+      "recording_thumbnail_url": null,
+      "recording_url": "",
+      "description": "",
+      "summary": "",
+      "presentation_pdf_downloadable": false,
+      "presentation_pdf_url": "",
+      "survey_completed": true
+    },
+    {
+      "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
+      "name": "Session 2",
+      "number": 2,
+      "time": "2021-10-27T13:00:00.000Z",
+      "length": "120m",
+      "recording_thumbnail_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211026%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211026T182709Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=711a599b1073d9ab2acd7bce708fd07dfe4a0416800b91ded2253345f23175fc",
+      "recording_url": "test-recording-url",
+      "description": "<h3><strong>Pre-Readings:</strong></h3><p><br></p><ul><li><a href=\"https://platformchronicles.substack.com/p/network-effects-and-defensibility\" rel=\"noopener noreferrer\" target=\"_blank\">Seven Questions to Evaluate Network Effect Moats - Platform Chronicles</a></li><li><a href=\"https://www.youtube.com/watch?app=desktop&amp;v=_xHsHWblK6U\" rel=\"noopener noreferrer\" target=\"_blank\">Tactics for Improving Marketplace Quality [Video] - Josh Breinlinger</a> (<strong>our guest for today!</strong>)</li></ul><p><br></p><h3><strong>Supplementary Materials: </strong></h3><p><br></p><ul><li><a href=\"https://platformchronicles.substack.com/p/how-defensible-are-zooms-network\" rel=\"noopener noreferrer\" target=\"_blank\">How Defensible are Zoom's Network Effects - Platform Chronicles</a></li><li><a href=\"https://www.nfx.com/post/network-effects-manual/\" rel=\"noopener noreferrer\" target=\"_blank\">The Network Effects Manual: 13 Different Network Effects (and counting) - NfX</a></li></ul>",
+      "summary": "<ul><li>Gain economic frameworks to understand and manage network d</li><li>Understand cost/benefit aspects of platform-based network businesses</li><li class=\"ql-indent-1\">Identify strategic considerations for two-sided and multi-sided platform businesses</li><li class=\"ql-indent-1\">This lecture covers some of the most fundamental principles behind what makes digital platforms powerful business models.</li></ul>",
+      "presentation_pdf_downloadable": false,
+      "presentation_pdf_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211026%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211026T182709Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=711a599b1073d9ab2acd7bce708fd07dfe4a0416800b91ded2253345f23175fc",
+      "survey_completed": true
+    },
+    {
+      "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
+      "name": "Session 3",
+      "number": 3,
+      "time": "2021-11-27T13:00:00.000Z",
+      "length": "120m",
+      "recording_thumbnail_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211026%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211026T182709Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=711a599b1073d9ab2acd7bce708fd07dfe4a0416800b91ded2253345f23175fc",
+      "recording_url": "test-recording-url",
+      "description": "<h3><strong>Pre-Readings:</strong></h3><p><br></p><ul><li><a href=\"https://platformchronicles.substack.com/p/network-effects-and-defensibility\" rel=\"noopener noreferrer\" target=\"_blank\">Seven Questions to Evaluate Network Effect Moats - Platform Chronicles</a></li><li><a href=\"https://www.youtube.com/watch?app=desktop&amp;v=_xHsHWblK6U\" rel=\"noopener noreferrer\" target=\"_blank\">Tactics for Improving Marketplace Quality [Video] - Josh Breinlinger</a> (<strong>our guest for today!</strong>)</li></ul><p><br></p><h3><strong>Supplementary Materials: </strong></h3><p><br></p><ul><li><a href=\"https://platformchronicles.substack.com/p/how-defensible-are-zooms-network\" rel=\"noopener noreferrer\" target=\"_blank\">How Defensible are Zoom's Network Effects - Platform Chronicles</a></li><li><a href=\"https://www.nfx.com/post/network-effects-manual/\" rel=\"noopener noreferrer\" target=\"_blank\">The Network Effects Manual: 13 Different Network Effects (and counting) - NfX</a></li></ul>",
+      "summary": "<ul><li>Gain economic frameworks to understand and manage network d</li><li>Understand cost/benefit aspects of platform-based network businesses</li><li class=\"ql-indent-1\">Identify strategic considerations for two-sided and multi-sided platform businesses</li><li class=\"ql-indent-1\">This lecture covers some of the most fundamental principles behind what makes digital platforms powerful business models.</li></ul>",
+      "presentation_pdf_downloadable": true,
+      "presentation_pdf_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211026%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211026T182709Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=711a599b1073d9ab2acd7bce708fd07dfe4a0416800b91ded2253345f23175fc",
+      "survey_completed": true
+    }
+  ]
+}

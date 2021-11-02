@@ -90,7 +90,7 @@ export default function ModalAnimate({
             }}
           >
             {onClose && (
-              <Cross onClick={onClose}>
+              <Cross onClick={onClose} data-testid="close-modal">
                 <img src="/static/cross.svg" alt="close-modal" />
               </Cross>
             )}

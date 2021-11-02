@@ -67,8 +67,8 @@ export default function StudentProfileFilters({
   };
 
   return (
-    <ViewSelector>
-      <FilterFormControl>
+    <ViewSelector data-testid="user-filters">
+      <FilterFormControl data-testid="view-mode">
         <InputLabel id="view-label">View</InputLabel>
         <Select
           displayEmpty
@@ -80,15 +80,15 @@ export default function StudentProfileFilters({
           label="View"
           value={view}
         >
-          <MenuItem key="grid" value="grid" id="grid-view">
+          <MenuItem key="grid" value="grid" id="grid-view" data-testid="peer-grid-view">
             Grid View
           </MenuItem>
-          <MenuItem key="list" value="list" id="table-view">
+          <MenuItem key="list" value="list" id="table-view" data-testid="peer-table-view">
             Table View
           </MenuItem>
         </Select>
       </FilterFormControl>
-      <FilterFormControl>
+      <FilterFormControl data-testid="company-select">
         <InputLabel id="multiple-checkbox-label">Filter by Company</InputLabel>
         <Select
           labelId="multiple-checkbox-label"
@@ -103,15 +103,18 @@ export default function StudentProfileFilters({
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500 } }}
         >
-          {companies?.map((name: any) => (
+          {companies?.map((name: any, index: number) => (
             <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
-              <Checkbox checked={selectedCompanies.indexOf(name) > -1} />
+              <Checkbox
+                checked={selectedCompanies.indexOf(name) > -1}
+                data-testid={`company-${index + 1}`}
+              />
               <ListItemText primary={name} />
             </MenuItem>
           ))}
         </Select>
       </FilterFormControl>
-      <FilterFormControl>
+      <FilterFormControl data-testid="strength-select">
         <InputLabel id="multiple-checkbox-label">Filter by Strengths</InputLabel>
         <Select
           labelId="strength-label"
@@ -134,7 +137,7 @@ export default function StudentProfileFilters({
           ))}
         </Select>
       </FilterFormControl>
-      <FilterFormControl>
+      <FilterFormControl data-testid="interest-select">
         <InputLabel id="multiple-checkbox-label">Filter by Interests</InputLabel>
         <Select
           labelId="interest-label"

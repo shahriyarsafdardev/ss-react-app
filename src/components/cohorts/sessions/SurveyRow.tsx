@@ -64,6 +64,9 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       placeholder="Start typing whatever comes to mind!"
       multiline
       rows={4}
+      inputProps={{
+        'data-testid': 'survey-text'
+      }}
     />
   );
 }
@@ -76,7 +79,12 @@ function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
           key={index}
           value={option}
           control={
-            <Radio checked={option === submitted_answer} onChange={() => onChange(option)} />
+            <Radio
+              checked={option === submitted_answer}
+              data-checked={option === submitted_answer}
+              onChange={() => onChange(option)}
+              data-testid={`option-${index + 1}`}
+            />
           }
           label={option}
         />
@@ -112,9 +120,15 @@ function MultiCheck({
 
   return (
     <div>
-      {options?.map((option) => (
+      {options?.map((option, index) => (
         <div key={option}>
-          <Checkbox value={option} checked={values.has(option)} onChange={handleChange} />
+          <Checkbox
+            value={option}
+            checked={values.has(option)}
+            id={`check-${index}`}
+            data-testid={`check-${index + 1}`}
+            onChange={handleChange}
+          />
           <label htmlFor={option}>{option}</label>
         </div>
       ))}
@@ -151,6 +165,7 @@ function CreateMultiSelect({
         isMulti
         isSearchable
         onChange={handleChange}
+        id="create-select"
       />
     </div>
   );
@@ -197,7 +212,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
 
   return (
     <RowContainer>
-      <QuestionText>{item.title}</QuestionText>
+      <QuestionText data-testid="onboard-question">{item.title}</QuestionText>
       <br />
       {answerFields()}
     </RowContainer>

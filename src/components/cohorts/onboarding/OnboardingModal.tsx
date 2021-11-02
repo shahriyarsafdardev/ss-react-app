@@ -196,6 +196,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     <Step1Container>
       <StyledVideoPreview
         src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+EODP+F21.mp4"
+        data-testid="onboard-video"
         poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-thumbnail-3.jpg"
         controls
       />
@@ -264,7 +265,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <CohortAuthorPreview />
+      <CohortAuthorPreview data-testid="onboarding-image" />
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
@@ -295,12 +296,19 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
                 (!responses[activeStep] || responses[activeStep].length === 0)
               }
               onClick={() => onStepChange(activeStep)}
+              data-testid="btn-next"
             >
               Next
             </StyledButton>
           )}
           {activeStep === 6 && (
-            <StyledButton form="profile-form" type="submit" variant="contained" className="next">
+            <StyledButton
+              form="profile-form"
+              type="submit"
+              variant="contained"
+              className="next"
+              data-testid="btn-submit"
+            >
               Submit
             </StyledButton>
           )}

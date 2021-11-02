@@ -11,7 +11,7 @@ type StudentProfileGridProps = {
 
 export default function StudentProfileGrid({ students, modalHandler }: StudentProfileGridProps) {
   return (
-    <Grid container spacing={3} id="peer-grid-container">
+    <Grid container spacing={3} id="peer-grid-container" data-testid="peers-grid">
       {students?.map((peer) => (
         <Grid key={peer.id} item xs={12} sm={4} md={3}>
           <StudentProfileCard peer={peer} modalHandler={modalHandler} />

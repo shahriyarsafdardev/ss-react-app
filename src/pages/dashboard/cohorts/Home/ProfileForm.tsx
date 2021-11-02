@@ -257,6 +257,9 @@ export default function ProfileForm({
                       {...getFieldProps('first_name')}
                       error={Boolean(touched.first_name && errors.first_name)}
                       helperText={touched.first_name && errors.first_name}
+                      inputProps={{
+                        'data-testid': 'first-name'
+                      }}
                     />
                     <TextField
                       fullWidth
@@ -264,6 +267,9 @@ export default function ProfileForm({
                       {...getFieldProps('last_name')}
                       error={Boolean(touched.last_name && errors.last_name)}
                       helperText={touched.last_name && errors.last_name}
+                      inputProps={{
+                        'data-testid': 'last-name'
+                      }}
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
@@ -274,6 +280,7 @@ export default function ProfileForm({
                         label="Company"
                         labelId="company-label"
                         id="multiple-checkbox-company"
+                        data-testid="current-company"
                         {...getFieldProps('current_company')}
                       >
                         {companies?.map((name: any) => (
@@ -289,12 +296,18 @@ export default function ProfileForm({
                       {...getFieldProps('linkedin_url')}
                       error={Boolean(touched.linkedin_url && errors.linkedin_url)}
                       helperText={touched.linkedin_url && errors.linkedin_url}
+                      inputProps={{
+                        'data-testid': 'linkedin-url'
+                      }}
                     />
                   </Stack>
                   <TextField
                     fullWidth
                     label="Current position"
                     {...getFieldProps('current_position')}
+                    inputProps={{
+                      'data-testid': 'current-position'
+                    }}
                   />
 
                   {!isOnboardingModal && (
@@ -320,6 +333,7 @@ export default function ProfileForm({
                           backspaceRemovesValue={true}
                           isMulti
                           isSearchable
+                          id="interest-multiselect"
                           onChange={(selected) => {
                             setFieldValue(
                               'interests',
@@ -342,6 +356,7 @@ export default function ProfileForm({
                           backspaceRemovesValue={true}
                           isMulti
                           isSearchable
+                          id="strength-multiselect"
                           onChange={(selected) => {
                             setFieldValue(
                               'strengths',
@@ -355,7 +370,12 @@ export default function ProfileForm({
                 </Stack>
                 {showSubmitButton && (
                   <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                    <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
+                    <StyledLoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                      id="btn-submit"
+                    >
                       Save
                     </StyledLoadingButton>
                   </Box>

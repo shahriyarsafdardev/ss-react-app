@@ -94,10 +94,15 @@ export default function AccountPopover() {
         sx={{ width: 220 }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle1" noWrap>
+          <Typography variant="subtitle1" noWrap data-testid="user-name">
             {user?.displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography
+            variant="body2"
+            sx={{ color: 'text.secondary' }}
+            noWrap
+            data-testid="user-email"
+          >
             {user?.email}
           </Typography>
         </Box>
@@ -107,6 +112,7 @@ export default function AccountPopover() {
         {MENU_OPTIONS.map((option) => (
           <MenuItem
             key={option.label}
+            id="user-settings"
             to={option.linkTo}
             component={RouterLink}
             onClick={handleClose}

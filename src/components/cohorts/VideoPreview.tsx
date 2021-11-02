@@ -21,10 +21,17 @@ export default function VideoPreview({
   video_url?: string;
 }) {
   return (
-    <VideoContainer className={className}>
+    <VideoContainer className={className} data-testid="session-video">
       {video_url && (
         // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video src={video_url} preload="auto" controls controlsList="nodownload" autoPlay={false} />
+        <video
+          src={video_url}
+          preload="auto"
+          controls
+          controlsList="nodownload"
+          autoPlay={false}
+          data-testid="session-video-url"
+        />
       )}
     </VideoContainer>
   );

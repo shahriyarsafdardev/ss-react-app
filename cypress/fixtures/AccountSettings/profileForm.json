@@ -1,0 +1,15 @@
+{
+  "message": "Profile Updated",
+  "variant": "success",
+  "user": {
+    "first_name": "Aqib",
+    "last_name": "Maqbool",
+    "linkedin_url": "https://linkedin.com/aqibmaqqbool_react_dev",
+    "discord_url": "Test url",
+    "profile_image_url": "/static/mock-images/avatars/avatar_default.jpg",
+    "current_company": "Test company 1",
+    "current_position": "Engineer",
+    "strengths": ["Strength B", "Strength C", "Test A", "Test B"],
+    "interests": ["Interest A", "Test interest 1", "Test interest 2"]
+  }
+}

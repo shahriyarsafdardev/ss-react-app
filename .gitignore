@@ -26,3 +26,5 @@ package-lock.json
 
 /.eslintcache
 *.patch
+/cypress/videos
+/cypress/screenshots

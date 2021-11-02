@@ -69,7 +69,7 @@ const DatePreview = ({ date }: { date: Date }) => {
   const classes = useStyes();
 
   return (
-    <div>
+    <div data-testid="upcoming-session-placeholder">
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_date.svg" alt="date-icon" />
         <Typography variant="body2" className={classes.content}>
@@ -87,11 +87,13 @@ const DatePreview = ({ date }: { date: Date }) => {
 const TimerField = ({
   text,
   value,
-  showSeparator = false
+  showSeparator = false,
+  testId
 }: {
   text: string;
   value: number;
   showSeparator?: boolean;
+  testId: string;
 }) => {
   const classes = useStyes();
   const formatted = value < 10 ? `0${value}` : value;
@@ -104,7 +106,9 @@ const TimerField = ({
           {text}
         </Typography>
 
-        <Typography variant="h2">{formatted}</Typography>
+        <Typography variant="h2" data-testid={testId}>
+          {formatted}
+        </Typography>
       </div>
     </div>
   );
@@ -131,15 +135,16 @@ const TimerPreview = ({ time }: { time: Date }) => {
           Passcode: 864988
         </Typography>
         <Box className={classes.timerRow}>
-          <TimerField text="Hours" value={hours} />
-          <TimerField text="Minutes" value={minutes} showSeparator={true} />
-          <TimerField text="Seconds" value={seconds} showSeparator={true} />
+          <TimerField text="Hours" value={hours} testId="hours" />
+          <TimerField text="Minutes" value={minutes} showSeparator={true} testId="minutes" />
+          <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
         </Box>
         <Button
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           className={classes.primaryBtn}
           target="_blank"
-          href="https://us06web.zoom.us/j/2298997414?pwd=NlpiUHBiUEt2VWR3aHh5NEZkbFJIZz09"
+          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          data-testid="session-invite"
         >
           Join Zoom
         </Button>
@@ -169,7 +174,8 @@ const SessionInProgress = () => {
           className={classes.primaryBtn}
           onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
           target="_blank"
-          href="https://us06web.zoom.us/j/2298997414?pwd=NlpiUHBiUEt2VWR3aHh5NEZkbFJIZz09"
+          href="https://us06web.zoom.us/j/5239760058?pwd=N3dMakFreTl4SWhVcXowU0wwR0ZkQT09"
+          data-testid="session-invite"
         >
           Join Zoom
         </Button>
@@ -185,7 +191,7 @@ const ExpiredSession = () => {
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_dots.svg" alt="date-icon" />
-        <Typography variant="subtitle1" className={classes.content2}>
+        <Typography variant="subtitle1" className={classes.content2} data-testid="session-ended">
           This live session has finished, the recording will be available soon!
         </Typography>
       </div>
@@ -222,5 +228,9 @@ const renderPlaceHolder = (sessionTimeValue: string) => {
 export default function VideoPlaceHolder({ sessionTimeValue }: { sessionTimeValue: string }) {
   const classes = useStyes();
 
-  return <div className={classes.container}>{renderPlaceHolder(sessionTimeValue)}</div>;
+  return (
+    <div className={classes.container} data-testid="video-place-holder">
+      {renderPlaceHolder(sessionTimeValue)}
+    </div>
+  );
 }

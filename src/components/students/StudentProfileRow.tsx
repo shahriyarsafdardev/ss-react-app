@@ -60,24 +60,34 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       role="checkbox"
       onClick={() => modalHandler(row)}
       style={{ cursor: 'pointer' }}
-      id={`student-row-${id}`}
+      data-testid={`student-row-${id}`}
     >
       <StyledTableCell component="th" scope="row" style={{ width: 200 }} padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           <Avatar alt={first_name} src={profile_image_url} />
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle2" noWrap data-testid={`peer${id ? `-${id}` : ''}-name`}>
             {first_name} {last_name}
           </Typography>
         </Stack>
       </StyledTableCell>
-      <StyledTableCell align="left" style={{ width: 150 }}>
+      <StyledTableCell
+        align="left"
+        style={{ width: 150 }}
+        data-testid={`peer${id ? `-${id}` : ''}-company`}
+      >
         {trimString(current_company.name)}
       </StyledTableCell>
-      <StyledTableCell align="left">{trimString(current_position)}</StyledTableCell>
+      <StyledTableCell align="left" data-testid={`peer${id ? `-${id}` : ''}-position`}>
+        {trimString(current_position)}
+      </StyledTableCell>
       <StyledTableCell align="left">
         <LabelContainer>
           {trimmedStrengths.data && (
-            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="success">
+            <Label
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="success"
+              testId={`peer${id ? `-${id}` : ''}-strength`}
+            >
               {capitalCase(trimmedStrengths.data)}
             </Label>
           )}
@@ -91,7 +101,11 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       <StyledTableCell align="left">
         <LabelContainer>
           {trimmedInterests.data && (
-            <Label variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'} color="secondary">
+            <Label
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color="secondary"
+              testId={`peer${id ? `-${id}` : ''}-interest`}
+            >
               {capitalCase(trimmedInterests.data)}
             </Label>
           )}

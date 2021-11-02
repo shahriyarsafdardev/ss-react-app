@@ -5,5 +5,5 @@ const MessageContainer = styled('div')((props) => ({
 }));
 
 export default function Message({ content }: { content: string }) {
-  return <MessageContainer>{content}</MessageContainer>;
+  return <MessageContainer data-testid="session-message">{content}</MessageContainer>;
 }

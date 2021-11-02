@@ -102,7 +102,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>{current_company?.name}</Text>
+          <Text data-testid="company-name">{current_company?.name}</Text>
         </StyledRow>
         <StyledRow>
           <img
@@ -112,7 +112,7 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>{email}</Text>
+          <Text data-testid="user-email">{email}</Text>
         </StyledRow>
         {interests?.length > 0 && (
           <>
@@ -126,26 +126,27 @@ export default function StudentProfileModal({
               />
               <Text style={{ marginRight: 10 }}>What I am looking for</Text>
               <TagsContainer>
-                {interests?.map((strength: any, index: number) => (
+                {interests?.map((interest: any, index: number) => (
                   <Label
                     key={index}
                     variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                     color="secondary"
+                    testId={`interest-${index}`}
                   >
-                    {capitalCase(strength)}
+                    {capitalCase(interest)}
                   </Label>
                 ))}
               </TagsContainer>
             </StyledRow>
             <TagsContainerMobile>
               {interests?.length > 0 &&
-                interests?.map((strength: any, index: number) => (
+                interests?.map((interest: any, index: number) => (
                   <Label
                     key={index}
                     variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                     color="secondary"
                   >
-                    {capitalCase(strength)}
+                    {capitalCase(interest)}
                   </Label>
                 ))}
             </TagsContainerMobile>
@@ -163,26 +164,27 @@ export default function StudentProfileModal({
               />
               <Text style={{ marginRight: 10 }}>What I am good at</Text>
               <TagsContainer>
-                {strengths?.map((interest: any, index: number) => (
+                {strengths?.map((strength: any, index: number) => (
                   <Label
                     key={index}
                     variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                     color="success"
+                    testId={`strength-${index}`}
                   >
-                    {capitalCase(interest)}
+                    {capitalCase(strength)}
                   </Label>
                 ))}
               </TagsContainer>
             </StyledRow>
             <TagsContainerMobile>
               {strengths?.length > 0 &&
-                strengths?.map((interest: any, index: number) => (
+                strengths?.map((strength: any, index: number) => (
                   <Label
                     key={index}
                     variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                     color="success"
                   >
-                    {capitalCase(interest)}
+                    {capitalCase(strength)}
                   </Label>
                 ))}
             </TagsContainerMobile>
@@ -213,8 +215,8 @@ export default function StudentProfileModal({
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <Link href={discord_url} target="_blank">
-                <Text>Message {first_name} on Discord</Text>
+              <Link href={discord_url} target="_blank" data-testid="discord-url">
+                <Text data-testid="discord-text">Message {first_name} on Discord</Text>
               </Link>
             </StyledRow>
           )}
@@ -238,9 +240,10 @@ export default function StudentProfileModal({
                   )
                 }
                 target="_blank"
+                data-testid="linkedin-url"
               >
                 {' '}
-                <Text>Connect with {first_name} on LinkedIn</Text>
+                <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
               </Link>
             </StyledRow>
           )}

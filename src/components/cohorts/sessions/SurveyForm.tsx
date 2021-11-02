@@ -211,6 +211,7 @@ export default function SurveyForm({
               variant="outlined"
               disabled={currentQuestion === 0}
               onClick={() => setCurrentQuestion(currentQuestion - 1)}
+              data-testid="btn-previous"
             >
               Previous Question
             </StyledButton>
@@ -219,6 +220,7 @@ export default function SurveyForm({
               className="right-btn"
               onClick={handleNext}
               disabled={response[questionID] === undefined}
+              data-testid="btn-next"
             >
               {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
             </StyledButton>

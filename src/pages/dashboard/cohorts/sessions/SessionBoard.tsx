@@ -252,8 +252,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
       <SessionsContainer>
         <Box width="100%" marginBottom={2}>
-          <SessionNumber>{`Session ${session.number} |`} </SessionNumber>
-          <SessionTitle>{session.name}</SessionTitle>
+          <SessionNumber data-testid="session-number">
+            {`Session ${session.number} |`}{' '}
+          </SessionNumber>
+          <SessionTitle data-testid="session-title">{session.name}</SessionTitle>
         </Box>
         {session.recording_url && session.recording_url !== '' ? (
           <StyledVideoPreview
@@ -267,6 +269,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             controls
             controlsList="nodownload"
             autoPlay={false}
+            data-testid="session-video-url"
           />
         ) : (
           <VideoPlaceHolder sessionTimeValue={session.time} />
@@ -286,9 +289,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           </FeedbackButton>
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
-          <SessionTab label="Resources" />
-          <SessionTab label="Summary Notes" />
-          <SessionTab label="Session Slides" />
+          <SessionTab label="Resources" data-testid="session-resources" />
+          <SessionTab label="Summary Notes" data-testid="session-notes" />
+          <SessionTab label="Session Slides" data-testid="session-slides" />
         </SessionTabs>
 
         {tabsContent[currentTab]}
