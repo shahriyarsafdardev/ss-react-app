@@ -60,10 +60,6 @@ export default function Messaging() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
-  const filters: ChannelFilters[] = [
-    { type: 'team', members: { $in: [user?.stream_id] } },
-    { type: 'messaging', members: { $in: [user?.stream_id] } }
-  ];
 
   const LoadingContainer = styled(Box)(() => ({
     position: 'absolute',
@@ -126,7 +122,6 @@ export default function Messaging() {
               <ChannelListContainer
                 {...{
                   isCreating,
-                  filters,
                   options,
                   setCreateType,
                   setIsCreating,
@@ -154,7 +149,6 @@ export default function Messaging() {
               <SidePanel
                 props={{
                   isCreating,
-                  filters,
                   options,
                   setCreateType,
                   setIsCreating,
