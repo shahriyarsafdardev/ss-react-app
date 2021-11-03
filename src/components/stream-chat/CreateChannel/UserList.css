@@ -45,7 +45,7 @@
   margin: 5px 0px 5px 20px;
 }
 
-.user-item__wrapper:hover {
+.user-item__name-wrapper:hover {
   background: #f7f6f8;
   cursor: pointer;
 }
@@ -54,6 +54,10 @@
   display: flex;
   align-items: center;
   width: 60%;
+}
+
+.user-item_invite {
+  cursor: pointer;
 }
 
 .user-item__wrapper p {
