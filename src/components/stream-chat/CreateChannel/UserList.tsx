@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
+import { Navigate } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
 import './UserList.css';
 import moment from 'moment';
@@ -37,10 +38,12 @@ type ItemProps = {
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   user: UserResponse<TeamUserType>;
   member: boolean;
+  cohortID: string;
 };
 
 const UserItem: React.FC<ItemProps> = (props) => {
-  const { index, setSelectedUsers, user, member } = props;
+  const { index, setSelectedUsers, user, member, cohortID } = props;
+  const [navigate, setNavigate] = useState(false);
 
   const [selected, setSelected] = useState(false);
 
@@ -54,21 +57,31 @@ const UserItem: React.FC<ItemProps> = (props) => {
   };
 
   return (
-    <div
-      className="user-item__wrapper"
-      role="button"
-      onKeyPress={() => {}}
-      tabIndex={0}
-      onClick={handleClick}
-    >
-      <div className="user-item__name-wrapper">
+    <div className="user-item__wrapper">
+      {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${user.id}`} />}
+      <div
+        className="user-item__name-wrapper"
+        role="button"
+        onKeyPress={() => {}}
+        tabIndex={0}
+        onClick={() => setNavigate(true)}
+      >
         <Avatar image={user.image} name={user.name || user.id} size={32} />
         <p className="user-item__name">{user.name || user.id}</p>
       </div>
       <p className="user-item__last-active">
         {user.last_active && moment(user.last_active).fromNow()}
       </p>
-      {!member && (selected ? <InviteIcon /> : <div className="user-item__invite-empty" />)}
+
+      <div
+        className="user-item_invite"
+        role="button"
+        onKeyPress={() => {}}
+        tabIndex={0}
+        onClick={handleClick}
+      >
+        {!member && (selected ? <InviteIcon /> : <div className="user-item__invite-empty" />)}
+      </div>
     </div>
   );
 };
@@ -83,6 +96,7 @@ type Props = {
 
 export const UserList: React.FC<Props> = (props) => {
   const { filters, setSelectedUsers, cohortUsers, showMembers, admin } = props;
+  const cohortID = window.location.pathname.split('/')[2] || '';
 
   const { client, channel } = useChatContext<
     TeamAttachmentType,
@@ -164,6 +178,7 @@ export const UserList: React.FC<Props> = (props) => {
                   setSelectedUsers={setSelectedUsers}
                   member={true}
                   user={member}
+                  cohortID={cohortID}
                 />
               ))
             )}
@@ -188,6 +203,7 @@ export const UserList: React.FC<Props> = (props) => {
                 setSelectedUsers={setSelectedUsers}
                 member={false}
                 user={user}
+                cohortID={cohortID}
               />
             ))
           )}
