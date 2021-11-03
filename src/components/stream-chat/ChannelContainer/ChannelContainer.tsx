@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
+import { Navigate } from 'react-router-dom';
 
 import './ChannelContainer.css';
 
@@ -73,6 +74,8 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   >();
 
   const [pinsOpen, setPinsOpen] = useState(false);
+  const [navigate, setNavigate] = useState<boolean>(false);
+  const [path, setPath] = useState<string>('');
 
   if (isCreating) {
     const filters: ChannelFilters[] = [];
@@ -83,6 +86,15 @@ export const ChannelContainer: React.FC<Props> = (props) => {
       </div>
     );
   }
+
+  const onMentionsClick = (event: React.BaseSyntheticEvent, user: any) => {
+    setPath(`/cohorts/${cohortID}/peers?user_id=${user?.id}`);
+    setNavigate(true);
+  };
+
+  const onMentionsHover = (event: React.BaseSyntheticEvent) => {
+    event.target.style.cursor = 'pointer';
+  };
 
   if (isEditing) {
     const filters: ChannelFilters[] = [];
@@ -104,7 +116,10 @@ export const ChannelContainer: React.FC<Props> = (props) => {
 
   return (
     <div className="channel__container">
+      {navigate && <Navigate to={path} />}
       <Channel
+        onMentionsClick={onMentionsClick}
+        onMentionsHover={onMentionsHover}
         EmptyStateIndicator={ChannelEmptyState}
         HeaderComponent={ChannelEmptyState}
         Input={TeamMessageInput}
