@@ -13,7 +13,6 @@ import { ChannelListContainer } from '../../../../components/stream-chat/Channel
 type SidePanelProps = {
   props: {
     isCreating: boolean;
-    filters: ChannelFilters[];
     options: Object;
     setCreateType: any;
     setIsCreating: any;
