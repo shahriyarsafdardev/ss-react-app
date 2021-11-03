@@ -43,13 +43,12 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
 };
 
 type Props = {
-  filters: ChannelFilters[];
   cohortUsers: any;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const EditChannel: React.FC<Props> = (props) => {
-  const { filters, setIsEditing, cohortUsers } = props;
+  const { setIsEditing, cohortUsers } = props;
   const { user } = useAuth();
 
   const { channel } = useChatContext<
@@ -99,8 +98,9 @@ export const EditChannel: React.FC<Props> = (props) => {
       {user?.type === 'admin' && <ChannelNameInput {...{ channelName, setChannelName }} />}
       <UserList
         admin={user?.type === 'admin'}
+        query=""
         showMembers={true}
-        {...{ filters, cohortUsers, setSelectedUsers }}
+        {...{ cohortUsers, setSelectedUsers }}
       />
       {user?.type === 'admin' && (
         <div

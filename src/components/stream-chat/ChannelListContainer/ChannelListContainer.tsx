@@ -113,9 +113,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     const initChannel = async () => {
       try {
         const channels = await client.queryChannels({ ...filters[0], name: 'general' }, {});
-        console.log('general channels', channels);
         if (channels) {
-          console.log('active channel', channels[0]);
           await channels[0].watch();
           setActiveChannel(channels[0]);
         }

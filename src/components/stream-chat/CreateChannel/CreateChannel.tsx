@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
+import { Icon } from '@iconify/react';
+import searchFill from '@iconify/icons-eva/search-fill';
 
 import './CreateChannel.css';
+import { Box, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 
 import type { ChannelFilters } from 'stream-chat';
 import { useSnackbar } from 'notistack5';
@@ -25,6 +29,23 @@ type InputProps = {
   channelName: string;
   setChannelName: (value: React.SetStateAction<string>) => void;
 };
+
+const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
+  transition: theme.transitions.create(['box-shadow', 'width'], {
+    easing: theme.transitions.easing.easeInOut,
+    duration: theme.transitions.duration.shorter
+  }),
+  '&.Mui-focused': { boxShadow: theme.customShadows.z8 },
+  '& fieldset': {
+    borderWidth: `1px !important`,
+    borderColor: `${theme.palette.grey[500_32]} !important`
+  },
+  [theme.breakpoints.up('md')]: {
+    width: 240,
+    flexDirection: 'row',
+    '&.Mui-focused': { width: 280 }
+  }
+}));
 
 const ChannelNameInput: React.FC<InputProps> = (props) => {
   const { channelName = '', setChannelName } = props;
@@ -49,14 +70,13 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
 
 type Props = {
   createType: string;
-  filters: ChannelFilters[];
   cohortID: string;
   cohortUsers: any;
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const CreateChannel: React.FC<Props> = (props) => {
-  const { createType, filters, setIsCreating, cohortID, cohortUsers } = props;
+  const { createType, setIsCreating, cohortID, cohortUsers } = props;
 
   const { client, setActiveChannel } = useChatContext<
     TeamAttachmentType,
@@ -72,6 +92,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([client.userID || '']);
   const regexForChannelName = /^[a-zA-Z0-9._-]+$/;
+  const [findUser, setFindUser] = useState<string>('');
 
   const createChannel = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -119,7 +140,24 @@ export const CreateChannel: React.FC<Props> = (props) => {
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       {createType === 'team' && <ChannelNameInput {...{ channelName, setChannelName }} />}
-      <UserList admin={true} showMembers={false} {...{ filters, setSelectedUsers, cohortUsers }} />
+      <FormControl size="small">
+        <SearchStyle
+          value={findUser}
+          onChange={(e) => setFindUser(e.target.value)}
+          placeholder="Search User..."
+          startAdornment={
+            <InputAdornment position="start">
+              <Box component={Icon} icon={searchFill} sx={{ color: 'text.disabled' }} />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+      <UserList
+        admin={true}
+        showMembers={false}
+        query={findUser}
+        {...{ setSelectedUsers, cohortUsers }}
+      />
       <div
         className="create-channel__button-wrapper"
         role="button"
