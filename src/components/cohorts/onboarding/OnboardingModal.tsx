@@ -18,7 +18,6 @@ type HomeResponse = {
   cohort_title: string;
   setup_completed: boolean;
   enrollment_id: string | any;
-  intro_video_url: string;
   discord_invitation_link: string | undefined;
   onboarding_side_image_url: string | undefined;
   onboarding_video_url: string | undefined;
@@ -271,7 +270,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <CohortAuthorPreview style={{ backgroundImage: homeConfig?.onboarding_side_image_url }} />
+      <CohortAuthorPreview
+        style={{ backgroundImage: `url("${homeConfig?.onboarding_side_image_url}")` }}
+      />
+
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
