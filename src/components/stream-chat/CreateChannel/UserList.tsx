@@ -78,10 +78,11 @@ type Props = {
   cohortUsers: any;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   showMembers: boolean;
+  admin: boolean;
 };
 
 export const UserList: React.FC<Props> = (props) => {
-  const { filters, setSelectedUsers, cohortUsers, showMembers } = props;
+  const { filters, setSelectedUsers, cohortUsers, showMembers, admin } = props;
 
   const { client, channel } = useChatContext<
     TeamAttachmentType,
@@ -167,28 +168,31 @@ export const UserList: React.FC<Props> = (props) => {
               ))
             )}
           </ListContainer>
-
-          <div className="channel-name-input__wrapper">
-            <p>Add Members</p>
-          </div>
+          {admin && (
+            <div className="channel-name-input__wrapper">
+              <p>Add Members</p>
+            </div>
+          )}
         </>
       )}
-      <ListContainer>
-        {loading ? (
-          <div className="user-list__message">Loading users...</div>
-        ) : (
-          users?.length &&
-          users.map((user, i) => (
-            <UserItem
-              index={i}
-              key={user.id}
-              setSelectedUsers={setSelectedUsers}
-              member={false}
-              user={user}
-            />
-          ))
-        )}
-      </ListContainer>
+      {admin && (
+        <ListContainer>
+          {loading ? (
+            <div className="user-list__message">Loading users...</div>
+          ) : (
+            users?.length &&
+            users.map((user, i) => (
+              <UserItem
+                index={i}
+                key={user.id}
+                setSelectedUsers={setSelectedUsers}
+                member={false}
+                user={user}
+              />
+            ))
+          )}
+        </ListContainer>
+      )}
     </>
   );
 };
