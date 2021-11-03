@@ -13,7 +13,10 @@
       "presentation_pdf_name": "string",
       "presentation_pdf_url": "string",
       "recording_url": "string",
-      "resources": "string"
+      "resources": "string",
+      "presentation_pdf_downloadable": "boolean",
+      "recording_thumbnail_url": "string",
+      "zoom_url": "string"
     }
   ]
 }
