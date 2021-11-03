@@ -203,7 +203,7 @@ export default function PeersTab() {
             modalUser={modalState}
             cohortID={cohort_id}
             dispalyChatLink={
-              modalState.id !== user?.id && cohort_id === 'c46fa46a-afe5-4175-adf0-65ba653cf5c8'
+              modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'
             }
           />
           <StudentProfileFilters
