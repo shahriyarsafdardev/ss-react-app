@@ -78,11 +78,9 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   const [path, setPath] = useState<string>('');
 
   if (isCreating) {
-    const filters: ChannelFilters[] = [];
-
     return (
       <div className="channel__container">
-        <CreateChannel {...{ createType, filters, cohortID, cohortUsers, setIsCreating }} />
+        <CreateChannel {...{ createType, cohortID, cohortUsers, setIsCreating }} />
       </div>
     );
   }
@@ -99,19 +97,9 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   };
 
   if (isEditing) {
-    const filters: ChannelFilters[] = [];
-
-    if (channel?.state?.members) {
-      const channelMembers = Object.keys(channel.state.members);
-      if (channelMembers.length) {
-        // @ts-expect-error
-        filters.id = { $nin: channelMembers };
-      }
-    }
-
     return (
       <div className="channel__container">
-        <EditChannel {...{ filters, cohortUsers, setIsEditing }} />
+        <EditChannel {...{ cohortUsers, setIsEditing }} />
       </div>
     );
   }

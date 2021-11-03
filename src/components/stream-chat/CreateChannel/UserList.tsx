@@ -87,15 +87,15 @@ const UserItem: React.FC<ItemProps> = (props) => {
 };
 
 type Props = {
-  filters: ChannelFilters[];
   cohortUsers: any;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   showMembers: boolean;
   admin: boolean;
+  query: string;
 };
 
 export const UserList: React.FC<Props> = (props) => {
-  const { filters, setSelectedUsers, cohortUsers, showMembers, admin } = props;
+  const { setSelectedUsers, cohortUsers, showMembers, admin, query } = props;
   const cohortID = window.location.pathname.split('/')[2] || '';
 
   const { client, channel } = useChatContext<
@@ -132,6 +132,12 @@ export const UserList: React.FC<Props> = (props) => {
         let response;
         if (newMembers.length === 0) {
           response = { users: [], duration: '1.12ms' };
+        } else if (query) {
+          response = await client.queryUsers(
+            { id: { $in: newMembers }, $and: [{ name: { $autocomplete: query } }] },
+            { created_at: -1 },
+            { limit: 100 }
+          );
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
@@ -152,7 +158,7 @@ export const UserList: React.FC<Props> = (props) => {
     };
 
     if (client) getUsers();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (error) {
     return (
