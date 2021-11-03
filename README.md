@@ -80,7 +80,7 @@ Fixture: fixtures/cohort_sessions_fixture.json
 
 ### Cohort Home Details
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/home
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/home
 
 Params: { cohort_id: uuid, participant_id: uuid }
 
@@ -88,7 +88,7 @@ Fixture: fixtures/cohort_home_fixture.json
 
 ### Cohort Registration, on each step completion
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/step_completed
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/step_completed
 
 Params: { cohort_id: uuid, step_number: number, enrollment_id: uuid }
 
@@ -96,7 +96,7 @@ Fixture: N/A
 
 ### Saving a User profile details for a cohort
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/registration/save_user_profile
+URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/save_user_profile
 
 Params: {
 cohort_id: uuid,

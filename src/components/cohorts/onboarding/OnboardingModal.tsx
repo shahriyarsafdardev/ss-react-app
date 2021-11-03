@@ -141,7 +141,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   useEffect(() => {
     axios
-      .get(`/cohorts/${cohort_id}/home.json`, { params: { cohort_id, participant_id: user?.id } })
+      .get(`/cohorts/${cohort_id}/onboarding/home.json`, {
+        params: { cohort_id, participant_id: user?.id }
+      })
       .then((res) => res.data)
       .then((payload) => {
         payload.last_recorded_step && setActiveStep(payload.last_recorded_step + 1);
@@ -150,7 +152,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   }, [cohort_id, user?.id]);
 
   const sendStepCompletionRequest = (stepNumber: number, answer?: string) =>
-    axios.post(`/cohorts/${cohort_id}/step_completed.json`, {
+    axios.post(`/cohorts/${cohort_id}/onboarding/step_completed.json`, {
       cohort_id,
       step_number: stepNumber,
       enrollment_id: homeConfig?.enrollment_id,
@@ -183,13 +185,15 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
     onSubmit();
 
-    await axios.post(`/cohorts/${cohort_id}/save_user_profile.json`, uploadData).then((res) => {
-      setModal(false);
-      enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
-      dispatch(updateOnboardingStatus(cohort_id));
+    await axios
+      .post(`/cohorts/${cohort_id}/onboarding/save_user_profile.json`, uploadData)
+      .then((res) => {
+        setModal(false);
+        enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
+        dispatch(updateOnboardingStatus(cohort_id));
 
-      updateProfile({ ...res.data });
-    });
+        updateProfile({ ...res.data });
+      });
   };
 
   const Step1 = () => (

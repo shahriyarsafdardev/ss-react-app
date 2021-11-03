@@ -85,7 +85,7 @@ export default function SessionsTab() {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
       axios
-        .get(`/cohorts/${cohort.id}/onboarding_complete.json`)
+        .get(`/cohorts/${cohort.id}/onboarding/onboarding_complete.json`)
         .then((res) => res.data)
         .then((payload) => {
           setHasOnboarded(payload);
