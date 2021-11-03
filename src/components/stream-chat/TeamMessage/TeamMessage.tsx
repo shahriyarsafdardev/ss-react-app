@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
 
 import './TeamMessage.css';
@@ -10,6 +12,7 @@ type Props = MessageUIComponentProps & {
 export const TeamMessage: React.FC<Props> = (props) => {
   const { setPinsOpen } = props;
   const cohortID = window.location.pathname.split('/')[2] || '';
+  const [navigate, setNavigate] = useState<boolean>(false);
 
   const { handleOpenThread, message } = useMessageContext();
 
@@ -19,7 +22,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
   };
 
   const handleUserClick = () => {
-    window.location.href = `/cohorts/${cohortID}/peers?user_id=${message.user?.id}`;
+    setNavigate(true);
   };
 
   const onUserHover = (event: React.BaseSyntheticEvent) => {
@@ -28,6 +31,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
 
   return (
     <div className={message.pinned ? 'pinned-message' : 'unpinned-message'}>
+      {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`} />}
       <MessageTeam
         {...props}
         onUserClick={handleUserClick}
