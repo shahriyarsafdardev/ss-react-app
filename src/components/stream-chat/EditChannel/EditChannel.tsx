@@ -18,6 +18,8 @@ import type {
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
+import useAuth from '../../../hooks/useAuth';
+
 type InputProps = {
   channelName: string;
   setChannelName: (value: React.SetStateAction<string>) => void;
@@ -48,6 +50,7 @@ type Props = {
 
 export const EditChannel: React.FC<Props> = (props) => {
   const { filters, setIsEditing, cohortUsers } = props;
+  const { user } = useAuth();
 
   const { channel } = useChatContext<
     TeamAttachmentType,
@@ -90,20 +93,26 @@ export const EditChannel: React.FC<Props> = (props) => {
   return (
     <div className="edit-channel__container">
       <div className="edit-channel__header">
-        <p>Edit Channel</p>
+        {user?.type === 'admin' ? <p>Edit Channel</p> : <p>Channel Info</p>}
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
-      <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList showMembers={true} {...{ filters, cohortUsers, setSelectedUsers }} />
-      <div
-        className="edit-channel__button-wrapper"
-        role="button"
-        onKeyPress={() => {}}
-        tabIndex={0}
-        onClick={updateChannel}
-      >
-        <p>Save Changes</p>
-      </div>
+      {user?.type === 'admin' && <ChannelNameInput {...{ channelName, setChannelName }} />}
+      <UserList
+        admin={user?.type === 'admin'}
+        showMembers={true}
+        {...{ filters, cohortUsers, setSelectedUsers }}
+      />
+      {user?.type === 'admin' && (
+        <div
+          className="edit-channel__button-wrapper"
+          role="button"
+          onKeyPress={() => {}}
+          tabIndex={0}
+          onClick={updateChannel}
+        >
+          <p>Save Changes</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -88,8 +88,10 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   }
 
   const onMentionsClick = (event: React.BaseSyntheticEvent, user: any) => {
-    setPath(`/cohorts/${cohortID}/peers?user_id=${user?.id}`);
-    setNavigate(true);
+    if (user?.id) {
+      setPath(`/cohorts/${cohortID}/peers?user_id=${user?.id}`);
+      setNavigate(true);
+    }
   };
 
   const onMentionsHover = (event: React.BaseSyntheticEvent) => {

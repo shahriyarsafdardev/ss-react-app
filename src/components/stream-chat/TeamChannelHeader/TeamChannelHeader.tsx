@@ -155,17 +155,15 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
         <div className="team-channel-header__channel-wrapper">
           {getConfirmationBox('Are you sure you want to delete this channel?')}
           <p className="team-channel-header__name">{teamHeader}</p>
-          {user?.type === 'admin' && (
-            <span
-              style={{ display: 'flex' }}
-              role="button"
-              onKeyPress={() => {}}
-              tabIndex={0}
-              onClick={() => setIsEditing(true)}
-            >
-              <ChannelInfo />
-            </span>
-          )}
+          <span
+            style={{ display: 'flex' }}
+            role="button"
+            onKeyPress={() => {}}
+            tabIndex={0}
+            onClick={() => setIsEditing(true)}
+          >
+            <ChannelInfo />
+          </span>
           {getDeleteButton()}
         </div>
       )}
