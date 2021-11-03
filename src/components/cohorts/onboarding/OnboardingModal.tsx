@@ -19,7 +19,11 @@ type HomeResponse = {
   setup_completed: boolean;
   enrollment_id: string | any;
   intro_video_url: string;
-  discord_invitation_link: string;
+  discord_invitation_link: string | undefined;
+  onboarding_side_image_url: string | undefined;
+  onboarding_video_url: string | undefined;
+  onboarding_video_thumbnail_url: string | undefined;
+  onboarding_header: string | undefined;
   last_recorded_step: number;
   participant_profile: {
     first_name: string;
@@ -45,7 +49,6 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   height: MODAL_HEIGHT,
   width: '430px',
   alignSelf: 'center',
-  backgroundImage: `url("https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-side-banner.jpg")`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: '100% 100%',
   borderTopLeftRadius: '25px',
@@ -199,8 +202,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const Step1 = () => (
     <Step1Container>
       <StyledVideoPreview
-        src="https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+EODP+F21.mp4"
-        poster="https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-thumbnail-3.jpg"
+        src={homeConfig?.onboarding_video_url}
+        poster={homeConfig?.onboarding_video_thumbnail_url}
         controls
       />
     </Step1Container>
@@ -252,7 +255,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const headContent = () => {
     if (activeStep === 0) {
-      return `Welcome to EODP F21! Here is a message from your instructor!`;
+      return homeConfig?.onboarding_header;
     }
 
     if (activeStep >= 1 && activeStep <= 5) {
@@ -268,7 +271,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
-      <CohortAuthorPreview />
+      <CohortAuthorPreview style={{ backgroundImage: homeConfig?.onboarding_side_image_url }} />
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
