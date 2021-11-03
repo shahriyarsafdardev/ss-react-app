@@ -20,12 +20,12 @@ import type {
   TeamReactionType,
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
+import useAuth from '../../../hooks/useAuth';
 
 type Props = Omit<ChannelListProps, 'filters'> & {
   setCreateType: React.Dispatch<React.SetStateAction<string>>;
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  filters: ChannelFilters[];
   cohortID: string;
   loggedinUserID: string;
   cohortUsers: any;
@@ -49,7 +49,6 @@ const CompanyHeader = () => (
 
 export const ChannelListContainer: React.FC<Props> = (props) => {
   const {
-    filters,
     options,
     setCreateType,
     setIsCreating,
@@ -59,6 +58,12 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     sort,
     loggedinUserID
   } = props;
+  const { user } = useAuth();
+
+  const filters: ChannelFilters[] = [
+    { type: 'team', members: { $in: [user?.stream_id] }, team: cohortID },
+    { type: 'messaging', members: { $in: [user?.stream_id] }, team: cohortID }
+  ];
 
   const url = new URLSearchParams(useLocation().search);
   const { client, setActiveChannel } = useChatContext<
@@ -103,6 +108,23 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     };
     initChannel();
   }, [url.get('channel_id'), url.get('message'), url.get('receiver_id')]);
+
+  useEffect(() => {
+    const initChannel = async () => {
+      try {
+        const channels = await client.queryChannels({ ...filters[0], name: 'general' }, {});
+        console.log('general channels', channels);
+        if (channels) {
+          console.log('active channel', channels[0]);
+          await channels[0].watch();
+          setActiveChannel(channels[0]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    initChannel();
+  }, []);
 
   const duplicateChat = (channel: any) => {
     if (channel?.data?.member_count === 2) {
