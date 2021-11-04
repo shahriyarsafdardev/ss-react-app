@@ -109,21 +109,6 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     initChannel();
   }, [url.get('channel_id'), url.get('message'), url.get('receiver_id')]);
 
-  useEffect(() => {
-    const initChannel = async () => {
-      try {
-        const channels = await client.queryChannels({ ...filters[0], name: 'general' }, {});
-        if (channels) {
-          await channels[0].watch();
-          setActiveChannel(channels[0]);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    initChannel();
-  }, []);
-
   const duplicateChat = (channel: any) => {
     if (channel?.data?.member_count === 2) {
       const userIDs = Object.values(channel.state.members).map((member: any) => member?.user_id);
