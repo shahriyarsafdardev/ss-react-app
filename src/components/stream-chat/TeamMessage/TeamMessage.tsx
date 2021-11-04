@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
@@ -32,11 +32,24 @@ export const TeamMessage: React.FC<Props> = (props) => {
   const [navigate, setNavigate] = useState<boolean>(false);
   const [hoveredUser, setHoveredUser] = useState<StudentProfile>();
   const { user } = useAuth();
+  const refContainer = useRef<any>();
 
   const { handleOpenThread, message } = useMessageContext();
   const peer = peers.filter((peer) => peer.id === message?.user?.id)[0];
   const currentUser = user?.id === message?.user?.id;
 
+  useEffect(() => {
+    if (
+      peer &&
+      peer.current_company?.name &&
+      refContainer?.current?.children[0]?.children[1]?.children[0]?.dataset?.testid ===
+        'message-team-author'
+    ) {
+      refContainer?.current?.children[0]?.children[1]?.children[0].firstElementChild.replaceChildren(
+        `${peer.first_name} ${peer.last_name} | ${peer.current_company.name}`
+      );
+    }
+  }, []);
   const handleOpenThreadOverride = (event: React.BaseSyntheticEvent) => {
     if (setPinsOpen) setPinsOpen(false);
     handleOpenThread(event);
@@ -50,17 +63,19 @@ export const TeamMessage: React.FC<Props> = (props) => {
   };
 
   const onUserHover = (event: React.BaseSyntheticEvent) => {
-    if (peer && !currentUser) {
-      event.target.style.cursor = 'pointer';
-      setHoveredUser(peer);
-      event.target.parentElement.removeAttribute('title');
-      setIsShown(true);
-    }
+    event.target.style.cursor = 'pointer';
+    // if (peer && !currentUser) {
+    //   event.target.style.cursor = 'pointer';
+    //   setHoveredUser(peer);
+    //   event.target.parentElement.removeAttribute('title');
+    //   setIsShown(true);
+    // }
   };
   return (
     <div
       className={message.pinned ? 'pinned-message' : 'unpinned-message'}
       onMouseLeave={() => setIsShown(false)}
+      ref={refContainer}
     >
       {navigate && <Navigate to={path} />}
       {isShown && hoveredUser && (
