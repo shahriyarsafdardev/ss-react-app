@@ -1,11 +1,11 @@
 .channel-preview__wrapper {
-  height: 47px;
+  min-height: 47px;
   display: flex;
   align-items: center;
 }
 
 .channel-preview__wrapper__selected {
-  height: 47px;
+  min-height: 47px;
   display: flex;
   align-items: center;
   background: rgba(77, 77, 205, 0.04);
@@ -28,7 +28,7 @@
   font-family: Helvetica Neue, sans-serif;
   font-size: 14px;
   color: #525f7f;
-  padding: 0 16px;
+  padding: 10px 16px;
   height: 100%;
   width: 100%;
   text-overflow: ellipsis;
