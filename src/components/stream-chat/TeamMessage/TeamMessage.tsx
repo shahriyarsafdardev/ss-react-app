@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
@@ -28,10 +28,18 @@ export const TeamMessage: React.FC<Props> = (props) => {
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [navigate, setNavigate] = useState<boolean>(false);
   const [hoveredUser, setHoveredUser] = useState<StudentProfile>();
+  const refContainer = useRef<any>();
 
   const { handleOpenThread, message } = useMessageContext();
   const peer = peers.filter((peer) => peer.id === message?.user?.id)[0];
 
+  useEffect(() => {
+    if (peer && peer.current_company?.name) {
+      refContainer?.current?.children[0]?.children[1]?.children[0].firstElementChild.replaceChildren(
+        `${message.user?.name} | ${peer.current_company.name}`
+      );
+    }
+  }, []);
   const handleOpenThreadOverride = (event: React.BaseSyntheticEvent) => {
     if (setPinsOpen) setPinsOpen(false);
     handleOpenThread(event);
@@ -54,6 +62,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
     <div
       className={message.pinned ? 'pinned-message' : 'unpinned-message'}
       onMouseLeave={() => setIsShown(false)}
+      ref={refContainer}
     >
       {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`} />}
       {isShown && hoveredUser && (
