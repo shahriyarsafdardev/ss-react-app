@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
+import { Channel, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
 
 import './ChannelContainer.css';
-
-import type { ChannelFilters } from 'stream-chat';
 
 import { ChannelInner } from './ChannelInner';
 import { ChannelEmptyState } from '../ChannelEmptyState/ChannelEmptyState';
@@ -14,16 +12,7 @@ import { TeamMessage } from '../TeamMessage/TeamMessage';
 import { TeamMessageInput } from '../TeamMessageInput/TeamMessageInput';
 
 import { CloseThreadIcon } from '../../../assets';
-
-import type {
-  TeamAttachmentType,
-  TeamChannelType,
-  TeamCommandType,
-  TeamEventType,
-  TeamMessageType,
-  TeamReactionType,
-  TeamUserType
-} from '../../../pages/dashboard/cohorts/messaging/Messaging';
+import { StudentProfile } from '../../../@types/cohorts';
 
 type Props = {
   createType: string;
@@ -31,6 +20,7 @@ type Props = {
   isEditing?: boolean;
   cohortID: string;
   cohortUsers: any;
+  peers: StudentProfile[];
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -60,18 +50,16 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
 };
 
 export const ChannelContainer: React.FC<Props> = (props) => {
-  const { createType, isCreating, isEditing, setIsCreating, setIsEditing, cohortID, cohortUsers } =
-    props;
-
-  const { channel } = useChatContext<
-    TeamAttachmentType,
-    TeamChannelType,
-    TeamCommandType,
-    TeamEventType,
-    TeamMessageType,
-    TeamReactionType,
-    TeamUserType
-  >();
+  const {
+    createType,
+    isCreating,
+    isEditing,
+    setIsCreating,
+    setIsEditing,
+    cohortID,
+    cohortUsers,
+    peers
+  } = props;
 
   const [pinsOpen, setPinsOpen] = useState(false);
   const [navigate, setNavigate] = useState<boolean>(false);
@@ -113,7 +101,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
         EmptyStateIndicator={ChannelEmptyState}
         HeaderComponent={ChannelEmptyState}
         Input={TeamMessageInput}
-        Message={(messageProps) => <TeamMessage {...messageProps} {...{ setPinsOpen }} />}
+        Message={(messageProps) => <TeamMessage {...messageProps} {...{ setPinsOpen, peers }} />}
         ThreadHeader={(threadProps) => <ThreadHeader {...threadProps} {...{ setPinsOpen }} />}
         TypingIndicator={() => null}
       >

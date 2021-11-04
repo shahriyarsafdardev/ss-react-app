@@ -3,7 +3,8 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import { RootState, useSelector } from '../../../../redux/store';
+import { RootState, useSelector, useDispatch } from '../../../../redux/store';
+import { getPeers } from '../../../../redux/slices/cohort';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
 import './Messaging.css';
@@ -67,6 +68,15 @@ export default function Messaging() {
     left: '50%'
   }));
 
+  const dispatch = useDispatch();
+  const { peers } = cohort || { peers: [] };
+
+  useEffect(() => {
+    if (cohort && !peers) {
+      dispatch(getPeers(cohortID.toString()));
+    }
+  }, [dispatch, cohort]);
+
   useEffect(() => {
     const initChat = async () => {
       const client = StreamChat.getInstance<
@@ -105,7 +115,7 @@ export default function Messaging() {
     }
   }, [isMobileNavVisible]);
 
-  if (!client) {
+  if (!client || !peers) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -142,6 +152,7 @@ export default function Messaging() {
                 setIsCreating,
                 setIsEditing,
                 cohortID,
+                peers,
                 cohortUsers: cohort?.enrollments || []
               }}
             />
