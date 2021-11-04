@@ -1,5 +1,7 @@
 const serverUrl = Cypress.env('serverUrl');
 
+import homeFixture from '../fixtures/onboarding/home.json';
+
 describe('Onboarding Flow', () => {
   const assertStepCompleted = (
     step_number,
@@ -9,10 +11,17 @@ describe('Onboarding Flow', () => {
   ) => {
     cy.intercept(
       'POST',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/step_completed.json`
-    ).as('stepComplete');
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/step_completed.json`,
+      (req) => {
+        req.reply({
+          statusCode: 200, // default
+          fixture: 'onboarding/stepCompleted'
+        });
+      }
+    ).as('step_completed');
+
     cy.get('[data-testid=btn-next]').click();
-    cy.wait('@stepComplete').then(({ request, response }) => {
+    cy.wait('@step_completed').then(({ request, response }) => {
       expect(response.statusCode).to.eq(200);
       expect(request.body.step_number).to.eq(step_number);
       expect(request.body.cohort_id).to.eq(cohortId);
@@ -42,20 +51,20 @@ describe('Onboarding Flow', () => {
     cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
     cy.route(
       'GET',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding_complete.json`,
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/onboarding_complete.json`,
       '@onboardingData'
     ).as('onboarding_complete');
     cy.route(
       'GET',
-      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=8864c717-587d-472a-929a-8e5f298024da-1`,
+      `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=8864c717-587d-472a-929a-8e5f298024da-1`,
       '@home'
     ).as('homeData');
   });
 
   it('should log user into app', () => {
     cy.visit('/');
-    const email = 'aqibmaqqbool@gmail.com';
-    const password = 'aqib1234';
+    const email = 'waqas@scholar.com';
+    const password = '123456';
     cy.get('[data-testid=email]').type(email);
     cy.get('[data-testid=password]').type(password);
     cy.get('[data-testid=loginBtn]').click({ multiple: true, force: true });
@@ -70,26 +79,17 @@ describe('Onboarding Flow', () => {
         // Assert that the side image has the correct src
         cy.get('[data-testid=onboarding-image]')
           .should('have.css', 'background-image')
-          .and(
-            'include',
-            'https://scholarsite-public.s3.eu-west-2.amazonaws.com/author-preview-min.png'
-          );
+          .and('include', homeFixture.onboarding_side_image_url);
       });
     });
     context('Displays Page 1', () => {
       it('Asserts data of Page 1', () => {
         // Assert title
-        cy.get('[data-testid=onboard-title]').should(
-          'have.text',
-          'Welcome to BINFX F21! Here is a message from your instructors!'
-        );
+        cy.get('[data-testid=onboard-title]').should('have.text', homeFixture.onboarding_header);
         // Assert src of video
         cy.get('[data-testid=onboard-video]')
           .should('have.attr', 'src')
-          .and(
-            'equal',
-            'https://scholarsite-public.s3-accelerate.amazonaws.com/Welcome+Video+-+BINFX+F21.mp4'
-          );
+          .and('equal', homeFixture.onboarding_video_url);
       });
       it('Sends message to backend when next is clicked', () => {
         assertStepCompleted(0);
@@ -250,7 +250,7 @@ describe('Onboarding Flow', () => {
         cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
         cy.route(
           'POST',
-          `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/save_user_profile.json`,
+          `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/save_user_profile.json`,
           '@saveProfile'
         ).as('save_user_profile');
         cy.get('[data-testid=btn-submit]').click();

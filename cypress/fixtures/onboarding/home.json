@@ -6,6 +6,10 @@
   "intro_video_url": "https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4",
   "discord_invitation_link": "https://discord.com/",
   "last_recorded_step": 0,
+  "onboarding_header": "Test header",
+  "onboarding_side_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-side-banner.jpg",
+  "onboarding_video_thumbnail_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/steve-tadelis-recording-thumbnail.png",
+  "onboarding_video_url": "https://cohort-videos.s3-accelerate.amazonaws.com/final-trimmed-recording.mp4",
   "participant_profile": {
     "first_name": "Aqib",
     "last_name": "Maqbool",
