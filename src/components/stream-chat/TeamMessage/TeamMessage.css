@@ -1,3 +1,27 @@
+.str-chat__avatar-tooltip {
+  position: absolute;
+  z-index: 5;
+  background-color: #fff;
+  border: 1px solid gray;
+  box-shadow: gray 0px 2px 1px 0px;
+  border-radius: 5px;
+  font-size: small;
+  margin-left: 100px;
+  margin-bottom: 5px;
+}
+
+.str-chat__avatar-tooltip div {
+  padding: 0 5px;
+}
+
+.logged-in {
+  color: green;
+}
+
+.logged-out {
+  color: red;
+}
+
 .str-chat__message-team:hover {
   background: #e9e9ea;
 }

@@ -11,6 +11,7 @@ type Props = MessageUIComponentProps & {
 
 export const TeamMessage: React.FC<Props> = (props) => {
   const { setPinsOpen } = props;
+  const [isShown, setIsShown] = useState(false);
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [navigate, setNavigate] = useState<boolean>(false);
 
@@ -27,11 +28,32 @@ export const TeamMessage: React.FC<Props> = (props) => {
 
   const onUserHover = (event: React.BaseSyntheticEvent) => {
     event.target.style.cursor = 'pointer';
+    event.target.parentElement.removeAttribute('title');
+    setIsShown(true);
   };
 
   return (
-    <div className={message.pinned ? 'pinned-message' : 'unpinned-message'}>
+    <div
+      className={message.pinned ? 'pinned-message' : 'unpinned-message'}
+      onMouseLeave={() => setIsShown(false)}
+    >
       {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`} />}
+      {isShown && (
+        <div className="str-chat__avatar-tooltip">
+          <div>
+            <h2>
+              <b>{message.user?.name}</b>
+              {message.user?.online ? (
+                <span className="logged-in">●</span>
+              ) : (
+                <span className="logged-out">●</span>
+              )}
+            </h2>
+            <p>Role: {message.user?.role}</p>
+            <p>Status: {message.user?.online ? 'online' : 'offline'}</p>
+          </div>
+        </div>
+      )}
       <MessageTeam
         {...props}
         onUserClick={handleUserClick}
