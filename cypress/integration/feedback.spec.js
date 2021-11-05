@@ -1,67 +1,5 @@
 import moment from 'moment';
 
-// const serverUrl = Cypress.env('serverUrl');
-import sessionFixture from '../fixtures/session/session_for_feedback.json';
-
-// describe('Survey Modal Flow', () => {
-//   before(() => {
-//     // network stub
-//     cy.server();
-
-//     cy.fixture('feedback/feedbackQuestions.json').as('questions');
-//     cy.route(
-//       'GET',
-//       `${serverUrl}/cohort_sessions/d1aa12c2-7658-4490-8fab-ec2b5187fe13/survey_questions.json`,
-//       '@questions'
-//     ).as('survey_questions');
-//   });
-
-//   it('should log user into app', () => {
-//     // cy.wait(200000);
-//     cy.login();
-//     cy.wait(3000);
-//   });
-//   it('should test the feedback Modal', () => {
-//     var dateTime = moment(sessionFixture.sessions[1].time).add(5, 'hours');
-//     cy.clock(new Date(dateTime.format()));
-//     cy.get('#session-list-1').click({ force: true });
-//     cy.server();
-//     cy.fixture('feedback/surveyResponse.json').as('submitResponse');
-//     cy.route(
-//       'POST',
-//       `${serverUrl}/cohort_sessions/submit_survey_responses.json`,
-//       '@submitResponse'
-//     ).as('submit_survey_responses');
-
-//     // cy.get('#session-list-').click({ force: true });
-//     //it selects option 1
-//     cy.get('[data-testid=option-1]').click();
-//     //it checks if right option is selected
-//     cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
-//     cy.get('[data-testid=btn-next]').click();
-//     //it selects option 2
-//     cy.get('[data-testid=option-2]').click();
-//     //it checks if right option is selected
-//     cy.get('[data-testid=option-2]').should('have.attr', 'data-checked').and('equal', 'true');
-//     cy.get('[data-testid=btn-next]').click();
-//     //it selects option 3
-//     cy.get('[data-testid=option-3]').click();
-//     //it checks if right option is selected
-//     cy.get('[data-testid=option-3]').should('have.attr', 'data-checked').and('equal', 'true');
-//     cy.get('[data-testid=btn-next]').click();
-//     //it types text in textfield
-//     cy.get('[data-testid=survey-text]').type('Session was so good');
-//     //it checks if correct text is typed
-//     cy.get('[data-testid=survey-text]').should('have.text', 'Session was so good');
-//     cy.get('[data-testid=btn-next]').click();
-//     cy.get('[data-testid=survey-text]').type('Everything was fine');
-//     //it checks if correct text is typed
-//     cy.get('[data-testid=survey-text]').should('have.text', 'Everything was fine');
-//     cy.get('[data-testid=btn-next]').click();
-//   });
-// });
-
-//////////////////
 const serverUrl = Cypress.env('serverUrl');
 import feedbackFixture from '../fixtures/feedback/feedbackQuestions.json';
 
@@ -109,6 +47,11 @@ describe('Session Survey Flow', () => {
       it('Asserts data of Question 1', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[0].title);
+        //Asserts description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[0].description
+        );
         // Asserts the options
         cy.get('[data-testid=option-1] > input').should('have.value', 'Strongly Agree');
         cy.get('[data-testid=option-2] > input').should('have.value', 'Agree');
@@ -137,6 +80,11 @@ describe('Session Survey Flow', () => {
       it('Asserts data of Question 2', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[1].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[1].description
+        );
         // Asserts the options
         cy.get('[data-testid=option-1] > input').should('have.value', 'Strongly Agree');
         cy.get('[data-testid=option-2] > input').should('have.value', 'Agree');
@@ -145,9 +93,9 @@ describe('Session Survey Flow', () => {
         cy.get('[data-testid=option-5] > input').should('have.value', 'Strongly Disagree');
       });
 
-      // it('Asserts that button is enabled before slecting any option', () => {
-      //   cy.get('[data-testid=btn-next]').should('not.be.disabled');
-      // });
+      it('Asserts that button is enabled before slecting any option', () => {
+        cy.get('[data-testid=btn-next]').should('not.be.disabled');
+      });
 
       it('selects the option and assert it is selected', () => {
         cy.get('[data-testid=option-2]').click();
@@ -161,15 +109,20 @@ describe('Session Survey Flow', () => {
       });
     });
 
-    context('When Question type is text-input', () => {
+    context('When Question type is text-input and is mandatory', () => {
       it('Asserts data of Question 3', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[2].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[2].description
+        );
       });
 
-      // it('Asserts that button is enabled before slecting any option', () => {
-      //   cy.get('[data-testid=btn-next]').should('not.be.disabled');
-      // });
+      it('Asserts that button is disabled', () => {
+        cy.get('[data-testid=btn-next]').should('be.disabled');
+      });
 
       it('types the text and assert it is typed correctly', () => {
         cy.get('[data-testid=survey-text]').type('Session was so good');
@@ -180,6 +133,61 @@ describe('Session Survey Flow', () => {
       it('clicks the next button', () => {
         cy.get('[data-testid=btn-next]').should('not.be.disabled');
         cy.get('[data-testid=btn-next]').click();
+      });
+    });
+
+    context('Checks if back button is working', () => {
+      it('clicks back button three times', () => {
+        cy.get('[data-testid=btn-previous]').click();
+        cy.get('[data-testid=btn-previous]').click();
+        cy.get('[data-testid=btn-previous]').click();
+      });
+
+      it('Goes back to last page to submit form', () => {
+        cy.get('[data-testid=btn-next]').click();
+        cy.get('[data-testid=btn-next]').click();
+        cy.get('[data-testid=btn-next]').click();
+      });
+    });
+
+    context('When Question type is text-input and is not mandatory', () => {
+      it('Asserts data of Question 3', () => {
+        // Assert question
+        cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[3].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[3].description
+        );
+      });
+
+      it('types the text and assert it is typed correctly', () => {
+        cy.get('[data-testid=survey-text]').type('Everything was fine');
+        //it checks if correct text is typed
+        cy.get('[data-testid=survey-text]').should('have.text', 'Everything was fine');
+      });
+    });
+
+    context('Submits the form', () => {
+      before(() => {
+        cy.server();
+        cy.fixture('feedback/surveyResponse.json').as('submitResponse');
+        cy.route(
+          'POST',
+          `${serverUrl}/cohort_sessions/submit_survey_responses.json`,
+          '@submitResponse'
+        ).as('submit_survey_responses');
+      });
+      it('Asserts answers mapping to their respective question IDs', () => {
+        cy.get('[data-testid=btn-next]').click();
+        cy.wait('@submit_survey_responses').then(({ response, request }) => {
+          const questionIDs = Object.keys(request.body.response);
+
+          expect(request.body.response[questionIDs[0]]).to.eq('Strongly Agree');
+          expect(request.body.response[questionIDs[1]]).to.eq('Agree');
+          expect(request.body.response[questionIDs[2]]).to.eq('Session was so good');
+          expect(request.body.response[questionIDs[3]]).to.eq('Everything was fine');
+        });
       });
     });
   });

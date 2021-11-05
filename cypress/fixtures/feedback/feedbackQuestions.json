@@ -7,7 +7,7 @@
     "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": true,
-    "description": null
+    "description": "Description of question 1"
   },
   {
     "id": "05aa0a4f-d97c-4ad5-83b6-05ec5f990c0e",
@@ -17,7 +17,7 @@
     "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": false,
-    "description": null
+    "description": "description of question 2"
   },
   {
     "id": "ad7129c8-d93d-4442-9887-13628609aca7",
@@ -27,19 +27,8 @@
     "options": [],
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": true,
-    "description": null
+    "description": "description of question 3"
   },
-  {
-    "id": "35e7d1a0-67f3-4473-a503-f3bad7b7517c",
-    "title": "Did the technology used in the session work well?",
-    "question_type": "multiple-choice",
-    "index": 3,
-    "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
-    "mandatory": true,
-    "description": null
-  },
-
   {
     "id": "62a84007-a67e-4533-8407-8b083de691f8",
     "title": "What could have been done differently in Session 1?",
@@ -47,7 +36,7 @@
     "index": 4,
     "options": [],
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
-    "mandatory": true,
-    "description": null
+    "mandatory": false,
+    "description": "last question"
   }
 ]
