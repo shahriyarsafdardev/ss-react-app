@@ -25,6 +25,7 @@ export type SurveyContent = {
   question_type: string;
   title: string;
   options?: string[];
+  description: string | null;
   submitted_answer: string | null;
 };
 

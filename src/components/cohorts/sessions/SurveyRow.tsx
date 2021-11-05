@@ -39,6 +39,15 @@ const QuestionText = styled('p')(() => ({
   color: '#071A33'
 }));
 
+const QuestionDescription = styled('label')(() => ({
+  fontWeight: 400,
+  fontSize: '12px',
+  lineHeight: '18px',
+  fontFamily: 'Public Sans',
+  fontStyle: 'normal',
+  color: '#637381'
+}));
+
 const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
@@ -213,6 +222,9 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
   return (
     <RowContainer>
       <QuestionText data-testid="onboard-question">{item.title}</QuestionText>
+      <QuestionDescription data-testid="onboard-description">
+        {item?.description}
+      </QuestionDescription>
       <br />
       {answerFields()}
     </RowContainer>
