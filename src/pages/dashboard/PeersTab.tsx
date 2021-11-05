@@ -55,7 +55,7 @@ export default function PeersTab() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
-  const { peers } = cohort || { peers: [] };
+  const { peers } = cohort || { peers: null };
 
   const createSelectMenu = (items: string) => {
     const newItems: any = peers
