@@ -53,11 +53,26 @@ describe('Session Survey Flow', () => {
           feedbackFixture[0].description
         );
         // Asserts the options
-        cy.get('[data-testid=option-1] > input').should('have.value', 'Strongly Agree');
-        cy.get('[data-testid=option-2] > input').should('have.value', 'Agree');
-        cy.get('[data-testid=option-3] > input').should('have.value', 'Neutral');
-        cy.get('[data-testid=option-4] > input').should('have.value', 'Disagree');
-        cy.get('[data-testid=option-5] > input').should('have.value', 'Strongly Disagree');
+        cy.get('[data-testid=option-1] > input').should(
+          'have.value',
+          feedbackFixture[0].options[0]
+        );
+        cy.get('[data-testid=option-2] > input').should(
+          'have.value',
+          feedbackFixture[0].options[1]
+        );
+        cy.get('[data-testid=option-3] > input').should(
+          'have.value',
+          feedbackFixture[0].options[2]
+        );
+        cy.get('[data-testid=option-4] > input').should(
+          'have.value',
+          feedbackFixture[0].options[3]
+        );
+        cy.get('[data-testid=option-5] > input').should(
+          'have.value',
+          feedbackFixture[0].options[4]
+        );
       });
 
       it('Asserts that button is disabled', () => {
@@ -86,11 +101,26 @@ describe('Session Survey Flow', () => {
           feedbackFixture[1].description
         );
         // Asserts the options
-        cy.get('[data-testid=option-1] > input').should('have.value', 'Strongly Agree');
-        cy.get('[data-testid=option-2] > input').should('have.value', 'Agree');
-        cy.get('[data-testid=option-3] > input').should('have.value', 'Neutral');
-        cy.get('[data-testid=option-4] > input').should('have.value', 'Disagree');
-        cy.get('[data-testid=option-5] > input').should('have.value', 'Strongly Disagree');
+        cy.get('[data-testid=option-1] > input').should(
+          'have.value',
+          feedbackFixture[1].options[0]
+        );
+        cy.get('[data-testid=option-2] > input').should(
+          'have.value',
+          feedbackFixture[1].options[1]
+        );
+        cy.get('[data-testid=option-3] > input').should(
+          'have.value',
+          feedbackFixture[1].options[2]
+        );
+        cy.get('[data-testid=option-4] > input').should(
+          'have.value',
+          feedbackFixture[1].options[3]
+        );
+        cy.get('[data-testid=option-5] > input').should(
+          'have.value',
+          feedbackFixture[1].options[4]
+        );
       });
 
       it('Asserts that button is enabled before slecting any option', () => {
@@ -151,7 +181,7 @@ describe('Session Survey Flow', () => {
     });
 
     context('When Question type is text-input and is not mandatory', () => {
-      it('Asserts data of Question 3', () => {
+      it('Asserts data of Question 4', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[3].title);
         // Asset Description
@@ -169,7 +199,7 @@ describe('Session Survey Flow', () => {
     });
 
     context('Submits the form', () => {
-      before(() => {
+      it('Asserts answers mapping to their respective question IDs', () => {
         cy.server();
         cy.fixture('feedback/surveyResponse.json').as('submitResponse');
         cy.route(
@@ -177,8 +207,6 @@ describe('Session Survey Flow', () => {
           `${serverUrl}/cohort_sessions/submit_survey_responses.json`,
           '@submitResponse'
         ).as('submit_survey_responses');
-      });
-      it('Asserts answers mapping to their respective question IDs', () => {
         cy.get('[data-testid=btn-next]').click();
         cy.wait('@submit_survey_responses').then(({ response, request }) => {
           const questionIDs = Object.keys(request.body.response);
