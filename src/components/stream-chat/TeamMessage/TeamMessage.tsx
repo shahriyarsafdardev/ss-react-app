@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from '@material-ui/core';
+
 import { Navigate } from 'react-router-dom';
 
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
@@ -12,7 +14,7 @@ type Props = MessageUIComponentProps & {
 };
 
 const UserSpecialities = ({ specialities, type }: { specialities: String[]; type: string }) => (
-  <p>
+  <p className="str-chat__avatar-tooltip-info-speciality">
     <strong>{type}: </strong>
     {specialities.map((speciality, i) => (
       <span key={i}>
@@ -25,6 +27,7 @@ const UserSpecialities = ({ specialities, type }: { specialities: String[]; type
 export const TeamMessage: React.FC<Props> = (props) => {
   const { setPinsOpen, peers } = props;
   const [isShown, setIsShown] = useState(false);
+  const [path, setPath] = useState<string>('');
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [navigate, setNavigate] = useState<boolean>(false);
   const [hoveredUser, setHoveredUser] = useState<StudentProfile>();
@@ -33,19 +36,25 @@ export const TeamMessage: React.FC<Props> = (props) => {
   const { handleOpenThread, message } = useMessageContext();
   const peer = peers.filter((peer) => peer.id === message?.user?.id)[0];
 
-  useEffect(() => {
-    if (peer && peer.current_company?.name) {
-      refContainer?.current?.children[0]?.children[1]?.children[0].firstElementChild.replaceChildren(
-        `${message.user?.name} | ${peer.current_company.name}`
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (peer && peer.current_company?.name) {
+  //     refContainer?.current?.children[0]?.children[1]?.children[0].firstElementChild.replaceChildren(
+  //       `${message.user?.name} | ${peer.current_company.name}`
+  //     );
+  //   }
+  // }, []);
   const handleOpenThreadOverride = (event: React.BaseSyntheticEvent) => {
     if (setPinsOpen) setPinsOpen(false);
     handleOpenThread(event);
   };
 
   const handleUserClick = () => {
+    setPath(`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`);
+    setNavigate(true);
+  };
+
+  const handleModalClick = () => {
+    setPath(`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${message.user?.id}`);
     setNavigate(true);
   };
 
@@ -57,37 +66,38 @@ export const TeamMessage: React.FC<Props> = (props) => {
       setIsShown(true);
     }
   };
-
   return (
     <div
       className={message.pinned ? 'pinned-message' : 'unpinned-message'}
       onMouseLeave={() => setIsShown(false)}
       ref={refContainer}
     >
-      {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`} />}
+      {navigate && <Navigate to={path} />}
       {isShown && hoveredUser && (
         <div className="str-chat__avatar-tooltip">
-          <div>
+          <div className="str-chat__avatar-tooltip-image" style={{ paddingLeft: '0px' }}>
+            <img src={message.user?.image} alt={message.user?.name} />
+          </div>
+          <div className="str-chat__avatar-tooltip-info">
             <h2>
-              <b>{message.user?.name}</b>
-              {message.user?.online ? (
-                <span className="logged-in">●</span>
-              ) : (
-                <span className="logged-out">●</span>
-              )}
+              <b className="str-chat__avatar-tooltip-info-name">{message.user?.name}</b>
             </h2>
             {hoveredUser.current_company && (
-              <p>
-                <strong>Company: </strong>
-                {hoveredUser.current_company?.name}{' '}
+              <p className="str-chat__avatar-tooltip-info-company">
+                <strong>
+                  {hoveredUser.current_position} @ {hoveredUser.current_company?.name}{' '}
+                </strong>
               </p>
             )}
-            {hoveredUser.interests && (
-              <UserSpecialities type="Interests" specialities={hoveredUser.interests} />
+            {hoveredUser.interests?.length > 0 && (
+              <UserSpecialities type="Interested in" specialities={hoveredUser.interests} />
             )}
-            {hoveredUser.strengths && (
+            {hoveredUser.strengths?.length > 0 && (
               <UserSpecialities type="Strengths" specialities={hoveredUser.strengths} />
             )}
+            <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${hoveredUser.id}`}>
+              <button className="str-chat__avatar-tooltip-info-button">Send Message</button>
+            </Link>
           </div>
         </div>
       )}

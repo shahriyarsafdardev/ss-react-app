@@ -115,7 +115,7 @@ export default function Messaging() {
     }
   }, [isMobileNavVisible]);
 
-  if (!client || !peers) {
+  if (!client || !peers || !cohort) {
     return (
       <LoadingContainer>
         <LoadingScreen />
