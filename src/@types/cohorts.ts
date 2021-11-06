@@ -24,7 +24,7 @@ type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'wa
 export type SurveyContent = {
   question_type: string;
   title: string;
-  options?: string[];
+  options?: string[] | any;
   description: string | null;
   submitted_answer: string | null;
 };

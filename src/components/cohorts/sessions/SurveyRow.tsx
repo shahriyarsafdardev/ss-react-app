@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Radio, RadioGroup, FormControlLabel, TextField, Checkbox } from '@material-ui/core';
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  TextField,
+  Checkbox,
+  Slider
+} from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
 
 // types
@@ -22,6 +29,10 @@ type RadioButtonsProps = {
 type TextInputProps = {
   submitted_answer: string;
   onChange: any;
+};
+type SliderProps = {
+  onChange: any;
+  item: SurveyContent;
 };
 
 const RowContainer = styled('div')(() => ({
@@ -52,7 +63,8 @@ const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
   MULTI_SELECT: 'multi-select',
-  CREATE_MULTI_SELECT: 'create-multi-select'
+  CREATE_MULTI_SELECT: 'create-multi-select',
+  SLIDER: 'slider'
 };
 
 const customStyles = {
@@ -83,7 +95,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
 function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
   return (
     <RadioGroup aria-label="gender" name="radio-buttons-group">
-      {item?.options?.map((option, index) => (
+      {item?.options?.map((option: any, index: any) => (
         <FormControlLabel
           key={index}
           value={option}
@@ -180,6 +192,31 @@ function CreateMultiSelect({
   );
 }
 
+function SliderQuestion({ onChange, item }: SliderProps) {
+  const [value, setValue] = useState(item?.options?.max);
+  const range = Array.from({ length: item?.options?.max }, (v, k) => k + 1);
+  const marks = range.map((item: number) => ({
+    value: item,
+    label: `${item}`
+  }));
+
+  useEffect(() => {
+    onChange(value);
+  }, [value]);
+
+  return (
+    <Slider
+      step={1}
+      valueLabelDisplay="auto"
+      min={1}
+      max={item?.options?.max}
+      defaultValue={item?.options?.max}
+      marks={marks}
+      onChange={(e, newValue) => setValue(newValue)}
+    />
+  );
+}
+
 export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
   const [text, setText] = useState(item.submitted_answer || '');
 
@@ -214,6 +251,9 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
           onChange={(e: any) => onChange(e)}
         />
       );
+    }
+    if (item.question_type === ANSWER_TYPES.SLIDER) {
+      return <SliderQuestion item={item} onChange={onChange} />;
     }
 
     return '';
