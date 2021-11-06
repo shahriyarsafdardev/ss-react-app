@@ -200,10 +200,6 @@ function SliderQuestion({ onChange, item }: SliderProps) {
     label: `${item}`
   }));
 
-  useEffect(() => {
-    onChange(value);
-  }, [value]);
-
   return (
     <Slider
       step={1}
@@ -212,7 +208,10 @@ function SliderQuestion({ onChange, item }: SliderProps) {
       max={item?.options?.max}
       defaultValue={item?.options?.max}
       marks={marks}
-      onChange={(e, newValue) => setValue(newValue)}
+      onChange={(e, newValue) => {
+        setValue(newValue);
+        onChange(value);
+      }}
     />
   );
 }
