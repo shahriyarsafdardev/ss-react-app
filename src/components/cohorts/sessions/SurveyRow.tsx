@@ -82,7 +82,7 @@ const ANSWER_TYPES = {
   MULTI_SELECT: 'multi-select',
   CREATE_MULTI_SELECT: 'create-multi-select',
   SLIDER: 'slider',
-  STAR_RATING: 'star_rating'
+  STAR_RATING: 'star-rating'
 };
 
 const customStyles = {
@@ -252,7 +252,7 @@ function StarRating({ submitted_answer, onChange, item }: StarRatingProps) {
   }, [submitted_answer]);
 
   return (
-    <Box width="100%" display="flex" justifyContent="center">
+    <Box width="100%" display="flex" justifyContent="center" data-testid="star-rating">
       <StarRatingStyled
         name="stars"
         starCount={5}

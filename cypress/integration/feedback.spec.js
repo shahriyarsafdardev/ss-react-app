@@ -234,6 +234,31 @@ describe('Session Survey Flow', () => {
       it('asserts that correct value is selected', () => {
         cy.get('[data-testid=slider-option]').find('input').should('have.value', 5);
       });
+
+      it('clicks the next button', () => {
+        cy.get('[data-testid=btn-next]').click();
+      });
+    });
+
+    context('When Question type is star rating', () => {
+      it('Asserts data of Question 6', () => {
+        // Assert question
+        cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[5].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[5].description
+        );
+      });
+
+      it('should select 3 stars', () => {
+        cy.get('[data-testid=star-rating] > div').find('label').eq(2).click();
+      });
+
+      it('asserts that stars have been filled and selected', () => {
+        cy.get('.dv-star-rating-empty-star').should('have.length', 2);
+        cy.get('.dv-star-rating-full-star').should('have.length', 3);
+      });
     });
 
     context('Submits the form', () => {
@@ -254,6 +279,7 @@ describe('Session Survey Flow', () => {
           expect(request.body.response[questionIDs[2]]).to.eq('Session was so good');
           expect(request.body.response[questionIDs[3]]).to.eq('Everything was fine');
           expect(request.body.response[questionIDs[4]]).to.eq(5);
+          expect(request.body.response[questionIDs[5]]).to.eq(3);
         });
       });
     });
