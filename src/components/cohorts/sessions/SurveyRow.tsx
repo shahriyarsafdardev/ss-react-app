@@ -31,6 +31,7 @@ type RadioButtonsProps = {
 type TextInputProps = {
   submitted_answer: string;
   onChange: any;
+  item: SurveyContent;
 };
 type SliderProps = {
   onChange: any;
@@ -92,7 +93,7 @@ const customStyles = {
   })
 };
 
-function TextInput({ submitted_answer, onChange }: TextInputProps) {
+function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
   return (
     <TextField
       key="text-answer"
@@ -100,7 +101,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       fullWidth
       value={submitted_answer}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Start typing whatever comes to mind!"
+      placeholder={item?.options?.placeholder || 'Start typing whatever comes to mind!'}
       multiline
       rows={4}
       inputProps={{
@@ -285,7 +286,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return <RadioButtons item={item} onChange={handleChange} submitted_answer={text} />;
     }
     if (item.question_type === ANSWER_TYPES.TEXT_INPUT) {
-      return <TextInput onChange={handleChange} submitted_answer={text} />;
+      return <TextInput onChange={handleChange} submitted_answer={text} item={item} />;
     }
     if (item.question_type === ANSWER_TYPES.MULTI_SELECT) {
       return (

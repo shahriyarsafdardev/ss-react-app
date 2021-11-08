@@ -24,7 +24,7 @@
     "title": "What worked well in today's session, specifically?",
     "question_type": "text-input",
     "index": 2,
-    "options": [],
+    "options": { "placeholder": "Start typing here" },
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": true,
     "description": "description of question 3"

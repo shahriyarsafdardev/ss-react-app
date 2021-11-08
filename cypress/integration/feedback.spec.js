@@ -150,6 +150,12 @@ describe('Session Survey Flow', () => {
         );
       });
 
+      it('Asserts that placeholder is displayed correctly', () => {
+        cy.get('[data-testid=survey-text]')
+          .invoke('attr', 'placeholder')
+          .should('contain', feedbackFixture[2].options.placeholder);
+      });
+
       it('Asserts that button is disabled', () => {
         cy.get('[data-testid=btn-next]').should('be.disabled');
       });
@@ -189,6 +195,12 @@ describe('Session Survey Flow', () => {
           'have.text',
           feedbackFixture[3].description
         );
+      });
+
+      it('Asserts that default placeholder is displayed if not present', () => {
+        cy.get('[data-testid=survey-text]')
+          .invoke('attr', 'placeholder')
+          .should('contain', 'Start typing whatever comes to mind!');
       });
 
       it('types the text and assert it is typed correctly', () => {
