@@ -210,8 +210,9 @@ function SliderQuestion({ onChange, item }: SliderProps) {
       marks={marks}
       onChange={(e, newValue) => {
         setValue(newValue);
-        onChange(value);
+        onChange(newValue);
       }}
+      data-testid="slider-option"
     />
   );
 }

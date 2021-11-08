@@ -196,6 +196,47 @@ describe('Session Survey Flow', () => {
         //it checks if correct text is typed
         cy.get('[data-testid=survey-text]').should('have.text', 'Everything was fine');
       });
+
+      it('clicks the next button', () => {
+        cy.get('[data-testid=btn-next]').should('not.be.disabled');
+        cy.get('[data-testid=btn-next]').click();
+      });
+    });
+
+    context('When Question type is slider', () => {
+      it('Asserts data of Question 5', () => {
+        // Assert question
+        cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[4].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[4].description
+        );
+      });
+
+      it('checks the default value', () => {
+        cy.get('[data-testid=slider-option]')
+          .find('input')
+          .should('have.value', feedbackFixture[4].options.max);
+      });
+
+      it('should have max value of 10', () => {
+        cy.get('[data-testid=slider-option]')
+          .find('input')
+          .should('have.attr', 'max')
+          .and('equal', `${feedbackFixture[4].options.max}`);
+      });
+
+      it('should select the value of 5', () => {
+        cy.get('[data-testid=slider-option]').click({ force: true, multiple: true });
+        cy.get('[data-testid=slider-option]')
+          .find('input')
+          .type('{leftarrow}{leftarrow}{leftarrow}{leftarrow}');
+      });
+
+      it('asserts that correct value is selected', () => {
+        cy.get('[data-testid=slider-option]').find('input').should('have.value', 5);
+      });
     });
 
     context('Submits the form', () => {
@@ -215,6 +256,7 @@ describe('Session Survey Flow', () => {
           expect(request.body.response[questionIDs[1]]).to.eq('Agree');
           expect(request.body.response[questionIDs[2]]).to.eq('Session was so good');
           expect(request.body.response[questionIDs[3]]).to.eq('Everything was fine');
+          expect(request.body.response[questionIDs[4]]).to.eq(5);
         });
       });
     });

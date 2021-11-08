@@ -38,5 +38,15 @@
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": false,
     "description": "last question"
+  },
+  {
+    "id": "72a84007-a67e-4533-8407-8b083de691f9",
+    "title": "How do you rate this session?",
+    "question_type": "slider",
+    "index": 4,
+    "options": { "max": 10 },
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": false,
+    "description": "select between 1 to 10"
   }
 ]
