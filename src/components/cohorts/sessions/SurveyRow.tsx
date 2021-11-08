@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import StarRatingComponent from 'react-star-rating-component';
 // material
 import { styled } from '@material-ui/core/styles';
 import {
@@ -34,6 +35,11 @@ type SliderProps = {
   onChange: any;
   item: SurveyContent;
 };
+type StarRatingProps = {
+  onChange: any;
+  submitted_answer: string;
+  item: SurveyContent;
+};
 
 const RowContainer = styled('div')(() => ({
   width: '100%',
@@ -59,12 +65,17 @@ const QuestionDescription = styled('label')(() => ({
   color: '#637381'
 }));
 
+const StarRatingStyled = styled(StarRatingComponent)(() => ({
+  width: '80%'
+}));
+
 const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
   MULTI_SELECT: 'multi-select',
   CREATE_MULTI_SELECT: 'create-multi-select',
-  SLIDER: 'slider'
+  SLIDER: 'slider',
+  STAR_RATING: 'star_rating'
 };
 
 const customStyles = {
@@ -226,6 +237,26 @@ function SliderQuestion({ onChange, item }: SliderProps) {
   );
 }
 
+function StarRating({ submitted_answer, onChange, item }: StarRatingProps) {
+  const [value, setValue] = useState<number>(0);
+
+  useEffect(() => {
+    setValue(Number(submitted_answer));
+  }, [submitted_answer]);
+
+  return (
+    <StarRatingStyled
+      name="stars"
+      starCount={5}
+      value={value || 0}
+      onStarClick={(nextValue: any) => {
+        onChange(nextValue);
+        setValue(nextValue);
+      }}
+    />
+  );
+}
+
 export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
   const [text, setText] = useState(item.submitted_answer || '');
 
@@ -263,6 +294,9 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
     }
     if (item.question_type === ANSWER_TYPES.SLIDER) {
       return <SliderQuestion item={item} onChange={onChange} />;
+    }
+    if (item.question_type === ANSWER_TYPES.STAR_RATING) {
+      return <StarRating item={item} onChange={onChange} submitted_answer={text} />;
     }
 
     return '';
