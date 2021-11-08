@@ -228,10 +228,7 @@ describe('Session Survey Flow', () => {
       });
 
       it('should select the value of 5', () => {
-        cy.get('[data-testid=slider-option]').click({ force: true, multiple: true });
-        cy.get('[data-testid=slider-option]')
-          .find('input')
-          .type('{leftarrow}{leftarrow}{leftarrow}{leftarrow}');
+        cy.get('[data-index=4]').click({ force: true, multiple: true });
       });
 
       it('asserts that correct value is selected', () => {

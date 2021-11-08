@@ -194,11 +194,20 @@ function CreateMultiSelect({
 
 function SliderQuestion({ onChange, item }: SliderProps) {
   const [value, setValue] = useState(item?.options?.max);
+  const [isRendered, setIsRenderedstate] = useState(false);
   const range = Array.from({ length: item?.options?.max }, (v, k) => k + 1);
   const marks = range.map((item: number) => ({
     value: item,
     label: `${item}`
   }));
+
+  useEffect(() => {
+    if (isRendered) {
+      onChange(value);
+    }
+
+    return setIsRenderedstate(true);
+  }, [isRendered]);
 
   return (
     <Slider
