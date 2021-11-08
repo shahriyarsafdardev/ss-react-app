@@ -8,7 +8,8 @@ import {
   FormControlLabel,
   TextField,
   Checkbox,
-  Slider
+  Slider,
+  Box
 } from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
 
@@ -65,8 +66,14 @@ const QuestionDescription = styled('label')(() => ({
   color: '#637381'
 }));
 
-const StarRatingStyled = styled(StarRatingComponent)(() => ({
-  width: '80%'
+const StarRatingStyled = styled(StarRatingComponent)(({ theme }) => ({
+  i: {
+    fontSize: '4rem',
+    margin: '0 10px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2rem'
+    }
+  }
 }));
 
 const ANSWER_TYPES = {
@@ -238,22 +245,24 @@ function SliderQuestion({ onChange, item }: SliderProps) {
 }
 
 function StarRating({ submitted_answer, onChange, item }: StarRatingProps) {
-  const [value, setValue] = useState<number>(0);
+  const [value, setValue] = useState<number>(5);
 
   useEffect(() => {
     setValue(Number(submitted_answer));
   }, [submitted_answer]);
 
   return (
-    <StarRatingStyled
-      name="stars"
-      starCount={5}
-      value={value || 0}
-      onStarClick={(nextValue: any) => {
-        onChange(nextValue);
-        setValue(nextValue);
-      }}
-    />
+    <Box width="100%" display="flex" justifyContent="center">
+      <StarRatingStyled
+        name="stars"
+        starCount={5}
+        value={value || 5}
+        onStarClick={(nextValue: any) => {
+          onChange(nextValue);
+          setValue(nextValue);
+        }}
+      />
+    </Box>
   );
 }
 
