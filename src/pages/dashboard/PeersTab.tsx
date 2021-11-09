@@ -138,6 +138,9 @@ export default function PeersTab() {
 
   const applyFilters = useCallback(() => {
     let filteredStudents: any = peers;
+
+    filteredStudents = filteredStudents?.filter((student: any) => student.user_type === 'learner');
+
     if (selectedCompanies.length > 0) {
       filteredStudents = filteredStudents?.filter((student: any) =>
         selectedCompanies?.includes(student?.current_company?.name)

@@ -51,7 +51,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
   };
 
   const handleUserClick = () => {
-    if (!currentUser) {
+    if (!currentUser && peer.user_type === 'learner') {
       setPath(`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`);
       setNavigate(true);
     }

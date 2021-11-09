@@ -13,6 +13,7 @@ export type StudentProfile = {
   strengths: string[];
   interests: string[];
   profile_image_url: string;
+  user_type: string;
 };
 
 type Tag = {
