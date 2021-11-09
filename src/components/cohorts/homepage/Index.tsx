@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Container, Typography, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
@@ -40,17 +41,36 @@ const dummyList = [
     info_text: 'Waiting for you!',
     type: 'video',
     complete: true
+  },
+  {
+    name: 'Say hello to your section!',
+    action_text: 'Open Messaging',
+    info_text: 'Waiting for you!',
+    type: 'video',
+    complete: true
   }
 ];
 
 const Index = () => {
-  const a = 12; // will be removed, placed just to hide arrow function error of es lint
+  const [list, setList] = useState(dummyList);
+
+  const handleChange = (l: any) => {
+    setList(l);
+  };
+
   return (
     <Page title="ScholarSite | Homepage">
       <Container style={{ marginBottom: '50px' }}>
         <CohortTimeLine />
         <StyledBox>
-          <SessionPrereading list={dummyList} />
+          <SessionPrereading
+            list={list}
+            totalItems={list.length}
+            completedItems={list.filter((item) => item.complete === true).length}
+            onListChange={(a: any) => {
+              handleChange(a);
+            }}
+          />
           <NetworkSuggestion />
         </StyledBox>
       </Container>

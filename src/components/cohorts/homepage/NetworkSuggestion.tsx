@@ -1,14 +1,9 @@
 import { SectionContainer } from './Common';
 
-const containerStyle = {
-  minWidth: '49%',
-  minHeight: '400px'
-};
-
+// eslint-disable-next-line arrow-body-style
 const NetworkSuggestion = () => {
-  const temp = 123;
   return (
-    <SectionContainer style={containerStyle}>
+    <SectionContainer className="card-2">
       <div>Network Suggestions</div>
     </SectionContainer>
   );

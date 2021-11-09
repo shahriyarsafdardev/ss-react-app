@@ -1,10 +1,15 @@
 import { styled } from '@material-ui/core/styles';
 
-export const SectionContainer = styled('div')(() => ({
+export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
   boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
-  borderRadius: '16px'
+  borderRadius: '16px',
+  padding: '20px',
+  '&.card-2': {
+    width: '49%',
+    height: '500px',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  }
 }));
