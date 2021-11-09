@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from '@material-ui/core';
-
+import React, { useState, useRef } from 'react';
+import { Button } from '@material-ui/core';
 import { Navigate } from 'react-router-dom';
-
 import { MessageUIComponentProps, MessageTeam, useMessageContext } from 'stream-chat-react';
 import { StudentProfile } from '../../../@types/cohorts';
+
+import useAuth from '../../../hooks/useAuth';
 
 import './TeamMessage.css';
 
@@ -32,9 +32,11 @@ export const TeamMessage: React.FC<Props> = (props) => {
   const [navigate, setNavigate] = useState<boolean>(false);
   const [hoveredUser, setHoveredUser] = useState<StudentProfile>();
   const refContainer = useRef<any>();
+  const { user } = useAuth();
 
   const { handleOpenThread, message } = useMessageContext();
   const peer = peers.filter((peer) => peer.id === message?.user?.id)[0];
+  const currentUser = user?.id === message?.user?.id;
 
   // useEffect(() => {
   //   if (peer && peer.current_company?.name) {
@@ -49,18 +51,15 @@ export const TeamMessage: React.FC<Props> = (props) => {
   };
 
   const handleUserClick = () => {
-    setPath(`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`);
-    setNavigate(true);
-  };
-
-  const handleModalClick = () => {
-    setPath(`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${message.user?.id}`);
-    setNavigate(true);
+    if (!currentUser) {
+      setPath(`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`);
+      setNavigate(true);
+    }
   };
 
   const onUserHover = (event: React.BaseSyntheticEvent) => {
-    event.target.style.cursor = 'pointer';
-    if (peer) {
+    if (peer && !currentUser) {
+      event.target.style.cursor = 'pointer';
       setHoveredUser(peer);
       event.target.parentElement.removeAttribute('title');
       setIsShown(true);
@@ -75,11 +74,6 @@ export const TeamMessage: React.FC<Props> = (props) => {
       {navigate && <Navigate to={path} />}
       {isShown && hoveredUser && (
         <div className="str-chat__avatar-tooltip">
-          {message.user?.image && (
-            <div className="str-chat__avatar-tooltip-image" style={{ paddingLeft: '0px' }}>
-              <img src={message.user?.image} alt={message.user?.name} />
-            </div>
-          )}
           <div className="str-chat__avatar-tooltip-info">
             <h2>
               <b className="str-chat__avatar-tooltip-info-name">{message.user?.name}</b>
@@ -97,9 +91,12 @@ export const TeamMessage: React.FC<Props> = (props) => {
             {hoveredUser.strengths?.length > 0 && (
               <UserSpecialities type="Strengths" specialities={hoveredUser.strengths} />
             )}
-            <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${hoveredUser.id}`}>
-              <button className="str-chat__avatar-tooltip-info-button">Send Message</button>
-            </Link>
+            <Button
+              className="str-chat__avatar-tooltip-info-button"
+              href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${hoveredUser.id}`}
+            >
+              Send Message
+            </Button>
           </div>
         </div>
       )}
