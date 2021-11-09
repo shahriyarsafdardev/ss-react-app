@@ -178,29 +178,23 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   );
 
   const shouldDisplaySurveyModal = () => {
-    if (
-      !session?.survey_completed &&
-      feedback === 'true' &&
-      feedbackSessionNumber === sessionNumber
-    ) {
+    if (feedback === 'true') {
       return true;
     }
+    if (feedbackSubmitted || session?.survey_completed) return false;
+    if (session && session.time) {
+      const sessionTime1 = new Date(session.time);
+      const sessionTime2 = new Date(session.time);
+      const currentTime = new Date();
+      const surveyReleaseTime = sessionTime1;
+      surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 1);
+      const surveyCloseTime = sessionTime2;
+      surveyCloseTime.setHours(surveyCloseTime.getHours() + 24);
+      if (currentTime > surveyReleaseTime && currentTime < surveyCloseTime) {
+        return true;
+      }
+    }
     return false;
-    // console.log('adrian', feedbackSubmitted, session?.survey_completed);
-    // if (feedbackSubmitted || session?.survey_completed) return false;
-    // if (session && session.time) {
-    //   const sessionTime1 = new Date(session.time);
-    //   const sessionTime2 = new Date(session.time);
-    //   const currentTime = new Date();
-    //   const surveyReleaseTime = sessionTime1;
-    //   surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 1);
-    //   const surveyCloseTime = sessionTime2;
-    //   surveyCloseTime.setHours(surveyCloseTime.getHours() + 24);
-    //   if (currentTime > surveyReleaseTime && currentTime < surveyCloseTime) {
-    //     return true;
-    //   }
-    // }
-    // return false;
   };
 
   useEffect(() => {
