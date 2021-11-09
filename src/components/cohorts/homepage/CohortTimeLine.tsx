@@ -10,7 +10,6 @@ const containerStyle = {
 };
 
 const CohortTimeLine = () => {
-  const a = 12;
   const steps = ['step1', 'step2', 'step3', 'step4'];
   return (
     <SectionContainer style={containerStyle}>
