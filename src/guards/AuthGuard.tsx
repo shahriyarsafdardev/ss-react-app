@@ -16,11 +16,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated && pathname !== '/') {
-      navigate('/');
-    }
-  }, [pathname, isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (!isAuthenticated && pathname !== '/') {
+  //     navigate('/');
+  //   }
+  // }, [pathname, isAuthenticated, navigate]);
 
   if (!isAuthenticated) {
     return <Login />;
