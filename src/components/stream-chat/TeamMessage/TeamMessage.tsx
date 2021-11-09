@@ -75,9 +75,11 @@ export const TeamMessage: React.FC<Props> = (props) => {
       {navigate && <Navigate to={path} />}
       {isShown && hoveredUser && (
         <div className="str-chat__avatar-tooltip">
-          <div className="str-chat__avatar-tooltip-image" style={{ paddingLeft: '0px' }}>
-            <img src={message.user?.image} alt={message.user?.name} />
-          </div>
+          {message.user?.image && (
+            <div className="str-chat__avatar-tooltip-image" style={{ paddingLeft: '0px' }}>
+              <img src={message.user?.image} alt={message.user?.name} />
+            </div>
+          )}
           <div className="str-chat__avatar-tooltip-info">
             <h2>
               <b className="str-chat__avatar-tooltip-info-name">{message.user?.name}</b>
