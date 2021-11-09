@@ -19,6 +19,30 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
+const dummyList = [
+  {
+    name: 'Read Prereading 1: An introduction to the chicken and egg problem with details',
+    action_text: 'Open Prereading',
+    info_text: '3 min read',
+    type: 'video',
+    complete: true
+  },
+  {
+    name: 'Prereading 2: Facebook - good or evil?',
+    action_text: 'watch video',
+    info_text: '4 min watch',
+    type: 'video',
+    complete: true
+  },
+  {
+    name: 'Say hello to your section!',
+    action_text: 'Open Messaging',
+    info_text: 'Waiting for you!',
+    type: 'video',
+    complete: true
+  }
+];
+
 const Index = () => {
   const a = 12; // will be removed, placed just to hide arrow function error of es lint
   return (
@@ -26,7 +50,7 @@ const Index = () => {
       <Container style={{ marginBottom: '50px' }}>
         <CohortTimeLine />
         <StyledBox>
-          <SessionPrereading />
+          <SessionPrereading list={dummyList} />
           <NetworkSuggestion />
         </StyledBox>
       </Container>

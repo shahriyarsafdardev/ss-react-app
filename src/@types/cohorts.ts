@@ -70,3 +70,11 @@ export type Cohort = {
   sessions: Session[];
   enrollments: String[];
 };
+
+export type PreReadingList = {
+  name: string;
+  action_text: string;
+  info_text: string;
+  type: string;
+  complete: boolean;
+};
