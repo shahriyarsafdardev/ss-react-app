@@ -32,7 +32,7 @@ const dummyList = [
     action_text: 'watch video',
     info_text: '4 min watch',
     type: 'video',
-    complete: true
+    complete: false
   },
   {
     name: 'Say hello to your section!',
