@@ -40,7 +40,6 @@ type SliderProps = {
 type StarRatingProps = {
   onChange: any;
   submitted_answer: string;
-  item: SurveyContent;
 };
 
 const RowContainer = styled('div')(() => ({
@@ -245,12 +244,23 @@ function SliderQuestion({ onChange, item }: SliderProps) {
   );
 }
 
-function StarRating({ submitted_answer, onChange, item }: StarRatingProps) {
+function StarRating({ submitted_answer, onChange }: StarRatingProps) {
   const [value, setValue] = useState<number>(5);
+  const [isRendered, setIsRenderedstate] = useState(false);
 
   useEffect(() => {
-    setValue(Number(submitted_answer));
+    if (typeof submitted_answer === 'number') {
+      setValue(Number(submitted_answer));
+    }
   }, [submitted_answer]);
+
+  useEffect(() => {
+    if (isRendered) {
+      onChange(value);
+    }
+
+    return setIsRenderedstate(true);
+  }, [isRendered]);
 
   return (
     <Box width="100%" display="flex" justifyContent="center" data-testid="star-rating">
@@ -306,7 +316,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return <SliderQuestion item={item} onChange={onChange} />;
     }
     if (item.question_type === ANSWER_TYPES.STAR_RATING) {
-      return <StarRating item={item} onChange={onChange} submitted_answer={text} />;
+      return <StarRating onChange={onChange} submitted_answer={text} />;
     }
 
     return '';
