@@ -15,7 +15,9 @@ import { SectionContainer } from './Common';
 
 const containerStyle = {
   width: '100%',
-  height: '200px'
+  height: '200px',
+  display: 'flex',
+  alignItems: 'center'
 };
 
 const StyledSession = styled(Typography)(() => ({
@@ -93,6 +95,18 @@ const CohortTimeLine = () => {
       }
     })
   );
+  const StyledTimeline = styled(Box)(() => ({
+    width: '100%',
+    overflowX: 'scroll',
+    display: 'flex',
+    '&::-webkit-scrollbar': { width: '4px' }
+  }));
+
+  // const timelineStyles = {
+  //   width: '100%',
+  //   overflowX: 'scroll',
+  //   ::-webkit-scrollbar {display:none;}
+  // };
 
   function QontoStepIcon(props: StepIconProps) {
     const { active, completed, className } = props;
@@ -134,31 +148,35 @@ const CohortTimeLine = () => {
 
   return (
     <SectionContainer style={containerStyle}>
-      <Box width="100%">
-        <Stepper activeStep={activeSession} alternativeLabel connector={<ColorlibConnector />}>
-          <Step key={99}>
-            <StepLabel StepIconComponent={QontoStepIcon}>
-              <StyledSession>Welcome</StyledSession>
-            </StepLabel>
-          </Step>
-          {sessions?.map((session) => (
-            <Step key={session.number}>
+      <StyledTimeline>
+        <img src="/static/cohorts-home/left-arrow.svg" alt="left arrow" />
+        <Box sx={{ width: '100%' }}>
+          <Stepper activeStep={activeSession} alternativeLabel connector={<ColorlibConnector />}>
+            <Step key={99} sx={{ minWidth: '150px' }}>
               <StepLabel StepIconComponent={QontoStepIcon}>
-                <div>
-                  <StyledSession>{`Session ${session.number}`}</StyledSession>
-                  <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
-                  <StyledDate>{displayDate(session.time)}</StyledDate>
-                </div>
+                <StyledSession>Welcome</StyledSession>
               </StepLabel>
             </Step>
-          ))}
-          <Step key={100}>
-            <StepLabel StepIconComponent={QontoStepIcon}>
-              <StyledSession>End</StyledSession>
-            </StepLabel>
-          </Step>
-        </Stepper>
-      </Box>
+            {sessions?.map((session) => (
+              <Step key={session.number} sx={{ minWidth: '150px' }}>
+                <StepLabel StepIconComponent={QontoStepIcon}>
+                  <div>
+                    <StyledSession>{`Session ${session.number}`}</StyledSession>
+                    <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
+                    <StyledDate>{displayDate(session.time)}</StyledDate>
+                  </div>
+                </StepLabel>
+              </Step>
+            ))}
+            <Step key={100} sx={{ minWidth: '150px' }}>
+              <StepLabel StepIconComponent={QontoStepIcon}>
+                <StyledSession>End</StyledSession>
+              </StepLabel>
+            </Step>
+          </Stepper>
+        </Box>
+        <img src="/static/cohorts-home/right-arrow.svg" alt="right arrow" />
+      </StyledTimeline>
     </SectionContainer>
   );
 };
