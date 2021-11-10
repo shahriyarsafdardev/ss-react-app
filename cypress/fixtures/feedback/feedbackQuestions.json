@@ -56,6 +56,16 @@
     "index": 5,
     "options": [],
     "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": true,
+    "description": "stars rating"
+  },
+  {
+    "id": "92a84007-a67e-4533-8407-8b083de691f5",
+    "title": "How do you rate this session?",
+    "question_type": "star-rating",
+    "index": 6,
+    "options": [],
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
     "mandatory": false,
     "description": "stars rating"
   }

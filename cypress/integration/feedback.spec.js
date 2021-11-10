@@ -271,6 +271,30 @@ describe('Session Survey Flow', () => {
         cy.get('.dv-star-rating-empty-star').should('have.length', 2);
         cy.get('.dv-star-rating-full-star').should('have.length', 3);
       });
+
+      it('clicks the next button', () => {
+        cy.get('[data-testid=btn-next]').click();
+      });
+    });
+
+    context('When Question type is star rating ans user do not select rating', () => {
+      it('Asserts data of Question 7', () => {
+        // Assert question
+        cy.get('[data-testid=onboard-question]').should('have.text', feedbackFixture[6].title);
+        // Asset Description
+        cy.get('[data-testid=onboard-description]').should(
+          'have.text',
+          feedbackFixture[6].description
+        );
+      });
+
+      it('asserts that stars have been filled and selected', () => {
+        cy.get('.dv-star-rating-full-star').should('have.length', 5);
+      });
+
+      it('asserts that button is not disabled', () => {
+        cy.get('[data-testid=btn-next]').should('not.be.disabled');
+      });
     });
 
     context('Submits the form', () => {
@@ -292,6 +316,7 @@ describe('Session Survey Flow', () => {
           expect(request.body.response[questionIDs[3]]).to.eq('Everything was fine');
           expect(request.body.response[questionIDs[4]]).to.eq(5);
           expect(request.body.response[questionIDs[5]]).to.eq(3);
+          expect(request.body.response[questionIDs[6]]).to.eq(5);
         });
       });
     });
