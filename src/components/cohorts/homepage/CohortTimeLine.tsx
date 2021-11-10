@@ -97,16 +97,23 @@ const CohortTimeLine = () => {
   );
   const StyledTimeline = styled(Box)(() => ({
     width: '100%',
-    overflowX: 'scroll',
+    overflowX: 'hidden',
     display: 'flex',
-    '&::-webkit-scrollbar': { width: '4px' }
+    justifyContent: 'space-between',
+    '&::-webkit-scrollbar': { width: '4px' },
+    img: {
+      cursor: 'pointer'
+    }
   }));
 
-  // const timelineStyles = {
-  //   width: '100%',
-  //   overflowX: 'scroll',
-  //   ::-webkit-scrollbar {display:none;}
-  // };
+  const StyledBox = styled(Box)(() => ({
+    width: '85%',
+    overflowX: 'auto',
+    scrollBehavior: 'smooth',
+    '&.scrollbar-hidden::-webkit-scrollbar': {
+      display: 'none'
+    }
+  }));
 
   function QontoStepIcon(props: StepIconProps) {
     const { active, completed, className } = props;
@@ -146,36 +153,61 @@ const CohortTimeLine = () => {
     }
   }));
 
+  const scroll = (val: number) => {
+    const elem = document.getElementById('timeline-div');
+    if (elem) {
+      elem.scrollLeft += val * 500;
+    }
+  };
+
   return (
     <SectionContainer style={containerStyle}>
       <StyledTimeline>
-        <img src="/static/cohorts-home/left-arrow.svg" alt="left arrow" />
-        <Box sx={{ width: '100%' }}>
-          <Stepper activeStep={activeSession} alternativeLabel connector={<ColorlibConnector />}>
-            <Step key={99} sx={{ minWidth: '150px' }}>
+        {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <img
+          src="/static/cohorts-home/left-arrow.svg"
+          onClick={() => scroll(-1)}
+          onKeyDown={() => scroll(-1)}
+          alt="left arrow"
+        />
+        <StyledBox id="timeline-div" className="scrollbar-hidden">
+          <Stepper
+            activeStep={activeSession}
+            alternativeLabel
+            connector={<ColorlibConnector />}
+            style={{ marginTop: '10px' }}
+          >
+            <Step key={99} sx={{ minWidth: '180px' }}>
               <StepLabel StepIconComponent={QontoStepIcon}>
                 <StyledSession>Welcome</StyledSession>
               </StepLabel>
             </Step>
-            {sessions?.map((session) => (
-              <Step key={session.number} sx={{ minWidth: '150px' }}>
-                <StepLabel StepIconComponent={QontoStepIcon}>
-                  <div>
-                    <StyledSession>{`Session ${session.number}`}</StyledSession>
-                    <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
-                    <StyledDate>{displayDate(session.time)}</StyledDate>
-                  </div>
-                </StepLabel>
-              </Step>
-            ))}
-            <Step key={100} sx={{ minWidth: '150px' }}>
+            {sessions &&
+              sessions?.map((session) => (
+                <Step key={session.number} sx={{ minWidth: '180px' }}>
+                  <StepLabel StepIconComponent={QontoStepIcon}>
+                    <div>
+                      <StyledSession>{`Session ${session.number}`}</StyledSession>
+                      <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
+                      <StyledDate>{displayDate(session.time)}</StyledDate>
+                    </div>
+                  </StepLabel>
+                </Step>
+              ))}
+            <Step key={100} sx={{ minWidth: '180px' }}>
               <StepLabel StepIconComponent={QontoStepIcon}>
                 <StyledSession>End</StyledSession>
               </StepLabel>
             </Step>
           </Stepper>
-        </Box>
-        <img src="/static/cohorts-home/right-arrow.svg" alt="right arrow" />
+        </StyledBox>
+        {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <img
+          src="/static/cohorts-home/right-arrow.svg"
+          onClick={() => scroll(1)}
+          onKeyDown={() => scroll(1)}
+          alt="right arrow"
+        />
       </StyledTimeline>
     </SectionContainer>
   );
