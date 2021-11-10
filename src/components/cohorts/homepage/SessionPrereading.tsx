@@ -7,20 +7,14 @@ import CircularProgressbar from './CircularProgressBar';
 type SessionPrereadingProps = {
   list: PreReadingList[];
   onListChange: Function;
-  totalItems: number;
-  completedItems: number;
 };
 
-const SessionPrereading = ({
-  list,
-  onListChange,
-  totalItems,
-  completedItems
-}: SessionPrereadingProps) => {
+const SessionPrereading = ({ list, onListChange }: SessionPrereadingProps) => {
   const onMark = (index: number, value: boolean) => {
     if (index >= 0 && index < list.length) {
-      list[index].complete = value;
-      onListChange(list);
+      const updated = list;
+      updated[index].complete = value;
+      onListChange([...updated]);
     }
   };
 
@@ -37,10 +31,9 @@ const SessionPrereading = ({
         </Box>
         <Box>
           <CircularProgressbar
-            key="progress"
             strokeWidth={14}
-            totalSteps={totalItems}
-            completedSteps={completedItems}
+            totalSteps={list.length}
+            completedSteps={list.filter((item) => item.complete === true).length}
           />
         </Box>
       </Box>

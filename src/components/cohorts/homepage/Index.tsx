@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Container, Typography, Box } from '@material-ui/core';
+import { useState } from 'react';
+import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 import Page from 'components/Page';
@@ -65,8 +65,6 @@ const Index = () => {
         <StyledBox>
           <SessionPrereading
             list={list}
-            totalItems={list.length}
-            completedItems={list.filter((item) => item.complete === true).length}
             onListChange={(a: any) => {
               handleChange(a);
             }}
