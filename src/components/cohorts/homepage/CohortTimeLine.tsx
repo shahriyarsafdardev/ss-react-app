@@ -1,7 +1,16 @@
-import { Box } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import moment from 'moment';
+import { StepIconProps } from '@material-ui/core/StepIcon';
+import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
+import Circle from '@material-ui/icons/Circle';
+import { RootState, useDispatch, useSelector } from '../../../redux/store';
+import { getSessions } from '../../../redux/slices/cohort';
+
 import { SectionContainer } from './Common';
 
 const containerStyle = {
@@ -9,17 +18,145 @@ const containerStyle = {
   height: '200px'
 };
 
+const StyledSession = styled(Typography)(() => ({
+  fontSize: '14px',
+  fontWeight: 700,
+  lineHeight: '36px'
+}));
+
+const StyledDate = styled(Typography)(() => ({
+  fontSize: '12px',
+  fontWeight: 400
+}));
+
 const CohortTimeLine = () => {
-  const steps = ['step1', 'step2', 'step3', 'step4'];
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { sessions } = cohort || [];
+  const [activeSession, setActiveSession] = useState(0);
+
+  useEffect(() => {
+    if (cohort && !sessions) {
+      dispatch(getSessions(cohort.id));
+    }
+  }, [cohort]);
+
+  useEffect(() => {
+    let activeSession = 0;
+    sessions?.forEach((session) => {
+      if (moment(session.time) > moment()) {
+        activeSession = session.number;
+      }
+    });
+    setActiveSession(activeSession);
+  }, [sessions]);
+
+  const formatTime = (time: string, sessionLength: string) => {
+    const sessionStartTime = moment(time).format('hh:mm a');
+    const sessionEndTime = moment(time)
+      .add(Number(sessionLength.split(' ')[0]), 'hours')
+      .format('hh:mm a');
+    if (moment(time) > moment()) {
+      return `${sessionStartTime} - ${sessionEndTime}`;
+    }
+    return 'Complete';
+  };
+
+  const displayDate = (time: string) => {
+    if (moment(time) > moment()) {
+      return moment(time).format('dddd, MMM DD');
+    }
+    return 'Review Content';
+  };
+
+  const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
+    ({ theme, ownerState }) => ({
+      color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
+      display: 'flex',
+      height: 16,
+      alignItems: 'center',
+      ...(ownerState.active && {
+        color: '#784af4'
+      }),
+      '& .QontoStepIcon-completedIcon': {
+        color: '#784af4',
+        zIndex: 1,
+        fontSize: 20
+      },
+      '& .QontoStepIcon-circle': {
+        color: '#784af4',
+        zIndex: 1,
+        fontSize: 20
+      }
+    })
+  );
+
+  function QontoStepIcon(props: StepIconProps) {
+    const { active, completed, className } = props;
+
+    return (
+      <QontoStepIconRoot ownerState={{ active }} className={className}>
+        {completed ? (
+          <Circle className="QontoStepIcon-completedIcon" />
+        ) : (
+          <CircleOutlinedIcon className="QontoStepIcon-circle" />
+        )}
+      </QontoStepIconRoot>
+    );
+  }
+
+  const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+    [`&.${stepConnectorClasses.alternativeLabel}`]: {
+      top: 6,
+      left: 'calc(-50% + 6px)',
+      right: 'calc(50% + 6px)'
+    },
+    [`&.${stepConnectorClasses.active}`]: {
+      [`& .${stepConnectorClasses.line}`]: {
+        backgroundImage: ''
+      }
+    },
+    [`&.${stepConnectorClasses.completed}`]: {
+      [`& .${stepConnectorClasses.line}`]: {
+        backgroundImage: 'linear-gradient(90deg, rgba(0, 171, 85, 0.2) 0%, #00AB55 119.74%)'
+      }
+    },
+    [`& .${stepConnectorClasses.line}`]: {
+      height: 6,
+      border: 0,
+      backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+      borderRadius: 1
+    }
+  }));
+
   return (
     <SectionContainer style={containerStyle}>
       <Box width="100%">
-        <Stepper activeStep={1} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+        <Stepper activeStep={activeSession} alternativeLabel connector={<ColorlibConnector />}>
+          <Step key={99}>
+            <StepLabel StepIconComponent={QontoStepIcon}>
+              <StyledSession>Welcome</StyledSession>
+            </StepLabel>
+          </Step>
+          {sessions?.map((session) => (
+            <Step key={session.number}>
+              <StepLabel StepIconComponent={QontoStepIcon}>
+                <div>
+                  <StyledSession>{`Session ${session.number}`}</StyledSession>
+                  <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
+                  <StyledDate>{displayDate(session.time)}</StyledDate>
+                </div>
+              </StepLabel>
             </Step>
           ))}
+          <Step key={100}>
+            <StepLabel StepIconComponent={QontoStepIcon}>
+              <StyledSession>End</StyledSession>
+            </StepLabel>
+          </Step>
         </Stepper>
       </Box>
     </SectionContainer>
