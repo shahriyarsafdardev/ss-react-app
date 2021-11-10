@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { useLocation } from 'react-router';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
@@ -152,6 +153,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
   const { id, cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
+  const params = new URLSearchParams(window.location.search);
+  const feedbackSessionNumber = Number(params.get('session'));
+  const feedback = params.get('open_feedback');
 
   const SurveyModal = ({
     state,
@@ -174,9 +178,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   );
 
   const shouldDisplaySurveyModal = () => {
-    console.log('adrian', feedbackSubmitted, session?.survey_completed);
+    if (feedback === 'true') {
+      return true;
+    }
     if (feedbackSubmitted || session?.survey_completed) return false;
-
     if (session && session.time) {
       const sessionTime1 = new Date(session.time);
       const sessionTime2 = new Date(session.time);
@@ -185,7 +190,6 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 1);
       const surveyCloseTime = sessionTime2;
       surveyCloseTime.setHours(surveyCloseTime.getHours() + 24);
-
       if (currentTime > surveyReleaseTime && currentTime < surveyCloseTime) {
         return true;
       }

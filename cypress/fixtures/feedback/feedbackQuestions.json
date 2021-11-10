@@ -1,42 +1,72 @@
 [
   {
-    "id": "a2909868-494d-4681-83bf-b89070383536",
-    "title": "The material taught in this session was useful?",
+    "id": "bfec2655-016c-4118-86b5-863d6d86a7ac",
+    "title": "Was the material taught in this session useful?",
     "question_type": "multiple-choice",
-    "index": null,
+    "index": 0,
     "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc"
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": true,
+    "description": "Description of question 1"
   },
   {
-    "id": "74ee41d2-8793-4163-9a76-b6ac769ab819",
-    "title": "The instructor/expert was engaging and clear?",
+    "id": "05aa0a4f-d97c-4ad5-83b6-05ec5f990c0e",
+    "title": "Was the instructor/expert engaging and clear?",
     "question_type": "multiple-choice",
-    "index": null,
+    "index": 1,
     "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc"
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": false,
+    "description": "description of question 2"
   },
   {
-    "id": "54c778da-a439-4212-80d6-b633dd991107",
-    "title": "The technology used in the session worked well?",
-    "question_type": "multiple-choice",
-    "index": null,
-    "options": ["Strongly Agree", "Agree", "Neutral", "Disagree", "Strongly Disagree"],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc"
-  },
-  {
-    "id": "fd070c20-653b-481d-ba45-c83988a4d95d",
+    "id": "ad7129c8-d93d-4442-9887-13628609aca7",
     "title": "What worked well in today's session, specifically?",
     "question_type": "text-input",
-    "index": null,
-    "options": [],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc"
+    "index": 2,
+    "options": { "placeholder": "Start typing here" },
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": true,
+    "description": "description of question 3"
   },
   {
-    "id": "29776320-6f28-465f-8480-44854195accd",
-    "title": "What could have been done differently in Session?",
+    "id": "62a84007-a67e-4533-8407-8b083de691f8",
+    "title": "What could have been done differently in Session 1?",
     "question_type": "text-input",
-    "index": null,
+    "index": 4,
     "options": [],
-    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc"
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": false,
+    "description": "last question"
+  },
+  {
+    "id": "72a84007-a67e-4533-8407-8b083de691f9",
+    "title": "How do you rate this session?",
+    "question_type": "slider",
+    "index": 4,
+    "options": { "max": 10 },
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": false,
+    "description": "select between 1 to 10"
+  },
+  {
+    "id": "82a84007-a67e-4533-8407-8b083de691f4",
+    "title": "How do you rate this session?",
+    "question_type": "star-rating",
+    "index": 5,
+    "options": [],
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": true,
+    "description": "stars rating"
+  },
+  {
+    "id": "92a84007-a67e-4533-8407-8b083de691f5",
+    "title": "How do you rate this session?",
+    "question_type": "star-rating",
+    "index": 6,
+    "options": [],
+    "cohort_session_id": "67540235-11b5-4666-9fa0-d875a0e7afbc",
+    "mandatory": false,
+    "description": "stars rating"
   }
 ]

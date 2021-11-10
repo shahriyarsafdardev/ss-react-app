@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
+import StarRatingComponent from 'react-star-rating-component';
 // material
 import { styled } from '@material-ui/core/styles';
-import { Radio, RadioGroup, FormControlLabel, TextField, Checkbox } from '@material-ui/core';
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  TextField,
+  Checkbox,
+  Slider,
+  Box
+} from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
 
 // types
@@ -22,6 +31,15 @@ type RadioButtonsProps = {
 type TextInputProps = {
   submitted_answer: string;
   onChange: any;
+  item: SurveyContent;
+};
+type SliderProps = {
+  onChange: any;
+  item: SurveyContent;
+};
+type StarRatingProps = {
+  onChange: any;
+  submitted_answer: string;
 };
 
 const RowContainer = styled('div')(() => ({
@@ -39,11 +57,32 @@ const QuestionText = styled('p')(() => ({
   color: '#071A33'
 }));
 
+const QuestionDescription = styled('label')(() => ({
+  fontWeight: 400,
+  fontSize: '14px',
+  lineHeight: '42px',
+  fontFamily: 'Public Sans',
+  fontStyle: 'normal',
+  color: '#637381'
+}));
+
+const StarRatingStyled = styled(StarRatingComponent)(({ theme }) => ({
+  i: {
+    fontSize: '4rem',
+    margin: '0 10px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2rem'
+    }
+  }
+}));
+
 const ANSWER_TYPES = {
   MULTIPLE_CHOICE: 'multiple-choice',
   TEXT_INPUT: 'text-input',
   MULTI_SELECT: 'multi-select',
-  CREATE_MULTI_SELECT: 'create-multi-select'
+  CREATE_MULTI_SELECT: 'create-multi-select',
+  SLIDER: 'slider',
+  STAR_RATING: 'star-rating'
 };
 
 const customStyles = {
@@ -53,7 +92,7 @@ const customStyles = {
   })
 };
 
-function TextInput({ submitted_answer, onChange }: TextInputProps) {
+function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
   return (
     <TextField
       key="text-answer"
@@ -61,7 +100,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
       fullWidth
       value={submitted_answer}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Start typing whatever comes to mind!"
+      placeholder={item?.options?.placeholder || 'Start typing whatever comes to mind!'}
       multiline
       rows={4}
       inputProps={{
@@ -74,7 +113,7 @@ function TextInput({ submitted_answer, onChange }: TextInputProps) {
 function RadioButtons({ item, onChange, submitted_answer }: RadioButtonsProps) {
   return (
     <RadioGroup aria-label="gender" name="radio-buttons-group">
-      {item?.options?.map((option, index) => (
+      {item?.options?.map((option: any, index: any) => (
         <FormControlLabel
           key={index}
           value={option}
@@ -171,6 +210,73 @@ function CreateMultiSelect({
   );
 }
 
+function SliderQuestion({ onChange, item }: SliderProps) {
+  const [value, setValue] = useState(item?.options?.max);
+  const [isRendered, setIsRenderedstate] = useState(false);
+  const range = Array.from({ length: item?.options?.max }, (v, k) => k + 1);
+  const marks = range.map((item: number) => ({
+    value: item,
+    label: `${item}`
+  }));
+
+  useEffect(() => {
+    if (isRendered) {
+      onChange(value);
+    }
+
+    return setIsRenderedstate(true);
+  }, [isRendered]);
+
+  return (
+    <Slider
+      step={1}
+      valueLabelDisplay="auto"
+      min={1}
+      max={item?.options?.max}
+      defaultValue={item?.options?.max}
+      marks={marks}
+      onChange={(e, newValue) => {
+        setValue(newValue);
+        onChange(newValue);
+      }}
+      data-testid="slider-option"
+    />
+  );
+}
+
+function StarRating({ submitted_answer, onChange }: StarRatingProps) {
+  const [value, setValue] = useState<number>(5);
+  const [isRendered, setIsRenderedstate] = useState(false);
+
+  useEffect(() => {
+    if (typeof submitted_answer === 'number') {
+      setValue(Number(submitted_answer));
+    }
+  }, [submitted_answer]);
+
+  useEffect(() => {
+    if (isRendered) {
+      onChange(value);
+    }
+
+    return setIsRenderedstate(true);
+  }, [isRendered]);
+
+  return (
+    <Box width="100%" display="flex" justifyContent="center" data-testid="star-rating">
+      <StarRatingStyled
+        name="stars"
+        starCount={5}
+        value={value || 5}
+        onStarClick={(nextValue: any) => {
+          onChange(nextValue);
+          setValue(nextValue);
+        }}
+      />
+    </Box>
+  );
+}
+
 export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
   const [text, setText] = useState(item.submitted_answer || '');
 
@@ -190,7 +296,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return <RadioButtons item={item} onChange={handleChange} submitted_answer={text} />;
     }
     if (item.question_type === ANSWER_TYPES.TEXT_INPUT) {
-      return <TextInput onChange={handleChange} submitted_answer={text} />;
+      return <TextInput onChange={handleChange} submitted_answer={text} item={item} />;
     }
     if (item.question_type === ANSWER_TYPES.MULTI_SELECT) {
       return (
@@ -206,6 +312,12 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
         />
       );
     }
+    if (item.question_type === ANSWER_TYPES.SLIDER) {
+      return <SliderQuestion item={item} onChange={onChange} />;
+    }
+    if (item.question_type === ANSWER_TYPES.STAR_RATING) {
+      return <StarRating onChange={onChange} submitted_answer={text} />;
+    }
 
     return '';
   };
@@ -213,6 +325,11 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
   return (
     <RowContainer>
       <QuestionText data-testid="onboard-question">{item.title}</QuestionText>
+      {item?.description && (
+        <QuestionDescription data-testid="onboard-description">
+          {item?.description}
+        </QuestionDescription>
+      )}
       <br />
       {answerFields()}
     </RowContainer>

@@ -1,0 +1,20 @@
+{
+  "cohort_id": "9550cc85-305a-438c-a115-e791a16c91f0",
+  "sessions": [
+    {
+      "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
+      "name": "Session 1",
+      "number": 1,
+      "time": "2021-11-10T10:00:00.000Z",
+      "length": "120m",
+      "recording_thumbnail_url": null,
+      "recording_url": "",
+      "description": "",
+      "summary": "",
+      "presentation_pdf_downloadable": false,
+      "presentation_pdf_url": "",
+      "survey_completed": false,
+      "zoom_url": "https/testurl.com"
+    }
+  ]
+}

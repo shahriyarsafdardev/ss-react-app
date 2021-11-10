@@ -18,32 +18,37 @@ const questions = [
       'Personally invited by someone in the Scholarsite team',
       'Other'
     ],
-    submitted_answer: null
+    submitted_answer: null,
+    description: null
   },
   {
     question_type: 'multiple-choice',
     title: 'Who is paying for this course?',
     options: ['I am', 'My employer is', 'Other'],
-    submitted_answer: null
+    submitted_answer: null,
+    description: null
   },
   {
     question_type: 'multiple-choice',
     title:
       'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
-    submitted_answer: null
+    submitted_answer: null,
+    description: null
   },
   {
     question_type: 'multi-select',
     title: 'What are you looking to find within the Scholarsite community?',
     options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
-    submitted_answer: null
+    submitted_answer: null,
+    description: null
   },
   {
     question_type: 'create-multi-select',
     title: 'What topics can fellow cohort members ask you question on?',
     options: ['Economics', 'Management', 'Hiring', 'Statistics'],
-    submitted_answer: null
+    submitted_answer: null,
+    description: null
   }
 ];
 

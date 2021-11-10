@@ -117,7 +117,7 @@ export default function SurveyForm({
 }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-  const [surveyData, setSurveyData] = useState([]);
+  const [surveyData, setSurveyData] = useState<any>([]);
   const [response, setResponse] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -219,7 +219,9 @@ export default function SurveyForm({
               variant="contained"
               className="right-btn"
               onClick={handleNext}
-              disabled={response[questionID] === undefined}
+              disabled={
+                surveyData[currentQuestion].mandatory === true && response[questionID] === undefined
+              }
               data-testid="btn-next"
             >
               {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
