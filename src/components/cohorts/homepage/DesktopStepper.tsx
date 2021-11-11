@@ -42,7 +42,7 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
     }
   })
 );
-const StyledTimeline = styled(Box)(() => ({
+const StyledTimeline = styled(Box)(({ theme }) => ({
   width: '100%',
   overflowX: 'hidden',
   display: 'flex',
@@ -50,6 +50,9 @@ const StyledTimeline = styled(Box)(() => ({
   '&::-webkit-scrollbar': { width: '4px' },
   img: {
     cursor: 'pointer'
+  },
+  [theme.breakpoints.down('sm')]: {
+    display: 'none'
   }
 }));
 
