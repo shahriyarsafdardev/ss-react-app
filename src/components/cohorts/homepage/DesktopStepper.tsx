@@ -111,9 +111,11 @@ const scroll = (val: number) => {
 };
 
 export default function DesktopStepper({
+  cohortID,
   activeSession,
   sessions
 }: {
+  cohortID: string;
   activeSession: number;
   sessions: Session[];
 }) {
@@ -145,7 +147,13 @@ export default function DesktopStepper({
                   <div>
                     <StyledSession>{`Session ${session.number}`}</StyledSession>
                     <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
-                    <StyledDate>{displayDate(session.time)}</StyledDate>
+                    {displayDate(session.time) ? (
+                      <StyledDate>{displayDate(session.time)}</StyledDate>
+                    ) : (
+                      <a href={`/cohorts/${cohortID}/sessions?session=${session.number}`}>
+                        Review Content
+                      </a>
+                    )}
                   </div>
                 </StepLabel>
               </Step>

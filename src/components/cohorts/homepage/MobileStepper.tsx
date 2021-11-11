@@ -128,13 +128,15 @@ const displaySession = (time: string, length: string, number: number) => {
   if (moment(time) > moment()) {
     return `Session ${number} | ${length}`;
   }
-  return 'Review Content';
+  return false;
 };
 
 export default function MobileStepper({
+  cohortID,
   activeSession,
   sessions
 }: {
+  cohortID: string;
   activeSession: number;
   sessions: Session[];
 }) {
@@ -176,9 +178,15 @@ export default function MobileStepper({
               >
                 <div>
                   <StyledSession>{step.name}</StyledSession>
-                  <StyledContent>
-                    {displaySession(step.time, step.length, step.number)}
-                  </StyledContent>
+                  {displaySession(step.time, step.length, step.number) ? (
+                    <StyledContent>
+                      {displaySession(step.time, step.length, step.number)}
+                    </StyledContent>
+                  ) : (
+                    <a href={`/cohorts/${cohortID}/sessions?session=${step.number}`}>
+                      Review Content
+                    </a>
+                  )}
                 </div>
               </StepLabel>
             </Step>

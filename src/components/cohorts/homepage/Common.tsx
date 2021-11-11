@@ -15,12 +15,16 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   }
 }));
 export const formatTime = (time: string, sessionLength: string) => {
-  const sessionStartTime = moment(time).format('hh:mm a');
-  const sessionEndTime = moment(time)
+  const sessionStartTime = moment(
+    new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+  ).format('hh:mm a');
+  const sessionEndTime = moment(
+    new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+  )
     .add(Number(sessionLength.split(' ')[0]), 'hours')
     .format('hh:mm a');
   if (moment(time) > moment()) {
-    return `${sessionStartTime} - ${sessionEndTime}`;
+    return `${sessionStartTime} - ${sessionEndTime} PST`;
   }
   return 'Complete';
 };
@@ -29,5 +33,5 @@ export const displayDate = (time: string) => {
   if (moment(time) > moment()) {
     return moment(time).format('dddd, MMM DD');
   }
-  return 'Review Content';
+  return false;
 };

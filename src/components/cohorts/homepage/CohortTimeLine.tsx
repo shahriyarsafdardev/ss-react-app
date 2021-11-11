@@ -38,10 +38,11 @@ const CohortTimeLine = () => {
   return (
     <SectionContainer>
       <DesktopStepper
+        cohortID={cohort_id}
         activeSession={activeSession === 0 ? 1 : activeSession + 2}
         sessions={sessions}
       />
-      <MobileStepper activeSession={activeSession} sessions={sessions} />
+      <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
     </SectionContainer>
   );
 };
