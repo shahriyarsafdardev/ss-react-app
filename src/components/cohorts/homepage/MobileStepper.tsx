@@ -46,7 +46,7 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
       zIndex: 1,
       background: '#5858D0',
       borderRadius: '4px',
-      width: '46px',
+      minWidth: '50px',
       height: '31px',
       display: 'flex',
       justifyContent: 'center',
@@ -89,8 +89,8 @@ function QontoStepIcon(props: StepIconProps | any) {
         </div>
       ) : (
         <div className="QontoStepIcon-circle">
-          <Typography sx={{ fontSize: '13px', fontWeight: 500 }}>
-            {moment(time).format('MMM')}{' '}
+          <Typography sx={{ fontSize: '13px', fontWeight: 500, padding: '0 3px' }}>
+            {moment(time).format('DD MMM')}{' '}
           </Typography>
         </div>
       )}
@@ -138,6 +138,8 @@ export default function MobileStepper({
   activeSession: number;
   sessions: Session[];
 }) {
+  console.log('active session: ', activeSession);
+
   const [sessionSteps, setSessionSteps] = useState(sessions);
   const [seeMore, setSeeMore] = useState(false);
 
@@ -168,7 +170,7 @@ export default function MobileStepper({
           connector={<ColorlibConnector />}
         >
           {sessionSteps?.map((step, index) => (
-            <Step key={step.number} sx={{ minHeight: '70px' }}>
+            <Step key={step.number} sx={{ minHeight: '50px' }}>
               <StepLabel
                 StepIconComponent={(props: StepIconProps) => (
                   <QontoStepIcon {...props} time={step.time} key={step.time} />

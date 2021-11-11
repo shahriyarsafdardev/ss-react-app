@@ -24,17 +24,23 @@ const CohortTimeLine = () => {
 
   useEffect(() => {
     let activeSession = 0;
-    sessions?.forEach((session) => {
-      if (moment(session.time) > moment()) {
-        activeSession = session.number;
+    let flag = true;
+    sessions?.forEach((session, index) => {
+      if (moment(session.time) < moment() && flag) {
+        activeSession = index + 1;
+        flag = false;
       }
     });
+
     setActiveSession(activeSession);
   }, [sessions]);
 
   return (
     <SectionContainer>
-      <DesktopStepper activeSession={activeSession} sessions={sessions} />
+      <DesktopStepper
+        activeSession={activeSession === 0 ? 1 : activeSession + 2}
+        sessions={sessions}
+      />
       <MobileStepper activeSession={activeSession} sessions={sessions} />
     </SectionContainer>
   );
