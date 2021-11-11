@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { PreReadingList } from '../../../@types/cohorts';
+import { SessionMaterial } from '../../../@types/cohorts';
 import MarkCheckbox from './MarkCheckbox';
 
 type PreReadingRowProps = {
-  item: PreReadingList;
+  item: SessionMaterial;
   checkboxHanlder: Function;
 };
 
@@ -56,7 +56,7 @@ export default function PreReadingRow({ item, checkboxHanlder }: PreReadingRowPr
       <StyledBox className="inner">
         <p>{item.name}</p>
         <StyledBox className="secondary">
-          <StyledLink href="/">{item.action_text}</StyledLink>
+          <StyledLink href={item.action_url}>{item.action_text}</StyledLink>
           <span>{item.info_text}</span>
         </StyledBox>
       </StyledBox>

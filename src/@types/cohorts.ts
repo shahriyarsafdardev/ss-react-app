@@ -34,6 +34,14 @@ export type Survey = {
   contents: SurveyContent[];
 };
 
+export type SessionMaterial = {
+  name: string;
+  action_text: string;
+  info_text: string;
+  action_url: string;
+  complete: boolean;
+};
+
 export type Session = {
   id: string;
   name: string;
@@ -50,6 +58,7 @@ export type Session = {
   presentation_pdf_downloadable: boolean;
   survey: Survey;
   resources: string;
+  session_materials: SessionMaterial[];
 };
 
 export type SessionListItem = {
@@ -71,10 +80,3 @@ export type Cohort = {
   enrollments: String[];
 };
 
-export type PreReadingList = {
-  name: string;
-  action_text: string;
-  info_text: string;
-  type: string;
-  complete: boolean;
-};

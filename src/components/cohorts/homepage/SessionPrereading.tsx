@@ -1,22 +1,78 @@
-import { Box } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import moment from 'moment';
+import Page from 'components/Page';
+
+import { Container, Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+import { getSessions } from '../../../redux/slices/cohort';
+import { RootState, useDispatch, useSelector } from '../../../redux/store';
+import { SessionMaterial } from '../../../@types/cohorts';
+import LoadingScreen from '../../LoadingScreen';
+
+import axios from '../../../utils/axios';
 import { SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
-import { PreReadingList } from '../../../@types/cohorts';
 import CircularProgressbar from './CircularProgressBar';
 
-type SessionPrereadingProps = {
-  list: PreReadingList[];
-  onListChange: Function;
-};
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '60%',
+  left: '38%'
+}));
 
-const SessionPrereading = ({ list, onListChange }: SessionPrereadingProps) => {
+const SessionPrereading = () => {
+  const [list, setList] = useState<SessionMaterial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { sessions } = cohort || [];
+
+  useEffect(() => {
+    if (cohort && !sessions) {
+      dispatch(getSessions(cohort.id));
+    }
+  }, [cohort]);
+
+  useEffect(() => {
+    const initMaterials = async () => {
+      let activeSession = '';
+      sessions?.forEach((session) => {
+        if (moment(session.time) > moment()) {
+          activeSession = session.id;
+        }
+      });
+      if (activeSession) {
+        try {
+          const response = await axios.get(
+            `/cohorts/${cohort_id}/cohort_sessions/${activeSession}/session_materials.json`
+          );
+          setList(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      setLoading(false);
+    };
+    initMaterials();
+  }, [sessions]);
+
   const onMark = (index: number, value: boolean) => {
     if (index >= 0 && index < list.length) {
       const updated = list;
       updated[index].complete = value;
-      onListChange([...updated]);
+      setList([...updated]);
     }
   };
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <SectionContainer className="card-2">

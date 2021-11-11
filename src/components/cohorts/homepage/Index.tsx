@@ -51,29 +51,15 @@ const dummyList = [
   }
 ];
 
-const Index = () => {
-  const [list, setList] = useState(dummyList);
-
-  const handleChange = (l: any) => {
-    setList(l);
-  };
-
-  return (
-    <Page title="ScholarSite | Homepage">
-      <Container style={{ marginBottom: '50px' }}>
-        <CohortTimeLine />
-        <StyledBox>
-          <SessionPrereading
-            list={list}
-            onListChange={(a: any) => {
-              handleChange(a);
-            }}
-          />
-          <NetworkSuggestion />
-        </StyledBox>
-      </Container>
-    </Page>
-  );
-};
-
+const Index = () => (
+  <Page title="ScholarSite | Homepage">
+    <Container style={{ marginBottom: '50px' }}>
+      <CohortTimeLine />
+      <StyledBox>
+        <SessionPrereading />
+        <NetworkSuggestion />
+      </StyledBox>
+    </Container>
+  </Page>
+);
 export default Index;
