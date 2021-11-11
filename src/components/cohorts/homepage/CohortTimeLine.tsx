@@ -5,13 +5,7 @@ import { getSessions } from '../../../redux/slices/cohort';
 
 import { SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
-
-const containerStyle = {
-  width: '100%',
-  height: '200px',
-  display: 'flex',
-  alignItems: 'center'
-};
+import MobileStepper from './MobileStepper';
 
 const CohortTimeLine = () => {
   const dispatch = useDispatch();
@@ -39,8 +33,9 @@ const CohortTimeLine = () => {
   }, [sessions]);
 
   return (
-    <SectionContainer style={containerStyle}>
+    <SectionContainer>
       <DesktopStepper activeSession={activeSession} sessions={sessions} />
+      <MobileStepper activeSession={activeSession} sessions={sessions} />
     </SectionContainer>
   );
 };
