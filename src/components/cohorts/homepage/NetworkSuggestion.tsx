@@ -5,8 +5,8 @@ import { SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
 import PeerCard from './PeerCard';
-import { CarouselControlsPaging1, CarouselControlsArrowsBasic1 } from '../../carousel';
-// eslint-disable-next-line arrow-body-style
+import { CarouselControlsPaging1 } from '../../carousel';
+
 const NetworkSuggestion = () => {
   const carouselRef = useRef<Slider>(null);
   const dispatch = useDispatch();
@@ -15,13 +15,13 @@ const NetworkSuggestion = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
-  const { peers } = cohort || { peers: [] };
+  const { peers } = cohort || [];
 
   useEffect(() => {
     if (cohort && !peers) {
       dispatch(getPeers(cohort_id.toString()));
     }
-  }, [dispatch, cohort]);
+  }, [cohort]);
 
   const handlePrevious = () => {
     carouselRef.current?.slickPrev();
@@ -39,6 +39,8 @@ const NetworkSuggestion = () => {
     ...CarouselControlsPaging1({
       color: 'primary.main',
       sx: {
+        position: 'relative',
+        backgroundColor: 'transparent',
         bottom: '0',
         right: '40%',
         left: '40%',
@@ -54,7 +56,10 @@ const NetworkSuggestion = () => {
     >
       <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
         <Box>
-          <p style={{ fontSize: '18px', fontWeight: 700 }}>👋 Say hi to some of your peers</p>
+          <p style={{ fontSize: '18px' }}>
+            👋 Say hi to some of your{' '}
+            <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>peers</span>
+          </p>
           <p style={{ fontSize: '14px', color: '#212B36' }}>
             Here are a few who are interested in growing their network
           </p>
@@ -74,11 +79,10 @@ const NetworkSuggestion = () => {
           onKeyDown={handlePrevious}
           alt="left arrow"
         />
-        <Card>
+        <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
           <Slider ref={carouselRef} {...settings}>
             {peers && peers?.slice(0, 4).map((peer) => <PeerCard key={peer.id} item={peer} />)}
           </Slider>
-          <CarouselControlsArrowsBasic1 onNext={handleNext} onPrevious={handlePrevious} />
         </Card>
         {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
         <img

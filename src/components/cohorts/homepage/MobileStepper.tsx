@@ -65,7 +65,7 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
     display: 'none'
   },
   [theme.breakpoints.down('sm')]: {
-    height: '300px'
+    height: '250px'
   },
   scrollBehavior: 'smooth',
   '&.scrollbar-hidden::-webkit-scrollbar': {
@@ -81,7 +81,7 @@ function QontoStepIcon(props: StepIconProps | any) {
   const { active, completed, className, time } = props;
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
-      {completed ? (
+      {!completed ? (
         <div className="QontoStepIcon-completedIcon">
           <Typography sx={{ fontSize: '13px', fontWeight: 500 }}>
             {moment(time).format('DD MMM')}
@@ -138,8 +138,6 @@ export default function MobileStepper({
   activeSession: number;
   sessions: Session[];
 }) {
-  console.log('active session: ', activeSession);
-
   const [sessionSteps, setSessionSteps] = useState(sessions);
   const [seeMore, setSeeMore] = useState(false);
 

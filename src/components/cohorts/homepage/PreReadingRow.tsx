@@ -28,10 +28,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
     }
   },
   '&.secondary': {
-    marginTop: 'auto',
+    marginTop: '5px',
     fontSize: '15px',
     [theme.breakpoints.down('sm')]: {
-      margin: '20px 0 10px 0',
+      margin: '5px 0 10px 0',
       display: 'flex',
       justifyContent: 'space-between'
     },

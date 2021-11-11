@@ -3,19 +3,23 @@ import { Checkbox, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 const StyledCheckBox = styled(Box)(({ theme }) => ({
+  cursor: 'pointer',
   width: '92px',
   height: '110px',
   background: 'rgba(77, 77, 205, 0.05)',
   borderRadius: '0px 8px 8px 0px',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   textAlign: 'center',
   flexDirection: 'column',
+  '&:hover': { opacity: 0.9 },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     height: '53px',
     flexDirection: 'row',
-    borderRadius: '0px 0px 8px 8px'
+    borderRadius: '0px 0px 8px 8px',
+    justifyContent: 'flex-start'
   }
 }));
 
@@ -33,17 +37,10 @@ export default function MarkCheckbox({
   completed: boolean;
   onChange: Function;
 }) {
-  const [marked, setMarked] = useState<boolean>(completed);
   return (
-    <StyledCheckBox>
-      <Checkbox
-        checked={marked}
-        onChange={(e) => {
-          setMarked(e.target.checked);
-          onChange(e.target.checked);
-        }}
-      />
-      <StyledText> {marked ? 'Marked as Complete' : 'Mark as Complete'}</StyledText>
+    <StyledCheckBox onClick={() => onChange(!completed)}>
+      <Checkbox checked={completed} />
+      <StyledText> {completed ? 'Marked as Complete' : 'Mark as Complete'}</StyledText>
     </StyledCheckBox>
   );
 }

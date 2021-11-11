@@ -9,10 +9,11 @@ import { StudentProfile } from '../../../@types/cohorts';
 const StyledBox = styled(Box)(() => ({
   width: '100%',
   height: '286px',
-  boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.08)',
+  boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%);',
   padding: '16px',
   display: 'flex',
   background: '#F7F8F9',
+  borderRadius: '25px',
   flexDirection: 'column',
   justifyContent: 'space-between'
 }));
