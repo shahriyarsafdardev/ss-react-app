@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import Page from 'components/Page';
 
-import { Container, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { getSessions } from '../../../redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
@@ -29,6 +28,7 @@ const SessionPrereading = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
+  const [activeSessionID, setActiveSessionID] = useState<string>('');
 
   useEffect(() => {
     if (cohort && !sessions) {
@@ -47,9 +47,10 @@ const SessionPrereading = () => {
       if (activeSession) {
         try {
           const response = await axios.get(
-            `/cohorts/${cohort_id}/cohort_sessions/${activeSession}/session_materials.json`
+            `/cohort_sessions/${activeSession}/session_materials.json`
           );
           setList(response.data);
+          setActiveSessionID(activeSession);
         } catch (error) {
           console.log(error);
         }
@@ -59,11 +60,21 @@ const SessionPrereading = () => {
     initMaterials();
   }, [sessions]);
 
-  const onMark = (index: number, value: boolean) => {
+  const onMark = async (index: number, value: boolean) => {
     if (index >= 0 && index < list.length) {
       const updated = list;
-      updated[index].complete = value;
-      setList([...updated]);
+      try {
+        const response = await axios.post(
+          `/cohort_sessions/${activeSessionID}/session_materials/${updated[index].id}/submit_checklist.json`,
+          {
+            complete: value
+          }
+        );
+        updated[index].complete = response.data;
+        setList([...updated]);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   if (loading) {

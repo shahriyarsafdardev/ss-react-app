@@ -35,6 +35,7 @@ export type Survey = {
 };
 
 export type SessionMaterial = {
+  id: string;
   name: string;
   action_text: string;
   info_text: string;
@@ -79,4 +80,3 @@ export type Cohort = {
   sessions: Session[];
   enrollments: String[];
 };
-
