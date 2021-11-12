@@ -268,7 +268,7 @@ const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
 
-const HomePage = Loadable(lazy(() => import('components/cohorts/homepage/Index')));
+const HomePage = Loadable(lazy(() => import('components/cohorts/home/HomeTab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
