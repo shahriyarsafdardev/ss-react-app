@@ -42,6 +42,10 @@ export type SessionMaterial = {
   action_url: string;
   complete: boolean;
 };
+export type GroupedSessionMaterial = {
+  category: string;
+  session_materials: SessionMaterial[];
+};
 
 export type Session = {
   id: string;
@@ -59,6 +63,7 @@ export type Session = {
   presentation_pdf_downloadable: boolean;
   survey: Survey;
   resources: string;
+  session_materials: GroupedSessionMaterial[];
 };
 
 export type SessionListItem = {

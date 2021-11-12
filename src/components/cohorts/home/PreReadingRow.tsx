@@ -44,6 +44,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     padding: '15px',
     width: '70%',
+    minHeight: '110px',
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }

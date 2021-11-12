@@ -8,6 +8,7 @@ import { Session, SessionMaterial } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
+import CohortGoodbye from './CohortGoodbye';
 import CircularProgressbar from './CircularProgressBar';
 
 const SessionPrereading = () => {
@@ -20,6 +21,7 @@ const SessionPrereading = () => {
   );
   const { sessions } = cohort || [];
   const [activeSession, setActiveSession] = useState<Session>();
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (cohort && !sessions) {
@@ -28,30 +30,32 @@ const SessionPrereading = () => {
   }, [cohort]);
 
   useEffect(() => {
-    let found = false;
-    sessions?.forEach((session) => {
-      if (!found && moment(session.time).add(1, 'hour') > moment()) {
-        setActiveSession(session);
-        found = true;
-      }
-    });
+    if (!activeSession) {
+      let found = false;
+      sessions?.forEach((session, index) => {
+        if (!found && moment(session.time).add(1, 'hour') > moment()) {
+          setActiveSession(session);
+          found = true;
+        }
+      });
+    }
   }, [sessions]);
 
   useEffect(() => {
     const initMaterials = async () => {
-      setLoading(true);
       if (activeSession) {
+        setLoading(true);
         try {
           const response = await axios.get(
             `/cohort_sessions/${activeSession.id}/session_materials.json`
           );
           setList(response.data);
-          setLoading(false);
           setActiveSession(activeSession);
         } catch (error) {
           console.log(error);
         }
       }
+      setLoading(false);
     };
     initMaterials();
   }, [activeSession]);
@@ -78,35 +82,45 @@ const SessionPrereading = () => {
     <SectionContainer className="card-2">
       {!loading ? (
         <>
-          <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <Box>
-              <p style={{ fontSize: '18px' }}>
-                Get Ready for{' '}
-                <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                  Session {activeSession?.number}
-                </span>
-              </p>
-              <p style={{ fontSize: '14px' }}>
-                These tasks should be completed before the session starts
-              </p>
+          {activeSession ? (
+            <>
+              <Box
+                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
+              >
+                <Box>
+                  <p style={{ fontSize: '18px' }}>
+                    Get Ready for{' '}
+                    <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+                      Session {activeSession?.number}
+                    </span>
+                  </p>
+                  <p style={{ fontSize: '14px' }}>
+                    These tasks should be completed before the session starts
+                  </p>
+                </Box>
+                <Box>
+                  <CircularProgressbar
+                    strokeWidth={14}
+                    totalSteps={list.length}
+                    completedSteps={list.filter((item) => item.complete === true).length}
+                  />
+                </Box>
+              </Box>
+              <Box style={{ height: '400px', overflow: 'scroll' }}>
+                {list.map((preReading, index) => (
+                  <PreReadingRow
+                    key={index}
+                    item={preReading}
+                    checkboxHanlder={(value: boolean) => onMark(index, value)}
+                  />
+                ))}
+              </Box>
+            </>
+          ) : (
+            <Box style={{ height: '400px', overflow: 'scroll' }}>
+              <CohortGoodbye />
             </Box>
-            <Box>
-              <CircularProgressbar
-                strokeWidth={14}
-                totalSteps={list.length}
-                completedSteps={list.filter((item) => item.complete === true).length}
-              />
-            </Box>
-          </Box>
-          <Box style={{ height: '400px', overflow: 'scroll' }}>
-            {list.map((preReading, index) => (
-              <PreReadingRow
-                key={index}
-                item={preReading}
-                checkboxHanlder={(value: boolean) => onMark(index, value)}
-              />
-            ))}
-          </Box>
+          )}
         </>
       ) : (
         <CircularLoader />

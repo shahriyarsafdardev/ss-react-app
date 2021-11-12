@@ -5,7 +5,7 @@ import { styled } from '@material-ui/core/styles';
 const StyledCheckBox = styled(Box)(({ theme }) => ({
   cursor: 'pointer',
   width: '92px',
-  height: '110px',
+  height: '100%',
   background: 'rgba(77, 77, 205, 0.05)',
   borderRadius: '0px 8px 8px 0px',
   display: 'flex',
