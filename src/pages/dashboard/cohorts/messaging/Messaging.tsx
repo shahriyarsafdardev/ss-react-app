@@ -90,8 +90,9 @@ export default function Messaging() {
       }
       setChatClient(client);
     };
-
-    initChat();
+    if (user?.stream_token) {
+      initChat();
+    }
   }, []);
 
   useEffect(() => {

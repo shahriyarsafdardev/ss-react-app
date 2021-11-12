@@ -5,7 +5,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { getSessions } from '../../../redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import { SessionMaterial } from '../../../@types/cohorts';
+import { Session, SessionMaterial } from '../../../@types/cohorts';
 import LoadingScreen from '../../LoadingScreen';
 
 import axios from '../../../utils/axios';
@@ -28,7 +28,7 @@ const SessionPrereading = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
-  const [activeSessionID, setActiveSessionID] = useState<string>('');
+  const [activeSession, setActiveSession] = useState<Session>();
 
   useEffect(() => {
     if (cohort && !sessions) {
@@ -37,20 +37,24 @@ const SessionPrereading = () => {
   }, [cohort]);
 
   useEffect(() => {
+    let found = false;
+    sessions?.forEach((session) => {
+      if (!found && moment(session.time).add(1, 'hour') > moment()) {
+        setActiveSession(session);
+        found = true;
+      }
+    });
+  }, [sessions]);
+
+  useEffect(() => {
     const initMaterials = async () => {
-      let activeSession = '';
-      sessions?.forEach((session) => {
-        if (moment(session.time) > moment()) {
-          activeSession = session.id;
-        }
-      });
       if (activeSession) {
         try {
           const response = await axios.get(
-            `/cohort_sessions/${activeSession}/session_materials.json`
+            `/cohort_sessions/${activeSession.id}/session_materials.json`
           );
           setList(response.data);
-          setActiveSessionID(activeSession);
+          setActiveSession(activeSession);
         } catch (error) {
           console.log(error);
         }
@@ -58,14 +62,14 @@ const SessionPrereading = () => {
       setLoading(false);
     };
     initMaterials();
-  }, [sessions]);
+  }, [activeSession]);
 
   const onMark = async (index: number, value: boolean) => {
     if (index >= 0 && index < list.length) {
       const updated = list;
       try {
         const response = await axios.post(
-          `/cohort_sessions/${activeSessionID}/session_materials/${updated[index].id}/submit_checklist.json`,
+          `/cohort_sessions/${activeSession?.id}/session_materials/${updated[index].id}/submit_checklist.json`,
           {
             complete: value
           }
@@ -90,7 +94,10 @@ const SessionPrereading = () => {
       <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
         <Box>
           <p style={{ fontSize: '18px' }}>
-            Get Ready for <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>Session 2</span>
+            Get Ready for{' '}
+            <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+              Session {activeSession?.number}
+            </span>
           </p>
           <p style={{ fontSize: '14px' }}>
             These tasks should be completed before the session starts

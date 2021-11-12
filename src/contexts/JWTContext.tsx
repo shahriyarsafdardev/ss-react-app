@@ -151,15 +151,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const connectStream = async (user: any) => {
-    if (client.user) {
-      await client.disconnectUser();
+    if (user?.stream_token) {
+      if (client.user) {
+        await client.disconnectUser();
+      }
+      await client.connectUser(
+        {
+          id: user?.stream_id || user?.id
+        },
+        user?.stream_token
+      );
     }
-    await client.connectUser(
-      {
-        id: user?.stream_id || user?.id
-      },
-      user?.stream_token
-    );
   };
 
   const login = async (email: string, password: string) => {
@@ -171,9 +173,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const { accessToken, user } = response.data;
 
     setAmplitudeUserId(user.id);
-    if (user?.stream_token) {
-      connectStream(user);
-    }
+    connectStream(user);
     setSession(accessToken);
     dispatch({
       type: Types.Login,

@@ -240,7 +240,9 @@ export default function NotificationsPopover() {
       setTotalUnread(unread);
       setChatClient(client);
     };
-    initChat();
+    if (user?.stream_token) {
+      initChat();
+    }
   }, [unread]);
 
   const handleOpen = () => {

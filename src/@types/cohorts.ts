@@ -59,7 +59,6 @@ export type Session = {
   presentation_pdf_downloadable: boolean;
   survey: Survey;
   resources: string;
-  session_materials: SessionMaterial[];
 };
 
 export type SessionListItem = {
