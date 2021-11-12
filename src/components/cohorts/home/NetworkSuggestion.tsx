@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
 import _ from 'lodash';
@@ -50,9 +51,18 @@ const NetworkSuggestion = () => {
     })
   };
 
+  const StyledBoxContainer = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      img: { display: 'none' }
+    }
+  }));
+
   return (
     <SectionContainer
-      className="card-2"
+      className="card-3"
       sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
     >
       {peers ? (
@@ -68,13 +78,7 @@ const NetworkSuggestion = () => {
               </p>
             </Box>
           </Box>
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'row'
-            }}
-          >
+          <StyledBoxContainer>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <img
               src="/static/cohorts-home/left-arrow.svg"
@@ -85,7 +89,14 @@ const NetworkSuggestion = () => {
             <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
                 {peers &&
-                  _.sampleSize(peers, 4).map((peer) => <PeerCard key={peer.id} item={peer} />)}
+                  _.sampleSize(peers, 4).map((peer) => (
+                    <PeerCard
+                      key={peer.id}
+                      item={peer}
+                      onHandleNext={handleNext}
+                      onHandlePrevious={handlePrevious}
+                    />
+                  ))}
               </Slider>
             </Card>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -95,7 +106,7 @@ const NetworkSuggestion = () => {
               onKeyDown={handleNext}
               alt="right arrow"
             />
-          </Box>
+          </StyledBoxContainer>
           <Divider variant="middle" />
           <Button> See all peers</Button>
         </>

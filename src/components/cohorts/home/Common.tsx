@@ -20,6 +20,16 @@ export const SectionContainer = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       width: '100%'
     }
+  },
+  '&.card-3': {
+    width: '49%',
+    height: '500px',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '750px'
+    }
   }
 }));
 

@@ -6,7 +6,7 @@ import Label from '../../Label';
 
 import { StudentProfile } from '../../../@types/cohorts';
 
-const StyledBox = styled(Box)(() => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '286px',
   boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%);',
@@ -15,14 +15,24 @@ const StyledBox = styled(Box)(() => ({
   background: '#F7F8F9',
   borderRadius: '25px',
   flexDirection: 'column',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    height: '530px',
+    hr: {
+      display: 'none'
+    }
+  }
 }));
 
-const StyledProfile = styled('img')(() => ({
+const StyledProfile = styled('img')(({ theme }) => ({
   width: '77px',
   height: '106px',
   boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.08)',
-  borderRadius: '14.5691px'
+  borderRadius: '14.5691px',
+  [theme.breakpoints.down('sm')]: {
+    width: '192px',
+    height: '157px'
+  }
 }));
 
 const TagsContainer = styled(Box)(({ theme }) => ({
@@ -30,10 +40,7 @@ const TagsContainer = styled(Box)(({ theme }) => ({
   flex: 1,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: 10,
-  [theme.breakpoints.down('sm')]: {
-    display: 'none'
-  }
+  gap: 10
 }));
 
 const Text = styled(Typography)(() => ({
@@ -48,30 +55,121 @@ const StyledRow = styled(Box)(() => ({
   marginBottom: 20
 }));
 
+const StyledProfileContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    flexBasis: '60%'
+  }
+}));
+
+const ActionButtons = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  button: {
+    width: '48%'
+  },
+  [theme.breakpoints.down('sm')]: {
+    flexBasis: '18%',
+    flexDirection: 'column',
+    button: {
+      width: '100%'
+    }
+  }
+}));
+
+const StyledImageContainer = styled(Box)(({ theme }) => ({
+  flexBasis: '20%',
+  [theme.breakpoints.down('sm')]: {
+    flexBasis: '30%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}));
+
+const StyledCompanyContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  [theme.breakpoints.down('sm')]: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  [theme.breakpoints.up('sm')]: {
+    img: { display: 'none !important' }
+  }
+}));
+
+const StyledContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flexBasis: '75%',
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+}));
+
+const StyledNameContainer = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
+}));
+
 const dummyStrengths = ['Marketing', 'Finance', 'Hiring'];
 
-export default function PeerCard({ item }: { item: StudentProfile }) {
+export default function PeerCard({
+  item,
+  onHandleNext,
+  onHandlePrevious
+}: {
+  item: StudentProfile;
+  onHandleNext: any;
+  onHandlePrevious: any;
+}) {
   return (
     <StyledBox>
-      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Box sx={{ flexBasis: '20%' }}>
+      <StyledProfileContainer>
+        <StyledImageContainer>
           <StyledProfile
             src="https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir-e36a51"
             alt={item.first_name}
           />
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexBasis: '75%' }}>
-          <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>{item.first_name}</Typography>
-          <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
-            Technical Marketing Associate @{' '}
-            <span style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}> Adobe </span>
-          </Typography>
+        </StyledImageContainer>
+        <StyledContainer>
+          <StyledCompanyContainer>
+            {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+            <img
+              src="/static/cohorts-home/left-arrow.svg"
+              onClick={onHandlePrevious}
+              onKeyDown={onHandlePrevious}
+              alt="left arrow"
+            />
+            <StyledNameContainer>
+              <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>{item.first_name}</Typography>
+              <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
+                Technical Marketing Associate @{' '}
+                <span style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}> Adobe </span>
+              </Typography>
+            </StyledNameContainer>
+            {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+            <img
+              src="/static/cohorts-home/right-arrow.svg"
+              onClick={onHandleNext}
+              onKeyDown={onHandleNext}
+              alt="right arrow"
+            />
+          </StyledCompanyContainer>
           <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
             I’m a Technical Marketing assciate that really likes ... and ... I want to branch out
             and grow my network. Let me know what you’re looking...
           </Typography>
-        </Box>
-      </Box>
+        </StyledContainer>
+      </StyledProfileContainer>
       <Divider variant="middle" />
       <Box>
         <StyledRow>
@@ -92,14 +190,11 @@ export default function PeerCard({ item }: { item: StudentProfile }) {
           ))}
         </TagsContainer>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button variant="outlined" sx={{ width: '166px' }}>
-          View Profile
-        </Button>
-        <Button variant="contained" sx={{ width: '166px' }}>
-          Send message
-        </Button>
-      </Box>
+      <Divider variant="middle" />
+      <ActionButtons>
+        <Button variant="outlined">View Profile</Button>
+        <Button variant="contained">Send message</Button>
+      </ActionButtons>
     </StyledBox>
   );
 }
