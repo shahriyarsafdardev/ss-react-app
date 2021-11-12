@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { Box, CircularProgress } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { Box } from '@material-ui/core';
 import { getSessions } from '../../../redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { Session, SessionMaterial } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
-import { SectionContainer } from './Common';
+import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
 
@@ -40,18 +39,19 @@ const SessionPrereading = () => {
 
   useEffect(() => {
     const initMaterials = async () => {
+      setLoading(true);
       if (activeSession) {
         try {
           const response = await axios.get(
             `/cohort_sessions/${activeSession.id}/session_materials.json`
           );
           setList(response.data);
+          setLoading(false);
           setActiveSession(activeSession);
         } catch (error) {
           console.log(error);
         }
       }
-      setLoading(false);
     };
     initMaterials();
   }, [activeSession]);
@@ -73,45 +73,44 @@ const SessionPrereading = () => {
       }
     }
   };
-  if (loading) {
-    return (
-      <Box sx={{ textAlign: 'center', margin: 'auto' }}>
-        <CircularProgress color="primary" />
-      </Box>
-    );
-  }
 
   return (
     <SectionContainer className="card-2">
-      <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <Box>
-          <p style={{ fontSize: '18px' }}>
-            Get Ready for{' '}
-            <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-              Session {activeSession?.number}
-            </span>
-          </p>
-          <p style={{ fontSize: '14px' }}>
-            These tasks should be completed before the session starts
-          </p>
-        </Box>
-        <Box>
-          <CircularProgressbar
-            strokeWidth={14}
-            totalSteps={list.length}
-            completedSteps={list.filter((item) => item.complete === true).length}
-          />
-        </Box>
-      </Box>
-      <Box style={{ height: '400px', overflow: 'scroll' }}>
-        {list.map((preReading, index) => (
-          <PreReadingRow
-            key={index}
-            item={preReading}
-            checkboxHanlder={(value: boolean) => onMark(index, value)}
-          />
-        ))}
-      </Box>
+      {!loading ? (
+        <>
+          <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+            <Box>
+              <p style={{ fontSize: '18px' }}>
+                Get Ready for{' '}
+                <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+                  Session {activeSession?.number}
+                </span>
+              </p>
+              <p style={{ fontSize: '14px' }}>
+                These tasks should be completed before the session starts
+              </p>
+            </Box>
+            <Box>
+              <CircularProgressbar
+                strokeWidth={14}
+                totalSteps={list.length}
+                completedSteps={list.filter((item) => item.complete === true).length}
+              />
+            </Box>
+          </Box>
+          <Box style={{ height: '400px', overflow: 'scroll' }}>
+            {list.map((preReading, index) => (
+              <PreReadingRow
+                key={index}
+                item={preReading}
+                checkboxHanlder={(value: boolean) => onMark(index, value)}
+              />
+            ))}
+          </Box>
+        </>
+      ) : (
+        <CircularLoader />
+      )}
     </SectionContainer>
   );
 };

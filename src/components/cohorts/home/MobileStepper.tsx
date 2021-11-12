@@ -65,7 +65,7 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
     display: 'none'
   },
   [theme.breakpoints.down('sm')]: {
-    height: '250px'
+    height: '280px'
   },
   scrollBehavior: 'smooth',
   '&.scrollbar-hidden::-webkit-scrollbar': {

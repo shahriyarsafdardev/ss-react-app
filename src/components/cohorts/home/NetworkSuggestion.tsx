@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import Slider from 'react-slick';
-import { Box, Button, Card, Divider, CircularProgress } from '@material-ui/core';
+import { Box, Button, Card, Divider } from '@material-ui/core';
 import _ from 'lodash';
-import { SectionContainer } from './Common';
+import { CircularLoader, SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
 import PeerCard from './PeerCard';
@@ -100,9 +100,7 @@ const NetworkSuggestion = () => {
           <Button> See all peers</Button>
         </>
       ) : (
-        <Box sx={{ textAlign: 'center', margin: 'auto' }}>
-          <CircularProgress />
-        </Box>
+        <CircularLoader />
       )}
     </SectionContainer>
   );

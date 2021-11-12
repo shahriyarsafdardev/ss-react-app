@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { CircularProgress, Box } from '@material-ui/core';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
-import { SectionContainer } from './Common';
+import { CircularLoader, SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
 import MobileStepper from './MobileStepper';
 
@@ -36,7 +35,7 @@ const CohortTimeLine = () => {
   }, [sessions]);
 
   return (
-    <SectionContainer>
+    <SectionContainer className="timeline">
       {sessions ? (
         <>
           <DesktopStepper
@@ -47,9 +46,7 @@ const CohortTimeLine = () => {
           <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
         </>
       ) : (
-        <Box sx={{ textAlign: 'center', margin: 'auto' }}>
-          <CircularProgress />
-        </Box>
+        <CircularLoader />
       )}
     </SectionContainer>
   );

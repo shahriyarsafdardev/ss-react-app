@@ -1,4 +1,6 @@
 import { styled } from '@material-ui/core/styles';
+import { Box, CircularProgress } from '@material-ui/core';
+
 import moment from 'moment';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
@@ -6,6 +8,12 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
   borderRadius: '16px',
   padding: '20px',
+  '&.timeline': {
+    height: '200px',
+    [theme.breakpoints.down('sm')]: {
+      height: '310px'
+    }
+  },
   '&.card-2': {
     width: '49%',
     height: '500px',
@@ -13,6 +21,13 @@ export const SectionContainer = styled('div')(({ theme }) => ({
       width: '100%'
     }
   }
+}));
+
+const StyledCircularLoader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%'
 }));
 
 export const formatTime = (time: string, sessionLength: string) => {
@@ -36,3 +51,9 @@ export const displayDate = (time: string) => {
   }
   return false;
 };
+
+export const CircularLoader = () => (
+  <StyledCircularLoader>
+    <CircularProgress />
+  </StyledCircularLoader>
+);
