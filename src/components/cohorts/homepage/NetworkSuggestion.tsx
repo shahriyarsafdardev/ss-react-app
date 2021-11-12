@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
+import _ from 'lodash';
 import { SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
@@ -81,7 +82,7 @@ const NetworkSuggestion = () => {
         />
         <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
           <Slider ref={carouselRef} {...settings}>
-            {peers && peers?.slice(0, 4).map((peer) => <PeerCard key={peer.id} item={peer} />)}
+            {peers && _.sampleSize(peers, 4).map((peer) => <PeerCard key={peer.id} item={peer} />)}
           </Slider>
         </Card>
         {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
