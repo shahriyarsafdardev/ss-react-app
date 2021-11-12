@@ -24,11 +24,17 @@ const CohortTimeLine = () => {
 
   useEffect(() => {
     let activeSession = 0;
-    let flag = true;
+    let activeSessionCount = 0;
     sessions?.forEach((session, index) => {
-      if (moment(session.time) < moment() && flag) {
+      if (moment(session.time).add(1, 'hours') < moment()) {
         activeSession = index + 1;
-        flag = false;
+        activeSessionCount++;
+      }
+      if (activeSessionCount === 0) {
+        activeSession = 0;
+      }
+      if (activeSessionCount === sessions?.length) {
+        activeSession = sessions?.length + 1;
       }
     });
 

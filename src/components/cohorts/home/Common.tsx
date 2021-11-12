@@ -14,6 +14,7 @@ export const SectionContainer = styled('div')(({ theme }) => ({
     }
   }
 }));
+
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(
     new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
@@ -23,14 +24,14 @@ export const formatTime = (time: string, sessionLength: string) => {
   )
     .add(Number(sessionLength.split(' ')[0]), 'hours')
     .format('hh:mm a');
-  if (moment(time) > moment()) {
+  if (moment(time).add(1, 'hours') > moment()) {
     return `${sessionStartTime} - ${sessionEndTime} PST`;
   }
   return 'Complete';
 };
 
 export const displayDate = (time: string) => {
-  if (moment(time) > moment()) {
+  if (moment(time).add(1, 'hours') > moment()) {
     return moment(time).format('dddd, MMM DD');
   }
   return false;
