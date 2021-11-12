@@ -10,6 +10,7 @@ import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CohortGoodbye from './CohortGoodbye';
 import CircularProgressbar from './CircularProgressBar';
+import VideoPlaceHolder from '../VideoPlaceHolder';
 
 const SessionPrereading = () => {
   const [list, setList] = useState<SessionMaterial[]>([]);
@@ -21,13 +22,12 @@ const SessionPrereading = () => {
   );
   const { sessions } = cohort || [];
   const [activeSession, setActiveSession] = useState<Session>();
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
     }
-  }, [cohort]);
+  }, [cohort, sessions, dispatch]);
 
   useEffect(() => {
     if (!activeSession) {
@@ -39,7 +39,7 @@ const SessionPrereading = () => {
         }
       });
     }
-  }, [sessions]);
+  }, [sessions, activeSession]);
 
   useEffect(() => {
     const initMaterials = async () => {
@@ -107,6 +107,13 @@ const SessionPrereading = () => {
                 </Box>
               </Box>
               <Box style={{ height: '400px', overflow: 'scroll' }}>
+                {moment(activeSession.time).subtract(1, 'hours') < moment() && (
+                  <VideoPlaceHolder
+                    displayType="small"
+                    sessionTimeValue={activeSession.time}
+                    sessionZoomUrl={activeSession.zoom_url}
+                  />
+                )}
                 {list.map((preReading, index) => (
                   <PreReadingRow
                     key={index}

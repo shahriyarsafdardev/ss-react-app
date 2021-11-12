@@ -288,7 +288,11 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             data-testid="session-video-url"
           />
         ) : (
-          <VideoPlaceHolder sessionTimeValue={session.time} sessionZoomUrl={session.zoom_url} />
+          <VideoPlaceHolder
+            displayType="large"
+            sessionTimeValue={session.time}
+            sessionZoomUrl={session.zoom_url}
+          />
         )}
 
         {shouldDisplaySurveyModal() && (

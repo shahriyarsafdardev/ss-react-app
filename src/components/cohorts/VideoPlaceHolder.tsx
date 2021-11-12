@@ -16,6 +16,17 @@ const useStyes = makeStyles(() => ({
     flexDirection: 'column',
     justifyContent: 'center'
   },
+  smallContainer: {
+    width: '100%',
+    height: '200px',
+    backgroundColor: '#F3F3FB',
+    borderRadius: '25px',
+    padding: '10px',
+    marginBottom: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space_between'
+  },
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
@@ -25,6 +36,10 @@ const useStyes = makeStyles(() => ({
     display: 'flex',
     padding: '20px 0'
   },
+  smallTimerRow: {
+    display: 'flex',
+    padding: '8px 0'
+  },
   content: {
     color: '#6C7885'
   },
@@ -33,6 +48,11 @@ const useStyes = makeStyles(() => ({
     textAlign: 'center',
     paddingTop: '20px',
     paddingBottom: '40px'
+  },
+  smallContent2: {
+    maxWidth: '250px',
+    textAlign: 'center',
+    paddingBottom: '10px'
   },
   marginTop: {
     marginTop: '5px'
@@ -114,7 +134,15 @@ const TimerField = ({
   );
 };
 
-const TimerPreview = ({ time, zoomUrl }: { time: Date; zoomUrl: string | null }) => {
+const TimerPreview = ({
+  time,
+  zoomUrl,
+  displayType
+}: {
+  time: Date;
+  zoomUrl: string | null;
+  displayType: string;
+}) => {
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
@@ -129,12 +157,16 @@ const TimerPreview = ({ time, zoomUrl }: { time: Date; zoomUrl: string | null })
   return (
     <div>
       <div className={classes.wrapper}>
-        <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
+        {displayType !== 'small' && (
+          <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
+        )}
         <Typography variant="subtitle1">This session is starting soon!</Typography>
-        <Typography variant="subtitle2" className={classes.marginTop}>
-          Passcode: 864988
-        </Typography>
-        <Box className={classes.timerRow}>
+        {displayType !== 'small' && (
+          <Typography variant="subtitle2" className={classes.marginTop}>
+            Passcode: 864988
+          </Typography>
+        )}
+        <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
           <TimerField text="Hours" value={hours} testId="hours" />
           <TimerField text="Minutes" value={minutes} showSeparator={true} testId="minutes" />
           <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
@@ -155,7 +187,13 @@ const TimerPreview = ({ time, zoomUrl }: { time: Date; zoomUrl: string | null })
   );
 };
 
-const SessionInProgress = ({ zoomUrl }: { zoomUrl: string | null }) => {
+const SessionInProgress = ({
+  zoomUrl,
+  displayType
+}: {
+  zoomUrl: string | null;
+  displayType: string;
+}) => {
   const classes = useStyes();
   const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
@@ -164,14 +202,20 @@ const SessionInProgress = ({ zoomUrl }: { zoomUrl: string | null }) => {
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_recorder.svg" alt="date-icon" />
-        <Box className={classes.content2}>
-          <Typography variant="subtitle1">
-            The session has already started, access the link below to join!
-          </Typography>
-          <Typography variant="subtitle2" className={classes.marginTop}>
-            Passcode: 864988
-          </Typography>
-        </Box>
+        {displayType === 'small' ? (
+          <Box className={classes.smallContent2}>
+            <Typography variant="subtitle1">Your Session Is live now!</Typography>
+          </Box>
+        ) : (
+          <Box className={classes.content2}>
+            <Typography variant="subtitle1">
+              The session has already started, access the link below to join!
+            </Typography>
+            <Typography variant="subtitle2" className={classes.marginTop}>
+              Passcode: 864988
+            </Typography>
+          </Box>
+        )}
         {zoomUrl && (
           <Button
             className={classes.primaryBtn}
@@ -188,14 +232,18 @@ const SessionInProgress = ({ zoomUrl }: { zoomUrl: string | null }) => {
   );
 };
 
-const ExpiredSession = () => {
+const ExpiredSession = ({ displayType }: { displayType: string }) => {
   const classes = useStyes();
 
   return (
     <div>
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_dots.svg" alt="date-icon" />
-        <Typography variant="subtitle1" className={classes.content2} data-testid="session-ended">
+        <Typography
+          variant="subtitle1"
+          className={displayType === 'small' ? classes.smallContent2 : classes.content2}
+          data-testid="session-ended"
+        >
           This live session has finished, the recording will be available soon!
         </Typography>
       </div>
@@ -203,7 +251,11 @@ const ExpiredSession = () => {
   );
 };
 
-const renderPlaceHolder = (sessionTimeValue: string, sessionZoomUrl: string | null) => {
+const renderPlaceHolder = (
+  displayType: string,
+  sessionTimeValue: string,
+  sessionZoomUrl: string | null
+) => {
   const currentTime = new Date();
   const sessionTime = new Date(sessionTimeValue);
 
@@ -211,9 +263,9 @@ const renderPlaceHolder = (sessionTimeValue: string, sessionZoomUrl: string | nu
 
   if (difference < 0) {
     if (Math.floor((Math.abs(difference) / (1000 * 60 * 60)) % 24) < 2) {
-      return <SessionInProgress zoomUrl={sessionZoomUrl} />;
+      return <SessionInProgress displayType={displayType} zoomUrl={sessionZoomUrl} />;
     }
-    return <ExpiredSession />;
+    return <ExpiredSession displayType={displayType} />;
   }
 
   const daysRemaining = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -223,7 +275,7 @@ const renderPlaceHolder = (sessionTimeValue: string, sessionZoomUrl: string | nu
   }
 
   if (daysRemaining === 0) {
-    return <TimerPreview time={sessionTime} zoomUrl={sessionZoomUrl} />;
+    return <TimerPreview displayType={displayType} time={sessionTime} zoomUrl={sessionZoomUrl} />;
   }
 
   return null;
@@ -231,16 +283,21 @@ const renderPlaceHolder = (sessionTimeValue: string, sessionZoomUrl: string | nu
 
 export default function VideoPlaceHolder({
   sessionTimeValue,
-  sessionZoomUrl
+  sessionZoomUrl,
+  displayType
 }: {
   sessionTimeValue: string;
+  displayType: string;
   sessionZoomUrl: string | null;
 }) {
   const classes = useStyes();
 
   return (
-    <div className={classes.container} data-testid="video-place-holder">
-      {renderPlaceHolder(sessionTimeValue, sessionZoomUrl)}
+    <div
+      className={displayType === 'small' ? classes.smallContainer : classes.container}
+      data-testid="video-place-holder"
+    >
+      {renderPlaceHolder(displayType, sessionTimeValue, sessionZoomUrl)}
     </div>
   );
 }
