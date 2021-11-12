@@ -174,7 +174,7 @@ export default function NotificationsPopover() {
       >(apiKey!);
 
       // Go for connecting a user only is is not already connected
-      if (!client.user) {
+      if (!client.user && user?.stream_token) {
         await client.connectUser(
           {
             id: user?.stream_id || user?.id

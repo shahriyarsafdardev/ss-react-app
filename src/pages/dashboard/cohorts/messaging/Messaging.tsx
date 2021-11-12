@@ -78,7 +78,7 @@ export default function Messaging() {
         TeamReactionType,
         TeamUserType
       >(apiKey!);
-      if (!client.user) {
+      if (!client.user && user?.stream_token) {
         await client.connectUser(
           {
             id: user?.stream_id || user?.id,

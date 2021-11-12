@@ -171,7 +171,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const { accessToken, user } = response.data;
 
     setAmplitudeUserId(user.id);
-    connectStream(user);
+    if (user?.stream_token) {
+      connectStream(user);
+    }
     setSession(accessToken);
     dispatch({
       type: Types.Login,
