@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -50,7 +51,13 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   '&::-webkit-scrollbar': { width: '4px' },
   img: {
-    cursor: 'pointer'
+    '&.active': {
+      cursor: 'pointer'
+    },
+    '&.disabled': {
+      cursor: 'default',
+      opacity: 0.3
+    }
   },
   [theme.breakpoints.down('sm')]: {
     display: 'none'
@@ -104,12 +111,12 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   }
 }));
 
-const scroll = (val: number) => {
-  const elem = document.getElementById('timeline-div');
-  if (elem) {
-    elem.scrollLeft += val * 500;
-  }
+const ARROW_STATES = {
+  NO_LEFT: 'no-left',
+  NO_right: 'no-right',
+  MIDDLE: 'middle'
 };
+const SCROLL_MOVEMENT = 400;
 
 export default function DesktopStepper({
   cohortID,
@@ -120,6 +127,32 @@ export default function DesktopStepper({
   activeSession: number;
   sessions: Session[];
 }) {
+  const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
+
+  const scroll = async (val: number) => {
+    const elem = document.getElementById('timeline-div');
+    if (elem) {
+      elem.scrollLeft += val * SCROLL_MOVEMENT;
+
+      await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
+
+      if (elem.scrollLeft === 0) {
+        setArrowState(ARROW_STATES.NO_LEFT);
+        return;
+      }
+      const previous = elem.scrollLeft;
+      elem.scrollLeft += 1;
+      await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
+
+      if (elem.scrollLeft === previous) {
+        setArrowState(ARROW_STATES.NO_right);
+      } else {
+        elem.scrollLeft -= 1;
+        setArrowState(ARROW_STATES.MIDDLE);
+      }
+    }
+  };
+
   return (
     <StyledTimeline>
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -127,6 +160,7 @@ export default function DesktopStepper({
         src="/static/cohorts-home/left-arrow.svg"
         onClick={() => scroll(-1)}
         onKeyDown={() => scroll(-1)}
+        className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
       />
       <StyledBox id="timeline-div" className="scrollbar-hidden">
@@ -173,6 +207,7 @@ export default function DesktopStepper({
         src="/static/cohorts-home/right-arrow.svg"
         onClick={() => scroll(1)}
         onKeyDown={() => scroll(1)}
+        className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"
       />
     </StyledTimeline>
