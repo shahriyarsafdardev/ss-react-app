@@ -5,7 +5,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Session } from '../../../@types/cohorts';
 
@@ -183,9 +183,11 @@ export default function MobileStepper({
                       {displaySession(step.time, step.length, step.number)}
                     </StyledContent>
                   ) : (
-                    <a href={`/cohorts/${cohortID}/sessions?session=${step.number}`}>
-                      Review Content
-                    </a>
+                    <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
+                      <Link to={`/cohorts/${cohortID}/sessions?session=${step.number}`}>
+                        Review Content
+                      </Link>
+                    </Typography>
                   )}
                 </div>
               </StepLabel>

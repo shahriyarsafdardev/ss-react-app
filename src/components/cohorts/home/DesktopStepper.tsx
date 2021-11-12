@@ -1,4 +1,5 @@
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -150,9 +151,11 @@ export default function DesktopStepper({
                     {displayDate(session.time) ? (
                       <StyledDate>{displayDate(session.time)}</StyledDate>
                     ) : (
-                      <a href={`/cohorts/${cohortID}/sessions?session=${session.number}`}>
-                        Review Content
-                      </a>
+                      <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
+                        <Link to={`/cohorts/${cohortID}/sessions?session=${session.number}`}>
+                          Review Content
+                        </Link>
+                      </Typography>
                     )}
                   </div>
                 </StepLabel>
