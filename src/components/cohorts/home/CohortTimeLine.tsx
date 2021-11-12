@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { CircularProgress, Box } from '@material-ui/core';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
-
 import { SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
 import MobileStepper from './MobileStepper';
@@ -24,17 +24,11 @@ const CohortTimeLine = () => {
 
   useEffect(() => {
     let activeSession = 0;
-    let activeSessionCount = 0;
+    let flag = true;
     sessions?.forEach((session, index) => {
-      if (moment(session.time).add(1, 'hours') < moment()) {
+      if (moment(session.time).add(1, 'hours') > moment() && flag) {
         activeSession = index + 1;
-        activeSessionCount++;
-      }
-      if (activeSessionCount === 0) {
-        activeSession = 0;
-      }
-      if (activeSessionCount === sessions?.length) {
-        activeSession = sessions?.length + 1;
+        flag = false;
       }
     });
 
@@ -43,12 +37,20 @@ const CohortTimeLine = () => {
 
   return (
     <SectionContainer>
-      <DesktopStepper
-        cohortID={cohort_id}
-        activeSession={activeSession === 0 ? 1 : activeSession + 2}
-        sessions={sessions}
-      />
-      <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
+      {sessions ? (
+        <>
+          <DesktopStepper
+            cohortID={cohort_id}
+            activeSession={activeSession === 0 ? sessions.length + 2 : activeSession + 1}
+            sessions={sessions}
+          />
+          <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
+        </>
+      ) : (
+        <Box sx={{ textAlign: 'center', margin: 'auto' }}>
+          <CircularProgress />
+        </Box>
+      )}
     </SectionContainer>
   );
 };

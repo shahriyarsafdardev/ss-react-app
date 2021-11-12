@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { Box } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { getSessions } from '../../../redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { Session, SessionMaterial } from '../../../@types/cohorts';
-import LoadingScreen from '../../LoadingScreen';
-
 import axios from '../../../utils/axios';
 import { SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
-
-const LoadingContainer = styled(Box)(() => ({
-  position: 'absolute',
-  top: '60%',
-  left: '38%'
-}));
 
 const SessionPrereading = () => {
   const [list, setList] = useState<SessionMaterial[]>([]);
@@ -83,9 +75,9 @@ const SessionPrereading = () => {
   };
   if (loading) {
     return (
-      <LoadingContainer>
-        <LoadingScreen />
-      </LoadingContainer>
+      <Box sx={{ textAlign: 'center', margin: 'auto' }}>
+        <CircularProgress color="primary" />
+      </Box>
     );
   }
 
