@@ -14,7 +14,6 @@ import VideoPlaceHolder from '../VideoPlaceHolder';
 
 const SessionPrereading = () => {
   const [list, setList] = useState<SessionMaterial[]>([]);
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -27,7 +26,7 @@ const SessionPrereading = () => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
     }
-  }, [cohort, sessions, dispatch]);
+  }, [cohort, sessions]);
 
   useEffect(() => {
     if (!activeSession) {
@@ -44,7 +43,6 @@ const SessionPrereading = () => {
   useEffect(() => {
     const initMaterials = async () => {
       if (activeSession) {
-        setLoading(true);
         try {
           const response = await axios.get(
             `/cohort_sessions/${activeSession.id}/session_materials.json`
@@ -55,7 +53,6 @@ const SessionPrereading = () => {
           console.log(error);
         }
       }
-      setLoading(false);
     };
     initMaterials();
   }, [activeSession]);
@@ -80,7 +77,7 @@ const SessionPrereading = () => {
 
   return (
     <SectionContainer className="card-2">
-      {!loading ? (
+      {sessions && cohort ? (
         <>
           {activeSession ? (
             <>
