@@ -78,6 +78,7 @@ export type SessionListItem = {
 export type Cohort = {
   id: string;
   name: string;
+  code: string;
   isOnboarded: boolean;
   intake: number;
   questions_url: string;
