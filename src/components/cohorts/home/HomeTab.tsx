@@ -22,9 +22,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const Index = () => (
   <Page title="ScholarSite | Homepage">
     <Container style={{ marginBottom: '50px' }}>
-      <Typography variant="h3" style={{ marginBottom: '20px' }}>
-        👋 Hi, welcome to the EODP S21 Cohort!
-      </Typography>
       <CohortTimeLine />
       <StyledBox>
         <SessionPrereading />

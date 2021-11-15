@@ -58,10 +58,11 @@ const CohortTimeLine = () => {
 
   return (
     <Box>
-      <Typography variant="h3" style={{ marginBottom: '20px' }}>
-        {header}
-        {/* 👋 Hi, welcome to the EODP S21 Cohort! */}
-      </Typography>
+      {sessions && (
+        <Typography variant="h3" style={{ marginBottom: '20px' }}>
+          {header}
+        </Typography>
+      )}
 
       <SectionContainer className="timeline">
         {sessions ? (

@@ -53,7 +53,6 @@ const SessionPrereading = () => {
             `/cohort_sessions/${activeSession.id}/session_materials.json`
           );
           setList(response.data);
-          setActiveSession(activeSession);
         } catch (error) {
           console.log(error);
         }
