@@ -9,7 +9,6 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   borderRadius: '16px',
   padding: '20px',
   '&.timeline': {
-    height: '200px',
     [theme.breakpoints.down('sm')]: {
       height: '310px'
     }

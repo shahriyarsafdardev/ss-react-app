@@ -25,10 +25,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 
 const StyledProfile = styled('img')(({ theme }) => ({
-  width: '77px',
-  height: '106px',
+  width: '120px',
+  height: '120px',
   boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.08)',
   borderRadius: '14.5691px',
+  objectFit: 'cover',
   [theme.breakpoints.down('sm')]: {
     width: '192px',
     height: '157px'
@@ -79,15 +80,7 @@ const ActionButtons = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StyledImageContainer = styled(Box)(({ theme }) => ({
-  flexBasis: '20%',
-  [theme.breakpoints.down('sm')]: {
-    flexBasis: '30%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-}));
+const StyledImageContainer = styled(Box)(({ theme }) => ({}));
 
 const StyledCompanyContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -103,6 +96,7 @@ const StyledCompanyContainer = styled(Box)(({ theme }) => ({
 
 const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
+  paddingLeft: '25px',
   flexDirection: 'column',
   flexBasis: '75%',
   [theme.breakpoints.down('sm')]: {
@@ -120,8 +114,6 @@ const StyledNameContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const dummyStrengths = ['Marketing', 'Finance', 'Hiring'];
-
 export default function PeerCard({
   item,
   onHandleNext,
@@ -131,14 +123,12 @@ export default function PeerCard({
   onHandleNext: any;
   onHandlePrevious: any;
 }) {
+  console.log(item);
   return (
     <StyledBox>
       <StyledProfileContainer>
         <StyledImageContainer>
-          <StyledProfile
-            src="https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir-e36a51"
-            alt={item.first_name}
-          />
+          <StyledProfile src={item.profile_image_url} alt={item.first_name} />
         </StyledImageContainer>
         <StyledContainer>
           <StyledCompanyContainer>
@@ -150,10 +140,15 @@ export default function PeerCard({
               alt="left arrow"
             />
             <StyledNameContainer>
-              <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>{item.first_name}</Typography>
+              <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>
+                {item.first_name} {item.last_name}
+              </Typography>
               <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
-                Technical Marketing Associate @{' '}
-                <span style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}> Adobe </span>
+                {item.current_position} @{' '}
+                <span style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}>
+                  {' '}
+                  {item.current_company.name}{' '}
+                </span>
               </Typography>
             </StyledNameContainer>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -164,10 +159,10 @@ export default function PeerCard({
               alt="right arrow"
             />
           </StyledCompanyContainer>
-          <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
+          {/* <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
             I’m a Technical Marketing assciate that really likes ... and ... I want to branch out
             and grow my network. Let me know what you’re looking...
-          </Typography>
+          </Typography> */}
         </StyledContainer>
       </StyledProfileContainer>
       <Divider variant="middle" />
@@ -180,10 +175,10 @@ export default function PeerCard({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text>What he’s good at</Text>
+          <Text>What they're good at</Text>
         </StyledRow>
         <TagsContainer>
-          {dummyStrengths.map((strength: string, index: number) => (
+          {item.strengths.map((strength: string, index: number) => (
             <Label key={index} variant="ghost" color="success">
               {capitalCase(strength)}
             </Label>
