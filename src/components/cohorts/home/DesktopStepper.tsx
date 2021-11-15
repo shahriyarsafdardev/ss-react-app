@@ -132,24 +132,20 @@ export default function DesktopStepper({
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
     if (elem) {
-      elem.scrollLeft += val * SCROLL_MOVEMENT;
-
+      const previous = elem.scrollLeft;
+      elem.scrollLeft += val * 500;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
       if (elem.scrollLeft === 0) {
         setArrowState(ARROW_STATES.NO_LEFT);
         return;
       }
-      const previous = elem.scrollLeft;
-      elem.scrollLeft += 1;
-      await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
       if (elem.scrollLeft === previous) {
         setArrowState(ARROW_STATES.NO_right);
-      } else {
-        elem.scrollLeft -= 1;
-        setArrowState(ARROW_STATES.MIDDLE);
+        return;
       }
+      setArrowState(ARROW_STATES.MIDDLE);
     }
   };
 
