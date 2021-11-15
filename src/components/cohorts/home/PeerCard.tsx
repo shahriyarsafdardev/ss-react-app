@@ -10,7 +10,6 @@ import { StudentProfile } from '../../../@types/cohorts';
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '100%',
   minHeight: '220px',
-  boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%);',
   padding: '10px',
   display: 'flex',
   background: '#F7F8F9',
@@ -28,7 +27,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const StyledProfile = styled('img')(({ theme }) => ({
   width: '120px',
   height: '120px',
-  boxShadow: '0px 4px 20px 0px rgba(0, 0, 0, 0.08)',
   borderRadius: '14.5691px',
   objectFit: 'cover',
   [theme.breakpoints.down('sm')]: {
