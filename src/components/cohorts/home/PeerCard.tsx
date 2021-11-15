@@ -8,14 +8,14 @@ import { StudentProfile } from '../../../@types/cohorts';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: '286px',
+  height: '325px',
   boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%);',
-  padding: '16px',
+  padding: '10px',
   display: 'flex',
   background: '#F7F8F9',
   borderRadius: '25px',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  justifyContent: 'space-evenly',
   [theme.breakpoints.down('sm')]: {
     height: '530px',
     hr: {
@@ -53,7 +53,7 @@ const Text = styled(Typography)(() => ({
 
 const StyledRow = styled(Box)(() => ({
   display: 'flex',
-  marginBottom: 20
+  marginBottom: 10
 }));
 
 const StyledProfileContainer = styled(Box)(({ theme }) => ({
@@ -165,7 +165,7 @@ export default function PeerCard({
           </Typography> */}
         </StyledContainer>
       </StyledProfileContainer>
-      <Divider variant="middle" />
+      <Divider variant="middle" sx={{ margin: '10px 0px' }} />
       <Box>
         <StyledRow>
           <img
@@ -185,7 +185,7 @@ export default function PeerCard({
           ))}
         </TagsContainer>
       </Box>
-      <Divider variant="middle" />
+      <Divider variant="middle" sx={{ margin: '10px 0px' }} />
       <ActionButtons>
         <Button variant="outlined">View Profile</Button>
         <Button variant="contained">Send message</Button>

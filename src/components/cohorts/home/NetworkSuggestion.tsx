@@ -47,7 +47,7 @@ const NetworkSuggestion = () => {
       sx: {
         position: 'relative',
         backgroundColor: 'transparent',
-        bottom: '0',
+        bottom: '-5px',
         right: '40%',
         left: '40%',
         zIndex: 99
@@ -67,7 +67,7 @@ const NetworkSuggestion = () => {
   return (
     <SectionContainer
       className="card-3"
-      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}
     >
       {peers ? (
         <>
@@ -111,7 +111,7 @@ const NetworkSuggestion = () => {
               alt="right arrow"
             />
           </StyledBoxContainer>
-          <Divider variant="middle" />
+          <Divider variant="middle" sx={{ marginTop: '15px' }} />
           <Button> See all peers</Button>
         </>
       ) : (
