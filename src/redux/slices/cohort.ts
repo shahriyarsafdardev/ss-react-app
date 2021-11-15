@@ -54,7 +54,30 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, isOnboarded: true };
       }
     },
+    updateSessionMaterialCheckStatus(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetSessionIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
 
+        if (targetSessionIndex !== -1) {
+          const targetMaterialIndex = updated[targetSessionIndex].session_materials[
+            action.payload.Index
+          ].session_materials.findIndex((material) => material.id === action.payload.materialId);
+
+          if (targetMaterialIndex !== -1) {
+            updated[targetSessionIndex].session_materials[action.payload.Index].session_materials[
+              targetMaterialIndex
+            ].complete = action.payload.result;
+            state.cohorts[targetCohortIndex].sessions = updated;
+          }
+        }
+      }
+    },
     updateSessionFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohortID
@@ -125,6 +148,37 @@ export function updateSessionFeedbackStatus(cohortID: string, sessionID: string)
   return async () => {
     try {
       dispatch(slice.actions.updateSessionFeedbackStatusSuccess({ cohortID, sessionID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateMaterialStatus(
+  cohortID: string | undefined,
+  sessionID: string | undefined,
+  Index: number,
+  materialId: string,
+  value: boolean
+) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohort_sessions/${sessionID}/session_materials/${materialId}/submit_checklist.json`,
+        {
+          complete: value
+        }
+      );
+      const result = response.data;
+      dispatch(
+        slice.actions.updateSessionMaterialCheckStatus({
+          cohortID,
+          sessionID,
+          Index,
+          materialId,
+          result
+        })
+      );
     } catch (error) {
       console.log(error);
     }

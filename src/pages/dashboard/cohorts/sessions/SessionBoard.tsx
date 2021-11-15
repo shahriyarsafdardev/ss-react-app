@@ -214,6 +214,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         <SessionMaterials
           groupedMaterials={session?.session_materials || []}
           sessionId={session?.id}
+          cohortId={id}
           key="session_materials"
         />
       ) : (
