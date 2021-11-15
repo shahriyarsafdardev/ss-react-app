@@ -20,9 +20,14 @@ const SessionPrereading = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
-  const [activeSession, setActiveSession] = useState<Session>();
+  const [activeSession, setActiveSession] = useState<Session | undefined>();
 
   useEffect(() => {
+    setActiveSession(undefined);
+  }, []);
+
+  useEffect(() => {
+    setActiveSession(undefined);
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
     }
@@ -31,7 +36,7 @@ const SessionPrereading = () => {
   useEffect(() => {
     if (!activeSession) {
       let found = false;
-      sessions?.forEach((session, index) => {
+      sessions?.forEach((session) => {
         if (!found && moment(session.time).add(1, 'hour') > moment()) {
           setActiveSession(session);
           found = true;
