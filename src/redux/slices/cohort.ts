@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import { dispatch } from '../store';
 import { Cohort } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
@@ -31,7 +32,11 @@ const slice = createSlice({
       );
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
-        state.cohorts[targetCohortIndex] = { ...updated, peers: action.payload.peers };
+        state.cohorts[targetCohortIndex] = {
+          ...updated,
+          peers: action.payload.peers,
+          random_peers: _.sampleSize(action.payload.peers, 4)
+        };
       }
     },
 

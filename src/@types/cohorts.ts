@@ -86,4 +86,5 @@ export type Cohort = {
   peers: StudentProfile[];
   sessions: Session[];
   enrollments: String[];
+  random_peers: StudentProfile[];
 };

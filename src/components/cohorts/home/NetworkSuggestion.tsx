@@ -18,18 +18,13 @@ const NetworkSuggestion = () => {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
-  const { peers } = cohort || [];
-  const [networkSuggestion, setNetworkSuggestions] = useState<StudentProfile[]>();
+  const { random_peers } = cohort || [];
 
   useEffect(() => {
-    if (cohort?.sessions && !peers) {
+    if (cohort?.sessions && !random_peers) {
       dispatch(getPeers(cohort_id.toString()));
     }
   }, [dispatch, Object.keys(cohort || {}).length, cohort_id]);
-
-  useEffect(() => {
-    setNetworkSuggestions(_.sampleSize(peers, 4));
-  }, [peers]);
 
   const handlePrevious = () => {
     carouselRef.current?.slickPrev();
@@ -71,7 +66,7 @@ const NetworkSuggestion = () => {
       className="card-3"
       sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}
     >
-      {peers ? (
+      {random_peers ? (
         <>
           <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <Box>
@@ -94,7 +89,7 @@ const NetworkSuggestion = () => {
             />
             <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
-                {networkSuggestion?.map((peer) => (
+                {random_peers?.map((peer) => (
                   <PeerCard
                     key={peer.id}
                     item={peer}
