@@ -146,4 +146,5 @@ export type ParticipantProfile = {
   current_position: string;
   strengths: string[] | any;
   interests: string[] | any;
+  introduction: string;
 };

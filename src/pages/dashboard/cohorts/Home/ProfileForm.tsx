@@ -40,6 +40,7 @@ interface InitialState {
   interests: string[];
   strengths: string[];
   profile_image_url: File | any;
+  introduction: string;
 }
 const Title = styled(Typography)(() => ({
   fontSize: 24,
@@ -140,6 +141,7 @@ export default function ProfileForm({
     current_position: string;
     strengths: string[];
     interests: string[];
+    introduction: string;
   };
 }) {
   const [strengths, setStrengths] = useState<string[]>();
@@ -167,7 +169,8 @@ export default function ProfileForm({
       current_position: '',
       profile_image_url: null,
       interests: [],
-      strengths: []
+      strengths: [],
+      introduction: ''
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
@@ -307,6 +310,14 @@ export default function ProfileForm({
                     {...getFieldProps('current_position')}
                     inputProps={{
                       'data-testid': 'current-position'
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Introduction"
+                    {...getFieldProps('introduction')}
+                    inputProps={{
+                      'data-testid': 'user-introduction'
                     }}
                   />
 

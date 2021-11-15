@@ -159,10 +159,9 @@ export default function PeerCard({
               alt="right arrow"
             />
           </StyledCompanyContainer>
-          {/* <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
-            I’m a Technical Marketing assciate that really likes ... and ... I want to branch out
-            and grow my network. Let me know what you’re looking...
-          </Typography> */}
+          <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
+            {item.introduction}
+          </Typography>
         </StyledContainer>
       </StyledProfileContainer>
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />
