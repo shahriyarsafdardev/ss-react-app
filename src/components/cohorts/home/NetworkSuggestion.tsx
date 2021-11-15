@@ -3,6 +3,7 @@ import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
 import _ from 'lodash';
+import { StudentProfile } from '../../../@types/cohorts';
 import { CircularLoader, SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
@@ -17,7 +18,7 @@ const NetworkSuggestion = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { peers } = cohort || [];
-  const [networkSuggestion, setNetworkSuggestions] = useState(peers);
+  const [networkSuggestion, setNetworkSuggestions] = useState<StudentProfile[]>();
 
   useEffect(() => {
     if (cohort?.sessions && !peers) {
@@ -26,7 +27,7 @@ const NetworkSuggestion = () => {
   }, [dispatch, Object.keys(cohort || {}).length, cohort_id]);
 
   useEffect(() => {
-    setNetworkSuggestions(peers);
+    setNetworkSuggestions(_.sampleSize(peers, 4));
   }, [peers]);
 
   const handlePrevious = () => {
@@ -92,15 +93,14 @@ const NetworkSuggestion = () => {
             />
             <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
-                {networkSuggestion &&
-                  _.sampleSize(networkSuggestion, 4).map((peer) => (
-                    <PeerCard
-                      key={peer.id}
-                      item={peer}
-                      onHandleNext={handleNext}
-                      onHandlePrevious={handlePrevious}
-                    />
-                  ))}
+                {networkSuggestion?.map((peer) => (
+                  <PeerCard
+                    key={peer.id}
+                    item={peer}
+                    onHandleNext={handleNext}
+                    onHandlePrevious={handlePrevious}
+                  />
+                ))}
               </Slider>
             </Card>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
