@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
@@ -97,6 +98,7 @@ const NetworkSuggestion = () => {
                   <PeerCard
                     key={peer.id}
                     item={peer}
+                    cohortID={cohort_id}
                     onHandleNext={handleNext}
                     onHandlePrevious={handlePrevious}
                   />
@@ -112,7 +114,14 @@ const NetworkSuggestion = () => {
             />
           </StyledBoxContainer>
           <Divider variant="middle" sx={{ marginTop: '15px' }} />
-          <Button> See all peers</Button>
+          <Button
+            to={`/cohorts/${cohort_id}/peers`}
+            component={RouterLink}
+            sx={{ marginTop: '15px' }}
+          >
+            {' '}
+            See all peers
+          </Button>
         </>
       ) : (
         <CircularLoader />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Divider, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { capitalCase } from 'change-case';
@@ -68,12 +69,18 @@ const StyledProfileContainer = styled(Box)(({ theme }) => ({
 const ActionButtons = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
+  a: {
+    width: '48%'
+  },
   button: {
     width: '48%'
   },
   [theme.breakpoints.down('sm')]: {
     flexBasis: '18%',
     flexDirection: 'column',
+    a: {
+      width: '100%'
+    },
     button: {
       width: '100%'
     }
@@ -117,11 +124,13 @@ const StyledNameContainer = styled(Box)(({ theme }) => ({
 export default function PeerCard({
   item,
   onHandleNext,
-  onHandlePrevious
+  onHandlePrevious,
+  cohortID
 }: {
   item: StudentProfile;
   onHandleNext: any;
   onHandlePrevious: any;
+  cohortID: string;
 }) {
   console.log(item);
   return (
@@ -186,8 +195,20 @@ export default function PeerCard({
       </Box>
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />
       <ActionButtons>
-        <Button variant="outlined">View Profile</Button>
-        <Button variant="contained">Send message</Button>
+        <Button
+          variant="outlined"
+          component={RouterLink}
+          to={`/cohorts/${cohortID}/peers?user_id=${item.id}`}
+        >
+          View Profile
+        </Button>
+        <Button
+          variant="contained"
+          component={RouterLink}
+          to={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${item.id}`}
+        >
+          Send message
+        </Button>
       </ActionButtons>
     </StyledBox>
   );
