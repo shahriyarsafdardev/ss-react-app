@@ -37,7 +37,7 @@ export default function SessionMaterials({
               key={index}
               item={preReading}
               checkboxHanlder={(value: boolean) =>
-                dispatch(updateMaterialStatus(cohortId, sessionId, number, preReading.id, value))
+                dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value))
               }
             />
           ))}

@@ -65,12 +65,20 @@ const slice = createSlice({
         );
 
         if (targetSessionIndex !== -1) {
-          const targetMaterialIndex = updated[targetSessionIndex].session_materials[
-            action.payload.Index
-          ].session_materials.findIndex((material) => material.id === action.payload.materialId);
+          let targetGroupIndex = -1;
+          let targetMaterialIndex = -1;
+
+          updated[targetSessionIndex].session_materials.map((group, i) =>
+            group.session_materials.map((material, j) => {
+              if (material.id === action.payload.materialId) {
+                targetGroupIndex = i;
+                targetMaterialIndex = j;
+              }
+            })
+          );
 
           if (targetMaterialIndex !== -1) {
-            updated[targetSessionIndex].session_materials[action.payload.Index].session_materials[
+            updated[targetSessionIndex].session_materials[targetGroupIndex].session_materials[
               targetMaterialIndex
             ].complete = action.payload.result;
             state.cohorts[targetCohortIndex].sessions = updated;
@@ -157,7 +165,6 @@ export function updateSessionFeedbackStatus(cohortID: string, sessionID: string)
 export function updateMaterialStatus(
   cohortID: string | undefined,
   sessionID: string | undefined,
-  Index: number,
   materialId: string,
   value: boolean
 ) {
@@ -174,7 +181,6 @@ export function updateMaterialStatus(
         slice.actions.updateSessionMaterialCheckStatus({
           cohortID,
           sessionID,
-          Index,
           materialId,
           result
         })
