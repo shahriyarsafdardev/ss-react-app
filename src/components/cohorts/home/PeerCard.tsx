@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Divider, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -121,6 +121,14 @@ const StyledNameContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
+const trimArray = (data: any) => {
+  const trimCount = 4;
+  if (Array.isArray(data) && data.length > 0) {
+    return { data: data.slice(0, trimCount), other: data.length - trimCount };
+  }
+  return { data: [], other: 0 };
+};
+
 export default function PeerCard({
   item,
   onHandleNext,
@@ -132,7 +140,18 @@ export default function PeerCard({
   onHandlePrevious: any;
   cohortID: string;
 }) {
-  console.log(item);
+  const [strengths, setStrengths] = useState<{
+    data: any[];
+    other: number;
+  }>({
+    data: [],
+    other: 0
+  });
+
+  useEffect(() => {
+    setStrengths(trimArray(item.strengths));
+  }, [item]);
+
   return (
     <StyledBox>
       <StyledProfileContainer>
@@ -188,11 +207,16 @@ export default function PeerCard({
           <Text>What they're good at</Text>
         </StyledRow>
         <TagsContainer>
-          {item.strengths.map((strength: string, index: number) => (
+          {strengths.data.map((strength: string, index: number) => (
             <Label key={index} variant="ghost" color="success">
               {capitalCase(strength)}
             </Label>
           ))}
+          {strengths.other > 0 && (
+            <Label variant="ghost" color="success">
+              +{strengths.other}
+            </Label>
+          )}
         </TagsContainer>
       </Box>
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />

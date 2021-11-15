@@ -1,4 +1,4 @@
-import { Container, Box } from '@material-ui/core';
+import { Container, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 import Page from 'components/Page';
@@ -19,40 +19,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-const dummyList = [
-  {
-    name: 'Read Prereading 1: An introduction to the chicken and egg problem with details',
-    action_text: 'Open Prereading',
-    info_text: '3 min read',
-    type: 'video',
-    complete: true
-  },
-  {
-    name: 'Prereading 2: Facebook - good or evil?',
-    action_text: 'watch video',
-    info_text: '4 min watch',
-    type: 'video',
-    complete: false
-  },
-  {
-    name: 'Say hello to your section!',
-    action_text: 'Open Messaging',
-    info_text: 'Waiting for you!',
-    type: 'video',
-    complete: true
-  },
-  {
-    name: 'Say hello to your section!',
-    action_text: 'Open Messaging',
-    info_text: 'Waiting for you!',
-    type: 'video',
-    complete: true
-  }
-];
-
 const Index = () => (
   <Page title="ScholarSite | Homepage">
     <Container style={{ marginBottom: '50px' }}>
+      <Typography variant="h3" style={{ marginBottom: '20px' }}>
+        👋 Hi, welcome to the EODP S21 Cohort!
+      </Typography>
       <CohortTimeLine />
       <StyledBox>
         <SessionPrereading />
