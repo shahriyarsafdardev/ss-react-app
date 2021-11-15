@@ -18,14 +18,14 @@ const useStyes = makeStyles(() => ({
   },
   smallContainer: {
     width: '100%',
-    height: '200px',
+    height: '230px',
     backgroundColor: '#F3F3FB',
     borderRadius: '25px',
     padding: '10px',
     marginBottom: '10px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space_between'
+    justifyContent: 'center'
   },
   wrapper: {
     display: 'flex',
@@ -63,6 +63,15 @@ const useStyes = makeStyles(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     paddingLeft: '2px'
+  },
+  smallBtn: {
+    backgroundColor: '#4D4DCD',
+    padding: '12px 70px',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#4D4DCD',
+      opacity: 0.9
+    }
   },
   primaryBtn: {
     backgroundColor: '#4D4DCD',
@@ -160,21 +169,30 @@ const TimerPreview = ({
         {displayType !== 'small' && (
           <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
         )}
-        <Typography variant="subtitle1">This session is starting soon!</Typography>
+        <Typography variant="subtitle1">
+          {displayType === 'small'
+            ? 'The session room is opening soon, come join us!'
+            : 'This session is starting soon!'}
+        </Typography>
         {displayType !== 'small' && (
           <Typography variant="subtitle2" className={classes.marginTop}>
             Passcode: 864988
           </Typography>
         )}
         <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
-          <TimerField text="Hours" value={hours} testId="hours" />
-          <TimerField text="Minutes" value={minutes} showSeparator={true} testId="minutes" />
+          {displayType !== 'small' && <TimerField text="Hours" value={hours} testId="hours" />}
+          <TimerField
+            text="Minutes"
+            value={minutes}
+            showSeparator={displayType !== 'small'}
+            testId="minutes"
+          />
           <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
         </Box>
         {zoomUrl && (
           <Button
             onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
-            className={classes.primaryBtn}
+            className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             target="_blank"
             href={`${zoomUrl}`}
             data-testid="session-invite"
@@ -201,24 +219,30 @@ const SessionInProgress = ({
   return (
     <div>
       <div className={classes.wrapper}>
-        <img src="/static/cohorts-home/sessions/ic_recorder.svg" alt="date-icon" />
         {displayType === 'small' ? (
-          <Box className={classes.smallContent2}>
-            <Typography variant="subtitle1">Your Session Is live now!</Typography>
-          </Box>
+          <>
+            <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
+            <Box className={classes.smallContent2}>
+              <Typography variant="subtitle1">Your Session is live now!</Typography>
+            </Box>
+          </>
         ) : (
-          <Box className={classes.content2}>
-            <Typography variant="subtitle1">
-              The session has already started, access the link below to join!
-            </Typography>
-            <Typography variant="subtitle2" className={classes.marginTop}>
-              Passcode: 864988
-            </Typography>
-          </Box>
+          <>
+            <img src="/static/cohorts-home/sessions/ic_recorder.svg" alt="date-icon" />
+
+            <Box className={classes.content2}>
+              <Typography variant="subtitle1">
+                The session has already started, access the link below to join!
+              </Typography>
+              <Typography variant="subtitle2" className={classes.marginTop}>
+                Passcode: 864988
+              </Typography>
+            </Box>
+          </>
         )}
         {zoomUrl && (
           <Button
-            className={classes.primaryBtn}
+            className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
             target="_blank"
             href={`${zoomUrl}`}
