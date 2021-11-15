@@ -9,7 +9,7 @@ import { StudentProfile } from '../../../@types/cohorts';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   width: '100%',
-  height: '325px',
+  minHeight: '220px',
   boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%);',
   padding: '10px',
   display: 'flex',
@@ -195,31 +195,33 @@ export default function PeerCard({
         </StyledContainer>
       </StyledProfileContainer>
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />
-      <Box>
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/star.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text>What they're good at</Text>
-        </StyledRow>
-        <TagsContainer>
-          {strengths.data.map((strength: string, index: number) => (
-            <Label key={index} variant="ghost" color="success">
-              {capitalCase(strength)}
-            </Label>
-          ))}
-          {strengths.other > 0 && (
-            <Label variant="ghost" color="success">
-              +{strengths.other}
-            </Label>
-          )}
-        </TagsContainer>
-      </Box>
-      <Divider variant="middle" sx={{ margin: '10px 0px' }} />
+      {strengths.data.length > 0 && (
+        <Box>
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/star.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text>What they're good at</Text>
+          </StyledRow>
+          <TagsContainer>
+            {strengths.data.map((strength: string, index: number) => (
+              <Label key={index} variant="ghost" color="success">
+                {capitalCase(strength)}
+              </Label>
+            ))}
+            {strengths.other > 0 && (
+              <Label variant="ghost" color="success">
+                +{strengths.other}
+              </Label>
+            )}
+          </TagsContainer>
+          <Divider variant="middle" sx={{ margin: '15px 0px' }} />
+        </Box>
+      )}
       <ActionButtons>
         <Button
           variant="outlined"
