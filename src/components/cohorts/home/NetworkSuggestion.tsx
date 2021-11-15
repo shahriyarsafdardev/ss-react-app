@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
@@ -16,14 +16,18 @@ const NetworkSuggestion = () => {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
-
   const { peers } = cohort || [];
+  const [networkSuggestion, setNetworkSuggestions] = useState(peers);
 
   useEffect(() => {
-    if (cohort && !peers) {
+    if (cohort?.sessions && !peers) {
       dispatch(getPeers(cohort_id.toString()));
     }
-  }, [cohort]);
+  }, [dispatch, Object.keys(cohort || {}).length, cohort_id]);
+
+  useEffect(() => {
+    setNetworkSuggestions(peers);
+  }, [peers]);
 
   const handlePrevious = () => {
     carouselRef.current?.slickPrev();
@@ -88,8 +92,8 @@ const NetworkSuggestion = () => {
             />
             <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
-                {peers &&
-                  _.sampleSize(peers, 4).map((peer) => (
+                {networkSuggestion &&
+                  _.sampleSize(networkSuggestion, 4).map((peer) => (
                     <PeerCard
                       key={peer.id}
                       item={peer}
