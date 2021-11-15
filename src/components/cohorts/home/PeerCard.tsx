@@ -105,9 +105,9 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   paddingLeft: '25px',
   flexDirection: 'column',
+  justifyContent: 'center',
   flexBasis: '75%',
   [theme.breakpoints.down('sm')]: {
-    justifyContent: 'center',
     alignItems: 'center'
   }
 }));
