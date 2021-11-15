@@ -82,6 +82,7 @@ export type Cohort = {
   isOnboarded: boolean;
   intake: number;
   questions_url: string;
+  goodbye_message: string;
   peers: StudentProfile[];
   sessions: Session[];
   enrollments: String[];

@@ -8,9 +8,9 @@ import { Session, SessionMaterial } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
-import CohortGoodbye from './CohortGoodbye';
 import CircularProgressbar from './CircularProgressBar';
 import VideoPlaceHolder from '../VideoPlaceHolder';
+import { Summary } from '../sessions';
 
 const SessionPrereading = () => {
   const [list, setList] = useState<SessionMaterial[]>([]);
@@ -127,7 +127,7 @@ const SessionPrereading = () => {
             </>
           ) : (
             <Box style={{ height: '400px', overflow: 'scroll' }}>
-              <CohortGoodbye />
+              <Summary key="summary" innerContent={cohort.goodbye_message} />
             </Box>
           )}
         </>
