@@ -31,6 +31,10 @@ const CohortTimeLine = () => {
       }
     });
 
+    if (activeSession === 1 && sessions?.length) {
+      activeSession = 2;
+    }
+
     setActiveSession(activeSession);
   }, [sessions]);
 
@@ -40,7 +44,7 @@ const CohortTimeLine = () => {
         <>
           <DesktopStepper
             cohortID={cohort_id}
-            activeSession={activeSession === 0 ? sessions.length + 2 : activeSession + 1}
+            activeSession={activeSession === 0 ? sessions.length + 2 : activeSession}
             sessions={sessions}
           />
           <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
