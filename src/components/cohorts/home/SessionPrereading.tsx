@@ -99,7 +99,10 @@ const SessionPrereading = () => {
                   <>
                     <Box>
                       <p style={{ fontSize: '18px' }}>
-                        🎉 You’re all ready to go for Session {activeSession.number}!
+                        🎉 You’re all ready to go for{' '}
+                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+                          Session {activeSession?.number}
+                        </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
                     </Box>
