@@ -31,7 +31,10 @@ export default function SessionMaterials({
     <ResourcesContainer style={{ overflow: 'scroll' }} id="session_materials">
       {groupedMaterials.map((group, number) => (
         <Box key={number} style={{ overflow: 'scroll' }}>
-          <p style={{ fontSize: '18px', marginBottom: '15px' }}>{group.category}:</p>
+          <p style={{ fontSize: '18px', marginBottom: '15px' }}>
+            {group.category}
+            {group.session_materials.length > 1 && 's'}:
+          </p>
           {group.session_materials.map((preReading, index) => (
             <PreReadingRow
               key={index}
