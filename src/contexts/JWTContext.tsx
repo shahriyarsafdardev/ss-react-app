@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
 import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { setAmplitudeUserId } from 'utils/amplitude';
+import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
 import { ParticipantProfile } from '../@types/user';
 
@@ -95,6 +96,7 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
 const AuthContext = createContext<JWTContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(JWTReducer, initialState);
   const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
   const client = StreamChat.getInstance<
@@ -207,6 +209,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     if (client.user) {
       await client.disconnectUser();
     }
+    navigate('/');
   };
 
   const resetPassword = async (email: string) => {
