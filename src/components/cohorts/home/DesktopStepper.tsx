@@ -135,7 +135,7 @@ export default function DesktopStepper({
     const elem = document.getElementById('timeline-div');
     if (elem) {
       const previous = elem.scrollLeft;
-      elem.scrollLeft += val * 500;
+      elem.scrollLeft += val * 130;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
       if (elem.scrollLeft === 0) {
@@ -159,8 +159,8 @@ export default function DesktopStepper({
 
   useEffect(() => {
     const elem = document.getElementById('timeline-div');
-    if (elem && activeSession > 2) {
-      elem.scrollLeft = activeStep * 130;
+    if (activeSession > 2) {
+      scroll(activeStep);
     }
     return () => {
       if (elem) {
@@ -174,8 +174,8 @@ export default function DesktopStepper({
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <img
         src="/static/cohorts-home/left-arrow.svg"
-        onClick={() => scroll(-1)}
-        onKeyDown={() => scroll(-1)}
+        onClick={() => scroll(-4)}
+        onKeyDown={() => scroll(-4)}
         className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
       />
@@ -221,8 +221,8 @@ export default function DesktopStepper({
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <img
         src="/static/cohorts-home/right-arrow.svg"
-        onClick={() => scroll(1)}
-        onKeyDown={() => scroll(1)}
+        onClick={() => scroll(4)}
+        onKeyDown={() => scroll(4)}
         className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"
       />
