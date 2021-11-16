@@ -121,11 +121,13 @@ const SCROLL_MOVEMENT = 400;
 export default function DesktopStepper({
   cohortID,
   activeSession,
-  sessions
+  sessions,
+  onTrackEvent
 }: {
   cohortID: string;
   activeSession: number;
   sessions: Session[];
+  onTrackEvent: Function;
 }) {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
@@ -134,6 +136,7 @@ export default function DesktopStepper({
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
     if (elem) {
+      val > 0 ? onTrackEvent('Navigate Right') : onTrackEvent('Navigate Left');
       const previous = elem.scrollLeft;
       elem.scrollLeft += val * 500;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
@@ -202,7 +205,10 @@ export default function DesktopStepper({
                       <StyledDate>{displayDate(session.time)}</StyledDate>
                     ) : (
                       <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
-                        <Link to={`/cohorts/${cohortID}/sessions?session=${session.number}`}>
+                        <Link
+                          to={`/cohorts/${cohortID}/sessions?session=${session.number}`}
+                          onClick={() => onTrackEvent('Review Content')}
+                        >
                           Review Content
                         </Link>
                       </Typography>

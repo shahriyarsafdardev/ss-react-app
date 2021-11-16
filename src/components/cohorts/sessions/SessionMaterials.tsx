@@ -34,6 +34,7 @@ export default function SessionMaterials({
           <p style={{ fontSize: '18px', marginBottom: '15px' }}>{group.category}:</p>
           {group.session_materials.map((preReading, index) => (
             <PreReadingRow
+              onPreReadingClick={() => {}}
               key={index}
               item={preReading}
               checkboxHanlder={(value: boolean) =>

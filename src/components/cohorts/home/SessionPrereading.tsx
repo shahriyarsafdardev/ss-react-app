@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 
 import { Box } from '@material-ui/core';
 import { getSessions } from '../../../redux/slices/cohort';
@@ -71,6 +72,13 @@ const SessionPrereading = () => {
             complete: value
           }
         );
+        trackHomePageEvents(
+          cohort.name,
+          cohort.intake,
+          activeSession?.number,
+          HOME_PAGE_EVENTS.to_do_list,
+          `Marked Item as ${value ? 'true' : 'false'}`
+        );
         updated[index].complete = response.data;
         setList([...updated]);
       } catch (error) {
@@ -119,6 +127,15 @@ const SessionPrereading = () => {
                   <PreReadingRow
                     key={index}
                     item={preReading}
+                    onPreReadingClick={() =>
+                      trackHomePageEvents(
+                        cohort.name,
+                        cohort.intake,
+                        activeSession.number,
+                        HOME_PAGE_EVENTS.to_do_list,
+                        'Opened Resource from Home-Tab'
+                      )
+                    }
                     checkboxHanlder={(value: boolean) => onMark(index, value)}
                   />
                 ))}

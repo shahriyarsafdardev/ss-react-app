@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import moment from 'moment';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import useAuth from '../../../hooks/useAuth';
 import { getSessions } from '../../../redux/slices/cohort';
@@ -65,6 +66,15 @@ const CohortTimeLine = () => {
         {sessions ? (
           <>
             <DesktopStepper
+              onTrackEvent={(eventData: string) =>
+                trackHomePageEvents(
+                  cohort.name,
+                  cohort.intake,
+                  activeSession === 0 ? sessions.length : activeSession,
+                  HOME_PAGE_EVENTS.cohort_timeline,
+                  eventData
+                )
+              }
               cohortID={cohort_id}
               activeSession={activeSession === 0 ? sessions.length + 2 : activeSession}
               sessions={sessions}

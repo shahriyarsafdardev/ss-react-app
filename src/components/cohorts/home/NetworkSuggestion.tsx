@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
-import _ from 'lodash';
-import { StudentProfile } from '../../../@types/cohorts';
 import { CircularLoader, SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
@@ -28,10 +27,12 @@ const NetworkSuggestion = () => {
 
   const handlePrevious = () => {
     carouselRef.current?.slickPrev();
+    onTrackEvent('Navigate Left');
   };
 
   const handleNext = () => {
     carouselRef.current?.slickNext();
+    onTrackEvent('Navigate Right');
   };
 
   const settings = {
@@ -60,6 +61,16 @@ const NetworkSuggestion = () => {
       img: { display: 'none' }
     }
   }));
+
+  const onTrackEvent = (eventValue: string) => {
+    trackHomePageEvents(
+      cohort.name,
+      cohort.intake,
+      undefined,
+      HOME_PAGE_EVENTS.network_suggestion,
+      eventValue
+    );
+  };
 
   return (
     <SectionContainer
@@ -92,6 +103,7 @@ const NetworkSuggestion = () => {
                 {random_peers?.map((peer) => (
                   <PeerCard
                     key={peer.id}
+                    eventTrackHandler={(eventValue: string) => onTrackEvent(eventValue)}
                     item={peer}
                     cohortID={cohort_id}
                     onHandleNext={handleNext}
@@ -113,6 +125,7 @@ const NetworkSuggestion = () => {
             to={`/cohorts/${cohort_id}/peers`}
             component={RouterLink}
             sx={{ marginTop: '15px' }}
+            onClick={() => onTrackEvent('See all peers')}
           >
             {' '}
             See all peers
