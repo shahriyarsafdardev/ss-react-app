@@ -10,9 +10,11 @@ import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
 import PeerCard from './PeerCard';
 import { CarouselControlsPaging1 } from '../../carousel';
+import useAuth from '../../../hooks/useAuth';
 
 const NetworkSuggestion = () => {
   const carouselRef = useRef<Slider>(null);
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -22,7 +24,7 @@ const NetworkSuggestion = () => {
 
   useEffect(() => {
     if (cohort?.sessions && !random_peers) {
-      dispatch(getPeers(cohort_id.toString()));
+      dispatch(getPeers(cohort_id.toString(), user?.id));
     }
   }, [dispatch, Object.keys(cohort || {}).length, cohort_id]);
 

@@ -35,7 +35,10 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = {
           ...updated,
           peers: action.payload.peers,
-          random_peers: _.sampleSize(action.payload.peers, 4)
+          random_peers: _.sampleSize(
+            action.payload.peers.filter((student: any) => student.id !== action.payload.userID),
+            4
+          )
         };
       }
     },
@@ -124,11 +127,14 @@ export function getCohorts() {
   };
 }
 
-export function getPeers(cohortID: string) {
+export function getPeers(cohortID: string, userID: string) {
   return async () => {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/peers.json`);
-      dispatch(slice.actions.getPeersSuccess(response.data));
+      const { peers } = response.data;
+      const { cohort_id } = response.data;
+
+      dispatch(slice.actions.getPeersSuccess({ peers, cohort_id, userID }));
     } catch (error) {
       console.log(error);
     }

@@ -118,7 +118,7 @@ export default function PeersTab() {
   };
   useEffect(() => {
     if (cohort && !peers) {
-      dispatch(getPeers(cohort_id.toString()));
+      dispatch(getPeers(cohort_id.toString(), 'null'));
     }
   }, [dispatch, cohort]);
 
