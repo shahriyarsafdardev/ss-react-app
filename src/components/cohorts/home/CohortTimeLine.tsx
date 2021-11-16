@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import moment from 'moment';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import useAuth from '../../../hooks/useAuth';
 import { getSessions } from '../../../redux/slices/cohort';
@@ -29,11 +30,13 @@ const CohortTimeLine = () => {
   useEffect(() => {
     let activeSession = 0;
     let flag = true;
+    let isHeaderSet = false;
     sessions?.forEach((session, index) => {
       if (moment(session.time).add(1, 'hours') > moment() && flag) {
         activeSession = index + 1;
         if (moment().add(1, 'hours') >= moment(session.time)) {
           setHeader(`🔴 Get ready, Session ${activeSession} is starting soon!`);
+          isHeaderSet = true;
         } else {
           setHeader(
             `👋 Welcome back ${user?.first_name}, we hope you enjoyed Session ${activeSession - 1}!`
@@ -45,7 +48,9 @@ const CohortTimeLine = () => {
     });
 
     if (activeSession === 1 && sessions?.length) {
-      setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code || ''} Cohort!`);
+      if (!isHeaderSet) {
+        setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code || ''} Cohort!`);
+      }
       activeSession = 2;
     }
 
@@ -65,6 +70,15 @@ const CohortTimeLine = () => {
         {sessions ? (
           <>
             <DesktopStepper
+              onTrackEvent={(eventData: string) =>
+                trackHomePageEvents(
+                  cohort.name,
+                  cohort.intake,
+                  activeSession === 0 ? sessions.length : activeSession,
+                  HOME_PAGE_EVENTS.cohort_timeline,
+                  eventData
+                )
+              }
               cohortID={cohort_id}
               activeSession={activeSession === 0 ? sessions.length + 2 : activeSession}
               sessions={sessions}

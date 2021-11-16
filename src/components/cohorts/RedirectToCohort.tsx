@@ -7,7 +7,7 @@ export default function RedirectToCohort() {
   let navigationUrl = '/';
 
   if (cohorts.length > 0) {
-    navigationUrl = `/cohorts/${cohorts[0].id}/sessions`;
+    navigationUrl = `/cohorts/${cohorts[0].id}/home`;
   } else {
     return <LoadingScreen />;
   }

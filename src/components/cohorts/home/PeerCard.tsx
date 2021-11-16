@@ -136,12 +136,14 @@ export default function PeerCard({
   item,
   onHandleNext,
   onHandlePrevious,
-  cohortID
+  cohortID,
+  eventTrackHandler
 }: {
   item: StudentProfile;
   onHandleNext: any;
   onHandlePrevious: any;
   cohortID: string;
+  eventTrackHandler: Function;
 }) {
   const [strengths, setStrengths] = useState<{
     data: any[];
@@ -230,6 +232,7 @@ export default function PeerCard({
           variant="outlined"
           component={RouterLink}
           to={`/cohorts/${cohortID}/peers?user_id=${item.id}`}
+          onClick={() => eventTrackHandler('Opened profile')}
         >
           View Profile
         </Button>
@@ -237,6 +240,7 @@ export default function PeerCard({
           variant="contained"
           component={RouterLink}
           to={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${item.id}`}
+          onClick={() => eventTrackHandler('Started Chat')}
         >
           Send message
         </Button>

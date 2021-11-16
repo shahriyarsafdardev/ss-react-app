@@ -56,7 +56,8 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
     },
     '&.disabled': {
       cursor: 'default',
-      opacity: 0.3
+      opacity: 0.3,
+      pointerEvents: 'none'
     }
   },
   [theme.breakpoints.down('sm')]: {
@@ -121,11 +122,13 @@ const SCROLL_MOVEMENT = 400;
 export default function DesktopStepper({
   cohortID,
   activeSession,
-  sessions
+  sessions,
+  onTrackEvent
 }: {
   cohortID: string;
   activeSession: number;
   sessions: Session[];
+  onTrackEvent: Function;
 }) {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
@@ -134,8 +137,9 @@ export default function DesktopStepper({
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
     if (elem) {
+      val > 0 ? onTrackEvent('Navigate Right') : onTrackEvent('Navigate Left');
       const previous = elem.scrollLeft;
-      elem.scrollLeft += val * 500;
+      elem.scrollLeft += val * 130;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
       if (elem.scrollLeft === 0) {
@@ -159,8 +163,8 @@ export default function DesktopStepper({
 
   useEffect(() => {
     const elem = document.getElementById('timeline-div');
-    if (elem && activeSession > 2) {
-      elem.scrollLeft = activeStep * 130;
+    if (activeSession > 2) {
+      scroll(activeStep);
     }
     return () => {
       if (elem) {
@@ -174,8 +178,8 @@ export default function DesktopStepper({
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <img
         src="/static/cohorts-home/left-arrow.svg"
-        onClick={() => scroll(-1)}
-        onKeyDown={() => scroll(-1)}
+        onClick={() => scroll(-4)}
+        onKeyDown={() => scroll(-4)}
         className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
       />
@@ -202,7 +206,10 @@ export default function DesktopStepper({
                       <StyledDate>{displayDate(session.time)}</StyledDate>
                     ) : (
                       <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
-                        <Link to={`/cohorts/${cohortID}/sessions?session=${session.number}`}>
+                        <Link
+                          to={`/cohorts/${cohortID}/sessions?session=${session.number}`}
+                          onClick={() => onTrackEvent('Review Content')}
+                        >
                           Review Content
                         </Link>
                       </Typography>
@@ -213,7 +220,7 @@ export default function DesktopStepper({
             ))}
           <Step key={100} sx={{ minWidth: '180px' }}>
             <StepLabel StepIconComponent={QontoStepIcon}>
-              <StyledSession>End</StyledSession>
+              <StyledSession>Enter Alumni Network</StyledSession>
             </StepLabel>
           </Step>
         </Stepper>
@@ -221,8 +228,8 @@ export default function DesktopStepper({
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <img
         src="/static/cohorts-home/right-arrow.svg"
-        onClick={() => scroll(1)}
-        onKeyDown={() => scroll(1)}
+        onClick={() => scroll(4)}
+        onKeyDown={() => scroll(4)}
         className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"
       />

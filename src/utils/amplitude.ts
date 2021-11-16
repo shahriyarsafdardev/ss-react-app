@@ -110,3 +110,35 @@ export const trackPeersPageEvent = (
     [SESSION_EVENTS.action]: eventData
   });
 };
+
+export const HOME_PAGE_EVENTS = {
+  home_page_action: 'Home Page Action',
+  cohort_name: 'cohort-name',
+  cohort_intake_number: 'cohort-intake-number',
+  category: 'category',
+  action: 'action',
+  cohort_timeline: 'cohort-timeline',
+  session_number: 'session-number',
+  to_do_list: 'to-do-list',
+  network_suggestion: 'network-suggestion'
+};
+
+export const trackHomePageEvents = (
+  cohortName: string,
+  intake: number | null,
+  sessionNumber: number | undefined,
+  eventType: string,
+  eventData?: string
+) => {
+  const amplitudeData = {
+    [HOME_PAGE_EVENTS.cohort_name]: cohortName,
+    [HOME_PAGE_EVENTS.cohort_intake_number]: intake,
+    [HOME_PAGE_EVENTS.session_number]: sessionNumber
+  };
+
+  sendAmplitudeData(HOME_PAGE_EVENTS.home_page_action, {
+    ...amplitudeData,
+    [HOME_PAGE_EVENTS.category]: eventType,
+    [HOME_PAGE_EVENTS.action]: eventData
+  });
+};

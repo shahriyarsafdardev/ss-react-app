@@ -1,20 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
+import moment from 'moment';
 import { Link as RouterLink } from 'react-router-dom';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
-import _ from 'lodash';
-import { StudentProfile } from '../../../@types/cohorts';
 import { CircularLoader, SectionContainer } from './Common';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getPeers } from '../../../redux/slices/cohort';
 import PeerCard from './PeerCard';
 import { CarouselControlsPaging1 } from '../../carousel';
+import useAuth from '../../../hooks/useAuth';
 
 const NetworkSuggestion = () => {
   const carouselRef = useRef<Slider>(null);
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
+  const [activeSession, setActiveSession] = useState<number | undefined>(undefined);
+
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -22,17 +26,31 @@ const NetworkSuggestion = () => {
 
   useEffect(() => {
     if (cohort?.sessions && !random_peers) {
-      dispatch(getPeers(cohort_id.toString()));
+      dispatch(getPeers(cohort_id.toString(), user?.id));
     }
   }, [dispatch, Object.keys(cohort || {}).length, cohort_id]);
 
   const handlePrevious = () => {
     carouselRef.current?.slickPrev();
+    onTrackEvent('Navigate Left');
   };
 
   const handleNext = () => {
     carouselRef.current?.slickNext();
+    onTrackEvent('Navigate Right');
   };
+
+  useEffect(() => {
+    if (!activeSession) {
+      let found = false;
+      cohort?.sessions?.forEach((session) => {
+        if (!found && moment(session.time).add(1, 'hour') > moment()) {
+          setActiveSession(session.number);
+          found = true;
+        }
+      });
+    }
+  }, [cohort?.sessions, activeSession]);
 
   const settings = {
     speed: 800,
@@ -60,6 +78,16 @@ const NetworkSuggestion = () => {
       img: { display: 'none' }
     }
   }));
+
+  const onTrackEvent = (eventValue: string) => {
+    trackHomePageEvents(
+      cohort.name,
+      cohort.intake,
+      activeSession,
+      HOME_PAGE_EVENTS.network_suggestion,
+      eventValue
+    );
+  };
 
   return (
     <SectionContainer
@@ -92,6 +120,7 @@ const NetworkSuggestion = () => {
                 {random_peers?.map((peer) => (
                   <PeerCard
                     key={peer.id}
+                    eventTrackHandler={(eventValue: string) => onTrackEvent(eventValue)}
                     item={peer}
                     cohortID={cohort_id}
                     onHandleNext={handleNext}
@@ -113,6 +142,7 @@ const NetworkSuggestion = () => {
             to={`/cohorts/${cohort_id}/peers`}
             component={RouterLink}
             sx={{ marginTop: '15px' }}
+            onClick={() => onTrackEvent('See all peers')}
           >
             {' '}
             See all peers

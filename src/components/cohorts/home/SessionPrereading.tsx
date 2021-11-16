@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 
 import { Box } from '@material-ui/core';
 import { getSessions } from '../../../redux/slices/cohort';
@@ -71,12 +72,26 @@ const SessionPrereading = () => {
             complete: value
           }
         );
+        trackHomePageEvents(
+          cohort.name,
+          cohort.intake,
+          activeSession?.number,
+          HOME_PAGE_EVENTS.to_do_list,
+          `Marked Item as ${value ? 'true' : 'false'}`
+        );
         updated[index].complete = response.data;
         setList([...updated]);
       } catch (error) {
         console.log(error);
       }
     }
+  };
+
+  const preReadingsCompleted = () => {
+    if (list?.length > 0) {
+      return list.filter((item) => item.complete === false).length === 0;
+    }
+    return false;
   };
 
   return (
@@ -88,24 +103,47 @@ const SessionPrereading = () => {
               <Box
                 style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
               >
-                <Box>
-                  <p style={{ fontSize: '18px' }}>
-                    Get Ready for{' '}
-                    <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                      Session {activeSession?.number}
-                    </span>
-                  </p>
-                  <p style={{ fontSize: '14px' }}>
-                    These tasks should be completed before the session starts
-                  </p>
-                </Box>
-                <Box>
-                  <CircularProgressbar
-                    strokeWidth={14}
-                    totalSteps={list.length}
-                    completedSteps={list.filter((item) => item.complete === true).length}
-                  />
-                </Box>
+                {preReadingsCompleted() ? (
+                  <>
+                    <Box>
+                      <p style={{ fontSize: '18px' }}>
+                        🎉 You’re all ready to go for{' '}
+                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+                          Session {activeSession?.number}
+                        </span>
+                      </p>
+                      <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
+                    </Box>
+                    <Box>
+                      <CircularProgressbar
+                        strokeWidth={14}
+                        totalSteps={list.length}
+                        completedSteps={list.filter((item) => item.complete === true).length}
+                      />
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box>
+                      <p style={{ fontSize: '18px' }}>
+                        Get Ready for{' '}
+                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
+                          Session {activeSession?.number}
+                        </span>
+                      </p>
+                      <p style={{ fontSize: '14px' }}>
+                        These tasks should be completed before the session starts
+                      </p>
+                    </Box>
+                    <Box>
+                      <CircularProgressbar
+                        strokeWidth={14}
+                        totalSteps={list.length}
+                        completedSteps={list.filter((item) => item.complete === true).length}
+                      />
+                    </Box>
+                  </>
+                )}
               </Box>
               <Box style={{ height: '400px', overflow: 'scroll' }}>
                 {moment(activeSession.time).subtract(1, 'hours') < moment() && (
@@ -119,6 +157,15 @@ const SessionPrereading = () => {
                   <PreReadingRow
                     key={index}
                     item={preReading}
+                    onPreReadingClick={() =>
+                      trackHomePageEvents(
+                        cohort.name,
+                        cohort.intake,
+                        activeSession.number,
+                        HOME_PAGE_EVENTS.to_do_list,
+                        'Opened Resource from Home-Tab'
+                      )
+                    }
                     checkboxHanlder={(value: boolean) => onMark(index, value)}
                   />
                 ))}

@@ -7,6 +7,7 @@ import MarkCheckbox from './MarkCheckbox';
 type PreReadingRowProps = {
   item: SessionMaterial;
   checkboxHanlder: Function;
+  onPreReadingClick: Function;
 };
 
 const StyledLink = styled('a')(() => ({
@@ -51,13 +52,17 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-export default function PreReadingRow({ item, checkboxHanlder }: PreReadingRowProps) {
+export default function PreReadingRow({
+  item,
+  checkboxHanlder,
+  onPreReadingClick
+}: PreReadingRowProps) {
   return (
     <StyledBox className="main">
       <StyledBox className="inner">
         <p>{item.name}</p>
         <StyledBox className="secondary">
-          <StyledLink target="_blank" href={item.action_url}>
+          <StyledLink href={item.action_url} target="_blank" onClick={() => onPreReadingClick()}>
             {item.action_text}
           </StyledLink>
           <span>{item.info_text}</span>

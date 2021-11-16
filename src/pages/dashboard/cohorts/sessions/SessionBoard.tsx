@@ -252,8 +252,6 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   if (!session) return null;
 
-  console.log(session);
-
   return (
     <Wrapper>
       {shouldDisplaySurveyModal() && (
