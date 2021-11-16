@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import moment from 'moment';
 import { Link as RouterLink } from 'react-router-dom';
 import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { styled } from '@material-ui/core/styles';
@@ -14,6 +15,8 @@ const NetworkSuggestion = () => {
   const carouselRef = useRef<Slider>(null);
   const dispatch = useDispatch();
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
+  const [activeSession, setActiveSession] = useState<number | undefined>(undefined);
+
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -34,6 +37,18 @@ const NetworkSuggestion = () => {
     carouselRef.current?.slickNext();
     onTrackEvent('Navigate Right');
   };
+
+  useEffect(() => {
+    if (!activeSession) {
+      let found = false;
+      cohort?.sessions?.forEach((session) => {
+        if (!found && moment(session.time).add(1, 'hour') > moment()) {
+          setActiveSession(session.number);
+          found = true;
+        }
+      });
+    }
+  }, [cohort?.sessions, activeSession]);
 
   const settings = {
     speed: 800,
@@ -66,7 +81,7 @@ const NetworkSuggestion = () => {
     trackHomePageEvents(
       cohort.name,
       cohort.intake,
-      undefined,
+      activeSession,
       HOME_PAGE_EVENTS.network_suggestion,
       eventValue
     );

@@ -56,7 +56,8 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
     },
     '&.disabled': {
       cursor: 'default',
-      opacity: 0.3
+      opacity: 0.3,
+      pointerEvents: 'none'
     }
   },
   [theme.breakpoints.down('sm')]: {
