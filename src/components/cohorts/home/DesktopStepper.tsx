@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -128,6 +128,8 @@ export default function DesktopStepper({
   sessions: Session[];
 }) {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
+  const [activeStep, setActiveStep] = useState(0);
+  const [isRendered, setIsRenderedstate] = useState(false);
 
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
@@ -148,6 +150,24 @@ export default function DesktopStepper({
       setArrowState(ARROW_STATES.MIDDLE);
     }
   };
+  useEffect(() => {
+    if (isRendered) {
+      setActiveStep(activeSession);
+    }
+    return setIsRenderedstate(true);
+  }, [activeSession, isRendered]);
+
+  useEffect(() => {
+    const elem = document.getElementById('timeline-div');
+    if (elem && activeSession > 2) {
+      elem.scrollLeft = activeStep * 130;
+    }
+    return () => {
+      if (elem) {
+        elem.scrollLeft = 0;
+      }
+    };
+  }, [activeStep]);
 
   return (
     <StyledTimeline>

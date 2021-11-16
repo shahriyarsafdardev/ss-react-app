@@ -45,12 +45,12 @@ const CohortTimeLine = () => {
     });
 
     if (activeSession === 1 && sessions?.length) {
-      setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code} Cohort!`);
+      setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code || ''} Cohort!`);
       activeSession = 2;
     }
 
     if (activeSession === 0 && sessions?.length) {
-      setHeader(`🎉 Congratulations, you’ve completed the ${cohort?.code} cohort!`);
+      setHeader(`🎉 Congratulations, you’ve completed the ${cohort?.code || ''} cohort!`);
     }
 
     setActiveSession(activeSession);
