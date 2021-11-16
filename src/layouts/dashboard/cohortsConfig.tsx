@@ -12,7 +12,7 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts')
 };
 
-const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
+const cohortsConfig = (rawCohorts: any) =>
   rawCohorts.map((cohort: any) => {
     const object: any = {
       title: cohort.name,
@@ -39,17 +39,12 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
       ];
     }
     object.children = [
+      { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
       ...object.children,
       { title: 'networking', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
       { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
     ];
 
-    if (isAdmin) {
-      object.children = [
-        { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
-        ...object.children
-      ];
-    }
     return object;
   });
 
