@@ -34,6 +34,7 @@ type HomeResponse = {
     current_company: string;
     strengths: string[];
     interests: string[];
+    introduction: string;
   };
 };
 

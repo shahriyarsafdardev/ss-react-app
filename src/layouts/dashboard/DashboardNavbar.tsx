@@ -46,12 +46,14 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
+  const visibleHeaders = ['messaging', 'home'];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
+    const section = tab.reverse()[0];
     if (tab.length > 5) {
-      if (tab.reverse()[0] === 'messaging') {
-        setCurrentTab('Messaging');
+      if (visibleHeaders.includes(section)) {
+        setCurrentTab(section);
       } else {
         setCurrentTab(null);
       }
@@ -74,7 +76,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         </MHidden>
 
         {currentTab && (
-          <Typography variant="h4" style={{ color: '#071A33' }}>
+          <Typography variant="h4" style={{ color: '#071A33', textTransform: 'capitalize' }}>
             {currentTab}
           </Typography>
         )}

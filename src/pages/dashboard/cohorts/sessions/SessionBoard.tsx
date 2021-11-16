@@ -5,7 +5,13 @@ import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { SESSION_EVENTS, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
-import { Description, Summary, SurveyForm, Slides } from '../../../../components/cohorts/sessions';
+import {
+  SessionMaterials,
+  Description,
+  Summary,
+  SurveyForm,
+  Slides
+} from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { updateSessionModalState } from '../../../../redux/slices/sessionFeedback';
@@ -203,19 +209,30 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   }, [session]);
 
   const tabsContent = [
-    <Description
-      key="description"
-      onTrack={(eventData: string) =>
-        trackSessionsPageEvent(
-          cohortName,
-          cohortIntake,
-          sessionNumber,
-          SESSION_EVENTS.resources_tab,
-          eventData
-        )
-      }
-      innerContent={session?.description || ''}
-    />,
+    <>
+      {session?.session_materials && session?.session_materials?.length > 0 ? (
+        <SessionMaterials
+          groupedMaterials={session?.session_materials || []}
+          sessionId={session?.id}
+          cohortId={id}
+          key="session_materials"
+        />
+      ) : (
+        <Description
+          key="description"
+          onTrack={(eventData: string) =>
+            trackSessionsPageEvent(
+              cohortName,
+              cohortIntake,
+              sessionNumber,
+              SESSION_EVENTS.resources_tab,
+              eventData
+            )
+          }
+          innerContent={session?.description || ''}
+        />
+      )}
+    </>,
     <Summary key="summary" innerContent={session?.summary || ''} />,
     <Slides
       key="slidesTab"
@@ -272,7 +289,11 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             data-testid="session-video-url"
           />
         ) : (
-          <VideoPlaceHolder sessionTimeValue={session.time} sessionZoomUrl={session.zoom_url} />
+          <VideoPlaceHolder
+            displayType="large"
+            sessionTimeValue={session.time}
+            sessionZoomUrl={session.zoom_url}
+          />
         )}
 
         {shouldDisplaySurveyModal() && (

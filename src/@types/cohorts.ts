@@ -13,6 +13,7 @@ export type StudentProfile = {
   strengths: string[];
   interests: string[];
   profile_image_url: string;
+  introduction: string;
 };
 
 type Tag = {
@@ -34,6 +35,19 @@ export type Survey = {
   contents: SurveyContent[];
 };
 
+export type SessionMaterial = {
+  id: string;
+  name: string;
+  action_text: string;
+  info_text: string;
+  action_url: string;
+  complete: boolean;
+};
+export type GroupedSessionMaterial = {
+  category: string;
+  session_materials: SessionMaterial[];
+};
+
 export type Session = {
   id: string;
   name: string;
@@ -50,6 +64,7 @@ export type Session = {
   presentation_pdf_downloadable: boolean;
   survey: Survey;
   resources: string;
+  session_materials: GroupedSessionMaterial[];
 };
 
 export type SessionListItem = {
@@ -63,10 +78,13 @@ export type SessionListItem = {
 export type Cohort = {
   id: string;
   name: string;
+  code: string;
   isOnboarded: boolean;
   intake: number;
   questions_url: string;
+  goodbye_message: string;
   peers: StudentProfile[];
   sessions: Session[];
   enrollments: String[];
+  random_peers: StudentProfile[];
 };

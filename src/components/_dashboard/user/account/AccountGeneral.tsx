@@ -17,6 +17,7 @@ type ParticipantProfile = {
   current_position: string;
   strengths: string[] | any;
   interests: string[] | any;
+  introduction: string;
 };
 
 // ----------------------------------------------------------------------
@@ -33,7 +34,8 @@ export default function AccountGeneral() {
     current_position: user?.current_position || '',
     profile_image_url: user?.profile_image_url || '',
     interests: user?.interests || [],
-    strengths: user?.strengths || []
+    strengths: user?.strengths || [],
+    introduction: user?.introduction || ''
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -48,6 +50,7 @@ export default function AccountGeneral() {
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('image', values.profile_image_url.image);
+    uploadData.append('introduction', values.introduction);
     await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });
       updateProfile({ ...res.data.user });

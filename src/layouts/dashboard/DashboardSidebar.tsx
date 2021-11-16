@@ -13,6 +13,7 @@ import {
   CardActionArea
 } from '@material-ui/core';
 // redux
+import useAuth from 'hooks/useAuth';
 import { RootState, useSelector } from '../../redux/store';
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -29,7 +30,6 @@ import { MHidden } from '../../components/@material-extend';
 import sidebarConfig from './SidebarConfig';
 import cohortsConfig from './cohortsConfig';
 
-import { DocIllustration } from '../../assets';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -109,6 +109,7 @@ type DashboardSidebarProps = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
   const { cohorts } = useSelector((state: RootState) => state.cohort);
+  const { user } = useAuth();
 
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -176,7 +177,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       </LogoContainer>
 
       <NavSection
-        cohortsData={cohortsConfig(cohorts)}
+        cohortsData={cohortsConfig(cohorts, user?.type === 'admin')}
         navConfig={sidebarConfig}
         isShow={!isCollapse}
       />

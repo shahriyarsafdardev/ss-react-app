@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import { dispatch } from '../store';
 import { Cohort } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
@@ -31,7 +32,11 @@ const slice = createSlice({
       );
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
-        state.cohorts[targetCohortIndex] = { ...updated, peers: action.payload.peers };
+        state.cohorts[targetCohortIndex] = {
+          ...updated,
+          peers: action.payload.peers,
+          random_peers: _.sampleSize(action.payload.peers, 4)
+        };
       }
     },
 
@@ -54,7 +59,38 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, isOnboarded: true };
       }
     },
+    updateSessionMaterialCheckStatus(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetSessionIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
 
+        if (targetSessionIndex !== -1) {
+          let targetGroupIndex = -1;
+          let targetMaterialIndex = -1;
+
+          updated[targetSessionIndex].session_materials.map((group, i) =>
+            group.session_materials.map((material, j) => {
+              if (material.id === action.payload.materialId) {
+                targetGroupIndex = i;
+                targetMaterialIndex = j;
+              }
+            })
+          );
+
+          if (targetMaterialIndex !== -1) {
+            updated[targetSessionIndex].session_materials[targetGroupIndex].session_materials[
+              targetMaterialIndex
+            ].complete = action.payload.result;
+            state.cohorts[targetCohortIndex].sessions = updated;
+          }
+        }
+      }
+    },
     updateSessionFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohortID
@@ -125,6 +161,35 @@ export function updateSessionFeedbackStatus(cohortID: string, sessionID: string)
   return async () => {
     try {
       dispatch(slice.actions.updateSessionFeedbackStatusSuccess({ cohortID, sessionID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateMaterialStatus(
+  cohortID: string | undefined,
+  sessionID: string | undefined,
+  materialId: string,
+  value: boolean
+) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohort_sessions/${sessionID}/session_materials/${materialId}/submit_checklist.json`,
+        {
+          complete: value
+        }
+      );
+      const result = response.data;
+      dispatch(
+        slice.actions.updateSessionMaterialCheckStatus({
+          cohortID,
+          sessionID,
+          materialId,
+          result
+        })
+      );
     } catch (error) {
       console.log(error);
     }
