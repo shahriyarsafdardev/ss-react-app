@@ -85,7 +85,13 @@ const ActionButtons = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StyledImageContainer = styled(Box)(({ theme }) => ({}));
+const StyledImageContainer = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+}));
 
 const StyledCompanyContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -101,7 +107,6 @@ const StyledCompanyContainer = styled(Box)(({ theme }) => ({
 
 const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  paddingLeft: '25px',
   flexDirection: 'column',
   justifyContent: 'center',
   flexBasis: '75%',
@@ -112,10 +117,10 @@ const StyledContainer = styled(Box)(({ theme }) => ({
 
 const StyledNameContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
-    width: '50%',
+    width: '60%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    justifyContent: 'flex-start'
   }
 }));
 

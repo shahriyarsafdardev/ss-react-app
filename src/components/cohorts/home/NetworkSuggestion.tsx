@@ -44,7 +44,7 @@ const NetworkSuggestion = () => {
       sx: {
         position: 'relative',
         backgroundColor: 'transparent',
-        bottom: '-5px',
+        bottom: '0px',
         right: '40%',
         left: '40%',
         zIndex: 99
