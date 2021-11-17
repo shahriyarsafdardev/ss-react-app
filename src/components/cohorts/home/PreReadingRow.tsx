@@ -49,6 +49,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
+  },
+  '&.check-box': {
+    '&:hover': {
+      span: {
+        backgroundColor: 'rgba(77, 77, 205, 0.04)'
+      }
+    }
   }
 }));
 
@@ -68,9 +75,9 @@ export default function PreReadingRow({
           <span>{item.info_text}</span>
         </StyledBox>
       </StyledBox>
-      <Box>
+      <StyledBox className="check-box">
         <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} />
-      </Box>
+      </StyledBox>
     </StyledBox>
   );
 }

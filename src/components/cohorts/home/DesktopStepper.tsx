@@ -49,10 +49,16 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
   overflowX: 'hidden',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   '&::-webkit-scrollbar': { width: '4px' },
   img: {
     '&.active': {
-      cursor: 'pointer'
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'rgba(77, 77, 205, 0.1)',
+        borderRadius: '15px',
+        boxShadow: '2px 2px 5px 5px rgba(77, 77, 205, 0.1)'
+      }
     },
     '&.disabled': {
       cursor: 'default',

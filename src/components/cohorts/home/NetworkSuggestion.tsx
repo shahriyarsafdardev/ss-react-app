@@ -74,8 +74,16 @@ const NetworkSuggestion = () => {
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       img: { display: 'none' }
+    },
+    img: {
+      '&:hover': {
+        backgroundColor: 'rgba(77, 77, 205, 0.1)',
+        borderRadius: '15px',
+        boxShadow: '2px 2px 5px 5px rgba(77, 77, 205, 0.1)'
+      }
     }
   }));
 
