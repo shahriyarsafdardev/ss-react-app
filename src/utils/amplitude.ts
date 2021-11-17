@@ -142,3 +142,14 @@ export const trackHomePageEvents = (
     [HOME_PAGE_EVENTS.action]: eventData
   });
 };
+
+const MESSAGING_EVENTS = {
+  message_tab_action: 'Messaging Tab Action'
+};
+
+export const trackMessagingEvents = (eventCategory: string, eventData: string) => {
+  sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
+    category: eventCategory,
+    action: eventData
+  });
+};

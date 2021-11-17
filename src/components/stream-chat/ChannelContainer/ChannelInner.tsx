@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MessageResponse, logChatPromiseExecution } from 'stream-chat';
+import { trackMessagingEvents } from 'utils/amplitude';
 
 import {
   defaultPinPermissions,
@@ -30,6 +31,7 @@ type InnerProps = {
   pinsOpen: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setPinsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  type: string | undefined;
 };
 
 type GiphyStateObj = {
@@ -40,7 +42,7 @@ type GiphyStateObj = {
 export const GiphyContext = React.createContext<GiphyStateObj>({} as GiphyStateObj);
 
 export const ChannelInner: React.FC<InnerProps> = (props) => {
-  const { pinsOpen, setIsEditing, setPinsOpen } = props;
+  const { pinsOpen, setIsEditing, setPinsOpen, type } = props;
 
   const [giphyState, setGiphyState] = useState(false);
 
@@ -87,6 +89,13 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     if (sendMessage) {
       const sendMessagePromise = sendMessage(updatedMessage);
       logChatPromiseExecution(sendMessagePromise, 'send message');
+      if (type) {
+        if (type === 'team') {
+          trackMessagingEvents('Team Channel', 'Message Sent');
+        } else if (type === 'messaging') {
+          trackMessagingEvents('Direct Chat', 'Message Sent');
+        }
+      }
       setGiphyState(false);
     }
   };
