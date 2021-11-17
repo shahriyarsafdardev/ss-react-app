@@ -171,6 +171,7 @@ export default function PeerCard({
               onClick={onHandlePrevious}
               onKeyDown={onHandlePrevious}
               alt="left arrow"
+              style={{ cursor: 'pointer' }}
             />
             <StyledNameContainer>
               <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>
@@ -190,6 +191,7 @@ export default function PeerCard({
               onClick={onHandleNext}
               onKeyDown={onHandleNext}
               alt="right arrow"
+              style={{ cursor: 'pointer' }}
             />
           </StyledCompanyContainer>
           <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>

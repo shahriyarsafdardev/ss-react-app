@@ -114,6 +114,7 @@ const NetworkSuggestion = () => {
               onClick={handlePrevious}
               onKeyDown={handlePrevious}
               alt="left arrow"
+              style={{ cursor: 'pointer' }}
             />
             <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
@@ -135,6 +136,7 @@ const NetworkSuggestion = () => {
               onClick={handleNext}
               onKeyDown={handleNext}
               alt="right arrow"
+              style={{ cursor: 'pointer' }}
             />
           </StyledBoxContainer>
           <Divider variant="middle" sx={{ marginTop: '15px' }} />
