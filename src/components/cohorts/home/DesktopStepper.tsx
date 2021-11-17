@@ -138,7 +138,6 @@ export default function DesktopStepper({
     const elem = document.getElementById('timeline-div');
     if (elem) {
       val > 0 ? onTrackEvent('Navigate Right') : onTrackEvent('Navigate Left');
-      const previous = elem.scrollLeft;
       elem.scrollLeft += val * 130;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
@@ -147,7 +146,7 @@ export default function DesktopStepper({
         return;
       }
 
-      if (elem.scrollLeft === previous) {
+      if (elem.scrollLeft + elem.offsetWidth === elem.scrollWidth) {
         setArrowState(ARROW_STATES.NO_right);
         return;
       }
