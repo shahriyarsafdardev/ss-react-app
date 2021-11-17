@@ -220,7 +220,8 @@ export default function DesktopStepper({
             ))}
           <Step key={100} sx={{ minWidth: '180px' }}>
             <StepLabel StepIconComponent={QontoStepIcon}>
-              <StyledSession>Enter Alumni Network</StyledSession>
+              <StyledSession>Cohort Completion</StyledSession>
+              <StyledDate>Welcome to the alumni community!</StyledDate>
             </StepLabel>
           </Step>
         </Stepper>
