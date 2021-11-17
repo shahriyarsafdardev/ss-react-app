@@ -84,7 +84,6 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     const initChannel = async () => {
       if (url.get('direct') && url.get('receiver_id')) {
         try {
-          console.log('team', cohortID);
           const newChannel = await client.channel('messaging', '', {
             name: '',
             members: selectedUsers,

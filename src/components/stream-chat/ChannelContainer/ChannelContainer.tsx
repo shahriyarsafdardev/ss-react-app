@@ -119,6 +119,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
       >
         <ChannelInner
           {...{
+            type: channel?.type,
             pinsOpen,
             setIsEditing,
             setPinsOpen

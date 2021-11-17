@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
+import { trackMessagingEvents } from 'utils/amplitude';
 
 import './TeamChannelPreview.css';
 
@@ -118,6 +119,11 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
         setIsEditing(false);
         if (setActiveChannel) {
           setActiveChannel(channel);
+          if (type === 'team') {
+            trackMessagingEvents('Team Channel', 'Channel Opened');
+          } else {
+            trackMessagingEvents('Direct Chat', 'Chat Opened');
+          }
         }
       }}
       role="button"
