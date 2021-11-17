@@ -145,8 +145,8 @@ export default function DesktopStepper({
         setArrowState(ARROW_STATES.NO_LEFT);
         return;
       }
-
-      if (elem.scrollLeft + elem.offsetWidth === elem.scrollWidth) {
+      const diff = elem.scrollLeft + elem.offsetWidth - elem.scrollWidth;
+      if ((diff > 0 && diff < 10) || (diff > -10 && diff < 0) || diff === 0) {
         setArrowState(ARROW_STATES.NO_right);
         return;
       }
