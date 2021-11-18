@@ -32,7 +32,8 @@ const questions = [
       'Other'
     ],
     submitted_answer: null,
-    description: null
+    description: null,
+    maxLimit: 2
   },
   {
     question_type: 'multiple-choice',
@@ -96,7 +97,8 @@ const questions = [
       'Other'
     ],
     submitted_answer: null,
-    description: null
+    description: null,
+    maxLimit: 5
   },
   {
     question_type: 'create-multi-select',
@@ -108,13 +110,7 @@ const questions = [
   {
     question_type: 'multi-select',
     title: 'What are you looking to find within the Scholarsite community?',
-    options: [
-      'Find a mentor',
-      'Mentor others',
-      'Grow my network',
-      'Discuss materials',
-      'Interested'
-    ],
+    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
     submitted_answer: null,
     description: null
   },
@@ -140,7 +136,8 @@ const questions = [
       'Lives near me'
     ],
     submitted_answer: null,
-    description: null
+    description: null,
+    maxLimit: 5
   },
   {
     question_type: 'multiple-choice',
@@ -212,21 +209,21 @@ export const Question2 = ({
   </QuestionWrapper>
 );
 
-export const Question3 = ({
-  currentAnswer,
-  setCurrentAnswer
-}: {
-  currentAnswer: any;
-  setCurrentAnswer: Function;
-}) => (
-  <QuestionWrapper>
-    <SurveyRow
-      item={questions[2]}
-      submitted_answer={currentAnswer || ''}
-      onChange={setCurrentAnswer}
-    />
-  </QuestionWrapper>
-);
+// export const Question3 = ({
+//   currentAnswer,
+//   setCurrentAnswer
+// }: {
+//   currentAnswer: any;
+//   setCurrentAnswer: Function;
+// }) => (
+//   <QuestionWrapper>
+//     <SurveyRow
+//       item={questions[2]}
+//       submitted_answer={currentAnswer || ''}
+//       onChange={setCurrentAnswer}
+//     />
+//   </QuestionWrapper>
+// );
 
 export const Question4 = ({
   currentAnswer,

@@ -215,11 +215,13 @@ function CreateMultiSelect({
 function MultiSelect({
   options,
   onChange,
-  values
+  values,
+  maxLimit
 }: {
   options: string[] | undefined;
   onChange: Function;
   values: string[];
+  maxLimit?: number;
 }) {
   const handleChange = (values: any) => {
     onChange(values.map((item: any) => item.value));
@@ -233,7 +235,19 @@ function MultiSelect({
     <div>
       <Select
         defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
-        options={options?.map((option) => ({ value: option, label: option }))}
+        options={
+          // eslint-disable-next-line no-nested-ternary
+          maxLimit
+            ? selectedValues.length < maxLimit
+              ? options?.map((option) => ({ value: option, label: option }))
+              : []
+            : options?.map((option) => ({ value: option, label: option }))
+        }
+        noOptionsMessage={() =>
+          selectedValues.length === maxLimit
+            ? "You've reached the max options value"
+            : 'No options available'
+        }
         isClearable={false}
         styles={customStyles}
         backspaceRemovesValue={true}
@@ -361,6 +375,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
           options={item.options}
           values={submitted_answer}
           onChange={(e: any) => onChange(e)}
+          maxLimit={item.maxLimit}
         />
       );
     }

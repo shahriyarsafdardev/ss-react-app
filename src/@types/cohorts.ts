@@ -33,6 +33,7 @@ export type SurveyContent = {
   options?: string[] | any;
   description: string | null;
   submitted_answer: string | null;
+  maxLimit?: number;
 };
 
 export type Survey = {

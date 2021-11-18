@@ -335,14 +335,14 @@ export default function ProfileForm({
                       'data-testid': 'current-position'
                     }}
                   />
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     label="Introduction"
                     {...getFieldProps('introduction')}
                     inputProps={{
                       'data-testid': 'user-introduction'
                     }}
-                  />
+                  /> */}
 
                   {!isOnboardingModal && (
                     <>
