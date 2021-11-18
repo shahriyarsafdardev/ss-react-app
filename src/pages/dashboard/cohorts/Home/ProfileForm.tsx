@@ -224,7 +224,7 @@ export default function ProfileForm({
       <br />
       <FormikProvider value={formik}>
         <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item xs={12} md={4}>
               <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
                 <UploadAvatar

@@ -51,7 +51,7 @@ type HomeResponse = {
   };
 };
 
-const MODAL_HEIGHT = '600px';
+const MODAL_HEIGHT = '650px';
 
 const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
