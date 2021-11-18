@@ -17,6 +17,7 @@ export type payloadUser = {
   role: string;
   isPublic: boolean;
   current_company: string;
+  preferred_pronoun: string;
   strengths: string[];
   interests: string[];
   linkedin_url: string;

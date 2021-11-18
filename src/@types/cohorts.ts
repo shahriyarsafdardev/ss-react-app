@@ -10,6 +10,7 @@ export type StudentProfile = {
   last_name: string;
   current_company: Company;
   current_position: string;
+  preferred_pronoun: string;
   strengths: string[];
   interests: string[];
   profile_image_url: string;

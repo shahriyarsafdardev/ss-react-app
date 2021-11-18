@@ -36,6 +36,7 @@ interface InitialState {
   first_name: string;
   last_name: string;
   current_company?: string;
+  preferred_pronoun?: string;
   current_position?: string;
   interests: string[];
   strengths: string[];
@@ -138,6 +139,7 @@ export default function ProfileForm({
     discord_url: string;
     profile_image_url: File | any;
     current_company: string;
+    preferred_pronoun: string;
     current_position: string;
     strengths: string[];
     interests: string[];
@@ -147,6 +149,7 @@ export default function ProfileForm({
   const [strengths, setStrengths] = useState<string[]>();
   const [interests, setInterests] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>();
+  const pronouns = ['She/her', 'He/him', 'They/them', 'A pronoun not listed', 'Prefer not to say'];
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string()
       .min(2, 'Too Short!')
@@ -166,6 +169,7 @@ export default function ProfileForm({
       first_name: '',
       last_name: '',
       current_company: '',
+      preferred_pronoun: '',
       current_position: '',
       profile_image_url: null,
       interests: [],
@@ -277,6 +281,25 @@ export default function ProfileForm({
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <FormControl fullWidth disabled={isOnboardingModal}>
+                      <InputLabel id="multiple-checkbox-pronoun-label">
+                        Preferred Pronouns
+                      </InputLabel>
+                      <Select
+                        fullWidth
+                        label="Preferred Pronouns"
+                        labelId="pronoun-label"
+                        id="multiple-checkbox-pronoun"
+                        data-testid="preferred-pronoun"
+                        {...getFieldProps('preferred_pronoun')}
+                      >
+                        {pronouns?.map((pronoun: string) => (
+                          <MenuItem key={pronoun} value={pronoun}>
+                            <ListItemText primary={pronoun} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl fullWidth disabled={isOnboardingModal}>
                       <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
                       <Select
                         fullWidth
@@ -293,17 +316,17 @@ export default function ProfileForm({
                         ))}
                       </Select>
                     </FormControl>
-                    <TextField
-                      fullWidth
-                      label="Linkedin Url"
-                      {...getFieldProps('linkedin_url')}
-                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                      helperText={touched.linkedin_url && errors.linkedin_url}
-                      inputProps={{
-                        'data-testid': 'linkedin-url'
-                      }}
-                    />
                   </Stack>
+                  <TextField
+                    fullWidth
+                    label="Linkedin Url"
+                    {...getFieldProps('linkedin_url')}
+                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                    helperText={touched.linkedin_url && errors.linkedin_url}
+                    inputProps={{
+                      'data-testid': 'linkedin-url'
+                    }}
+                  />
                   <TextField
                     fullWidth
                     label="Current position"

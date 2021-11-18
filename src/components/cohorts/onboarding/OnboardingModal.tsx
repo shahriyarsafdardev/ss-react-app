@@ -32,6 +32,7 @@ type HomeResponse = {
     profile_image_url: string;
     current_position: string;
     current_company: string;
+    preferred_pronoun: string;
     strengths: string[];
     interests: string[];
     introduction: string;
@@ -181,6 +182,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     values.linkedin_url && uploadData.append('linkedin_url', values.linkedin_url);
     values.discord_url && uploadData.append('discord_url', values.discord_url);
     values.current_company && uploadData.append('current_company', values.current_company);
+    values.preferred_pronoun && uploadData.append('preferred_pronoun', values.preferred_pronoun);
     values.current_position && uploadData.append('current_position', values.current_position);
     values.strengths && uploadData.append('strengths', values.strengths);
     values.interests && uploadData.append('interests', values.interests);

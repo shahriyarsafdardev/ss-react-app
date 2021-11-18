@@ -14,6 +14,7 @@ type ParticipantProfile = {
   discord_url: string;
   profile_image_url: File | any;
   current_company: string;
+  preferred_pronoun: string;
   current_position: string;
   strengths: string[] | any;
   interests: string[] | any;
@@ -31,6 +32,7 @@ export default function AccountGeneral() {
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
     current_company: user?.current_company || '',
+    preferred_pronoun: user?.preferred_pronoun || '',
     current_position: user?.current_position || '',
     profile_image_url: user?.profile_image_url || '',
     interests: user?.interests || [],
@@ -46,6 +48,7 @@ export default function AccountGeneral() {
     uploadData.append('linkedin_url', values.linkedin_url);
     uploadData.append('discord_url', values.discord_url);
     uploadData.append('current_company', values.current_company);
+    uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
