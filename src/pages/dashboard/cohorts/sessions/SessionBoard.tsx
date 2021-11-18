@@ -281,6 +281,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <StyledVideoPreview
             src={session.recording_url}
             poster={session.recording_thumbnail_url}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              return false;
+            }}
             controls
             controlsList="nodownload"
             autoPlay={false}
