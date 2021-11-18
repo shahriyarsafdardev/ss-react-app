@@ -12,6 +12,7 @@ import {
   Box
 } from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 
 // types
 import { SurveyContent } from '../../../@types/cohorts';
@@ -82,7 +83,8 @@ const ANSWER_TYPES = {
   MULTI_SELECT: 'multi-select',
   CREATE_MULTI_SELECT: 'create-multi-select',
   SLIDER: 'slider',
-  STAR_RATING: 'star-rating'
+  STAR_RATING: 'star-rating',
+  MULTIPLE_SELECT: 'multiple-select'
 };
 
 const customStyles = {
@@ -210,6 +212,41 @@ function CreateMultiSelect({
   );
 }
 
+function MultiSelect({
+  options,
+  onChange,
+  values
+}: {
+  options: string[] | undefined;
+  onChange: Function;
+  values: string[];
+}) {
+  const handleChange = (values: any) => {
+    onChange(values.map((item: any) => item.value));
+  };
+
+  if (!options) return null;
+
+  const selectedValues = values || [];
+
+  return (
+    <div>
+      <Select
+        defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
+        options={options?.map((option) => ({ value: option, label: option }))}
+        isClearable={false}
+        styles={customStyles}
+        backspaceRemovesValue={true}
+        placeholder={<div>Select from list</div>}
+        isMulti
+        isSearchable
+        onChange={handleChange}
+        id="multi-select"
+      />
+    </div>
+  );
+}
+
 function SliderQuestion({ onChange, item }: SliderProps) {
   const [value, setValue] = useState(item?.options?.max);
   const [isRendered, setIsRenderedstate] = useState(false);
@@ -317,6 +354,15 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
     }
     if (item.question_type === ANSWER_TYPES.STAR_RATING) {
       return <StarRating onChange={onChange} submitted_answer={text} />;
+    }
+    if (item.question_type === ANSWER_TYPES.MULTIPLE_SELECT) {
+      return (
+        <MultiSelect
+          options={item.options}
+          values={submitted_answer}
+          onChange={(e: any) => onChange(e)}
+        />
+      );
     }
 
     return '';
