@@ -1,45 +1,40 @@
-import { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import moment from 'moment';
+import { useEffect, useState } from 'react';
 import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
-import { RootState, useDispatch, useSelector } from '../../../redux/store';
+import moment from 'moment';
 import useAuth from '../../../hooks/useAuth';
-import { getSessions } from '../../../redux/slices/cohort';
+import { Session, Cohort } from '../../../@types/cohorts';
 import { CircularLoader, SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
 import MobileStepper from './MobileStepper';
 
-const CohortTimeLine = () => {
-  const dispatch = useDispatch();
+const CohortTimeLine = ({
+  cohort,
+  sessions
+}: {
+  cohort: Cohort;
+  sessions: Session[];
+  // eslint-disable-next-line arrow-body-style
+}) => {
   const { user } = useAuth();
-
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-  const { sessions } = cohort || [];
-  const [activeSession, setActiveSession] = useState(0);
   const [header, setHeader] = useState('');
+  const [activeSession, setActiveSession] = useState(0);
 
   useEffect(() => {
-    if (cohort && !sessions) {
-      dispatch(getSessions(cohort.id));
-    }
-  }, [cohort]);
-
-  useEffect(() => {
-    let activeSession = 0;
+    let currentSessionNumber = 0;
     let flag = true;
     let isHeaderSet = false;
     sessions?.forEach((session, index) => {
       if (moment(session.time).add(1, 'hours') > moment() && flag) {
-        activeSession = index + 1;
+        currentSessionNumber = index + 1;
         if (moment().add(1, 'hours') >= moment(session.time)) {
-          setHeader(`🔴 Get ready, Session ${activeSession} is starting soon!`);
+          setHeader(`🔴 Get ready, Session ${currentSessionNumber} is starting soon!`);
           isHeaderSet = true;
         } else {
           setHeader(
-            `👋 Welcome back ${user?.first_name}, we hope you enjoyed Session ${activeSession - 1}!`
+            `👋 Welcome back ${user?.first_name}, we hope you enjoyed Session ${
+              currentSessionNumber - 1
+            }!`
           );
         }
 
@@ -47,18 +42,18 @@ const CohortTimeLine = () => {
       }
     });
 
-    if (activeSession === 1 && sessions?.length) {
+    if (currentSessionNumber === 1 && sessions?.length) {
       if (!isHeaderSet) {
         setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code || ''} Cohort!`);
       }
-      activeSession = 2;
+      currentSessionNumber = 2;
     }
 
-    if (activeSession === 0 && sessions?.length) {
+    if (currentSessionNumber === 0 && sessions?.length) {
       setHeader(`🎉 Congratulations, you’ve completed the ${cohort?.code || ''} cohort!`);
     }
 
-    setActiveSession(activeSession);
+    setActiveSession(currentSessionNumber);
   }, [sessions]);
 
   return (
@@ -79,11 +74,11 @@ const CohortTimeLine = () => {
                   eventData
                 )
               }
-              cohortID={cohort_id}
+              cohortID={cohort.id}
               activeSession={activeSession === 0 ? sessions.length + 2 : activeSession}
               sessions={sessions}
             />
-            <MobileStepper cohortID={cohort_id} activeSession={activeSession} sessions={sessions} />
+            <MobileStepper cohortID={cohort.id} activeSession={activeSession} sessions={sessions} />
           </>
         ) : (
           <CircularLoader />

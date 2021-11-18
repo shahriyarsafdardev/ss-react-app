@@ -49,10 +49,17 @@ const StyledTimeline = styled(Box)(({ theme }) => ({
   overflowX: 'hidden',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   '&::-webkit-scrollbar': { width: '4px' },
   img: {
+    margin: '0 10px',
     '&.active': {
-      cursor: 'pointer'
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'rgba(77, 77, 205, 0.05)',
+        borderRadius: '15px',
+        boxShadow: '1px 1px 5px 5px rgba(77, 77, 205, 0.1)'
+      }
     },
     '&.disabled': {
       cursor: 'default',
@@ -138,7 +145,6 @@ export default function DesktopStepper({
     const elem = document.getElementById('timeline-div');
     if (elem) {
       val > 0 ? onTrackEvent('Navigate Right') : onTrackEvent('Navigate Left');
-      const previous = elem.scrollLeft;
       elem.scrollLeft += val * 130;
       await new Promise((r) => setTimeout(r, SCROLL_MOVEMENT));
 
@@ -146,8 +152,8 @@ export default function DesktopStepper({
         setArrowState(ARROW_STATES.NO_LEFT);
         return;
       }
-
-      if (elem.scrollLeft === previous) {
+      const diff = elem.scrollLeft + elem.offsetWidth - elem.scrollWidth;
+      if ((diff > 0 && diff < 10) || (diff > -10 && diff < 0) || diff === 0) {
         setArrowState(ARROW_STATES.NO_right);
         return;
       }

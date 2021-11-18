@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
-
 import { Box } from '@material-ui/core';
-import { getSessions } from '../../../redux/slices/cohort';
-import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import { Session, SessionMaterial } from '../../../@types/cohorts';
+import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
@@ -13,38 +10,16 @@ import CircularProgressbar from './CircularProgressBar';
 import VideoPlaceHolder from '../VideoPlaceHolder';
 import { Summary } from '../sessions';
 
-const SessionPrereading = () => {
+const SessionPrereading = ({
+  cohort,
+  sessions,
+  activeSession
+}: {
+  cohort: Cohort;
+  sessions: Session[];
+  activeSession: Session | undefined;
+}) => {
   const [list, setList] = useState<SessionMaterial[]>([]);
-  const dispatch = useDispatch();
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-  const { sessions } = cohort || [];
-  const [activeSession, setActiveSession] = useState<Session | undefined>();
-
-  useEffect(() => {
-    setActiveSession(undefined);
-  }, []);
-
-  useEffect(() => {
-    setActiveSession(undefined);
-    if (cohort && !sessions) {
-      dispatch(getSessions(cohort.id));
-    }
-  }, [cohort, sessions]);
-
-  useEffect(() => {
-    if (!activeSession) {
-      let found = false;
-      sessions?.forEach((session) => {
-        if (!found && moment(session.time).add(1, 'hour') > moment()) {
-          setActiveSession(session);
-          found = true;
-        }
-      });
-    }
-  }, [sessions, activeSession]);
 
   useEffect(() => {
     const initMaterials = async () => {
