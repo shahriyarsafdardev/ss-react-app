@@ -8,9 +8,13 @@ export type StudentProfile = {
   id: string;
   first_name: string;
   last_name: string;
+  email: string;
   current_company: Company;
   current_position: string;
   preferred_pronoun: string;
+  linkedin_url: string;
+  roles: string[];
+  industries: string[];
   strengths: string[];
   interests: string[];
   profile_image_url: string;

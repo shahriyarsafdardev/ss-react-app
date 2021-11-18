@@ -42,31 +42,36 @@ const Text = styled(Typography)(() => ({
   fontFamily: 'Public Sans',
   color: '#212B36',
   fontSize: 12,
-  whiteSpace: 'nowrap'
+  whiteSpace: 'break-spaces'
 }));
 
-const TagsContainer = styled(Box)(({ theme }) => ({
+const ColoredContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: 10,
   [theme.breakpoints.down('sm')]: {
     display: 'none'
+  },
+  '&.gaped': {
+    gap: 10
   }
 }));
 
-const TagsContainerMobile = styled(Box)(({ theme }) => ({
+const ColoredContainerMobile = styled(Box)(({ theme }) => ({
   display: 'none',
   flex: 1,
   alignItems: 'center',
   flexWrap: 'wrap',
-  gap: 10,
   marginBottom: 20,
   [theme.breakpoints.down('sm')]: {
     display: 'flex'
+  },
+  '&.gaped': {
+    gap: 10
   }
 }));
+
 export default function StudentProfileModal({
   modalState,
   modalHandler,
@@ -84,6 +89,10 @@ export default function StudentProfileModal({
     current_company,
     profile_image_url,
     current_position,
+    roles,
+    industries,
+    introduction,
+    preferred_pronoun,
     phone,
     strengths,
     interests,
@@ -92,11 +101,35 @@ export default function StudentProfileModal({
     email
   } = modalUser;
   return (
-    <Modal open={modalState} onClose={() => modalHandler({})} id="student-modal">
+    <Modal className="small" open={modalState} onClose={() => modalHandler({})} id="student-modal">
       <StyledContainer>
         <Title>
           {first_name} {last_name}
         </Title>
+        {preferred_pronoun && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/ic_person.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text data-testid="preferred-pronoun">{preferred_pronoun}</Text>
+          </StyledRow>
+        )}
+        {introduction && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/ic_clear_all.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text data-testid="introduction">{introduction}</Text>
+          </StyledRow>
+        )}
         <StyledRow>
           <img
             alt="sketch icon"
@@ -105,10 +138,48 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text data-testid="company-name">
-            {current_position} @ {current_company?.name}
-          </Text>
+          <Text data-testid="company-name">{current_company?.name}</Text>
         </StyledRow>
+        <StyledRow>
+          <img
+            alt="sketch icon"
+            src="/static/peers/job.svg"
+            width={20}
+            height={20}
+            style={{ marginRight: 15 }}
+          />
+          <Text data-testid="current-position">{current_position}</Text>
+        </StyledRow>
+        {industries?.length > 0 && (
+          <>
+            <StyledRow>
+              <img
+                alt="sketch icon"
+                src="/static/peers/job.svg"
+                width={20}
+                height={20}
+                style={{ marginRight: 15 }}
+              />
+              <ColoredContainer>
+                {industries?.map((industry: any, index: number) => (
+                  <Text key={index} data-testid="preferred-pronoun">
+                    {index !== 0 && ', '}
+                    {capitalCase(industry)}
+                  </Text>
+                ))}
+              </ColoredContainer>
+            </StyledRow>
+            <ColoredContainerMobile>
+              {industries?.length > 0 &&
+                industries?.map((industry: any, index: number) => (
+                  <Text key={index} data-testid="preferred-pronoun">
+                    {capitalCase(industry)}
+                    {index !== 0 && ', '}
+                  </Text>
+                ))}
+            </ColoredContainerMobile>
+          </>
+        )}
         <StyledRow>
           <img
             alt="sketch icon"
@@ -130,7 +201,7 @@ export default function StudentProfileModal({
                 style={{ marginRight: 15 }}
               />
               <Text style={{ marginRight: 10 }}>What I am looking for</Text>
-              <TagsContainer>
+              <ColoredContainer className="gaped">
                 {interests?.map((interest: any, index: number) => (
                   <Label
                     key={index}
@@ -141,9 +212,9 @@ export default function StudentProfileModal({
                     {capitalCase(interest)}
                   </Label>
                 ))}
-              </TagsContainer>
+              </ColoredContainer>
             </StyledRow>
-            <TagsContainerMobile>
+            <ColoredContainerMobile className="gaped">
               {interests?.length > 0 &&
                 interests?.map((interest: any, index: number) => (
                   <Label
@@ -154,7 +225,7 @@ export default function StudentProfileModal({
                     {capitalCase(interest)}
                   </Label>
                 ))}
-            </TagsContainerMobile>
+            </ColoredContainerMobile>
           </>
         )}
         {strengths?.length > 0 && (
@@ -168,7 +239,7 @@ export default function StudentProfileModal({
                 style={{ marginRight: 15 }}
               />
               <Text style={{ marginRight: 10 }}>What I am good at</Text>
-              <TagsContainer>
+              <ColoredContainer className="gaped">
                 {strengths?.map((strength: any, index: number) => (
                   <Label
                     key={index}
@@ -179,9 +250,9 @@ export default function StudentProfileModal({
                     {capitalCase(strength)}
                   </Label>
                 ))}
-              </TagsContainer>
+              </ColoredContainer>
             </StyledRow>
-            <TagsContainerMobile>
+            <ColoredContainerMobile className="gaped">
               {strengths?.length > 0 &&
                 strengths?.map((strength: any, index: number) => (
                   <Label
@@ -192,7 +263,7 @@ export default function StudentProfileModal({
                     {capitalCase(strength)}
                   </Label>
                 ))}
-            </TagsContainerMobile>
+            </ColoredContainerMobile>
           </>
         )}
         {phone && (
