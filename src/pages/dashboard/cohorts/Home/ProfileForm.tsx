@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import * as Yup from 'yup';
+import { RootState, useSelector } from 'redux/store';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
@@ -25,7 +26,6 @@ import { styled } from '@material-ui/core/styles';
 import { UploadAvatar } from '../../../../components/upload';
 // axios
 import axios from '../../../../utils/axios';
-import { IndustryOptions, RolesOptions } from '../../../../components/cohorts/onboarding/Questions';
 import MultiSelect from '../../../../components/MultiSelect';
 
 interface InitialState {
@@ -43,12 +43,6 @@ interface InitialState {
   profile_image_url: File | any;
   introduction: string;
 }
-const Title = styled(Typography)(() => ({
-  fontSize: 24,
-  color: '#071A33',
-  fontWeight: 'bold',
-  margin: '1rem 0'
-}));
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 100,
@@ -56,47 +50,8 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-const StyledSelect = styled(MaterialSelect)(({ theme }) => ({
-  maxWidth: '48.5%',
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 'unset'
-  }
-}));
 
 const customStyles = {
-  // container: (provided: any, state: any) => ({
-  //   ...provided,
-  //   width: '100%',
-  //   minHeight: '29px'
-  // }),
-  // control: (provided: any, state: any) => ({
-  //   ...provided,
-  //   height: '55px',
-  //   borderRadius: '6px',
-  //   borderColor: state.isFocused ? '1939B7' : '#CFD8DC',
-  //   ':hover': {
-  //     borderColor: '#071A33',
-  //     borderRadius: 8
-  //   },
-  //   overflowY: 'scroll'
-  // }),
-  // dropdownIndicator: (provided: any) => ({
-  //   ...provided,
-  //   position: 'sticky',
-  //   top: 10,
-  //   right: 0,
-  //   zIndex: 10
-  // }),
-  // multiValueLabel: (provided: any) => ({
-  //   ...provided,
-  //   color: '#1939B7',
-  //   fontWeight: 'bold',
-  //   fontSize: '0.75rem'
-  // }),
-  // indicatorSeparator: (provided: any) => ({
-  //   ...provided,
-  //   display: 'none'
-  // })
   placeholder: (provided: any, state: any) => ({
     display: state.isFocused ? 'none' : 'block',
     color: 'rgb(128, 128, 128)'
@@ -105,22 +60,10 @@ const customStyles = {
 
 const greenCustomsStyle = {
   ...customStyles
-  // multiValue: (provided: any) => ({
-  //   ...provided,
-  //   backgroundColor: 'rgba(84, 214, 44, 0.24)',
-  //   height: 22,
-  //   borderRadius: '8px'
-  // })
 };
 
 const blueCustomsStyle = {
   ...customStyles
-  // multiValue: (provided: any) => ({
-  //   ...provided,
-  //   backgroundColor: 'rgba(51, 102, 255, 0.16)',
-  //   height: 22,
-  //   borderRadius: '8px'
-  // })
 };
 
 const getOptions = (options: any) =>
@@ -157,7 +100,10 @@ export default function ProfileForm({
   const [strengths, setStrengths] = useState<string[]>();
   const [interests, setInterests] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>();
-  const pronouns = ['She/her', 'He/him', 'They/them', 'A pronoun not listed', 'Prefer not to say'];
+  const { role_options, industry_options, preferred_pronoun_options } = useSelector(
+    (state: RootState) => state.profileOptions
+  );
+
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string()
       .min(2, 'Too Short!')
@@ -293,7 +239,7 @@ export default function ProfileForm({
                         sx={{ zIndex: 1500 }}
                         {...getFieldProps('preferred_pronoun')}
                       >
-                        {pronouns?.map((pronoun: string) => (
+                        {preferred_pronoun_options?.map((pronoun: string) => (
                           <MenuItem key={pronoun} value={pronoun}>
                             <ListItemText primary={pronoun} />
                           </MenuItem>
@@ -363,7 +309,7 @@ export default function ProfileForm({
                           What is the best way to describe your current role? Max 2 Options
                         </Typography>
                         <MultiSelect
-                          options={RolesOptions}
+                          options={role_options}
                           values={values.roles}
                           onChange={(e: any) => setFieldValue('roles', e)}
                           maxLimit={2}
@@ -375,7 +321,7 @@ export default function ProfileForm({
                           choices.
                         </Typography>
                         <MultiSelect
-                          options={IndustryOptions}
+                          options={industry_options}
                           values={values.industries}
                           onChange={(e: any) => setFieldValue('industries', e)}
                           maxLimit={5}

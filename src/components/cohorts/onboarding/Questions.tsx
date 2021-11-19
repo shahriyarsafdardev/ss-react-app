@@ -6,71 +6,6 @@ const QuestionWrapper = styled('div')(() => ({
   paddingTop: '10px'
 }));
 
-export const IndustryOptions = [
-  'AR / VR',
-  'Agriculture',
-  'Artificial Intelligence',
-  'Automotive',
-  'Aviation / Aerospace',
-  'Biotechnology',
-  'Blockchain',
-  'Community',
-  'Consulting',
-  'Consumer Goods / Services',
-  'Cryptocurrency',
-  'Cybersecurity',
-  'Design / Graphics',
-  'E-commerce',
-  'Education',
-  'Entertainment / Gaming',
-  'Fashion',
-  'Finance / Fintech',
-  'Food / Beverage',
-  'Hardware / IoT',
-  'Health Care',
-  'Hospitality / Events',
-  'Human Resources',
-  'Information Technology / Services',
-  'Investment / Venture Capital',
-  'Law / Legal',
-  'Logistics / Supply Chain',
-  'Manufacturing / Industrial',
-  'Marketing / Advertising / Sales',
-  'Media',
-  'Military',
-  'Music',
-  'Nanotechnology',
-  'Nonprofit',
-  'Oil / Energy / Utilities',
-  'Pharmaceuticals',
-  'Real Estate / Construction',
-  'Renewable / Environment',
-  'Retail',
-  'SaaS',
-  'Semiconductors',
-  'Services',
-  'Sports',
-  'Student',
-  'Telecommunications',
-  'Transportation / Mobility',
-  'Travel',
-  'Wellness / Fitness',
-  'Other'
-];
-
-export const RolesOptions = [
-  'Community',
-  'Data',
-  'Design',
-  'Engineer',
-  'Founder',
-  'Investor',
-  'Marketing',
-  'Project Manager',
-  'Research',
-  'Other'
-];
-
 const questions = [
   {
     question_type: 'text-input',
@@ -84,7 +19,7 @@ const questions = [
   {
     question_type: 'multiple-select',
     title: 'What is the best way to describe your current role?',
-    options: RolesOptions,
+    options: [],
     submitted_answer: null,
     description: null,
     maxLimit: 2
@@ -99,7 +34,7 @@ const questions = [
   {
     question_type: 'multiple-select',
     title: 'Which best describes the industry you work in? Make between 1 and 5 choices.',
-    options: IndustryOptions,
+    options: [],
     submitted_answer: null,
     description: null,
     maxLimit: 5
@@ -199,14 +134,16 @@ export const Question1 = ({
 
 export const Question2 = ({
   currentAnswer,
-  setCurrentAnswer
+  setCurrentAnswer,
+  options = []
 }: {
   currentAnswer: any;
   setCurrentAnswer: Function;
+  options: string[];
 }) => (
   <QuestionWrapper>
     <SurveyRow
-      item={questions[1]}
+      item={{ ...questions[1], options }}
       submitted_answer={currentAnswer || ''}
       onChange={setCurrentAnswer}
     />
@@ -231,14 +168,16 @@ export const Question2 = ({
 
 export const Question4 = ({
   currentAnswer,
-  setCurrentAnswer
+  setCurrentAnswer,
+  options = []
 }: {
   currentAnswer: any;
   setCurrentAnswer: Function;
+  options: string[];
 }) => (
   <QuestionWrapper>
     <SurveyRow
-      item={questions[3]}
+      item={{ ...questions[3], options }}
       submitted_answer={currentAnswer || ''}
       onChange={setCurrentAnswer}
     />

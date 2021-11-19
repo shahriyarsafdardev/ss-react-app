@@ -7,7 +7,7 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import ProfileForm from 'pages/dashboard/cohorts/Home/ProfileForm';
-import { useDispatch } from 'redux/store';
+import { useDispatch, RootState, useSelector } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
@@ -157,6 +157,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [responses, setResponses] = useState<any>({});
   const totalSteps = 13;
 
+  const { role_options, industry_options } = useSelector(
+    (state: RootState) => state.profileOptions
+  );
+
   useEffect(() => {
     axios
       .get(`/cohorts/${cohort_id}/onboarding/home.json`, {
@@ -287,6 +291,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         <Question2
           currentAnswer={responses[`question-${activeStep}`]}
           setCurrentAnswer={updateAnswers}
+          options={role_options}
         />
       );
     }
@@ -295,6 +300,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         <Question4
           currentAnswer={responses[`question-${activeStep}`]}
           setCurrentAnswer={updateAnswers}
+          options={industry_options}
         />
       );
     }
