@@ -42,7 +42,7 @@ describe('Onboarding Flow', () => {
   });
 
   it('should log user into app', () => {
-    cy.visit('http://localhost:3001/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions');
+    cy.visit('/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions');
     const email = 'waqas@scholar.com';
     const password = '123456';
     cy.get('[data-testid=email]').type(email);

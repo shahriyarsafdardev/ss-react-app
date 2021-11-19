@@ -272,8 +272,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         </div>
       );
     }
-    console.log(responses);
-    console.log('active step:', activeStep);
+
     if (activeStep === 2) {
       return (
         <Question1
