@@ -1,7 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
-
 import * as Yup from 'yup';
 
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -28,6 +26,7 @@ import { UploadAvatar } from '../../../../components/upload';
 // axios
 import axios from '../../../../utils/axios';
 import { IndustryOptions, RolesOptions } from '../../../../components/cohorts/onboarding/Questions';
+import MultiSelect from '../../../../components/MultiSelect';
 
 interface InitialState {
   linkedin_url: string;
@@ -363,30 +362,11 @@ export default function ProfileForm({
                         <Typography>
                           What is the best way to describe your current role? Max 2 Options
                         </Typography>
-                        <Select
-                          defaultValue={getOptions(values.roles)}
-                          options={
-                            // eslint-disable-next-line no-nested-ternary
-                            values.roles.length < 2 ? getOptions(RolesOptions) : []
-                          }
-                          noOptionsMessage={() =>
-                            values.roles.length === 2
-                              ? "You've reached the max options value"
-                              : 'No options available'
-                          }
-                          isClearable={false}
-                          styles={customStyles}
-                          backspaceRemovesValue={true}
-                          placeholder={<div>Select from List </div>}
-                          isMulti
-                          isSearchable
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'roles',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
-                          id="roles-select"
+                        <MultiSelect
+                          options={RolesOptions}
+                          values={values.roles}
+                          onChange={(e: any) => setFieldValue('roles', e)}
+                          maxLimit={2}
                         />
                       </Stack>
                       <Stack direction={{ xs: 'column' }} spacing={1}>
@@ -394,27 +374,11 @@ export default function ProfileForm({
                           Which best describes the industry you work in? Make between 1 and 5
                           choices.
                         </Typography>
-                        <Select
-                          defaultValue={getOptions(values.industries)}
-                          options={values.industries.length < 5 ? getOptions(IndustryOptions) : []}
-                          noOptionsMessage={() =>
-                            values.industries.length === 5
-                              ? "You've reached the max options value"
-                              : 'No options available'
-                          }
-                          isClearable={false}
-                          styles={customStyles}
-                          backspaceRemovesValue={true}
-                          placeholder={<div>Select from list</div>}
-                          isMulti
-                          isSearchable
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'industries',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
-                          id="industries-select"
+                        <MultiSelect
+                          options={IndustryOptions}
+                          values={values.industries}
+                          onChange={(e: any) => setFieldValue('industries', e)}
+                          maxLimit={5}
                         />
                       </Stack>
                       <Stack direction={{ xs: 'column' }} spacing={1}>
