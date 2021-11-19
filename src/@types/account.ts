@@ -22,6 +22,9 @@ export type payloadUser = {
   interests: string[];
   roles: string[];
   industries: string[];
+  is_interested_in_networking: boolean;
+  networking_role_preferences: string[];
+  is_interested_in_mentoring: boolean;
   linkedin_url: string;
   stream_id: string;
   stream_token: string;

@@ -47,6 +47,9 @@ type HomeResponse = {
     preferred_pronoun: string;
     strengths: string[];
     roles: string[];
+    is_interested_in_networking: boolean;
+    networking_role_preferences: string[];
+    is_interested_in_mentoring: boolean;
     industries: string[];
     interests: string[];
     introduction: string;

@@ -38,7 +38,10 @@ const users: payloadUser[] = [
     industries: ['industry 1'],
     stream_id: '',
     stream_token: '',
-    full_name: 'Jaydon Frankie'
+    full_name: 'Jaydon Frankie',
+    is_interested_in_networking: true,
+    networking_role_preferences: ['option 1'],
+    is_interested_in_mentoring: false
   },
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-1',
@@ -65,7 +68,10 @@ const users: payloadUser[] = [
     industries: ['industry 1'],
     stream_id: '',
     stream_token: '',
-    full_name: 'Aqib Maqbool'
+    full_name: 'Aqib Maqbool',
+    is_interested_in_networking: false,
+    networking_role_preferences: ['option 2'],
+    is_interested_in_mentoring: false
   }
 ];
 
@@ -135,7 +141,10 @@ mock.onPost('/api/account/register').reply(async (config) => {
       linkedin_url: '',
       stream_id: '',
       stream_token: '',
-      full_name: ''
+      full_name: '',
+      is_interested_in_networking: false,
+      networking_role_preferences: [],
+      is_interested_in_mentoring: false
     };
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {

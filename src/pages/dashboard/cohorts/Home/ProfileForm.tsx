@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react';
-import CreatableSelect from 'react-select/creatable';
 import * as Yup from 'yup';
 import { RootState, useSelector } from 'redux/store';
 
@@ -36,12 +35,10 @@ interface InitialState {
   current_company?: string;
   preferred_pronoun?: string;
   current_position?: string;
-  interests: string[];
-  roles: string[];
-  industries: string[];
-  strengths: string[];
   profile_image_url: File | any;
   introduction: string;
+  roles: string[];
+  industries: string[];
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -95,10 +92,11 @@ export default function ProfileForm({
     industries: string[];
     interests: string[];
     introduction: string;
+    is_interested_in_networking: boolean;
+    networking_role_preferences: string[];
+    is_interested_in_mentoring: boolean;
   };
 }) {
-  const [strengths, setStrengths] = useState<string[]>();
-  const [interests, setInterests] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>();
   const { role_options, industry_options, preferred_pronoun_options } = useSelector(
     (state: RootState) => state.profileOptions
@@ -111,9 +109,6 @@ export default function ProfileForm({
       .required('First name required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
-
-  const interestOptions = interests?.map((interest) => ({ value: interest, label: interest }));
-  const strengthsOptions = strengths?.map((strength) => ({ value: strength, label: strength }));
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -130,7 +125,10 @@ export default function ProfileForm({
       roles: [],
       industries: [],
       strengths: [],
-      introduction: ''
+      introduction: '',
+      is_interested_in_networking: false,
+      networking_role_preferences: [],
+      is_interested_in_mentoring: false
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
@@ -159,9 +157,7 @@ export default function ProfileForm({
       .get('/cohorts/select_fields_data.json')
       .then((res) => res.data)
       .then((payload) => {
-        payload?.strengths && setStrengths(payload.strengths);
         payload?.companies && setCompanies(payload.companies);
-        payload?.interests && setInterests(payload.interests);
       });
   }, []);
 
@@ -282,7 +278,6 @@ export default function ProfileForm({
                       'data-testid': 'current-position'
                     }}
                   />
-
                   {!isOnboardingModal && (
                     <>
                       <TextField
@@ -297,13 +292,6 @@ export default function ProfileForm({
                           'data-testid': 'user-introduction'
                         }}
                       />
-                      {/* <TextField
-                        fullWidth
-                        label="Discord Url"
-                        {...getFieldProps('discord_url')}
-                        error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                        helperText={touched.linkedin_url && errors.linkedin_url}
-                      /> */}
                       <Stack direction={{ xs: 'column' }} spacing={1}>
                         <Typography>
                           What is the best way to describe your current role? Max 2 Options
@@ -325,52 +313,6 @@ export default function ProfileForm({
                           values={values.industries}
                           onChange={(e: any) => setFieldValue('industries', e)}
                           maxLimit={5}
-                        />
-                      </Stack>
-                      <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>
-                          How would you like to engage with the ScholarSite community?
-                        </Typography>
-
-                        <CreatableSelect
-                          defaultValue={getOptions(values.interests)}
-                          styles={blueCustomsStyle}
-                          placeholder={<div>Start typing whatever comes to mind!</div>}
-                          options={interestOptions}
-                          isClearable={false}
-                          backspaceRemovesValue={true}
-                          isMulti
-                          isSearchable
-                          id="interest-multiselect"
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'interests',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
-                        />
-                      </Stack>
-
-                      <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>
-                          What topics can fellow cohort members ask you questions on?
-                        </Typography>
-                        <CreatableSelect
-                          defaultValue={getOptions(values.strengths)}
-                          styles={greenCustomsStyle}
-                          placeholder={<div>Start typing whatever comes to mind!</div>}
-                          options={strengthsOptions}
-                          isClearable={false}
-                          backspaceRemovesValue={true}
-                          isMulti
-                          isSearchable
-                          id="strength-multiselect"
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'strengths',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
                         />
                       </Stack>
                     </>

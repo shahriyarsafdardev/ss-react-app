@@ -21,6 +21,9 @@ type ParticipantProfile = {
   strengths: string[] | any;
   interests: string[] | any;
   introduction: string;
+  is_interested_in_networking: boolean;
+  networking_role_preferences: string[] | any;
+  is_interested_in_mentoring: boolean;
 };
 
 // ----------------------------------------------------------------------
@@ -41,7 +44,10 @@ export default function AccountGeneral() {
     roles: user?.roles || [],
     interests: user?.interests || [],
     strengths: user?.strengths || [],
-    introduction: user?.introduction || ''
+    introduction: user?.introduction || '',
+    is_interested_in_networking: user?.is_interested_in_networking,
+    networking_role_preferences: user?.networking_role_preferences || [],
+    is_interested_in_mentoring: user?.is_interested_in_mentoring
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -55,6 +61,15 @@ export default function AccountGeneral() {
     uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
     uploadData.append('roles', values.roles);
+    uploadData.append(
+      'is_interested_in_networking',
+      values.is_interested_in_networking ? 'Yes' : 'No'
+    );
+    uploadData.append('networking_role_preferences', values.networking_role_preferences);
+    uploadData.append(
+      'is_interested_in_mentoring',
+      values.is_interested_in_mentoring ? 'Yes' : 'No'
+    );
     uploadData.append('industries', values.industries);
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);

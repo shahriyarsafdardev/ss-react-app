@@ -17,6 +17,9 @@ export type StudentProfile = {
   industries: string[];
   strengths: string[];
   interests: string[];
+  is_interested_in_networking: boolean;
+  networking_role_preferences: string[];
+  is_interested_in_mentoring: boolean;
   profile_image_url: string;
   introduction: string;
 };

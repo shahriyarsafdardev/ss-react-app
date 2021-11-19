@@ -150,4 +150,7 @@ export type ParticipantProfile = {
   industries: string[] | any;
   interests: string[] | any;
   introduction: string;
+  is_interested_in_networking: boolean;
+  networking_role_preferences: string[];
+  is_interested_in_mentoring: boolean;
 };
