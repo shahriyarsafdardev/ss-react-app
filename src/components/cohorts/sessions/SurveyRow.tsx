@@ -104,6 +104,7 @@ function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
       onChange={(e) => onChange(e.target.value)}
       placeholder={item?.options?.placeholder || 'Start typing whatever comes to mind!'}
       multiline
+      autoFocus
       rows={4}
       inputProps={{
         'data-testid': 'survey-text'

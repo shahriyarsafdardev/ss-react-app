@@ -137,7 +137,7 @@ const questions = [
     ],
     submitted_answer: null,
     description: null,
-    maxLimit: 5
+    maxLimit: 3
   },
   {
     question_type: 'multiple-choice',

@@ -84,7 +84,7 @@ export default function ModalAnimate({
           className={className}
           style={{
             ...customStyles,
-            ...(zIndex && { overlay: { ...customStyles.overlay, zIndex } })
+            ...(zIndex && { overlay: { ...customStyles.overlay, zIndex: 1200 } })
           }}
           ariaHideApp={false}
         >

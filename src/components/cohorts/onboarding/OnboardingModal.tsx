@@ -196,6 +196,14 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
   };
 
+  const onPreviousHandler = () => {
+    if (activeStep === 10 && responses[`question-7`] === 'No') {
+      setActiveStep(7);
+    } else {
+      setActiveStep(activeStep - 1);
+    }
+  };
+
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
     const uploadData = new FormData();
     uploadData.append('enrollment_id', homeConfig?.enrollment_id);
@@ -309,24 +317,27 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
-
-    if (activeStep === 8) {
-      return (
-        <Question8
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-        />
-      );
+    if (responses[`question-7`] && responses[`question-7`] === 'Yes') {
+      if (activeStep === 8) {
+        return (
+          <Question8
+            currentAnswer={responses[`question-${activeStep}`]}
+            setCurrentAnswer={updateAnswers}
+          />
+        );
+      }
+      if (activeStep === 9) {
+        return (
+          <Question9
+            currentAnswer={responses[`question-${activeStep}`]}
+            setCurrentAnswer={updateAnswers}
+          />
+        );
+      }
     }
-    if (activeStep === 9) {
-      return (
-        <Question9
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-        />
-      );
+    if (responses[`question-7`] && responses[`question-7`] === 'No' && activeStep === 8) {
+      setActiveStep(10);
     }
-
     if (activeStep === 10) {
       return (
         <Question10
@@ -416,7 +427,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               disabled={activeStep <= 0}
               className="previous"
               variant="outlined"
-              onClick={() => setActiveStep(activeStep - 1)}
+              onClick={onPreviousHandler}
             >
               Previous
             </StyledButton>

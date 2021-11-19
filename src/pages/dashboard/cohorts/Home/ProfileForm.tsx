@@ -280,7 +280,7 @@ export default function ProfileForm({
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <FormControl fullWidth disabled={isOnboardingModal}>
+                    <FormControl fullWidth>
                       <InputLabel id="multiple-checkbox-pronoun-label">
                         Preferred Pronouns
                       </InputLabel>
@@ -290,6 +290,7 @@ export default function ProfileForm({
                         labelId="pronoun-label"
                         id="multiple-checkbox-pronoun"
                         data-testid="preferred-pronoun"
+                        sx={{ zIndex: 1500 }}
                         {...getFieldProps('preferred_pronoun')}
                       >
                         {pronouns?.map((pronoun: string) => (
@@ -299,7 +300,7 @@ export default function ProfileForm({
                         ))}
                       </Select>
                     </FormControl>
-                    <FormControl fullWidth disabled={isOnboardingModal}>
+                    <FormControl fullWidth>
                       <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
                       <Select
                         fullWidth
