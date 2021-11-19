@@ -16,6 +16,8 @@ type ParticipantProfile = {
   current_company: string;
   preferred_pronoun: string;
   current_position: string;
+  roles: string[] | any;
+  industries: string[] | any;
   strengths: string[] | any;
   interests: string[] | any;
   introduction: string;
@@ -35,6 +37,8 @@ export default function AccountGeneral() {
     preferred_pronoun: user?.preferred_pronoun || '',
     current_position: user?.current_position || '',
     profile_image_url: user?.profile_image_url || '',
+    industries: user?.industries || [],
+    roles: user?.roles || [],
     interests: user?.interests || [],
     strengths: user?.strengths || [],
     introduction: user?.introduction || ''
@@ -50,10 +54,13 @@ export default function AccountGeneral() {
     uploadData.append('current_company', values.current_company);
     uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
+    uploadData.append('roles', values.roles);
+    uploadData.append('industries', values.industries);
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('image', values.profile_image_url.image);
     uploadData.append('introduction', values.introduction);
+
     await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });
       updateProfile({ ...res.data.user });

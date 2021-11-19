@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
+
 import * as Yup from 'yup';
 
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -11,24 +13,21 @@ import {
   Stack,
   TextField,
   Typography,
-  Select,
   MenuItem,
   ListItemText,
   FormHelperText,
   InputLabel,
-  FormControl
+  FormControl,
+  Select as MaterialSelect
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import Label from 'components/Label';
 import { UploadAvatar } from '../../../../components/upload';
-// utils
-import { fData } from '../../../../utils/formatNumber';
-
 // axios
 import axios from '../../../../utils/axios';
+import { IndustryOptions, RolesOptions } from '../../../../components/cohorts/onboarding/Questions';
 
 interface InitialState {
   linkedin_url: string;
@@ -39,6 +38,8 @@ interface InitialState {
   preferred_pronoun?: string;
   current_position?: string;
   interests: string[];
+  roles: string[];
+  industries: string[];
   strengths: string[];
   profile_image_url: File | any;
   introduction: string;
@@ -56,7 +57,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-const StyledSelect = styled(Select)(({ theme }) => ({
+const StyledSelect = styled(MaterialSelect)(({ theme }) => ({
   maxWidth: '48.5%',
   [theme.breakpoints.down('md')]: {
     maxWidth: 'unset'
@@ -123,6 +124,12 @@ const blueCustomsStyle = {
   // })
 };
 
+const getOptions = (options: any) =>
+  options.map((option: any) => ({
+    value: option,
+    label: option
+  }));
+
 export default function ProfileForm({
   onSubmit,
   showSubmitButton = true,
@@ -142,6 +149,8 @@ export default function ProfileForm({
     preferred_pronoun: string;
     current_position: string;
     strengths: string[];
+    roles: string[];
+    industries: string[];
     interests: string[];
     introduction: string;
   };
@@ -173,6 +182,8 @@ export default function ProfileForm({
       current_position: '',
       profile_image_url: null,
       interests: [],
+      roles: [],
+      industries: [],
       strengths: [],
       introduction: ''
     },
@@ -184,16 +195,6 @@ export default function ProfileForm({
 
   const { values, errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
     formik;
-
-  const defaultInterests = values.interests?.map((interest) => ({
-    value: interest,
-    label: interest
-  }));
-
-  const defaultStrengths = values.strengths?.map((strength) => ({
-    value: strength,
-    label: strength
-  }));
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -284,7 +285,7 @@ export default function ProfileForm({
                       <InputLabel id="multiple-checkbox-pronoun-label">
                         Preferred Pronouns
                       </InputLabel>
-                      <Select
+                      <MaterialSelect
                         fullWidth
                         label="Preferred Pronouns"
                         labelId="pronoun-label"
@@ -298,11 +299,11 @@ export default function ProfileForm({
                             <ListItemText primary={pronoun} />
                           </MenuItem>
                         ))}
-                      </Select>
+                      </MaterialSelect>
                     </FormControl>
                     <FormControl fullWidth>
                       <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
-                      <Select
+                      <MaterialSelect
                         fullWidth
                         label="Company"
                         labelId="company-label"
@@ -315,7 +316,7 @@ export default function ProfileForm({
                             <ListItemText primary={name} />
                           </MenuItem>
                         ))}
-                      </Select>
+                      </MaterialSelect>
                     </FormControl>
                   </Stack>
                   <TextField
@@ -356,11 +357,69 @@ export default function ProfileForm({
                       /> */}
                       <Stack direction={{ xs: 'column' }} spacing={1}>
                         <Typography>
+                          What is the best way to describe your current role? Max 2 Options
+                        </Typography>
+                        <Select
+                          defaultValue={getOptions(values.roles)}
+                          options={
+                            // eslint-disable-next-line no-nested-ternary
+                            values.roles.length < 2 ? getOptions(RolesOptions) : []
+                          }
+                          noOptionsMessage={() =>
+                            values.roles.length === 2
+                              ? "You've reached the max options value"
+                              : 'No options available'
+                          }
+                          isClearable={false}
+                          styles={customStyles}
+                          backspaceRemovesValue={true}
+                          placeholder={<div>Select from List </div>}
+                          isMulti
+                          isSearchable
+                          onChange={(selected) => {
+                            setFieldValue(
+                              'roles',
+                              Array.isArray(selected) ? selected.map((s) => s.value) : []
+                            );
+                          }}
+                          id="roles-select"
+                        />
+                      </Stack>
+                      <Stack direction={{ xs: 'column' }} spacing={1}>
+                        <Typography>
+                          Which best describes the industry you work in? Make between 1 and 5
+                          choices.
+                        </Typography>
+                        <Select
+                          defaultValue={getOptions(values.industries)}
+                          options={values.industries.length < 5 ? getOptions(IndustryOptions) : []}
+                          noOptionsMessage={() =>
+                            values.industries.length === 5
+                              ? "You've reached the max options value"
+                              : 'No options available'
+                          }
+                          isClearable={false}
+                          styles={customStyles}
+                          backspaceRemovesValue={true}
+                          placeholder={<div>Select from list</div>}
+                          isMulti
+                          isSearchable
+                          onChange={(selected) => {
+                            setFieldValue(
+                              'industries',
+                              Array.isArray(selected) ? selected.map((s) => s.value) : []
+                            );
+                          }}
+                          id="industries-select"
+                        />
+                      </Stack>
+                      <Stack direction={{ xs: 'column' }} spacing={1}>
+                        <Typography>
                           How would you like to engage with the ScholarSite community?
                         </Typography>
 
                         <CreatableSelect
-                          defaultValue={defaultInterests}
+                          defaultValue={getOptions(values.interests)}
                           styles={blueCustomsStyle}
                           placeholder={<div>Start typing whatever comes to mind!</div>}
                           options={interestOptions}
@@ -383,7 +442,7 @@ export default function ProfileForm({
                           What topics can fellow cohort members ask you questions on?
                         </Typography>
                         <CreatableSelect
-                          defaultValue={defaultStrengths}
+                          defaultValue={getOptions(values.strengths)}
                           styles={greenCustomsStyle}
                           placeholder={<div>Start typing whatever comes to mind!</div>}
                           options={strengthsOptions}

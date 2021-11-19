@@ -146,6 +146,8 @@ export type ParticipantProfile = {
   preferred_pronoun: string;
   current_position: string;
   strengths: string[] | any;
+  roles: string[] | any;
+  industries: string[] | any;
   interests: string[] | any;
   introduction: string;
 };

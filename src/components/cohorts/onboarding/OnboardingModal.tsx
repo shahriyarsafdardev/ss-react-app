@@ -46,6 +46,8 @@ type HomeResponse = {
     current_company: string;
     preferred_pronoun: string;
     strengths: string[];
+    roles: string[];
+    industries: string[];
     interests: string[];
     introduction: string;
   };
@@ -181,6 +183,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         enrollment_id: homeConfig?.enrollment_id
       })
       .then((res) => {
+        updateProfile({ ...res.data });
+        if (homeConfig) {
+          homeConfig.participant_profile = { ...homeConfig.participant_profile, ...res.data };
+        }
         setModal(false);
         enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
         dispatch(updateOnboardingStatus(cohort_id));

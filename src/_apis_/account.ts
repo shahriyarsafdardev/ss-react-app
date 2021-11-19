@@ -34,6 +34,8 @@ const users: payloadUser[] = [
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/demo',
     preferred_pronoun: 'He/him',
+    roles: ['role 1'],
+    industries: ['industry 1'],
     stream_id: '',
     stream_token: '',
     full_name: 'Jaydon Frankie'
@@ -59,6 +61,8 @@ const users: payloadUser[] = [
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev',
     preferred_pronoun: 'He/him',
+    roles: ['role 1'],
+    industries: ['industry 1'],
     stream_id: '',
     stream_token: '',
     full_name: 'Aqib Maqbool'
@@ -126,6 +130,8 @@ mock.onPost('/api/account/register').reply(async (config) => {
       preferred_pronoun: '',
       strengths: [],
       interests: [],
+      roles: [],
+      industries: [],
       linkedin_url: '',
       stream_id: '',
       stream_token: '',
