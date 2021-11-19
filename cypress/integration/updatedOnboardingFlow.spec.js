@@ -436,7 +436,7 @@ describe('Onboarding Flow', () => {
     context('Submits the Onboarding form', () => {
       it('Asserts answers mapping to their respective question IDs', () => {
         cy.server();
-        cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
+        cy.fixture('onboarding/saveUserProfileRefactored.json').as('saveProfile');
         cy.route(
           'POST',
           `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/submit_onboarding_answers.json`,
@@ -445,7 +445,7 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=btn-next]').click();
         cy.wait('@submit_onboarding_answers').then(({ response, request }) => {
           const questionIDs = Object.keys(request.body.onboarding_answers);
-
+          //Request
           expect(request.body.onboarding_answers[questionIDs[0]]).to.deep.eq(
             'Types the little background info'
           );
@@ -471,6 +471,20 @@ describe('Onboarding Flow', () => {
           expect(request.body.onboarding_answers[questionIDs[8]]).to.eq('Social Media');
           expect(request.body.onboarding_answers[questionIDs[9]]).to.eq('My employer');
           expect(request.body.onboarding_answers[questionIDs[10]]).to.eq('No');
+          //Response
+          expect(response.body.current_company).to.eq(userProfileFixture.current_company);
+          expect(response.body.current_position).to.eq(userProfileFixture.current_position);
+          expect(response.body.discord_url).to.eq(userProfileFixture.discord_url);
+          expect(response.body.first_name).to.eq(userProfileFixture.first_name);
+          expect(response.body.last_name).to.eq(userProfileFixture.last_name);
+          expect(response.body.industries).to.deep.eq(userProfileFixture.industries);
+          expect(response.body.interests).to.deep.eq(userProfileFixture.interests);
+          expect(response.body.strengths).to.deep.eq(userProfileFixture.strengths);
+          expect(response.body.introduction).to.eq(userProfileFixture.introduction);
+          expect(response.body.linkedin_url).to.eq(userProfileFixture.linkedin_url);
+          expect(response.body.preferred_pronoun).to.deep.eq(userProfileFixture.preferred_pronoun);
+          expect(response.body.roles).to.deep.eq(userProfileFixture.roles);
+          expect(response.body.profile_image_url).to.deep.eq(userProfileFixture.profile_image_url);
         });
       });
     });

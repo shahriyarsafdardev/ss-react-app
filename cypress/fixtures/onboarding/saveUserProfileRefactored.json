@@ -7,8 +7,9 @@
   "current_company": "Adobe",
   "preferred_pronoun": "He/him",
   "roles": ["Data", "Design"],
-  "industries": ["Agriculture"],
+  "industries": ["Agriculture", "Artificial Intelligence"],
   "current_position": "Economist",
-  "strengths": ["Management"],
-  "interests": ["Find a mentor"]
+  "strengths": ["Economics", "Hiring"],
+  "interests": ["Mentor others", "Grow my network"],
+  "introduction": "Types the little background info"
 }
