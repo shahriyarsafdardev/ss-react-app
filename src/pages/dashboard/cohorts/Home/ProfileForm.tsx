@@ -337,17 +337,21 @@ export default function ProfileForm({
                       'data-testid': 'current-position'
                     }}
                   />
-                  {/* <TextField
-                    fullWidth
-                    label="Introduction"
-                    {...getFieldProps('introduction')}
-                    inputProps={{
-                      'data-testid': 'user-introduction'
-                    }}
-                  /> */}
 
                   {!isOnboardingModal && (
                     <>
+                      <TextField
+                        fullWidth
+                        label="Introduction"
+                        {...getFieldProps('introduction')}
+                        error={Boolean(touched.introduction && errors.introduction)}
+                        helperText={touched.introduction && errors.introduction}
+                        multiline
+                        rows={4}
+                        inputProps={{
+                          'data-testid': 'user-introduction'
+                        }}
+                      />
                       {/* <TextField
                         fullWidth
                         label="Discord Url"
