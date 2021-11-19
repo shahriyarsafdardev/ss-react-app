@@ -1,6 +1,7 @@
 const serverUrl = Cypress.env('serverUrl');
 
-import homeFixture from '../fixtures/onboarding/home.json';
+import homeFixture from '../fixtures/onboarding/home_refactored.json';
+import userProfileFixture from '../fixtures/onboarding/saveUserProfileRefactored.json';
 const cohortId = '9550cc85-305a-438c-a115-e791a16c91f0';
 const enrollmentId = 'f1b1b3f1-afad-4aec-8a4f-240698ac246c';
 const onboardingHeaderText = 'Build Your Profile';
@@ -20,7 +21,7 @@ describe('Onboarding Flow', () => {
     cy.fixture('login/login.json').as('loginData');
     cy.fixture('session/sessions.json').as('sessionData');
     cy.fixture('session/onBoardingNotCompleted.json').as('onboardingData');
-    cy.fixture('onboarding/home.json').as('home');
+    cy.fixture('onboarding/home_refactored.json').as('home');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route(
       'GET',
@@ -41,7 +42,7 @@ describe('Onboarding Flow', () => {
   });
 
   it('should log user into app', () => {
-    cy.visit('/');
+    cy.visit('http://localhost:3001/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions');
     const email = 'waqas@scholar.com';
     const password = '123456';
     cy.get('[data-testid=email]').type(email);
@@ -93,22 +94,57 @@ describe('Onboarding Flow', () => {
           'have.text',
           onboardingHeaderDescription
         );
-        cy.get('[data-testid=first-name]').should('have.value', 'Waqas');
-        cy.get('[data-testid=last-name]').should('have.value', 'Nazir');
-        cy.get('[data-testid=preferred-pronouns]').contains('He/Him').should('have.text', 'He/Him');
-        cy.get('[data-testid=current-company]').contains('Adobe').should('have.text', 'Adobe');
-        cy.get('[data-testid=current-position]').should('have.value', 'Economist');
+        cy.get('[data-testid=first-name]').should(
+          'have.value',
+          homeFixture.participant_profile.first_name
+        );
+        cy.get('[data-testid=last-name]').should(
+          'have.value',
+          homeFixture.participant_profile.last_name
+        );
+        cy.get('[data-testid=preferred-pronoun]').contains(
+          homeFixture.participant_profile.preferred_pronoun
+        );
+        cy.get('[data-testid=current-company]')
+          .contains('Adobe')
+          .should('have.text', homeFixture.participant_profile.current_company);
+        cy.get('[data-testid=current-position]').should(
+          'have.value',
+          homeFixture.participant_profile.current_position
+        );
         cy.get('[data-testid=linkedin-url]').should(
           'have.value',
-          'https://linkedin.com/waqas_react_dev'
+          homeFixture.participant_profile.linkedin_url
         );
-        cy.get(['data-testid=profile-url'])
-          .find('img')
-          .should('have.attr', 'src')
-          .and('equal', 'profile/url');
+        // cy.get(['data-testid=profile-url'])
+        //   .should('have.attr', 'src')
+        //   .and('equal', homeFixture.participant_profile.profile_image_url);
       });
-      it('Clicks on next button', () => {
-        cy.get('[data-testid=btn-next]').click();
+    });
+    context('Submits the user profile form', () => {
+      before(() => {
+        //mocks the update user profile api
+        cy.server();
+        cy.fixture('onboarding/saveUserProfileRefactored.json').as('saveProfile');
+        cy.route(
+          'POST',
+          `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/save_user_profile.json`,
+          '@saveProfile'
+        ).as('save_user_profile');
+      });
+      it('Submits the form', () => {
+        cy.get('[data-testid=btn-submit]').click();
+        cy.wait('@save_user_profile').then(({ response }) => {
+          expect(response.body.first_name).to.eq(userProfileFixture.first_name);
+          expect(response.body.last_name).to.eq(userProfileFixture.last_name);
+          expect(response.body.linkedin_url).to.eq(userProfileFixture.linkedin_url);
+          expect(response.body.discord_url).to.eq(userProfileFixture.discord_url);
+          expect(response.body.current_position).to.eq(userProfileFixture.current_position);
+          expect(response.body.current_company).to.eq(userProfileFixture.current_company);
+          expect(response.body.profile_image_url).to.eq(userProfileFixture.profile_image_url);
+          expect(response.body.interests).to.deep.eq(userProfileFixture.interests);
+          expect(response.body.strengths).to.deep.eq(userProfileFixture.strengths);
+        });
       });
     });
     context('Displays Page 3', () => {
@@ -120,10 +156,10 @@ describe('Onboarding Flow', () => {
         );
       });
       it('Types user introduction in text field', () => {
-        cy.get('[data-testid=intro-text]').type('Types the little background info');
+        cy.get('[data-testid=survey-text]').type('Types the little background info');
       });
       it('Asserts the right text is typed', () => {
-        cy.get('[data-testid=intro-text]').should('have.text', 'Types the little background info');
+        cy.get('[data-testid=survey-text]').should('have.text', 'Types the little background info');
       });
       it('Clicks on next button', () => {
         cy.get('[data-testid=btn-next]').click();
@@ -143,12 +179,12 @@ describe('Onboarding Flow', () => {
         );
       });
       it('Selects 2 fields in dropdown', () => {
-        cy.get('[data-testid=check-2').click();
-        cy.get('[data-testid=check-3').click();
+        cy.get('#multi-select').find('input').type('Data {enter} ');
+        cy.get('#multi-select').find('input').type('Design {enter} ');
       });
       it('Asserts the right fields are selected', () => {
-        cy.get('#create-select').contains('Data');
-        cy.get('#create-select').contains('Design');
+        cy.get('#multi-select').contains('Data');
+        cy.get('#multi-select').contains('Design');
       });
 
       it('Clicks on next button', () => {
@@ -165,23 +201,18 @@ describe('Onboarding Flow', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
-          'How many years of experience do you have in this type of role?'
+          'Which best describes the industry you work in? Make between 1 and 5 choices.'
         );
-        //Assert options
-        cy.get('[data-testid=option-1] > input').should('have.value', '0-2');
-        cy.get('[data-testid=option-2] > input').should('have.value', '2-5');
-        cy.get('[data-testid=option-3] > input').should('have.value', '5-10');
-        cy.get('[data-testid=option-4] > input').should('have.value', '10-15');
-        cy.get('[data-testid=option-5] > input').should('have.value', '15+');
       });
 
-      it('Selects an option', () => {
-        //Selects option 3 with text 5-10
-        cy.get('[data-testid=option-3]').click();
+      it('Selects 2 fields in dropdown', () => {
+        cy.get('#multi-select').find('input').type('Agriculture {enter} ');
+        cy.get('#multi-select').find('input').type('Artificial Intelligence {enter} ');
       });
 
-      it('Asserts the right option is selected', () => {
-        cy.get('[data-testid=option-3]').should('have.attr', 'data-checked').and('equal', 'true');
+      it('Asserts the right fields are selected', () => {
+        cy.get('#multi-select').contains('Agriculture');
+        cy.get('#multi-select').contains('Artificial Intelligence');
       });
 
       it('Clicks on next button', () => {
@@ -190,34 +221,6 @@ describe('Onboarding Flow', () => {
     });
     context('Displays Page 6', () => {
       it('Asserts data of Page 6', () => {
-        cy.get('[data-testid=onboard-title]').should('have.text', onboardingHeaderText);
-        cy.get('[data-testid=onboard-description]').should(
-          'have.text',
-          onboardingHeaderDescription
-        );
-        // Assert question
-        cy.get('[data-testid=onboard-question]').should(
-          'have.text',
-          'Which best describes the industry you work in? Make between 1 and 5 choices.'
-        );
-      });
-
-      it('Selects 2 fields in dropdown', () => {
-        cy.get('[data-testid=check-2').click();
-        cy.get('[data-testid=check-3').click();
-      });
-
-      it('Asserts the right fields are selected', () => {
-        cy.get('#create-select').contains('Agriculture');
-        cy.get('#create-select').contains('Artificial Intelligence');
-      });
-
-      it('Clicks on next button', () => {
-        cy.get('[data-testid=btn-next]').click();
-      });
-    });
-    context('Displays Page 7', () => {
-      it('Asserts data of Page 7', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
         // Assert question
@@ -240,8 +243,8 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=btn-next]').click();
       });
     });
-    context('Displays Page 8', () => {
-      it('Asserts data of Page 8', () => {
+    context('Displays Page 7', () => {
+      it('Asserts data of Page 7', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
         // Assert question
@@ -254,7 +257,6 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=check-2] > input').should('have.value', 'Mentor others');
         cy.get('[data-testid=check-3] > input').should('have.value', 'Grow my network');
         cy.get('[data-testid=check-4] > input').should('have.value', 'Discuss materials');
-        cy.get('[data-testid=check-5] > input').should('have.value', 'Interested');
       });
       it('Selects 2 options', () => {
         cy.get('[data-testid=check-2').click();
@@ -264,9 +266,12 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=check-2').find('input[type="checkbox"]').should('be.checked');
         cy.get('[data-testid=check-3').find('input[type="checkbox"]').should('be.checked');
       });
+      it('Clicks on next button', () => {
+        cy.get('[data-testid=btn-next]').click();
+      });
     });
-    context('Displays Page 9', () => {
-      it('Asserts data of Page 9', () => {
+    context('Displays Page 8', () => {
+      it('Asserts data of Page 8', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
         // Assert question
@@ -284,10 +289,13 @@ describe('Onboarding Flow', () => {
       it('Asserts that right option is selected', () => {
         cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
       });
+      it('Clicks on next button', () => {
+        cy.get('[data-testid=btn-next]').click();
+      });
     });
 
-    context('Displays Page 10 if user selects yes on page 9', () => {
-      it('Asserts data of Page 4', () => {
+    context('Displays Page 9 if user selects yes on page 8', () => {
+      it('Asserts data of Page 9', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
         // Assert question
@@ -297,20 +305,20 @@ describe('Onboarding Flow', () => {
         );
       });
       it('Selects 2 fields in dropdown', () => {
-        cy.get('[data-testid=check-2').click();
-        cy.get('[data-testid=check-3').click();
+        cy.get('#multi-select').find('input').type('Has the same years of experience {enter} ');
+        cy.get('#multi-select').find('input').type('Can mentor me {enter} ');
       });
       it('Asserts the right fields are selected', () => {
-        cy.get('#create-select').contains('Has the same years of experience');
-        cy.get('#create-select').contains('Can mentor me');
+        cy.get('#multi-select').contains('Has the same years of experience');
+        cy.get('#multi-select').contains('Can mentor me');
       });
 
       it('Clicks on next button', () => {
         cy.get('[data-testid=btn-next]').click();
       });
     });
-    context('Displays Page 11', () => {
-      it('Asserts data of Page 11', () => {
+    context('Displays Page 10', () => {
+      it('Asserts data of Page 10', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
         // Assert question
@@ -333,8 +341,8 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=btn-next]').click();
       });
     });
-    context('Displays Page 12', () => {
-      it('Asserts data of Page 12', () => {
+    context('Displays Page 11', () => {
+      it('Asserts data of Page 11', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
         // Assert question
@@ -371,8 +379,8 @@ describe('Onboarding Flow', () => {
       });
     });
 
-    context('Displays Page 13', () => {
-      it('Asserts data of Page 13', () => {
+    context('Displays Page 12', () => {
+      it('Asserts data of Page 12', () => {
         // Assert title
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
@@ -385,9 +393,6 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=option-1] > input').should('have.value', 'I am');
         cy.get('[data-testid=option-2] > input').should('have.value', 'My employer');
         cy.get('[data-testid=option-3] > input').should('have.value', 'Other');
-        // Select option
-        // Assert selected
-        cy.get('[data-testid=option-2]').should('have.attr', 'data-checked').and('equal', 'true');
       });
 
       it('Selects an option', () => {
@@ -404,8 +409,8 @@ describe('Onboarding Flow', () => {
       });
     });
 
-    context('Displays Page 14', () => {
-      it('Asserts data of Page 14', () => {
+    context('Displays Page 13', () => {
+      it('Asserts data of Page 13', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
         // Assert question
@@ -434,38 +439,38 @@ describe('Onboarding Flow', () => {
         cy.fixture('onboarding/saveUserProfile.json').as('saveProfile');
         cy.route(
           'POST',
-          `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/save_user_profile.json`,
+          `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/submit_onboarding_answers.json`,
           '@saveProfile'
-        ).as('save_user_profile');
-        cy.get('[data-testid=btn-submit]').click();
-        cy.wait('@save_user_profile').then(({ response, request }) => {
-          const questionIDs = Object.keys(request.body.response);
+        ).as('submit_onboarding_answers');
+        cy.get('[data-testid=btn-next]').click();
+        cy.wait('@submit_onboarding_answers').then(({ response, request }) => {
+          const questionIDs = Object.keys(request.body.onboarding_answers);
 
-          expect(request.body.response[questionIDs[0]]).to.eq('Strongly Agree');
-          expect(request.body.response[questionIDs[1]]).to.eq('');
-          expect(request.body.response[questionIDs[2]]).to.deep.eq(
+          expect(request.body.onboarding_answers[questionIDs[0]]).to.deep.eq(
             'Types the little background info'
           );
-          expect(request.body.response[questionIDs[3]]).to.deep.eq(['Data', 'Design']);
-          expect(request.body.response[questionIDs[4]]).to.eq('5-10');
-          expect(request.body.response[questionIDs[5]]).to.eq([
+          expect(request.body.onboarding_answers[questionIDs[1]]).to.deep.eq(['Data', 'Design']);
+          expect(request.body.onboarding_answers[questionIDs[2]]).to.deep.eq([
             'Agriculture',
             'Artificial Intelligence'
           ]);
-          expect(request.body.response[questionIDs[6]]).to.deep.eq(['Hiring', 'Economics']);
-          expect(request.body.response[questionIDs[7]]).to.deep.eq([
-            'Mentor Others',
+          expect(request.body.onboarding_answers[questionIDs[3]]).to.deep.eq([
+            'Economics',
+            'Hiring'
+          ]);
+          expect(request.body.onboarding_answers[questionIDs[4]]).to.deep.eq([
+            'Mentor others',
             'Grow my network'
           ]);
-          expect(request.body.response[questionIDs[8]]).to.eq('Yes');
-          expect(request.body.response[questionIDs[9]]).to.eq([
+          expect(request.body.onboarding_answers[questionIDs[5]]).to.eq('Yes');
+          expect(request.body.onboarding_answers[questionIDs[6]]).to.deep.eq([
             'Has the same years of experience',
             'Can mentor me'
           ]);
-          expect(request.body.response[questionIDs[10]]).to.eq('Yes');
-          expect(request.body.response[questionIDs[11]]).to.eq('Social Media');
-          expect(request.body.response[questionIDs[12]]).to.eq('My employer');
-          expect(request.body.response[questionIDs[13]]).to.eq('No');
+          expect(request.body.onboarding_answers[questionIDs[7]]).to.eq('Yes');
+          expect(request.body.onboarding_answers[questionIDs[8]]).to.eq('Social Media');
+          expect(request.body.onboarding_answers[questionIDs[9]]).to.eq('My employer');
+          expect(request.body.onboarding_answers[questionIDs[10]]).to.eq('No');
         });
       });
     });

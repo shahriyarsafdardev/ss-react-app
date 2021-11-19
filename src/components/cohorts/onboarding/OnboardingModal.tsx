@@ -397,15 +397,15 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return '';
     }
 
-    if (activeStep >= 1 && activeStep <= 5) {
+    if (activeStep >= 1 && activeStep <= 4) {
       return 'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
     }
 
-    if (activeStep >= 6 && activeStep <= 10) {
+    if (activeStep >= 5 && activeStep <= 9) {
       return 'We’ll help you make meaningful connections with other professionals in the cohort.';
     }
 
-    if (activeStep >= 11) {
+    if (activeStep >= 10) {
       return 'Don’t worry, there’s just a few!';
     }
 

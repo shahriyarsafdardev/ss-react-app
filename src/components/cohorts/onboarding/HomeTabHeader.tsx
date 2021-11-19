@@ -80,7 +80,7 @@ export default function HomeTabHeader({
     <>
       {cohortTitle ? <SubTitle data-testid="onboard-title">{cohortTitle}</SubTitle> : ''}
       {cohortDescription ? (
-        <Description data-testid="onboard-title">{cohortDescription}</Description>
+        <Description data-testid="onboard-description">{cohortDescription}</Description>
       ) : (
         ''
       )}

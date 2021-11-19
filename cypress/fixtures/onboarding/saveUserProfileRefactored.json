@@ -1,0 +1,14 @@
+{
+  "first_name": "Waqas",
+  "last_name": "Nazir",
+  "linkedin_url": "https://linkedin.com/waqas_react_dev",
+  "discord_url": "Test url",
+  "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir-2",
+  "current_company": "Adobe",
+  "preferred_pronoun": "He/him",
+  "roles": ["Data", "Design"],
+  "industries": ["Agriculture"],
+  "current_position": "Economist",
+  "strengths": ["Management"],
+  "interests": ["Find a mentor"]
+}

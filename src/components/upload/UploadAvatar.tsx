@@ -123,6 +123,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }: Upl
 
           {file && (
             <Box
+              data-testid="profile-url"
               component="img"
               alt="avatar"
               src={isString(file) ? file : file.preview}
