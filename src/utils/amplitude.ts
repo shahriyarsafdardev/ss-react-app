@@ -46,6 +46,7 @@ export const SESSION_EVENTS = {
   category: 'category',
   action: 'action',
   resources_tab: 'Resources Tab',
+  recording_video_player: 'Recording Video Player',
   slides_tab: 'Slides Tab',
   zoom_preview: 'Zoom Preview',
   opened_zoom_link: 'Opened Zoom Link'

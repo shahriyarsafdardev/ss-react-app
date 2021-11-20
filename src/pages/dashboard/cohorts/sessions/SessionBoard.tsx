@@ -285,6 +285,33 @@ export default function SessionBoard({ session }: SessionBoardProps) {
               e.preventDefault();
               return false;
             }}
+            onPlay={(e) => {
+              trackSessionsPageEvent(
+                cohortName,
+                cohortIntake,
+                sessionNumber,
+                SESSION_EVENTS.recording_video_player,
+                'Clicked Play'
+              );
+            }}
+            onPause={(e) => {
+              trackSessionsPageEvent(
+                cohortName,
+                cohortIntake,
+                sessionNumber,
+                SESSION_EVENTS.recording_video_player,
+                'Clicked Pause'
+              );
+            }}
+            onSeeked={(e) => {
+              trackSessionsPageEvent(
+                cohortName,
+                cohortIntake,
+                sessionNumber,
+                SESSION_EVENTS.recording_video_player,
+                'Selected New Timepoint'
+              );
+            }}
             controls
             controlsList="nodownload"
             autoPlay={false}
