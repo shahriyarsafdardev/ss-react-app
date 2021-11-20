@@ -33,8 +33,9 @@ export const EVENT_TYPES = {
   page_view: 'Page view',
   peers_tab: 'Peers Tab',
   sessions_tab: 'Sessions Tab',
-  opened_modal: 'Peer modal viewed',
-  peers_filters: 'Peer Filters'
+  home_tab: 'Home Tab',
+  messaging_tab: 'Messaging Tab',
+  account_settings_tab: 'Account Settings'
 };
 
 export const SESSION_EVENTS = {

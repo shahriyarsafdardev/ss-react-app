@@ -3,6 +3,7 @@ import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import moment from 'moment';
+import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -32,6 +33,12 @@ const Index = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
+
+  useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.home_tab
+    });
+  }, []);
 
   useEffect(() => {
     if (cohort && !sessions) {
