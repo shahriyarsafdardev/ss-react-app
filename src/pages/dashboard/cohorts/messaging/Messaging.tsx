@@ -3,6 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
+import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
 import { RootState, useSelector } from '../../../../redux/store';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
@@ -66,6 +67,12 @@ export default function Messaging() {
     top: '50%',
     left: '50%'
   }));
+
+  useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.messaging_tab
+    });
+  }, []);
 
   useEffect(() => {
     const initChat = async () => {

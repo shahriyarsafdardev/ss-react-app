@@ -1,22 +1,14 @@
 import { Icon } from '@iconify/react';
 import { capitalCase } from 'change-case';
 import { useState, useEffect } from 'react';
-import bellFill from '@iconify/icons-eva/bell-fill';
-import shareFill from '@iconify/icons-eva/share-fill';
 import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
-import roundReceipt from '@iconify/icons-ic/round-receipt';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
+import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
-import {
-  getCards,
-  getProfile,
-  getInvoices,
-  getAddressBook,
-  getNotifications
-} from '../../redux/slices/user';
+
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -43,25 +35,11 @@ export default function UserAccount() {
 
   const [currentTab, setCurrentTab] = useState('general');
 
-  // useEffect(() => {
-  //   dispatch(getCards());
-  //   dispatch(getAddressBook());
-  //   dispatch(getInvoices());
-  //   dispatch(getNotifications());
-  //   dispatch(getProfile());
-  // }, [dispatch]);
-
-  // if (!myProfile) {
-  //   return null;
-  // }
-
-  // if (!cards) {
-  //   return null;
-  // }
-
-  // if (!notifications) {
-  //   return null;
-  // }
+  useEffect(() => {
+    sendAmplitudeData(EVENT_TYPES.page_view, {
+      page_type: EVENT_TYPES.account_settings_tab
+    });
+  }, []);
 
   const ACCOUNT_TABS = [
     {
