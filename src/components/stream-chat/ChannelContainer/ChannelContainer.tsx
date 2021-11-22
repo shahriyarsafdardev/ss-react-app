@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
-
+import axios from 'utils/axios';
 import './ChannelContainer.css';
-
-import type { ChannelFilters } from 'stream-chat';
 
 import { ChannelInner } from './ChannelInner';
 import { ChannelEmptyState } from '../ChannelEmptyState/ChannelEmptyState';
@@ -85,6 +83,18 @@ export const ChannelContainer: React.FC<Props> = (props) => {
     );
   }
 
+  const addNotification = (message: any) => {
+    if (channel) {
+      axios.post(`/users/new_message_notification.json`, {
+        message: message.text,
+        channel_id: channel?.id,
+        channel_type: channel?.type === 'team' ? 'Team' : 'Direct',
+        cohort_id: cohortID,
+        receivers: Object.keys(channel.state.members)
+      });
+    }
+  };
+
   const onMentionsClick = (event: React.BaseSyntheticEvent, user: any) => {
     if (user?.id) {
       setPath(`/cohorts/${cohortID}/peers?user_id=${user?.id}`);
@@ -121,7 +131,8 @@ export const ChannelContainer: React.FC<Props> = (props) => {
           {...{
             pinsOpen,
             setIsEditing,
-            setPinsOpen
+            setPinsOpen,
+            addNotification
           }}
         />
       </Channel>

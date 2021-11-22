@@ -30,6 +30,7 @@ type InnerProps = {
   pinsOpen: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   setPinsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  addNotification: Function;
 };
 
 type GiphyStateObj = {
@@ -40,7 +41,7 @@ type GiphyStateObj = {
 export const GiphyContext = React.createContext<GiphyStateObj>({} as GiphyStateObj);
 
 export const ChannelInner: React.FC<InnerProps> = (props) => {
-  const { pinsOpen, setIsEditing, setPinsOpen } = props;
+  const { pinsOpen, setIsEditing, setPinsOpen, addNotification } = props;
 
   const [giphyState, setGiphyState] = useState(false);
 
@@ -87,6 +88,7 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     if (sendMessage) {
       const sendMessagePromise = sendMessage(updatedMessage);
       logChatPromiseExecution(sendMessagePromise, 'send message');
+      addNotification(updatedMessage);
       setGiphyState(false);
     }
   };
