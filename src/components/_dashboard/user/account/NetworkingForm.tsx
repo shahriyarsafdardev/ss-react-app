@@ -10,8 +10,7 @@ import {
   Stack,
   Typography,
   MenuItem,
-  InputLabel,
-  ListItemText,
+  TextField,
   Select as MaterialSelect
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -54,7 +53,7 @@ interface InitialState {
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 100,
+  width: 130,
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -106,7 +105,6 @@ export default function NetworkingForm({
   });
 
   const { values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
-
   useEffect(() => {
     axios
       .get('/cohorts/select_fields_data.json')
@@ -116,11 +114,6 @@ export default function NetworkingForm({
         payload?.interests && setInterests(payload.interests);
       });
   }, []);
-
-  const options = [
-    { value: 'true', label: 'Yes please' },
-    { value: 'false', label: 'No thanks' }
-  ];
 
   return (
     <>
@@ -169,18 +162,47 @@ export default function NetworkingForm({
                       maxLimit={3}
                     />
                   </Stack>
-                  <Stack
-                    sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-                    spacing={1}
-                  >
+                  <Stack spacing={1}>
                     <Typography>
                       I am interested in recieving networking suggestions based on commonalities and
                       interests
                     </Typography>
-                    {/* <Select
-                      value={values.opted_in_for_matching_suggestions === true ? 'true' : 'false'}
-                      options={options}
-                    /> */}
+                    <MaterialSelect
+                      fullWidth
+                      data-testid="opt-for-networking"
+                      defaultValue={
+                        values.opted_in_for_matching_suggestions === true ? 'Yes' : 'No'
+                      }
+                    >
+                      <MenuItem
+                        value="Yes"
+                        onClick={() => {
+                          setFieldValue('opted_in_for_matching_suggestions', true);
+                        }}
+                      >
+                        {' '}
+                        Yes Please
+                      </MenuItem>
+                      <MenuItem
+                        value="No"
+                        onClick={() => {
+                          setFieldValue('opted_in_for_matching_suggestions', false);
+                        }}
+                      >
+                        {' '}
+                        No thanks
+                      </MenuItem>
+                    </MaterialSelect>
+                  </Stack>
+                  <Stack direction={{ xs: 'column' }} spacing={1}>
+                    <TextField
+                      fullWidth
+                      {...getFieldProps('linkedin_url')}
+                      inputProps={{
+                        'data-testid': 'user-introduction'
+                      }}
+                      onChange={(e: any) => setFieldValue('linkedin_url', e.target.value)}
+                    />
                   </Stack>
                 </Stack>
                 {showSubmitButton && (
@@ -191,7 +213,7 @@ export default function NetworkingForm({
                       loading={isSubmitting}
                       id="btn-submit"
                     >
-                      Save
+                      Save Changes
                     </StyledLoadingButton>
                   </Box>
                 )}

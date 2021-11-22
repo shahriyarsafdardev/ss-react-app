@@ -15,6 +15,7 @@ type ParticipantProfile = {
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
   is_interested_in_mentoring: boolean;
+  linkedin_url: string;
 };
 
 // ----------------------------------------------------------------------
@@ -29,7 +30,8 @@ export default function AccountNetworking() {
     strengths: user?.strengths || [],
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
     networking_matching_preferences: user?.networking_matching_preferences || [],
-    is_interested_in_mentoring: user?.is_interested_in_mentoring
+    is_interested_in_mentoring: user?.is_interested_in_mentoring,
+    linkedin_url: user?.linkedin_url
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -45,6 +47,7 @@ export default function AccountNetworking() {
     );
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
+    uploadData.append('linkedin_url', values.linkedin_url);
 
     await axios.post(`users/update_networking_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });

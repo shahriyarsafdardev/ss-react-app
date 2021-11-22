@@ -42,7 +42,7 @@ interface InitialState {
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 100,
+  width: 130,
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -317,7 +317,7 @@ export default function ProfileForm({
                       loading={isSubmitting}
                       id="btn-submit"
                     >
-                      Save
+                      Save Changes
                     </StyledLoadingButton>
                   </Box>
                 )}
