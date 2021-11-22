@@ -112,10 +112,6 @@ describe('Onboarding Flow', () => {
           'have.value',
           homeFixture.participant_profile.current_position
         );
-        cy.get('[data-testid=linkedin-url]').should(
-          'have.value',
-          homeFixture.participant_profile.linkedin_url
-        );
       });
     });
     context('Submits the user profile form', () => {
@@ -134,7 +130,6 @@ describe('Onboarding Flow', () => {
         cy.wait('@save_user_profile').then(({ response }) => {
           expect(response.body.first_name).to.eq(userProfileFixture.first_name);
           expect(response.body.last_name).to.eq(userProfileFixture.last_name);
-          expect(response.body.linkedin_url).to.eq(userProfileFixture.linkedin_url);
           expect(response.body.discord_url).to.eq(userProfileFixture.discord_url);
           expect(response.body.current_position).to.eq(userProfileFixture.current_position);
           expect(response.body.current_company).to.eq(userProfileFixture.current_company);
