@@ -18,7 +18,7 @@ const questions = [
   },
   {
     question_type: 'multiple-select',
-    title: 'What is the best way to describe your current role?',
+    title: 'Which categories best describe your current role? (feel free to select multiple)',
     options: [],
     submitted_answer: null,
     description: null,
@@ -33,11 +33,30 @@ const questions = [
   },
   {
     question_type: 'multiple-select',
-    title: 'Which best describes the industry you work in? Make between 1 and 5 choices.',
+    title:
+      'Which categories best describe the industry you currently work in? (feel free to select multiple)',
     options: [],
     submitted_answer: null,
     description: null,
     maxLimit: 5
+  },
+  {
+    question_type: 'multiple-select',
+    title:
+      'Which cohort members are you most interested in connecting with?  (feel free to select multiple)',
+    options: [
+      'Work in the same role',
+      'Work in the same industry',
+      'Can mentor me',
+      'I can mentor',
+      'Are investors',
+      'Are founders',
+      'Live near me',
+      'I’m not interested in connecting with cohort members'
+    ],
+    submitted_answer: null,
+    description: null,
+    maxLimit: 3
   },
   {
     question_type: 'create-multi-select',
@@ -47,40 +66,9 @@ const questions = [
     description: null
   },
   {
-    question_type: 'multi-select',
-    title: 'What are you looking to find within the Scholarsite community?',
-    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
-    submitted_answer: null,
-    description: null
-  },
-  {
     question_type: 'multiple-choice',
     title:
-      'Are you interested in being matched with a peer in your cohort based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)',
-    options: ['Yes', 'No'],
-    submitted_answer: null,
-    description: null
-  },
-  {
-    question_type: 'multiple-select',
-    title: "I'm most interested in matching with someone who: (Make between 1 and 3 choices)",
-    options: [
-      'Works in the same role',
-      'Works in the same industry',
-      'Has the same years of experience',
-      'Can mentor me',
-      'I can mentor',
-      'Is an investor',
-      'Is a founder',
-      'Lives near me'
-    ],
-    submitted_answer: null,
-    description: null,
-    maxLimit: 3
-  },
-  {
-    question_type: 'multiple-choice',
-    title: 'Would you be open to mentoring more junior professionals?',
+      'Are you interested in recieving networking suggestions based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)',
     options: ['Yes', 'No'],
     submitted_answer: null,
     description: null
@@ -111,6 +99,37 @@ const questions = [
     title:
       'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
+    submitted_answer: null,
+    description: null
+  },
+  {
+    question_type: 'multi-select',
+    title: 'What are you looking to find within the Scholarsite community?',
+    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
+    submitted_answer: null,
+    description: null
+  },
+  {
+    question_type: 'multiple-select',
+    title: "I'm most interested in matching with someone who: (Make between 1 and 3 choices)",
+    options: [
+      'Works in the same role',
+      'Works in the same industry',
+      'Has the same years of experience',
+      'Can mentor me',
+      'I can mentor',
+      'Is an investor',
+      'Is a founder',
+      'Lives near me'
+    ],
+    submitted_answer: null,
+    description: null,
+    maxLimit: 3
+  },
+  {
+    question_type: 'multiple-choice',
+    title: 'Would you be open to mentoring more junior professionals?',
+    options: ['Yes', 'No'],
     submitted_answer: null,
     description: null
   }

@@ -20,9 +20,7 @@ import {
   Question7,
   Question8,
   Question9,
-  Question10,
-  Question11,
-  Question12
+  Question10
 } from './Questions';
 
 type HomeResponse = {
@@ -158,7 +156,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>({});
-  const totalSteps = 13;
+  const totalSteps = 11;
 
   const { role_options, industry_options } = useSelector(
     (state: RootState) => state.profileOptions
@@ -202,7 +200,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const onStepChange = (stepNumber: number) => {
     sendStepCompletionRequest(activeStep);
-    if (activeStep >= 12) {
+    if (activeStep >= 10) {
       submitOnboardingAnswers();
     } else {
       setActiveStep(stepNumber + 1);
@@ -210,11 +208,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   };
 
   const onPreviousHandler = () => {
-    if (activeStep === 10 && responses[`question-7`] === 'No') {
-      setActiveStep(7);
-    } else {
-      setActiveStep(activeStep - 1);
-    }
+    setActiveStep(activeStep - 1);
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -331,46 +325,25 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
-    if (responses[`question-7`] && responses[`question-7`] === 'Yes') {
-      if (activeStep === 8) {
-        return (
-          <Question8
-            currentAnswer={responses[`question-${activeStep}`]}
-            setCurrentAnswer={updateAnswers}
-          />
-        );
-      }
-      if (activeStep === 9) {
-        return (
-          <Question9
-            currentAnswer={responses[`question-${activeStep}`]}
-            setCurrentAnswer={updateAnswers}
-          />
-        );
-      }
+    if (activeStep === 8) {
+      return (
+        <Question8
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
     }
-    if (responses[`question-7`] && responses[`question-7`] === 'No' && activeStep === 8) {
-      setActiveStep(10);
+    if (activeStep === 9) {
+      return (
+        <Question9
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
     }
     if (activeStep === 10) {
       return (
         <Question10
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-        />
-      );
-    }
-    if (activeStep === 11) {
-      return (
-        <Question11
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-        />
-      );
-    }
-    if (activeStep === 12) {
-      return (
-        <Question12
           currentAnswer={responses[`question-${activeStep}`]}
           setCurrentAnswer={updateAnswers}
         />
@@ -389,11 +362,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return 'Build Your Profile';
     }
 
-    if (activeStep >= 5 && activeStep <= 9) {
+    if (activeStep >= 5 && activeStep <= 7) {
       return 'Networking Preferences';
     }
 
-    if (activeStep >= 10) {
+    if (activeStep >= 8) {
       return 'Housekeeping Questions';
     }
 
@@ -409,11 +382,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return 'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
     }
 
-    if (activeStep >= 5 && activeStep <= 9) {
+    if (activeStep >= 5 && activeStep <= 7) {
       return 'We’ll help you make meaningful connections with other professionals in the cohort.';
     }
 
-    if (activeStep >= 10) {
+    if (activeStep >= 8) {
       return 'Don’t worry, there’s just a few!';
     }
 
@@ -454,7 +427,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               disabled={
                 activeStep > 0 &&
                 activeStep !== 1 &&
-                activeStep <= 12 &&
+                activeStep <= 10 &&
                 (!responses[`question-${activeStep}`] ||
                   responses[`question-${activeStep}`].length === 0)
               }

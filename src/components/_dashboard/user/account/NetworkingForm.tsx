@@ -165,14 +165,14 @@ export default function NetworkingForm({
                       </Typography>
                       <MultiSelect
                         options={[
-                          'Works in the same role',
-                          'Works in the same industry',
-                          'Has the same years of experience',
+                          'Work in the same role',
+                          'Work in the same industry',
                           'Can mentor me',
                           'I can mentor',
-                          'Is an investor',
-                          'Is a founder',
-                          'Lives near me'
+                          'Are investors',
+                          'Are founders',
+                          'Live near me',
+                          'I’m not interested in connecting with cohort members'
                         ]}
                         values={values.networking_matching_preferences}
                         onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
