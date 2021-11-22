@@ -10,6 +10,8 @@ import {
   Stack,
   Typography,
   MenuItem,
+  FormControl,
+  InputLabel,
   TextField,
   Select as MaterialSelect
 } from '@material-ui/core';
@@ -163,39 +165,45 @@ export default function NetworkingForm({
                     />
                   </Stack>
                   <Stack spacing={1}>
-                    <Typography>
-                      I am interested in recieving networking suggestions based on commonalities and
-                      interests
-                    </Typography>
-                    <MaterialSelect
-                      fullWidth
-                      data-testid="opt-for-networking"
-                      defaultValue={
-                        values.opted_in_for_matching_suggestions === true ? 'Yes' : 'No'
-                      }
-                    >
-                      <MenuItem
-                        value="Yes"
-                        onClick={() => {
-                          setFieldValue('opted_in_for_matching_suggestions', true);
-                        }}
+                    <FormControl fullWidth>
+                      <InputLabel>
+                        I am interested in recieving networking suggestions based on commonalities
+                        and interests
+                      </InputLabel>
+
+                      <MaterialSelect
+                        label="I am interested in recieving networking suggestions based on commonalities and
+                    interests"
+                        fullWidth
+                        data-testid="opt-for-networking"
+                        defaultValue={
+                          values.opted_in_for_matching_suggestions === true ? 'Yes' : 'No'
+                        }
                       >
-                        {' '}
-                        Yes Please
-                      </MenuItem>
-                      <MenuItem
-                        value="No"
-                        onClick={() => {
-                          setFieldValue('opted_in_for_matching_suggestions', false);
-                        }}
-                      >
-                        {' '}
-                        No thanks
-                      </MenuItem>
-                    </MaterialSelect>
+                        <MenuItem
+                          value="Yes"
+                          onClick={() => {
+                            setFieldValue('opted_in_for_matching_suggestions', true);
+                          }}
+                        >
+                          {' '}
+                          Yes Please
+                        </MenuItem>
+                        <MenuItem
+                          value="No"
+                          onClick={() => {
+                            setFieldValue('opted_in_for_matching_suggestions', false);
+                          }}
+                        >
+                          {' '}
+                          No thanks
+                        </MenuItem>
+                      </MaterialSelect>
+                    </FormControl>
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
                     <TextField
+                      label="Linkedin URL"
                       fullWidth
                       {...getFieldProps('linkedin_url')}
                       inputProps={{
