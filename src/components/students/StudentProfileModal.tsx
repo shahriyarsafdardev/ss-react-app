@@ -40,9 +40,12 @@ const StyledRow = styled(Box)(() => ({
 
 const Text = styled(Typography)(() => ({
   fontFamily: 'Public Sans',
-  color: '#212B36',
-  fontSize: 12,
-  whiteSpace: 'break-spaces'
+  color: 'black',
+  fontSize: 14,
+  whiteSpace: 'break-spaces',
+  'span.company-name': {
+    fontWeight: 'bold'
+  }
 }));
 
 const ColoredContainer = styled(Box)(({ theme }) => ({
@@ -138,91 +141,34 @@ export default function StudentProfileModal({
             height={20}
             style={{ marginRight: 15 }}
           />
-          <Text data-testid="company-name">{current_company?.name}</Text>
-        </StyledRow>
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/job.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text data-testid="current-position">{current_position}</Text>
+          <Text data-testid="company-name">
+            {current_position} @ <span className="company-name">{current_company?.name}</span>
+          </Text>
         </StyledRow>
         {current_industry_category_selections?.length > 0 && (
           <>
             <StyledRow>
               <img
                 alt="sketch icon"
-                src="/static/peers/job.svg"
+                src="/static/peers/industry.svg"
                 width={20}
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <ColoredContainer>
-                {current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Text key={index} data-testid="preferred-pronoun">
-                    {index !== 0 && ', '}
-                    {capitalCase(industry)}
-                  </Text>
-                ))}
-              </ColoredContainer>
-            </StyledRow>
-            <ColoredContainerMobile>
-              {current_industry_category_selections?.length > 0 &&
-                current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Text key={index} data-testid="preferred-pronoun">
-                    {capitalCase(industry)}
-                    {index !== 0 && ', '}
-                  </Text>
-                ))}
-            </ColoredContainerMobile>
-          </>
-        )}
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/mail.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text data-testid="user-email">{email}</Text>
-        </StyledRow>
-        {interests?.length > 0 && (
-          <>
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/done_all.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Text style={{ marginRight: 10 }}>What I am looking for</Text>
+              <Text style={{ marginRight: 10 }}>Industry</Text>
               <ColoredContainer className="gaped">
-                {interests?.map((interest: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="secondary"
-                    testId={`interest-${index}`}
-                  >
-                    {capitalCase(interest)}
+                {current_industry_category_selections?.map((industry: any, index: number) => (
+                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                    {capitalCase(industry)}
                   </Label>
                 ))}
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile className="gaped">
-              {interests?.length > 0 &&
-                interests?.map((interest: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="secondary"
-                  >
-                    {capitalCase(interest)}
+              {current_industry_category_selections?.length > 0 &&
+                current_industry_category_selections?.map((industry: any, index: number) => (
+                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                    {capitalCase(industry)}
                   </Label>
                 ))}
             </ColoredContainerMobile>
@@ -238,7 +184,7 @@ export default function StudentProfileModal({
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={{ marginRight: 10 }}>What I am good at</Text>
+              <Text style={{ marginRight: 10 }}>Strengths</Text>
               <ColoredContainer className="gaped">
                 {strengths?.map((strength: any, index: number) => (
                   <Label
@@ -323,6 +269,17 @@ export default function StudentProfileModal({
               </Link>
             </StyledRow>
           )}
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/mail.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text data-testid="user-email">{email}</Text>
+          </StyledRow>
+
           {dispalyChatLink && (
             <StyledRow>
               <img
