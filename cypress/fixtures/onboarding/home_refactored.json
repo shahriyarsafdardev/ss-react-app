@@ -21,6 +21,9 @@
     "preferred_pronoun": "He/him",
     "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
     "strengths": ["Strength B", "Strength C"],
-    "interests": ["Interest A"]
+    "interests": ["Interest A"],
+    "current_industry_category_selections": ["Agriculture"],
+    "bio_text": "azxd",
+    "current_role_category_selections": ["Data"]
   }
 }

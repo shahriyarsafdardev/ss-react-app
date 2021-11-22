@@ -116,9 +116,6 @@ describe('Onboarding Flow', () => {
           'have.value',
           homeFixture.participant_profile.linkedin_url
         );
-        // cy.get(['data-testid=profile-url'])
-        //   .should('have.attr', 'src')
-        //   .and('equal', homeFixture.participant_profile.profile_image_url);
       });
     });
     context('Submits the user profile form', () => {
@@ -144,6 +141,19 @@ describe('Onboarding Flow', () => {
           expect(response.body.profile_image_url).to.eq(userProfileFixture.profile_image_url);
           expect(response.body.interests).to.deep.eq(userProfileFixture.interests);
           expect(response.body.strengths).to.deep.eq(userProfileFixture.strengths);
+          expect(response.body.bio_text).to.eq(userProfileFixture.bio_text);
+          expect(response.body.current_industry_category_selections).to.deep.eq(
+            userProfileFixture.current_industry_category_selections
+          );
+          expect(response.body.current_role_category_selections).to.deep.eq(
+            userProfileFixture.current_role_category_selections
+          );
+          expect(response.body.networking_matching_preferences).to.deep.eq(
+            userProfileFixture.networking_matching_preferences
+          );
+          expect(response.body.opted_in_for_matching_suggestions).to.eq(
+            userProfileFixture.opted_in_for_matching_suggestions
+          );
         });
       });
     });
@@ -175,7 +185,7 @@ describe('Onboarding Flow', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
-          'What is the best way to describe your current role?'
+          'Which categories best describe your current role? (feel free to select multiple)'
         );
       });
       it('Selects 2 fields in dropdown', () => {
@@ -201,7 +211,7 @@ describe('Onboarding Flow', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
-          'Which best describes the industry you work in? Make between 1 and 5 choices.'
+          'Which categories best describe the industry you currently work in? (feel free to select multiple)'
         );
       });
 
@@ -226,6 +236,29 @@ describe('Onboarding Flow', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
+          'Which cohort members are you most interested in connecting with?  (feel free to select multiple)'
+        );
+      });
+      it('Selects 2 fields in dropdown', () => {
+        cy.get('#multi-select').find('input').type('Work in the same role {enter} ');
+        cy.get('#multi-select').find('input').type('Can mentor me {enter} ');
+      });
+      it('Asserts the right fields are selected', () => {
+        cy.get('#multi-select').contains('Work in the same role');
+        cy.get('#multi-select').contains('Can mentor me');
+      });
+
+      it('Clicks on next button', () => {
+        cy.get('[data-testid=btn-next]').click();
+      });
+    });
+    context('Displays Page 7', () => {
+      it('Asserts data of Page 7', () => {
+        cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
+        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
+        // Assert question
+        cy.get('[data-testid=onboard-question]').should(
+          'have.text',
           'What topics can fellow cohort members ask you question on?'
         );
       });
@@ -243,33 +276,6 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=btn-next]').click();
       });
     });
-    context('Displays Page 7', () => {
-      it('Asserts data of Page 7', () => {
-        cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
-        // Assert question
-        cy.get('[data-testid=onboard-question]').should(
-          'have.text',
-          'What are you looking to find within the Scholarsite community?'
-        );
-        // Assert options text
-        cy.get('[data-testid=check-1] > input').should('have.value', 'Find a mentor');
-        cy.get('[data-testid=check-2] > input').should('have.value', 'Mentor others');
-        cy.get('[data-testid=check-3] > input').should('have.value', 'Grow my network');
-        cy.get('[data-testid=check-4] > input').should('have.value', 'Discuss materials');
-      });
-      it('Selects 2 options', () => {
-        cy.get('[data-testid=check-2').click();
-        cy.get('[data-testid=check-3').click();
-      });
-      it('Asserts that right options are selected', () => {
-        cy.get('[data-testid=check-2').find('input[type="checkbox"]').should('be.checked');
-        cy.get('[data-testid=check-3').find('input[type="checkbox"]').should('be.checked');
-      });
-      it('Clicks on next button', () => {
-        cy.get('[data-testid=btn-next]').click();
-      });
-    });
     context('Displays Page 8', () => {
       it('Asserts data of Page 8', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
@@ -277,7 +283,7 @@ describe('Onboarding Flow', () => {
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
-          'Are you interested in being matched with a peer in your cohort based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)'
+          'Are you interested in recieving networking suggestions based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)'
         );
         // Assert options text
         cy.get('[data-testid=option-1] > input').should('have.value', 'Yes');
@@ -293,56 +299,8 @@ describe('Onboarding Flow', () => {
         cy.get('[data-testid=btn-next]').click();
       });
     });
-
-    context('Displays Page 9 if user selects yes on page 8', () => {
+    context('Displays Page 9', () => {
       it('Asserts data of Page 9', () => {
-        cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
-        // Assert question
-        cy.get('[data-testid=onboard-question]').should(
-          'have.text',
-          "I'm most interested in matching with someone who: (Make between 1 and 3 choices)"
-        );
-      });
-      it('Selects 2 fields in dropdown', () => {
-        cy.get('#multi-select').find('input').type('Has the same years of experience {enter} ');
-        cy.get('#multi-select').find('input').type('Can mentor me {enter} ');
-      });
-      it('Asserts the right fields are selected', () => {
-        cy.get('#multi-select').contains('Has the same years of experience');
-        cy.get('#multi-select').contains('Can mentor me');
-      });
-
-      it('Clicks on next button', () => {
-        cy.get('[data-testid=btn-next]').click();
-      });
-    });
-    context('Displays Page 10', () => {
-      it('Asserts data of Page 10', () => {
-        cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
-        // Assert question
-        cy.get('[data-testid=onboard-question]').should(
-          'have.text',
-          'Would you be open to mentoring more junior professionals?'
-        );
-        // Assert options text
-        cy.get('[data-testid=option-1] > input').should('have.value', 'Yes');
-        cy.get('[data-testid=option-2] > input').should('have.value', 'No');
-      });
-      it('Selects Yes', () => {
-        cy.get('[data-testid=option-1]').click();
-      });
-      it('Asserts that right option is selected', () => {
-        cy.get('[data-testid=option-1]').should('have.attr', 'data-checked').and('equal', 'true');
-      });
-
-      it('Clicks on next button', () => {
-        cy.get('[data-testid=btn-next]').click();
-      });
-    });
-    context('Displays Page 11', () => {
-      it('Asserts data of Page 11', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
         // Assert question
@@ -379,8 +337,8 @@ describe('Onboarding Flow', () => {
       });
     });
 
-    context('Displays Page 12', () => {
-      it('Asserts data of Page 12', () => {
+    context('Displays Page 10', () => {
+      it('Asserts data of Page 10', () => {
         // Assert title
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
         cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
@@ -455,36 +413,41 @@ describe('Onboarding Flow', () => {
             'Artificial Intelligence'
           ]);
           expect(request.body.onboarding_answers[questionIDs[3]]).to.deep.eq([
+            'Work in the same role',
+            'Can mentor me'
+          ]);
+          expect(request.body.onboarding_answers[questionIDs[4]]).to.deep.eq([
             'Economics',
             'Hiring'
           ]);
-          expect(request.body.onboarding_answers[questionIDs[4]]).to.deep.eq([
-            'Mentor others',
-            'Grow my network'
-          ]);
           expect(request.body.onboarding_answers[questionIDs[5]]).to.eq('Yes');
-          expect(request.body.onboarding_answers[questionIDs[6]]).to.deep.eq([
-            'Has the same years of experience',
-            'Can mentor me'
-          ]);
-          expect(request.body.onboarding_answers[questionIDs[7]]).to.eq('Yes');
-          expect(request.body.onboarding_answers[questionIDs[8]]).to.eq('Social Media');
-          expect(request.body.onboarding_answers[questionIDs[9]]).to.eq('My employer');
-          expect(request.body.onboarding_answers[questionIDs[10]]).to.eq('No');
-          //Response
+          expect(request.body.onboarding_answers[questionIDs[6]]).to.eq('Social Media');
+          expect(request.body.onboarding_answers[questionIDs[7]]).to.eq('My employer');
+          expect(request.body.onboarding_answers[questionIDs[8]]).to.eq('No');
+          // //Response
           expect(response.body.current_company).to.eq(userProfileFixture.current_company);
           expect(response.body.current_position).to.eq(userProfileFixture.current_position);
           expect(response.body.discord_url).to.eq(userProfileFixture.discord_url);
           expect(response.body.first_name).to.eq(userProfileFixture.first_name);
           expect(response.body.last_name).to.eq(userProfileFixture.last_name);
-          expect(response.body.industries).to.deep.eq(userProfileFixture.industries);
+          expect(response.body.current_industry_category_selections).to.deep.eq(
+            userProfileFixture.current_industry_category_selections
+          );
           expect(response.body.interests).to.deep.eq(userProfileFixture.interests);
           expect(response.body.strengths).to.deep.eq(userProfileFixture.strengths);
-          expect(response.body.introduction).to.eq(userProfileFixture.introduction);
+          expect(response.body.bio_text).to.eq(userProfileFixture.bio_text);
           expect(response.body.linkedin_url).to.eq(userProfileFixture.linkedin_url);
           expect(response.body.preferred_pronoun).to.deep.eq(userProfileFixture.preferred_pronoun);
-          expect(response.body.roles).to.deep.eq(userProfileFixture.roles);
+          expect(response.body.current_role_category_selections).to.deep.eq(
+            userProfileFixture.current_role_category_selections
+          );
           expect(response.body.profile_image_url).to.deep.eq(userProfileFixture.profile_image_url);
+          expect(response.body.opted_in_for_matching_suggestions).to.eq(
+            userProfileFixture.opted_in_for_matching_suggestions
+          );
+          expect(response.body.networking_matching_preferences).to.deep.eq(
+            userProfileFixture.networking_matching_preferences
+          );
         });
       });
     });
