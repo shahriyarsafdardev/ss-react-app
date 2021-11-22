@@ -16,13 +16,13 @@ type ParticipantProfile = {
   current_company: string;
   preferred_pronoun: string;
   current_position: string;
-  roles: string[] | any;
-  industries: string[] | any;
+  current_role_category_selections: string[] | any;
+  current_industry_category_selections: string[] | any;
   strengths: string[] | any;
   interests: string[] | any;
-  introduction: string;
-  is_interested_in_networking: boolean;
-  networking_role_preferences: string[] | any;
+  bio_text: string;
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[] | any;
   is_interested_in_mentoring: boolean;
 };
 
@@ -40,13 +40,13 @@ export default function AccountGeneral() {
     preferred_pronoun: user?.preferred_pronoun || '',
     current_position: user?.current_position || '',
     profile_image_url: user?.profile_image_url || '',
-    industries: user?.industries || [],
-    roles: user?.roles || [],
+    current_industry_category_selections: user?.current_industry_category_selections || [],
+    current_role_category_selections: user?.current_role_category_selections || [],
     interests: user?.interests || [],
     strengths: user?.strengths || [],
-    introduction: user?.introduction || '',
-    is_interested_in_networking: user?.is_interested_in_networking,
-    networking_role_preferences: user?.networking_role_preferences || [],
+    bio_text: user?.bio_text || '',
+    opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
+    networking_matching_preferences: user?.networking_matching_preferences || [],
     is_interested_in_mentoring: user?.is_interested_in_mentoring
   };
 
@@ -60,21 +60,24 @@ export default function AccountGeneral() {
     uploadData.append('current_company', values.current_company);
     uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
-    uploadData.append('roles', values.roles);
+    uploadData.append('current_role_category_selections', values.current_role_category_selections);
     uploadData.append(
-      'is_interested_in_networking',
-      values.is_interested_in_networking ? 'Yes' : 'No'
+      'opted_in_for_matching_suggestions',
+      values.opted_in_for_matching_suggestions ? 'Yes' : 'No'
     );
-    uploadData.append('networking_role_preferences', values.networking_role_preferences);
+    uploadData.append('networking_matching_preferences', values.networking_matching_preferences);
     uploadData.append(
       'is_interested_in_mentoring',
       values.is_interested_in_mentoring ? 'Yes' : 'No'
     );
-    uploadData.append('industries', values.industries);
+    uploadData.append(
+      'current_industry_category_selections',
+      values.current_industry_category_selections
+    );
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('image', values.profile_image_url.image);
-    uploadData.append('introduction', values.introduction);
+    uploadData.append('bio_text', values.bio_text);
 
     await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });

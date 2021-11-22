@@ -36,9 +36,9 @@ interface InitialState {
   preferred_pronoun?: string;
   current_position?: string;
   profile_image_url: File | any;
-  introduction: string;
-  roles: string[];
-  industries: string[];
+  bio_text: string;
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -88,12 +88,12 @@ export default function ProfileForm({
     preferred_pronoun: string;
     current_position: string;
     strengths: string[];
-    roles: string[];
-    industries: string[];
+    current_role_category_selections: string[];
+    current_industry_category_selections: string[];
     interests: string[];
-    introduction: string;
-    is_interested_in_networking: boolean;
-    networking_role_preferences: string[];
+    bio_text: string;
+    opted_in_for_matching_suggestions: boolean;
+    networking_matching_preferences: string[];
     is_interested_in_mentoring: boolean;
   };
 }) {
@@ -122,12 +122,12 @@ export default function ProfileForm({
       current_position: '',
       profile_image_url: null,
       interests: [],
-      roles: [],
-      industries: [],
+      current_role_category_selections: [],
+      current_industry_category_selections: [],
       strengths: [],
-      introduction: '',
-      is_interested_in_networking: false,
-      networking_role_preferences: [],
+      bio_text: '',
+      opted_in_for_matching_suggestions: false,
+      networking_matching_preferences: [],
       is_interested_in_mentoring: false
     },
     validationSchema: UpdateUserSchema,
@@ -282,10 +282,10 @@ export default function ProfileForm({
                     <>
                       <TextField
                         fullWidth
-                        label="Introduction"
-                        {...getFieldProps('introduction')}
-                        error={Boolean(touched.introduction && errors.introduction)}
-                        helperText={touched.introduction && errors.introduction}
+                        label="Bio"
+                        {...getFieldProps('bio_text')}
+                        error={Boolean(touched.bio_text && errors.bio_text)}
+                        helperText={touched.bio_text && errors.bio_text}
                         multiline
                         rows={4}
                         inputProps={{
@@ -298,8 +298,10 @@ export default function ProfileForm({
                         </Typography>
                         <MultiSelect
                           options={role_options}
-                          values={values.roles}
-                          onChange={(e: any) => setFieldValue('roles', e)}
+                          values={values.current_role_category_selections}
+                          onChange={(e: any) =>
+                            setFieldValue('current_role_category_selections', e)
+                          }
                           maxLimit={2}
                         />
                       </Stack>
@@ -310,8 +312,10 @@ export default function ProfileForm({
                         </Typography>
                         <MultiSelect
                           options={industry_options}
-                          values={values.industries}
-                          onChange={(e: any) => setFieldValue('industries', e)}
+                          values={values.current_industry_category_selections}
+                          onChange={(e: any) =>
+                            setFieldValue('current_industry_category_selections', e)
+                          }
                           maxLimit={5}
                         />
                       </Stack>

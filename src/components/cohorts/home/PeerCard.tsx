@@ -193,9 +193,9 @@ export default function PeerCard({
             />
           </StyledCompanyContainer>
           <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
-            {item?.introduction?.length > 100
-              ? `${item.introduction?.substring(0, 100)}...`
-              : item.introduction}
+            {item?.bio_text?.length > 100
+              ? `${item.bio_text?.substring(0, 100)}...`
+              : item.bio_text}
           </Typography>
         </StyledContainer>
       </StyledProfileContainer>

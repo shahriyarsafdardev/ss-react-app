@@ -34,13 +34,13 @@ const users: payloadUser[] = [
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/demo',
     preferred_pronoun: 'He/him',
-    roles: ['role 1'],
-    industries: ['industry 1'],
+    current_role_category_selections: ['role 1'],
+    current_industry_category_selections: ['industry 1'],
     stream_id: '',
     stream_token: '',
     full_name: 'Jaydon Frankie',
-    is_interested_in_networking: true,
-    networking_role_preferences: ['option 1'],
+    opted_in_for_matching_suggestions: true,
+    networking_matching_preferences: ['option 1'],
     is_interested_in_mentoring: false
   },
   {
@@ -64,13 +64,13 @@ const users: payloadUser[] = [
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev',
     preferred_pronoun: 'He/him',
-    roles: ['role 1'],
-    industries: ['industry 1'],
+    current_role_category_selections: ['role 1'],
+    current_industry_category_selections: ['industry 1'],
     stream_id: '',
     stream_token: '',
     full_name: 'Aqib Maqbool',
-    is_interested_in_networking: false,
-    networking_role_preferences: ['option 2'],
+    opted_in_for_matching_suggestions: false,
+    networking_matching_preferences: ['option 2'],
     is_interested_in_mentoring: false
   }
 ];
@@ -136,14 +136,14 @@ mock.onPost('/api/account/register').reply(async (config) => {
       preferred_pronoun: '',
       strengths: [],
       interests: [],
-      roles: [],
-      industries: [],
+      current_role_category_selections: [],
+      current_industry_category_selections: [],
       linkedin_url: '',
       stream_id: '',
       stream_token: '',
       full_name: '',
-      is_interested_in_networking: false,
-      networking_role_preferences: [],
+      opted_in_for_matching_suggestions: false,
+      networking_matching_preferences: [],
       is_interested_in_mentoring: false
     };
 

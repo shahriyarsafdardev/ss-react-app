@@ -89,9 +89,9 @@ export default function StudentProfileModal({
     current_company,
     profile_image_url,
     current_position,
-    roles,
-    industries,
-    introduction,
+    current_role_category_selections,
+    current_industry_category_selections,
+    bio_text,
     preferred_pronoun,
     phone,
     strengths,
@@ -118,7 +118,7 @@ export default function StudentProfileModal({
             <Text data-testid="preferred-pronoun">{preferred_pronoun}</Text>
           </StyledRow>
         )}
-        {introduction && (
+        {bio_text && (
           <StyledRow>
             <img
               alt="sketch icon"
@@ -127,7 +127,7 @@ export default function StudentProfileModal({
               height={20}
               style={{ marginRight: 15 }}
             />
-            <Text data-testid="introduction">{introduction}</Text>
+            <Text data-testid="introduction">{bio_text}</Text>
           </StyledRow>
         )}
         <StyledRow>
@@ -150,7 +150,7 @@ export default function StudentProfileModal({
           />
           <Text data-testid="current-position">{current_position}</Text>
         </StyledRow>
-        {industries?.length > 0 && (
+        {current_industry_category_selections?.length > 0 && (
           <>
             <StyledRow>
               <img
@@ -161,7 +161,7 @@ export default function StudentProfileModal({
                 style={{ marginRight: 15 }}
               />
               <ColoredContainer>
-                {industries?.map((industry: any, index: number) => (
+                {current_industry_category_selections?.map((industry: any, index: number) => (
                   <Text key={index} data-testid="preferred-pronoun">
                     {index !== 0 && ', '}
                     {capitalCase(industry)}
@@ -170,8 +170,8 @@ export default function StudentProfileModal({
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile>
-              {industries?.length > 0 &&
-                industries?.map((industry: any, index: number) => (
+              {current_industry_category_selections?.length > 0 &&
+                current_industry_category_selections?.map((industry: any, index: number) => (
                   <Text key={index} data-testid="preferred-pronoun">
                     {capitalCase(industry)}
                     {index !== 0 && ', '}

@@ -13,15 +13,15 @@ export type StudentProfile = {
   current_position: string;
   preferred_pronoun: string;
   linkedin_url: string;
-  roles: string[];
-  industries: string[];
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
   strengths: string[];
   interests: string[];
-  is_interested_in_networking: boolean;
-  networking_role_preferences: string[];
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
   is_interested_in_mentoring: boolean;
   profile_image_url: string;
-  introduction: string;
+  bio_text: string;
 };
 
 type Tag = {

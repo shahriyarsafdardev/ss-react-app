@@ -146,11 +146,11 @@ export type ParticipantProfile = {
   preferred_pronoun: string;
   current_position: string;
   strengths: string[] | any;
-  roles: string[] | any;
-  industries: string[] | any;
+  current_role_category_selections: string[] | any;
+  current_industry_category_selections: string[] | any;
   interests: string[] | any;
-  introduction: string;
-  is_interested_in_networking: boolean;
-  networking_role_preferences: string[];
+  bio_text: string;
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
   is_interested_in_mentoring: boolean;
 };

@@ -8,12 +8,12 @@ import useAuth from '../../../../hooks/useAuth';
 import axios from '../../../../utils/axios';
 
 type ParticipantProfile = {
-  roles: string[] | any;
-  industries: string[] | any;
+  current_role_category_selections: string[] | any;
+  current_industry_category_selections: string[] | any;
   strengths: string[] | any;
   interests: string[] | any;
-  is_interested_in_networking: boolean;
-  networking_role_preferences: string[] | any;
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[] | any;
   is_interested_in_mentoring: boolean;
 };
 
@@ -23,22 +23,22 @@ export default function AccountNetworking() {
   const { enqueueSnackbar } = useSnackbar();
 
   const participantProfileConfig: ParticipantProfile | undefined = {
-    industries: user?.industries || [],
-    roles: user?.roles || [],
+    current_industry_category_selections: user?.current_industry_category_selections || [],
+    current_role_category_selections: user?.current_role_category_selections || [],
     interests: user?.interests || [],
     strengths: user?.strengths || [],
-    is_interested_in_networking: user?.is_interested_in_networking,
-    networking_role_preferences: user?.networking_role_preferences || [],
+    opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
+    networking_matching_preferences: user?.networking_matching_preferences || [],
     is_interested_in_mentoring: user?.is_interested_in_mentoring
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
     const uploadData = new FormData();
     uploadData.append(
-      'is_interested_in_networking',
-      values.is_interested_in_networking ? 'Yes' : 'No'
+      'opted_in_for_matching_suggestions',
+      values.opted_in_for_matching_suggestions ? 'Yes' : 'No'
     );
-    uploadData.append('networking_role_preferences', values.networking_role_preferences);
+    uploadData.append('networking_matching_preferences', values.networking_matching_preferences);
     uploadData.append(
       'is_interested_in_mentoring',
       values.is_interested_in_mentoring ? 'Yes' : 'No'

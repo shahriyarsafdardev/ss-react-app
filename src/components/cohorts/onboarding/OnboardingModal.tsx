@@ -46,13 +46,13 @@ type HomeResponse = {
     current_company: string;
     preferred_pronoun: string;
     strengths: string[];
-    roles: string[];
-    is_interested_in_networking: boolean;
-    networking_role_preferences: string[];
+    current_role_category_selections: string[];
+    opted_in_for_matching_suggestions: boolean;
+    networking_matching_preferences: string[];
     is_interested_in_mentoring: boolean;
-    industries: string[];
+    current_industry_category_selections: string[];
     interests: string[];
-    introduction: string;
+    bio_text: string;
   };
 };
 

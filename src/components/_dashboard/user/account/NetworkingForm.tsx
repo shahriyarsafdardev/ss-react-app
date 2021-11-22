@@ -13,11 +13,11 @@ import MultiSelect from '../../../MultiSelect';
 
 interface InitialState {
   interests: string[];
-  roles: string[];
-  industries: string[];
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
   strengths: string[];
-  is_interested_in_networking: boolean;
-  networking_role_preferences: string[];
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
   is_interested_in_mentoring: boolean;
 }
 
@@ -50,11 +50,11 @@ export default function NetworkingForm({
   onSubmit: Function;
   userProfile?: {
     strengths: string[];
-    roles: string[];
-    industries: string[];
+    current_role_category_selections: string[];
+    current_industry_category_selections: string[];
     interests: string[];
-    is_interested_in_networking: boolean;
-    networking_role_preferences: string[];
+    opted_in_for_matching_suggestions: boolean;
+    networking_matching_preferences: string[];
     is_interested_in_mentoring: boolean;
   };
 }) {
@@ -68,11 +68,11 @@ export default function NetworkingForm({
     enableReinitialize: true,
     initialValues: userProfile || {
       interests: [],
-      roles: [],
-      industries: [],
+      current_role_category_selections: [],
+      current_industry_category_selections: [],
       strengths: [],
-      is_interested_in_networking: false,
-      networking_role_preferences: [],
+      opted_in_for_matching_suggestions: false,
+      networking_matching_preferences: [],
       is_interested_in_mentoring: false
     },
     onSubmit: async (values) => {
@@ -152,11 +152,11 @@ export default function NetworkingForm({
                 >
                   <Typography>Interested in receiving networking suggestions:</Typography>
                   <Switch
-                    {...getFieldProps('is_interested_in_networking')}
-                    checked={values.is_interested_in_networking}
+                    {...getFieldProps('opted_in_for_matching_suggestions')}
+                    checked={values.opted_in_for_matching_suggestions}
                   />
                 </Stack>
-                {values.is_interested_in_networking && (
+                {values.opted_in_for_matching_suggestions && (
                   <>
                     <Stack direction={{ xs: 'column' }} spacing={1}>
                       <Typography>
@@ -174,8 +174,8 @@ export default function NetworkingForm({
                           'Is a founder',
                           'Lives near me'
                         ]}
-                        values={values.networking_role_preferences}
-                        onChange={(e: any) => setFieldValue('networking_role_preferences', e)}
+                        values={values.networking_matching_preferences}
+                        onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
                         maxLimit={3}
                       />
                     </Stack>
