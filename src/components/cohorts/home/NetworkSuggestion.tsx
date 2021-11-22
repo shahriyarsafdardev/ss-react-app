@@ -53,7 +53,8 @@ const NetworkSuggestion = ({
         bottom: '0px',
         right: '40%',
         left: '40%',
-        zIndex: 99
+        zIndex: 99,
+        marginTop: '15px'
       }
     })
   };
