@@ -243,10 +243,10 @@ export default function ProfileForm({
                       </MaterialSelect>
                     </FormControl>
                     <FormControl fullWidth>
-                      <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
+                      <InputLabel id="multiple-checkbox-company-label">Current Company</InputLabel>
                       <MaterialSelect
                         fullWidth
-                        label="Company"
+                        label="Current Company"
                         labelId="company-label"
                         id="multiple-checkbox-company"
                         data-testid="current-company"
@@ -262,17 +262,7 @@ export default function ProfileForm({
                   </Stack>
                   <TextField
                     fullWidth
-                    label="Linkedin Url"
-                    {...getFieldProps('linkedin_url')}
-                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                    helperText={touched.linkedin_url && errors.linkedin_url}
-                    inputProps={{
-                      'data-testid': 'linkedin-url'
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Current position"
+                    label="Current role"
                     {...getFieldProps('current_position')}
                     inputProps={{
                       'data-testid': 'current-position'
@@ -282,7 +272,7 @@ export default function ProfileForm({
                     <>
                       <TextField
                         fullWidth
-                        label="Bio"
+                        label="Personal Bio"
                         {...getFieldProps('bio_text')}
                         error={Boolean(touched.bio_text && errors.bio_text)}
                         helperText={touched.bio_text && errors.bio_text}
@@ -293,9 +283,7 @@ export default function ProfileForm({
                         }}
                       />
                       <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>
-                          What is the best way to describe your current role? Max 2 Options
-                        </Typography>
+                        <Typography>Which categories best describe my current role?</Typography>
                         <MultiSelect
                           options={role_options}
                           values={values.current_role_category_selections}
@@ -307,8 +295,7 @@ export default function ProfileForm({
                       </Stack>
                       <Stack direction={{ xs: 'column' }} spacing={1}>
                         <Typography>
-                          Which best describes the industry you work in? Make between 1 and 5
-                          choices.
+                          Which categories best describe the industry I currently work in?
                         </Typography>
                         <MultiSelect
                           options={industry_options}

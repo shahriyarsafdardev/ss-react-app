@@ -2,8 +2,23 @@ import Select from 'react-select';
 
 const customStyles = {
   placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
+    display: state.isFocused ? 'none' : 'block'
+    // color: 'rgb(128, 128, 128)'
+  }),
+  multiValue: (provided: any, state: any) => ({
+    backgroundColor: 'rgba(77, 77, 205, 0.16)',
+    padding: '1px 2px 1px 8px',
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    borderRadius: '6px',
+    color: 'rgba(77, 77, 205, 1)',
+    margin: '5px 5px 5px 0px',
+    fontWeight: 700,
+    fontSize: '14px'
+  }),
+  multiValueLabel: (provided: any, state: any) => ({
+    color: 'rgba(77, 77, 205, 1)'
   })
 };
 

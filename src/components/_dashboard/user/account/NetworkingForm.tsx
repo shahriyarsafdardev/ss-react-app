@@ -1,8 +1,19 @@
 import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { Box, Grid, Card, Stack, Typography, Switch } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Card,
+  Stack,
+  Typography,
+  MenuItem,
+  InputLabel,
+  ListItemText,
+  Select as MaterialSelect
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
@@ -11,6 +22,27 @@ import { styled } from '@material-ui/core/styles';
 import axios from '../../../../utils/axios';
 import MultiSelect from '../../../MultiSelect';
 
+const customStyles = {
+  placeholder: (provided: any, state: any) => ({
+    display: state.isFocused ? 'none' : 'block'
+    // color: 'rgb(128, 128, 128)'
+  }),
+  multiValue: (provided: any, state: any) => ({
+    backgroundColor: 'rgba(77, 77, 205, 0.16)',
+    padding: '1px 2px 1px 8px',
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    borderRadius: '6px',
+    color: 'rgba(77, 77, 205, 1)',
+    margin: '5px 5px 5px 0px',
+    fontWeight: 700,
+    fontSize: '14px'
+  }),
+  multiValueLabel: (provided: any, state: any) => ({
+    color: 'rgba(77, 77, 205, 1)'
+  })
+};
 interface InitialState {
   interests: string[];
   current_role_category_selections: string[];
@@ -27,13 +59,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
-};
 
 const getOptions = (options: any) =>
   options.map((option: any) => ({
@@ -92,123 +117,86 @@ export default function NetworkingForm({
       });
   }, []);
 
+  const options = [
+    { value: 'true', label: 'Yes please' },
+    { value: 'false', label: 'No thanks' }
+  ];
+
   return (
     <>
       <br />
       <FormikProvider value={formik}>
         <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
-          <Grid item xs={12} md={8}>
-            <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
-              <Stack spacing={{ xs: 2, md: 3 }}>
-                <Stack direction={{ xs: 'column' }} spacing={1}>
-                  <Typography>
-                    How would you like to engage with the ScholarSite community?
-                  </Typography>
-
-                  <CreatableSelect
-                    defaultValue={getOptions(values.interests)}
-                    styles={customStyles}
-                    placeholder={<div>Start typing whatever comes to mind!</div>}
-                    options={interestOptions}
-                    isClearable={false}
-                    backspaceRemovesValue={true}
-                    isMulti
-                    isSearchable
-                    id="interest-multiselect"
-                    onChange={(selected) => {
-                      setFieldValue(
-                        'interests',
-                        Array.isArray(selected) ? selected.map((s) => s.value) : []
-                      );
-                    }}
-                  />
-                </Stack>
-
-                <Stack direction={{ xs: 'column' }} spacing={1}>
-                  <Typography>
-                    What topics can fellow cohort members ask you questions on?
-                  </Typography>
-                  <CreatableSelect
-                    defaultValue={getOptions(values.strengths)}
-                    styles={customStyles}
-                    placeholder={<div>Start typing whatever comes to mind!</div>}
-                    options={strengthsOptions}
-                    isClearable={false}
-                    backspaceRemovesValue={true}
-                    isMulti
-                    isSearchable
-                    id="strength-multiselect"
-                    onChange={(selected) => {
-                      setFieldValue(
-                        'strengths',
-                        Array.isArray(selected) ? selected.map((s) => s.value) : []
-                      );
-                    }}
-                  />
-                </Stack>
-                <Stack
-                  sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-                  spacing={1}
-                >
-                  <Typography>Interested in receiving networking suggestions:</Typography>
-                  <Switch
-                    {...getFieldProps('opted_in_for_matching_suggestions')}
-                    checked={values.opted_in_for_matching_suggestions}
-                  />
-                </Stack>
-                {values.opted_in_for_matching_suggestions && (
-                  <>
-                    <Stack direction={{ xs: 'column' }} spacing={1}>
-                      <Typography>
-                        I'm most interested in matching with someone who: (Make between 1 and 3
-                        choices){' '}
-                      </Typography>
-                      <MultiSelect
-                        options={[
-                          'Work in the same role',
-                          'Work in the same industry',
-                          'Can mentor me',
-                          'I can mentor',
-                          'Are investors',
-                          'Are founders',
-                          'Live near me',
-                          'I’m not interested in connecting with cohort members'
-                        ]}
-                        values={values.networking_matching_preferences}
-                        onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
-                        maxLimit={3}
-                      />
-                    </Stack>
-                    <Stack
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
+          <Grid container spacing={1}>
+            <Grid item xs={12} md={12}>
+              <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
+                <Stack spacing={{ xs: 2, md: 3 }}>
+                  <Stack direction={{ xs: 'column' }} spacing={1}>
+                    <Typography>Fellow cohort members can ask me questions on</Typography>
+                    <CreatableSelect
+                      defaultValue={getOptions(values.strengths)}
+                      styles={customStyles}
+                      placeholder={<div>Start typing whatever comes to mind!</div>}
+                      options={strengthsOptions}
+                      isClearable={false}
+                      backspaceRemovesValue={true}
+                      isMulti
+                      isSearchable
+                      id="strength-multiselect"
+                      onChange={(selected) => {
+                        setFieldValue(
+                          'strengths',
+                          Array.isArray(selected) ? selected.map((s) => s.value) : []
+                        );
                       }}
-                      spacing={1}
-                    >
-                      <Typography>Interested in mentoring juniors: </Typography>
-                      <Switch
-                        {...getFieldProps('is_interested_in_mentoring')}
-                        checked={values.is_interested_in_mentoring}
-                      />
-                    </Stack>
-                  </>
-                )}
-              </Stack>
-              {showSubmitButton && (
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                  <StyledLoadingButton
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                    id="btn-submit"
+                    />
+                  </Stack>
+                  <Stack direction={{ xs: 'column' }} spacing={1}>
+                    <Typography>I am interested in connecting with </Typography>
+                    <MultiSelect
+                      options={[
+                        'Work in the same role',
+                        'Work in the same industry',
+                        'Can mentor me',
+                        'I can mentor',
+                        'Are investors',
+                        'Are founders',
+                        'Live near me',
+                        'I’m not interested in connecting with cohort members'
+                      ]}
+                      values={values.networking_matching_preferences}
+                      onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
+                      maxLimit={3}
+                    />
+                  </Stack>
+                  <Stack
+                    sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                    spacing={1}
                   >
-                    Save
-                  </StyledLoadingButton>
-                </Box>
-              )}
-            </Card>
+                    <Typography>
+                      I am interested in recieving networking suggestions based on commonalities and
+                      interests
+                    </Typography>
+                    {/* <Select
+                      value={values.opted_in_for_matching_suggestions === true ? 'true' : 'false'}
+                      options={options}
+                    /> */}
+                  </Stack>
+                </Stack>
+                {showSubmitButton && (
+                  <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+                    <StyledLoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                      id="btn-submit"
+                    >
+                      Save
+                    </StyledLoadingButton>
+                  </Box>
+                )}
+              </Card>
+            </Grid>
           </Grid>
         </Form>
       </FormikProvider>
