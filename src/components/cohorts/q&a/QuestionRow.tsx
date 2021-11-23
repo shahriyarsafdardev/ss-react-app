@@ -7,15 +7,21 @@ import { Question } from '../../../@types/cohorts';
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '500px',
   justifyContent: 'space-between',
   backgroundColor: 'white',
-  boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
+  boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.20), 0px 24px 48px rgba(145, 158, 171, 0.05)',
   borderRadius: '16px',
   padding: '20px',
-  marginBottom: '20px'
+  margin: '0 10px 20px 10px',
+  'span.view-type': {
+    color: '#4D4DCD',
+    textDecoration: 'underline',
+    cursor: 'pointer'
+  }
 }));
 export default function QuestionRow({ question }: { question: Question }) {
+  const [isHiddenView, setView] = useState(true);
+
   const renderAnswer = () => {
     if (question.answered) {
       return (
@@ -54,8 +60,9 @@ export default function QuestionRow({ question }: { question: Question }) {
     }
     return '';
   };
-  return (
-    <StyledQuestionRow>
+
+  const renderQuestion = () => (
+    <>
       <Box>
         <Typography
           style={{ fontSize: '18px', fontWeight: 700, color: '#212B36', lineHeight: '28px' }}
@@ -63,30 +70,32 @@ export default function QuestionRow({ question }: { question: Question }) {
           {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
         </Typography>
       </Box>
-      <Box style={{ width: '100%' }}>
-        {question.question_type === 'Text' && question.question_text && (
-          <div
-            style={{ fontWeight: 200, fontSize: '16px', lineHeight: '28px' }}
-            dangerouslySetInnerHTML={{ __html: question.question_text }}
-          />
-        )}
-        {question.question_type === 'Audio' && question.audio_url && (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <audio src={question.audio_url} controls style={{ width: '100%', marginTop: '10px' }} />
-        )}
-        {question.question_type === 'Video' && question.video_url && (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video
-            src={question.video_url}
-            poster={question?.video_screenshot}
-            preload="auto"
-            controls
-            controlsList="nodownload"
-            autoPlay={false}
-            style={{ width: '100%', borderRadius: '8px', marginTop: '10px' }}
-          />
-        )}
-      </Box>
+      {!isHiddenView && (
+        <Box style={{ width: '100%' }}>
+          {question.question_type === 'Text' && question.question_text && (
+            <div
+              style={{ fontWeight: 200, fontSize: '16px', lineHeight: '28px' }}
+              dangerouslySetInnerHTML={{ __html: question.question_text }}
+            />
+          )}
+          {question.question_type === 'Audio' && question.audio_url && (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <audio src={question.audio_url} controls style={{ width: '100%', marginTop: '10px' }} />
+          )}
+          {question.question_type === 'Video' && question.video_url && (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video
+              src={question.video_url}
+              poster={question?.video_screenshot}
+              preload="auto"
+              controls
+              controlsList="nodownload"
+              autoPlay={false}
+              style={{ width: '100%', borderRadius: '8px', marginTop: '10px' }}
+            />
+          )}
+        </Box>
+      )}
       <Typography
         style={{
           fontSize: '14px',
@@ -98,8 +107,23 @@ export default function QuestionRow({ question }: { question: Question }) {
       >
         {question?.asker_name
           ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
-          : 'Some User'}
+          : 'Some User'}{' '}
+        |{' '}
+        <span
+          onClick={() => setView(!isHiddenView)}
+          role="button"
+          className="view-type"
+          tabIndex={-1}
+          onKeyDown={() => {}}
+        >
+          {isHiddenView ? 'See Details' : 'Hide Details'}
+        </span>
       </Typography>
+    </>
+  );
+  return (
+    <StyledQuestionRow>
+      {renderQuestion()}
       {renderAnswer()}
     </StyledQuestionRow>
   );

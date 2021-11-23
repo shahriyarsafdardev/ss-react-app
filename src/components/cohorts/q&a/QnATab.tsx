@@ -5,7 +5,7 @@ import Page from 'components/Page';
 import axios from '../../../utils/axios';
 import { Question } from '../../../@types/cohorts';
 
-import AskQuestion from './AskQuestion';
+import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
 import About from './About';
 import Filters from './Filters';
@@ -38,9 +38,9 @@ function QnATab() {
     initMaterials();
   }, [cohort_id]);
   return (
-    <Page title="ScholarSite | QnA">
+    <Page title="ScholarSite | Q&A">
       <Container style={{ marginBottom: '50px' }}>
-        <AskQuestion />
+        <QuestionForm />
         <StyledBox>
           <QnAFeed questions={list} />
           <Box

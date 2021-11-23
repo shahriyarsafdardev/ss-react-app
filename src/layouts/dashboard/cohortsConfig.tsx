@@ -42,8 +42,7 @@ const cohortsConfig = (rawCohorts: any) =>
       { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
       ...object.children,
       { title: 'networking', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'QnA', path: PATH_DASHBOARD.cohorts.QnA(cohort.id) },
-      { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
+      { title: 'Q&A', path: PATH_DASHBOARD.cohorts.q_a(cohort.id) }
     ];
 
     return object;
