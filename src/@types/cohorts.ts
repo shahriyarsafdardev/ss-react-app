@@ -97,6 +97,13 @@ export type Cohort = {
   random_peers: StudentProfile[];
 };
 
+export type Comment = {
+  id: string;
+  text: string;
+  time: string;
+  user_name: string;
+};
+
 export type Question = {
   answer: string;
   answer_audio_url: string;
@@ -124,4 +131,5 @@ export type Question = {
   user_slug: string;
   video_screenshot: string;
   video_url: string;
+  comments: Comment[];
 };
