@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
 import { Box, Typography } from '@material-ui/core';
-import { Question } from '../../../@types/cohorts';
+import { Question, Comment } from '../../../@types/cohorts';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -19,6 +19,31 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
     cursor: 'pointer'
   }
 }));
+
+const CommentBox = styled(Box)(() => ({
+  backgroundColor: '#F4F6F8',
+  borderRadius: '8px',
+  marginBottom: '10px',
+  padding: '20px 10px',
+  '.info': {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  '.content': {
+    marginTop: '5px'
+  }
+}));
+
+const CommentRow = ({ comment }: { comment: Comment }) => (
+  <CommentBox>
+    <Box className="info">
+      <p>{comment.user_name}</p>
+      <p>{moment(comment.time).format('DD MMM YYYY')}</p>
+    </Box>
+    <Box className="content">{comment.text}</Box>
+  </CommentBox>
+);
+
 export default function QuestionRow({ question }: { question: Question }) {
   const [isHiddenView, setView] = useState(true);
 
@@ -121,10 +146,23 @@ export default function QuestionRow({ question }: { question: Question }) {
       </Typography>
     </>
   );
+  const renderComments = () =>
+    question.comments.length > 0 && (
+      <div>
+        <div
+          style={{ border: '1px solid #828282', margin: '10px 0', width: '100%', opacity: 0.2 }}
+        />
+        {question.comments.map((comment: Comment) => (
+          <CommentRow key={comment.id} comment={comment} />
+        ))}
+      </div>
+    );
+
   return (
     <StyledQuestionRow>
       {renderQuestion()}
       {renderAnswer()}
+      {renderComments()}
     </StyledQuestionRow>
   );
 }
