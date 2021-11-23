@@ -26,7 +26,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
     borderRadius: '8px',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column'
-    }
+    },
+    marginRight: '4px'
   },
   '&.secondary': {
     marginTop: '5px',
