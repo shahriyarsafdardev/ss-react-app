@@ -9,7 +9,8 @@ export const SectionContainer = styled('div')(({ theme }) => ({
     height: '150px'
   },
   '&.filters': {
-    height: '150px'
+    height: '250px',
+    marginTop: '20px'
   },
   '&.about': {
     height: '340px'

@@ -118,7 +118,7 @@ export default function Router() {
             { path: '/sessions', element: <SessionsTab /> },
             { path: '/messaging', element: <Messaging /> },
             { path: '/home', element: <HomePage /> },
-            { path: '/QnA', element: <QnA /> }
+            { path: '/Q&A', element: <QnA /> }
           ]
         },
         {
