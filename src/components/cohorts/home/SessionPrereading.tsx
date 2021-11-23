@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { styled } from '@material-ui/core/styles';
 import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box } from '@material-ui/core';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
@@ -9,6 +10,13 @@ import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
 import VideoPlaceHolder from '../VideoPlaceHolder';
 import { Summary } from '../sessions';
+
+const StyledSessionPrereadingContainer = styled(Box)(() => ({
+  height: '400px',
+  overflowY: 'scroll',
+  '&::-webkit-scrollbar': { width: '5px' },
+  '&::-webkit-scrollbar-thumb': { borderRadius: '4px', backgroundColor: 'rgba(0, 0, 0, .3)' }
+}));
 
 const SessionPrereading = ({
   cohort,
@@ -120,7 +128,7 @@ const SessionPrereading = ({
                   </>
                 )}
               </Box>
-              <Box style={{ height: '400px', overflow: 'scroll' }}>
+              <StyledSessionPrereadingContainer>
                 {moment(activeSession.time).subtract(1, 'hours') < moment() && (
                   <VideoPlaceHolder
                     displayType="small"
@@ -144,7 +152,7 @@ const SessionPrereading = ({
                     checkboxHanlder={(value: boolean) => onMark(index, value)}
                   />
                 ))}
-              </Box>
+              </StyledSessionPrereadingContainer>
             </>
           ) : (
             <Box style={{ height: '400px', overflow: 'scroll' }}>
