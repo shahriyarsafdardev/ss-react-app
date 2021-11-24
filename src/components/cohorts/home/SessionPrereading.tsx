@@ -60,7 +60,7 @@ const SessionPrereading = ({
           cohort.intake,
           activeSession?.number,
           HOME_PAGE_EVENTS.to_do_list,
-          `Marked Item as ${value ? 'true' : 'false'}`
+          `Marked Item as ${value ? 'true' : 'false'} from Home-Tab`
         );
         updated[index].complete = response.data;
         setList([...updated]);

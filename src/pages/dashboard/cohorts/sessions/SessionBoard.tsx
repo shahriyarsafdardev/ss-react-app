@@ -216,6 +216,15 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           sessionId={session?.id}
           cohortId={id}
           key="session_materials"
+          onTrack={(eventData: string) =>
+            trackSessionsPageEvent(
+              cohortName,
+              cohortIntake,
+              sessionNumber,
+              SESSION_EVENTS.resources_tab,
+              eventData
+            )
+          }
         />
       ) : (
         <Description
