@@ -17,8 +17,14 @@ export type payloadUser = {
   role: string;
   isPublic: boolean;
   current_company: string;
+  preferred_pronoun: string;
   strengths: string[];
   interests: string[];
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
+  is_interested_in_mentoring: boolean;
   linkedin_url: string;
   stream_id: string;
   stream_token: string;

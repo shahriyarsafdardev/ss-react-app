@@ -1,17 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'components/animate';
-import { Box, Typography, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
-import Step4 from 'pages/dashboard/cohorts/Home/ProfileForm';
-import { useDispatch } from 'redux/store';
+import ProfileForm from 'pages/dashboard/cohorts/Home/ProfileForm';
+import { useDispatch, RootState, useSelector } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
-import { Question1, Question2, Question3, Question4, Question5 } from './Questions';
+import {
+  Question1,
+  Question2,
+  Question4,
+  Question5,
+  Question6,
+  Question7,
+  Question8,
+  Question9,
+  Question10
+} from './Questions';
 
 type HomeResponse = {
   cohort_id: string;
@@ -32,13 +42,19 @@ type HomeResponse = {
     profile_image_url: string;
     current_position: string;
     current_company: string;
+    preferred_pronoun: string;
     strengths: string[];
+    current_role_category_selections: string[];
+    opted_in_for_matching_suggestions: boolean;
+    networking_matching_preferences: string[];
+    is_interested_in_mentoring: boolean;
+    current_industry_category_selections: string[];
     interests: string[];
-    introduction: string;
+    bio_text: string;
   };
 };
 
-const MODAL_HEIGHT = '600px';
+const MODAL_HEIGHT = '650px';
 
 const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
@@ -139,8 +155,12 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [activeStep, setActiveStep] = useState(0);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
-  const [responses, setResponses] = useState<any>([]);
-  const totalSteps = 7;
+  const [responses, setResponses] = useState<any>({});
+  const totalSteps = 11;
+
+  const { role_options, industry_options } = useSelector(
+    (state: RootState) => state.profileOptions
+  );
 
   useEffect(() => {
     axios
@@ -154,22 +174,41 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       });
   }, [cohort_id, user?.id]);
 
-  const sendStepCompletionRequest = (stepNumber: number, answer?: string) =>
+  const sendStepCompletionRequest = (stepNumber: number) =>
     axios.post(`/cohorts/${cohort_id}/onboarding/step_completed.json`, {
       cohort_id,
       step_number: stepNumber,
-      enrollment_id: homeConfig?.enrollment_id,
-      answer
+      enrollment_id: homeConfig?.enrollment_id
     });
 
-  const onStepChange = (stepNumber: number) => {
-    if (stepNumber >= 1 && stepNumber <= 5) {
-      sendStepCompletionRequest(activeStep, responses[stepNumber] || '');
-    } else {
-      sendStepCompletionRequest(activeStep);
-    }
+  const submitOnboardingAnswers = () => {
+    axios
+      .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, {
+        onboarding_answers: responses,
+        enrollment_id: homeConfig?.enrollment_id
+      })
+      .then((res) => {
+        updateProfile({ ...res.data });
+        if (homeConfig) {
+          homeConfig.participant_profile = { ...homeConfig.participant_profile, ...res.data };
+        }
+        setModal(false);
+        enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
+        dispatch(updateOnboardingStatus(cohort_id));
+      });
+  };
 
-    setActiveStep(stepNumber + 1);
+  const onStepChange = (stepNumber: number) => {
+    sendStepCompletionRequest(activeStep);
+    if (activeStep >= 10) {
+      submitOnboardingAnswers();
+    } else {
+      setActiveStep(stepNumber + 1);
+    }
+  };
+
+  const onPreviousHandler = () => {
+    setActiveStep(activeStep - 1);
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -181,21 +220,22 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     values.linkedin_url && uploadData.append('linkedin_url', values.linkedin_url);
     values.discord_url && uploadData.append('discord_url', values.discord_url);
     values.current_company && uploadData.append('current_company', values.current_company);
+    values.preferred_pronoun && uploadData.append('preferred_pronoun', values.preferred_pronoun);
     values.current_position && uploadData.append('current_position', values.current_position);
     values.strengths && uploadData.append('strengths', values.strengths);
     values.interests && uploadData.append('interests', values.interests);
     values.profile_image_url?.image && uploadData.append('image', values.profile_image_url?.image);
 
     onSubmit();
+    onStepChange(activeStep);
 
     await axios
       .post(`/cohorts/${cohort_id}/onboarding/save_user_profile.json`, uploadData)
       .then((res) => {
-        setModal(false);
-        enqueueSnackbar('Profile Updated successfully', { variant: 'success' });
-        dispatch(updateOnboardingStatus(cohort_id));
-
         updateProfile({ ...res.data });
+        if (homeConfig) {
+          homeConfig.participant_profile = { ...homeConfig.participant_profile, ...res.data };
+        }
       });
   };
 
@@ -211,8 +251,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   );
 
   const updateAnswers = (answer: any) => {
-    const newResponse = [...responses];
-    newResponse[activeStep] = answer;
+    const newResponse = { ...responses };
+    newResponse[`question-${activeStep}`] = answer;
     setResponses(newResponse);
   };
 
@@ -222,32 +262,91 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 1) {
-      return <Question1 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
-    }
-
-    if (activeStep === 2) {
-      return <Question2 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
-    }
-    if (activeStep === 3) {
-      return <Question3 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
-    }
-    if (activeStep === 4) {
-      return <Question4 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
-    }
-    if (activeStep === 5) {
-      return <Question5 currentAnswer={responses[activeStep]} setCurrentAnswer={updateAnswers} />;
-    }
-
-    if (activeStep === 6) {
       return (
         <div>
-          <Step4
+          <ProfileForm
             userProfile={homeConfig?.participant_profile}
             isOnboardingModal={true}
             onSubmit={onFormSubmitHandler}
             showSubmitButton={false}
           />
         </div>
+      );
+    }
+
+    if (activeStep === 2) {
+      return (
+        <Question1
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+
+    if (activeStep === 3) {
+      return (
+        <Question2
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+          options={role_options}
+        />
+      );
+    }
+    if (activeStep === 4) {
+      return (
+        <Question4
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+          options={industry_options}
+        />
+      );
+    }
+    if (activeStep === 5) {
+      return (
+        <Question5
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+    if (activeStep === 6) {
+      return (
+        <Question6
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+    if (activeStep === 7) {
+      return (
+        <Question7
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+    if (activeStep === 8) {
+      return (
+        <Question8
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+    if (activeStep === 9) {
+      return (
+        <Question9
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
+      );
+    }
+    if (activeStep === 10) {
+      return (
+        <Question10
+          currentAnswer={responses[`question-${activeStep}`]}
+          setCurrentAnswer={updateAnswers}
+        />
       );
     }
 
@@ -259,12 +358,36 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return homeConfig?.onboarding_header;
     }
 
-    if (activeStep >= 1 && activeStep <= 5) {
-      return "First off, we'd like to ask you a few questions so we can get to know you better";
+    if (activeStep >= 1 && activeStep <= 4) {
+      return 'Build Your Profile';
     }
 
-    if (activeStep === 6) {
-      return 'Finally, fill out your profile for the directory.';
+    if (activeStep >= 5 && activeStep <= 7) {
+      return 'Networking Preferences';
+    }
+
+    if (activeStep >= 8) {
+      return 'Housekeeping Questions';
+    }
+
+    return '';
+  };
+
+  const headContentDescription = () => {
+    if (activeStep === 0) {
+      return '';
+    }
+
+    if (activeStep >= 1 && activeStep <= 4) {
+      return 'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
+    }
+
+    if (activeStep >= 5 && activeStep <= 7) {
+      return 'We’ll help you make meaningful connections with other professionals in the cohort.';
+    }
+
+    if (activeStep >= 8) {
+      return 'Don’t worry, there’s just a few!';
     }
 
     return '';
@@ -279,6 +402,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       <ContentContainer>
         <HomeTabHeader
           cohortTitle={headContent()}
+          cohortDescription={headContentDescription()}
           activeStep={activeStep}
           totalSteps={totalSteps}
           showProgressBar={true}
@@ -290,20 +414,22 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               disabled={activeStep <= 0}
               className="previous"
               variant="outlined"
-              onClick={() => setActiveStep(activeStep - 1)}
+              onClick={onPreviousHandler}
             >
               Previous
             </StyledButton>
           )}
 
-          {activeStep !== totalSteps - 1 && (
+          {activeStep !== 1 && (
             <StyledButton
               variant="contained"
               className="next"
               disabled={
                 activeStep > 0 &&
-                activeStep < 6 &&
-                (!responses[activeStep] || responses[activeStep].length === 0)
+                activeStep !== 1 &&
+                activeStep <= 10 &&
+                (!responses[`question-${activeStep}`] ||
+                  responses[`question-${activeStep}`].length === 0)
               }
               onClick={() => onStepChange(activeStep)}
               data-testid="btn-next"
@@ -311,7 +437,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               Next
             </StyledButton>
           )}
-          {activeStep === 6 && (
+          {activeStep === 1 && (
             <StyledButton
               form="profile-form"
               type="submit"
@@ -319,7 +445,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               className="next"
               data-testid="btn-submit"
             >
-              Submit
+              Next
             </StyledButton>
           )}
         </ButtonsContainer>

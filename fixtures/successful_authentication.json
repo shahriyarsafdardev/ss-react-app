@@ -7,6 +7,7 @@
     "profile_image_url": "https://cultivatedculture.com/wp-content/uploads/2019/12/LinkedIn-Profile-Picture-Example-Madeline-Mann.jpeg",
     "current_company": "string",
     "current_position": "string",
+    "preferred_pronoun": "string",
     "discord_url": "string",
     "interests": "string[]",
     "linkedin_url": "string",

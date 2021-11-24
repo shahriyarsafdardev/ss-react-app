@@ -39,6 +39,13 @@ const SubTitle = styled(Typography)(() => ({
   marginBottom: '1rem'
 }));
 
+const Description = styled(Typography)(() => ({
+  fontWeight: 400,
+  fontSize: 12,
+  marginBottom: '1rem',
+  color: '#6C7885'
+}));
+
 const StyledStepper = styled(Stepper)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     '.css-wb2j8e-MuiStepLabel-label.MuiStepLabel-alternativeLabel': {
@@ -52,6 +59,7 @@ export default function HomeTabHeader({
   activeStep,
   totalSteps,
   cohortTitle,
+  cohortDescription,
   showProgressBar = true
 }: {
   children?: React.ReactNode;
@@ -59,6 +67,7 @@ export default function HomeTabHeader({
   cohortTitle: string | undefined;
   showProgressBar?: boolean;
   totalSteps: number;
+  cohortDescription: string | undefined;
 }) {
   // eslint-disable-next-line no-nested-ternary
   const progress = () => {
@@ -70,6 +79,11 @@ export default function HomeTabHeader({
   return (
     <>
       {cohortTitle ? <SubTitle data-testid="onboard-title">{cohortTitle}</SubTitle> : ''}
+      {cohortDescription ? (
+        <Description data-testid="onboard-description">{cohortDescription}</Description>
+      ) : (
+        ''
+      )}
       {showProgressBar && (
         <>
           <ProgressBarContainer>

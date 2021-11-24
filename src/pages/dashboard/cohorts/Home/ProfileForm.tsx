@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import CreatableSelect from 'react-select/creatable';
 import * as Yup from 'yup';
+import { RootState, useSelector } from 'redux/store';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
@@ -11,24 +11,21 @@ import {
   Stack,
   TextField,
   Typography,
-  Select,
   MenuItem,
   ListItemText,
   FormHelperText,
   InputLabel,
-  FormControl
+  FormControl,
+  Select as MaterialSelect
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import Label from 'components/Label';
 import { UploadAvatar } from '../../../../components/upload';
-// utils
-import { fData } from '../../../../utils/formatNumber';
-
 // axios
 import axios from '../../../../utils/axios';
+import MultiSelect from '../../../../components/MultiSelect';
 
 interface InitialState {
   linkedin_url: string;
@@ -36,66 +33,22 @@ interface InitialState {
   first_name: string;
   last_name: string;
   current_company?: string;
+  preferred_pronoun?: string;
   current_position?: string;
-  interests: string[];
-  strengths: string[];
   profile_image_url: File | any;
-  introduction: string;
+  bio_text: string;
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
 }
-const Title = styled(Typography)(() => ({
-  fontSize: 24,
-  color: '#071A33',
-  fontWeight: 'bold',
-  margin: '1rem 0'
-}));
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 100,
+  width: 130,
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
 }));
-const StyledSelect = styled(Select)(({ theme }) => ({
-  maxWidth: '48.5%',
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 'unset'
-  }
-}));
 
 const customStyles = {
-  // container: (provided: any, state: any) => ({
-  //   ...provided,
-  //   width: '100%',
-  //   minHeight: '29px'
-  // }),
-  // control: (provided: any, state: any) => ({
-  //   ...provided,
-  //   height: '55px',
-  //   borderRadius: '6px',
-  //   borderColor: state.isFocused ? '1939B7' : '#CFD8DC',
-  //   ':hover': {
-  //     borderColor: '#071A33',
-  //     borderRadius: 8
-  //   },
-  //   overflowY: 'scroll'
-  // }),
-  // dropdownIndicator: (provided: any) => ({
-  //   ...provided,
-  //   position: 'sticky',
-  //   top: 10,
-  //   right: 0,
-  //   zIndex: 10
-  // }),
-  // multiValueLabel: (provided: any) => ({
-  //   ...provided,
-  //   color: '#1939B7',
-  //   fontWeight: 'bold',
-  //   fontSize: '0.75rem'
-  // }),
-  // indicatorSeparator: (provided: any) => ({
-  //   ...provided,
-  //   display: 'none'
-  // })
   placeholder: (provided: any, state: any) => ({
     display: state.isFocused ? 'none' : 'block',
     color: 'rgb(128, 128, 128)'
@@ -104,23 +57,17 @@ const customStyles = {
 
 const greenCustomsStyle = {
   ...customStyles
-  // multiValue: (provided: any) => ({
-  //   ...provided,
-  //   backgroundColor: 'rgba(84, 214, 44, 0.24)',
-  //   height: 22,
-  //   borderRadius: '8px'
-  // })
 };
 
 const blueCustomsStyle = {
   ...customStyles
-  // multiValue: (provided: any) => ({
-  //   ...provided,
-  //   backgroundColor: 'rgba(51, 102, 255, 0.16)',
-  //   height: 22,
-  //   borderRadius: '8px'
-  // })
 };
+
+const getOptions = (options: any) =>
+  options.map((option: any) => ({
+    value: option,
+    label: option
+  }));
 
 export default function ProfileForm({
   onSubmit,
@@ -138,15 +85,23 @@ export default function ProfileForm({
     discord_url: string;
     profile_image_url: File | any;
     current_company: string;
+    preferred_pronoun: string;
     current_position: string;
     strengths: string[];
+    current_role_category_selections: string[];
+    current_industry_category_selections: string[];
     interests: string[];
-    introduction: string;
+    bio_text: string;
+    opted_in_for_matching_suggestions: boolean;
+    networking_matching_preferences: string[];
+    is_interested_in_mentoring: boolean;
   };
 }) {
-  const [strengths, setStrengths] = useState<string[]>();
-  const [interests, setInterests] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>();
+  const { role_options, industry_options, preferred_pronoun_options } = useSelector(
+    (state: RootState) => state.profileOptions
+  );
+
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string()
       .min(2, 'Too Short!')
@@ -154,9 +109,6 @@ export default function ProfileForm({
       .required('First name required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
-
-  const interestOptions = interests?.map((interest) => ({ value: interest, label: interest }));
-  const strengthsOptions = strengths?.map((strength) => ({ value: strength, label: strength }));
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -166,11 +118,17 @@ export default function ProfileForm({
       first_name: '',
       last_name: '',
       current_company: '',
+      preferred_pronoun: '',
       current_position: '',
       profile_image_url: null,
       interests: [],
+      current_role_category_selections: [],
+      current_industry_category_selections: [],
       strengths: [],
-      introduction: ''
+      bio_text: '',
+      opted_in_for_matching_suggestions: false,
+      networking_matching_preferences: [],
+      is_interested_in_mentoring: false
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
@@ -180,16 +138,6 @@ export default function ProfileForm({
 
   const { values, errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
     formik;
-
-  const defaultInterests = values.interests?.map((interest) => ({
-    value: interest,
-    label: interest
-  }));
-
-  const defaultStrengths = values.strengths?.map((strength) => ({
-    value: strength,
-    label: strength
-  }));
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -209,9 +157,7 @@ export default function ProfileForm({
       .get('/cohorts/select_fields_data.json')
       .then((res) => res.data)
       .then((payload) => {
-        payload?.strengths && setStrengths(payload.strengths);
         payload?.companies && setCompanies(payload.companies);
-        payload?.interests && setInterests(payload.interests);
       });
   }, []);
 
@@ -220,7 +166,7 @@ export default function ProfileForm({
       <br />
       <FormikProvider value={formik}>
         <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item xs={12} md={4}>
               <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
                 <UploadAvatar
@@ -276,11 +222,29 @@ export default function ProfileForm({
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                    <FormControl fullWidth disabled={isOnboardingModal}>
-                      <InputLabel id="multiple-checkbox-company-label">Company</InputLabel>
-                      <Select
+                    <FormControl fullWidth>
+                      <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
+                      <MaterialSelect
                         fullWidth
-                        label="Company"
+                        label="Pronouns"
+                        labelId="pronoun-label"
+                        id="multiple-checkbox-pronoun"
+                        data-testid="preferred-pronoun"
+                        sx={{ zIndex: 1500 }}
+                        {...getFieldProps('preferred_pronoun')}
+                      >
+                        {preferred_pronoun_options?.map((pronoun: string) => (
+                          <MenuItem key={pronoun} value={pronoun}>
+                            <ListItemText primary={pronoun} />
+                          </MenuItem>
+                        ))}
+                      </MaterialSelect>
+                    </FormControl>
+                    <FormControl fullWidth>
+                      <InputLabel id="multiple-checkbox-company-label">Current Company</InputLabel>
+                      <MaterialSelect
+                        fullWidth
+                        label="Current Company"
                         labelId="company-label"
                         id="multiple-checkbox-company"
                         data-testid="current-company"
@@ -291,89 +255,53 @@ export default function ProfileForm({
                             <ListItemText primary={name} />
                           </MenuItem>
                         ))}
-                      </Select>
+                      </MaterialSelect>
                     </FormControl>
-                    <TextField
-                      fullWidth
-                      label="Linkedin Url"
-                      {...getFieldProps('linkedin_url')}
-                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                      helperText={touched.linkedin_url && errors.linkedin_url}
-                      inputProps={{
-                        'data-testid': 'linkedin-url'
-                      }}
-                    />
                   </Stack>
                   <TextField
                     fullWidth
-                    label="Current position"
+                    label="Current role"
                     {...getFieldProps('current_position')}
                     inputProps={{
                       'data-testid': 'current-position'
                     }}
                   />
-                  <TextField
-                    fullWidth
-                    label="Introduction"
-                    {...getFieldProps('introduction')}
-                    inputProps={{
-                      'data-testid': 'user-introduction'
-                    }}
-                  />
-
                   {!isOnboardingModal && (
                     <>
-                      {/* <TextField
+                      <TextField
                         fullWidth
-                        label="Discord Url"
-                        {...getFieldProps('discord_url')}
-                        error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                        helperText={touched.linkedin_url && errors.linkedin_url}
-                      /> */}
+                        label="Personal Bio"
+                        {...getFieldProps('bio_text')}
+                        error={Boolean(touched.bio_text && errors.bio_text)}
+                        helperText={touched.bio_text && errors.bio_text}
+                        multiline
+                        rows={4}
+                        inputProps={{
+                          'data-testid': 'user-introduction'
+                        }}
+                      />
                       <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>
-                          How would you like to engage with the ScholarSite community?
-                        </Typography>
-
-                        <CreatableSelect
-                          defaultValue={defaultInterests}
-                          styles={blueCustomsStyle}
-                          placeholder={<div>Start typing whatever comes to mind!</div>}
-                          options={interestOptions}
-                          isClearable={false}
-                          backspaceRemovesValue={true}
-                          isMulti
-                          isSearchable
-                          id="interest-multiselect"
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'interests',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
+                        <Typography>Which categories best describe your current role?</Typography>
+                        <MultiSelect
+                          options={role_options}
+                          values={values.current_role_category_selections}
+                          onChange={(e: any) =>
+                            setFieldValue('current_role_category_selections', e)
+                          }
+                          maxLimit={2}
                         />
                       </Stack>
-
                       <Stack direction={{ xs: 'column' }} spacing={1}>
                         <Typography>
-                          What topics can fellow cohort members ask you questions on?
+                          Which categories best describe the industry you currently work in?
                         </Typography>
-                        <CreatableSelect
-                          defaultValue={defaultStrengths}
-                          styles={greenCustomsStyle}
-                          placeholder={<div>Start typing whatever comes to mind!</div>}
-                          options={strengthsOptions}
-                          isClearable={false}
-                          backspaceRemovesValue={true}
-                          isMulti
-                          isSearchable
-                          id="strength-multiselect"
-                          onChange={(selected) => {
-                            setFieldValue(
-                              'strengths',
-                              Array.isArray(selected) ? selected.map((s) => s.value) : []
-                            );
-                          }}
+                        <MultiSelect
+                          options={industry_options}
+                          values={values.current_industry_category_selections}
+                          onChange={(e: any) =>
+                            setFieldValue('current_industry_category_selections', e)
+                          }
+                          maxLimit={5}
                         />
                       </Stack>
                     </>
@@ -387,7 +315,7 @@ export default function ProfileForm({
                       loading={isSubmitting}
                       id="btn-submit"
                     >
-                      Save
+                      Save Changes
                     </StyledLoadingButton>
                   </Box>
                 )}
