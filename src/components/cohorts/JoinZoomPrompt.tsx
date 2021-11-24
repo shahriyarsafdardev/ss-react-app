@@ -305,7 +305,7 @@ const renderPlaceHolder = (
   return null;
 };
 
-export default function VideoPlaceHolder({
+export default function JoinZoomPrompt({
   sessionTimeValue,
   sessionZoomUrl,
   displayType

@@ -8,7 +8,7 @@ import axios from '../../../utils/axios';
 import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
-import VideoPlaceHolder from '../VideoPlaceHolder';
+import JoinZoomPrompt from '../JoinZoomPrompt';
 import { Summary } from '../sessions';
 
 const StyledSessionPrereadingContainer = styled(Box)(() => ({
@@ -130,7 +130,7 @@ const SessionPrereading = ({
               </Box>
               <StyledSessionPrereadingContainer>
                 {moment(activeSession.time).subtract(1, 'hours') < moment() && (
-                  <VideoPlaceHolder
+                  <JoinZoomPrompt
                     displayType="small"
                     sessionTimeValue={activeSession.time}
                     sessionZoomUrl={activeSession.zoom_url}

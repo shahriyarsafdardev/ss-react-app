@@ -18,7 +18,7 @@ import { updateSessionModalState } from '../../../../redux/slices/sessionFeedbac
 import { updateSessionFeedbackStatus } from '../../../../redux/slices/cohort';
 
 // Video Place Holder
-import VideoPlaceHolder from '../../../../components/cohorts/VideoPlaceHolder';
+import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
 
 // ----------------------------------------------------------------------
 
@@ -339,7 +339,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             data-testid="session-video-url"
           />
         ) : (
-          <VideoPlaceHolder
+          <JoinZoomPrompt
             displayType="large"
             sessionTimeValue={session.time}
             sessionZoomUrl={session.zoom_url}
