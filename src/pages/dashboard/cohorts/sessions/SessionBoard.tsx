@@ -233,7 +233,19 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         />
       )}
     </>,
-    <Summary key="summary" innerContent={session?.summary || ''} />,
+    <Summary
+      key="summary"
+      onTrack={(eventData: string) =>
+        trackSessionsPageEvent(
+          cohortName,
+          cohortIntake,
+          sessionNumber,
+          SESSION_EVENTS.summary_tab,
+          eventData
+        )
+      }
+      innerContent={session?.summary || ''}
+    />,
     <Slides
       key="slidesTab"
       onTrack={(eventData: string) =>

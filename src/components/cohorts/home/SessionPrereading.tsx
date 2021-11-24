@@ -156,7 +156,7 @@ const SessionPrereading = ({
             </>
           ) : (
             <Box style={{ height: '400px', overflow: 'scroll' }}>
-              <Summary key="summary" innerContent={cohort.goodbye_message} />
+              <Summary onTrack={() => {}} key="summary" innerContent={cohort.goodbye_message} />
             </Box>
           )}
         </>
