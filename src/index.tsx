@@ -34,6 +34,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { ActionCableProvider } from 'react-actioncable-provider';
+
 // material
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
@@ -67,9 +69,11 @@ ReactDOM.render(
           <SettingsProvider>
             <CollapseDrawerProvider>
               <BrowserRouter>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
+                <ActionCableProvider url="ws://localhost:3000/cable">
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </ActionCableProvider>
               </BrowserRouter>
             </CollapseDrawerProvider>
           </SettingsProvider>
