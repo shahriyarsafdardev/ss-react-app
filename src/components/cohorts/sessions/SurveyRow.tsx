@@ -12,7 +12,7 @@ import {
   Box
 } from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
-
+import MultiSelect from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
 
@@ -82,7 +82,8 @@ const ANSWER_TYPES = {
   MULTI_SELECT: 'multi-select',
   CREATE_MULTI_SELECT: 'create-multi-select',
   SLIDER: 'slider',
-  STAR_RATING: 'star-rating'
+  STAR_RATING: 'star-rating',
+  MULTIPLE_SELECT: 'multiple-select'
 };
 
 const customStyles = {
@@ -102,6 +103,7 @@ function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
       onChange={(e) => onChange(e.target.value)}
       placeholder={item?.options?.placeholder || 'Start typing whatever comes to mind!'}
       multiline
+      autoFocus
       rows={4}
       inputProps={{
         'data-testid': 'survey-text'
@@ -317,6 +319,16 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
     }
     if (item.question_type === ANSWER_TYPES.STAR_RATING) {
       return <StarRating onChange={onChange} submitted_answer={text} />;
+    }
+    if (item.question_type === ANSWER_TYPES.MULTIPLE_SELECT) {
+      return (
+        <MultiSelect
+          options={item.options}
+          values={submitted_answer}
+          onChange={(e: any) => onChange(e)}
+          maxLimit={item.maxLimit}
+        />
+      );
     }
 
     return '';

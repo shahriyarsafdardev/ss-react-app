@@ -8,6 +8,83 @@ const QuestionWrapper = styled('div')(() => ({
 
 const questions = [
   {
+    question_type: 'text-input',
+    title: '',
+    options: {
+      placeholder: 'What have you done? Where have you worked? What are you interested in?'
+    },
+    submitted_answer: null,
+    description: null
+  },
+  {
+    question_type: 'multiple-select',
+    title: 'Which categories best describe your current role? (feel free to select multiple)',
+    options: [],
+    submitted_answer: null,
+    description: null,
+    maxLimit: 2
+  },
+  {
+    question_type: 'multiple-choice',
+    title: 'How many years of experience do you have in this type of role?',
+    options: ['0-2', '2-5', '5-10', '10-15', '15+'],
+    submitted_answer: null,
+    description: null
+  },
+  {
+    question_type: 'multiple-select',
+    title:
+      'Which categories best describe the industry you currently work in? (feel free to select multiple)',
+    options: [],
+    submitted_answer: null,
+    description: null,
+    maxLimit: 5
+  },
+  {
+    question_type: 'multiple-select',
+    title:
+      'Which cohort members are you most interested in connecting with?  (feel free to select multiple)',
+    options: [
+      'Cohort members that work in the same role',
+      'Cohort members that work in the same industry',
+      'Cohort members that I can be mentored by',
+      'Cohort members that I can mentor',
+      'Cohort members who are investors',
+      'Cohort members who are founders',
+      'Cohort members who live near me',
+      'I’m not interested in connecting with cohort members'
+    ],
+    submitted_answer: null,
+    description: null,
+    maxLimit: 3
+  },
+  {
+    question_type: 'create-multi-select',
+    title: 'What topics can fellow cohort members ask you question on?',
+    options: [
+      'Management',
+      'Team building',
+      'Economics',
+      'Regression',
+      'Software Engineering',
+      'Documentation',
+      'Analytics',
+      'Strategic Planning',
+      'Satelite Constelation Theory'
+    ],
+    submitted_answer: null,
+    description:
+      "To create a new topic, just start typing, when you've finished spelling it out, press enter!"
+  },
+  {
+    question_type: 'multiple-choice',
+    title:
+      'Are you interested in recieving networking suggestions based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)',
+    options: ['Yes', 'No'],
+    submitted_answer: null,
+    description: null
+  },
+  {
     question_type: 'multiple-choice',
     title: 'How did you hear about this cohort?',
     options: [
@@ -24,7 +101,7 @@ const questions = [
   {
     question_type: 'multiple-choice',
     title: 'Who is paying for this course?',
-    options: ['I am', 'My employer is', 'Other'],
+    options: ['I am', 'My employer', 'Other'],
     submitted_answer: null,
     description: null
   },
@@ -33,20 +110,6 @@ const questions = [
     title:
       'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
-    submitted_answer: null,
-    description: null
-  },
-  {
-    question_type: 'multi-select',
-    title: 'What are you looking to find within the Scholarsite community?',
-    options: ['Find a mentor', 'Mentor others', 'Grow my network', 'Discuss materials'],
-    submitted_answer: null,
-    description: null
-  },
-  {
-    question_type: 'create-multi-select',
-    title: 'What topics can fellow cohort members ask you question on?',
-    options: ['Economics', 'Management', 'Hiring', 'Statistics'],
     submitted_answer: null,
     description: null
   }
@@ -70,46 +133,50 @@ export const Question1 = ({
 
 export const Question2 = ({
   currentAnswer,
-  setCurrentAnswer
+  setCurrentAnswer,
+  options = []
 }: {
   currentAnswer: any;
   setCurrentAnswer: Function;
+  options: string[];
 }) => (
   <QuestionWrapper>
     <SurveyRow
-      item={questions[1]}
+      item={{ ...questions[1], options }}
       submitted_answer={currentAnswer || ''}
       onChange={setCurrentAnswer}
     />
   </QuestionWrapper>
 );
 
-export const Question3 = ({
-  currentAnswer,
-  setCurrentAnswer
-}: {
-  currentAnswer: any;
-  setCurrentAnswer: Function;
-}) => (
-  <QuestionWrapper>
-    <SurveyRow
-      item={questions[2]}
-      submitted_answer={currentAnswer || ''}
-      onChange={setCurrentAnswer}
-    />
-  </QuestionWrapper>
-);
+// export const Question3 = ({
+//   currentAnswer,
+//   setCurrentAnswer
+// }: {
+//   currentAnswer: any;
+//   setCurrentAnswer: Function;
+// }) => (
+//   <QuestionWrapper>
+//     <SurveyRow
+//       item={questions[2]}
+//       submitted_answer={currentAnswer || ''}
+//       onChange={setCurrentAnswer}
+//     />
+//   </QuestionWrapper>
+// );
 
 export const Question4 = ({
   currentAnswer,
-  setCurrentAnswer
+  setCurrentAnswer,
+  options = []
 }: {
   currentAnswer: any;
   setCurrentAnswer: Function;
+  options: string[];
 }) => (
   <QuestionWrapper>
     <SurveyRow
-      item={questions[3]}
+      item={{ ...questions[3], options }}
       submitted_answer={currentAnswer || ''}
       onChange={setCurrentAnswer}
     />
@@ -126,6 +193,118 @@ export const Question5 = ({
   <QuestionWrapper>
     <SurveyRow
       item={questions[4]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question6 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[5]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question7 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[6]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question8 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[7]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question9 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[8]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question10 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[9]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question11 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[10]}
+      submitted_answer={currentAnswer || ''}
+      onChange={setCurrentAnswer}
+    />
+  </QuestionWrapper>
+);
+
+export const Question12 = ({
+  currentAnswer,
+  setCurrentAnswer
+}: {
+  currentAnswer: any;
+  setCurrentAnswer: Function;
+}) => (
+  <QuestionWrapper>
+    <SurveyRow
+      item={questions[11]}
       submitted_answer={currentAnswer || ''}
       onChange={setCurrentAnswer}
     />

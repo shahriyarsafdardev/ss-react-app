@@ -3,10 +3,12 @@ import { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { setAmplitudeUserId } from 'utils/amplitude';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'redux/store';
+
+import { setOptions } from 'redux/slices/profileOptions';
 import axios from '../utils/axios';
 import { ParticipantProfile } from '../@types/user';
-
-import { isValidToken, setSession } from '../utils/jwt';
+import { setSession } from '../utils/jwt';
 // @types
 import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/authentication';
 
@@ -97,6 +99,7 @@ const AuthContext = createContext<JWTContextType | null>(null);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
+  const reduxDispatcher = useDispatch();
   const [state, dispatch] = useReducer(JWTReducer, initialState);
   const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
   const client = StreamChat.getInstance<
@@ -118,8 +121,10 @@ function AuthProvider({ children }: { children: ReactNode }) {
           setSession(accessToken);
 
           const response = await axios.get('/users/my_account');
-          const { user } = response.data;
+          const { user, role_options, industry_options, preferred_pronoun_options } = response.data;
           connectStream(user);
+
+          reduxDispatcher(setOptions(role_options, industry_options, preferred_pronoun_options));
 
           dispatch({
             type: Types.Initial,
@@ -172,7 +177,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
       password
     });
 
-    const { accessToken, user } = response.data;
+    const { accessToken, user, role_options, industry_options, preferred_pronoun_options } =
+      response.data;
 
     setAmplitudeUserId(user.id);
     connectStream(user);
@@ -183,6 +189,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         user
       }
     });
+    reduxDispatcher(setOptions(role_options, industry_options, preferred_pronoun_options));
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {

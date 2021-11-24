@@ -17,6 +17,7 @@ import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import { CohortContext } from 'contexts/CohortContext';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
+import { StudentProfile } from '../../@types/cohorts';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
@@ -39,7 +40,7 @@ const LoadingContainer = styled(Box)(() => ({
 export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
-  const [modalState, modalHandler] = useState<any>({});
+  const [modalState, modalHandler] = useState<StudentProfile | any>({});
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>([]);

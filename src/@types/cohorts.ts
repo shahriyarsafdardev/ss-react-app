@@ -8,12 +8,20 @@ export type StudentProfile = {
   id: string;
   first_name: string;
   last_name: string;
+  email: string;
   current_company: Company;
   current_position: string;
+  preferred_pronoun: string;
+  linkedin_url: string;
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
   strengths: string[];
   interests: string[];
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
+  is_interested_in_mentoring: boolean;
   profile_image_url: string;
-  introduction: string;
+  bio_text: string;
 };
 
 type Tag = {
@@ -28,6 +36,7 @@ export type SurveyContent = {
   options?: string[] | any;
   description: string | null;
   submitted_answer: string | null;
+  maxLimit?: number;
 };
 
 export type Survey = {

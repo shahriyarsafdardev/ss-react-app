@@ -1,0 +1,17 @@
+{
+  "first_name": "Waqas",
+  "last_name": "Nazir",
+  "linkedin_url": "https://linkedin.com/waqas_react_dev",
+  "discord_url": "Test url",
+  "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir-2",
+  "current_company": "Adobe",
+  "preferred_pronoun": "He/him",
+  "current_role_category_selections": ["Data", "Design"],
+  "current_industry_category_selections": ["Agriculture", "Artificial Intelligence"],
+  "current_position": "Economist",
+  "strengths": ["Economics", "Hiring"],
+  "interests": ["Mentor others", "Grow my network"],
+  "bio_text": "Types the little background info",
+  "networking_matching_preferences": ["Work in the same industry"],
+  "opted_in_for_matching_suggestions": true
+}

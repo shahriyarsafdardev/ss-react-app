@@ -143,8 +143,14 @@ export type ParticipantProfile = {
   discord_url: string;
   profile_image_url: File | any;
   current_company: string;
+  preferred_pronoun: string;
   current_position: string;
   strengths: string[] | any;
+  current_role_category_selections: string[] | any;
+  current_industry_category_selections: string[] | any;
   interests: string[] | any;
-  introduction: string;
+  bio_text: string;
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[];
+  is_interested_in_mentoring: boolean;
 };

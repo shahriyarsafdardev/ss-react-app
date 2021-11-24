@@ -14,6 +14,7 @@ interface ModalAnimateProps {
   open: boolean;
   children: React.ReactNode | React.ReactNode[];
   id?: string;
+  className?: string;
   zIndex?: number;
 }
 
@@ -43,6 +44,12 @@ const StyledModal = styled(Modal)(({ theme }) => ({
   outline: 'none',
   [theme.breakpoints.down('sm')]: {
     width: '90%'
+  },
+  '&.small': {
+    width: '40%',
+    [theme.breakpoints.down('sm')]: {
+      width: '90%'
+    }
   }
 }));
 const Cross = styled(Box)(({ theme }) => ({
@@ -65,7 +72,8 @@ export default function ModalAnimate({
   onClose,
   children,
   zIndex,
-  id
+  id,
+  className
 }: ModalAnimateProps) {
   return (
     <AnimatePresence>
@@ -73,9 +81,10 @@ export default function ModalAnimate({
         <StyledModal
           isOpen={open}
           onRequestClose={onClose}
+          className={className}
           style={{
             ...customStyles,
-            ...(zIndex && { overlay: { ...customStyles.overlay, zIndex } })
+            ...(zIndex && { overlay: { ...customStyles.overlay, zIndex: 1200 } })
           }}
           ariaHideApp={false}
         >

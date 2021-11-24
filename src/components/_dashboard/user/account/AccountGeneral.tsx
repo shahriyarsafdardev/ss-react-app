@@ -14,10 +14,16 @@ type ParticipantProfile = {
   discord_url: string;
   profile_image_url: File | any;
   current_company: string;
+  preferred_pronoun: string;
   current_position: string;
+  current_role_category_selections: string[] | any;
+  current_industry_category_selections: string[] | any;
   strengths: string[] | any;
   interests: string[] | any;
-  introduction: string;
+  bio_text: string;
+  opted_in_for_matching_suggestions: boolean;
+  networking_matching_preferences: string[] | any;
+  is_interested_in_mentoring: boolean;
 };
 
 // ----------------------------------------------------------------------
@@ -31,11 +37,17 @@ export default function AccountGeneral() {
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
     current_company: user?.current_company || '',
+    preferred_pronoun: user?.preferred_pronoun || '',
     current_position: user?.current_position || '',
     profile_image_url: user?.profile_image_url || '',
+    current_industry_category_selections: user?.current_industry_category_selections || [],
+    current_role_category_selections: user?.current_role_category_selections || [],
     interests: user?.interests || [],
     strengths: user?.strengths || [],
-    introduction: user?.introduction || ''
+    bio_text: user?.bio_text || '',
+    opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
+    networking_matching_preferences: user?.networking_matching_preferences || [],
+    is_interested_in_mentoring: user?.is_interested_in_mentoring
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -46,11 +58,27 @@ export default function AccountGeneral() {
     uploadData.append('linkedin_url', values.linkedin_url);
     uploadData.append('discord_url', values.discord_url);
     uploadData.append('current_company', values.current_company);
+    uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
+    uploadData.append('current_role_category_selections', values.current_role_category_selections);
+    uploadData.append(
+      'opted_in_for_matching_suggestions',
+      values.opted_in_for_matching_suggestions ? 'Yes' : 'No'
+    );
+    uploadData.append('networking_matching_preferences', values.networking_matching_preferences);
+    uploadData.append(
+      'is_interested_in_mentoring',
+      values.is_interested_in_mentoring ? 'Yes' : 'No'
+    );
+    uploadData.append(
+      'current_industry_category_selections',
+      values.current_industry_category_selections
+    );
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('image', values.profile_image_url.image);
-    uploadData.append('introduction', values.introduction);
+    uploadData.append('bio_text', values.bio_text);
+
     await axios.post(`users/update_user_profile.json`, uploadData).then((res) => {
       enqueueSnackbar(res.data.message, { variant: res.data.variant });
       updateProfile({ ...res.data.user });

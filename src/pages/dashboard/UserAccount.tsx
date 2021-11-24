@@ -3,6 +3,7 @@ import { capitalCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
+import roundPeople from '@iconify/icons-ic/baseline-people';
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
@@ -21,7 +22,8 @@ import {
   AccountBilling,
   AccountSocialLinks,
   AccountNotifications,
-  AccountChangePassword
+  AccountChangePassword,
+  AccountNetworking
 } from '../../components/_dashboard/user/account';
 
 // ----------------------------------------------------------------------
@@ -46,6 +48,11 @@ export default function UserAccount() {
       value: 'general',
       icon: <Icon icon={roundAccountBox} width={20} height={20} />,
       component: <AccountGeneral />
+    },
+    {
+      value: 'networking',
+      icon: <Icon icon={roundPeople} width={20} height={20} />,
+      component: <AccountNetworking />
     },
     {
       value: 'change_password',

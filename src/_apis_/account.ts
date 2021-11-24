@@ -33,9 +33,15 @@ const users: payloadUser[] = [
     strengths: ['Strength B', 'Strength C'],
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/demo',
+    preferred_pronoun: 'He/him',
+    current_role_category_selections: ['role 1'],
+    current_industry_category_selections: ['industry 1'],
     stream_id: '',
     stream_token: '',
-    full_name: 'Jaydon Frankie'
+    full_name: 'Jaydon Frankie',
+    opted_in_for_matching_suggestions: true,
+    networking_matching_preferences: ['option 1'],
+    is_interested_in_mentoring: false
   },
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-1',
@@ -57,9 +63,15 @@ const users: payloadUser[] = [
     strengths: ['Strength B', 'Strength C'],
     interests: ['Interest A'],
     linkedin_url: 'https://linkedin.com/aqibmaqqbool_react_dev',
+    preferred_pronoun: 'He/him',
+    current_role_category_selections: ['role 1'],
+    current_industry_category_selections: ['industry 1'],
     stream_id: '',
     stream_token: '',
-    full_name: 'Aqib Maqbool'
+    full_name: 'Aqib Maqbool',
+    opted_in_for_matching_suggestions: false,
+    networking_matching_preferences: ['option 2'],
+    is_interested_in_mentoring: false
   }
 ];
 
@@ -121,12 +133,18 @@ mock.onPost('/api/account/register').reply(async (config) => {
       role: 'user',
       isPublic: true,
       current_company: '',
+      preferred_pronoun: '',
       strengths: [],
       interests: [],
+      current_role_category_selections: [],
+      current_industry_category_selections: [],
       linkedin_url: '',
       stream_id: '',
       stream_token: '',
-      full_name: ''
+      full_name: '',
+      opted_in_for_matching_suggestions: false,
+      networking_matching_preferences: [],
+      is_interested_in_mentoring: false
     };
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
