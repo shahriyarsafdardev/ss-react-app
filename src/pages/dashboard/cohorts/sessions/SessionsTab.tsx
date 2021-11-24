@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
-import axios from 'utils/axios';
 import LoadingScreen from 'components/LoadingScreen';
 import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
@@ -49,7 +47,6 @@ const LoadingContainer = styled(Box)(() => ({
 export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
-  const [hasOnboarded, setHasOnboarded] = useState(true);
   const [analyticsSent, setAnalyticsSent] = useState(false);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -92,12 +89,6 @@ export default function SessionsTab() {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
-      axios
-        .get(`/cohorts/${cohort.id}/onboarding/onboarding_complete.json`)
-        .then((res) => res.data)
-        .then((payload) => {
-          setHasOnboarded(payload);
-        });
     }
   }, [cohort]);
 
@@ -110,7 +101,6 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         {sessions ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
