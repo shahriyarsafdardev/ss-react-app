@@ -123,7 +123,9 @@ export const HOME_PAGE_EVENTS = {
   cohort_timeline: 'cohort-timeline',
   session_number: 'session-number',
   to_do_list: 'to-do-list',
-  network_suggestion: 'network-suggestion'
+  network_suggestion: 'network-suggestion',
+  zoom_preview: 'Zoom Preview',
+  opened_zoom_link: 'Opened Zoom Link'
 };
 
 export const trackHomePageEvents = (

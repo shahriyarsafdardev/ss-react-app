@@ -18,6 +18,16 @@ const StyledSessionPrereadingContainer = styled(Box)(() => ({
   '&::-webkit-scrollbar-thumb': { borderRadius: '4px', backgroundColor: 'rgba(0, 0, 0, .3)' }
 }));
 
+const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
+  trackHomePageEvents(
+    name,
+    intake,
+    sessionNumber,
+    HOME_PAGE_EVENTS.zoom_preview,
+    HOME_PAGE_EVENTS.opened_zoom_link
+  );
+};
+
 const SessionPrereading = ({
   cohort,
   sessions,
@@ -134,6 +144,7 @@ const SessionPrereading = ({
                     displayType="small"
                     sessionTimeValue={activeSession.time}
                     sessionZoomUrl={activeSession.zoom_url}
+                    onClick={OnZoomButtonClick}
                   />
                 )}
                 {list.map((preReading, index) => (

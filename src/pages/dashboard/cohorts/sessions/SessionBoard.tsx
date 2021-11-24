@@ -151,6 +151,16 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
+const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
+  trackSessionsPageEvent(
+    name,
+    intake,
+    sessionNumber,
+    SESSION_EVENTS.zoom_preview,
+    SESSION_EVENTS.opened_zoom_link
+  );
+};
+
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -343,6 +353,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             displayType="large"
             sessionTimeValue={session.time}
             sessionZoomUrl={session.zoom_url}
+            onClick={OnZoomButtonClick}
           />
         )}
 

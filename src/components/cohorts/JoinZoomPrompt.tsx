@@ -3,7 +3,6 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
-import { trackSessionsPageEvent, SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 
 const useStyes = makeStyles(() => ({
@@ -84,16 +83,6 @@ const useStyes = makeStyles(() => ({
   }
 }));
 
-const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
-  trackSessionsPageEvent(
-    name,
-    intake,
-    sessionNumber,
-    SESSION_EVENTS.zoom_preview,
-    SESSION_EVENTS.opened_zoom_link
-  );
-};
-
 const DatePreview = ({ date }: { date: Date }) => {
   const classes = useStyes();
 
@@ -146,11 +135,13 @@ const TimerField = ({
 const TimerPreview = ({
   time,
   zoomUrl,
-  displayType
+  displayType,
+  clickEvent
 }: {
   time: Date;
   zoomUrl: string | null;
   displayType: string;
+  clickEvent: Function;
 }) => {
   const classes = useStyes();
   let d = time;
@@ -191,7 +182,7 @@ const TimerPreview = ({
         </Box>
         {zoomUrl && (
           <Button
-            onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
+            onClick={() => clickEvent(cohortName, cohortIntake, sessionNumber)}
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             target="_blank"
             href={`${zoomUrl}`}
@@ -207,10 +198,12 @@ const TimerPreview = ({
 
 const SessionInProgress = ({
   zoomUrl,
-  displayType
+  displayType,
+  clickEvent
 }: {
   zoomUrl: string | null;
   displayType: string;
+  clickEvent: Function;
 }) => {
   const classes = useStyes();
   const { cohortName, cohortIntake } = useContext(CohortContext);
@@ -243,7 +236,7 @@ const SessionInProgress = ({
         {zoomUrl && (
           <Button
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
-            onClick={() => OnZoomButtonClick(cohortName, cohortIntake, sessionNumber)}
+            onClick={() => clickEvent(cohortName, cohortIntake, sessionNumber)}
             target="_blank"
             href={`${zoomUrl}`}
             data-testid="session-invite"
@@ -278,7 +271,8 @@ const ExpiredSession = ({ displayType }: { displayType: string }) => {
 const renderPlaceHolder = (
   displayType: string,
   sessionTimeValue: string,
-  sessionZoomUrl: string | null
+  sessionZoomUrl: string | null,
+  onClick: Function
 ) => {
   const currentTime = new Date();
   const sessionTime = new Date(sessionTimeValue);
@@ -287,7 +281,13 @@ const renderPlaceHolder = (
 
   if (difference < 0) {
     if (Math.floor((Math.abs(difference) / (1000 * 60 * 60)) % 24) < 2) {
-      return <SessionInProgress displayType={displayType} zoomUrl={sessionZoomUrl} />;
+      return (
+        <SessionInProgress
+          displayType={displayType}
+          zoomUrl={sessionZoomUrl}
+          clickEvent={onClick}
+        />
+      );
     }
     return <ExpiredSession displayType={displayType} />;
   }
@@ -299,7 +299,14 @@ const renderPlaceHolder = (
   }
 
   if (daysRemaining === 0) {
-    return <TimerPreview displayType={displayType} time={sessionTime} zoomUrl={sessionZoomUrl} />;
+    return (
+      <TimerPreview
+        displayType={displayType}
+        time={sessionTime}
+        zoomUrl={sessionZoomUrl}
+        clickEvent={onClick}
+      />
+    );
   }
 
   return null;
@@ -308,11 +315,13 @@ const renderPlaceHolder = (
 export default function JoinZoomPrompt({
   sessionTimeValue,
   sessionZoomUrl,
-  displayType
+  displayType,
+  onClick
 }: {
   sessionTimeValue: string;
   displayType: string;
   sessionZoomUrl: string | null;
+  onClick: Function;
 }) {
   const classes = useStyes();
 
@@ -321,7 +330,7 @@ export default function JoinZoomPrompt({
       className={displayType === 'small' ? classes.smallContainer : classes.container}
       data-testid="video-place-holder"
     >
-      {renderPlaceHolder(displayType, sessionTimeValue, sessionZoomUrl)}
+      {renderPlaceHolder(displayType, sessionTimeValue, sessionZoomUrl, onClick)}
     </div>
   );
 }
