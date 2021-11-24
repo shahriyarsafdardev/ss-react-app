@@ -40,8 +40,7 @@ const users: payloadUser[] = [
     stream_token: '',
     full_name: 'Jaydon Frankie',
     opted_in_for_matching_suggestions: true,
-    networking_matching_preferences: ['option 1'],
-    is_interested_in_mentoring: false
+    networking_matching_preferences: ['option 1']
   },
   {
     id: '8864c717-587d-472a-929a-8e5f298024da-1',
@@ -70,8 +69,7 @@ const users: payloadUser[] = [
     stream_token: '',
     full_name: 'Aqib Maqbool',
     opted_in_for_matching_suggestions: false,
-    networking_matching_preferences: ['option 2'],
-    is_interested_in_mentoring: false
+    networking_matching_preferences: ['option 2']
   }
 ];
 
@@ -143,8 +141,7 @@ mock.onPost('/api/account/register').reply(async (config) => {
       stream_token: '',
       full_name: '',
       opted_in_for_matching_suggestions: false,
-      networking_matching_preferences: [],
-      is_interested_in_mentoring: false
+      networking_matching_preferences: []
     };
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {

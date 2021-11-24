@@ -14,7 +14,6 @@ type ParticipantProfile = {
   interests: string[] | any;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
-  is_interested_in_mentoring: boolean;
   linkedin_url: string;
 };
 
@@ -30,7 +29,6 @@ export default function AccountNetworking() {
     strengths: user?.strengths || [],
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
     networking_matching_preferences: user?.networking_matching_preferences || [],
-    is_interested_in_mentoring: user?.is_interested_in_mentoring,
     linkedin_url: user?.linkedin_url
   };
 
@@ -41,10 +39,6 @@ export default function AccountNetworking() {
       values.opted_in_for_matching_suggestions ? 'Yes' : 'No'
     );
     uploadData.append('networking_matching_preferences', values.networking_matching_preferences);
-    uploadData.append(
-      'is_interested_in_mentoring',
-      values.is_interested_in_mentoring ? 'Yes' : 'No'
-    );
     uploadData.append('strengths', values.strengths);
     uploadData.append('interests', values.interests);
     uploadData.append('linkedin_url', values.linkedin_url);

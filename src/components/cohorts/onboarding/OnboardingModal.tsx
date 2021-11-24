@@ -47,7 +47,6 @@ type HomeResponse = {
     current_role_category_selections: string[];
     opted_in_for_matching_suggestions: boolean;
     networking_matching_preferences: string[];
-    is_interested_in_mentoring: boolean;
     current_industry_category_selections: string[];
     interests: string[];
     bio_text: string;

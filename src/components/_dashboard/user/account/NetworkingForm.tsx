@@ -51,7 +51,6 @@ interface InitialState {
   strengths: string[];
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
-  is_interested_in_mentoring: boolean;
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -81,7 +80,6 @@ export default function NetworkingForm({
     interests: string[];
     opted_in_for_matching_suggestions: boolean;
     networking_matching_preferences: string[];
-    is_interested_in_mentoring: boolean;
   };
 }) {
   const [strengths, setStrengths] = useState<string[]>();
@@ -98,8 +96,7 @@ export default function NetworkingForm({
       current_industry_category_selections: [],
       strengths: [],
       opted_in_for_matching_suggestions: false,
-      networking_matching_preferences: [],
-      is_interested_in_mentoring: false
+      networking_matching_preferences: []
     },
     onSubmit: async (values) => {
       await onSubmit(values);

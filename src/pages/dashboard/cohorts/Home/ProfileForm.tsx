@@ -94,7 +94,6 @@ export default function ProfileForm({
     bio_text: string;
     opted_in_for_matching_suggestions: boolean;
     networking_matching_preferences: string[];
-    is_interested_in_mentoring: boolean;
   };
 }) {
   const [companies, setCompanies] = useState<string[]>();
@@ -127,8 +126,7 @@ export default function ProfileForm({
       strengths: [],
       bio_text: '',
       opted_in_for_matching_suggestions: false,
-      networking_matching_preferences: [],
-      is_interested_in_mentoring: false
+      networking_matching_preferences: []
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
