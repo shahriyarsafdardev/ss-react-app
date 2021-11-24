@@ -425,10 +425,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             </StyledButton>
           )}
 
-          {activeStep !== 1 && activeStep !== 10 && (
+          {activeStep !== 1 && (
             <StyledButton
               variant="contained"
               className="next"
+              loading={isSubmitting}
               disabled={
                 activeStep > 0 &&
                 activeStep !== 1 &&
@@ -439,23 +440,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               onClick={() => onStepChange(activeStep)}
               data-testid="btn-next"
             >
-              Next
-            </StyledButton>
-          )}
-          {activeStep === 10 && (
-            <StyledButton
-              variant="contained"
-              className="next"
-              loading={isSubmitting}
-              disabled={
-                activeStep <= 10 &&
-                (!responses[`question-${activeStep}`] ||
-                  responses[`question-${activeStep}`].length === 0)
-              }
-              onClick={() => onStepChange(activeStep)}
-              data-testid="btn-next"
-            >
-              Submit
+              {activeStep === 10 ? 'Submit' : 'Next'}
             </StyledButton>
           )}
           {activeStep === 1 && (
