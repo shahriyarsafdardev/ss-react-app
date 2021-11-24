@@ -156,6 +156,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>({});
   const totalSteps = 11;
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const { role_options, industry_options } = useSelector(
     (state: RootState) => state.profileOptions
@@ -378,7 +381,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep >= 1 && activeStep <= 4) {
-      return 'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
+      return `Your profile will be visible to other members of the ${cohort.code} cohort. You can edit all details again later in profile settings.`;
     }
 
     if (activeStep >= 5 && activeStep <= 7) {
