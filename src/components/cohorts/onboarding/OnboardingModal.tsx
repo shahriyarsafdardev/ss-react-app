@@ -147,6 +147,7 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
 }));
 
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -184,6 +185,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     });
 
   const submitOnboardingAnswers = () => {
+    setIsSubmitting(true);
     axios
       .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, {
         onboarding_answers: responses,
@@ -195,6 +197,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           homeConfig.participant_profile = { ...homeConfig.participant_profile, ...res.data };
         }
         setModal(false);
+        setIsSubmitting(false);
         enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
         dispatch(updateOnboardingStatus(cohort_id));
       });
@@ -381,7 +384,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep >= 1 && activeStep <= 4) {
-      return `Your profile will be visible to other members of the ${cohort.code} cohort. You can edit all details again later in profile settings.`;
+      return `Your profile will be visible to other members of the ${cohort?.code} cohort. You can edit all details again later in profile settings.`;
     }
 
     if (activeStep >= 5 && activeStep <= 7) {
@@ -422,7 +425,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             </StyledButton>
           )}
 
-          {activeStep !== 1 && (
+          {activeStep !== 1 && activeStep !== 10 && (
             <StyledButton
               variant="contained"
               className="next"
@@ -437,6 +440,22 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               data-testid="btn-next"
             >
               Next
+            </StyledButton>
+          )}
+          {activeStep === 10 && (
+            <StyledButton
+              variant="contained"
+              className="next"
+              loading={isSubmitting}
+              disabled={
+                activeStep <= 10 &&
+                (!responses[`question-${activeStep}`] ||
+                  responses[`question-${activeStep}`].length === 0)
+              }
+              onClick={() => onStepChange(activeStep)}
+              data-testid="btn-next"
+            >
+              Submit
             </StyledButton>
           )}
           {activeStep === 1 && (
