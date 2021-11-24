@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
+import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
 import { Box, Button, Card, Divider } from '@material-ui/core';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { CircularLoader, SectionContainer } from './Common';
 import { Cohort } from '../../../@types/cohorts';
 import { useDispatch } from '../../../redux/store';
@@ -11,6 +12,43 @@ import { getPeers } from '../../../redux/slices/cohort';
 import PeerCard from './PeerCard';
 import { CarouselControlsPaging1 } from '../../carousel';
 import useAuth from '../../../hooks/useAuth';
+
+const settings = {
+  speed: 800,
+  dots: true,
+  arrows: false,
+
+  ...CarouselControlsPaging1({
+    color: 'primary.main',
+    sx: {
+      position: 'relative',
+      backgroundColor: 'transparent',
+      bottom: '0px',
+      right: '40%',
+      left: '40%',
+      zIndex: 99,
+      marginTop: '15px'
+    }
+  })
+};
+
+const StyledBoxContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexDirection: 'row',
+  alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    img: { display: 'none' }
+  },
+  img: {
+    margin: '0 5px',
+    '&:hover': {
+      backgroundColor: 'rgba(77, 77, 205, 0.05)',
+      borderRadius: '15px',
+      boxShadow: '1px 1px 5px 5px rgba(77, 77, 205, 0.1)'
+    }
+  }
+}));
 
 const NetworkSuggestion = ({
   activeSession,
@@ -23,6 +61,8 @@ const NetworkSuggestion = ({
   const { user } = useAuth();
   const dispatch = useDispatch();
   const { random_peers } = cohort || [];
+
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
     if (cohort?.sessions && !random_peers) {
@@ -40,51 +80,8 @@ const NetworkSuggestion = ({
     onTrackEvent('Navigate Right');
   };
 
-  const settings = {
-    speed: 800,
-    dots: true,
-    arrows: false,
-
-    ...CarouselControlsPaging1({
-      color: 'primary.main',
-      sx: {
-        position: 'relative',
-        backgroundColor: 'transparent',
-        bottom: '0px',
-        right: '40%',
-        left: '40%',
-        zIndex: 99,
-        marginTop: '15px'
-      }
-    })
-  };
-
-  const StyledBoxContainer = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    [theme.breakpoints.down('sm')]: {
-      img: { display: 'none' }
-    },
-    img: {
-      margin: '0 5px',
-      '&:hover': {
-        backgroundColor: 'rgba(77, 77, 205, 0.05)',
-        borderRadius: '15px',
-        boxShadow: '1px 1px 5px 5px rgba(77, 77, 205, 0.1)'
-      }
-    }
-  }));
-
   const onTrackEvent = (eventValue: string) => {
-    trackHomePageEvents(
-      cohort.name,
-      cohort.intake,
-      activeSession,
-      HOME_PAGE_EVENTS.network_suggestion,
-      eventValue
-    );
+    sendAnalyticsData(activeSession, HOME_PAGE_EVENTS.network_suggestion, eventValue);
   };
 
   return (

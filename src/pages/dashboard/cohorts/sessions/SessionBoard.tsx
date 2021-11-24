@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from 'react';
-import { useLocation } from 'react-router';
 import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
-import { SESSION_EVENTS, trackSessionsPageEvent } from 'utils/amplitude';
+import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import {
   SessionMaterials,
   Description,
@@ -151,26 +151,17 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
-const OnZoomButtonClick = (name: string, intake: number | null, sessionNumber: number) => {
-  trackSessionsPageEvent(
-    name,
-    intake,
-    sessionNumber,
-    SESSION_EVENTS.zoom_preview,
-    SESSION_EVENTS.opened_zoom_link
-  );
-};
-
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
   const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
-  const { id, cohortName, cohortIntake } = useContext(CohortContext);
+  const { id } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
   const params = new URLSearchParams(window.location.search);
-  const feedbackSessionNumber = Number(params.get('session'));
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
   const feedback = params.get('open_feedback');
 
   const SurveyModal = ({
@@ -227,26 +218,14 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           cohortId={id}
           key="session_materials"
           onTrack={(eventData: string) =>
-            trackSessionsPageEvent(
-              cohortName,
-              cohortIntake,
-              sessionNumber,
-              SESSION_EVENTS.resources_tab,
-              eventData
-            )
+            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
           }
         />
       ) : (
         <Description
           key="description"
           onTrack={(eventData: string) =>
-            trackSessionsPageEvent(
-              cohortName,
-              cohortIntake,
-              sessionNumber,
-              SESSION_EVENTS.resources_tab,
-              eventData
-            )
+            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
           }
           innerContent={session?.description || ''}
         />
@@ -255,26 +234,14 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     <Summary
       key="summary"
       onTrack={(eventData: string) =>
-        trackSessionsPageEvent(
-          cohortName,
-          cohortIntake,
-          sessionNumber,
-          SESSION_EVENTS.summary_tab,
-          eventData
-        )
+        sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
       }
       innerContent={session?.summary || ''}
     />,
     <Slides
       key="slidesTab"
       onTrack={(eventData: string) =>
-        trackSessionsPageEvent(
-          cohortName,
-          cohortIntake,
-          sessionNumber,
-          SESSION_EVENTS.slides_tab,
-          eventData
-        )
+        sendAnalyticsData(sessionNumber, SESSION_EVENTS.slides_tab, eventData)
       }
       pdfUrl={session?.presentation_pdf_url}
       pdfDownloadable={session?.presentation_pdf_downloadable}
@@ -317,27 +284,21 @@ export default function SessionBoard({ session }: SessionBoardProps) {
               return false;
             }}
             onPlay={(e) => {
-              trackSessionsPageEvent(
-                cohortName,
-                cohortIntake,
+              sendAnalyticsData(
                 sessionNumber,
                 SESSION_EVENTS.recording_video_player,
                 'Clicked Play'
               );
             }}
             onPause={(e) => {
-              trackSessionsPageEvent(
-                cohortName,
-                cohortIntake,
+              sendAnalyticsData(
                 sessionNumber,
                 SESSION_EVENTS.recording_video_player,
                 'Clicked Pause'
               );
             }}
             onSeeked={(e) => {
-              trackSessionsPageEvent(
-                cohortName,
-                cohortIntake,
+              sendAnalyticsData(
                 sessionNumber,
                 SESSION_EVENTS.recording_video_player,
                 'Selected New Timepoint'
@@ -353,7 +314,13 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             displayType="large"
             sessionTimeValue={session.time}
             sessionZoomUrl={session.zoom_url}
-            onClick={OnZoomButtonClick}
+            onClick={(sessionNumber: number) => {
+              sendAnalyticsData(
+                sessionNumber,
+                SESSION_EVENTS.zoom_preview,
+                SESSION_EVENTS.opened_zoom_link
+              );
+            }}
           />
         )}
 

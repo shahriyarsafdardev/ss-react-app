@@ -4,8 +4,9 @@ import { styled } from '@material-ui/core/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import axios from 'utils/axios';
 import LoadingScreen from 'components/LoadingScreen';
-import { sendAmplitudeData, EVENT_TYPES } from 'utils/amplitude';
+import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { SessionListItem } from '../../../../@types/cohorts';
@@ -93,6 +94,10 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
+  const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
+    trackSessionsPageEvent(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
+  };
+
   return (
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
@@ -100,27 +105,29 @@ export default function SessionsTab() {
       <Page title="ScholarSite | Sessions">
         {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         {sessions ? (
-          <SessionsContainer>
-            <SessionsInnerContainer container>
-              <Grid item md={8} sm={12}>
-                <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                  <SessionBoard session={sessions && sessions[selectedSession]} />
-                </SessionContext.Provider>
-              </Grid>
-              <SessionListDesktopContainer item md={4}>
-                <SessionList
-                  onClick={setSelectedSession}
-                  selectedSession={selectedSession}
-                  sessionsList={trimmedSessionData}
-                />
-              </SessionListDesktopContainer>
-            </SessionsInnerContainer>
-            <SessionListSidebar
-              setSelectedSession={setSelectedSession}
-              selectedSession={selectedSession}
-              sessionsList={trimmedSessionData}
-            />
-          </SessionsContainer>
+          <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+            <SessionsContainer>
+              <SessionsInnerContainer container>
+                <Grid item md={8} sm={12}>
+                  <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
+                    <SessionBoard session={sessions && sessions[selectedSession]} />
+                  </SessionContext.Provider>
+                </Grid>
+                <SessionListDesktopContainer item md={4}>
+                  <SessionList
+                    onClick={setSelectedSession}
+                    selectedSession={selectedSession}
+                    sessionsList={trimmedSessionData}
+                  />
+                </SessionListDesktopContainer>
+              </SessionsInnerContainer>
+              <SessionListSidebar
+                setSelectedSession={setSelectedSession}
+                selectedSession={selectedSession}
+                sessionsList={trimmedSessionData}
+              />
+            </SessionsContainer>
+          </AnalyticsContext.Provider>
         ) : (
           <LoadingContainer>
             <LoadingScreen />

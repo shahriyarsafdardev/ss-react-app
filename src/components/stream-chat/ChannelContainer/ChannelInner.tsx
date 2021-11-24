@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { MessageResponse, logChatPromiseExecution } from 'stream-chat';
-import { trackMessagingEvents } from 'utils/amplitude';
 
 import {
   defaultPinPermissions,
@@ -13,6 +12,7 @@ import {
   MessageToSend
 } from 'stream-chat-react';
 
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { PinnedMessageList } from '../PinnedMessageList/PinnedMessageList';
 import { TeamChannelHeader } from '../TeamChannelHeader/TeamChannelHeader';
 import { ThreadMessageInput } from '../TeamMessageInput/ThreadMessageInput';
@@ -45,6 +45,7 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
   const { pinsOpen, setIsEditing, setPinsOpen, type } = props;
 
   const [giphyState, setGiphyState] = useState(false);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const giphyStateObj = {
     giphyState,
@@ -91,9 +92,9 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
       logChatPromiseExecution(sendMessagePromise, 'send message');
       if (type) {
         if (type === 'team') {
-          trackMessagingEvents('Team Channel', 'Message Sent');
+          sendAnalyticsData('Team Channel', 'Message Sent');
         } else if (type === 'messaging') {
-          trackMessagingEvents('Direct Chat', 'Message Sent');
+          sendAnalyticsData('Direct Chat', 'Message Sent');
         }
       }
       setGiphyState(false);

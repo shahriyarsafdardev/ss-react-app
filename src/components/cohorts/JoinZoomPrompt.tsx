@@ -3,7 +3,7 @@ import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
-import { CohortContext, SessionContext } from 'contexts/CohortContext';
+import { SessionContext } from 'contexts/CohortContext';
 
 const useStyes = makeStyles(() => ({
   container: {
@@ -146,7 +146,6 @@ const TimerPreview = ({
   const classes = useStyes();
   let d = time;
   d = new Date(d.setMinutes(d.getMinutes()));
-  const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   const { seconds, minutes, hours } = useTimer({
@@ -182,7 +181,7 @@ const TimerPreview = ({
         </Box>
         {zoomUrl && (
           <Button
-            onClick={() => clickEvent(cohortName, cohortIntake, sessionNumber)}
+            onClick={() => clickEvent(sessionNumber)}
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             target="_blank"
             href={`${zoomUrl}`}
@@ -206,7 +205,6 @@ const SessionInProgress = ({
   clickEvent: Function;
 }) => {
   const classes = useStyes();
-  const { cohortName, cohortIntake } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
 
   return (
@@ -236,7 +234,7 @@ const SessionInProgress = ({
         {zoomUrl && (
           <Button
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
-            onClick={() => clickEvent(cohortName, cohortIntake, sessionNumber)}
+            onClick={() => clickEvent(sessionNumber)}
             target="_blank"
             href={`${zoomUrl}`}
             data-testid="session-invite"
