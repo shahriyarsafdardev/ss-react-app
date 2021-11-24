@@ -5,9 +5,8 @@ import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
-import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { styled } from '@material-ui/core/styles';
-import { ActionCable } from 'react-actioncable-provider';
+import { ActionCableConsumer } from 'react-actioncable-provider';
 
 // material
 import {
@@ -34,8 +33,7 @@ import { MIconButton } from '../../components/@material-extend';
 
 type TNotificationPopover = {
   id: string;
-  channel_id: string | null;
-  cohort_id: string | null;
+  link: string;
   title: string;
   description: string;
   avatar: string | null;
@@ -117,7 +115,7 @@ function NotificationItem({
 
   return (
     <ListItemButton
-      to={`cohorts/${notification.cohort_id}/messaging?channel_id=${notification.channel_id}&message=${notification.id}`}
+      to={notification.link}
       onClick={onClick}
       disableGutters
       key={notification.id}
@@ -181,16 +179,15 @@ export default function NotificationsPopover() {
   };
 
   const handleReceivedNotifications = (val: any) => {
-    // eslint-disable-next-line no-debugger
-    console.log('received', val);
     if (val.receiver === user?.id) {
       setTotalUnread(totalUnRead + 1);
+      setNotifications([val.react_notification, ...notifications]);
     }
   };
 
   return (
     <>
-      <ActionCable
+      <ActionCableConsumer
         channel={{ channel: 'NotificationsChannel' }}
         onReceived={handleReceivedNotifications}
       />
@@ -252,7 +249,7 @@ export default function NotificationsPopover() {
               fullWidth
               disableRipple
               component={RouterLink}
-              to={`cohorts/${notifications[0].cohort_id}/messaging`}
+              to={notifications[0].link}
               onClick={() => {
                 setOpen(false);
               }}

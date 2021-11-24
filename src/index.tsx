@@ -40,6 +40,7 @@ import { ActionCableProvider } from 'react-actioncable-provider';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 // redux
+import ActionCable from 'actioncable';
 import { store, persistor } from './redux/store';
 // contexts
 import { SettingsProvider } from './contexts/SettingsContext';
@@ -61,6 +62,9 @@ import reportWebVitals from './reportWebVitals';
 
 // ----------------------------------------------------------------------
 
+const cable = ActionCable.createConsumer('ws://localhost:3000/cable');
+cable.subscriptions.create('NotificationsChannel', {});
+
 ReactDOM.render(
   <HelmetProvider>
     <ReduxProvider store={store}>
@@ -69,7 +73,7 @@ ReactDOM.render(
           <SettingsProvider>
             <CollapseDrawerProvider>
               <BrowserRouter>
-                <ActionCableProvider url="ws://localhost:3000/cable">
+                <ActionCableProvider cable={cable}>
                   <AuthProvider>
                     <App />
                   </AuthProvider>
