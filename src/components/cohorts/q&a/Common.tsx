@@ -6,7 +6,7 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   borderRadius: '16px',
   padding: '20px',
   '&.newQuestion': {
-    height: '150px'
+    marginLeft: '10px'
   },
   '&.filters': {
     height: '250px',
