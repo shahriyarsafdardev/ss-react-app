@@ -74,8 +74,8 @@ function QnATab() {
 
   return (
     <Page title="ScholarSite | Q&A">
+      <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
       <Container style={{ marginBottom: '50px' }}>
-        <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
         <StyledBox>
           <QnAFeed questions={list} />
           <StyledFiltersContainer>
