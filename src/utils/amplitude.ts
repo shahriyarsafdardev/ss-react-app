@@ -48,6 +48,7 @@ export const SESSION_EVENTS = {
   resources_tab: 'Resources Tab',
   recording_video_player: 'Recording Video Player',
   slides_tab: 'Slides Tab',
+  summary_tab: 'Summary Tab',
   zoom_preview: 'Zoom Preview',
   opened_zoom_link: 'Opened Zoom Link'
 };
@@ -122,7 +123,9 @@ export const HOME_PAGE_EVENTS = {
   cohort_timeline: 'cohort-timeline',
   session_number: 'session-number',
   to_do_list: 'to-do-list',
-  network_suggestion: 'network-suggestion'
+  network_suggestion: 'network-suggestion',
+  zoom_preview: 'Zoom Preview',
+  opened_zoom_link: 'Opened Zoom Link'
 };
 
 export const trackHomePageEvents = (
@@ -145,12 +148,21 @@ export const trackHomePageEvents = (
   });
 };
 
-const MESSAGING_EVENTS = {
-  message_tab_action: 'Messaging Tab Action'
+export const MESSAGING_EVENTS = {
+  message_tab_action: 'Messaging Tab Action',
+  cohort_name: 'cohort-name',
+  cohort_intake_number: 'cohort-intake-number'
 };
 
-export const trackMessagingEvents = (eventCategory: string, eventData: string) => {
+export const trackMessagingEvents = (
+  cohortName: string,
+  intake: number | null,
+  eventCategory: string,
+  eventData: string
+) => {
   sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
+    [MESSAGING_EVENTS.cohort_name]: cohortName,
+    [MESSAGING_EVENTS.cohort_intake_number]: intake,
     category: eventCategory,
     action: eventData
   });

@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { styled } from '@material-ui/core/styles';
-import { trackHomePageEvents, HOME_PAGE_EVENTS } from 'utils/amplitude';
+import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box } from '@material-ui/core';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import { CircularLoader, SectionContainer } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
-import VideoPlaceHolder from '../VideoPlaceHolder';
+import JoinZoomPrompt from '../JoinZoomPrompt';
 import { Summary } from '../sessions';
 
 const StyledSessionPrereadingContainer = styled(Box)(() => ({
@@ -28,6 +29,7 @@ const SessionPrereading = ({
   activeSession: Session | undefined;
 }) => {
   const [list, setList] = useState<SessionMaterial[]>([]);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
     const initMaterials = async () => {
@@ -55,12 +57,10 @@ const SessionPrereading = ({
             complete: value
           }
         );
-        trackHomePageEvents(
-          cohort.name,
-          cohort.intake,
+        sendAnalyticsData(
           activeSession?.number,
           HOME_PAGE_EVENTS.to_do_list,
-          `Marked Item as ${value ? 'true' : 'false'}`
+          `Marked Item as ${value ? 'true' : 'false'} from Home-Tab`
         );
         updated[index].complete = response.data;
         setList([...updated]);
@@ -130,10 +130,17 @@ const SessionPrereading = ({
               </Box>
               <StyledSessionPrereadingContainer>
                 {moment(activeSession.time).subtract(1, 'hours') < moment() && (
-                  <VideoPlaceHolder
+                  <JoinZoomPrompt
                     displayType="small"
                     sessionTimeValue={activeSession.time}
                     sessionZoomUrl={activeSession.zoom_url}
+                    onClick={(sessionNumber: number) => {
+                      sendAnalyticsData(
+                        sessionNumber,
+                        HOME_PAGE_EVENTS.zoom_preview,
+                        HOME_PAGE_EVENTS.opened_zoom_link
+                      );
+                    }}
                   />
                 )}
                 {list.map((preReading, index) => (
@@ -141,9 +148,7 @@ const SessionPrereading = ({
                     key={index}
                     item={preReading}
                     onPreReadingClick={() =>
-                      trackHomePageEvents(
-                        cohort.name,
-                        cohort.intake,
+                      sendAnalyticsData(
                         activeSession.number,
                         HOME_PAGE_EVENTS.to_do_list,
                         'Opened Resource from Home-Tab'
@@ -156,7 +161,7 @@ const SessionPrereading = ({
             </>
           ) : (
             <Box style={{ height: '400px', overflow: 'scroll' }}>
-              <Summary key="summary" innerContent={cohort.goodbye_message} />
+              <Summary onTrack={() => {}} key="summary" innerContent={cohort.goodbye_message} />
             </Box>
           )}
         </>

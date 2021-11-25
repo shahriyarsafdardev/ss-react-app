@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Message from '../../Message';
 
 type SummaryProps = {
   innerContent: string;
+  onTrack: Function;
 };
 
 const SummaryContainer = styled(Container)((props) => ({
@@ -12,7 +14,13 @@ const SummaryContainer = styled(Container)((props) => ({
   }
 }));
 
-export default function Summary({ innerContent }: SummaryProps) {
+export default function Summary({ innerContent, onTrack }: SummaryProps) {
+  useEffect(() => {
+    if (innerContent) {
+      onTrack('Opened Tab');
+    }
+  }, [innerContent]);
+
   return (
     <SummaryContainer>
       {innerContent && innerContent !== '' ? (

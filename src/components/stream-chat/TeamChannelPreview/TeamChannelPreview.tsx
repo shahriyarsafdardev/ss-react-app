@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
-import { trackMessagingEvents } from 'utils/amplitude';
 
 import './TeamChannelPreview.css';
 
-// import { TeamTypingIndicator } from '../TeamTypingIndicator/TeamTypingIndicator';
-
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import type {
   TeamAttachmentType,
   TeamChannelType,
@@ -24,6 +22,7 @@ type Props = ChannelPreviewUIComponentProps & {
 
 export const TeamChannelPreview: React.FC<Props> = (props) => {
   const { channel, setActiveChannel, setIsCreating, setIsEditing, type } = props;
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const { channel: activeChannel, client } = useChatContext<
     TeamAttachmentType,
@@ -120,9 +119,9 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
         if (setActiveChannel) {
           setActiveChannel(channel);
           if (type === 'team') {
-            trackMessagingEvents('Team Channel', 'Channel Opened');
+            sendAnalyticsData('Team Channel', 'Channel Opened');
           } else {
-            trackMessagingEvents('Direct Chat', 'Chat Opened');
+            sendAnalyticsData('Direct Chat', 'Chat Opened');
           }
         }
       }}

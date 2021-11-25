@@ -3,7 +3,14 @@ import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import moment from 'moment';
-import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
+import {
+  EVENT_TYPES,
+  sendAmplitudeData,
+  trackHomePageEvents,
+  HOME_PAGE_EVENTS
+} from 'utils/amplitude';
+
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -27,6 +34,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const Index = () => {
   const dispatch = useDispatch();
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
+  const [analyticsSent, setAnalyticsSent] = useState(false);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -35,10 +43,15 @@ const Index = () => {
   const { sessions } = cohort || [];
 
   useEffect(() => {
-    sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.home_tab
-    });
-  }, []);
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.home_tab,
+        [HOME_PAGE_EVENTS.cohort_name]: cohort.name,
+        [HOME_PAGE_EVENTS.cohort_intake_number]: cohort.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   useEffect(() => {
     if (cohort && !sessions) {
@@ -63,15 +76,21 @@ const Index = () => {
     }
   }, [sessions, activeSession]);
 
+  const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
+    trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
+  };
+
   return (
     <Page title="ScholarSite | Homepage">
-      <Container style={{ marginBottom: '50px' }}>
-        <CohortTimeLine cohort={cohort} sessions={sessions} />
-        <StyledBox>
-          <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
-          <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-        </StyledBox>
-      </Container>
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <Container style={{ marginBottom: '50px' }}>
+          <CohortTimeLine cohort={cohort} sessions={sessions} />
+          <StyledBox>
+            <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
+            <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+          </StyledBox>
+        </Container>
+      </AnalyticsContext.Provider>
     </Page>
   );
 };
