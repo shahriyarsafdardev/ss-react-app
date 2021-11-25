@@ -83,6 +83,18 @@ export type SessionListItem = {
   number: number;
 };
 
+export type Notification = {
+  id: string;
+  description: string;
+  title: string | undefined;
+  type: string;
+  avatar: string;
+  link: string;
+  channel_id: string;
+  isUnRead: boolean;
+  createdAt: Date;
+};
+
 export type Cohort = {
   id: string;
   name: string;
