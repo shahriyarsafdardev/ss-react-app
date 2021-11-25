@@ -1,9 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { LiteralStringForUnion, StreamChat, ChannelFilters, ChannelSort } from 'stream-chat';
+import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
+import {
+  MESSAGING_EVENTS,
+  EVENT_TYPES,
+  sendAmplitudeData,
+  trackMessagingEvents
+} from 'utils/amplitude';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useSelector } from '../../../../redux/store';
 import LoadingScreen from '../../../../components/LoadingScreen';
 
@@ -70,7 +76,9 @@ export default function Messaging() {
 
   useEffect(() => {
     sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.messaging_tab
+      page_type: EVENT_TYPES.messaging_tab,
+      [MESSAGING_EVENTS.cohort_name]: cohort.name,
+      [MESSAGING_EVENTS.cohort_intake_number]: cohort.intake
     });
   }, []);
 
@@ -121,56 +129,62 @@ export default function Messaging() {
     );
   }
 
+  const sendAnalyticsData = (eventCategory: string, eventData: string) => {
+    trackMessagingEvents(cohort.name, cohort.intake, eventCategory, eventData);
+  };
+
   return (
     <Page title="ScholarSite | Messaging" id="page">
-      <Box id="box">
-        <div key={cohortID} className="chat_wrapper">
-          <Chat {...{ client, i18nInstance }} theme="team light">
-            <DesktopView>
-              <ChannelListContainer
-                {...{
-                  isCreating,
-                  options,
-                  setCreateType,
-                  setIsCreating,
-                  setIsEditing,
-                  cohortID,
-                  cohortUsers: cohort?.enrollments || [],
-                  sort,
-                  loggedinUserID
-                }}
-              />
-            </DesktopView>
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <Box id="box">
+          <div key={cohortID} className="chat_wrapper">
+            <Chat {...{ client, i18nInstance }} theme="team light">
+              <DesktopView>
+                <ChannelListContainer
+                  {...{
+                    isCreating,
+                    options,
+                    setCreateType,
+                    setIsCreating,
+                    setIsEditing,
+                    cohortID,
+                    cohortUsers: cohort?.enrollments || [],
+                    sort,
+                    loggedinUserID
+                  }}
+                />
+              </DesktopView>
 
-            <ChannelContainer
-              {...{
-                createType,
-                isCreating,
-                isEditing,
-                setIsCreating,
-                setIsEditing,
-                cohortID,
-                cohortUsers: cohort?.enrollments || []
-              }}
-            />
-            <MobileView>
-              <SidePanel
-                props={{
+              <ChannelContainer
+                {...{
+                  createType,
                   isCreating,
-                  options,
-                  setCreateType,
+                  isEditing,
                   setIsCreating,
                   setIsEditing,
                   cohortID,
-                  cohortUsers: cohort?.enrollments || [],
-                  sort,
-                  loggedinUserID
+                  cohortUsers: cohort?.enrollments || []
                 }}
               />
-            </MobileView>
-          </Chat>
-        </div>
-      </Box>
+              <MobileView>
+                <SidePanel
+                  props={{
+                    isCreating,
+                    options,
+                    setCreateType,
+                    setIsCreating,
+                    setIsEditing,
+                    cohortID,
+                    cohortUsers: cohort?.enrollments || [],
+                    sort,
+                    loggedinUserID
+                  }}
+                />
+              </MobileView>
+            </Chat>
+          </div>
+        </Box>
+      </AnalyticsContext.Provider>
     </Page>
   );
 }

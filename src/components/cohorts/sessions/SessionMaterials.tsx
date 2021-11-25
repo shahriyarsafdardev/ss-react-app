@@ -18,12 +18,14 @@ type SessionMaterialProps = {
   groupedMaterials: GroupedSessionMaterial[];
   sessionId: string | undefined;
   cohortId: string | undefined;
+  onTrack: Function;
 };
 
 export default function SessionMaterials({
   groupedMaterials,
   sessionId,
-  cohortId
+  cohortId,
+  onTrack
 }: SessionMaterialProps) {
   const dispatch = useDispatch();
 
@@ -34,12 +36,13 @@ export default function SessionMaterials({
           <p style={{ fontSize: '18px', marginBottom: '15px' }}>{group.category}</p>
           {group.session_materials.map((preReading, index) => (
             <PreReadingRow
-              onPreReadingClick={() => {}}
+              onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
               key={index}
               item={preReading}
-              checkboxHanlder={(value: boolean) =>
-                dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value))
-              }
+              checkboxHanlder={(value: boolean) => {
+                onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
+                dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
+              }}
             />
           ))}
         </Box>
