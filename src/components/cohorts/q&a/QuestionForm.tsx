@@ -1,14 +1,11 @@
 import { useState } from 'react';
-
 import { Stack, TextField, Box, Typography, Button, Divider } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
-
 import { styled } from '@material-ui/core/styles';
 import { SectionContainer } from './Common';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   width: '100%',
-  padding: '15px',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -19,7 +16,6 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 }));
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   height: '39px',
-  width: 170,
   marginLeft: 10,
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -45,8 +41,8 @@ const RecordingTabContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   flexDirection: 'column',
-  flexBasis: '34%',
-  [theme.breakpoints.down('sm')]: {
+  width: '33%',
+  [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     width: '100%'
   }
@@ -64,7 +60,21 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
 
 const AddQuestionButton = styled(Button)(({ theme }) => ({
   height: 39,
-  width: 170,
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
+const QuestionFormContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: '#4D4DCD',
+  padding: '16px 24px 16px 24px',
+  position: 'relative',
+  top: 0,
+  zIndex: 1200
+}));
+
+const QuestionInput = styled(Box)(({ theme }) => ({
+  width: '63%',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -80,7 +90,7 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   marginBottom: 20,
   height: 225,
-  padding: 20
+  padding: '30px 10px 30px 16px'
 }));
 const recordingTab = () => (
   <>
@@ -115,54 +125,57 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
   };
 
   return (
-    <SectionContainer className="newQuestion">
-      <StyledStack
-        direction={{ xs: 'column', md: 'row' }}
-        spacing={2}
-        style={{ alignItems: `${showRecording === true ? 'unset' : 'center'}` }}
-      >
-        <TextField
-          fullWidth
-          value={question}
-          placeholder="Do you have any questions? Host would love to hear them! "
-          multiline
-          rows={showRecording === true ? '9' : ''}
-          sx={{ flexBasis: '65%' }}
-          size="small"
-          onChange={(e) => setQuestion(e.target.value)}
-          inputProps={{ maxLength: 120 }}
-        />
-        <RecordingTabContainer>
-          {showRecording && recordingTab()}
-          <ButtonsContainer>
-            <AddQuestionButton
-              onClick={() => {
-                setShowRecording(!showRecording);
-              }}
-              variant="outlined"
-              id="btn-submit"
-              startIcon={
-                showRecording === true ? (
-                  <img src="/static/cohorts-home/arrow-up.svg" />
-                ) : (
-                  <img src="/static/cohorts-home/arrow-down.svg" />
-                )
-              }
-            >
-              {showRecording === true ? 'Hide' : 'Add Recording'}
-            </AddQuestionButton>
-            <StyledLoadingButton
-              onClick={() => submitQuestion()}
-              variant="contained"
-              loading={submitting}
-              id="btn-submit"
-            >
-              Submit Question
-            </StyledLoadingButton>
-          </ButtonsContainer>
-        </RecordingTabContainer>
-      </StyledStack>
-    </SectionContainer>
+    <QuestionFormContainer id="new-question">
+      <SectionContainer className="newQuestion">
+        <StyledStack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={2}
+          style={{ alignItems: `${showRecording === true ? 'unset' : 'center'}` }}
+        >
+          <QuestionInput>
+            <TextField
+              fullWidth
+              value={question}
+              placeholder="Do you have any questions? Host would love to hear them! "
+              multiline
+              rows={showRecording === true ? '9' : ''}
+              size="small"
+              onChange={(e) => setQuestion(e.target.value)}
+              inputProps={{ maxLength: 120 }}
+            />
+          </QuestionInput>
+          <RecordingTabContainer>
+            {showRecording && recordingTab()}
+            <ButtonsContainer>
+              <AddQuestionButton
+                onClick={() => {
+                  setShowRecording(!showRecording);
+                }}
+                variant="outlined"
+                id="btn-submit"
+                startIcon={
+                  showRecording === true ? (
+                    <img src="/static/cohorts-home/arrow-up.svg" />
+                  ) : (
+                    <img src="/static/cohorts-home/arrow-down.svg" />
+                  )
+                }
+              >
+                {showRecording === true ? 'Hide' : 'Add Recording'}
+              </AddQuestionButton>
+              <StyledLoadingButton
+                onClick={() => submitQuestion()}
+                variant="contained"
+                loading={submitting}
+                id="btn-submit"
+              >
+                Submit Question
+              </StyledLoadingButton>
+            </ButtonsContainer>
+          </RecordingTabContainer>
+        </StyledStack>
+      </SectionContainer>
+    </QuestionFormContainer>
   );
 };
 
