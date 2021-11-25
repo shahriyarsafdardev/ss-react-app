@@ -9,6 +9,7 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   backgroundColor: 'white',
+  wordBreak: 'break-word',
   boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.20), 0px 24px 48px rgba(145, 158, 171, 0.05)',
   borderRadius: '16px',
   padding: '20px',

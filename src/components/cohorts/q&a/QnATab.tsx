@@ -24,6 +24,17 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
+const StyledFiltersContainer = styled(Box)(({ theme }) => ({
+  width: '33%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '530px',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [submitting, setSubmitting] = useState(false);
@@ -67,18 +78,10 @@ function QnATab() {
         <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
         <StyledBox>
           <QnAFeed questions={list} />
-          <Box
-            style={{
-              width: '33%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: '530px'
-            }}
-          >
+          <StyledFiltersContainer>
             <About />
             <Filters />
-          </Box>
+          </StyledFiltersContainer>
         </StyledBox>
       </Container>
     </Page>
