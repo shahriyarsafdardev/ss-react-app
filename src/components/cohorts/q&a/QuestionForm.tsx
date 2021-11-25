@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Stack, TextField, Box, Typography, Button, Divider } from '@material-ui/core';
+import { Stack, TextField, Box, Typography, Button, Divider, Container } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import { SectionContainer } from './Common';
 
-const StyledStack = styled(Stack)(({ theme }) => ({
+const StyledStack = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
@@ -15,7 +15,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  height: '39px',
+  width: '170px',
   marginLeft: 10,
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -41,7 +41,7 @@ const RecordingTabContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   flexDirection: 'column',
-  width: '33%',
+  width: '37%',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     width: '100%'
@@ -51,6 +51,7 @@ const RecordingTabContainer = styled(Box)(({ theme }) => ({
 const ButtonsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
+  marginLeft: 'auto',
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
@@ -59,7 +60,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
 }));
 
 const AddQuestionButton = styled(Button)(({ theme }) => ({
-  height: 39,
+  width: '170px',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -68,13 +69,13 @@ const AddQuestionButton = styled(Button)(({ theme }) => ({
 const QuestionFormContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#4D4DCD',
   padding: '16px 24px 16px 24px',
-  position: 'relative',
-  top: 0,
-  zIndex: 1200
+  zIndex: 1200,
+  width: '100%',
+  position: 'relative'
 }));
 
 const QuestionInput = styled(Box)(({ theme }) => ({
-  width: '63%',
+  width: '60%',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -92,6 +93,7 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
   height: 225,
   padding: '30px 10px 30px 16px'
 }));
+
 const recordingTab = () => (
   <>
     <RecordingButtonsContainer>
@@ -115,6 +117,7 @@ const recordingTab = () => (
     </RecordingButtonsContainer>
   </>
 );
+
 const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boolean }) => {
   const [question, setQuestion] = useState('');
   const [showRecording, setShowRecording] = useState(false);
@@ -125,13 +128,9 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
   };
 
   return (
-    <QuestionFormContainer id="new-question">
+    <QuestionFormContainer id="question-box">
       <SectionContainer className="newQuestion">
-        <StyledStack
-          direction={{ xs: 'column', md: 'row' }}
-          spacing={2}
-          style={{ alignItems: `${showRecording === true ? 'unset' : 'center'}` }}
-        >
+        <StyledStack style={{ alignItems: `${showRecording === true ? 'unset' : 'center'}` }}>
           <QuestionInput>
             <TextField
               fullWidth
