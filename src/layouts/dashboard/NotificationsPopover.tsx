@@ -1,11 +1,12 @@
 import { useRef, useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import axios from 'utils/axios';
 import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
 import { styled } from '@material-ui/core/styles';
+import { StreamChat, LiteralStringForUnion } from 'stream-chat';
+
 import { ActionCableConsumer } from 'react-actioncable-provider';
 
 // material
@@ -36,6 +37,7 @@ type TNotificationPopover = {
   link: string;
   title: string;
   description: string;
+  channel_id: string;
   avatar: string | null;
   type: string;
   createdAt: Date;
@@ -115,11 +117,11 @@ function NotificationItem({
 
   return (
     <ListItemButton
-      to={notification.link}
+      href={notification.link}
       onClick={onClick}
       disableGutters
       key={notification.id}
-      component={RouterLink}
+      component="a"
       sx={{
         py: 1.5,
         px: 2.5,
@@ -152,16 +154,53 @@ function NotificationItem({
 }
 
 export default function NotificationsPopover() {
+  const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
   const { user } = useAuth();
   const anchorRef = useRef(null);
+  const [chatClient, setChatClient] = useState<any>(null);
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<TNotificationPopover[]>([]);
-  const [totalUnRead, setTotalUnread] = useState(0);
+
+  useEffect(() => {
+    const initChat = async () => {
+      const client = StreamChat.getInstance<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        LiteralStringForUnion,
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>,
+        { image?: string }
+      >(apiKey!);
+      // Go for connecting a user only if not already connected
+      if (!client.user && user?.stream_token) {
+        await client.connectUser(
+          {
+            id: user?.stream_id || user?.id
+          },
+          user?.stream_token
+        );
+      }
+      client.on((event) => {
+        if (event.total_unread_count !== null && event.type === 'notification.mark_read') {
+          axios
+            .post('/notifications/mark_read.json', {
+              type: 'channel',
+              channel_id: event.channel_id
+            })
+            .then((res) => setNotifications(res.data.notifications));
+        }
+      });
+      setChatClient(client);
+    };
+    if (user?.stream_token) {
+      initChat();
+    }
+  }, []);
 
   useEffect(() => {
     axios.get('/notifications.json').then((res) => {
       setNotifications([...res.data.notifications, ...notifications]);
-      setTotalUnread(totalUnRead + res.data.notifications.length);
     });
   }, []);
 
@@ -173,14 +212,22 @@ export default function NotificationsPopover() {
     setOpen(false);
   };
 
+  const markRead = (id: string) => {
+    axios.post('/notifications/mark_read.json', {
+      type: 'single',
+      notification_id: id
+    });
+  };
+
   const handleMarkAllAsRead = async () => {
     setNotifications([]);
-    setTotalUnread(0);
+    axios.post('/notifications/mark_read.json', {
+      type: 'all'
+    });
   };
 
   const handleReceivedNotifications = (val: any) => {
     if (val.receiver === user?.id) {
-      setTotalUnread(totalUnRead + 1);
       setNotifications([val.react_notification, ...notifications]);
     }
   };
@@ -197,7 +244,7 @@ export default function NotificationsPopover() {
         color={open ? 'primary' : 'default'}
         onClick={handleOpen}
       >
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={notifications.length} color="error">
           <Icon icon={bellFill} width={20} height={20} />
         </Badge>
       </MIconButton>
@@ -212,11 +259,11 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
+              You have {notifications.length} unread messages
             </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {notifications.length > 0 && (
             <Tooltip title=" Mark all as read">
               <MIconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Icon icon={doneAllFill} width={20} height={20} />
@@ -235,29 +282,12 @@ export default function NotificationsPopover() {
                 notification={notification}
                 onClick={() => {
                   setOpen(false);
+                  markRead(notification.id);
                 }}
               />
             ))}
           </List>
         </Scrollbar>
-
-        <Divider />
-
-        {notifications.length > 0 && (
-          <Box sx={{ p: 1 }}>
-            <Button
-              fullWidth
-              disableRipple
-              component={RouterLink}
-              to={notifications[0].link}
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              View All
-            </Button>
-          </Box>
-        )}
       </MenuPopover>
     </>
   );
