@@ -3,12 +3,7 @@ import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import moment from 'moment';
-import {
-  EVENT_TYPES,
-  sendAmplitudeData,
-  trackHomePageEvents,
-  HOME_PAGE_EVENTS
-} from 'utils/amplitude';
+import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
 
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
@@ -46,8 +41,8 @@ const Index = () => {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.home_tab,
-        [HOME_PAGE_EVENTS.cohort_name]: cohort.name,
-        [HOME_PAGE_EVENTS.cohort_intake_number]: cohort.intake
+        [EVENT_TYPES.cohort_name]: cohort.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort.intake
       });
       setAnalyticsSent(true);
     }

@@ -50,6 +50,8 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const [hasOnboarded, setHasOnboarded] = useState(true);
+  const [analyticsSent, setAnalyticsSent] = useState(false);
+
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -68,10 +70,15 @@ export default function SessionsTab() {
   }
 
   useEffect(() => {
-    sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.sessions_tab
-    });
-  }, []);
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.sessions_tab,
+        [EVENT_TYPES.cohort_name]: cohort?.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
