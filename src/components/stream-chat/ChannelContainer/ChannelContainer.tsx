@@ -89,6 +89,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
         message: message.text,
         channel_id: channel?.id,
         channel_type: channel?.type === 'team' ? 'Team' : 'Direct',
+        channel_name: channel?.data?.name,
         cohort_id: cohortID,
         receivers: Object.keys(channel.state.members)
       });

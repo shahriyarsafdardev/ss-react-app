@@ -220,6 +220,7 @@ export default function NotificationsPopover() {
   };
 
   const handleMarkAllAsRead = async () => {
+    chatClient.markAllRead();
     setNotifications([]);
     axios.post('/notifications/mark_read.json', {
       type: 'all'
