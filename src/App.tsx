@@ -19,6 +19,7 @@ import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
 import { useDispatch } from './redux/store';
 import { getCohorts } from './redux/slices/cohort';
+import { getNotifications } from './redux/slices/notification';
 
 require('dotenv').config({ path: '../.env' });
 
@@ -31,6 +32,7 @@ export default function App() {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(getCohorts());
+      dispatch(getNotifications());
       initAmplitude();
       setAmplitudeUserProperties({
         full_name: user?.displayName,

@@ -1,26 +1,25 @@
-import { useRef, useEffect, useState } from 'react';
-import axios from 'utils/axios';
+import { useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
 import { styled } from '@material-ui/core/styles';
-import { StreamChat, LiteralStringForUnion } from 'stream-chat';
-
 import { ActionCableConsumer } from 'react-actioncable-provider';
-
-// material
 import {
   Box,
   List,
   Badge,
-  Button,
   Tooltip,
   Divider,
   Typography,
   ListItemText,
   ListItemButton
 } from '@material-ui/core';
+import { addNotification, markAsRead } from '../../redux/slices/notification';
+
+// material
+import { Notification } from '../../@types/cohorts';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
 import useAuth from '../../hooks/useAuth';
 
 // utils
@@ -31,18 +30,6 @@ import MenuPopover from '../../components/MenuPopover';
 import { MIconButton } from '../../components/@material-extend';
 
 // ----------------------------------------------------------------------
-
-type TNotificationPopover = {
-  id: string;
-  link: string;
-  title: string;
-  description: string;
-  channel_id: string;
-  avatar: string | null;
-  type: string;
-  createdAt: Date;
-  isUnRead: boolean;
-};
 
 const UserAvatar = styled('div')(() => ({
   width: '40px',
@@ -62,7 +49,7 @@ const trimString = (data: string) => {
   return '';
 };
 
-function renderContent(notification: TNotificationPopover) {
+function renderContent(notification: Notification) {
   const title = (
     <Typography variant="subtitle2">
       {notification.title}
@@ -106,13 +93,7 @@ function renderContent(notification: TNotificationPopover) {
   };
 }
 
-function NotificationItem({
-  notification,
-  onClick
-}: {
-  notification: TNotificationPopover;
-  onClick: any;
-}) {
+function NotificationItem({ notification, onClick }: { notification: Notification; onClick: any }) {
   const { avatar, title } = renderContent(notification);
 
   return (
@@ -154,82 +135,16 @@ function NotificationItem({
 }
 
 export default function NotificationsPopover() {
-  const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
   const { user } = useAuth();
   const anchorRef = useRef(null);
-  const [chatClient, setChatClient] = useState<any>(null);
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState<TNotificationPopover[]>([]);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const initChat = async () => {
-      const client = StreamChat.getInstance<
-        Record<string, unknown>,
-        Record<string, unknown>,
-        LiteralStringForUnion,
-        Record<string, unknown>,
-        Record<string, unknown>,
-        Record<string, unknown>,
-        { image?: string }
-      >(apiKey!);
-      // Go for connecting a user only if not already connected
-      if (!client.user && user?.stream_token) {
-        await client.connectUser(
-          {
-            id: user?.stream_id || user?.id
-          },
-          user?.stream_token
-        );
-      }
-      client.on((event) => {
-        if (event.total_unread_count !== null && event.type === 'notification.mark_read') {
-          axios
-            .post('/notifications/mark_read.json', {
-              type: 'channel',
-              channel_id: event.channel_id
-            })
-            .then((res) => setNotifications(res.data.notifications));
-        }
-      });
-      setChatClient(client);
-    };
-    if (user?.stream_token) {
-      initChat();
-    }
-  }, []);
-
-  useEffect(() => {
-    axios.get('/notifications.json').then((res) => {
-      setNotifications([...res.data.notifications, ...notifications]);
-    });
-  }, []);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const markRead = (id: string) => {
-    axios.post('/notifications/mark_read.json', {
-      type: 'single',
-      notification_id: id
-    });
-  };
-
-  const handleMarkAllAsRead = async () => {
-    chatClient.markAllRead();
-    setNotifications([]);
-    axios.post('/notifications/mark_read.json', {
-      type: 'all'
-    });
-  };
+  const notifications = useSelector((state: RootState) => state?.notification?.notifications) || [];
 
   const handleReceivedNotifications = (val: any) => {
     if (val.receiver === user?.id) {
-      setNotifications([val.react_notification, ...notifications]);
+      dispatch(addNotification(val.react_notification));
     }
   };
 
@@ -243,7 +158,7 @@ export default function NotificationsPopover() {
         ref={anchorRef}
         size="large"
         color={open ? 'primary' : 'default'}
-        onClick={handleOpen}
+        onClick={() => setOpen(true)}
       >
         <Badge badgeContent={notifications.length} color="error">
           <Icon icon={bellFill} width={20} height={20} />
@@ -252,7 +167,7 @@ export default function NotificationsPopover() {
 
       <MenuPopover
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         anchorEl={anchorRef.current}
         sx={{ width: 360 }}
       >
@@ -266,7 +181,7 @@ export default function NotificationsPopover() {
 
           {notifications.length > 0 && (
             <Tooltip title=" Mark all as read">
-              <MIconButton color="primary" onClick={handleMarkAllAsRead}>
+              <MIconButton color="primary" onClick={() => dispatch(markAsRead('all', undefined))}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </MIconButton>
             </Tooltip>
@@ -283,7 +198,7 @@ export default function NotificationsPopover() {
                 notification={notification}
                 onClick={() => {
                   setOpen(false);
-                  markRead(notification.id);
+                  dispatch(markAsRead('single', notification.id));
                 }}
               />
             ))}
