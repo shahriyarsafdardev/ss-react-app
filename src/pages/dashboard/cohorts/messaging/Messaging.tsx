@@ -3,12 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import {
-  MESSAGING_EVENTS,
-  EVENT_TYPES,
-  sendAmplitudeData,
-  trackMessagingEvents
-} from 'utils/amplitude';
+import { EVENT_TYPES, sendAmplitudeData, trackMessagingEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useSelector } from '../../../../redux/store';
 import LoadingScreen from '../../../../components/LoadingScreen';
@@ -60,6 +55,7 @@ export default function Messaging() {
   const [createType, setCreateType] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
   const loggedinUserID = user?.id;
   const cohortID = window.location.pathname.split('/')[2] || '';
@@ -75,12 +71,15 @@ export default function Messaging() {
   }));
 
   useEffect(() => {
-    sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.messaging_tab,
-      [MESSAGING_EVENTS.cohort_name]: cohort.name,
-      [MESSAGING_EVENTS.cohort_intake_number]: cohort.intake
-    });
-  }, []);
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.messaging_tab,
+        [EVENT_TYPES.cohort_name]: cohort?.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   useEffect(() => {
     const initChat = async () => {
