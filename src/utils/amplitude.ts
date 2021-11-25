@@ -35,7 +35,9 @@ export const EVENT_TYPES = {
   sessions_tab: 'Sessions Tab',
   home_tab: 'Home Tab',
   messaging_tab: 'Messaging Tab',
-  account_settings_tab: 'Account Settings'
+  account_settings_tab: 'Account Settings',
+  cohort_name: 'cohort-name',
+  cohort_intake_number: 'cohort-intake-number'
 };
 
 export const SESSION_EVENTS = {
@@ -149,9 +151,7 @@ export const trackHomePageEvents = (
 };
 
 export const MESSAGING_EVENTS = {
-  message_tab_action: 'Messaging Tab Action',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number'
+  message_tab_action: 'Messaging Tab Action'
 };
 
 export const trackMessagingEvents = (
@@ -161,8 +161,8 @@ export const trackMessagingEvents = (
   eventData: string
 ) => {
   sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
-    [MESSAGING_EVENTS.cohort_name]: cohortName,
-    [MESSAGING_EVENTS.cohort_intake_number]: intake,
+    [EVENT_TYPES.cohort_name]: cohortName,
+    [EVENT_TYPES.cohort_intake_number]: intake,
     category: eventCategory,
     action: eventData
   });

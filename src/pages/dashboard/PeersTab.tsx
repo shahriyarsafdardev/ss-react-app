@@ -39,6 +39,7 @@ const LoadingContainer = styled(Box)(() => ({
 
 export default function PeersTab() {
   const { themeStretch } = useSettings();
+  const [analyticsSent, setAnalyticsSent] = useState(false);
   const dispatch = useDispatch();
   const [modalState, modalHandler] = useState<StudentProfile | any>({});
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
@@ -91,10 +92,15 @@ export default function PeersTab() {
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.peers_tab
-    });
-  }, []);
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.peers_tab,
+        [EVENT_TYPES.cohort_name]: cohort?.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   const handleChange = (event: any) => {
     const {
