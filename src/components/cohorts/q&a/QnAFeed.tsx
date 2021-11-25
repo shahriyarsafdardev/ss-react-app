@@ -1,14 +1,23 @@
 import { Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import QuestionRow from './QuestionRow';
 import { Question } from '../../../@types/cohorts';
 
+const StyledFeedContainer = styled(Box)(({ theme }) => ({
+  width: '65%',
+  maxHeight: '600px',
+  overflowY: 'scroll',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
 // eslint-disable-next-line arrow-body-style
 const QnAFeed = ({ questions }: { questions: Question[] }) => {
   return (
-    <Box style={{ width: '65%', maxHeight: '600px', overflowY: 'scroll' }}>
+    <StyledFeedContainer>
       {questions &&
         questions?.map((question: any) => <QuestionRow key={question.id} question={question} />)}
-    </Box>
+    </StyledFeedContainer>
   );
 };
 

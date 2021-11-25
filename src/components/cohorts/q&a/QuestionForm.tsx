@@ -22,7 +22,9 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 170,
   marginLeft: 10,
   [theme.breakpoints.down('md')]: {
-    width: '100%'
+    width: '100%',
+    marginLeft: 0,
+    marginTop: 20
   }
 }));
 
@@ -44,8 +46,9 @@ const RecordingTabContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'column',
   flexBasis: '34%',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column'
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    width: '100%'
   }
 }));
 
@@ -54,7 +57,16 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    width: '100%'
+  }
+}));
+
+const AddQuestionButton = styled(Button)(({ theme }) => ({
+  height: 39,
+  width: 170,
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
   }
 }));
 
@@ -123,13 +135,12 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
         <RecordingTabContainer>
           {showRecording && recordingTab()}
           <ButtonsContainer>
-            <Button
+            <AddQuestionButton
               onClick={() => {
                 setShowRecording(!showRecording);
               }}
               variant="outlined"
               id="btn-submit"
-              sx={{ height: 39, width: 170 }}
               startIcon={
                 showRecording === true ? (
                   <img src="/static/cohorts-home/arrow-up.svg" />
@@ -139,7 +150,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
               }
             >
               {showRecording === true ? 'Hide' : 'Add Recording'}
-            </Button>
+            </AddQuestionButton>
             <StyledLoadingButton
               onClick={() => submitQuestion()}
               variant="contained"
