@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
+import axios from 'utils/axios';
 import moment from 'moment';
 import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
-
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -28,6 +29,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const Index = () => {
   const dispatch = useDispatch();
+  const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
 
@@ -51,6 +53,12 @@ const Index = () => {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
+      axios
+        .get(`/cohorts/${cohort.id}/onboarding/onboarding_complete.json`)
+        .then((res) => res.data)
+        .then((payload) => {
+          setHasOnboarded(payload);
+        });
     }
   }, [cohort]);
 
@@ -78,6 +86,7 @@ const Index = () => {
   return (
     <Page title="ScholarSite | Homepage">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         <Container style={{ marginBottom: '50px' }}>
           <CohortTimeLine cohort={cohort} sessions={sessions} />
           <StyledBox>

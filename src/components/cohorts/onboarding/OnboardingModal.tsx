@@ -47,7 +47,6 @@ type HomeResponse = {
     current_role_category_selections: string[];
     opted_in_for_matching_suggestions: boolean;
     networking_matching_preferences: string[];
-    is_interested_in_mentoring: boolean;
     current_industry_category_selections: string[];
     interests: string[];
     bio_text: string;
@@ -148,6 +147,7 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
 }));
 
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -157,6 +157,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>({});
   const totalSteps = 11;
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const { role_options, industry_options } = useSelector(
     (state: RootState) => state.profileOptions
@@ -182,6 +185,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     });
 
   const submitOnboardingAnswers = () => {
+    setIsSubmitting(true);
     axios
       .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, {
         onboarding_answers: responses,
@@ -193,6 +197,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           homeConfig.participant_profile = { ...homeConfig.participant_profile, ...res.data };
         }
         setModal(false);
+        setIsSubmitting(false);
         enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
         dispatch(updateOnboardingStatus(cohort_id));
       });
@@ -379,7 +384,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep >= 1 && activeStep <= 4) {
-      return 'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
+      return `Your profile will be visible to other members of the ${cohort?.code} cohort. You can edit all details again later in profile settings.`;
     }
 
     if (activeStep >= 5 && activeStep <= 7) {
@@ -424,6 +429,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             <StyledButton
               variant="contained"
               className="next"
+              loading={isSubmitting}
               disabled={
                 activeStep > 0 &&
                 activeStep !== 1 &&
@@ -434,7 +440,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               onClick={() => onStepChange(activeStep)}
               data-testid="btn-next"
             >
-              Next
+              {activeStep === 10 ? 'Submit' : 'Next'}
             </StyledButton>
           )}
           {activeStep === 1 && (

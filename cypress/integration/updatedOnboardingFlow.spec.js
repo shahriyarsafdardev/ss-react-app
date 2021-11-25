@@ -6,7 +6,7 @@ const cohortId = '9550cc85-305a-438c-a115-e791a16c91f0';
 const enrollmentId = 'f1b1b3f1-afad-4aec-8a4f-240698ac246c';
 const onboardingHeaderText = 'Build Your Profile';
 const onboardingHeaderDescription =
-  'Your profile will be visible to other members of the EODP F21 cohort. You can edit all details again later in profile settings.';
+  'Your profile will be visible to other members of the EODP21 cohort. You can edit all details again later in profile settings.';
 
 const networkHeader = 'Networking Preferences';
 const networkDescription =
@@ -42,7 +42,7 @@ describe('Onboarding Flow', () => {
   });
 
   it('should log user into app', () => {
-    cy.visit('/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/sessions');
+    cy.visit('/');
     const email = 'waqas@scholar.com';
     const password = '123456';
     cy.get('[data-testid=email]').type(email);
@@ -90,7 +90,7 @@ describe('Onboarding Flow', () => {
       });
       it('Asserts data of Page 2', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', onboardingHeaderText);
-        cy.get('[data-testid=onboard-description]').should(
+        cy.get('[data-testid=onboard-header-description]').should(
           'have.text',
           onboardingHeaderDescription
         );
@@ -155,7 +155,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 3', () => {
       it('Asserts data of Page 3', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', onboardingHeaderText);
-        cy.get('[data-testid=onboard-description]').should(
+        cy.get('[data-testid=onboard-header-description]').should(
           'have.text',
           onboardingHeaderDescription
         );
@@ -173,7 +173,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 4', () => {
       it('Asserts data of Page 4', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', onboardingHeaderText);
-        cy.get('[data-testid=onboard-description]').should(
+        cy.get('[data-testid=onboard-header-description]').should(
           'have.text',
           onboardingHeaderDescription
         );
@@ -199,7 +199,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 5', () => {
       it('Asserts data of Page 5', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', onboardingHeaderText);
-        cy.get('[data-testid=onboard-description]').should(
+        cy.get('[data-testid=onboard-header-description]').should(
           'have.text',
           onboardingHeaderDescription
         );
@@ -227,7 +227,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 6', () => {
       it('Asserts data of Page 6', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
+        cy.get('[data-testid=onboard-header-description]').should('have.text', networkDescription);
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -235,12 +235,14 @@ describe('Onboarding Flow', () => {
         );
       });
       it('Selects 2 fields in dropdown', () => {
-        cy.get('#multi-select').find('input').type('Work in the same role {enter} ');
-        cy.get('#multi-select').find('input').type('Can mentor me {enter} ');
+        cy.get('#multi-select')
+          .find('input')
+          .type('Cohort members that work in the same role {enter} ');
+        cy.get('#multi-select').find('input').type('Cohort members that I can mentor {enter} ');
       });
       it('Asserts the right fields are selected', () => {
-        cy.get('#multi-select').contains('Work in the same role');
-        cy.get('#multi-select').contains('Can mentor me');
+        cy.get('#multi-select').contains('Cohort members that work in the same role');
+        cy.get('#multi-select').contains('Cohort members that I can mentor');
       });
 
       it('Clicks on next button', () => {
@@ -250,7 +252,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 7', () => {
       it('Asserts data of Page 7', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
+        cy.get('[data-testid=onboard-header-description]').should('have.text', networkDescription);
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -259,9 +261,9 @@ describe('Onboarding Flow', () => {
       });
       it('Types two Topics and press enter', () => {
         //type Economics and press enter
-        cy.get('#create-select').find('input[type="text"]').type('Economics {enter} ');
+        cy.get('#create-select').find('input[type="text"]').type('Economics {enter}');
         //type hiring and press enter
-        cy.get('#create-select').find('input[type="text"]').type('Hiring {enter} ');
+        cy.get('#create-select').find('input[type="text"]').type('Hiring{enter}');
       });
       it('Asserts the right Text is typed', () => {
         cy.get('#create-select').contains('Hiring');
@@ -274,7 +276,7 @@ describe('Onboarding Flow', () => {
     context('Displays Page 8', () => {
       it('Asserts data of Page 8', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', networkHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', networkDescription);
+        cy.get('[data-testid=onboard-header-description]').should('have.text', networkDescription);
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -297,7 +299,10 @@ describe('Onboarding Flow', () => {
     context('Displays Page 9', () => {
       it('Asserts data of Page 9', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
+        cy.get('[data-testid=onboard-header-description]').should(
+          'have.text',
+          houseKeepingDescription
+        );
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -336,7 +341,10 @@ describe('Onboarding Flow', () => {
       it('Asserts data of Page 10', () => {
         // Assert title
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
+        cy.get('[data-testid=onboard-header-description]').should(
+          'have.text',
+          houseKeepingDescription
+        );
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -365,7 +373,10 @@ describe('Onboarding Flow', () => {
     context('Displays Page 13', () => {
       it('Asserts data of Page 13', () => {
         cy.get('[data-testid=onboard-title]').should('have.text', houseKeepingHeader);
-        cy.get('[data-testid=onboard-description]').should('have.text', houseKeepingDescription);
+        cy.get('[data-testid=onboard-header-description]').should(
+          'have.text',
+          houseKeepingDescription
+        );
         // Assert question
         cy.get('[data-testid=onboard-question]').should(
           'have.text',
@@ -408,8 +419,8 @@ describe('Onboarding Flow', () => {
             'Artificial Intelligence'
           ]);
           expect(request.body.onboarding_answers[questionIDs[3]]).to.deep.eq([
-            'Work in the same role',
-            'Can mentor me'
+            'Cohort members that work in the same role',
+            'Cohort members that I can mentor'
           ]);
           expect(request.body.onboarding_answers[questionIDs[4]]).to.deep.eq([
             'Economics',

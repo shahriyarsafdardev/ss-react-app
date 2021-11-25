@@ -23,7 +23,6 @@ type ParticipantProfile = {
   bio_text: string;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
-  is_interested_in_mentoring: boolean;
 };
 
 // ----------------------------------------------------------------------
@@ -46,8 +45,7 @@ export default function AccountGeneral() {
     strengths: user?.strengths || [],
     bio_text: user?.bio_text || '',
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
-    networking_matching_preferences: user?.networking_matching_preferences || [],
-    is_interested_in_mentoring: user?.is_interested_in_mentoring
+    networking_matching_preferences: user?.networking_matching_preferences || []
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
@@ -66,10 +64,6 @@ export default function AccountGeneral() {
       values.opted_in_for_matching_suggestions ? 'Yes' : 'No'
     );
     uploadData.append('networking_matching_preferences', values.networking_matching_preferences);
-    uploadData.append(
-      'is_interested_in_mentoring',
-      values.is_interested_in_mentoring ? 'Yes' : 'No'
-    );
     uploadData.append(
       'current_industry_category_selections',
       values.current_industry_category_selections
