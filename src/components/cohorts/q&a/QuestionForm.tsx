@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Stack, TextField, Box, Typography, Button, Divider, Container } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { SectionContainer } from './Common';
 
 const StyledStack = styled(Box)(({ theme }) => ({
@@ -96,7 +97,9 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
 
 const recordingTab = () => (
   <>
-    <RecordingButtonsContainer>
+    <VideoRecorder onComplete={(response: any) => console.log(response)} />
+
+    {/* <RecordingButtonsContainer>
       <Typography sx={{ fontWeight: 400, fontSize: 14, color: '#6C7885' }}>
         You can add a recording to provide context and a personal touch to your question!
       </Typography>
@@ -114,7 +117,7 @@ const recordingTab = () => (
           Record Audio
         </StyledRecordingButton>
       </Box>
-    </RecordingButtonsContainer>
+    </RecordingButtonsContainer> */}
   </>
 );
 

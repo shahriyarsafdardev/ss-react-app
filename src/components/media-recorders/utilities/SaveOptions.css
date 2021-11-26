@@ -1,0 +1,38 @@
+.questions-answers-save-options {
+  height: 0px;
+  overflow: visible;
+}
+.questions-answers-save-options div {
+  margin-top: 60px;
+}
+.questions-answers-save-options .button-container {
+  display: flex;
+  flex-direction: row;
+}
+.questions-answers-save-options .button {
+  color: black;
+  padding: 0.5rem 1rem;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.video-recorder-screen .recorder-wrapper {
+  height: 60vh;
+  width: 100%;
+}
+.video-recorder-screen .recorder-wrapper div {
+  overflow: visible;
+}
+.video-recorder-screen .recorder-wrapper button {
+  outline: none;
+}
+.video-recorder-screen .recorder-wrapper div[class^='switch-camera-view'] {
+  display: none;
+}
+.video-recorder-screen video {
+  z-index: 20;
+  object-fit: contain;
+}
+.video-recorder-screen .upper div {
+  z-index: 25 !important;
+}
