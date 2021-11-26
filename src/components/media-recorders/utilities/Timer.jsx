@@ -28,7 +28,6 @@ const pad = (unit) => {
 
 const getState = (seconds) => {
   const minutes = Math.floor(seconds / 60);
-
   const humanTime =
     minutes !== 0 ? `${minutes}:${pad(seconds - minutes * 60)}` : `${seconds - minutes * 60}s`;
 
@@ -39,15 +38,11 @@ const getState = (seconds) => {
 };
 
 const Timer = ({ timeLimit }) => {
-  const [state, setState] = useState(getState(timeLimit ? timeLimit / 1000 : 0));
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const { seconds } = state;
-      const nextSeconds = timeLimit ? seconds - 1 : seconds + 1;
-
-      const nextState = getState(nextSeconds);
-      setState(nextState);
+      setSeconds((seconds) => (timeLimit ? seconds - 1 : seconds + 1));
     }, 1000);
 
     return () => {
@@ -58,7 +53,7 @@ const Timer = ({ timeLimit }) => {
   return (
     <Text>
       <RecIcon />
-      {state.human || '0:00'}
+      {getState(seconds).human || '0:00'}
     </Text>
   );
 };
