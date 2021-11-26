@@ -126,10 +126,21 @@ const Controls =
     );
   };
 
-const CustomVideoRecorder = ({ onComplete }) => (
-  <Box>
+const CustomVideoRecorder = ({ onComplete, onClose }) => (
+  <Box style={{ height: '200px' }}>
     <div className="question-video-recorder-screen">
       <div className="question-recorder-wrapper">
+        {/* <button onClick={() => onClose(false)} style={{ background: 'none' }}>
+          <img src="/static/cross-white.svg" />
+        </button> */}
+        {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+        <img
+          src="/static/cross-white.svg"
+          alt="cross"
+          onClick={() => onClose(false)}
+          onKeyDown={() => {}}
+          style={{ position: 'absolute', top: 10, right: 10, zIndex: 200 }}
+        />
         <VideoRecorder
           isOnInitially
           showReplayControls
