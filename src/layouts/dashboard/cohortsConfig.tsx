@@ -57,7 +57,6 @@ const cohortsConfig = (rawCohorts: any) =>
       {
         title: 'Q&A',
         path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-        externalUrl: true,
         notifications: true,
         category: 'Question'
       }
