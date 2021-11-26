@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Stack, TextField, Box, Typography, Button, Divider, Container } from '@material-ui/core';
+import { TextField, Box, Typography, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
-import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { SectionContainer } from './Common';
+import MediaRecordingTab from './MediaRecordingTab';
 
 const StyledStack = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -22,18 +22,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%',
     marginLeft: 0,
     marginTop: 20
-  }
-}));
-
-const StyledRecordingButton = styled(Button)(({ theme }) => ({
-  height: '50px',
-  margin: '10px',
-  color: '#4D4DCD',
-  width: 200,
-  fontSize: 16,
-  border: '2px solid',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
   }
 }));
 
@@ -82,107 +70,66 @@ const QuestionInput = styled(Box)(({ theme }) => ({
   }
 }));
 
-const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  flexDirection: 'column',
-  background: 'linear-gradient(180deg, #F7FAFC 0%, rgba(247, 250, 252, 0) 100%)',
-  border: '1px dashed #DCE0E4',
-  borderRadius: '8px',
-  marginBottom: 20,
-  height: 250,
-  padding: '30px 10px 30px 16px'
-}));
-
-const recordingTab = (recording: boolean, setIsRecording: any) => (
-  <>
-    <RecordingButtonsContainer>
-      {recording && (
-        <VideoRecorder
-          onClose={setIsRecording}
-          onComplete={(response: any) => console.log(response)}
-        />
-      )}
-      {!recording && (
-        <>
-          <Typography sx={{ fontWeight: 400, fontSize: 14, color: '#6C7885' }}>
-            You can add a recording to provide context and a personal touch to your question!
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <StyledRecordingButton
-              variant="outlined"
-              startIcon={<img src="/static/cohorts-home/video-outlined.svg" />}
-              onClick={() => {
-                setIsRecording(true);
-              }}
-            >
-              Record Video
-            </StyledRecordingButton>
-            <StyledRecordingButton
-              variant="outlined"
-              startIcon={<img src="/static/cohorts-home/audio-outlined.svg" />}
-            >
-              Record Audio
-            </StyledRecordingButton>
-          </Box>
-        </>
-      )}
-    </RecordingButtonsContainer>
-  </>
-);
-
 const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boolean }) => {
   const [question, setQuestion] = useState('');
-  const [showRecording, setShowRecording] = useState(false);
+  const [showMediaSection, setMediaSection] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [videoData, setVideoData] = useState(null);
+  const [questionType, setQuestionType] = useState('Text');
 
   const submitQuestion = async () => {
-    onSubmit(question);
+    await onSubmit(question, videoData, questionType);
     setQuestion('');
-  };
-
-  const handleRecording = () => {
-    if (showRecording && isRecording) {
-      setIsRecording(false);
-    }
+    setMediaSection(false);
+    setIsRecording(false);
+    setQuestionType('Text');
+    setVideoData(null);
   };
 
   return (
     <QuestionFormContainer id="question-box">
       <SectionContainer className="newQuestion">
-        <StyledStack style={{ alignItems: `${showRecording === true ? 'unset' : 'center'}` }}>
+        <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
           <QuestionInput>
             <TextField
               fullWidth
               value={question}
               placeholder="Do you have any questions? Host would love to hear them! "
               multiline
-              rows={showRecording === true ? '9' : ''}
+              rows={showMediaSection === true ? '9' : ''}
               size="small"
               onChange={(e) => setQuestion(e.target.value)}
               inputProps={{ maxLength: 120 }}
             />
           </QuestionInput>
           <RecordingTabContainer>
-            {showRecording && recordingTab(isRecording, setIsRecording)}
+            {showMediaSection && (
+              <MediaRecordingTab
+                isRecording={isRecording}
+                onVideoRecordingComplete={setVideoData}
+                setIsRecording={setIsRecording}
+                setQuestionType={setQuestionType}
+              />
+            )}
             <ButtonsContainer>
               <AddQuestionButton
                 onClick={() => {
-                  setShowRecording(!showRecording);
-                  handleRecording();
+                  if (!showMediaSection) {
+                    setQuestionType('Text');
+                  }
+                  setMediaSection(!showMediaSection);
                 }}
                 variant="outlined"
                 id="btn-submit"
                 startIcon={
-                  showRecording === true ? (
-                    <img src="/static/cohorts-home/arrow-up.svg" />
+                  showMediaSection === true ? (
+                    <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
                   ) : (
-                    <img src="/static/cohorts-home/arrow-down.svg" />
+                    <img src="/static/cohorts-home/arrow-down.svg" alt="down-arrow" />
                   )
                 }
               >
-                {showRecording === true ? 'Hide' : 'Add Recording'}
+                {showMediaSection === true ? 'Hide' : 'Add Recording'}
               </AddQuestionButton>
               <StyledLoadingButton
                 onClick={() => submitQuestion()}
