@@ -87,7 +87,7 @@ const NetworkSuggestion = ({
   return (
     <SectionContainer
       className="card-3"
-      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' }}
+      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
     >
       {random_peers ? (
         <>
