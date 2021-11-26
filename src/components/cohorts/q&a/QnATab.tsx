@@ -53,12 +53,19 @@ function QnATab() {
     initMaterials();
   }, [cohort_id]);
 
-  const onFormSubmitHandler = async (question: string) => {
+  const onFormSubmitHandler = async (
+    question: string,
+    videoData: File | null,
+    questionType: string
+  ) => {
     if (question) {
       setSubmitting(true);
       const questionData = new FormData();
 
       questionData.append('question_summary', question);
+      questionData.append('question_type', questionType);
+      videoData && questionData.append('question_video', videoData);
+
       questionData.append('cohort_id', cohort_id);
       await axios.post(`/questions_feed.json`, questionData).then((res) => {
         if (res.data.question) {
