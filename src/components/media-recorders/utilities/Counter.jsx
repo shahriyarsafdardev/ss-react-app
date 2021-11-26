@@ -21,9 +21,6 @@ const Countdown = ({ countdownTime }) => {
   const updateNumber = () => {
     const nextNumber = time - 1;
     setTime(nextNumber);
-    // if (nextNumber !== 0) {
-    //   this.timeout = setTimeout(this.updateNumber, 1000);
-    // }
   };
 
   useEffect(() => {
