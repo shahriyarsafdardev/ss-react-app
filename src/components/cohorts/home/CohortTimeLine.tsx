@@ -48,7 +48,6 @@ const CohortTimeLine = ({
       if (!isHeaderSet) {
         setHeader(`👋 Hi ${user?.first_name}, welcome to the ${cohort?.code || ''} Cohort!`);
       }
-      currentSessionNumber = 2;
     }
 
     if (currentSessionNumber === 0 && sessions?.length) {
