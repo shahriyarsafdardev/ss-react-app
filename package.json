@@ -74,7 +74,6 @@
     "@types/react-pdf": "^5.0.7",
     "@types/react-star-rating-component": "^1.4.1",
     "actioncable": "^5.2.6",
-    "actioncable-js": "^5.0.0-rc2",
     "amazon-cognito-identity-js": "^5.0.6",
     "amplitude-js": "^8.8.0",
     "apexcharts": "^3.27.3",
