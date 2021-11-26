@@ -114,7 +114,7 @@ export type Cohort = {
 export type Comment = {
   id: string;
   text: string;
-  time: string;
+  time: Date;
   user_name: string;
 };
 

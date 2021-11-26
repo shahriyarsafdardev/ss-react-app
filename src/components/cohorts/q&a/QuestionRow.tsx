@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography, Divider } from '@material-ui/core';
+import CommentList from './CommentList';
+import CommentForm from './CommentForm';
 import { Question, Comment } from '../../../@types/cohorts';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
@@ -150,12 +152,7 @@ export default function QuestionRow({ question }: { question: Question }) {
   const renderComments = () =>
     question.comments.length > 0 && (
       <div>
-        <div
-          style={{ border: '1px solid #828282', margin: '10px 0', width: '100%', opacity: 0.2 }}
-        />
-        {question.comments.map((comment: Comment) => (
-          <CommentRow key={comment.id} comment={comment} />
-        ))}
+        <CommentList post={question} />
       </div>
     );
 
@@ -163,7 +160,14 @@ export default function QuestionRow({ question }: { question: Question }) {
     <StyledQuestionRow>
       {renderQuestion()}
       {renderAnswer()}
+      <Divider
+        sx={{
+          mt: 1,
+          width: '100%'
+        }}
+      />
       {renderComments()}
+      <CommentForm questionID={question.id} />
     </StyledQuestionRow>
   );
 }
