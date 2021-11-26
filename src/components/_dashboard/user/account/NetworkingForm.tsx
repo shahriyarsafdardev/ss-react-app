@@ -194,17 +194,17 @@ export default function NetworkingForm({
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
                     <Typography>
-                      Which cohort members are you most interested in connecting with?
+                      I am most interested in connecting with cohort members who:
                     </Typography>
                     <MultiSelect
                       options={[
-                        'Cohort members that work in the same role',
-                        'Cohort members that work in the same industry',
-                        'Cohort members that I can be mentored by',
-                        'Cohort members that I can mentor',
-                        'Cohort members who are investors',
-                        'Cohort members who are founders',
-                        'Cohort members who live near me',
+                        'Work in the same role',
+                        'Work in the same industry',
+                        'That I can be mentored by',
+                        'That I can mentor',
+                        'Who are investors',
+                        'Who are founders',
+                        'Who live near me',
                         'I’m not interested in connecting with cohort members'
                       ]}
                       values={values.networking_matching_preferences}

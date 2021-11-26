@@ -43,15 +43,15 @@ const questions = [
   {
     question_type: 'multiple-select',
     title:
-      'Which cohort members are you most interested in connecting with?  (feel free to select multiple)',
+      'I am most interested in connecting with cohort members who... (feel free to select multiple)',
     options: [
-      'Cohort members that work in the same role',
-      'Cohort members that work in the same industry',
-      'Cohort members that I can be mentored by',
-      'Cohort members that I can mentor',
-      'Cohort members who are investors',
-      'Cohort members who are founders',
-      'Cohort members who live near me',
+      'Work in the same role',
+      'Work in the same industry',
+      'That I can be mentored by',
+      'That I can mentor',
+      'Who are investors',
+      'Who are founders',
+      'Who live near me',
       'I’m not interested in connecting with cohort members'
     ],
     submitted_answer: null,
