@@ -70,6 +70,22 @@ const SessionPrereading = ({
     }
   };
 
+  const sessionDescription = (innerContent: string) => (
+    <Box
+      className="ql-editor"
+      data-testid="session-description"
+      dangerouslySetInnerHTML={{ __html: innerContent }}
+      style={{
+        fontWeight: 400,
+        fontSize: '14px',
+        height: 'auto',
+        lineHeight: '28px',
+        padding: '0px 5px 15px 0px',
+        marginRight: '4px'
+      }}
+    />
+  );
+
   const preReadingsCompleted = () => {
     if (list?.length > 0) {
       return list.filter((item) => item.complete === false).length === 0;
@@ -143,6 +159,8 @@ const SessionPrereading = ({
                     }}
                   />
                 )}
+                {activeSession.session_description &&
+                  sessionDescription(activeSession.session_description)}
                 {list.map((preReading, index) => (
                   <PreReadingRow
                     key={index}
