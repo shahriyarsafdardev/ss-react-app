@@ -4371,13 +4371,6 @@ acorn@^8.2.4:
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.4.1.tgz"
   integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
-actioncable-js@^5.0.0-rc2:
-  version "5.0.0-rc2"
-  resolved "https://registry.yarnpkg.com/actioncable-js/-/actioncable-js-5.0.0-rc2.tgz#4f66539a4e0969b27ab670a5e8cf616001bcbdcd"
-  integrity sha1-T2ZTmk4JabJ6tnCl6M9hYAG8vc0=
-  dependencies:
-    imports-loader "^0.6.5"
-
 actioncable@^5.0.0, actioncable@^5.2.6:
   version "5.2.6"
   resolved "https://registry.yarnpkg.com/actioncable/-/actioncable-5.2.6.tgz#cea30647183524f3bae8c2a78fa6ecd6d4dbc70c"
