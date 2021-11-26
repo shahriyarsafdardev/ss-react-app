@@ -32,7 +32,7 @@ const ActionsWrapper = styled.div`
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0px;
+  bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +69,6 @@ const Controls =
     onConfirm
   }) => {
     const renderContent = () => {
-      const shouldUseVideoInput = !isInlineRecordingSupported && isVideoInputSupported;
-
       if (
         (!isInlineRecordingSupported && !isVideoInputSupported) ||
         thereWasAnError ||

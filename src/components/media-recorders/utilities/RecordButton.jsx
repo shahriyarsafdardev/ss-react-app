@@ -8,8 +8,8 @@ const RecWrapper = styled('div')(() => ({
 
 const ButtonBorder = styled('div')(() => ({
   border: '8px solid rgba(255, 255, 255, 0.4)',
-  height: '50px',
-  width: '50px',
+  height: '40px',
+  width: '40px',
   borderRadius: '50%'
 }));
 
@@ -32,12 +32,12 @@ const Button = styled('button')(() => ({
   backgroundColor: 'white',
   color: 'black',
   borderRadius: '50%',
-  width: '25px',
-  height: '25px',
+  width: '20px',
+  height: '20px',
   background: 'rgba(227, 73, 28, 0.8)',
   outline: 'none',
   border: 'none',
-  margin: '5px',
+  margin: '2px',
   cursor: 'pointer',
   zIndex: 5,
   '&:hover': {

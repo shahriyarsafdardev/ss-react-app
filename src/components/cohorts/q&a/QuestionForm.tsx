@@ -91,7 +91,7 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
   border: '1px dashed #DCE0E4',
   borderRadius: '8px',
   marginBottom: 20,
-  height: 225,
+  height: 250,
   padding: '30px 10px 30px 16px'
 }));
 
