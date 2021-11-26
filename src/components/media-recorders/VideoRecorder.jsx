@@ -32,7 +32,7 @@ const ActionsWrapper = styled.div`
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 50px;
+  bottom: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,13 +97,15 @@ const Controls =
 
       if (isCameraOn && streamIsReady) {
         return (
-          <RecordButton
-            t={t}
-            type="button"
-            name="start-video-button"
-            onClick={onStartRecording}
-            data-qa="start-recording"
-          />
+          <>
+            <RecordButton
+              t={t}
+              type="button"
+              name="start-video-button"
+              onClick={onStartRecording}
+              data-qa="start-recording"
+            />
+          </>
         );
       }
       return null;
@@ -130,16 +132,13 @@ const CustomVideoRecorder = ({ onComplete, onClose }) => (
   <Box style={{ height: '200px' }}>
     <div className="question-video-recorder-screen">
       <div className="question-recorder-wrapper">
-        {/* <button onClick={() => onClose(false)} style={{ background: 'none' }}>
-          <img src="/static/cross-white.svg" />
-        </button> */}
         {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
         <img
           src="/static/cross-white.svg"
           alt="cross"
           onClick={() => onClose(false)}
           onKeyDown={() => {}}
-          style={{ position: 'absolute', top: 10, right: 10, zIndex: 200 }}
+          style={{ position: 'absolute', top: 10, right: 10, zIndex: 200, cursor: 'pointer' }}
         />
         <VideoRecorder
           isOnInitially
