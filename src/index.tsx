@@ -61,8 +61,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // ----------------------------------------------------------------------
-
-const cable = ActionCable.createConsumer('ws://localhost:3000/cable');
+const cable_url = process.env.REACT_APP_ACTION_CABLE_URL || '';
+const cable = ActionCable.createConsumer(cable_url);
 cable.subscriptions.create('NotificationsChannel', {});
 
 ReactDOM.render(
