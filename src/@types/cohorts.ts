@@ -89,9 +89,11 @@ export type Notification = {
   description: string;
   title: string | undefined;
   type: string;
+  category: string;
   avatar: string;
   link: string;
   channel_id: string;
+  cohort_id: string;
   isUnRead: boolean;
   createdAt: Date;
 };

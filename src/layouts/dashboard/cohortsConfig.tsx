@@ -15,6 +15,7 @@ const ICONS = {
 const cohortsConfig = (rawCohorts: any) =>
   rawCohorts.map((cohort: any) => {
     const object: any = {
+      id: cohort.id,
       title: cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
@@ -26,7 +27,8 @@ const cohortsConfig = (rawCohorts: any) =>
         {
           title: 'discord',
           path: cohort.discord_directory_url,
-          externalUrl: true
+          externalUrl: true,
+          notifications: false
         }
       ];
     } else {
@@ -34,15 +36,31 @@ const cohortsConfig = (rawCohorts: any) =>
         ...object.children,
         {
           title: 'messaging',
-          path: PATH_DASHBOARD.cohorts.messaging(cohort.id)
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+          notifications: true,
+          category: 'Messaging'
         }
       ];
     }
     object.children = [
-      { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
+      {
+        title: 'home',
+        path: PATH_DASHBOARD.cohorts.home(cohort.id),
+        notifications: false
+      },
       ...object.children,
-      { title: 'networking', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'Q&A', path: PATH_DASHBOARD.cohorts.q_a(cohort.id) }
+      {
+        title: 'networking',
+        path: PATH_DASHBOARD.cohorts.peers(cohort.id),
+        notifications: false
+      },
+      {
+        title: 'Q&A',
+        path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+        externalUrl: true,
+        notifications: true,
+        category: 'Question'
+      }
     ];
 
     return object;

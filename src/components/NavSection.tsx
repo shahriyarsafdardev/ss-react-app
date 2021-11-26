@@ -16,7 +16,7 @@ import {
   ListItemButton,
   ListItemButtonProps
 } from '@material-ui/core';
-
+import { RootState, useSelector } from '../redux/store';
 // ----------------------------------------------------------------------
 
 const ListSubheaderStyle = styled((props) => (
@@ -54,6 +54,18 @@ const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => 
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
     backgroundColor: theme.palette.primary.main
+  },
+  '.count': {
+    background: '#4d4dcd',
+    color: 'white',
+    borderRadius: '2px',
+    padding: '0 5px',
+    minWidth: '24px',
+    minHeight: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '12px'
   }
 }));
 
@@ -65,9 +77,22 @@ const ListItemIconStyle = styled(ListItemIcon)({
   justifyContent: 'center'
 });
 
+const ListItemCount = styled(ListItemText)({
+  background: '#4d4dcd',
+  color: 'white',
+  borderRadius: '2px',
+  padding: '0 5px',
+  minWidth: '24px',
+  minHeight: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: '12px'
+});
 // ----------------------------------------------------------------------
 
 type NavItemProps = {
+  id?: string;
   title: string;
   path: string;
   icon?: JSX.Element;
@@ -76,6 +101,8 @@ type NavItemProps = {
     title: string;
     path: string;
     externalUrl?: boolean;
+    notifications?: boolean;
+    category?: string;
   }[];
 };
 
@@ -91,9 +118,9 @@ function NavItem({
   const theme = useTheme();
   const location = useLocation();
   const { pathname } = location;
-  const { title, path, icon, info, children } = item;
+  const { id, title, path, icon, info, children } = item;
   const isActiveRoot = pathname.includes(path);
-
+  const userNotifications = useSelector((state: RootState) => state.notification.notifications);
   const [open, setOpen] = useState(isActiveRoot);
 
   useEffect(() => {
@@ -103,6 +130,11 @@ function NavItem({
   const handleOpen = () => {
     setOpen(!open);
   };
+
+  const getUnreadNotifications = (category: string | undefined) =>
+    userNotifications?.filter(
+      (notification) => id === notification.cohort_id && category === notification.category
+    );
 
   const activeRootStyle = {
     color: 'primary.main',
@@ -147,13 +179,13 @@ function NavItem({
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {children.map((item, index) => {
-                const { title, path, externalUrl } = item;
+                const { title, path, externalUrl, category, notifications } = item;
                 const isActiveSub = path ? !!matchPath({ path, end: false }, pathname) : false;
 
                 return (
                   <ListItemStyle
                     disableGutters
-                    key={title}
+                    key={`${title}-${userNotifications.length}`}
                     id={`${title}-${index}`}
                     component={RouterLink}
                     onClick={() => {
@@ -186,6 +218,9 @@ function NavItem({
                       />
                     </ListItemIconStyle>
                     <ListItemText disableTypography primary={title} />
+                    {notifications && category && getUnreadNotifications(category).length > 0 && (
+                      <span className="count">{getUnreadNotifications(category).length}</span>
+                    )}
                   </ListItemStyle>
                 );
               })}
