@@ -131,7 +131,7 @@ const SessionPrereading = ({
                         </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>
-                        These tasks should be completed before the session starts
+                        The following tasks are recommended but not required
                       </p>
                     </Box>
                     <Box>
