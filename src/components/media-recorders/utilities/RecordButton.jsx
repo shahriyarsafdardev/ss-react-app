@@ -2,14 +2,14 @@ import { styled } from '@material-ui/core/styles';
 
 const RecWrapper = styled('div')(() => ({
   display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center'
+  alignItems: 'center',
+  bottom: '10px'
 }));
 
 const ButtonBorder = styled('div')(() => ({
   border: '8px solid rgba(255, 255, 255, 0.4)',
-  height: '80px',
-  width: '80px',
+  height: '50px',
+  width: '50px',
   borderRadius: '50%'
 }));
 
@@ -19,7 +19,7 @@ const Instructions = styled('div')(() => ({
   color: '#ffffff',
   letterSpacing: '1.75px',
   display: 'flex',
-  marginBottom: '20px'
+  marginRight: '5px'
 }));
 
 const InstuctionsHighlight = styled('div')(() => ({
@@ -32,11 +32,12 @@ const Button = styled('button')(() => ({
   backgroundColor: 'white',
   color: 'black',
   borderRadius: '50%',
-  width: '64px',
-  height: '64px',
+  width: '25px',
+  height: '25px',
   background: 'rgba(227, 73, 28, 0.8)',
   outline: 'none',
   border: 'none',
+  margin: '5px',
   cursor: 'pointer',
   zIndex: 5,
   '&:hover': {
