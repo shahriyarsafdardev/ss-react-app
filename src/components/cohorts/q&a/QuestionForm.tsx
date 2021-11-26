@@ -95,39 +95,57 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
   padding: '30px 10px 30px 16px'
 }));
 
-const recordingTab = () => (
+const recordingTab = (recording: boolean, setIsRecording: any) => (
   <>
-    <VideoRecorder onComplete={(response: any) => console.log(response)} />
-
-    {/* <RecordingButtonsContainer>
-      <Typography sx={{ fontWeight: 400, fontSize: 14, color: '#6C7885' }}>
-        You can add a recording to provide context and a personal touch to your question!
-      </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <StyledRecordingButton
-          variant="outlined"
-          startIcon={<img src="/static/cohorts-home/video-outlined.svg" />}
-        >
-          Record Video
-        </StyledRecordingButton>
-        <StyledRecordingButton
-          variant="outlined"
-          startIcon={<img src="/static/cohorts-home/audio-outlined.svg" />}
-        >
-          Record Audio
-        </StyledRecordingButton>
-      </Box>
-    </RecordingButtonsContainer> */}
+    <RecordingButtonsContainer>
+      {recording && (
+        <VideoRecorder
+          onClose={setIsRecording}
+          onComplete={(response: any) => console.log(response)}
+        />
+      )}
+      {!recording && (
+        <>
+          <Typography sx={{ fontWeight: 400, fontSize: 14, color: '#6C7885' }}>
+            You can add a recording to provide context and a personal touch to your question!
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <StyledRecordingButton
+              variant="outlined"
+              startIcon={<img src="/static/cohorts-home/video-outlined.svg" />}
+              onClick={() => {
+                setIsRecording(true);
+              }}
+            >
+              Record Video
+            </StyledRecordingButton>
+            <StyledRecordingButton
+              variant="outlined"
+              startIcon={<img src="/static/cohorts-home/audio-outlined.svg" />}
+            >
+              Record Audio
+            </StyledRecordingButton>
+          </Box>
+        </>
+      )}
+    </RecordingButtonsContainer>
   </>
 );
 
 const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boolean }) => {
   const [question, setQuestion] = useState('');
   const [showRecording, setShowRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
   const submitQuestion = async () => {
     onSubmit(question);
     setQuestion('');
+  };
+
+  const handleRecording = () => {
+    if (showRecording && isRecording) {
+      setIsRecording(false);
+    }
   };
 
   return (
@@ -147,11 +165,12 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
             />
           </QuestionInput>
           <RecordingTabContainer>
-            {showRecording && recordingTab()}
+            {showRecording && recordingTab(isRecording, setIsRecording)}
             <ButtonsContainer>
               <AddQuestionButton
                 onClick={() => {
                   setShowRecording(!showRecording);
+                  handleRecording();
                 }}
                 variant="outlined"
                 id="btn-submit"
