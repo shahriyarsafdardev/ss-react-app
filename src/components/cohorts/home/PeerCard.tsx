@@ -57,7 +57,6 @@ const StyledRow = styled(Box)(() => ({
 
 const StyledProfileContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     flexBasis: '60%'
@@ -116,9 +115,11 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  marginLeft: '20px',
   flexBasis: '68%',
   [theme.breakpoints.down('sm')]: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 'unset'
   }
 }));
 
