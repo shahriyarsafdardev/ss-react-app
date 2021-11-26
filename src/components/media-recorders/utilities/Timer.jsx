@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Text = styled.div`
   position: absolute;
-  top: 50px;
+  top: 5px;
   right: 50px;
   font-family: Menlo, monospace;
   font-size: 28px;
@@ -16,7 +16,7 @@ const RecIcon = styled.div`
   background: #e55226;
   border-radius: 50%;
   float: left;
-  margin: 2px 8px;
+  margin: 14px 8px;
   margin-left: 0;
 `;
 
