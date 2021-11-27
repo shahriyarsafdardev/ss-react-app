@@ -4,9 +4,10 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import axios from 'utils/axios';
 
 // material
-import { Box, Avatar, Divider, ListItem, TextField, ListItemAvatar } from '@material-ui/core';
+import { Box, Avatar, ListItem, TextField, ListItemAvatar } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +36,13 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function CommentForm({ questionID }: { questionID: string }) {
+export default function CommentForm({
+  questionID,
+  addComment
+}: {
+  questionID: string;
+  addComment: Function;
+}) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -48,16 +55,25 @@ export default function CommentForm({ questionID }: { questionID: string }) {
       comment: ''
     },
     validationSchema: CommentSchema,
-    onSubmit: async (values, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        // await fakeRequest(500);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar('Comment Added', { variant: 'success' });
+        await axios
+          .post(`/questions_feed/${questionID}/add_comment.json`, { comment: values.comment })
+          .then((res) => {
+            resetForm();
+            addComment({
+              id: res.data.id,
+              text: res.data.text,
+              time: res.data.created_at,
+              user_name: user?.displayName,
+              user_image: user?.profile_image_url
+            });
+            setSubmitting(false);
+            enqueueSnackbar('Comment Added', { variant: 'success' });
+          });
       } catch (error) {
         console.error(error);
         setSubmitting(false);
-        // setErrors(error.code);
       }
     }
   });
@@ -75,7 +91,11 @@ export default function CommentForm({ questionID }: { questionID: string }) {
         }}
       >
         <ListItemAvatar>
-          <Avatar alt={user?.name} src={user?.profile_image_url} sx={{ width: 48, height: 48 }} />
+          <Avatar
+            alt={user?.displayName}
+            src={user?.profile_image_url}
+            sx={{ width: 48, height: 48 }}
+          />
         </ListItemAvatar>
         <FormikProvider value={formik}>
           <StyledForm noValidate autoComplete="off" onSubmit={handleSubmit}>

@@ -79,12 +79,22 @@ function QnATab() {
     }
   };
 
+  const addComment = (questionID: string, comment: any) => {
+    const index = list.findIndex((question) => question.id === questionID);
+    const updated: Question = list[index];
+    list[index] = {
+      ...updated,
+      comments: [...updated.comments, comment]
+    };
+    setList(list);
+  };
+
   return (
     <Page title="ScholarSite | Q&A">
       <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
-          <QnAFeed questions={list} />
+          <QnAFeed addComment={addComment} questions={list} />
           <StyledFiltersContainer>
             <About />
             <Filters />

@@ -12,11 +12,17 @@ const StyledFeedContainer = styled(Box)(({ theme }) => ({
   }
 }));
 // eslint-disable-next-line arrow-body-style
-const QnAFeed = ({ questions }: { questions: Question[] }) => {
+const QnAFeed = ({ questions, addComment }: { questions: Question[]; addComment: Function }) => {
   return (
     <StyledFeedContainer>
       {questions &&
-        questions?.map((question: any) => <QuestionRow key={question.id} question={question} />)}
+        questions?.map((question: any) => (
+          <QuestionRow
+            addComment={(comment: any) => addComment(question.id, comment)}
+            key={question.id}
+            question={question}
+          />
+        ))}
     </StyledFeedContainer>
   );
 };
