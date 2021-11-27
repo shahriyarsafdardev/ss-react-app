@@ -18,7 +18,12 @@ export default function CommentList({ post }: CommentListProps) {
     <List disablePadding>
       {comments.map((comment) => (
         <Box key={comment.id} sx={{}}>
-          <CommentItem name={comment.user_name} postedAt={comment.time} message={comment.text} />
+          <CommentItem
+            name={comment.user_name}
+            avatarUrl={comment.user_image}
+            postedAt={comment.time}
+            message={comment.text}
+          />
         </Box>
       ))}
     </List>

@@ -23,31 +23,13 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   }
 }));
 
-const CommentBox = styled(Box)(() => ({
-  backgroundColor: '#F4F6F8',
-  borderRadius: '8px',
-  marginBottom: '10px',
-  padding: '20px 10px',
-  '.info': {
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  '.content': {
-    marginTop: '5px'
-  }
-}));
-
-const CommentRow = ({ comment }: { comment: Comment }) => (
-  <CommentBox>
-    <Box className="info">
-      <p>{comment.user_name}</p>
-      <p>{moment(comment.time).format('DD MMM YYYY')}</p>
-    </Box>
-    <Box className="content">{comment.text}</Box>
-  </CommentBox>
-);
-
-export default function QuestionRow({ question }: { question: Question }) {
+export default function QuestionRow({
+  question,
+  addComment
+}: {
+  question: Question;
+  addComment: Function;
+}) {
   const [isHiddenView, setView] = useState(true);
 
   const renderAnswer = () => {
@@ -167,7 +149,7 @@ export default function QuestionRow({ question }: { question: Question }) {
         }}
       />
       {renderComments()}
-      <CommentForm questionID={question.id} />
+      <CommentForm addComment={addComment} questionID={question.id} />
     </StyledQuestionRow>
   );
 }
