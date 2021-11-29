@@ -69,8 +69,7 @@ const questions = [
       'Software Engineering',
       'Documentation',
       'Analytics',
-      'Strategic Planning',
-      'Satelite Constelation Theory'
+      'Strategic Planning'
     ],
     submitted_answer: null,
     description:
