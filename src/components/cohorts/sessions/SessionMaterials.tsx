@@ -30,10 +30,10 @@ export default function SessionMaterials({
   const dispatch = useDispatch();
 
   return (
-    <ResourcesContainer style={{ overflow: 'scroll' }} id="session_materials">
+    <ResourcesContainer id="session_materials">
       {groupedMaterials.map((group, number) => (
-        <Box key={number} style={{ overflow: 'scroll' }}>
-          <p style={{ fontSize: '18px', marginBottom: '15px' }}>{group.category}</p>
+        <Box key={number}>
+          <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>{group.category}s:</p>
           {group.session_materials.map((preReading, index) => (
             <PreReadingRow
               onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}

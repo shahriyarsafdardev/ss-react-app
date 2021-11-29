@@ -13,7 +13,7 @@ type PreReadingRowProps = {
 const StyledLink = styled('a')(() => ({
   textDecoration: 'underline',
   fontWeight: 'bold',
-  marginRight: '20px',
+  marginLeft: '10px',
   color: '#4D4DCD'
 }));
 
@@ -44,8 +44,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
   '&.inner': {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     padding: '15px',
-    width: '70%',
     minHeight: '110px',
     [theme.breakpoints.down('sm')]: {
       width: '100%'
@@ -70,10 +70,10 @@ export default function PreReadingRow({
       <StyledBox className="inner">
         <p>{item.name}</p>
         <StyledBox className="secondary">
+          <span>{item.info_text}</span>
           <StyledLink href={item.action_url} target="_blank" onClick={() => onPreReadingClick()}>
             {item.action_text}
           </StyledLink>
-          <span>{item.info_text}</span>
         </StyledBox>
       </StyledBox>
       <StyledBox className="check-box">
