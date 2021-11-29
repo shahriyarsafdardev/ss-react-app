@@ -11,6 +11,13 @@ import QnAFeed from './QnAFeed';
 import About from './About';
 import Filters from './Filters';
 
+const StyledPage = styled(Page)(({ theme }) => ({
+  marginTop: '-15px',
+  [theme.breakpoints.up('lg')]: {
+    marginTop: '-35px'
+  }
+}));
+
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -102,7 +109,7 @@ function QnATab() {
   };
 
   return (
-    <Page title="ScholarSite | Q&A">
+    <StyledPage title="ScholarSite | Q&A">
       <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
@@ -113,7 +120,7 @@ function QnATab() {
           </StyledFiltersContainer>
         </StyledBox>
       </Container>
-    </Page>
+    </StyledPage>
   );
 }
 export default QnATab;
