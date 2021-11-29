@@ -80,7 +80,6 @@ function QnATab() {
   };
 
   const addComment = (questionID: string, comment: any) => {
-    console.log('QnATab');
     const index = list.findIndex((question) => question.id === questionID);
     const updated: Question = list[index];
     const updatedList: Question[] = [...list];
@@ -91,12 +90,23 @@ function QnATab() {
     setList(updatedList);
   };
 
+  const removeComment = (questionID: string, comment_id: string) => {
+    const index = list.findIndex((question) => question.id === questionID);
+    const updated: Question = list[index];
+    const updatedList: Question[] = [...list];
+    updatedList[index] = {
+      ...updated,
+      comments: updated.comments.filter((comment) => comment.id !== comment_id)
+    };
+    setList(updatedList);
+  };
+
   return (
     <Page title="ScholarSite | Q&A">
       <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
-          <QnAFeed addComment={addComment} questions={list} />
+          <QnAFeed removeComment={removeComment} addComment={addComment} questions={list} />
           <StyledFiltersContainer>
             <About />
             <Filters />

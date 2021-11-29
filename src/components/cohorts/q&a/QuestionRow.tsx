@@ -25,10 +25,12 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
 
 export default function QuestionRow({
   question,
-  addComment
+  addComment,
+  removeComment
 }: {
   question: Question;
   addComment: Function;
+  removeComment: Function;
 }) {
   const [isHiddenView, setView] = useState(true);
 
@@ -134,7 +136,7 @@ export default function QuestionRow({
   const renderComments = () =>
     question.comments.length > 0 && (
       <div>
-        <CommentList post={question} />
+        <CommentList removeComment={removeComment} post={question} />
       </div>
     );
 

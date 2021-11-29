@@ -12,19 +12,25 @@ const StyledFeedContainer = styled(Box)(({ theme }) => ({
   }
 }));
 // eslint-disable-next-line arrow-body-style
-const QnAFeed = ({ questions, addComment }: { questions: Question[]; addComment: Function }) => {
-  return (
-    <StyledFeedContainer>
-      {questions &&
-        questions?.map((question: any) => (
-          <QuestionRow
-            addComment={(comment: any) => addComment(question.id, comment)}
-            key={question.id}
-            question={question}
-          />
-        ))}
-    </StyledFeedContainer>
-  );
-};
-
+const QnAFeed = ({
+  questions,
+  addComment,
+  removeComment
+}: {
+  questions: Question[];
+  addComment: Function;
+  removeComment: Function;
+}) => (
+  <StyledFeedContainer>
+    {questions &&
+      questions?.map((question: any) => (
+        <QuestionRow
+          addComment={(comment: any) => addComment(question.id, comment)}
+          removeComment={(comment_id: string) => removeComment(question.id, comment_id)}
+          key={question.id}
+          question={question}
+        />
+      ))}
+  </StyledFeedContainer>
+);
 export default QnAFeed;

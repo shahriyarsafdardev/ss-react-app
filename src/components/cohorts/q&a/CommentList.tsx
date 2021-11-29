@@ -1,32 +1,35 @@
+import useAuth from 'hooks/useAuth';
 // material
-import { Box, List } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 // @types
 import { Question } from '../../../@types/cohorts';
 //
 import CommentItem from './CommentItem';
-
 // ----------------------------------------------------------------------
 
 type CommentListProps = {
   post: Question;
+  removeComment: Function;
 };
 
-export default function CommentList({ post }: CommentListProps) {
+export default function CommentList({ post, removeComment }: CommentListProps) {
   const { comments } = post;
-
+  const { user } = useAuth();
   return (
-    <List disablePadding>
+    <Stack spacing={1.5}>
       {comments.map((comment) => (
-        <Box key={comment.id} sx={{}}>
-          <CommentItem
-            name={comment.user_name}
-            avatarUrl={comment.user_image}
-            postedAt={comment.time}
-            message={comment.text}
-            image={comment.image}
-          />
-        </Box>
+        <CommentItem
+          key={comment.id}
+          id={comment.id}
+          name={comment.user_name}
+          avatarUrl={comment.user_image}
+          postedAt={comment.time}
+          message={comment.text}
+          image={comment.image}
+          removeComment={removeComment}
+          admin={comment.user_id === user?.id || user?.type === 'admin'}
+        />
       ))}
-    </List>
+    </Stack>
   );
 }

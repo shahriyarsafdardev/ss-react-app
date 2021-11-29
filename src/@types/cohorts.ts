@@ -118,6 +118,7 @@ export type Comment = {
   user_name: string;
   user_image: string;
   image: string;
+  user_id: string;
 };
 
 export type Question = {
