@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Box, Typography, Divider } from '@material-ui/core';
+import { Box, Typography, Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Question, Comment } from '../../../@types/cohorts';
@@ -33,6 +34,14 @@ export default function QuestionRow({
   removeComment: Function;
 }) {
   const [isHiddenView, setView] = useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const renderAnswer = () => {
     if (question.answered) {
@@ -75,12 +84,32 @@ export default function QuestionRow({
 
   const renderQuestion = () => (
     <>
-      <Box>
+      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Typography
           style={{ fontSize: '18px', fontWeight: 700, color: '#212B36', lineHeight: '28px' }}
         >
           {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
         </Typography>
+        <IconButton
+          id="basic-button"
+          aria-controls="basic-menu"
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button'
+          }}
+        >
+          <MenuItem onClick={handleClose}>Delete</MenuItem>
+        </Menu>
       </Box>
       {!isHiddenView && (
         <Box style={{ width: '100%' }}>
