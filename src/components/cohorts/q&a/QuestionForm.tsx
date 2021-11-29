@@ -75,6 +75,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
   const [showMediaSection, setMediaSection] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [videoData, setVideoData] = useState(null);
+  const [audioData, setAudioData] = useState(null);
   const [questionType, setQuestionType] = useState('Text');
 
   const submitQuestion = async () => {
@@ -96,7 +97,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
               value={question}
               placeholder="Do you have any questions? Host would love to hear them! "
               multiline
-              rows={showMediaSection === true ? '9' : ''}
+              rows={showMediaSection === true ? '10' : ''}
               size="small"
               onChange={(e) => setQuestion(e.target.value)}
               inputProps={{ maxLength: 120 }}
@@ -109,6 +110,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
                 onVideoRecordingComplete={setVideoData}
                 setIsRecording={setIsRecording}
                 setQuestionType={setQuestionType}
+                questionType={questionType}
               />
             )}
             <ButtonsContainer>

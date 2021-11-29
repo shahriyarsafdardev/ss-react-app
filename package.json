@@ -142,6 +142,7 @@
     "react-slick": "^0.28.0",
     "react-spring": "^9.2.4",
     "react-star-rating-component": "^1.4.1",
+    "react-stopwatch": "^2.0.4",
     "react-test-renderer": "^17.0.2",
     "react-timer-hook": "^3.0.5",
     "react-video-recorder": "^3.19.1",

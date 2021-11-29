@@ -1,6 +1,7 @@
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import AudioRecorder from 'components/media-recorders/AudioRecorder';
 
 const StyledRecordingButton = styled(Button)(({ theme }) => ({
   height: '50px',
@@ -24,23 +25,26 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   marginBottom: 20,
   height: 250,
-  padding: '30px 10px 30px 16px'
+  padding: '30px 10px 30px 16px',
+  position: 'relative'
 }));
 
 const MediaRecordingTab = ({
   isRecording,
   onVideoRecordingComplete,
   setIsRecording,
-  setQuestionType
+  setQuestionType,
+  questionType
 }: {
   isRecording: boolean;
   onVideoRecordingComplete: Function;
   setIsRecording: Function;
   setQuestionType: Function;
+  questionType: string;
 }) => (
   <>
     <RecordingButtonsContainer>
-      {isRecording && (
+      {isRecording && questionType === 'Video' && (
         <VideoRecorder
           onClose={(value: boolean) => {
             setIsRecording(value);
@@ -48,6 +52,16 @@ const MediaRecordingTab = ({
             setQuestionType('Text');
           }}
           onComplete={(response: any) => onVideoRecordingComplete(response)}
+        />
+      )}
+      {isRecording && questionType === 'Audio' && (
+        <AudioRecorder
+          onComplete={(response: any) => onVideoRecordingComplete(response)}
+          onClose={(value: boolean) => {
+            setIsRecording(value);
+            onVideoRecordingComplete(null);
+            setQuestionType('Text');
+          }}
         />
       )}
       {!isRecording && (
@@ -69,6 +83,10 @@ const MediaRecordingTab = ({
             <StyledRecordingButton
               variant="outlined"
               startIcon={<img src="/static/cohorts-home/audio-outlined.svg" alt="audio-icon" />}
+              onClick={() => {
+                setQuestionType('Audio');
+                setIsRecording(true);
+              }}
             >
               Record Audio
             </StyledRecordingButton>
