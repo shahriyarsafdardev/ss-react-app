@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { TextField, Box, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import { useSnackbar } from 'notistack5';
+import axios from 'utils/axios';
 import { SectionContainer } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
 
@@ -72,21 +74,50 @@ const QuestionInput = styled(Box)(({ theme }) => ({
   }
 }));
 
-const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boolean }) => {
-  const [question, setQuestion] = useState('');
+const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
+  const [questionSummary, setQuestionSummary] = useState('');
   const [showMediaSection, setMediaSection] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [videoData, setVideoData] = useState(null);
   const [audioData, setAudioData] = useState(null);
   const [questionType, setQuestionType] = useState('Text');
+  const [submitting, setSubmitting] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
 
-  const submitQuestion = async () => {
-    await onSubmit(question, videoData, questionType);
-    setQuestion('');
-    setMediaSection(false);
-    setIsRecording(false);
-    setQuestionType('Text');
-    setVideoData(null);
+  const onFormSubmitHandler = async () => {
+    setSubmitting(true);
+    const questionData = new FormData();
+
+    questionData.append('question_summary', questionSummary);
+    questionData.append('question_type', questionType);
+    videoData && questionData.append('question_video', videoData || '');
+    audioData && questionData.append('question_audio', audioData || '');
+    questionData.append('cohort_id', cohort_id);
+
+    await axios
+      .post(`/questions_feed.json`, questionData)
+      .then((res) => {
+        if (res.data.question) {
+          enqueueSnackbar('New question added', { variant: 'success' });
+          onSuccess(res.data.question);
+          setQuestionSummary('');
+          setMediaSection(false);
+          setIsRecording(false);
+          setQuestionType('Text');
+          setVideoData(null);
+          setAudioData(null);
+        } else {
+          enqueueSnackbar('Failed to submit question!', { variant: 'error' });
+          enqueueSnackbar('Please try submitting again', { variant: 'error' });
+        }
+        setSubmitting(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar('Failed to submit question!', { variant: 'error' });
+        enqueueSnackbar('Please try submitting again', { variant: 'error' });
+        setSubmitting(false);
+      });
   };
 
   return (
@@ -96,11 +127,11 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
           <QuestionInput>
             <TextField
               fullWidth
-              value={question}
+              value={questionSummary}
               placeholder="Do you have any questions? Host would love to hear them! "
               multiline
               size="small"
-              onChange={(e) => setQuestion(e.target.value)}
+              onChange={(e) => setQuestionSummary(e.target.value)}
               style={{ height: '100%' }}
               inputProps={{
                 maxLength: 120,
@@ -142,7 +173,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
                 {showMediaSection === true ? 'Hide' : 'Add Recording'}
               </AddQuestionButton>
               <StyledLoadingButton
-                onClick={() => submitQuestion()}
+                onClick={onFormSubmitHandler}
                 variant="contained"
                 loading={submitting}
               >

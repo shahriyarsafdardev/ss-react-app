@@ -2,8 +2,7 @@ import { Container, Box } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
-import { useSnackbar } from 'notistack5';
-import axios from '../../../utils/axios';
+import axios from 'utils/axios';
 import { Question } from '../../../@types/cohorts';
 
 import QuestionForm from './QuestionForm';
@@ -44,9 +43,7 @@ const StyledFiltersContainer = styled(Box)(({ theme }) => ({
 
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const [submitting, setSubmitting] = useState(false);
   const [list, setList] = useState<Question[]>([]);
-  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const initMaterials = async () => {
@@ -60,30 +57,8 @@ function QnATab() {
     initMaterials();
   }, [cohort_id]);
 
-  const onFormSubmitHandler = async (
-    question: string,
-    videoData: File | null,
-    questionType: string
-  ) => {
-    if (question) {
-      setSubmitting(true);
-      const questionData = new FormData();
-
-      questionData.append('question_summary', question);
-      questionData.append('question_type', questionType);
-      videoData && questionData.append('question_video', videoData);
-
-      questionData.append('cohort_id', cohort_id);
-      await axios.post(`/questions_feed.json`, questionData).then((res) => {
-        if (res.data.question) {
-          enqueueSnackbar('New question added', { variant: 'success' });
-          setSubmitting(false);
-          setList([res.data.question, ...list]);
-        } else {
-          enqueueSnackbar('Failed to submit question', { variant: 'error' });
-        }
-      });
-    }
+  const onCreateSuccess = (questionObject: Question) => {
+    setList([questionObject, ...list]);
   };
 
   const addComment = (questionID: string, comment: any) => {
@@ -110,7 +85,7 @@ function QnATab() {
 
   return (
     <StyledPage title="ScholarSite | Q&A">
-      <QuestionForm submitting={submitting} onSubmit={onFormSubmitHandler} />
+      <QuestionForm onSuccess={onCreateSuccess} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
           <QnAFeed removeComment={removeComment} addComment={addComment} questions={list} />
