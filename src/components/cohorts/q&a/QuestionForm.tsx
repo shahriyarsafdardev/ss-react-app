@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextField, Box, Typography, Button } from '@material-ui/core';
+import { TextField, Box, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import { SectionContainer } from './Common';
@@ -40,7 +40,6 @@ const RecordingTabContainer = styled(Box)(({ theme }) => ({
 const ButtonsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  marginLeft: 'auto',
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
@@ -117,6 +116,7 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
               <MediaRecordingTab
                 isRecording={isRecording}
                 onVideoRecordingComplete={setVideoData}
+                onAudioRecordingComplete={setAudioData}
                 setIsRecording={setIsRecording}
                 setQuestionType={setQuestionType}
                 questionType={questionType}
@@ -131,7 +131,6 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
                   setMediaSection(!showMediaSection);
                 }}
                 variant="outlined"
-                id="btn-submit"
                 startIcon={
                   showMediaSection === true ? (
                     <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
@@ -146,7 +145,6 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
                 onClick={() => submitQuestion()}
                 variant="contained"
                 loading={submitting}
-                id="btn-submit"
               >
                 Submit Question
               </StyledLoadingButton>

@@ -32,6 +32,7 @@ const RecordingButtonsContainer = styled(Box)(({ theme }) => ({
 const MediaRecordingTab = ({
   isRecording,
   onVideoRecordingComplete,
+  onAudioRecordingComplete,
   setIsRecording,
   setQuestionType,
   questionType
@@ -41,6 +42,7 @@ const MediaRecordingTab = ({
   setIsRecording: Function;
   setQuestionType: Function;
   questionType: string;
+  onAudioRecordingComplete: Function;
 }) => (
   <>
     <RecordingButtonsContainer>
@@ -56,10 +58,10 @@ const MediaRecordingTab = ({
       )}
       {isRecording && questionType === 'Audio' && (
         <AudioRecorder
-          onComplete={(response: any) => onVideoRecordingComplete(response)}
+          onComplete={(response: any) => onAudioRecordingComplete(response)}
           onClose={(value: boolean) => {
             setIsRecording(value);
-            onVideoRecordingComplete(null);
+            onAudioRecordingComplete(null);
             setQuestionType('Text');
           }}
         />
