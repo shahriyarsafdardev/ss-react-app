@@ -1,4 +1,6 @@
 // material
+import { styled } from '@material-ui/core/styles';
+
 import {
   Avatar,
   Divider,
@@ -18,16 +20,36 @@ interface CommentItemProps extends ListItemProps {
   avatarUrl?: string;
   message: string;
   postedAt: Date;
+  image: string;
 }
 
-export default function CommentItem({ name, avatarUrl, message, postedAt }: CommentItemProps) {
+const StyledPreview = styled('img')(({ theme }) => ({
+  marginLeft: '70px',
+  width: '150px',
+  height: '150px',
+  borderRadius: '14.5691px',
+  objectFit: 'cover',
+  marginBottom: '10px',
+  [theme.breakpoints.down('sm')]: {
+    width: '192px',
+    height: '157px'
+  }
+}));
+
+export default function CommentItem({
+  name,
+  avatarUrl,
+  message,
+  image,
+  postedAt
+}: CommentItemProps) {
   return (
     <>
       <ListItem
         disableGutters
         sx={{
           alignItems: 'flex-start',
-          py: 3
+          pt: 3
         }}
       >
         <ListItemAvatar>
@@ -56,7 +78,9 @@ export default function CommentItem({ name, avatarUrl, message, postedAt }: Comm
           }
         />
       </ListItem>
+      {image && <StyledPreview src={image} />}
       <Divider
+        style={{ marginBottom: 3 }}
         sx={{
           ml: 'auto',
           width: (theme) => `calc(100% - ${theme.spacing(7)})`

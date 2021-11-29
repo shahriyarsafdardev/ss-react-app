@@ -117,6 +117,7 @@ export type Comment = {
   time: Date;
   user_name: string;
   user_image: string;
+  image: string;
 };
 
 export type Question = {

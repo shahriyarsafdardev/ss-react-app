@@ -80,13 +80,15 @@ function QnATab() {
   };
 
   const addComment = (questionID: string, comment: any) => {
+    console.log('QnATab');
     const index = list.findIndex((question) => question.id === questionID);
     const updated: Question = list[index];
-    list[index] = {
+    const updatedList: Question[] = [...list];
+    updatedList[index] = {
       ...updated,
       comments: [...updated.comments, comment]
     };
-    setList(list);
+    setList(updatedList);
   };
 
   return (

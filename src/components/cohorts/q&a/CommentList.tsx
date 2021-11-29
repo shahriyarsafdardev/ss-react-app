@@ -23,6 +23,7 @@ export default function CommentList({ post }: CommentListProps) {
             avatarUrl={comment.user_image}
             postedAt={comment.time}
             message={comment.text}
+            image={comment.image}
           />
         </Box>
       ))}

@@ -1,19 +1,63 @@
+import { useState, useRef } from 'react';
 import useAuth from 'hooks/useAuth';
-import * as Yup from 'yup';
+import { Icon } from '@iconify/react';
+import roundSend from '@iconify/icons-ic/round-send';
+import cancel from '@iconify/icons-ic/cancel';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
-import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
+import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 
 // material
-import { Box, Avatar, ListItem, TextField, ListItemAvatar } from '@material-ui/core';
+import {
+  Box,
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  TextField,
+  IconButton,
+  InputAdornment,
+  CircularProgress
+} from '@material-ui/core';
+
+import EmojiPicker from '../../EmojiPicker';
 
 // ----------------------------------------------------------------------
 
 type FormValues = {
   comment: string;
+  file: File | any;
 };
+
+const CrossIconButton = styled(IconButton)(({ theme }) => ({
+  // marginLeft: '-32px',
+  cursor: 'pointer'
+}));
+
+const StyledSpinner = styled(CircularProgress)(({ theme }) => ({
+  width: '20px',
+  height: '20px',
+  mx: 'auto'
+}));
+
+const StyledImageContainer = styled(Box)(({ theme }) => ({
+  marginLeft: '70px',
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-start'
+}));
+
+const StyledPreview = styled('img')(({ theme }) => ({
+  width: '120px',
+  height: '120px',
+  borderRadius: '14.5691px',
+  objectFit: 'cover',
+  [theme.breakpoints.down('sm')]: {
+    width: '192px',
+    height: '157px'
+  }
+}));
 
 const StyledForm = styled(Form)(({ theme }) => ({
   display: 'flex',
@@ -22,17 +66,6 @@ const StyledForm = styled(Form)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column'
-  }
-}));
-
-const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: '130px',
-  marginLeft: 10,
-  padding: '14px',
-  [theme.breakpoints.down('md')]: {
-    width: '100%',
-    marginLeft: 'auto',
-    marginTop: 20
   }
 }));
 
@@ -45,41 +78,54 @@ export default function CommentForm({
 }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
-
-  const CommentSchema = Yup.object().shape({
-    comment: Yup.string().required('Comment is required')
-  });
+  const commentInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState('');
 
   const formik = useFormik<FormValues>({
     initialValues: {
-      comment: ''
+      comment: '',
+      file: null
     },
-    validationSchema: CommentSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      try {
-        await axios
-          .post(`/questions_feed/${questionID}/add_comment.json`, { comment: values.comment })
-          .then((res) => {
-            resetForm();
-            addComment({
-              id: res.data.id,
-              text: res.data.text,
-              time: res.data.created_at,
-              user_name: user?.displayName,
-              user_image: user?.profile_image_url
+      if (values.file || values.comment) {
+        try {
+          const uploadData = new FormData();
+          uploadData.append('image', values.file);
+          uploadData.append('comment', values.comment);
+          await axios
+            .post(`/questions_feed/${questionID}/add_comment.json`, uploadData)
+            .then((res) => {
+              resetForm();
+              setPreview('');
+              addComment(res.data);
+              setSubmitting(false);
+              enqueueSnackbar('Comment Added', { variant: 'success' });
             });
-            setSubmitting(false);
-            enqueueSnackbar('Comment Added', { variant: 'success' });
-          });
-      } catch (error) {
-        console.error(error);
-        setSubmitting(false);
+        } catch (error) {
+          console.error(error);
+          setSubmitting(false);
+        }
       }
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const handleClickAttach = () => {
+    fileInputRef.current?.click();
+  };
 
+  const { values, handleSubmit, isSubmitting, setFieldValue, getFieldProps } = formik;
+
+  const uploadeImage = (event: any) => {
+    if (event?.target?.files[0]) {
+      setFieldValue('file', event.target.files[0]);
+      setPreview(URL.createObjectURL(event.target.files[0]));
+      event.currentTarget.value = '';
+    } else {
+      setPreview('');
+      setFieldValue('file', null);
+    }
+  };
   return (
     <>
       <ListItem
@@ -98,25 +144,71 @@ export default function CommentForm({
           />
         </ListItemAvatar>
         <FormikProvider value={formik}>
-          <StyledForm noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <StyledForm noValidate autoComplete="off">
             <TextField
               fullWidth
-              multiline
-              label="New Comment"
-              placeholder="Add new comment"
+              disabled={isSubmitting}
+              size="small"
               {...getFieldProps('comment')}
-              error={Boolean(touched.comment && errors.comment)}
-              helperText={touched.comment && errors.comment}
+              inputRef={commentInputRef}
+              multiline
+              placeholder="Write a comment…"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton size="small" onClick={handleClickAttach}>
+                      <Icon icon={roundAddPhotoAlternate} width={24} height={24} />
+                    </IconButton>
+                    <EmojiPicker
+                      alignRight
+                      value={values.comment}
+                      setValue={(val) => setFieldValue('comment', val)}
+                    />
+                  </InputAdornment>
+                )
+              }}
+              sx={{
+                mr: 1,
+                '& fieldset': {
+                  borderWidth: `1px !important`,
+                  borderColor: (theme) => `${theme.palette.grey[500_32]} !important`
+                }
+              }}
             />
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <StyledLoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                Post comment
-              </StyledLoadingButton>
-            </Box>
+            {isSubmitting ? (
+              <StyledSpinner />
+            ) : (
+              <IconButton
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
+                <Icon icon={roundSend} width={24} height={24} />
+              </IconButton>
+            )}
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              accept="image/*"
+              onChange={(e) => uploadeImage(e)}
+            />
           </StyledForm>
         </FormikProvider>
       </ListItem>
+
+      {preview && (
+        <StyledImageContainer>
+          <StyledPreview src={preview} alt="comment image" />
+          <CrossIconButton
+            onClick={() => {
+              uploadeImage(null);
+            }}
+          >
+            <Icon icon={cancel} width={24} height={24} />
+          </CrossIconButton>
+        </StyledImageContainer>
+      )}
     </>
   );
 }
