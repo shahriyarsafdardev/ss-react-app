@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
+import { useSnackbar } from 'notistack5';
+import { deleteQuestion } from 'utils/requests';
 import { Question } from '../../../@types/cohorts';
 
 import QuestionForm from './QuestionForm';
@@ -44,6 +46,7 @@ const StyledFiltersContainer = styled(Box)(({ theme }) => ({
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [list, setList] = useState<Question[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const initMaterials = async () => {
@@ -83,12 +86,30 @@ function QnATab() {
     setList(updatedList);
   };
 
+  const handleDelete = async (questionID: string) => {
+    await deleteQuestion(
+      questionID,
+      () => {
+        setList(list.filter((question) => question.id !== questionID));
+        enqueueSnackbar('Question Deleted Successfully', { variant: 'success' });
+      },
+      () => {
+        enqueueSnackbar('Some error occurred, please try again', { variant: 'error' });
+      }
+    );
+  };
+
   return (
     <StyledPage title="ScholarSite | Q&A">
       <QuestionForm onSuccess={onCreateSuccess} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
-          <QnAFeed removeComment={removeComment} addComment={addComment} questions={list} />
+          <QnAFeed
+            addComment={addComment}
+            questions={list}
+            removeComment={removeComment}
+            onDeleteClick={handleDelete}
+          />
           <StyledFiltersContainer>
             <About />
             <Filters />

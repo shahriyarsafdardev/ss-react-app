@@ -5,7 +5,7 @@ import { Box, Typography, Divider, IconButton, Menu, MenuItem } from '@material-
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-import { Question, Comment } from '../../../@types/cohorts';
+import { Question } from '../../../@types/cohorts';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -27,15 +27,20 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
 export default function QuestionRow({
   question,
   addComment,
+  onDeleteClick,
+  canDelete,
   removeComment
 }: {
   question: Question;
   addComment: Function;
+  onDeleteClick: Function;
+  canDelete: Boolean;
   removeComment: Function;
 }) {
   const [isHiddenView, setView] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,6 +87,31 @@ export default function QuestionRow({
     return '';
   };
 
+  const deleteOption = () => (
+    <>
+      <IconButton
+        id="basic-button"
+        aria-controls="basic-menu"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button'
+        }}
+      >
+        <MenuItem onClick={() => onDeleteClick(question.id)}>Delete</MenuItem>
+      </Menu>
+    </>
+  );
+
   const renderQuestion = () => (
     <>
       <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -90,26 +120,7 @@ export default function QuestionRow({
         >
           {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
         </Typography>
-        <IconButton
-          id="basic-button"
-          aria-controls="basic-menu"
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button'
-          }}
-        >
-          <MenuItem onClick={handleClose}>Delete</MenuItem>
-        </Menu>
+        {canDelete && deleteOption()}
       </Box>
       {!isHiddenView && (
         <Box style={{ width: '100%' }}>
