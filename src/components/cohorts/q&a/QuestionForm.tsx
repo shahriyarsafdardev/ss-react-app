@@ -67,6 +67,9 @@ const QuestionInput = styled(Box)(({ theme }) => ({
   width: '60%',
   [theme.breakpoints.down('md')]: {
     width: '100%'
+  },
+  '.MuiOutlinedInput-root': {
+    height: '100%'
   }
 }));
 
@@ -97,10 +100,16 @@ const QuestionForm = ({ onSubmit, submitting }: { onSubmit: any; submitting: boo
               value={question}
               placeholder="Do you have any questions? Host would love to hear them! "
               multiline
-              rows={showMediaSection === true ? '10' : ''}
               size="small"
               onChange={(e) => setQuestion(e.target.value)}
-              inputProps={{ maxLength: 120 }}
+              style={{ height: '100%' }}
+              inputProps={{
+                maxLength: 120,
+                height: '100%',
+                style: {
+                  height: '100%'
+                }
+              }}
             />
           </QuestionInput>
           <RecordingTabContainer>

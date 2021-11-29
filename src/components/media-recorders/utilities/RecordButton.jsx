@@ -14,16 +14,17 @@ const ButtonBorder = styled('div')(() => ({
 }));
 
 const Instructions = styled('div')(() => ({
-  fontFamily: 'Arial',
+  fontFamily: 'Roboto',
   fontSize: '14px',
   color: '#ffffff',
   letterSpacing: '1.75px',
   display: 'flex',
-  marginRight: '5px'
+  marginRight: '5px',
+  fontWeight: 400
 }));
 
 const InstuctionsHighlight = styled('div')(() => ({
-  fontWeight: 700,
+  fontWeight: 400,
   color: '#dc6547',
   padding: '0 5px'
 }));
