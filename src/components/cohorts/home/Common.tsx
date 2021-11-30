@@ -89,7 +89,7 @@ export const displayMultipleDates = (times: string[]) => {
   if (upcomings.length === 1) {
     return displayDate(upcomings[0]);
   }
-  const formattedDates = upcomings.map((time) => moment(time).format('MMM DD'));
+  const formattedDates = upcomings.slice(0, 2).map((time) => moment(time).format('MMM DD'));
   return formatList(formattedDates);
 };
 
@@ -101,11 +101,13 @@ export const formatMultipleTimes = (times: string[], sessionLength: string) => {
   if (upcomings.length === 1) {
     return formatTime(upcomings[0], sessionLength);
   }
-  const sortedTimeslist = upcomings.map((time) =>
-    moment(new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).format(
-      'hh:mm a'
-    )
-  );
+  const sortedTimeslist = upcomings
+    .slice(0, 2)
+    .map((time) =>
+      moment(new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).format(
+        'hh:mm a'
+      )
+    );
   return `${formatList(sortedTimeslist)}  PST`;
 };
 
