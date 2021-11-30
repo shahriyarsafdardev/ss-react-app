@@ -17,7 +17,7 @@ const Button = styled.button`
 `;
 
 const Border = styled.div`
-  background: rgba(255, 255, 255, 0.4);
+  background: #e1e4e7;
   height: 40px;
   width: 40px;
   border-radius: 50%;

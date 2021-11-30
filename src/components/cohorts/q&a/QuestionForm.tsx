@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextField, Box, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
@@ -85,6 +85,15 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
+  useEffect(() => {
+    const elem = document.getElementById('question-text-input');
+    if (elem) {
+      if (elem.scrollHeight > 23) {
+        setMediaSection(true);
+      }
+    }
+  }, [questionSummary.length]);
+
   const onFormSubmitHandler = async () => {
     setSubmitting(true);
     const questionData = new FormData();
@@ -131,10 +140,11 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
               placeholder="Do you have any questions? Host would love to hear them! "
               multiline
               size="small"
+              id="question-text-input"
+              rows={1}
               onChange={(e) => setQuestionSummary(e.target.value)}
               style={{ height: '100%' }}
               inputProps={{
-                maxLength: 120,
                 height: '100%',
                 style: {
                   height: '100%'
