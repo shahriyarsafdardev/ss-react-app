@@ -16,7 +16,7 @@ const ButtonBorder = styled('div')(() => ({
 }));
 
 const Instructions = styled('div')(() => ({
-  fontFamily: 'Roboto',
+  fontFamily: 'Public Sans,sans-serif',
   fontSize: '14px',
   color: '#071A33',
   letterSpacing: '1.75px',
