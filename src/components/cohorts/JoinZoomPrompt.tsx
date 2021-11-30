@@ -161,7 +161,11 @@ const TimerPreview = ({
         )}
         <Typography variant="subtitle1">
           {displayType === 'small'
-            ? 'The session room is opening soon, come join us!'
+            ? `The ${moment(
+                new Date(time).toLocaleString('en-US', {
+                  timeZone: 'America/Los_Angeles'
+                })
+              ).format('hh a')} session room is opening soon, come join us!`
             : 'This session is starting soon!'}
         </Typography>
         {displayType !== 'small' && (
@@ -198,11 +202,13 @@ const TimerPreview = ({
 const SessionInProgress = ({
   zoomUrl,
   displayType,
-  clickEvent
+  clickEvent,
+  sessionTimeValue
 }: {
   zoomUrl: string | null;
   displayType: string;
   clickEvent: Function;
+  sessionTimeValue: string;
 }) => {
   const classes = useStyes();
   const { sessionNumber } = useContext(SessionContext);
@@ -214,7 +220,11 @@ const SessionInProgress = ({
           <>
             <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
             <Box className={classes.smallContent2}>
-              <Typography variant="subtitle1">Your Session is live now!</Typography>
+              <Typography variant="subtitle1">{`The ${moment(
+                new Date(sessionTimeValue).toLocaleString('en-US', {
+                  timeZone: 'America/Los_Angeles'
+                })
+              ).format('hh a')} Session is live now!`}</Typography>
             </Box>
           </>
         ) : (
@@ -284,6 +294,7 @@ const renderPlaceHolder = (
           displayType={displayType}
           zoomUrl={sessionZoomUrl}
           clickEvent={onClick}
+          sessionTimeValue={sessionTimeValue}
         />
       );
     }

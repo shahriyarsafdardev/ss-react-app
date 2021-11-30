@@ -5,6 +5,7 @@ import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import {
   SessionMaterials,
   Description,
@@ -189,9 +190,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       return true;
     }
     if (feedbackSubmitted || session?.survey_completed) return false;
-    if (session && session.time) {
-      const sessionTime1 = new Date(session.time);
-      const sessionTime2 = new Date(session.time);
+    if (session && session.times) {
+      const sessionTime1 = new Date(firstUpcomingDate(session.times));
+      const sessionTime2 = sessionTime1;
       const currentTime = new Date();
       const surveyReleaseTime = sessionTime1;
       surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 0.5);
@@ -312,7 +313,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         ) : (
           <JoinZoomPrompt
             displayType="large"
-            sessionTimeValue={session.time}
+            sessionTimeValue={firstUpcomingDate(session.times)}
             sessionZoomUrl={session.zoom_url}
             onClick={(sessionNumber: number) => {
               sendAnalyticsData(

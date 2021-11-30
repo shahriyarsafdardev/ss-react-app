@@ -62,7 +62,7 @@ export type Session = {
   number: number;
   survey_completed: boolean;
   length: string;
-  time: string;
+  times: string[];
   zoom_url: string;
   recording_url: string;
   recording_thumbnail_url: string;
@@ -79,7 +79,7 @@ export type SessionListItem = {
   id: string;
   name: string;
   length: string;
-  time: string;
+  times: string[];
   number: number;
 };
 

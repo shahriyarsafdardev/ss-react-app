@@ -13,6 +13,7 @@ import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
+import { firstUpcomingDate } from './Common';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -69,7 +70,7 @@ const Index = () => {
   useEffect(() => {
     let found = false;
     sessions?.forEach((session) => {
-      if (!found && moment(session.time).add(1, 'hour') > moment()) {
+      if (!found && moment(firstUpcomingDate(session.times)).add(1, 'hour') > moment()) {
         setActiveSession(session);
         found = true;
       }

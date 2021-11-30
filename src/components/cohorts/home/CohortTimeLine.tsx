@@ -5,7 +5,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import useAuth from '../../../hooks/useAuth';
 import { Session, Cohort } from '../../../@types/cohorts';
-import { CircularLoader, SectionContainer } from './Common';
+import { CircularLoader, firstUpcomingDate, SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
 import MobileStepper from './MobileStepper';
 
@@ -27,9 +27,9 @@ const CohortTimeLine = ({
     let flag = true;
     let isHeaderSet = false;
     sessions?.forEach((session, index) => {
-      if (moment(session.time).add(1, 'hours') > moment() && flag) {
+      if (moment(firstUpcomingDate(session.times)).add(1, 'hours') > moment() && flag) {
         currentSessionNumber = index + 1;
-        if (moment().add(1, 'hours') >= moment(session.time)) {
+        if (moment().add(1, 'hours') >= moment(firstUpcomingDate(session.times))) {
           setHeader(`🔴 Get ready, Session ${currentSessionNumber} is starting soon!`);
           isHeaderSet = true;
         } else {
