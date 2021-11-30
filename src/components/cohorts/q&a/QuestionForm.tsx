@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { TextField, Box, Button } from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import { TextField, Box, Button, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
-import { SectionContainer } from './Common';
+import { SectionContainer, CircularLoader } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
 
 const StyledStack = styled(Box)(({ theme }) => ({
@@ -85,6 +85,15 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
+  useEffect(() => {
+    const elem = document.getElementById('question-text-input');
+    if (elem) {
+      if (elem.scrollHeight > 23) {
+        setMediaSection(true);
+      }
+    }
+  }, [questionSummary.length]);
+
   const onFormSubmitHandler = async () => {
     setSubmitting(true);
     const questionData = new FormData();
@@ -123,65 +132,85 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
   return (
     <QuestionFormContainer id="question-box">
       <SectionContainer className="newQuestion">
-        <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
-          <QuestionInput>
-            <TextField
-              fullWidth
-              value={questionSummary}
-              placeholder="Do you have any questions? Host would love to hear them! "
-              multiline
-              size="small"
-              onChange={(e) => setQuestionSummary(e.target.value)}
-              style={{ height: '100%' }}
-              inputProps={{
-                maxLength: 120,
-                height: '100%',
-                style: {
-                  height: '100%'
-                }
-              }}
-            />
-          </QuestionInput>
-          <RecordingTabContainer>
-            {showMediaSection && (
-              <MediaRecordingTab
-                isRecording={isRecording}
-                onVideoRecordingComplete={setVideoData}
-                onAudioRecordingComplete={setAudioData}
-                setIsRecording={setIsRecording}
-                setQuestionType={setQuestionType}
-                questionType={questionType}
-              />
-            )}
-            <ButtonsContainer>
-              <AddQuestionButton
-                onClick={() => {
-                  if (!showMediaSection) {
-                    setQuestionType('Text');
+        {!submitting && (
+          <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
+            <QuestionInput>
+              <TextField
+                fullWidth
+                value={questionSummary}
+                placeholder="Do you have any questions? Host would love to hear them! "
+                multiline
+                size="small"
+                id="question-text-input"
+                rows={1}
+                onChange={(e) => setQuestionSummary(e.target.value)}
+                style={{ height: '100%' }}
+                inputProps={{
+                  height: '100%',
+                  style: {
+                    height: '100%'
                   }
-                  setMediaSection(!showMediaSection);
                 }}
-                variant="outlined"
-                startIcon={
-                  showMediaSection === true ? (
-                    <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
-                  ) : (
-                    <img src="/static/cohorts-home/arrow-down.svg" alt="down-arrow" />
-                  )
-                }
-              >
-                {showMediaSection === true ? 'Hide' : 'Add Recording'}
-              </AddQuestionButton>
-              <StyledLoadingButton
-                onClick={onFormSubmitHandler}
-                variant="contained"
-                loading={submitting}
-              >
-                Submit Question
-              </StyledLoadingButton>
-            </ButtonsContainer>
-          </RecordingTabContainer>
-        </StyledStack>
+              />
+            </QuestionInput>
+            <RecordingTabContainer>
+              {showMediaSection && (
+                <MediaRecordingTab
+                  isRecording={isRecording}
+                  onVideoRecordingComplete={setVideoData}
+                  onAudioRecordingComplete={setAudioData}
+                  setIsRecording={setIsRecording}
+                  setQuestionType={setQuestionType}
+                  questionType={questionType}
+                />
+              )}
+              <ButtonsContainer>
+                <AddQuestionButton
+                  onClick={() => {
+                    if (!showMediaSection) {
+                      setQuestionType('Text');
+                    }
+                    if (isRecording) {
+                      setIsRecording(false);
+                    }
+                    setMediaSection(!showMediaSection);
+                  }}
+                  variant="outlined"
+                  startIcon={
+                    showMediaSection === true ? (
+                      <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
+                    ) : (
+                      <img src="/static/cohorts-home/arrow-down.svg" alt="down-arrow" />
+                    )
+                  }
+                >
+                  {showMediaSection === true ? 'Hide' : 'Add Recording'}
+                </AddQuestionButton>
+                <StyledLoadingButton
+                  onClick={onFormSubmitHandler}
+                  variant="contained"
+                  loading={submitting}
+                >
+                  Submit Question
+                </StyledLoadingButton>
+              </ButtonsContainer>
+            </RecordingTabContainer>
+          </StyledStack>
+        )}
+        {submitting && (
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              height: `${showMediaSection === true ? '327px' : ''}`
+            }}
+          >
+            <Typography> Hold on one second, we're just uploading your question!</Typography>
+            <CircularLoader />
+          </Box>
+        )}
       </SectionContainer>
     </QuestionFormContainer>
   );

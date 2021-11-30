@@ -1,4 +1,5 @@
 import { styled } from '@material-ui/core/styles';
+import { Box, CircularProgress } from '@material-ui/core';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -17,3 +18,16 @@ export const SectionContainer = styled('div')(({ theme }) => ({
     height: '340px'
   }
 }));
+
+const StyledCircularLoader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '20%'
+}));
+
+export const CircularLoader = () => (
+  <StyledCircularLoader>
+    <CircularProgress />
+  </StyledCircularLoader>
+);
