@@ -160,7 +160,7 @@ export default function QuestionRow({
       {renderAnswer()}
       <Divider
         sx={{
-          mt: 1,
+          mt: 2,
           width: '100%'
         }}
       />

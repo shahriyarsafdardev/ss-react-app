@@ -16,7 +16,7 @@ export default function CommentList({ post, removeComment }: CommentListProps) {
   const { comments } = post;
   const { user } = useAuth();
   return (
-    <Stack style={{ marginTop: '10px' }} spacing={1.5}>
+    <Stack style={{ marginTop: '15px' }} spacing={1.5}>
       {comments.map((comment) => (
         <CommentItem
           key={comment.id}
