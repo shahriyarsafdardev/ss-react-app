@@ -21,8 +21,6 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
 export default function Description({ innerContent, onTrack }: DescriptionProps) {
   useEffect(() => {
     if (innerContent) {
-      onTrack(RESOURCES_EVENTS.opened);
-
       const resources = document.getElementById('resources')?.getElementsByTagName('a');
 
       if (resources) {
