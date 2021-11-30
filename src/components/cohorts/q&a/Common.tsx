@@ -1,5 +1,13 @@
+import { useState, useRef } from 'react';
+import { Icon } from '@iconify/react';
+import cancel from '@iconify/icons-ic/cancel';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+// material
 import { styled } from '@material-ui/core/styles';
-import { Box, CircularProgress } from '@material-ui/core';
+
+import { Box, MenuItem, CircularProgress, IconButton } from '@material-ui/core';
+import MenuPopover from '../../MenuPopover';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -31,3 +39,51 @@ export const CircularLoader = () => (
     <CircularProgress />
   </StyledCircularLoader>
 );
+
+export const DeleteOption = ({ handleDelete }: { handleDelete: Function }) => {
+  const menuRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <Box>
+      <IconButton
+        aria-label="more"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        onClick={handleOpen}
+        ref={menuRef}
+      >
+        <MoreVertIcon />
+      </IconButton>
+      <MenuPopover
+        open={open}
+        anchorEl={menuRef.current}
+        onClose={() => {
+          setOpen(false);
+        }}
+        sx={{ width: 200 }}
+      >
+        <MenuItem
+          id="comment-settings"
+          onClick={() => handleDelete()}
+          sx={{ typography: 'body2', py: 1, px: 2.5 }}
+        >
+          <Box
+            component={Icon}
+            icon={cancel}
+            sx={{
+              mr: 2,
+              width: 24,
+              height: 24
+            }}
+          />
+          Delete
+        </MenuItem>
+      </MenuPopover>
+    </Box>
+  );
+};

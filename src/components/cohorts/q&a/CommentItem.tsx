@@ -1,24 +1,11 @@
-import { useState, useRef } from 'react';
-import { Icon } from '@iconify/react';
-import cancel from '@iconify/icons-ic/cancel';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // material
 import { styled } from '@material-ui/core/styles';
 
-import {
-  Box,
-  Avatar,
-  Paper,
-  Stack,
-  MenuItem,
-  Typography,
-  ListItemProps,
-  IconButton
-} from '@material-ui/core';
-import MenuPopover from '../../MenuPopover';
+import { Avatar, Paper, Stack, Typography, ListItemProps } from '@material-ui/core';
+import { DeleteOption } from './Common';
 // utils
 import { fDate } from '../../../utils/formatTime';
 
@@ -55,13 +42,7 @@ export default function CommentItem({
   admin,
   removeComment
 }: CommentItemProps) {
-  const [open, setOpen] = useState(false);
-  const listRef = useRef(null);
   const { enqueueSnackbar } = useSnackbar();
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
 
   const handleDelete = async () => {
     const url = `/questions_feed/delete_comment.json?comment_id=${id}`;
@@ -91,46 +72,7 @@ export default function CommentItem({
               <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                 {fDate(postedAt)}
               </Typography>
-              {admin && (
-                <Box>
-                  <IconButton
-                    aria-label="more"
-                    aria-controls="long-menu"
-                    aria-haspopup="true"
-                    onClick={handleOpen}
-                    ref={listRef}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                  <MenuPopover
-                    open={open}
-                    anchorEl={listRef.current}
-                    onClose={() => {
-                      setOpen(false);
-                    }}
-                    sx={{ width: 200 }}
-                  >
-                    <MenuItem
-                      id="comment-settings"
-                      onClick={() => {
-                        handleDelete();
-                      }}
-                      sx={{ typography: 'body2', py: 1, px: 2.5 }}
-                    >
-                      <Box
-                        component={Icon}
-                        icon={cancel}
-                        sx={{
-                          mr: 2,
-                          width: 24,
-                          height: 24
-                        }}
-                      />
-                      Delete
-                    </MenuItem>
-                  </MenuPopover>
-                </Box>
-              )}
+              {admin && <DeleteOption handleDelete={() => handleDelete()} />}
             </Stack>
           </Stack>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>

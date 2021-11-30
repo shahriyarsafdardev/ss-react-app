@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Box, Typography, Divider, IconButton, Menu, MenuItem } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Box, Stack, Typography, Divider } from '@material-ui/core';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Question } from '../../../@types/cohorts';
+import { DeleteOption } from './Common';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -38,15 +38,7 @@ export default function QuestionRow({
   removeComment: Function;
 }) {
   const [isHiddenView, setView] = useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const hasDetails = question.question_text || question.audio_url || question.video_url;
 
   const renderAnswer = () => {
     if (question.answered) {
@@ -87,46 +79,51 @@ export default function QuestionRow({
     return '';
   };
 
-  const deleteOption = () => (
-    <>
-      <IconButton
-        id="basic-button"
-        aria-controls="basic-menu"
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button'
-        }}
-      >
-        <MenuItem onClick={() => onDeleteClick(question.id)}>Delete</MenuItem>
-      </Menu>
-    </>
-  );
-
   const renderQuestion = () => (
     <>
       <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <Typography
-          style={{ fontSize: '18px', fontWeight: 700, color: '#212B36', lineHeight: '28px' }}
-        >
-          {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
-        </Typography>
-        {canDelete && deleteOption()}
+        <Stack direction="column">
+          <Typography
+            style={{ fontSize: '18px', fontWeight: 700, color: '#212B36', lineHeight: '28px' }}
+          >
+            {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
+          </Typography>
+          <Typography
+            style={{
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#212B36',
+              lineHeight: '16px',
+              marginTop: '5px'
+            }}
+          >
+            {question?.asker_name
+              ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
+              : 'Some User'}
+            {hasDetails && (
+              <>
+                {' '}
+                |{' '}
+                <span
+                  onClick={() => setView(!isHiddenView)}
+                  role="button"
+                  className="view-type"
+                  tabIndex={-1}
+                  onKeyDown={() => {}}
+                >
+                  {isHiddenView ? 'See Details' : 'Hide Details'}
+                </span>
+              </>
+            )}
+          </Typography>
+        </Stack>
+        {canDelete && <DeleteOption handleDelete={() => onDeleteClick(question.id)} />}
       </Box>
       {!isHiddenView && (
         <Box style={{ width: '100%' }}>
           {question.question_type === 'Text' && question.question_text && (
             <div
-              style={{ fontWeight: 200, fontSize: '16px', lineHeight: '28px' }}
+              style={{ marginTop: '12px', fontWeight: 200, fontSize: '16px', lineHeight: '28px' }}
               dangerouslySetInnerHTML={{ __html: question.question_text }}
             />
           )}
@@ -148,29 +145,6 @@ export default function QuestionRow({
           )}
         </Box>
       )}
-      <Typography
-        style={{
-          fontSize: '14px',
-          fontWeight: 400,
-          color: '#212B36',
-          lineHeight: '16px',
-          marginTop: '10px'
-        }}
-      >
-        {question?.asker_name
-          ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
-          : 'Some User'}{' '}
-        |{' '}
-        <span
-          onClick={() => setView(!isHiddenView)}
-          role="button"
-          className="view-type"
-          tabIndex={-1}
-          onKeyDown={() => {}}
-        >
-          {isHiddenView ? 'See Details' : 'Hide Details'}
-        </span>
-      </Typography>
     </>
   );
   const renderComments = () =>
