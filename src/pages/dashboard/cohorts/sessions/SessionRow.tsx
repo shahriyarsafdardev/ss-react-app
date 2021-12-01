@@ -1,4 +1,5 @@
 import { styled } from '@material-ui/core/styles';
+import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -42,7 +43,7 @@ const SessionDetails = styled('div')((props) => ({
 }));
 
 export default function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
-  const sessionDate = new Date(session.time);
+  const sessionDate = new Date(firstUpcomingDate(session.times));
   const todayDate = new Date();
   const isPastSession = sessionDate < todayDate;
 
@@ -76,7 +77,7 @@ export default function SessionRow({ session, index, onClick, isSelected }: Sess
         <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
         <SessionDetails data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
-          {sessionTime(session.time)}
+          {sessionTime(firstUpcomingDate(session.times))}
         </SessionDetails>
       </div>
     </ListItem>

@@ -177,7 +177,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       </LogoContainer>
 
       <NavSection
-        cohortsData={cohortsConfig(cohorts)}
+        cohortsData={cohortsConfig(cohorts, user?.type === 'admin')}
         navConfig={sidebarConfig}
         isShow={!isCollapse}
       />

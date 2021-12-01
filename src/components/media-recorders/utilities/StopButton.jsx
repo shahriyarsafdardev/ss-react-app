@@ -1,0 +1,37 @@
+import styled from 'styled-components';
+
+const Button = styled.button`
+  background: ${(props) => props.backgroundColor};
+  color: ${(props) => props.color};
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  background: rgba(227, 73, 28, 0.8);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+  :hover {
+    background: #fb6d42;
+  }
+`;
+
+const Border = styled.div`
+  background: #e1e4e7;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+`;
+
+Button.defaultProps = {
+  color: 'black',
+  backgroundColor: 'white'
+};
+
+const StopButton = (props) => (
+  <Border>
+    <Button {...props} />
+  </Border>
+);
+
+export default StopButton;

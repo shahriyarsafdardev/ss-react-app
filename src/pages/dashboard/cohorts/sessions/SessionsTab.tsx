@@ -12,6 +12,7 @@ import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
+
 // ----------------------------------------------------------------------
 
 const SessionsContainer = styled(Container)(({ theme }) => ({
@@ -60,7 +61,7 @@ export default function SessionsTab() {
     trimmedSessionData = sessions.map((session) => ({
       id: session.id,
       name: session.name,
-      time: session.time,
+      times: session.times,
       length: session.length,
       number: session.number
     }));

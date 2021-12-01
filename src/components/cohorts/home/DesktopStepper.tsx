@@ -10,7 +10,7 @@ import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
 import Circle from '@material-ui/icons/Circle';
 
 import { Session } from '../../../@types/cohorts';
-import { displayDate, formatTime } from './Common';
+import { displayMultipleDates, formatMultipleTimes } from './Common';
 
 const StyledSession = styled(Typography)(() => ({
   fontSize: '14px',
@@ -212,9 +212,9 @@ export default function DesktopStepper({
                 <StepLabel StepIconComponent={QontoStepIcon}>
                   <div>
                     <StyledSession>{`Session ${session.number}`}</StyledSession>
-                    <StyledDate>{formatTime(session.time, session.length)}</StyledDate>
-                    {displayDate(session.time) ? (
-                      <StyledDate>{displayDate(session.time)}</StyledDate>
+                    <StyledDate>{formatMultipleTimes(session.times, session.length)}</StyledDate>
+                    {displayMultipleDates(session.times) ? (
+                      <StyledDate>{displayMultipleDates(session.times)}</StyledDate>
                     ) : (
                       <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
                         <Link

@@ -12,9 +12,10 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts')
 };
 
-const cohortsConfig = (rawCohorts: any) =>
+const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
   rawCohorts.map((cohort: any) => {
     const object: any = {
+      id: cohort.id,
       title: cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
@@ -26,7 +27,8 @@ const cohortsConfig = (rawCohorts: any) =>
         {
           title: 'discord',
           path: cohort.discord_directory_url,
-          externalUrl: true
+          externalUrl: true,
+          notifications: false
         }
       ];
     } else {
@@ -34,16 +36,41 @@ const cohortsConfig = (rawCohorts: any) =>
         ...object.children,
         {
           title: 'messaging',
-          path: PATH_DASHBOARD.cohorts.messaging(cohort.id)
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+          notifications: true,
+          category: 'Messaging'
         }
       ];
     }
     object.children = [
-      { title: 'home', path: PATH_DASHBOARD.cohorts.home(cohort.id) },
+      {
+        title: 'home',
+        path: PATH_DASHBOARD.cohorts.home(cohort.id),
+        notifications: false
+      },
       ...object.children,
-      { title: 'networking', path: PATH_DASHBOARD.cohorts.peers(cohort.id) },
-      { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
+      {
+        title: 'networking',
+        path: PATH_DASHBOARD.cohorts.peers(cohort.id),
+        notifications: false
+      }
     ];
+    if (isAdmin) {
+      object.children = [
+        ...object.children,
+        {
+          title: 'Q&A',
+          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+          notifications: true,
+          category: 'Question'
+        }
+      ];
+    } else {
+      object.children = [
+        ...object.children,
+        { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
+      ];
+    }
 
     return object;
   });

@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Session } from '../../../@types/cohorts';
+import { firstUpcomingDate } from './Common';
 
 const StyledSession = styled(Typography)(() => ({
   fontSize: '14px',
@@ -173,14 +174,14 @@ export default function MobileStepper({
             <Step key={step.number} sx={{ minHeight: '50px' }}>
               <StepLabel
                 StepIconComponent={(props: StepIconProps) => (
-                  <QontoStepIcon {...props} time={step.time} key={step.time} />
+                  <QontoStepIcon {...props} time={firstUpcomingDate(step.times)} key={step.times} />
                 )}
               >
                 <div>
                   <StyledSession>{step.name}</StyledSession>
-                  {displaySession(step.time, step.length, step.number) ? (
+                  {displaySession(firstUpcomingDate(step.times), step.length, step.number) ? (
                     <StyledContent>
-                      {displaySession(step.time, step.length, step.number)}
+                      {displaySession(firstUpcomingDate(step.times), step.length, step.number)}
                     </StyledContent>
                   ) : (
                     <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>

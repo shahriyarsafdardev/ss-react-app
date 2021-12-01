@@ -1,0 +1,26 @@
+.timer {
+  display: flex;
+  align-items: center;
+}
+.timer .ellipse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ca3a20;
+  margin-right: 5px;
+}
+.timer .text {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.large-timer {
+  height: 68px;
+  padding: 0px 20px;
+}
+
+.small-timer {
+  height: 44px;
+  padding: 10px 10px;
+}

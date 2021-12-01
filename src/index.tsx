@@ -34,10 +34,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import { ActionCableProvider } from 'react-actioncable-provider';
+
 // material
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 // redux
+import ActionCable from 'actioncable';
 import { store, persistor } from './redux/store';
 // contexts
 import { SettingsProvider } from './contexts/SettingsContext';
@@ -58,6 +61,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // ----------------------------------------------------------------------
+const cable_url = process.env.REACT_APP_ACTION_CABLE_URL || '';
+const cable = ActionCable.createConsumer(cable_url);
+cable.subscriptions.create('NotificationsChannel', {});
 
 ReactDOM.render(
   <HelmetProvider>
@@ -67,9 +73,11 @@ ReactDOM.render(
           <SettingsProvider>
             <CollapseDrawerProvider>
               <BrowserRouter>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
+                <ActionCableProvider cable={cable}>
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </ActionCableProvider>
               </BrowserRouter>
             </CollapseDrawerProvider>
           </SettingsProvider>

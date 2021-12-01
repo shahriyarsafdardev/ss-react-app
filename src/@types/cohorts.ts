@@ -62,7 +62,7 @@ export type Session = {
   number: number;
   survey_completed: boolean;
   length: string;
-  time: string;
+  times: string[];
   zoom_url: string;
   recording_url: string;
   recording_thumbnail_url: string;
@@ -79,8 +79,22 @@ export type SessionListItem = {
   id: string;
   name: string;
   length: string;
-  time: string;
+  times: string[];
   number: number;
+};
+
+export type Notification = {
+  id: string;
+  description: string;
+  title: string | undefined;
+  type: string;
+  category: string;
+  avatar: string;
+  link: string;
+  channel_id: string;
+  cohort_id: string;
+  isUnRead: boolean;
+  createdAt: Date;
 };
 
 export type Cohort = {
@@ -95,4 +109,44 @@ export type Cohort = {
   sessions: Session[];
   enrollments: String[];
   random_peers: StudentProfile[];
+};
+
+export type Comment = {
+  id: string;
+  text: string;
+  time: Date;
+  user_name: string;
+  user_image: string;
+  image: string;
+  user_id: string;
+};
+
+export type Question = {
+  answer: string;
+  answer_audio_url: string;
+  answer_date: string;
+  answer_id: string;
+  answer_video_screenshot: string;
+  answer_video_url: string;
+  answered: boolean;
+  asker_email: string;
+  asker_id: string;
+  asker_name: string;
+  audio_url: string;
+  aws_approved: boolean;
+  aws_transcription: string | null;
+  date: string;
+  id: string;
+  question_summary: string;
+  question_text: string;
+  question_type: string;
+  slug: string;
+  thumbnail: string;
+  user_id: string;
+  user_name: string;
+  user_organisation_logo: string;
+  user_slug: string;
+  video_screenshot: string;
+  video_url: string;
+  comments: Comment[];
 };

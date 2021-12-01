@@ -40,6 +40,25 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
   height: '100%'
 }));
 
+const formatList = (list: string[]) =>
+  list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ');
+
+export const sortedTimes = (times: string[]) =>
+  [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1));
+
+export const upcomingTimes = (times: string[]) =>
+  sortedTimes(times).filter((time) => moment(time).add(1, 'hours') > moment());
+
+export const firstUpcomingDate = (times: string[]) => {
+  const sorted: string[] = sortedTimes(times);
+  let firstTime = sorted[sorted.length - 1];
+  const upcomings = upcomingTimes(times);
+  if (upcomings.length > 0) {
+    [firstTime] = upcomings;
+  }
+  return firstTime;
+};
+
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(
     new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
@@ -60,6 +79,36 @@ export const displayDate = (time: string) => {
     return moment(time).format('dddd, MMM DD');
   }
   return false;
+};
+
+export const displayMultipleDates = (times: string[]) => {
+  const upcomings = upcomingTimes(times);
+  if (upcomings.length === 0) {
+    return false;
+  }
+  if (upcomings.length === 1) {
+    return displayDate(upcomings[0]);
+  }
+  const formattedDates = upcomings.slice(0, 2).map((time) => moment(time).format('MMM DD'));
+  return formatList(formattedDates);
+};
+
+export const formatMultipleTimes = (times: string[], sessionLength: string) => {
+  const upcomings = upcomingTimes(times);
+  if (upcomings.length === 0) {
+    return 'Complete';
+  }
+  if (upcomings.length === 1) {
+    return formatTime(upcomings[0], sessionLength);
+  }
+  const sortedTimeslist = upcomings
+    .slice(0, 2)
+    .map((time) =>
+      moment(new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).format(
+        'hh:mm a'
+      )
+    );
+  return `${formatList(sortedTimeslist)}  PST`;
 };
 
 export const CircularLoader = () => (

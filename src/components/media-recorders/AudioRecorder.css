@@ -1,0 +1,55 @@
+.recorder-icon {
+  display: flex;
+  height: 44px;
+  width: 44px;
+  cursor: pointer;
+}
+.recorder-icon img {
+  margin: auto;
+  height: 27px;
+  width: 27px;
+}
+
+.recorder-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.recorder-icon-container .mic-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.recorder-icon-container .recording-text {
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recorder-icon-container .stop-icon {
+  display: flex;
+  height: 44px;
+  cursor: pointer;
+  border: 3px solid #4d4dcd;
+  border-radius: 8px;
+  width: 146px;
+  justify-content: center;
+  align-items: center;
+  color: #4d4dcd;
+  font-weight: 500;
+}
+
+.recorder-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.recorder-container div:first-child {
+  margin-right: 10px;
+}

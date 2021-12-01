@@ -1,24 +1,25 @@
-import { useRef, useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
-import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { styled } from '@material-ui/core/styles';
-
-// material
+import { ActionCableConsumer } from 'react-actioncable-provider';
 import {
   Box,
   List,
   Badge,
-  Button,
   Tooltip,
   Divider,
   Typography,
   ListItemText,
   ListItemButton
 } from '@material-ui/core';
+import { addNotification, markAsRead } from '../../redux/slices/notification';
+
+// material
+import { Notification } from '../../@types/cohorts';
+import { RootState, useDispatch, useSelector } from '../../redux/store';
 import useAuth from '../../hooks/useAuth';
 
 // utils
@@ -29,18 +30,6 @@ import MenuPopover from '../../components/MenuPopover';
 import { MIconButton } from '../../components/@material-extend';
 
 // ----------------------------------------------------------------------
-
-type TNotificationPopover = {
-  id: string;
-  channel_id: string | null;
-  cohort_id: string | null;
-  title: string;
-  description: string;
-  avatar: string | null;
-  type: string;
-  createdAt: Date;
-  isUnRead: boolean;
-};
 
 const UserAvatar = styled('div')(() => ({
   width: '40px',
@@ -60,7 +49,7 @@ const trimString = (data: string) => {
   return '';
 };
 
-function renderContent(notification: TNotificationPopover) {
+function renderContent(notification: Notification) {
   const title = (
     <Typography variant="subtitle2">
       {notification.title}
@@ -104,22 +93,16 @@ function renderContent(notification: TNotificationPopover) {
   };
 }
 
-function NotificationItem({
-  notification,
-  onClick
-}: {
-  notification: TNotificationPopover;
-  onClick: any;
-}) {
+function NotificationItem({ notification, onClick }: { notification: Notification; onClick: any }) {
   const { avatar, title } = renderContent(notification);
 
   return (
     <ListItemButton
-      to={`cohorts/${notification.cohort_id}/messaging?channel_id=${notification.channel_id}&message=${notification.id}`}
+      href={notification.link}
       onClick={onClick}
       disableGutters
       key={notification.id}
-      component={RouterLink}
+      component="a"
       sx={{
         py: 1.5,
         px: 2.5,
@@ -152,128 +135,39 @@ function NotificationItem({
 }
 
 export default function NotificationsPopover() {
-  const apiKey = process.env.REACT_APP_STREAM_API_KEY || process.env.STREAM_API_KEY;
   const { user } = useAuth();
-  const [unread, setUnread] = useState<number | undefined>(0);
-  const [chatClient, setChatClient] = useState<any>(null);
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [notifications, setNotifications] = useState<TNotificationPopover[]>([]);
-  const [totalUnRead, setTotalUnread] = useState(0);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const initChat = async () => {
-      const client = StreamChat.getInstance<
-        Record<string, unknown>,
-        Record<string, unknown>,
-        LiteralStringForUnion,
-        Record<string, unknown>,
-        Record<string, unknown>,
-        Record<string, unknown>,
-        { image?: string }
-      >(apiKey!);
+  const notifications = useSelector((state: RootState) => state?.notification?.notifications) || [];
 
-      // Go for connecting a user only is is not already connected
-      if (!client.user && user?.stream_token) {
-        await client.connectUser(
-          {
-            id: user?.stream_id || user?.id
-          },
-          user?.stream_token
-        );
-      }
-      client.on((event) => {
-        if (
-          event.total_unread_count !== null &&
-          event.type !== 'user.watching.start' &&
-          event.type !== 'health.check'
-        ) {
-          setUnread(event.total_unread_count);
-        }
-      });
-      const result = await client.queryChannels(
-        { members: { $in: [user?.id] } },
-        { has_unread: -1, last_message_at: -1, updated_at: -1 }
-      );
-      const unreadChannels = result.filter((channel) => channel.state.unreadCount > 0).reverse();
-      let messages: any = [];
-      unreadChannels.map((channel) => {
-        channel.state.messages
-          .filter(
-            (m) => m?.user?.id !== user?.id && m.updated_at > channel.state.read[user?.id].last_read
-          )
-          .map(
-            (m) =>
-              (messages = [
-                {
-                  text: m.text,
-                  user: m.user?.name,
-                  date: m.updated_at,
-                  id: m.id,
-                  image: m.user?.image,
-                  team: channel?.data?.team,
-                  channel_id: channel?.id
-                },
-                ...messages
-              ])
-          )
-          .reverse();
-      });
-      const unread = messages.length;
-      if (Object.keys(messages).length > 0) {
-        setNotifications(
-          messages.map((message: any) => ({
-            id: message.id,
-            channel_id: message.channel_id,
-            cohort_id: message.team,
-            title: `New Message from ${message.user}`,
-            description: message.text,
-            avatar: message.image,
-            type: 'chat_message',
-            createdAt: message.date,
-            isUnRead: true
-          }))
-        );
-      } else {
-        setNotifications([]);
-      }
-      setTotalUnread(unread);
-      setChatClient(client);
-    };
-    if (user?.stream_token) {
-      initChat();
+  const handleReceivedNotifications = (val: any) => {
+    if (val.receiver === user?.id) {
+      dispatch(addNotification(val.react_notification));
     }
-  }, [unread]);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleMarkAllAsRead = async () => {
-    await chatClient.markAllRead();
-    setNotifications([]);
   };
 
   return (
     <>
+      <ActionCableConsumer
+        channel={{ channel: 'NotificationsChannel' }}
+        onReceived={handleReceivedNotifications}
+      />
       <MIconButton
         ref={anchorRef}
         size="large"
         color={open ? 'primary' : 'default'}
-        onClick={handleOpen}
+        onClick={() => setOpen(true)}
       >
-        <Badge badgeContent={totalUnRead} color="error">
+        <Badge badgeContent={notifications.length} color="error">
           <Icon icon={bellFill} width={20} height={20} />
         </Badge>
       </MIconButton>
 
       <MenuPopover
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         anchorEl={anchorRef.current}
         sx={{ width: 360 }}
       >
@@ -281,13 +175,13 @@ export default function NotificationsPopover() {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifications</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
+              You have {notifications.length} unread messages
             </Typography>
           </Box>
 
-          {totalUnRead > 0 && (
+          {notifications.length > 0 && (
             <Tooltip title=" Mark all as read">
-              <MIconButton color="primary" onClick={handleMarkAllAsRead}>
+              <MIconButton color="primary" onClick={() => dispatch(markAsRead('all', undefined))}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </MIconButton>
             </Tooltip>
@@ -304,29 +198,12 @@ export default function NotificationsPopover() {
                 notification={notification}
                 onClick={() => {
                   setOpen(false);
+                  dispatch(markAsRead('single', notification.id));
                 }}
               />
             ))}
           </List>
         </Scrollbar>
-
-        <Divider />
-
-        {notifications.length > 0 && (
-          <Box sx={{ p: 1 }}>
-            <Button
-              fullWidth
-              disableRipple
-              component={RouterLink}
-              to={`cohorts/${notifications[0].cohort_id}/messaging`}
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              View All
-            </Button>
-          </Box>
-        )}
       </MenuPopover>
     </>
   );
