@@ -9,7 +9,6 @@ import { deleteQuestion } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Question } from '../../../@types/cohorts';
 import { RootState, useSelector } from '../../../redux/store';
-import { Question } from '../../../@types/cohorts';
 import LoadingScreen from '../../LoadingScreen';
 import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
@@ -57,9 +56,6 @@ const LoadingContainer = styled(Box)(() => ({
 
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(true);
@@ -144,21 +140,21 @@ function QnATab() {
   return (
     <StyledPage title="ScholarSite | Q&A">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-      <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
-      <Container style={{ marginBottom: '50px' }}>
-        <StyledBox>
-          {list.length === 0 ? (
-            <EmptyFeed hosts={cohort.host_names} />
-          ) : (
-            <QnAFeed
-              addComment={addComment}
-              questions={list}
-              removeComment={removeComment}
-              onDeleteClick={handleDelete}
-            />
-          )}
-        </StyledBox>
-      </Container>
+        <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
+        <Container style={{ marginBottom: '50px' }}>
+          <StyledBox>
+            {list.length === 0 ? (
+              <EmptyFeed hosts={cohort.host_names} />
+            ) : (
+              <QnAFeed
+                addComment={addComment}
+                questions={list}
+                removeComment={removeComment}
+                onDeleteClick={handleDelete}
+              />
+            )}
+          </StyledBox>
+        </Container>
       </AnalyticsContext.Provider>
     </StyledPage>
   );
