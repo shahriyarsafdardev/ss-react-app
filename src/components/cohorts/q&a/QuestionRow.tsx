@@ -33,13 +33,15 @@ export default function QuestionRow({
   addComment,
   onDeleteClick,
   canDelete,
-  removeComment
+  removeComment,
+  onTrack
 }: {
   question: Question;
   addComment: Function;
   onDeleteClick: Function;
   canDelete: Boolean;
   removeComment: Function;
+  onTrack: Function;
 }) {
   const [isHiddenView, setView] = useState(question.answered);
   const hasDetails =
@@ -60,6 +62,7 @@ export default function QuestionRow({
                 controlsList="nodownload"
                 autoPlay={false}
                 style={{ width: '100%', borderRadius: '8px' }}
+                onPlay={() => onTrack('Watched Answer')}
               />
             )}
             {question.answer_audio_url && (

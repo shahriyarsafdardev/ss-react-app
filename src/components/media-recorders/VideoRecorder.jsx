@@ -126,7 +126,7 @@ const Controls =
     );
   };
 
-const CustomVideoRecorder = ({ onComplete, onClose }) => (
+const CustomVideoRecorder = ({ onComplete, onClose, onTrack }) => (
   <Box style={{ height: '200px' }}>
     <div className="question-video-recorder-screen">
       <div className="question-recorder-wrapper">
@@ -146,6 +146,7 @@ const CustomVideoRecorder = ({ onComplete, onClose }) => (
           onRecordingComplete={(videoBlob) => {
             onComplete(new File([videoBlob], 'question.webm', { type: 'video/webm' }));
           }}
+          onStartRecording={() => onTrack('Started recording video question')}
           renderActions={Controls(onComplete)}
           renderUnsupportedView={notSupportMessage}
         />

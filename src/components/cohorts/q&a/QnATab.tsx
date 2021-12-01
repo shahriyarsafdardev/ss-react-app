@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
+import { EVENT_TYPES, trackQnAEvents, sendAmplitudeData } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion } from 'utils/requests';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { Question } from '../../../@types/cohorts';
 import { RootState, useSelector } from '../../../redux/store';
 import { Question } from '../../../@types/cohorts';
 import LoadingScreen from '../../LoadingScreen';
-
 import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
 import EmptyFeed from './EmptyFeed';
@@ -55,12 +57,29 @@ const LoadingContainer = styled(Box)(() => ({
 
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(true);
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+
+  useEffect(() => {
+    if (cohort) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.questions_tab,
+        [EVENT_TYPES.cohort_name]: cohort?.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+      });
+    }
+  }, [cohort]);
+
+  const sendAnalyticsData = (eventCategory: string, eventData: string) => {
+    trackQnAEvents(cohort?.name, cohort?.intake, eventCategory, eventData);
+  };
 
   useEffect(() => {
     const initMaterials = async () => {
@@ -124,6 +143,7 @@ function QnATab() {
 
   return (
     <StyledPage title="ScholarSite | Q&A">
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
       <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
@@ -139,6 +159,7 @@ function QnATab() {
           )}
         </StyledBox>
       </Container>
+      </AnalyticsContext.Provider>
     </StyledPage>
   );
 }

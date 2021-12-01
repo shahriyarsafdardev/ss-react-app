@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, IconButton, Button } from '@material-ui/core';
-
 import Timer from './Timer';
 
 import './AudioRecorder.css';
 
-const AudioRecorder = ({ onComplete, onClose }) => {
+const AudioRecorder = ({ onComplete, onClose, onTrack }) => {
   const [audioURL, setAudioURL] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState(null);
@@ -49,6 +48,7 @@ const AudioRecorder = ({ onComplete, onClose }) => {
 
   const startRecording = () => {
     setIsRecording(true);
+    onTrack('Started recording audio question');
   };
 
   const stopRecording = () => {

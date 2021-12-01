@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
@@ -86,6 +87,7 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
   const [submitting, setSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
@@ -98,6 +100,7 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
 
   const onFormSubmitHandler = async () => {
     setSubmitting(true);
+    sendAnalyticsData('Question Form', 'Submitted question');
     const questionData = new FormData();
 
     questionData.append('question_summary', questionSummary);
@@ -146,6 +149,7 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
                 id="question-text-input"
                 rows={isMobile ? 2 : 1}
                 onChange={(e) => setQuestionSummary(e.target.value)}
+                onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
                 style={{ height: '100%' }}
                 inputProps={{
                   height: '100%',
@@ -164,6 +168,7 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
                   setIsRecording={setIsRecording}
                   setQuestionType={setQuestionType}
                   questionType={questionType}
+                  onTrack={(action: string) => sendAnalyticsData('Question Form', action)}
                 />
               )}
               <ButtonsContainer>
