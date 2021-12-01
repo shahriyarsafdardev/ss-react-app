@@ -4,6 +4,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
+import { isMobile } from 'react-device-detect';
 import { SectionContainer, CircularLoader } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
 
@@ -67,14 +68,15 @@ const QuestionFormContainer = styled(Box)(({ theme }) => ({
 const QuestionInput = styled(Box)(({ theme }) => ({
   width: '60%',
   [theme.breakpoints.down('md')]: {
-    width: '100%'
+    width: '100%',
+    marginBottom: '20px'
   },
   '.MuiOutlinedInput-root': {
     height: '100%'
   }
 }));
 
-const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
+const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string }) => {
   const [questionSummary, setQuestionSummary] = useState('');
   const [showMediaSection, setMediaSection] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -88,7 +90,7 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
     if (elem) {
-      if (elem.scrollHeight > 23) {
+      if (elem.scrollHeight > (isMobile ? 46 : 23)) {
         setMediaSection(true);
       }
     }
@@ -138,11 +140,11 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
               <TextField
                 fullWidth
                 value={questionSummary}
-                placeholder="Do you have any questions? We would love to hear them! "
+                placeholder={`Do you have any questions? ${hosts} would love to hear them!`}
                 multiline
                 size="small"
                 id="question-text-input"
-                rows={1}
+                rows={isMobile ? 2 : 1}
                 onChange={(e) => setQuestionSummary(e.target.value)}
                 style={{ height: '100%' }}
                 inputProps={{

@@ -32,6 +32,15 @@ const StyledPreview = styled('img')(({ theme }) => ({
   }
 }));
 
+const UserAvatar = styled(Avatar)(({ theme }) => ({
+  display: 'flex',
+  marginRight: '15px',
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+    marginRight: '0'
+  }
+}));
+
 export default function CommentItem({
   id,
   name,
@@ -59,21 +68,26 @@ export default function CommentItem({
 
   return (
     <>
-      <Stack direction="row" spacing={2}>
-        <Avatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48 }} />
+      <Stack direction="row">
+        <UserAvatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48 }} />
         <Paper sx={{ p: 1.5, flexGrow: 1, bgcolor: 'background.neutral' }}>
           <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            alignItems={{ sm: 'center' }}
-            justifyContent="space-between"
+            direction="row"
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            style={{ width: '100%' }}
           >
-            <Typography variant="subtitle2">{name}</Typography>
-            <Stack direction="row" alignItems="center">
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              alignItems={{ xs: 'flex-start', sm: 'center' }}
+              justifyContent="space-between"
+              style={{ width: '100%' }}
+            >
+              <Typography variant="subtitle2">{name}</Typography>
               <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                 {fDate(postedAt)}
               </Typography>
-              {admin && <DeleteOption handleDelete={() => handleDelete()} />}
             </Stack>
+            {admin && <DeleteOption handleDelete={() => handleDelete()} />}
           </Stack>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {message}

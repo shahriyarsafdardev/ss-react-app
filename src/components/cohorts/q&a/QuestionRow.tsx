@@ -17,6 +17,10 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   borderRadius: '16px',
   padding: '20px',
   margin: '20px 40px 20px 40px',
+  [theme.breakpoints.down('sm')]: {
+    boxShadow: '0 5px 5px rgb(0 0 0 / 10%)',
+    margin: '6px'
+  },
   'span.view-type': {
     color: '#4D4DCD',
     textDecoration: 'underline',

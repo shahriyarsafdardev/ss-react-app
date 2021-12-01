@@ -13,8 +13,7 @@ import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate'
 import {
   Box,
   Avatar,
-  ListItem,
-  ListItemAvatar,
+  Stack,
   TextField,
   IconButton,
   InputAdornment,
@@ -33,6 +32,15 @@ type FormValues = {
 const CrossIconButton = styled(IconButton)(({ theme }) => ({
   // marginLeft: '-32px',
   cursor: 'pointer'
+}));
+
+const UserAvatar = styled(Avatar)(({ theme }) => ({
+  display: 'block',
+  marginRight: '15px',
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+    marginRight: '0'
+  }
 }));
 
 const StyledSpinner = styled(CircularProgress)(({ theme }) => ({
@@ -63,10 +71,7 @@ const StyledForm = styled(Form)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column'
-  }
+  width: '100%'
 }));
 
 export default function CommentForm({
@@ -128,21 +133,19 @@ export default function CommentForm({
   };
   return (
     <>
-      <ListItem
-        disableGutters
+      <Stack
+        direction="row"
+        alignItems="center"
         sx={{
-          alignItems: 'center',
           pt: 2,
           width: '100%'
         }}
       >
-        <ListItemAvatar>
-          <Avatar
-            alt={user?.displayName}
-            src={user?.profile_image_url}
-            sx={{ width: 48, height: 48 }}
-          />
-        </ListItemAvatar>
+        <UserAvatar
+          alt={user?.displayName}
+          src={user?.profile_image_url}
+          sx={{ width: 48, height: 48 }}
+        />
         <FormikProvider value={formik}>
           <StyledForm noValidate autoComplete="off">
             <TextField
@@ -195,7 +198,7 @@ export default function CommentForm({
             />
           </StyledForm>
         </FormikProvider>
-      </ListItem>
+      </Stack>
 
       {preview && (
         <StyledImageContainer>

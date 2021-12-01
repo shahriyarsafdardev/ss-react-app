@@ -5,15 +5,19 @@ import Page from 'components/Page';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion } from 'utils/requests';
+import { RootState, useSelector } from '../../../redux/store';
 import { Question } from '../../../@types/cohorts';
+import LoadingScreen from '../../LoadingScreen';
 
 import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
+import EmptyFeed from './EmptyFeed';
 import About from './About';
 import Filters from './Filters';
 
 const StyledPage = styled(Page)(({ theme }) => ({
   marginTop: '-15px',
+  height: '100%',
   [theme.breakpoints.up('lg')]: {
     marginTop: '-25px'
   }
@@ -43,16 +47,27 @@ const StyledFiltersContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(true);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   useEffect(() => {
     const initMaterials = async () => {
       try {
         const response = await axios.get(`/questions_feed.json?cohort_id=${cohort_id} `);
         setList(response.data.questions);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -99,17 +114,29 @@ function QnATab() {
     );
   };
 
+  if (loading || !cohort) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <StyledPage title="ScholarSite | Q&A">
-      <QuestionForm onSuccess={onCreateSuccess} />
+      <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
       <Container style={{ marginBottom: '50px' }}>
         <StyledBox>
-          <QnAFeed
-            addComment={addComment}
-            questions={list}
-            removeComment={removeComment}
-            onDeleteClick={handleDelete}
-          />
+          {list.length === 0 ? (
+            <EmptyFeed hosts={cohort.host_names} />
+          ) : (
+            <QnAFeed
+              addComment={addComment}
+              questions={list}
+              removeComment={removeComment}
+              onDeleteClick={handleDelete}
+            />
+          )}
         </StyledBox>
       </Container>
     </StyledPage>
