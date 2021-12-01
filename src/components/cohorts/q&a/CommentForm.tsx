@@ -132,7 +132,7 @@ export default function CommentForm({
         disableGutters
         sx={{
           alignItems: 'center',
-          py: 3,
+          pt: 2,
           width: '100%'
         }}
       >

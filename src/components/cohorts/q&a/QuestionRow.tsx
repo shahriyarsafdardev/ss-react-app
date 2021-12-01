@@ -37,8 +37,9 @@ export default function QuestionRow({
   canDelete: Boolean;
   removeComment: Function;
 }) {
-  const [isHiddenView, setView] = useState(true);
-  const hasDetails = question.question_text || question.audio_url || question.video_url;
+  const [isHiddenView, setView] = useState(question.answered);
+  const hasDetails =
+    (question.question_text || question.audio_url || question.video_url) && question.answered;
 
   const renderAnswer = () => {
     if (question.answered) {
