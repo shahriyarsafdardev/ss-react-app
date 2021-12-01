@@ -170,7 +170,7 @@ const TimerPreview = ({
         </Typography>
         {displayType !== 'small' && (
           <Typography variant="subtitle2" className={classes.marginTop}>
-            Passcode: 864988
+            Passcode: EPBW21
           </Typography>
         )}
         <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
@@ -236,7 +236,7 @@ const SessionInProgress = ({
                 The session has already started, access the link below to join!
               </Typography>
               <Typography variant="subtitle2" className={classes.marginTop}>
-                Passcode: 864988
+                Passcode: EPBW21
               </Typography>
             </Box>
           </>
