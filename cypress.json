@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3001",
+  "baseUrl": "http://localhost:3000",
   "env": {
     "serverUrl": "http://localhost:3000/api/v1"
   },
