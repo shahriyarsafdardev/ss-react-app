@@ -15,14 +15,14 @@ import Filters from './Filters';
 const StyledPage = styled(Page)(({ theme }) => ({
   marginTop: '-15px',
   [theme.breakpoints.up('lg')]: {
-    marginTop: '-35px'
+    marginTop: '-25px'
   }
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '20px',
+  width: '100%',
+  justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
     flexDirection: 'column',
     marginTop: 0,
@@ -110,10 +110,6 @@ function QnATab() {
             removeComment={removeComment}
             onDeleteClick={handleDelete}
           />
-          <StyledFiltersContainer>
-            <About />
-            <Filters />
-          </StyledFiltersContainer>
         </StyledBox>
       </Container>
     </StyledPage>

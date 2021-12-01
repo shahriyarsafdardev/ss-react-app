@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Box, Stack, Typography, Divider } from '@material-ui/core';
+import { Box, Stack, Typography, Divider, Avatar } from '@material-ui/core';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Question } from '../../../@types/cohorts';
@@ -13,10 +13,10 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   backgroundColor: 'white',
   wordBreak: 'break-word',
-  boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.20), 0px 24px 48px rgba(145, 158, 171, 0.05)',
+  boxShadow: '0 10px 30px rgb(0 0 0 / 15%)',
   borderRadius: '16px',
   padding: '20px',
-  margin: '0 10px 20px 10px',
+  margin: '20px 40px 20px 40px',
   'span.view-type': {
     color: '#4D4DCD',
     textDecoration: 'underline',
@@ -67,9 +67,7 @@ export default function QuestionRow({
               />
             )}
           </Box>
-          <Typography
-            style={{ fontSize: '14px', fontWeight: 400, color: '#212B36', marginTop: '10px' }}
-          >
+          <Typography style={{ fontSize: '0.8rem', fontWeight: 400, color: '#212B36' }}>
             {question?.asker_name
               ? `Answered by ${question.user_name} ${moment(question.answer_date).fromNow()}`
               : 'Some User'}
@@ -84,14 +82,12 @@ export default function QuestionRow({
     <>
       <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Stack direction="column">
-          <Typography
-            style={{ fontSize: '18px', fontWeight: 700, color: '#212B36', lineHeight: '28px' }}
-          >
+          <Typography style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
             {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
           </Typography>
           <Typography
             style={{
-              fontSize: '14px',
+              fontSize: '0.8rem',
               fontWeight: 400,
               color: '#212B36',
               lineHeight: '16px',

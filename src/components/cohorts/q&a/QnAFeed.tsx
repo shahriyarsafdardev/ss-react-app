@@ -5,8 +5,7 @@ import { Question } from '../../../@types/cohorts';
 import useAuth from '../../../hooks/useAuth';
 
 const StyledFeedContainer = styled(Box)(({ theme }) => ({
-  width: '65%',
-  maxHeight: '600px',
+  width: '60%',
   overflowY: 'scroll',
   [theme.breakpoints.down('md')]: {
     width: '100%'

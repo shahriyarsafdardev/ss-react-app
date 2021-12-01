@@ -59,7 +59,7 @@ const AddQuestionButton = styled(Button)(({ theme }) => ({
 const QuestionFormContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#4D4DCD',
   padding: '16px 24px 16px 24px',
-  zIndex: 1200,
+  // zIndex: 1200,
   width: '100%',
   position: 'relative'
 }));
@@ -138,7 +138,7 @@ const QuestionForm = ({ onSuccess }: { onSuccess: Function }) => {
               <TextField
                 fullWidth
                 value={questionSummary}
-                placeholder="Do you have any questions? Host would love to hear them! "
+                placeholder="Do you have any questions? We would love to hear them! "
                 multiline
                 size="small"
                 id="question-text-input"
