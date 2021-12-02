@@ -19,6 +19,7 @@ import Filters from './Filters';
 const StyledPage = styled(Page)(({ theme }) => ({
   marginTop: '-15px',
   height: '100%',
+  overflow: 'hidden',
   [theme.breakpoints.up('lg')]: {
     marginTop: '-25px'
   }

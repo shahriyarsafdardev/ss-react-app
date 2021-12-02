@@ -109,11 +109,13 @@ const SessionPrereading = ({
                       <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
                     </Box>
                     <Box>
-                      <CircularProgressbar
-                        strokeWidth={14}
-                        totalSteps={list.length}
-                        completedSteps={list.filter((item) => item.complete === true).length}
-                      />
+                      {list.length > 0 && (
+                        <CircularProgressbar
+                          strokeWidth={14}
+                          totalSteps={list.length}
+                          completedSteps={list.filter((item) => item.complete === true).length}
+                        />
+                      )}
                     </Box>
                   </>
                 ) : (

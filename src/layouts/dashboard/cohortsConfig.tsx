@@ -19,7 +19,15 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
       title: cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
-      children: [{ title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) }]
+      children: [
+        { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        {
+          title: 'Q&A',
+          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+          notifications: true,
+          category: 'Question'
+        }
+      ]
     };
     if (cohort.name === 'Building & Investing in Network Effects') {
       object.children = [
@@ -55,22 +63,6 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
         notifications: false
       }
     ];
-    if (isAdmin) {
-      object.children = [
-        ...object.children,
-        {
-          title: 'Q&A',
-          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: true,
-          category: 'Question'
-        }
-      ];
-    } else {
-      object.children = [
-        ...object.children,
-        { title: 'Q&A', path: cohort.questions_url, externalUrl: true }
-      ];
-    }
 
     return object;
   });
