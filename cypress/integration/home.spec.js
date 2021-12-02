@@ -64,18 +64,54 @@ describe('Home page specs', () => {
     })
   })
 
-  describe('Home page timeline specs', () => {
-    it('C7: The left arrow icon in the progress bar should be disabled if welcome text is visible in progress bar', () => {
-    });
+  describe('Home timeline specs', () => {
+    beforeEach(() => {
+      cy.server();
+      cy.login();
+    })
+    context('2 hours before session', () => {
+      before(() => {
+        var dateTime = moment(sessionFixture.sessions[0].time).subtract(2, 'hours');
+        cy.clock(new Date(dateTime.format()));
+      });
+      it('C7: Left arrow icon disabled', () => {
+        timeLine.welcomeText().should('be.visible')
+        timeLine.leftArrowIconDisbaled().should('be.visible')
+      });
+    })
 
-    it('C8: The right arrow icon in the progress bar should be disabled if Cohort Completion text is visible in progress bar', () => {
-    });
+    context('After All Sessions', () => {
+      before(() => {
+        var dateTime = moment(sessionFixture.sessions[1].time).add(1, 'hours');
+        cy.clock(new Date(dateTime.format()));
+      });
+      it('C8: Right arrow icon disabled', () => {
+        timeLine.rightArrowIconActive().should('be.visible').click({ multiple: true, force: true })
+        timeLine.cohortCompletionText().should('be.visible')
+        timeLine.rightArrowIconDisbaled().eq(1).should('be.visible')
+      });
+    })
 
-    it('C9: The left arrow icon in the progress bar should be enabled if welcome text is not visible in progress bar', () => {
-    });
+    context('Session 1 Completed', () => {
+      beforeEach(() => {
+        var dateTime = moment(sessionFixture.sessions[0].time).add(1, 'hours');
+        cy.clock(new Date(dateTime.format()));
+      });
 
-    it('C10: The right arrow icon in the progress bar should be enabled if Cohort Completion is not visible in progress bar', () => {
-    });
+      it('Session Completed Text', () => {
+        timeLine.sessionOneText().should('be.visible')
+        timeLine.sessionCompleteText().should('be.visible')
+      });
+
+      it('Review Content Text', () => {
+        timeLine.reviewContent().should('be.visible')
+      });
+
+      it('Review Content Redirection', () => {
+        timeLine.reviewContent().should('be.visible').click()
+        cy.url().should('contain', 'session=1')
+      });
+    })
 
   })
 
