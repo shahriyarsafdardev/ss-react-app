@@ -43,9 +43,8 @@ const SessionDetails = styled('div')((props) => ({
 }));
 
 export default function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
-  const sessionDate = new Date(firstUpcomingDate(session.times));
-  const todayDate = new Date();
-  const isPastSession = sessionDate < todayDate;
+  const sessionDate = moment(firstUpcomingDate(session.times)).add(1, 'hours');
+  const isPastSession = sessionDate < moment();
 
   const sessionTime = (date: string) => {
     if (isPastSession) {

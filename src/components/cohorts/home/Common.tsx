@@ -53,6 +53,9 @@ const formatList = (list: string[]) =>
 export const sortedTimes = (times: string[]) =>
   [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1));
 
+export const surveyTime = (times: string[]) =>
+  sortedTimes(times).filter((time) => moment(time).add(48, 'hours') > moment())[0];
+
 export const upcomingTimes = (times: string[]) =>
   sortedTimes(times)
     .filter((time) => moment(time).add(1, 'hours') > moment())

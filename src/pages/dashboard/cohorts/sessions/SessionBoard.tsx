@@ -5,7 +5,8 @@ import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { firstUpcomingDate } from 'components/cohorts/home/Common';
+import { surveyTime, firstUpcomingDate } from 'components/cohorts/home/Common';
+import moment from 'moment';
 import {
   SessionMaterials,
   Description,
@@ -191,13 +192,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
     }
     if (feedbackSubmitted || session?.survey_completed) return false;
     if (session && session.times) {
-      const sessionTime1 = new Date(firstUpcomingDate(session.times));
-      const sessionTime2 = sessionTime1;
-      const currentTime = new Date();
-      const surveyReleaseTime = sessionTime1;
-      surveyReleaseTime.setHours(surveyReleaseTime.getHours() + 0.5);
-      const surveyCloseTime = sessionTime2;
-      surveyCloseTime.setHours(surveyCloseTime.getHours() + 48);
+      const currentTime = moment();
+      const sessionTime = surveyTime(session.times);
+      const surveyReleaseTime = moment(sessionTime).add(30, 'minutes');
+      const surveyCloseTime = moment(sessionTime).add(48, 'hours');
       if (currentTime > surveyReleaseTime && currentTime < surveyCloseTime) {
         return true;
       }
