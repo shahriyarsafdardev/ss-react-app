@@ -86,12 +86,7 @@ const SessionPrereading = ({
     />
   );
 
-  const preReadingsCompleted = () => {
-    if (list?.length > 0) {
-      return list.filter((item) => item.complete === false).length === 0;
-    }
-    return false;
-  };
+  const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
   return (
     <SectionContainer className="card-2">

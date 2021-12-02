@@ -3,17 +3,22 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
+import { EVENT_TYPES, trackQnAEvents, sendAmplitudeData } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion } from 'utils/requests';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Question } from '../../../@types/cohorts';
-
+import { RootState, useSelector } from '../../../redux/store';
+import LoadingScreen from '../../LoadingScreen';
 import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
+import EmptyFeed from './EmptyFeed';
 import About from './About';
 import Filters from './Filters';
 
 const StyledPage = styled(Page)(({ theme }) => ({
   marginTop: '-15px',
+  height: '100%',
   [theme.breakpoints.up('lg')]: {
     marginTop: '-25px'
   }
@@ -43,16 +48,41 @@ const StyledFiltersContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
 function QnATab() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(true);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+
+  useEffect(() => {
+    if (cohort) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.questions_tab,
+        [EVENT_TYPES.cohort_name]: cohort?.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+      });
+    }
+  }, [cohort]);
+
+  const sendAnalyticsData = (eventCategory: string, eventData: string) => {
+    trackQnAEvents(cohort?.name, cohort?.intake, eventCategory, eventData);
+  };
 
   useEffect(() => {
     const initMaterials = async () => {
       try {
         const response = await axios.get(`/questions_feed.json?cohort_id=${cohort_id} `);
         setList(response.data.questions);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -99,19 +129,33 @@ function QnATab() {
     );
   };
 
+  if (loading || !cohort) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <StyledPage title="ScholarSite | Q&A">
-      <QuestionForm onSuccess={onCreateSuccess} />
-      <Container style={{ marginBottom: '50px' }}>
-        <StyledBox>
-          <QnAFeed
-            addComment={addComment}
-            questions={list}
-            removeComment={removeComment}
-            onDeleteClick={handleDelete}
-          />
-        </StyledBox>
-      </Container>
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
+        <Container style={{ marginBottom: '50px' }}>
+          <StyledBox>
+            {list.length === 0 ? (
+              <EmptyFeed hosts={cohort.host_names} />
+            ) : (
+              <QnAFeed
+                addComment={addComment}
+                questions={list}
+                removeComment={removeComment}
+                onDeleteClick={handleDelete}
+              />
+            )}
+          </StyledBox>
+        </Container>
+      </AnalyticsContext.Provider>
     </StyledPage>
   );
 }

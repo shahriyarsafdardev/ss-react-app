@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import QuestionRow from './QuestionRow';
 import { Question } from '../../../@types/cohorts';
 import useAuth from '../../../hooks/useAuth';
@@ -24,6 +26,8 @@ const QnAFeed = ({
   removeComment: Function;
 }) => {
   const { user } = useAuth();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
   return (
     <StyledFeedContainer>
       {questions &&
@@ -35,6 +39,7 @@ const QnAFeed = ({
             question={question}
             onDeleteClick={onDeleteClick}
             removeComment={(comment_id: string) => removeComment(question.id, comment_id)}
+            onTrack={(action: string) => sendAnalyticsData('Questions Feed', action)}
           />
         ))}
     </StyledFeedContainer>

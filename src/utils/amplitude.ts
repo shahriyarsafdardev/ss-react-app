@@ -30,6 +30,7 @@ export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
 };
 
 export const EVENT_TYPES = {
+  questions_tab: 'Questions Tab',
   page_view: 'Page view',
   peers_tab: 'Peers Tab',
   sessions_tab: 'Sessions Tab',
@@ -165,5 +166,25 @@ export const trackMessagingEvents = (
     [EVENT_TYPES.cohort_intake_number]: intake,
     category: eventCategory,
     action: eventData
+  });
+};
+
+export const QnA_EVENTS = {
+  qna_page_action: 'QnA Page Action',
+  page_type: 'QnA Page',
+  action: 'action'
+};
+
+export const trackQnAEvents = (
+  cohortName: string,
+  intake: number | null,
+  eventCategory: string,
+  eventData: string
+) => {
+  sendAmplitudeData(QnA_EVENTS.qna_page_action, {
+    [EVENT_TYPES.cohort_name]: cohortName,
+    [EVENT_TYPES.cohort_intake_number]: intake,
+    category: eventCategory,
+    [QnA_EVENTS.action]: eventData
   });
 };

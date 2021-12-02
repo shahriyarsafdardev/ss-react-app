@@ -35,7 +35,8 @@ const MediaRecordingTab = ({
   onAudioRecordingComplete,
   setIsRecording,
   setQuestionType,
-  questionType
+  questionType,
+  onTrack
 }: {
   isRecording: boolean;
   onVideoRecordingComplete: Function;
@@ -43,11 +44,13 @@ const MediaRecordingTab = ({
   setQuestionType: Function;
   questionType: string;
   onAudioRecordingComplete: Function;
+  onTrack: Function;
 }) => (
   <>
     <RecordingButtonsContainer>
       {isRecording && questionType === 'Video' && (
         <VideoRecorder
+          onTrack={onTrack}
           onClose={(value: boolean) => {
             setIsRecording(value);
             onVideoRecordingComplete(null);
@@ -59,6 +62,7 @@ const MediaRecordingTab = ({
       {isRecording && questionType === 'Audio' && (
         <AudioRecorder
           onComplete={(response: any) => onAudioRecordingComplete(response)}
+          onTrack={onTrack}
           onClose={(value: boolean) => {
             setIsRecording(value);
             onAudioRecordingComplete(null);
@@ -98,5 +102,4 @@ const MediaRecordingTab = ({
     </RecordingButtonsContainer>
   </>
 );
-
 export default MediaRecordingTab;

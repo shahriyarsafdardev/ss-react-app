@@ -17,6 +17,10 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   borderRadius: '16px',
   padding: '20px',
   margin: '20px 40px 20px 40px',
+  [theme.breakpoints.down('sm')]: {
+    boxShadow: '0 5px 5px rgb(0 0 0 / 10%)',
+    margin: '6px'
+  },
   'span.view-type': {
     color: '#4D4DCD',
     textDecoration: 'underline',
@@ -29,13 +33,15 @@ export default function QuestionRow({
   addComment,
   onDeleteClick,
   canDelete,
-  removeComment
+  removeComment,
+  onTrack
 }: {
   question: Question;
   addComment: Function;
   onDeleteClick: Function;
   canDelete: Boolean;
   removeComment: Function;
+  onTrack: Function;
 }) {
   const [isHiddenView, setView] = useState(question.answered);
   const hasDetails =
@@ -56,6 +62,7 @@ export default function QuestionRow({
                 controlsList="nodownload"
                 autoPlay={false}
                 style={{ width: '100%', borderRadius: '8px' }}
+                onPlay={() => onTrack('Watched Answer')}
               />
             )}
             {question.answer_audio_url && (
