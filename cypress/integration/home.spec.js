@@ -11,35 +11,35 @@ describe('Home page specs', () => {
   const timeLine = new Timeline()
   const toDoList= new Todolist()
 
-  describe('Home page header specs', () => {
+  describe('Home header specs', () => {
     beforeEach(() => {
       cy.server();
       cy.login();
     })
 
-    context('For Welcome header', () => {
+    context('Welcome header 2 hours before session', () => {
       before(() => {
         var dateTime = moment(sessionFixture.sessions[0].time).subtract(2, 'hours');
         cy.clock(new Date(dateTime.format()));
       });
 
-      it('User should be able to view "👋 Hi Aqib, welcome to the Cohort!" heading', () => {
+      it('Welcome Header', () => {
         heading.welcomeCohort().should('be.visible')
       });
     })
 
-    context('Starting soon header', () => {
+    context('Starting soon header less then 1 hour before session', () => {
       before(() => {
         var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
         cy.clock(new Date(dateTime.format()));
       });
 
-      it('User should be able to view "🔴 Get ready, Session 1 is starting soon!" heading', () => {
+      it('Starting Soon Header', () => {
         heading.sessionAbouttoStart().should('be.visible')
       });
     })
 
-    context('Welcome back header', () => {
+    context('After Any Session', () => {
       before(() => {
         var dateTime = moment(sessionFixture.sessions[0].time).add(1, 'hours');
         cy.clock(new Date(dateTime.format()));
@@ -47,18 +47,18 @@ describe('Home page specs', () => {
         cy.clock(new Date(dateTime.format()));
       });
 
-      it('User should be able to view "👋 Welcome back Aqib, we hope you enjoyed Session" heading', () => {
+      it('Welcome Back Header', () => {
         heading.welcomeBack().should('be.visible')
       });
     })
 
-    context('For Completed header', () => {
+    context('After All Sessions', () => {
       before(() => {
         var dateTime = moment(sessionFixture.sessions[1].time).add(1, 'hours');
         cy.clock(new Date(dateTime.format()));
       });
 
-      it('C5: If a cohort is completed, the user should be able to view "Congratulations, you’ve completed the cohort!" heading', () => {
+      it('C5: Completed header', () => {
         heading.completedCohort().should('be.visible')
       });
     })
