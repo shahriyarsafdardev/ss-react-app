@@ -101,6 +101,7 @@ export type Cohort = {
   id: string;
   name: string;
   code: string;
+  host_names: string;
   isOnboarded: boolean;
   intake: number;
   questions_url: string;

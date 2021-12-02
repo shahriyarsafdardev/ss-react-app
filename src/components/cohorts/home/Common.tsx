@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Box, CircularProgress } from '@material-ui/core';
+import { uniq } from 'lodash';
 
 import moment from 'moment';
 
@@ -40,6 +41,12 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
   height: '100%'
 }));
 
+const getLocalTimeZone = () =>
+  new Date()
+    .toString()
+    .split(/[(,)]+/)[1]
+    .match(/\b(\w)/g)
+    ?.join('');
 const formatList = (list: string[]) =>
   list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ');
 
@@ -47,7 +54,9 @@ export const sortedTimes = (times: string[]) =>
   [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1));
 
 export const upcomingTimes = (times: string[]) =>
-  sortedTimes(times).filter((time) => moment(time).add(1, 'hours') > moment());
+  sortedTimes(times)
+    .filter((time) => moment(time).add(1, 'hours') > moment())
+    .slice(0, 2);
 
 export const firstUpcomingDate = (times: string[]) => {
   const sorted: string[] = sortedTimes(times);
@@ -60,36 +69,27 @@ export const firstUpcomingDate = (times: string[]) => {
 };
 
 export const formatTime = (time: string, sessionLength: string) => {
-  const sessionStartTime = moment(
-    new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-  ).format('hh:mm a');
-  const sessionEndTime = moment(
-    new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-  )
+  const sessionStartTime = moment(new Date(time)).format('hh:mm a');
+  const sessionEndTime = moment(new Date(time))
     .add(Number(sessionLength.split(' ')[0]), 'hours')
     .format('hh:mm a');
   if (moment(time).add(1, 'hours') > moment()) {
-    return `${sessionStartTime} - ${sessionEndTime} PST`;
+    return `${sessionStartTime} - ${sessionEndTime} ${getLocalTimeZone()}`;
   }
   return 'Complete';
 };
 
-export const displayDate = (time: string) => {
-  if (moment(time).add(1, 'hours') > moment()) {
-    return moment(time).format('dddd, MMM DD');
-  }
-  return false;
-};
-
 export const displayMultipleDates = (times: string[]) => {
-  const upcomings = upcomingTimes(times);
+  const upcomings = uniq(
+    upcomingTimes(times).map((time) => moment(new Date(time)).format('dddd, MMM DD'))
+  );
   if (upcomings.length === 0) {
     return false;
   }
   if (upcomings.length === 1) {
-    return displayDate(upcomings[0]);
+    return upcomings[0];
   }
-  const formattedDates = upcomings.slice(0, 2).map((time) => moment(time).format('MMM DD'));
+  const formattedDates = upcomings.map((time) => moment(time).format('MMM DD'));
   return formatList(formattedDates);
 };
 
@@ -101,14 +101,8 @@ export const formatMultipleTimes = (times: string[], sessionLength: string) => {
   if (upcomings.length === 1) {
     return formatTime(upcomings[0], sessionLength);
   }
-  const sortedTimeslist = upcomings
-    .slice(0, 2)
-    .map((time) =>
-      moment(new Date(time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).format(
-        'hh:mm a'
-      )
-    );
-  return `${formatList(sortedTimeslist)}  PST`;
+  const sortedTimeslist = upcomings.map((time) => moment(new Date(time)).format('hh:mm a'));
+  return `${formatList(sortedTimeslist)} ${getLocalTimeZone()}`;
 };
 
 export const CircularLoader = () => (
