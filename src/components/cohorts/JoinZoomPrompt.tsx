@@ -161,9 +161,7 @@ const TimerPreview = ({
         )}
         <Typography variant="subtitle1">
           {displayType === 'small'
-            ? `The ${moment(new Date(time)).format(
-                'hh a'
-              )} session room is opening soon, come join us!`
+            ? `The ${moment(new Date(time)).format('h a')} session  is opening soon, come join us!`
             : 'This session is starting soon!'}
         </Typography>
         {displayType !== 'small' && (
