@@ -8,6 +8,7 @@ import { Question } from '../../../@types/cohorts';
 import { DeleteOption } from './Common';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
+  overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',

@@ -8,7 +8,7 @@ import useAuth from '../../../hooks/useAuth';
 
 const StyledFeedContainer = styled(Box)(({ theme }) => ({
   width: '60%',
-  overflowY: 'scroll',
+  overflowY: 'hidden',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
