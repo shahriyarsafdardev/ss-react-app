@@ -83,7 +83,13 @@ const useStyes = makeStyles(() => ({
   }
 }));
 
-const DatePreview = ({ date }: { date: Date }) => {
+const DatePreview = ({
+  sessionTimesPreview,
+  date
+}: {
+  sessionTimesPreview: string;
+  date: Date;
+}) => {
   const classes = useStyes();
 
   return (
@@ -95,7 +101,7 @@ const DatePreview = ({ date }: { date: Date }) => {
         </Typography>
         <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
         <Typography variant="body2" className={classes.content}>
-          at {moment(date).format('HH:mm')}
+          at {sessionTimesPreview}
         </Typography>
       </div>
     </div>
@@ -272,6 +278,7 @@ const ExpiredSession = ({ displayType }: { displayType: string }) => {
 
 const renderPlaceHolder = (
   displayType: string,
+  sessionTimesPreview: string,
   sessionTimeValue: string,
   sessionZoomUrl: string | null,
   onClick: Function
@@ -298,7 +305,7 @@ const renderPlaceHolder = (
   const daysRemaining = Math.floor(difference / (1000 * 60 * 60 * 24));
 
   if (daysRemaining >= 1) {
-    return <DatePreview date={sessionTime} />;
+    return <DatePreview sessionTimesPreview={sessionTimesPreview} date={sessionTime} />;
   }
 
   if (daysRemaining === 0) {
@@ -318,11 +325,13 @@ const renderPlaceHolder = (
 export default function JoinZoomPrompt({
   sessionTimeValue,
   sessionZoomUrl,
+  sessionTimesPreview,
   displayType,
   onClick
 }: {
   sessionTimeValue: string;
   displayType: string;
+  sessionTimesPreview: string;
   sessionZoomUrl: string | null;
   onClick: Function;
 }) {
@@ -333,7 +342,13 @@ export default function JoinZoomPrompt({
       className={displayType === 'small' ? classes.smallContainer : classes.container}
       data-testid="video-place-holder"
     >
-      {renderPlaceHolder(displayType, sessionTimeValue, sessionZoomUrl, onClick)}
+      {renderPlaceHolder(
+        displayType,
+        sessionTimesPreview,
+        sessionTimeValue,
+        sessionZoomUrl,
+        onClick
+      )}
     </div>
   );
 }

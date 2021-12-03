@@ -82,6 +82,14 @@ export const formatTime = (time: string, sessionLength: string) => {
   return 'Complete';
 };
 
+export const zoomTimesPreview = (times: string[]) => {
+  const sorted: string[] = sortedTimes(times);
+  const upcoming = new Date(firstUpcomingDate(times));
+  const sameDayTimes = sorted.filter((time) => moment(new Date(time)).isSame(upcoming, 'day'));
+  const sortedTimeslist = sameDayTimes.map((time) => moment(new Date(time)).format('hh:mm a'));
+  return `${formatList(sortedTimeslist)} ${getLocalTimeZone()}`;
+};
+
 export const displayMultipleDates = (times: string[]) => {
   const upcomings = uniq(
     upcomingTimes(times).map((time) => moment(new Date(time)).format('dddd, MMM DD'))

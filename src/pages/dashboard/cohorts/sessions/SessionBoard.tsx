@@ -5,7 +5,7 @@ import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { surveyTime, firstUpcomingDate } from 'components/cohorts/home/Common';
+import { surveyTime, firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import moment from 'moment';
 import {
   SessionMaterials,
@@ -312,6 +312,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
           <JoinZoomPrompt
             displayType="large"
             sessionTimeValue={firstUpcomingDate(session.times)}
+            sessionTimesPreview={zoomTimesPreview(session.times)}
             sessionZoomUrl={session.zoom_url}
             onClick={(sessionNumber: number) => {
               sendAnalyticsData(
