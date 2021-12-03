@@ -20,12 +20,16 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
+        {
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
         { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
-          title: 'Q&A',
-          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: true,
-          category: 'Question'
+          title: 'networking',
+          path: PATH_DASHBOARD.cohorts.peers(cohort.id),
+          notifications: false
         }
       ]
     };
@@ -37,6 +41,12 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
           path: cohort.discord_directory_url,
           externalUrl: true,
           notifications: false
+        },
+        {
+          title: 'Q&A',
+          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+          notifications: true,
+          category: 'Question'
         }
       ];
     } else {
@@ -47,22 +57,16 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
           path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
           notifications: true,
           category: 'Messaging'
+        },
+        {
+          title: 'Q&A',
+          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+          notifications: true,
+          category: 'Question'
         }
       ];
     }
-    object.children = [
-      {
-        title: 'home',
-        path: PATH_DASHBOARD.cohorts.home(cohort.id),
-        notifications: false
-      },
-      ...object.children,
-      {
-        title: 'networking',
-        path: PATH_DASHBOARD.cohorts.peers(cohort.id),
-        notifications: false
-      }
-    ];
+    object.children = [...object.children];
 
     return object;
   });
