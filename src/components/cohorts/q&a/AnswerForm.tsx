@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
-// import { isMobile } from 'react-device-detect';
 import { styled, useTheme } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Container, Box, Divider, Typography, Stack, useMediaQuery } from '@material-ui/core';
+import {
+  Container,
+  Box,
+  Button,
+  Divider,
+  Typography,
+  Stack,
+  useMediaQuery
+} from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
-import { LoadingButton } from '@material-ui/lab';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { Question } from '../../../@types/cohorts';
 
@@ -50,7 +56,7 @@ const CompleteBox = styled(Stack)(() => ({
   fontWeight: 600
 }));
 
-const StyledButton = styled(LoadingButton)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({
   padding: 11,
   flex: 1,
   '&.right-btn': {
@@ -59,11 +65,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       display: 'none',
       marginLeft: '0 !important'
     }
-  },
-  '&:hover': {
-    backgroundColor: '#4D4DCD',
-    color: '#ffff',
-    opacity: 0.8
   },
   '&.btn-add-recording': {
     margin: '10px 0px',

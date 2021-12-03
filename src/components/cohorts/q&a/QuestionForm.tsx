@@ -114,8 +114,8 @@ const QuestionForm = ({
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModal] = useState(false);
-  const { user, updateProfile } = useAuth();
-  const showAnswerForm = (isHost || user?.type === 'admin') && unAnswered.length > 0;
+  const { user } = useAuth();
+  const showAnswerForm = isHost || user?.type === 'admin';
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
@@ -193,81 +193,89 @@ const QuestionForm = ({
       <SectionContainer className="newQuestion">
         {!submitting && (
           <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
-            <QuestionInput>
-              {!showAnswerForm || showMediaSection ? (
-                <TextField
-                  fullWidth
-                  value={questionSummary}
-                  placeholder={`Do you have any questions? ${hosts} would love to hear them!`}
-                  multiline
-                  size="small"
-                  id="question-text-input"
-                  rows={isMobile ? 2 : 1}
-                  onChange={(e) => setQuestionSummary(e.target.value)}
-                  onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
-                  style={{ height: '100%' }}
-                  inputProps={{
-                    height: '100%',
-                    style: {
-                      height: '100%'
-                    }
-                  }}
-                />
-              ) : (
-                <UnreadMessage>
-                  You have
-                  <Button variant="text" onClick={() => setModal(true)}>
-                    {`${unAnswered.length} `}
-                    unanswered
-                  </Button>
-                  questions
-                </UnreadMessage>
-              )}
-            </QuestionInput>
-            <RecordingTabContainer>
-              {showMediaSection && (
-                <MediaRecordingTab
-                  isRecording={isRecording}
-                  onVideoRecordingComplete={setVideoData}
-                  onAudioRecordingComplete={setAudioData}
-                  setIsRecording={setIsRecording}
-                  setQuestionType={setQuestionType}
-                  questionType={questionType}
-                  onTrack={(action: string) => sendAnalyticsData('Question Form', action)}
-                />
-              )}
-              <ButtonsContainer>
-                <AddQuestionButton
-                  onClick={() => {
-                    if (!showMediaSection) {
-                      setQuestionType('Text');
-                    }
-                    if (isRecording) {
-                      setIsRecording(false);
-                    }
-                    setMediaSection(!showMediaSection);
-                  }}
-                  variant="outlined"
-                  startIcon={
-                    showMediaSection === true ? (
-                      <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
-                    ) : (
-                      <img src="/static/cohorts-home/arrow-down.svg" alt="down-arrow" />
-                    )
-                  }
-                >
-                  {showMediaSection === true ? 'Hide' : 'Add Recording'}
-                </AddQuestionButton>
-                <StyledLoadingButton
-                  onClick={onFormSubmitHandler}
-                  variant="contained"
-                  loading={submitting}
-                  disabled={!showMediaSection && showAnswerForm}
-                >
-                  Submit Question
-                </StyledLoadingButton>
-              </ButtonsContainer>
-            </RecordingTabContainer>
+            {!showAnswerForm ? (
+              <>
+                <QuestionInput>
+                  <TextField
+                    fullWidth
+                    value={questionSummary}
+                    placeholder={`Do you have any questions? ${hosts} would love to hear them!`}
+                    multiline
+                    size="small"
+                    id="question-text-input"
+                    rows={isMobile ? 2 : 1}
+                    onChange={(e) => setQuestionSummary(e.target.value)}
+                    onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
+                    style={{ height: '100%' }}
+                    inputProps={{
+                      height: '100%',
+                      style: {
+                        height: '100%'
+                      }
+                    }}
+                  />
+                </QuestionInput>
+                <RecordingTabContainer>
+                  {showMediaSection && (
+                    <MediaRecordingTab
+                      isRecording={isRecording}
+                      onVideoRecordingComplete={setVideoData}
+                      onAudioRecordingComplete={setAudioData}
+                      setIsRecording={setIsRecording}
+                      setQuestionType={setQuestionType}
+                      questionType={questionType}
+                      onTrack={(action: string) => sendAnalyticsData('Question Form', action)}
+                    />
+                  )}
+                  <ButtonsContainer>
+                    <AddQuestionButton
+                      onClick={() => {
+                        if (!showMediaSection) {
+                          setQuestionType('Text');
+                        }
+                        if (isRecording) {
+                          setIsRecording(false);
+                        }
+                        setMediaSection(!showMediaSection);
+                      }}
+                      variant="outlined"
+                      startIcon={
+                        showMediaSection === true ? (
+                          <img src="/static/cohorts-home/arrow-up.svg" alt="up-arrow" />
+                        ) : (
+                          <img src="/static/cohorts-home/arrow-down.svg" alt="down-arrow" />
+                        )
+                      }
+                    >
+                      {showMediaSection === true ? 'Hide' : 'Add Recording'}
+                    </AddQuestionButton>
+                    <StyledLoadingButton
+                      onClick={onFormSubmitHandler}
+                      variant="contained"
+                      loading={submitting}
+                      disabled={!showMediaSection && showAnswerForm}
+                    >
+                      Submit Question
+                    </StyledLoadingButton>
+                  </ButtonsContainer>
+                </RecordingTabContainer>
+              </>
+            ) : (
+              <UnreadMessage>
+                {unAnswered.length > 0 ? (
+                  <>
+                    You have
+                    <Button variant="text" onClick={() => setModal(true)}>
+                      {`${unAnswered.length} `}
+                      unanswered
+                    </Button>
+                    questions
+                  </>
+                ) : (
+                  <span>You’ve answered all of your questions!</span>
+                )}
+              </UnreadMessage>
+            )}
           </StyledStack>
         )}
         {submitting && (
