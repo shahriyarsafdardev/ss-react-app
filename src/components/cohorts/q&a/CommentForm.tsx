@@ -82,6 +82,7 @@ export default function CommentForm({
   addComment: Function;
 }) {
   const { user } = useAuth();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
   const { enqueueSnackbar } = useSnackbar();
   const commentInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -98,6 +99,7 @@ export default function CommentForm({
           const uploadData = new FormData();
           uploadData.append('image', values.file);
           uploadData.append('comment', values.comment);
+          uploadData.append('cohort_id', cohort_id);
           await axios
             .post(`/questions_feed/${questionID}/add_comment.json`, uploadData)
             .then((res) => {
