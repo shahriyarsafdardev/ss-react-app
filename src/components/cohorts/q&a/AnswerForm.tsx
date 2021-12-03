@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
-import { styled } from '@material-ui/core/styles';
+// import { isMobile } from 'react-device-detect';
+import { styled, useTheme } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Container, Button, Box, Divider, Typography, Stack } from '@material-ui/core';
+import { Container, Box, Divider, Typography, Stack, useMediaQuery } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
@@ -39,13 +40,23 @@ const CurrentStep = styled('span')(() => ({
   fontFamily: 'Public Sans'
 }));
 
+const CompleteBox = styled(Stack)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  textAlign: 'center',
+  minHeight: '400px',
+  fontWeight: 600
+}));
+
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   flex: 1,
   '&.right-btn': {
     marginLeft: '30px !important',
     [theme.breakpoints.down('md')]: {
-      marginBottom: '10px',
+      display: 'none',
       marginLeft: '0 !important'
     }
   },
@@ -53,6 +64,19 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
     backgroundColor: '#4D4DCD',
     color: '#ffff',
     opacity: 0.8
+  },
+  '&.btn-add-recording': {
+    margin: '10px 0px',
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    }
+  },
+  '&.btn-close': {
+    width: '60%',
+    flex: 'none',
+    [theme.breakpoints.down('md')]: {
+      width: '80%'
+    }
   },
   [theme.breakpoints.up('md')]: {
     width: '100%'
@@ -81,7 +105,8 @@ const QuestionBox = styled(Box)(({ theme }) => ({
   overflowY: 'auto',
 
   [theme.breakpoints.down('md')]: {
-    display: 'none'
+    display: 'block',
+    height: '3100px'
   }
 }));
 
@@ -110,6 +135,7 @@ const RecorderBox = styled(Box)(({ theme }) => ({
   borderRadius: '8px',
   marginLeft: '30px',
   [theme.breakpoints.down('md')]: {
+    display: 'none',
     width: '100%',
     height: '240px',
     marginLeft: '0px'
@@ -155,6 +181,14 @@ export default function AnswerForm({
   const totalQuestions = questionsData.length;
   const [questionID, setQuestionID] = useState('');
   const [recording, setRecording] = useState(null);
+  const [complete, setComplete] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [addRecording, setAddRecording] = useState(!isMobile);
+
+  useEffect(() => {
+    setAddRecording(!isMobile);
+  }, [theme.breakpoints, isMobile]);
 
   useEffect(() => {
     if (questionsData.length > 0) {
@@ -179,7 +213,7 @@ export default function AnswerForm({
 
   const handleNext = () => {
     if (currentQuestion + 1 === totalQuestions) {
-      onClose();
+      setComplete(true);
     } else {
       setCurrentQuestion(currentQuestion + 1);
     }
@@ -247,6 +281,20 @@ export default function AnswerForm({
     </div>
   );
 
+  const Label = ({ value }: { value: string }) => (
+    <p
+      style={{
+        position: 'absolute',
+        top: '15px',
+        background: 'white',
+        fontWeight: 600,
+        padding: '0px 5px'
+      }}
+    >
+      {value}
+    </p>
+  );
+
   return (
     <>
       {questionsData && !loading && Object.keys(questionsData).length >= 0 ? (
@@ -266,41 +314,94 @@ export default function AnswerForm({
               <BorderLinearProgress variant="determinate" value={progress()} />
             </ProgressBarContainer>
           </QuestionContainer>
-          <QuestionContainer>
-            <Stack direction="column" justifyContent="space-between">
-              <MainStack direction={{ xs: 'column', sm: 'row' }}>
-                <QuestionBox>
-                  <RenderQuestion question={questionsData[currentQuestion]} />
-                </QuestionBox>
-
-                <RecorderBox key={currentQuestion}>
-                  <VideoRecorder
-                    onTrack={() => {}}
-                    onClose={() => {}}
-                    onComplete={(response: any) => {
-                      setRecording(response);
+          {!complete ? (
+            <QuestionContainer>
+              <Stack direction="column" justifyContent="space-between">
+                <MainStack direction={{ xs: 'column', sm: 'row' }}>
+                  <QuestionBox
+                    display={addRecording && isMobile ? 'none !important' : 'block !important'}
+                  >
+                    <Label value="Question" />
+                    <RenderQuestion question={questionsData[currentQuestion]} />
+                  </QuestionBox>
+                  <RecorderBox
+                    key={currentQuestion}
+                    display={!addRecording && isMobile ? 'none !important' : 'block !important'}
+                  >
+                    <Label value="Your Answer" />
+                    <VideoRecorder
+                      onTrack={() => {}}
+                      onClose={() => {}}
+                      onComplete={(response: any) => {
+                        setRecording(response);
+                      }}
+                    />
+                  </RecorderBox>
+                </MainStack>
+                {!isMobile && <Divider />}
+                {(addRecording || !isMobile) && (
+                  <MessageBox>* By clicking the button, you will be posting the answer</MessageBox>
+                )}
+                <ButtonsContainer key={questionID}>
+                  <StyledButton
+                    className="btn-previous"
+                    variant="outlined"
+                    onClick={() => {
+                      handleNext();
+                      setAddRecording(false);
                     }}
-                  />
-                </RecorderBox>
-              </MainStack>
-              <Divider />
-              <MessageBox>* By clicking the button, you will be posting the answer</MessageBox>
-              <ButtonsContainer>
-                <StyledButton variant="outlined" onClick={handleNext} data-testid="btn-previous">
-                  Skip Question
-                </StyledButton>
+                    data-testid="btn-previous"
+                  >
+                    Skip Question
+                  </StyledButton>
+                  {isMobile ? (
+                    <StyledButton
+                      className="btn-add-recording"
+                      variant="contained"
+                      key={`${addRecording}`}
+                      disabled={addRecording && !recording}
+                      onClick={() => {
+                        addRecording ? handleSubmit() : setAddRecording(true);
+                      }}
+                      data-testid="btn-addRecording"
+                    >
+                      Add Recording
+                    </StyledButton>
+                  ) : (
+                    <StyledButton
+                      variant="contained"
+                      className="right-btn"
+                      onClick={handleSubmit}
+                      disabled={!recording}
+                      data-testid="btn-next"
+                    >
+                      Submit Answer
+                    </StyledButton>
+                  )}
+                </ButtonsContainer>
+              </Stack>
+            </QuestionContainer>
+          ) : (
+            <QuestionContainer>
+              <CompleteBox>
+                <Box component="img" src="/static/icons/tick.svg" sx={{ objectFit: 'cover' }} />
+                <div>
+                  <p>Congratulations!</p>
+                  <p style={{ color: '#637381' }}>You've answered all the question!</p>
+                </div>
                 <StyledButton
                   variant="contained"
-                  className="right-btn"
-                  onClick={handleSubmit}
-                  disabled={!recording}
-                  data-testid="btn-next"
+                  className="btn-close"
+                  onClick={() => {
+                    onClose();
+                  }}
+                  data-testid="btn-close"
                 >
-                  Submit Answer
+                  Close
                 </StyledButton>
-              </ButtonsContainer>
-            </Stack>
-          </QuestionContainer>
+              </CompleteBox>
+            </QuestionContainer>
+          )}
         </>
       ) : (
         <Box padding="200px">

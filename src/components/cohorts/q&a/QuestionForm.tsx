@@ -33,6 +33,15 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
+const UnreadMessage = styled('p')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  [theme.breakpoints.down('md')]: {
+    justifyContent: 'center'
+  }
+}));
+
 const RecordingTabContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -205,14 +214,14 @@ const QuestionForm = ({
                   }}
                 />
               ) : (
-                <p>
+                <UnreadMessage>
                   You have
                   <Button variant="text" onClick={() => setModal(true)}>
                     {`${unAnswered.length} `}
                     unanswered
                   </Button>
                   questions
-                </p>
+                </UnreadMessage>
               )}
             </QuestionInput>
             <RecordingTabContainer>
