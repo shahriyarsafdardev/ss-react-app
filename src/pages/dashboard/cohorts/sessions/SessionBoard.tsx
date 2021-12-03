@@ -210,25 +210,23 @@ export default function SessionBoard({ session }: SessionBoardProps) {
 
   const tabsContent = [
     <>
-      {session?.session_materials && session?.session_materials?.length > 0 ? (
-        <SessionMaterials
-          groupedMaterials={session?.session_materials || []}
-          sessionId={session?.id}
-          cohortId={id}
-          key="session_materials"
-          onTrack={(eventData: string) =>
-            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-          }
-        />
-      ) : (
-        <Description
-          key="description"
-          onTrack={(eventData: string) =>
-            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-          }
-          innerContent={session?.description || ''}
-        />
-      )}
+      <Description
+        key="description"
+        onTrack={(eventData: string) =>
+          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        }
+        innerContent={session?.description || ''}
+        resourcesPresent={session?.session_materials && session?.session_materials?.length > 0}
+      />
+      <SessionMaterials
+        groupedMaterials={session?.session_materials || []}
+        sessionId={session?.id}
+        cohortId={id}
+        key="session_materials"
+        onTrack={(eventData: string) =>
+          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        }
+      />
     </>,
     <Summary
       key="summary"
