@@ -7,6 +7,7 @@ import Message from '../../Message';
 type DescriptionProps = {
   innerContent: string;
   onTrack: Function;
+  resourcesPresent: Boolean | undefined;
 };
 
 const DescriptionContainer = styled(Container)(({ theme }) => ({
@@ -15,10 +16,11 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
   },
   ul: {
     marginLeft: '25px'
-  }
+  },
+  marginBottom: '15px'
 }));
 
-export default function Description({ innerContent, onTrack }: DescriptionProps) {
+export default function Description({ innerContent, onTrack, resourcesPresent }: DescriptionProps) {
   useEffect(() => {
     if (innerContent) {
       onTrack(RESOURCES_EVENTS.opened);
@@ -38,14 +40,10 @@ export default function Description({ innerContent, onTrack }: DescriptionProps)
 
   return (
     <DescriptionContainer id="resources">
-      {innerContent && innerContent !== '' ? (
-        <div
-          className="ql-editor"
-          data-testid="session-description"
-          dangerouslySetInnerHTML={{ __html: innerContent }}
-        />
-      ) : (
+      {!innerContent && !resourcesPresent ? (
         <Message content="The session resources will be available 2 days before the session." />
+      ) : (
+        <div data-testid="session-description" dangerouslySetInnerHTML={{ __html: innerContent }} />
       )}
     </DescriptionContainer>
   );
