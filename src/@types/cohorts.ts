@@ -102,6 +102,7 @@ export type Cohort = {
   name: string;
   code: string;
   host_names: string;
+  is_host: boolean;
   isOnboarded: boolean;
   intake: number;
   questions_url: string;

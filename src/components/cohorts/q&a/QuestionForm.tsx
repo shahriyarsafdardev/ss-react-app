@@ -6,8 +6,12 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import { isMobile } from 'react-device-detect';
+import { Modal } from 'components/animate';
+import useAuth from 'hooks/useAuth';
+import { Question } from '../../../@types/cohorts';
 import { SectionContainer, CircularLoader } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
+import AnswerForm from './AnswerForm';
 
 const StyledStack = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -77,7 +81,19 @@ const QuestionInput = styled(Box)(({ theme }) => ({
   }
 }));
 
-const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string }) => {
+const QuestionForm = ({
+  onSuccess,
+  hosts,
+  unAnswered,
+  addAnswer,
+  isHost
+}: {
+  onSuccess: Function;
+  hosts: string;
+  isHost: boolean;
+  unAnswered: Array<Question>;
+  addAnswer: Function;
+}) => {
   const [questionSummary, setQuestionSummary] = useState('');
   const [showMediaSection, setMediaSection] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -88,6 +104,9 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const [modalState, setModal] = useState(false);
+  const { user, updateProfile } = useAuth();
+  const showAnswerForm = (isHost || user?.type === 'admin') && unAnswered.length > 0;
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
@@ -134,30 +153,67 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
       });
   };
 
+  const AnswerModal = ({
+    state,
+    onClose,
+    onComplete
+  }: {
+    state: boolean;
+    onClose: Function;
+    onComplete: Function;
+  }) => (
+    <Modal open={state} onClose={() => onClose()}>
+      <AnswerForm
+        key="answerForm"
+        onComplete={onComplete}
+        onClose={onClose}
+        unAnswered={unAnswered}
+      />
+    </Modal>
+  );
+
   return (
     <QuestionFormContainer id="question-box">
+      <AnswerModal
+        state={modalState}
+        onClose={() => {
+          setModal(false);
+        }}
+        onComplete={addAnswer}
+      />
       <SectionContainer className="newQuestion">
         {!submitting && (
           <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
             <QuestionInput>
-              <TextField
-                fullWidth
-                value={questionSummary}
-                placeholder={`Do you have any questions? ${hosts} would love to hear them!`}
-                multiline
-                size="small"
-                id="question-text-input"
-                rows={isMobile ? 2 : 1}
-                onChange={(e) => setQuestionSummary(e.target.value)}
-                onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
-                style={{ height: '100%' }}
-                inputProps={{
-                  height: '100%',
-                  style: {
-                    height: '100%'
-                  }
-                }}
-              />
+              {!showAnswerForm || showMediaSection ? (
+                <TextField
+                  fullWidth
+                  value={questionSummary}
+                  placeholder={`Do you have any questions? ${hosts} would love to hear them!`}
+                  multiline
+                  size="small"
+                  id="question-text-input"
+                  rows={isMobile ? 2 : 1}
+                  onChange={(e) => setQuestionSummary(e.target.value)}
+                  onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
+                  style={{ height: '100%' }}
+                  inputProps={{
+                    height: '100%',
+                    style: {
+                      height: '100%'
+                    }
+                  }}
+                />
+              ) : (
+                <p>
+                  You have
+                  <Button variant="text" onClick={() => setModal(true)}>
+                    {`${unAnswered.length} `}
+                    unanswered
+                  </Button>
+                  questions
+                </p>
+              )}
             </QuestionInput>
             <RecordingTabContainer>
               {showMediaSection && (
@@ -197,6 +253,7 @@ const QuestionForm = ({ onSuccess, hosts }: { onSuccess: Function; hosts: string
                   onClick={onFormSubmitHandler}
                   variant="contained"
                   loading={submitting}
+                  disabled={!showMediaSection && showAnswerForm}
                 >
                   Submit Question
                 </StyledLoadingButton>
