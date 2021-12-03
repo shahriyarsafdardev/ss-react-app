@@ -6,7 +6,7 @@ import { Box } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
-import { CircularLoader, firstUpcomingDate, SectionContainer } from './Common';
+import { CircularLoader, firstUpcomingDate, SectionContainer, zoomTimesPreview } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
 import JoinZoomPrompt from '../JoinZoomPrompt';
@@ -146,6 +146,7 @@ const SessionPrereading = ({
                   <JoinZoomPrompt
                     displayType="small"
                     sessionTimeValue={firstUpcomingDate(activeSession.times)}
+                    sessionTimesPreview={zoomTimesPreview(activeSession.times)}
                     sessionZoomUrl={activeSession.zoom_url}
                     onClick={(sessionNumber: number) => {
                       sendAnalyticsData(
