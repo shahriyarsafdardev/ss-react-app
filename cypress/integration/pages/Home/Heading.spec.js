@@ -3,6 +3,20 @@ import userFixture from '../../../fixtures/login/login.json';
 import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
 import moment from 'moment';
 
+Cypress.Commands.add('getHeading', () => {
+  return cy.get('.MuiTypography-h3')
+});
+
+Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
+  var dateTime = moment(session).subtract(time, 'hours');
+      cy.clock(new Date(dateTime.format()));
+});
+
+Cypress.Commands.add('setClockToAfterSession', (session, time)=> {
+  var dateTime = moment(session).add(time, 'hours');
+      cy.clock(new Date(dateTime.format()));
+});
+
 describe('Home > Heading', () => {
   beforeEach(() => {
     cy.server();
@@ -11,8 +25,7 @@ describe('Home > Heading', () => {
 
   context('When the current time is more than two hours before the first session starts', () => {
     before(() => {
-      var dateTime = moment(sessionFixture.sessions[0].time).subtract(2, 'hours');
-      cy.clock(new Date(dateTime.format()));
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,2)
     });
 
     it('Displays a personalised welcome message', () => {
@@ -22,45 +35,41 @@ describe('Home > Heading', () => {
       //   .should.eq(
       //     `👋 Hi ${userFixture.first_name}, welcome to the ${cohortsFixture.code} Cohort!`
       //   );
-      cy.get('.MuiTypography-h3')
+      cy.getHeading()
       .should('contain','👋 Hi '+ userFixture.user.first_name + ', welcome to the '+ cohortsFixture.cohorts[0].code +' Cohort!')
     });
   });
 
-  context('When the current time is less than one hour before the first session starts', () => {
+  context('When the current time is less than one hour before any session starts', () => {
     before(() => {
-      var dateTime = moment(sessionFixture.sessions[0].time).subtract(1, 'hours');
-      cy.clock(new Date(dateTime.format()));
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,1)
     });
 
-    it('Displays a personalised get ready message', () => {
-      cy.get('.MuiTypography-h3')
+    it('Displays a personalised get ready message for that session', () => {
+      cy.getHeading()
       .should('contain','🔴 Get ready, Session '+sessionFixture.sessions[0].number+' is starting soon!')
     });
   });
 
-  context('When the first session is completed and current time is more then one hour before the second session starts ', () => {
+  context('When a session is completed and current time is more than one hour before the next session starts', () => {
     before(() => {
-      var dateTime = moment(sessionFixture.sessions[0].time).add(1, 'hours');
-      cy.clock(new Date(dateTime.format()));
-      var dateTime = moment(sessionFixture.sessions[1].time).subtract(1, 'hours');
-      cy.clock(new Date(dateTime.format()));
+      cy.setClockToAfterSession(sessionFixture.sessions[0].time,1)
+      cy.setClockToBeforeSession(sessionFixture.sessions[1].time,1)
     });
 
     it('Displays a personalised Welcome back message', () => {
-      cy.get('.MuiTypography-h3')
+      cy.getHeading()
       .should('contain','👋 Welcome back '+userFixture.user.first_name+', we hope you enjoyed Session '+sessionFixture.sessions[0].number)
     });
   });
 
   context('When all Sessions are completed', () => {
     before(() => {
-      var dateTime = moment(sessionFixture.sessions[1].time).add(1, 'hours');
-      cy.clock(new Date(dateTime.format()));
+      cy.setClockToAfterSession(sessionFixture.sessions[1].time,1)
     });
 
     it('Displays a personalised Completed message', () => {
-      cy.get('.MuiTypography-h3')
+      cy.getHeading()
       .should('contain','🎉 Congratulations, you’ve completed the '+cohortsFixture.cohorts[0].code+' cohort!')
     });
   });
