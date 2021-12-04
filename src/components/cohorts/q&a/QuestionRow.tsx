@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
 import { Box, Stack, Typography, Divider, Avatar } from '@material-ui/core';
@@ -48,6 +48,22 @@ export default function QuestionRow({
   const hasDetails =
     (question.question_text || question.audio_url || question.video_url) && question.answered;
 
+  const myRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const questionID = query.get('question');
+    if (questionID && questionID === question.id) {
+      if (myRef.current) {
+        const yOffset = 200;
+
+        const y = myRef.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  }, []);
+
   const renderAnswer = () => {
     if (question.answered) {
       return (
@@ -90,7 +106,7 @@ export default function QuestionRow({
     <>
       <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Stack direction="column">
-          <Typography style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
+          <Typography ref={myRef} style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
             {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
           </Typography>
           <Typography
