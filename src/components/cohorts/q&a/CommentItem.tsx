@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -56,10 +57,23 @@ export default function CommentItem({
 }: CommentItemProps) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const myRef = useRef<HTMLDivElement>(null);
 
   const unreadNotificationID = useSelector((state: RootState) =>
     state?.notification?.notifications.filter((notification) => id === notification.channel_id)
   )[0]?.id;
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const commentID = query.get('comment');
+    if (commentID && commentID === id) {
+      if (myRef.current) {
+        const yOffset = 200;
+        const y = myRef.current.getBoundingClientRect().top + window.pageYOffset - yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  }, []);
 
   const handleDelete = async () => {
     const url = `/questions_feed/delete_comment.json?comment_id=${id}`;
@@ -83,7 +97,7 @@ export default function CommentItem({
   return (
     <>
       <VisibilitySensor onChange={(isVisible) => handleRead(isVisible)}>
-        <Stack direction="row">
+        <Stack direction="row" ref={myRef}>
           <UserAvatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48 }} />
           <Paper sx={{ p: 1.5, flexGrow: 1, bgcolor: 'background.neutral' }}>
             <Stack
