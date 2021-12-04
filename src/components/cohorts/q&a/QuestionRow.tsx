@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
 import { Box, Stack, Typography, Divider, Avatar } from '@material-ui/core';
+import VisibilitySensor from 'react-visibility-sensor';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Question } from '../../../@types/cohorts';
 import { DeleteOption } from './Common';
+import { markAsRead } from '../../../redux/slices/notification';
+import { RootState, useDispatch, useSelector } from '../../../redux/store';
 
 const StyledQuestionRow = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
@@ -45,8 +48,21 @@ export default function QuestionRow({
   onTrack: Function;
 }) {
   const [isHiddenView, setView] = useState(question.answered);
+  const dispatch = useDispatch();
+
+  const unreadNotificationID = useSelector((state: RootState) =>
+    state?.notification?.notifications.filter(
+      (notification) => question.id === notification.channel_id
+    )
+  )[0]?.id;
   const hasDetails =
     (question.question_text || question.audio_url || question.video_url) && question.answered;
+
+  const handleRead = (value: boolean) => {
+    if (value && unreadNotificationID) {
+      dispatch(markAsRead('single', unreadNotificationID));
+    }
+  };
 
   const renderAnswer = () => {
     if (question.answered) {
@@ -88,42 +104,44 @@ export default function QuestionRow({
 
   const renderQuestion = () => (
     <>
-      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <Stack direction="column">
-          <Typography style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
-            {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
-          </Typography>
-          <Typography
-            style={{
-              fontSize: '0.8rem',
-              fontWeight: 400,
-              color: '#212B36',
-              lineHeight: '16px',
-              marginTop: '5px'
-            }}
-          >
-            {question?.asker_name
-              ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
-              : 'Some User'}
-            {hasDetails && (
-              <>
-                {' '}
-                |{' '}
-                <span
-                  onClick={() => setView(!isHiddenView)}
-                  role="button"
-                  className="view-type"
-                  tabIndex={-1}
-                  onKeyDown={() => {}}
-                >
-                  {isHiddenView ? 'See Details' : 'Hide Details'}
-                </span>
-              </>
-            )}
-          </Typography>
-        </Stack>
-        {canDelete && <DeleteOption handleDelete={() => onDeleteClick(question.id)} />}
-      </Box>
+      <VisibilitySensor onChange={(isVisible) => handleRead(isVisible)}>
+        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <Stack direction="column">
+            <Typography style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
+              {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
+            </Typography>
+            <Typography
+              style={{
+                fontSize: '0.8rem',
+                fontWeight: 400,
+                color: '#212B36',
+                lineHeight: '16px',
+                marginTop: '5px'
+              }}
+            >
+              {question?.asker_name
+                ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
+                : 'Some User'}
+              {hasDetails && (
+                <>
+                  {' '}
+                  |{' '}
+                  <span
+                    onClick={() => setView(!isHiddenView)}
+                    role="button"
+                    className="view-type"
+                    tabIndex={-1}
+                    onKeyDown={() => {}}
+                  >
+                    {isHiddenView ? 'See Details' : 'Hide Details'}
+                  </span>
+                </>
+              )}
+            </Typography>
+          </Stack>
+          {canDelete && <DeleteOption handleDelete={() => onDeleteClick(question.id)} />}
+        </Box>
+      </VisibilitySensor>
       {!isHiddenView && (
         <Box style={{ width: '100%' }}>
           {question.question_type === 'Text' && question.question_text && (
