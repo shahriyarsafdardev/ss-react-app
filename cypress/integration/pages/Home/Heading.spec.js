@@ -4,7 +4,7 @@ import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
 import moment from 'moment';
 
 Cypress.Commands.add('getHeading', () => {
-  return cy.get('.MuiTypography-h3')
+  return cy.get('[data-testid=cohort-header]')
 });
 
 Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
