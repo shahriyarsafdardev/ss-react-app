@@ -4,22 +4,16 @@
   justify-content: center;
   width: 100%;
   height: 176px;
-  font-family: Roboto !important;
-  font-style: normal !important;
   text-shadow: none;
   position: relative;
 }
 .question-video-recorder-screen div {
-  font-family: Roboto !important;
-  font-style: normal !important;
   text-shadow: none;
 }
 .question-video-recorder-screen .question-recorder-wrapper {
   width: 296px;
   border-radius: 20px;
   margin-bottom: 60px;
-  font-family: Roboto !important;
-  font-style: normal !important;
 }
 
 .question-video-recorder-screen .question-recorder-wrapper .video-recorder__Wrapper-sc-7k20rv-0 {

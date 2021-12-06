@@ -15,18 +15,17 @@ const ButtonBorder = styled('div')(() => ({
   marginRight: '10px'
 }));
 
-const Instructions = styled('div')(() => ({
+const Instructions = styled('p')(() => ({
   fontFamily: 'Public Sans,sans-serif',
-  fontSize: '14px',
+  fontSize: '15px',
   color: '#071A33',
-  letterSpacing: '1.75px',
   display: 'flex',
   marginRight: '5px',
-  fontWeight: 400
+  fontWeight: 500
 }));
 
-const InstuctionsHighlight = styled('div')(() => ({
-  fontWeight: 400,
+const InstuctionsHighlight = styled('p')(() => ({
+  fontWeight: 500,
   color: '#dc6547',
   padding: '0 5px'
 }));
@@ -57,7 +56,7 @@ const RecordButton = ({ t, ...props }) => (
       <Button {...props} />
     </ButtonBorder>
     <Instructions>
-      <div>{t('PRESS')} </div>
+      <p>{t('PRESS')} </p>
       <InstuctionsHighlight> {t('REC')} </InstuctionsHighlight>
       {t('WHEN READY')}
     </Instructions>
