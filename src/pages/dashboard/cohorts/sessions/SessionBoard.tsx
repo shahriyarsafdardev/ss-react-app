@@ -337,6 +337,9 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" data-testid="session-resources" />
+          {session?.summary_notes_included && (
+            <SessionTab label="Summary Notes" data-testid="session-notes" />
+          )}
           <SessionTab label="Session Slides" data-testid="session-slides" />
         </SessionTabs>
 

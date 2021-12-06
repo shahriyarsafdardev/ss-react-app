@@ -21,6 +21,7 @@ export type StudentProfile = {
   networking_matching_preferences: string[];
   profile_image_url: string;
   bio_text: string;
+  type: string | undefined;
 };
 
 type Tag = {
@@ -70,6 +71,7 @@ export type Session = {
   summary: string;
   presentation_pdf_url: string;
   presentation_pdf_downloadable: boolean;
+  summary_notes_included: boolean;
   survey: Survey;
   resources: string;
   session_materials: GroupedSessionMaterial[];
