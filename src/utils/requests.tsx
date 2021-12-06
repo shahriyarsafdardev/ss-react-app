@@ -1,3 +1,4 @@
+import { Question } from '../@types/cohorts';
 import axios from './axios';
 
 export const deleteQuestion = async (
@@ -12,5 +13,33 @@ export const deleteQuestion = async (
     })
     .catch((err) => {
       onError();
+    });
+};
+
+export const submitAnswer = (
+  questionID: string,
+  recording: any,
+  list: Question[],
+  setList: Function
+) => {
+  const index = list.findIndex((question) => question.id === questionID);
+  const updated: Question = list[index];
+  const updatedList: Question[] = [...list];
+
+  const answerData = new FormData();
+  recording && answerData.append('video', recording);
+  answerData.append('id', questionID);
+
+  axios
+    .post(`/questions_feed/submit_answer.json`, answerData)
+    .then((res) => {
+      updatedList[index] = {
+        ...updated,
+        ...res.data
+      };
+      setList(updatedList);
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };

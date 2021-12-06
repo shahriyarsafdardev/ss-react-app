@@ -5,7 +5,7 @@ import Page from 'components/Page';
 import axios from 'utils/axios';
 import { EVENT_TYPES, trackQnAEvents, sendAmplitudeData } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
-import { deleteQuestion } from 'utils/requests';
+import { deleteQuestion, submitAnswer } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Question } from '../../../@types/cohorts';
 import { RootState, useSelector } from '../../../redux/store';
@@ -95,6 +95,11 @@ function QnATab() {
     setList([questionObject, ...list]);
   };
 
+  const addAnswer = (questionID: string, recording: any) => {
+    submitAnswer(questionID, recording, list, (list: Question[]) => setList(list));
+    enqueueSnackbar('Answer submitted, will be released soon', { variant: 'success' });
+  };
+
   const addComment = (questionID: string, comment: any) => {
     const index = list.findIndex((question) => question.id === questionID);
     const updated: Question = list[index];
@@ -141,7 +146,13 @@ function QnATab() {
   return (
     <StyledPage title="ScholarSite | Q&A">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <QuestionForm hosts={cohort?.host_names} onSuccess={onCreateSuccess} />
+        <QuestionForm
+          hosts={cohort?.host_names}
+          isHost={cohort?.is_host}
+          onSuccess={onCreateSuccess}
+          unAnswered={list.filter((q) => !q.answered)}
+          addAnswer={addAnswer}
+        />
         <Container style={{ marginBottom: '50px' }}>
           <StyledBox>
             {list.length === 0 ? (

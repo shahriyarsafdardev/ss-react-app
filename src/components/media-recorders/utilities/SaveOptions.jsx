@@ -6,7 +6,7 @@ const SaveOptions = ({ onSaveClick, onRedoClick, onExitClick }) => (
     <Button
       variant="outlined"
       style={{
-        width: 296,
+        width: '100%',
         borderRadius: 4,
         position: 'absolute',
         bottom: 0,
