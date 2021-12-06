@@ -166,15 +166,8 @@ const TimerPreview = ({
           <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
         )}
         <Typography variant="subtitle1">
-          {displayType === 'small'
-            ? `The ${moment(new Date(time)).format('h a')} session  is opening soon, come join us!`
-            : 'This session is starting soon!'}
+          {`The ${moment(new Date(time)).format('h:mm a')} session is opening soon, come join us!`}
         </Typography>
-        {displayType !== 'small' && (
-          <Typography variant="subtitle2" className={classes.marginTop}>
-            Passcode: EPBW21
-          </Typography>
-        )}
         <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
           {displayType !== 'small' && <TimerField text="Hours" value={hours} testId="hours" />}
           <TimerField
@@ -218,29 +211,12 @@ const SessionInProgress = ({
   return (
     <div>
       <div className={classes.wrapper}>
-        {displayType === 'small' ? (
-          <>
-            <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
-            <Box className={classes.smallContent2}>
-              <Typography variant="subtitle1">{`The ${moment(new Date(sessionTimeValue)).format(
-                'hh a'
-              )} Session is live now!`}</Typography>
-            </Box>
-          </>
-        ) : (
-          <>
-            <img src="/static/cohorts-home/sessions/ic_recorder.svg" alt="date-icon" />
-
-            <Box className={classes.content2}>
-              <Typography variant="subtitle1">
-                The session has already started, access the link below to join!
-              </Typography>
-              <Typography variant="subtitle2" className={classes.marginTop}>
-                Passcode: EPBW21
-              </Typography>
-            </Box>
-          </>
-        )}
+        <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
+        <Box className={classes.smallContent2}>
+          <Typography variant="subtitle1">{`The ${moment(new Date(sessionTimeValue)).format(
+            'h:mm a'
+          )} Session is live now!`}</Typography>
+        </Box>
         {zoomUrl && (
           <Button
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
