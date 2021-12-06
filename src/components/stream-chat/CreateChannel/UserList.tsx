@@ -136,13 +136,13 @@ export const UserList: React.FC<Props> = (props) => {
           response = await client.queryUsers(
             { id: { $in: newMembers }, $and: [{ name: { $autocomplete: query } }] },
             { created_at: -1 },
-            { limit: 100 }
+            { limit: 200 }
           );
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
             { created_at: -1 },
-            { limit: 100 }
+            { limit: 200 }
           );
         }
         if (response.users.length) {
