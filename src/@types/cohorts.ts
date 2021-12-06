@@ -57,6 +57,10 @@ export type GroupedSessionMaterial = {
   session_materials: SessionMaterial[];
 };
 
+export type RecordingUrl = {
+  name: string;
+  recording_url: string;
+};
 export type Session = {
   id: string;
   name: string;
@@ -65,7 +69,7 @@ export type Session = {
   length: string;
   times: string[];
   zoom_url: string;
-  recording_url: string;
+  recording_urls: RecordingUrl[];
   recording_thumbnail_url: string;
   description: string;
   summary: string;

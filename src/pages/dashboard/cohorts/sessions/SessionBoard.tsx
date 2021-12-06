@@ -1,5 +1,15 @@
 import { useEffect, useState, useContext } from 'react';
-import { Container, Tabs, Tab, Box, Typography } from '@material-ui/core';
+import {
+  Container,
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormControl
+} from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
@@ -153,8 +163,18 @@ const SessionNumber = styled('span')(({ theme }) => ({
   }
 }));
 
+const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
+  marginRight: '8px',
+  width: '180px',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '8px',
+    width: '100%'
+  }
+}));
+
 export default function SessionBoard({ session }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
+  const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
@@ -163,7 +183,6 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   const { sessionNumber } = useContext(SessionContext);
   const params = new URLSearchParams(window.location.search);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-
   const feedback = params.get('open_feedback');
 
   const SurveyModal = ({
@@ -204,6 +223,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
   };
 
   useEffect(() => {
+    setRecording(session?.recording_urls[0]?.recording_url);
     setFeedbackSubmitted(false);
     setModal(!feedbacks[session?.id || '']);
   }, [session]);
@@ -271,10 +291,36 @@ export default function SessionBoard({ session }: SessionBoardProps) {
             {`Session ${session.number} |`}{' '}
           </SessionNumber>
           <SessionTitle data-testid="session-title">{session.name}</SessionTitle>
+          {session.recording_urls && session?.recording_urls?.length > 1 && (
+            <RecordingSlelectForm data-testid="view-mode">
+              <InputLabel id="view-label">Recordings</InputLabel>
+              <Select
+                displayEmpty
+                labelId="view-label"
+                id="view-label"
+                value={recording}
+                onChange={(e: any) => {
+                  setRecording(e.target.value);
+                }}
+                label="Recording"
+              >
+                {session?.recording_urls.map((recording_url, index) => (
+                  <MenuItem
+                    key={index}
+                    value={recording_url.recording_url}
+                    id="grid-view"
+                    data-testid="peer-grid-view"
+                  >
+                    {recording_url.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </RecordingSlelectForm>
+          )}
         </Box>
-        {session.recording_url && session.recording_url !== '' ? (
+        {session.recording_urls && session.recording_urls.length ? (
           <StyledVideoPreview
-            src={session.recording_url}
+            src={recording}
             poster={session.recording_thumbnail_url}
             onContextMenu={(e) => {
               e.preventDefault();

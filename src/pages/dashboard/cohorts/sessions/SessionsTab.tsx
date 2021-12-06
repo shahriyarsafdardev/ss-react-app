@@ -56,11 +56,9 @@ export default function SessionsTab() {
   );
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
-  let filteredSessions: Session[] = [];
-
-  if (sessions && sessions.length) {
-    filteredSessions = sessions?.filter((session) => session.display_in_sessions_tab === true);
-  }
+  const filteredSessions: Session[] = sessions?.filter(
+    (session) => session.display_in_sessions_tab === true
+  );
 
   if (filteredSessions && filteredSessions.length) {
     trimmedSessionData = filteredSessions.map((session) => ({
@@ -112,7 +110,7 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {filteredSessions ? (
+        {filteredSessions && filteredSessions.length > 0 ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
               <SessionsInnerContainer container>
