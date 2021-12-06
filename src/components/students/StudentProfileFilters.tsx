@@ -137,7 +137,7 @@ export default function StudentProfileFilters({
           ))}
         </Select>
       </FilterFormControl>
-      <FilterFormControl data-testid="interest-select">
+      {/* <FilterFormControl data-testid="interest-select">
         <InputLabel id="multiple-checkbox-label">Filter by Interests</InputLabel>
         <Select
           labelId="interest-label"
@@ -159,7 +159,7 @@ export default function StudentProfileFilters({
             </MenuItem>
           ))}
         </Select>
-      </FilterFormControl>
+      </FilterFormControl> */}
     </ViewSelector>
   );
 }

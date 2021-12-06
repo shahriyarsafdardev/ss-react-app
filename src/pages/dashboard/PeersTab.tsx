@@ -61,7 +61,7 @@ export default function PeersTab() {
 
   const createSelectMenu = (items: string) => {
     const newItems: any = peers
-      ? peers?.map((peer: any) => peer[items]?.map((item: any) => item))
+      ? peers?.map((peer: any) => peer[items]?.map((item: any) => item)).sort()
       : [];
     return Array.from<any>(new Set([].concat(...newItems)));
   };
@@ -70,7 +70,7 @@ export default function PeersTab() {
     // get all the companies to choose from peers.
     let newCompanies = peers?.map((peer) => peer.current_company.name);
     // make the companies array unique
-    newCompanies = Array.from(new Set(newCompanies));
+    newCompanies = Array.from(new Set(newCompanies)).sort();
     setCompanies(newCompanies);
     // make select items for strengths
     const Strengths: any = createSelectMenu('strengths');
@@ -131,11 +131,17 @@ export default function PeersTab() {
 
   useEffect(() => {
     const filtereStudents = applyFilters();
-    const filteredInterests = filtereStudents?.map((student: any) => student?.interests)?.flat(1);
+    const filteredInterests = filtereStudents
+      ?.map((student: any) => student?.interests)
+      ?.flat(1)
+      .sort();
     const filterInterestsList: any = filteredInterests?.filter(
       (x: any, i: any, a: any) => a.indexOf(x) === i
     );
-    const filteredStrengths = filtereStudents?.map((student: any) => student?.strengths)?.flat(1);
+    const filteredStrengths = filtereStudents
+      ?.map((student: any) => student?.strengths)
+      ?.flat(1)
+      .sort();
     const filterStrengthsList: any = filteredStrengths?.filter(
       (x: any, i: any, a: any) => a.indexOf(x) === i
     );
