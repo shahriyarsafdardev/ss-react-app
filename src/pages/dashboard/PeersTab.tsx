@@ -58,17 +58,28 @@ export default function PeersTab() {
   );
 
   const { peers } = cohort || { peers: null };
+  let filteredPeers: Array<StudentProfile> = [];
+
+  if (peers) {
+    filteredPeers = peers.filter((peer) => {
+      if (!peer.type) {
+        return peer;
+      }
+      return false;
+    });
+  }
+  console.log(filteredPeers);
 
   const createSelectMenu = (items: string) => {
-    const newItems: any = peers
-      ? peers?.map((peer: any) => peer[items]?.map((item: any) => item)).sort()
+    const newItems: any = filteredPeers
+      ? filteredPeers?.map((peer: any) => peer[items]?.map((item: any) => item)).sort()
       : [];
     return Array.from<any>(new Set([].concat(...newItems)));
   };
 
   useEffect(() => {
     // get all the companies to choose from peers.
-    let newCompanies = peers?.map((peer) => peer.current_company.name);
+    let newCompanies = filteredPeers?.map((peer) => peer.current_company.name);
     // make the companies array unique
     newCompanies = Array.from(new Set(newCompanies)).sort();
     setCompanies(newCompanies);
@@ -150,7 +161,7 @@ export default function PeersTab() {
   }, [selectedCompanies]);
 
   const applyFilters = useCallback(() => {
-    let filteredStudents: any = peers;
+    let filteredStudents: any = filteredPeers;
     if (selectedCompanies.length > 0) {
       filteredStudents = filteredStudents?.filter((student: any) =>
         selectedCompanies?.includes(student?.current_company?.name)
@@ -207,7 +218,7 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      {peers ? (
+      {filteredPeers ? (
         <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
           <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
           <StudentProfileModal

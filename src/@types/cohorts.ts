@@ -21,6 +21,7 @@ export type StudentProfile = {
   networking_matching_preferences: string[];
   profile_image_url: string;
   bio_text: string;
+  type: string | undefined;
 };
 
 type Tag = {
