@@ -85,7 +85,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
 
   const addNotification = (message: any) => {
     if (channel) {
-      axios.post(`/users/new_message_notification.json`, {
+      axios.post(`/notifications.json`, {
         message: message.text,
         channel_id: channel?.id,
         channel_type: channel?.type === 'team' ? 'Team' : 'Direct',

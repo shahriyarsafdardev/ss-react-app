@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import bellFill from '@iconify/icons-eva/bell-fill';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
+import { NavLink as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { ActionCableConsumer } from 'react-actioncable-provider';
 import {
@@ -98,11 +99,11 @@ function NotificationItem({ notification, onClick }: { notification: Notificatio
 
   return (
     <ListItemButton
-      href={notification.link}
+      to={notification.link}
       onClick={onClick}
       disableGutters
       key={notification.id}
-      component="a"
+      component={RouterLink}
       sx={{
         py: 1.5,
         px: 2.5,
