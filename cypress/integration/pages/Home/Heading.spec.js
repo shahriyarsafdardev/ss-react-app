@@ -23,7 +23,7 @@ describe('Home > Heading', () => {
     cy.login();
   });
 
-  context('When the current time is more than two hours before the first session starts', () => {
+  context('When the current time is more than two hours before any session starts', () => {
     before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,2)
     });
@@ -45,7 +45,7 @@ describe('Home > Heading', () => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,1)
     });
 
-    it('Displays a personalised get ready message for that session', () => {
+    it('Displays a get ready message for that session', () => {
       cy.getHeading()
       .should('contain','🔴 Get ready, Session '+sessionFixture.sessions[0].number+' is starting soon!')
     });
