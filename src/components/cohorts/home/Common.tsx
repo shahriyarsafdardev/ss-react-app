@@ -91,28 +91,34 @@ export const zoomTimesPreview = (times: string[]) => {
 };
 
 export const displayMultipleDates = (times: string[]) => {
+  const sorted: string[] = uniq(
+    sortedTimes(times)
+      .slice(0, 2)
+      .map((time) => moment(new Date(time)).format('dddd, MMM DD'))
+  );
   const upcomings = uniq(
     upcomingTimes(times).map((time) => moment(new Date(time)).format('dddd, MMM DD'))
   );
   if (upcomings.length === 0) {
     return false;
   }
-  if (upcomings.length === 1) {
-    return upcomings[0];
+  if (sorted.length === 1) {
+    return sorted[0];
   }
-  const formattedDates = upcomings.map((time) => moment(time).format('MMM DD'));
+  const formattedDates = sorted.map((time) => moment(time).format('MMM DD'));
   return formatList(formattedDates);
 };
 
 export const formatMultipleTimes = (times: string[], sessionLength: string) => {
+  const sorted: string[] = sortedTimes(times).slice(0, 2);
   const upcomings = upcomingTimes(times);
   if (upcomings.length === 0) {
     return 'Complete';
   }
-  if (upcomings.length === 1) {
-    return formatTime(upcomings[0], sessionLength);
+  if (sorted.length === 1) {
+    return formatTime(sorted[0], sessionLength);
   }
-  const sortedTimeslist = upcomings.map((time) => moment(new Date(time)).format('hh:mm a'));
+  const sortedTimeslist = sorted.map((time) => moment(new Date(time)).format('hh:mm a'));
   return `${formatList(sortedTimeslist)} ${getLocalTimeZone()}`;
 };
 
