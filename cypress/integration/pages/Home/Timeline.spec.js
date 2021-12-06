@@ -51,7 +51,32 @@ describe('Home > Timeline', () => {
     cy.login();
   });
 
-  context('When the current time is more than two hours before the first session starts', () => {
+  it('Displays a welcome text in timeline', () => {});
+  it('Displays a left arrow icon', () => {});
+  it('Displays a cohort completion text', () => {});
+  it('Displays a right arrow icon', () => {});
+  it('Displays a right arrow icon', () => {});
+  it('Timeline scrolls to the right when right arrow icon is clicked', () => {});
+  it('Timeline scrolls to the left when left arrow icon is clicked', () => {});
+  context('When any session is not Completed', () => {
+    it('Displays a empty timeline between two sesions', () => {});
+    it('Displays a empty circle on a session', () => {});
+    it('Displays time under the session', () => {});
+  });
+  context('When any session is upcoming', () => {
+    it('Displays the upcoming session in active font', () => {});
+  });
+  context('When a session is Completed', () => {
+    it('Displays a filled timeline between two sesions', () => {});
+    it('Displays a filled circle on a session', () => {});
+    it('Displays a completed text under the completed session', () => {});
+    it('Displays review content text under the completed session', () => {});
+    it('Displays the correct session details when clicked on review content', () => {});
+  });
+  context('When all sessions are completed', () => {
+    it('Displays the completion text in active font', () => {});
+  });
+  /*context('When the current time is more than two hours before the first session starts', () => {
     before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,2)
     });
@@ -105,5 +130,5 @@ describe('Home > Timeline', () => {
       cy.url()
       .should('contain', 'session=1');
     });
-  });
+  });*/
 });
