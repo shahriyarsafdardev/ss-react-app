@@ -75,6 +75,8 @@ export type Session = {
   survey: Survey;
   resources: string;
   session_materials: GroupedSessionMaterial[];
+  display_in_sessions_tab: boolean;
+  custom_name: string;
 };
 
 export type SessionListItem = {

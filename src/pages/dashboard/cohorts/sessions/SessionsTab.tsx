@@ -7,7 +7,7 @@ import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
-import { SessionListItem } from '../../../../@types/cohorts';
+import { Session, SessionListItem } from '../../../../@types/cohorts';
 import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
@@ -56,9 +56,14 @@ export default function SessionsTab() {
   );
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
+  let filteredSessions: Session[] = [];
 
   if (sessions && sessions.length) {
-    trimmedSessionData = sessions.map((session) => ({
+    filteredSessions = sessions?.filter((session) => session.display_in_sessions_tab === true);
+  }
+
+  if (filteredSessions && filteredSessions.length) {
+    trimmedSessionData = filteredSessions.map((session) => ({
       id: session.id,
       name: session.name,
       times: session.times,
@@ -82,7 +87,12 @@ export default function SessionsTab() {
     const params = new URLSearchParams(window.location.search);
     let sessionNumber = Number(params.get('session'));
     sessionNumber--;
-    if (sessions && sessionNumber && sessionNumber >= 0 && sessionNumber < sessions.length) {
+    if (
+      filteredSessions &&
+      sessionNumber &&
+      sessionNumber >= 0 &&
+      sessionNumber < filteredSessions.length
+    ) {
       setSelectedSession(sessionNumber);
     }
   }, [sessions]);
@@ -102,13 +112,13 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {sessions ? (
+        {filteredSessions ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
               <SessionsInnerContainer container>
                 <Grid item md={8} sm={12}>
                   <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                    <SessionBoard session={sessions && sessions[selectedSession]} />
+                    <SessionBoard session={filteredSessions && filteredSessions[selectedSession]} />
                   </SessionContext.Provider>
                 </Grid>
                 <SessionListDesktopContainer item md={4}>
