@@ -5,7 +5,9 @@ import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { EVENT_TYPES, sendAmplitudeData, trackMessagingEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { RootState, useSelector } from '../../../../redux/store';
+import { RootState, useSelector, useDispatch } from '../../../../redux/store';
+import { getPeers } from '../../../../redux/slices/cohort';
+
 import LoadingScreen from '../../../../components/LoadingScreen';
 
 import './Messaging.css';
@@ -57,18 +59,28 @@ export default function Messaging() {
   const [isEditing, setIsEditing] = useState(false);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
+  const dispatch = useDispatch();
   const loggedinUserID = user?.id;
   const cohortID = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
+  const { peers } = cohort;
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
+
+  const enrollments = peers?.map((peer) => peer.id);
 
   const LoadingContainer = styled(Box)(() => ({
     position: 'absolute',
     top: '50%',
     left: '50%'
   }));
+
+  useEffect(() => {
+    if (cohort && !peers) {
+      dispatch(getPeers(cohortID.toString(), 'null'));
+    }
+  }, [dispatch, cohort]);
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -147,7 +159,7 @@ export default function Messaging() {
                     setIsCreating,
                     setIsEditing,
                     cohortID,
-                    cohortUsers: cohort?.enrollments || [],
+                    cohortUsers: enrollments || [],
                     sort,
                     loggedinUserID
                   }}
@@ -162,7 +174,7 @@ export default function Messaging() {
                   setIsCreating,
                   setIsEditing,
                   cohortID,
-                  cohortUsers: cohort?.enrollments || []
+                  cohortUsers: enrollments || []
                 }}
               />
               <MobileView>
@@ -174,7 +186,7 @@ export default function Messaging() {
                     setIsCreating,
                     setIsEditing,
                     cohortID,
-                    cohortUsers: cohort?.enrollments || [],
+                    cohortUsers: enrollments || [],
                     sort,
                     loggedinUserID
                   }}

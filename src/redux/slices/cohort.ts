@@ -30,15 +30,21 @@ const slice = createSlice({
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
       );
+      const filteredPeers = action.payload.peers.filter((student: any) => {
+        if (!student.type) {
+          if (student.id !== action.payload.userID) {
+            return student;
+          }
+        }
+
+        return false;
+      });
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = {
           ...updated,
           peers: action.payload.peers,
-          random_peers: _.sampleSize(
-            action.payload.peers.filter((student: any) => student.id !== action.payload.userID),
-            4
-          )
+          random_peers: _.sampleSize(filteredPeers, 4)
         };
       }
     },
