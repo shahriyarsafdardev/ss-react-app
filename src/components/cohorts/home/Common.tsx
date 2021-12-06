@@ -58,7 +58,7 @@ export const surveyTime = (times: string[]) =>
 
 export const upcomingTimes = (times: string[]) =>
   sortedTimes(times)
-    .filter((time) => moment(time).add(1, 'hours') > moment())
+    .filter((time) => moment(time).add(2, 'hours') > moment())
     .slice(0, 2);
 
 export const firstUpcomingDate = (times: string[]) => {
