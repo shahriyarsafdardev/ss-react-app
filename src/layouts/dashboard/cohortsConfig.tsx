@@ -45,7 +45,7 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
         {
           title: 'Q&A',
           path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: true,
+          notifications: false,
           category: 'Question'
         }
       ];
@@ -61,7 +61,7 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
         {
           title: 'Q&A',
           path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: true,
+          notifications: false,
           category: 'Question'
         }
       ];
