@@ -247,13 +247,6 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         }
       />
     </>,
-    <Summary
-      key="summary"
-      onTrack={(eventData: string) =>
-        sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
-      }
-      innerContent={session?.summary || ''}
-    />,
     <Slides
       key="slidesTab"
       onTrack={(eventData: string) =>
@@ -261,6 +254,13 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       }
       pdfUrl={session?.presentation_pdf_url}
       pdfDownloadable={session?.presentation_pdf_downloadable}
+    />,
+    <Summary
+      key="summary"
+      onTrack={(eventData: string) =>
+        sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
+      }
+      innerContent={session?.summary || ''}
     />
   ];
 
@@ -381,10 +381,10 @@ export default function SessionBoard({ session }: SessionBoardProps) {
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" data-testid="session-resources" />
+          <SessionTab label="Session Slides" data-testid="session-slides" />
           {session?.summary_notes_included && (
             <SessionTab label="Summary Notes" data-testid="session-notes" />
           )}
-          <SessionTab label="Session Slides" data-testid="session-slides" />
         </SessionTabs>
 
         {tabsContent[currentTab]}
