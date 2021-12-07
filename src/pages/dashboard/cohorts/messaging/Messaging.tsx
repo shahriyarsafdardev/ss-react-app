@@ -65,7 +65,7 @@ export default function Messaging() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
-  const { peers } = cohort;
+  const peers = cohort?.peers;
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
 
   const enrollments = peers?.map((peer) => peer.id);
