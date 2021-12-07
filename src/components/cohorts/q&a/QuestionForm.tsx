@@ -261,20 +261,29 @@ const QuestionForm = ({
                 </RecordingTabContainer>
               </>
             ) : (
-              <UnreadMessage>
-                {unAnswered.length > 0 ? (
-                  <>
-                    You have
-                    <Button variant="text" onClick={() => setModal(true)}>
-                      {`${unAnswered.length} `}
-                      unanswered
-                    </Button>
-                    question{unAnswered.length !== 1 && 's'}
-                  </>
-                ) : (
-                  <span>You’ve answered all of your questions!</span>
-                )}
-              </UnreadMessage>
+              <>
+                <UnreadMessage>
+                  {unAnswered.length > 0 ? (
+                    <>
+                      You have
+                      <Button variant="text" onClick={() => setModal(true)}>
+                        {`${unAnswered.length} `}
+                        unanswered
+                      </Button>
+                      question{unAnswered.length !== 1 && 's'}
+                    </>
+                  ) : (
+                    <span>You’ve answered all of your questions!</span>
+                  )}
+                </UnreadMessage>
+                <StyledLoadingButton
+                  onClick={() => setModal(true)}
+                  variant="contained"
+                  disabled={unAnswered.length === 0}
+                >
+                  Submit Answer(s)
+                </StyledLoadingButton>
+              </>
             )}
           </StyledStack>
         )}
