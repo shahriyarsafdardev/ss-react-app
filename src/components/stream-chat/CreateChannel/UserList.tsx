@@ -22,7 +22,7 @@ const ListContainer: React.FC = (props) => {
   const { children } = props;
 
   return (
-    <div className="user-list__container">
+    <div className="user-list__container" id="stream-users-list">
       <div className="user-list__header">
         <p>User</p>
         <p>Last Active</p>
@@ -112,9 +112,10 @@ export const UserList: React.FC<Props> = (props) => {
   const [error, setError] = useState(false);
   const [listEmpty, setListEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<UserResponse<TeamUserType>[] | undefined>();
+  const [users, setUsers] = useState<UserResponse<TeamUserType>[]>([]);
   const [members, setMembers] = useState<any>();
-
+  const [offset, setOffset] = useState(0);
+  const [usersResponse, setUsersResponse] = useState(0);
   useEffect(() => {
     const getUsers = async () => {
       if (loading) return;
@@ -136,20 +137,24 @@ export const UserList: React.FC<Props> = (props) => {
           response = await client.queryUsers(
             { id: { $in: newMembers }, $and: [{ name: { $autocomplete: query } }] },
             { created_at: -1 },
-            { limit: 100 }
+            { limit: 20, offset }
           );
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
             { created_at: -1 },
-            { limit: 100 }
+            { limit: 20, offset }
           );
         }
-        if (response.users.length) {
+        if (query && response.users.length) {
           setUsers(response.users);
-        } else {
+        } else if (response.users.length) {
+          setUsers([...users, ...response.users]);
+        }
+        if (response.users.length === 0) {
           setListEmpty(true);
         }
+        setUsersResponse(response.users.length);
       } catch (event) {
         setError(true);
       }
@@ -158,8 +163,13 @@ export const UserList: React.FC<Props> = (props) => {
     };
 
     if (client) getUsers();
-  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [query, offset]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const offSetHandler = () => {
+    if (offset < cohortUsers.length) {
+      setOffset(offset + 20);
+    }
+  };
   if (error) {
     return (
       <ListContainer>
@@ -176,17 +186,35 @@ export const UserList: React.FC<Props> = (props) => {
             {loading ? (
               <div className="user-list__message">Loading users...</div>
             ) : (
-              members?.length &&
-              members.map((member: any, i: number) => (
-                <UserItem
-                  index={i}
-                  key={member.id}
-                  setSelectedUsers={setSelectedUsers}
-                  member={true}
-                  user={member}
-                  cohortID={cohortID}
-                />
-              ))
+              <>
+                {members?.length &&
+                  members.map((member: any, i: number) => (
+                    <UserItem
+                      index={i}
+                      key={member.id}
+                      setSelectedUsers={setSelectedUsers}
+                      member={true}
+                      user={member}
+                      cohortID={cohortID}
+                    />
+                  ))}
+                {usersResponse !== 0 && (
+                  <button
+                    style={{
+                      height: '45px',
+                      padding: '10px 0',
+                      backgroundColor: '#4d4dcd',
+                      cursor: 'pointer',
+                      color: '#FFFFFF',
+                      fontSize: '18px'
+                    }}
+                    type="button"
+                    onClick={() => offSetHandler()}
+                  >
+                    Load more
+                  </button>
+                )}
+              </>
             )}
           </ListContainer>
           {admin && (
@@ -201,17 +229,35 @@ export const UserList: React.FC<Props> = (props) => {
           {loading ? (
             <div className="user-list__message">Loading users...</div>
           ) : (
-            users?.length &&
-            users.map((user, i) => (
-              <UserItem
-                index={i}
-                key={user.id}
-                setSelectedUsers={setSelectedUsers}
-                member={false}
-                user={user}
-                cohortID={cohortID}
-              />
-            ))
+            <>
+              {users?.length &&
+                users.map((user, i) => (
+                  <UserItem
+                    index={i}
+                    key={user.id}
+                    setSelectedUsers={setSelectedUsers}
+                    member={false}
+                    user={user}
+                    cohortID={cohortID}
+                  />
+                ))}
+              {usersResponse !== 0 && (
+                <button
+                  style={{
+                    height: '45px',
+                    padding: '10px 0',
+                    backgroundColor: '#4d4dcd',
+                    cursor: 'pointer',
+                    color: '#FFFFFF',
+                    fontSize: '18px'
+                  }}
+                  type="button"
+                  onClick={() => offSetHandler()}
+                >
+                  Load more
+                </button>
+              )}
+            </>
           )}
         </ListContainer>
       )}
