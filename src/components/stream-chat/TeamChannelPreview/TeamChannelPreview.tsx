@@ -45,11 +45,11 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     TeamUserType
   >();
 
-  useEffect(() => {
-    if (channel.id === activeChannel?.id && unreadCount > 0) {
-      dispatch(markAsRead('channel', activeChannel?.id));
-    }
-  }, [unreadCount, activeChannel]);
+  // useEffect(() => {
+  //   if (channel.id === activeChannel?.id && unreadCount > 0) {
+  //     dispatch(markAsRead('channel', activeChannel?.id));
+  //   }
+  // }, [unreadCount, activeChannel]);
 
   const ChannelPreview = () => (
     <p className="channel-preview__item">

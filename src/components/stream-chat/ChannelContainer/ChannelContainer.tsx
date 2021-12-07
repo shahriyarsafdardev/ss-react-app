@@ -83,18 +83,18 @@ export const ChannelContainer: React.FC<Props> = (props) => {
     );
   }
 
-  const addNotification = (message: any) => {
-    if (channel) {
-      axios.post(`/notifications.json`, {
-        message: message.text,
-        channel_id: channel?.id,
-        channel_type: channel?.type === 'team' ? 'Team' : 'Direct',
-        channel_name: channel?.data?.name,
-        cohort_id: cohortID,
-        receivers: Object.keys(channel.state.members)
-      });
-    }
-  };
+  // const addNotification = (message: any) => {
+  //   if (channel) {
+  //     axios.post(`/notifications.json`, {
+  //       message: message.text,
+  //       channel_id: channel?.id,
+  //       channel_type: channel?.type === 'team' ? 'Team' : 'Direct',
+  //       channel_name: channel?.data?.name,
+  //       cohort_id: cohortID,
+  //       receivers: Object.keys(channel.state.members)
+  //     });
+  //   }
+  // };
 
   const onMentionsClick = (event: React.BaseSyntheticEvent, user: any) => {
     if (user?.id) {
@@ -133,8 +133,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
             type: channel?.type,
             pinsOpen,
             setIsEditing,
-            setPinsOpen,
-            addNotification
+            setPinsOpen
           }}
         />
       </Channel>
