@@ -95,13 +95,15 @@ const QuestionForm = ({
   hosts,
   unAnswered,
   addAnswer,
-  isHost
+  isHost,
+  handleSkipQuestion
 }: {
   onSuccess: Function;
   hosts: string;
   isHost: boolean;
   unAnswered: Array<Question>;
   addAnswer: Function;
+  handleSkipQuestion: Function;
 }) => {
   const [questionSummary, setQuestionSummary] = useState('');
   const [showMediaSection, setMediaSection] = useState(false);
@@ -165,11 +167,13 @@ const QuestionForm = ({
   const AnswerModal = ({
     state,
     onClose,
-    onComplete
+    onComplete,
+    handleSkipQuestion
   }: {
     state: boolean;
     onClose: Function;
     onComplete: Function;
+    handleSkipQuestion: Function;
   }) => (
     <Modal open={state} onClose={() => onClose()}>
       <AnswerForm
@@ -177,6 +181,7 @@ const QuestionForm = ({
         onComplete={onComplete}
         onClose={onClose}
         unAnswered={unAnswered}
+        handleSkipQuestion={handleSkipQuestion}
       />
     </Modal>
   );
@@ -189,6 +194,7 @@ const QuestionForm = ({
           setModal(false);
         }}
         onComplete={addAnswer}
+        handleSkipQuestion={handleSkipQuestion}
       />
       <SectionContainer className="newQuestion">
         {!submitting && (

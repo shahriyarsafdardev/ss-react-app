@@ -151,6 +151,7 @@ export type Question = {
   question_text: string;
   question_type: string;
   slug: string;
+  skipped: boolean;
   thumbnail: string;
   user_id: string;
   user_name: string;

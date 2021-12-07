@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { styled, useTheme } from '@material-ui/core/styles';
+import axios from 'utils/axios';
 import moment from 'moment';
 import {
   Container,
@@ -170,11 +171,13 @@ const MainStack = styled(Stack)(({ theme }) => ({
 export default function AnswerForm({
   onComplete,
   onClose,
-  unAnswered
+  unAnswered,
+  handleSkipQuestion
 }: {
   onComplete: Function;
   onClose: Function;
   unAnswered: Array<Question>;
+  handleSkipQuestion: Function;
 }) {
   const questionsData = unAnswered;
   const [loading, setLoading] = useState(false);
@@ -350,6 +353,7 @@ export default function AnswerForm({
                     onClick={() => {
                       handleNext();
                       setAddRecording(false);
+                      handleSkipQuestion(questionID);
                     }}
                     data-testid="btn-previous"
                   >
