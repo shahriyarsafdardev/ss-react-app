@@ -48,6 +48,16 @@ export function getNotifications() {
   };
 }
 
+export function addNotifications(notifications: Notification[]) {
+  return async () => {
+    try {
+      dispatch(slice.actions.getNotificationsSuccess(notifications));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function addNotification(notification: Notification) {
   return async () => {
     try {
