@@ -164,6 +164,18 @@ const QuestionForm = ({
       });
   };
 
+  const submitButton = () =>
+    unAnswered.length > 0 && (
+      <StyledLoadingButton
+        onClick={() => setModal(true)}
+        variant="contained"
+        disabled={unAnswered.length === 0}
+      >
+        {unAnswered.length > 1 ? 'Submit Answers' : 'Submit Answer'}
+        {unAnswered.length === 0}
+      </StyledLoadingButton>
+    );
+
   const AnswerModal = ({
     state,
     onClose,
@@ -282,13 +294,7 @@ const QuestionForm = ({
                     <span>You’ve answered all of your questions!</span>
                   )}
                 </UnreadMessage>
-                <StyledLoadingButton
-                  onClick={() => setModal(true)}
-                  variant="contained"
-                  disabled={unAnswered.length === 0}
-                >
-                  Submit Answer(s)
-                </StyledLoadingButton>
+                {submitButton()}
               </>
             )}
           </StyledStack>

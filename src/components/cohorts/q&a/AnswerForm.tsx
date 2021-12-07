@@ -318,7 +318,7 @@ export default function AnswerForm({
               <BorderLinearProgress variant="determinate" value={progress()} />
             </ProgressBarContainer>
           </QuestionContainer>
-          {!complete ? (
+          {!complete && questionsData[currentQuestion] ? (
             <QuestionContainer>
               <Stack direction="column" justifyContent="space-between">
                 <MainStack direction={{ xs: 'column', sm: 'row' }}>
