@@ -1,48 +1,52 @@
 import sessionFixture from '../../../fixtures/session/sessions.json';
 import userFixture from '../../../fixtures/login/login.json';
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
+import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
 import moment from 'moment';
 
 Cypress.Commands.add('welcomeText', () => {
-  return cy.contains('p', 'Welcome')
+  return cy.contains('p', 'Welcome');
 });
 
 Cypress.Commands.add('leftArrowIconDisbaled', () => {
-  return cy.get('.disabled , [alt="left arrow"]')
+  return cy.get('.disabled , [alt="left arrow"]');
+});
+
+Cypress.Commands.add('leftArrowIconActive', () => {
+  return cy.get('.active , [alt="left arrow"]');
 });
 
 Cypress.Commands.add('rightArrowIconDisbaled', () => {
-  return cy.get('.disabled , [alt="right arrow"]')
+  return cy.get('.disabled , [alt="right arrow"]');
 });
 
 Cypress.Commands.add('rightArrowIconActive', () => {
-  return cy.get('.active , [alt="right arrow"]')
+  return cy.get('.active , [alt="right arrow"]');
 });
 
 Cypress.Commands.add('cohortCompletionText', () => {
-  return cy.contains('p', 'Cohort Completion')
+  return cy.contains('p', 'Cohort Completion');
 });
 
 Cypress.Commands.add('sessionOneText', () => {
-  return cy.contains('p', 'Session 1')
+  return cy.contains('p', 'Session 1');
 });
 
 Cypress.Commands.add('sessionCompleteText', () => {
-  return cy.contains('p', 'Complete')
+  return cy.contains('p', 'Complete');
 });
 
 Cypress.Commands.add('reviewContent', () => {
-  return cy.contains('a', 'Review Content')
+  return cy.contains('a', 'Review Content');
 });
 
-Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
+Cypress.Commands.add('setClockToBeforeSession', (session, time) => {
   var dateTime = moment(session).subtract(time, 'hours');
-      cy.clock(new Date(dateTime.format()));
+  cy.clock(new Date(dateTime.format()));
 });
 
-Cypress.Commands.add('setClockToAfterSession', (session, time)=> {
+Cypress.Commands.add('setClockToAfterSession', (session, time) => {
   var dateTime = moment(session).add(time, 'hours');
-      cy.clock(new Date(dateTime.format()));
+  cy.clock(new Date(dateTime.format()));
 });
 
 describe('Home > Timeline', () => {
@@ -51,84 +55,49 @@ describe('Home > Timeline', () => {
     cy.login();
   });
 
-  it('Displays a welcome text in timeline', () => {});
-  it('Displays a left arrow icon', () => {});
-  it('Displays a cohort completion text', () => {});
-  it('Displays a right arrow icon', () => {});
-  it('Displays a right arrow icon', () => {});
-  it('Timeline scrolls to the right when right arrow icon is clicked', () => {});
-  it('Timeline scrolls to the left when left arrow icon is clicked', () => {});
+  it('Displays a welcome text in timeline', () => {
+    cy.welcomeText().should('be.visible');
+  });
+  it('Displays a left arrow icon', () => {
+    cy.leftArrowIconDisbaled().should('be.visible');
+  });
+  it('Displays a right arrow icon', () => {
+    cy.rightArrowIconActive().should('be.visible');
+  });
+
+  it('Displays a cohort completion text', () => {
+    cy.rightArrowIconActive().should('be.visible').click({ multiple: true, force: true });
+    cy.cohortCompletionText().should('be.visible');
+  });
+
+  it('Timeline scrolls to the right when right arrow icon is clicked', () => {
+    cy.rightArrowIconActive().should('be.visible').click({ multiple: true, force: true });
+    cy.window().its('scrollX').should('equal', 0);
+  });
+
+  // it('Timeline scrolls to the left when left arrow icon is clicked', () => {});
+
   context('When any session is not Completed', () => {
+    before(() => {
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time, 2);
+      cy.setClockToBeforeSession(sessionFixture.sessions[1].time, 2);
+    });
+
     it('Displays a empty timeline between two sesions', () => {});
     it('Displays a empty circle on a session', () => {});
     it('Displays time under the session', () => {});
   });
-  context('When any session is upcoming', () => {
-    it('Displays the upcoming session in active font', () => {});
-  });
-  context('When a session is Completed', () => {
-    it('Displays a filled timeline between two sesions', () => {});
-    it('Displays a filled circle on a session', () => {});
-    it('Displays a completed text under the completed session', () => {});
-    it('Displays review content text under the completed session', () => {});
-    it('Displays the correct session details when clicked on review content', () => {});
-  });
-  context('When all sessions are completed', () => {
-    it('Displays the completion text in active font', () => {});
-  });
-  /*context('When the current time is more than two hours before the first session starts', () => {
-    before(() => {
-      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,2)
-    });
-
-    it('Displays a welcome text in timeline and left arrow icon is disabled', () => {
-      cy.welcomeText()
-      .should('be.visible');
-      cy.leftArrowIconDisbaled()
-      .should('be.visible');
-    });
-  });
-
-  context('When all Sessions are completed', () => {
-    before(() => {
-      cy.setClockToAfterSession(sessionFixture.sessions[1].time,1)
-    });
-
-    it('Displays cohort completion text and right arrow icon is disabled', () => {
-      cy.rightArrowIconActive()
-      .should('be.visible')
-      .click({ multiple: true, force: true });
-      cy.cohortCompletionText().
-      should('be.visible');
-      cy.rightArrowIconDisbaled().
-      eq(1).
-      should('be.visible');
-    });
-  });
-
-  context('When a session is Completed', () => {
-    beforeEach(() => {
-      cy.setClockToAfterSession(sessionFixture.sessions[0].time,1)
-    });
-
-    it('Displays completed text under the completed session', () => {
-      cy.sessionOneText().
-      should('be.visible');
-      cy.sessionCompleteText().
-      should('be.visible');
-    });
-
-    it('Displays review content text under the completed session', () => {
-      cy.reviewContent().
-      should('be.visible');
-    });
-
-    it('Displays the correct session details when clicked on review content', () => {
-      cy.reviewContent()
-      .should('be.visible')
-      .click();
-      cy.url()
-      .should('contain', 'session=1');
-    });
-  });*/
+  // context('When any session is upcoming', () => {
+  //   it('Displays the upcoming session in active font', () => {});
+  // });
+  // context('When a session is Completed', () => {
+  //   it('Displays a filled timeline between two sesions', () => {});
+  //   it('Displays a filled circle on a session', () => {});
+  //   it('Displays a completed text under the completed session', () => {});
+  //   it('Displays review content text under the completed session', () => {});
+  //   it('Displays the correct session details when clicked on review content', () => {});
+  // });
+  // context('When all sessions are completed', () => {
+  //   it('Displays the completion text in active font', () => {});
+  // });
 });
