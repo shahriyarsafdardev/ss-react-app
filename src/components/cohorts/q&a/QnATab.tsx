@@ -95,6 +95,21 @@ function QnATab() {
     setList([questionObject, ...list]);
   };
 
+  const handleSkipQuestion = (questionID: string) => {
+    const initMaterials = async () => {
+      try {
+        await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
+          // setList(list.filter((question) => question.id !== res.data.question_id));
+          enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
+        });
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('Some Error Occurred', { variant: 'error' });
+      }
+    };
+    initMaterials();
+  };
+
   const addAnswer = (questionID: string, recording: any) => {
     submitAnswer(questionID, recording, list, (list: Question[]) => setList(list));
     enqueueSnackbar('Answer submitted, will be released soon', { variant: 'success' });
@@ -150,8 +165,9 @@ function QnATab() {
           hosts={cohort?.host_names}
           isHost={cohort?.is_host}
           onSuccess={onCreateSuccess}
-          unAnswered={list.filter((q) => !q.answered)}
+          unAnswered={list.filter((q) => !q.answered && !q.skipped)}
           addAnswer={addAnswer}
+          handleSkipQuestion={handleSkipQuestion}
         />
         <Container style={{ marginBottom: '50px' }}>
           <StyledBox>

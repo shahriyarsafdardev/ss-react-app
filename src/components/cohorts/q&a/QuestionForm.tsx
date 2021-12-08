@@ -95,13 +95,15 @@ const QuestionForm = ({
   hosts,
   unAnswered,
   addAnswer,
-  isHost
+  isHost,
+  handleSkipQuestion
 }: {
   onSuccess: Function;
   hosts: string;
   isHost: boolean;
   unAnswered: Array<Question>;
   addAnswer: Function;
+  handleSkipQuestion: Function;
 }) => {
   const [questionSummary, setQuestionSummary] = useState('');
   const [showMediaSection, setMediaSection] = useState(false);
@@ -162,14 +164,28 @@ const QuestionForm = ({
       });
   };
 
+  const submitButton = () =>
+    unAnswered.length > 0 && (
+      <StyledLoadingButton
+        onClick={() => setModal(true)}
+        variant="contained"
+        disabled={unAnswered.length === 0}
+      >
+        {unAnswered.length > 1 ? 'Submit Answers' : 'Submit Answer'}
+        {unAnswered.length === 0}
+      </StyledLoadingButton>
+    );
+
   const AnswerModal = ({
     state,
     onClose,
-    onComplete
+    onComplete,
+    handleSkipQuestion
   }: {
     state: boolean;
     onClose: Function;
     onComplete: Function;
+    handleSkipQuestion: Function;
   }) => (
     <Modal open={state} onClose={() => onClose()}>
       <AnswerForm
@@ -177,6 +193,7 @@ const QuestionForm = ({
         onComplete={onComplete}
         onClose={onClose}
         unAnswered={unAnswered}
+        handleSkipQuestion={handleSkipQuestion}
       />
     </Modal>
   );
@@ -189,6 +206,7 @@ const QuestionForm = ({
           setModal(false);
         }}
         onComplete={addAnswer}
+        handleSkipQuestion={handleSkipQuestion}
       />
       <SectionContainer className="newQuestion">
         {!submitting && (
@@ -276,13 +294,7 @@ const QuestionForm = ({
                     <span>You’ve answered all of your questions!</span>
                   )}
                 </UnreadMessage>
-                <StyledLoadingButton
-                  onClick={() => setModal(true)}
-                  variant="contained"
-                  disabled={unAnswered.length === 0}
-                >
-                  Submit Answer(s)
-                </StyledLoadingButton>
+                {submitButton()}
               </>
             )}
           </StyledStack>
