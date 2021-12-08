@@ -2,7 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Box, Theme, TextField, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
-
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
@@ -279,6 +280,7 @@ export default function Slides({
         file={{
           url: pdfUrl
         }}
+        externalLinkTarget="_blank"
         onLoadSuccess={onDocumentLoadSuccess}
         onLoadError={console.error}
       >
@@ -287,7 +289,12 @@ export default function Slides({
             <Typography variant="h4">That slide does not exist</Typography>
           </div>
         ) : (
-          <StyledPage pageNumber={pageNumber} />
+          <StyledPage
+            renderMode="svg"
+            scale={0.6}
+            pageNumber={pageNumber}
+            renderAnnotationLayer={true}
+          />
         )}
       </PdfDocument>
       {numPages !== null && (
