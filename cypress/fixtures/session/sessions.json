@@ -14,7 +14,7 @@
         "number":1,
         "summary":"\u003cp\u003eThis lecture covers some of the most fundamental principles behind what makes digital platforms powerful business models. Aside from the economic forces of Network effects and economies of scale, we will cover the workings of two- and multi-sided platforms, the challenge of single- vs. multi-homing, and the role of switching costs in customer retention.\u003c/p\u003e",
         "length":"1 hour",
-        "zoom_url":"",
+        "zoom_url":"www.zoom.us",
         "presentation_pdf_name":"EODP S21 Session 2.pptx.pdf",
         "presentation_pdf_url":"https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211201%2Feu-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20211201T223230Z\u0026X-Amz-Expires=604800\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=c2163da881e228eadd39d00a610fda8224a8de970606699b8f704b23d4631778",
         "presentation_pdf_downloadable":false,
@@ -39,7 +39,7 @@
         "number":2,
         "summary":"\u003cp\u003eThis lecture describes the main components of a variety of digital platform business models. In addition to spelling out the economic forces behind the most common business models, we will explore key components to revenue generation that include pricing, product versioning, marketplace fees, auctions and their role in the digital economy, and how big-Data can become an important strategic asset\u003c/p\u003e",
         "length":"1 hour",
-        "zoom_url":"",
+        "zoom_url":"www.zoom.us",
         "presentation_pdf_downloadable":false,
         "survey_completed":true,
         "resources":[

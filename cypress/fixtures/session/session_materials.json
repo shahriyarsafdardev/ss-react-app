@@ -1,0 +1,26 @@
+[
+  {
+     "id":"4b125893-704e-444c-a69a-fc41bf570a4f",
+     "name":"Pre-Reading 1: As More People Worry About Monopolies, an Economist Explains What Antitrust Can and Can't Do",
+     "action_text":"Open",
+     "info_text":"9 minute read",
+     "action_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/6e9a7326ab1ddbeca8ff0eb18cd7d503.pdf",
+     "index":1,
+     "complete":false,
+     "category":"Pre-Reading Materials:",
+     "included_in_get_ready_checklist":true,
+     "included_in_session_materials_tab":true
+  },
+  {
+     "id":"ea0da011-a58f-4c09-968f-a8d0f87bcb35",
+     "name":"Pre-Reading 2: The privacy paradox",
+     "action_text":"Open",
+     "info_text":"4 minute read",
+     "action_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/5b7954f29d38699185a86e04563bd384.pdf",
+     "index":2,
+     "complete":false,
+     "category":"Pre-Reading Materials:",
+     "included_in_get_ready_checklist":true,
+     "included_in_session_materials_tab":true
+  }
+]
