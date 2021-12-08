@@ -6,7 +6,7 @@
      "info_text":"9 minute read",
      "action_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/6e9a7326ab1ddbeca8ff0eb18cd7d503.pdf",
      "index":1,
-     "complete":false,
+     "complete":true,
      "category":"Pre-Reading Materials:",
      "included_in_get_ready_checklist":true,
      "included_in_session_materials_tab":true
