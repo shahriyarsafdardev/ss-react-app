@@ -81,6 +81,7 @@ export type Session = {
   session_materials: GroupedSessionMaterial[];
   display_in_sessions_tab: boolean;
   custom_name: string;
+  isFetched: boolean;
 };
 
 export type SessionListItem = {

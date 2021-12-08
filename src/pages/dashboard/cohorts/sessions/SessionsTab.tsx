@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
+import axios from 'utils/axios';
 import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
-import { getSessions } from '../../../../redux/slices/cohort';
+import { getSessions, updateSessionData } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
 import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
@@ -101,6 +102,24 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
+  useEffect(() => {
+    if (filteredSessions && !filteredSessions[selectedSession].isFetched) {
+      const initMaterials = async () => {
+        try {
+          const response = await axios.get(
+            `/cohorts/${cohort_id}/sessions/${filteredSessions[selectedSession].id}/session_data.json`
+          );
+          dispatch(
+            updateSessionData(filteredSessions[selectedSession].id, cohort_id, response.data)
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      initMaterials();
+    }
+  }, [selectedSession, filteredSessions?.length]);
+
   const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
     trackSessionsPageEvent(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
@@ -110,7 +129,9 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {filteredSessions && filteredSessions.length > 0 ? (
+        {filteredSessions &&
+        filteredSessions.length > 0 &&
+        filteredSessions[selectedSession].isFetched ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
               <SessionsInnerContainer container>

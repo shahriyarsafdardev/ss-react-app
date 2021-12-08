@@ -58,6 +58,22 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
     },
+    setSessionDataSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetSessionIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionId
+        );
+        if (targetSessionIndex !== -1) {
+          updated[targetSessionIndex] = { ...action.payload.response, isFetched: true };
+          state.cohorts[targetCohortIndex].sessions = updated;
+        }
+      }
+    },
 
     updateOnboardingStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
@@ -173,6 +189,16 @@ export function updateSessionFeedbackStatus(cohortID: string, sessionID: string)
   return async () => {
     try {
       dispatch(slice.actions.updateSessionFeedbackStatusSuccess({ cohortID, sessionID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateSessionData(sessionId: string, cohort_id: string, response: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.setSessionDataSuccess({ sessionId, cohort_id, response }));
     } catch (error) {
       console.log(error);
     }
