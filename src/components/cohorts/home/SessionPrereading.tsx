@@ -89,7 +89,7 @@ const SessionPrereading = ({
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
   return (
-    <SectionContainer className="card-2">
+    <SectionContainer className="card-2" data-testid="to-do-card">
       {sessions && cohort ? (
         <>
           {activeSession ? (
