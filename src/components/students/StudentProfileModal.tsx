@@ -1,12 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 // modal
 import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
+import axios from 'utils/axios';
 import { CohortContext } from 'contexts/CohortContext';
 import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
 import Label from '../Label';
+import { StudentProfile } from '../../@types/cohorts';
 
 type StudentProfileModalProps = {
   modalState: boolean;
@@ -84,9 +86,11 @@ export default function StudentProfileModal({
 }: StudentProfileModalProps) {
   const theme = useTheme();
   const { cohortName, cohortIntake } = useContext(CohortContext);
+  const [profile, setProfile] = useState<StudentProfile | any>({});
+
+  const { id } = modalUser;
 
   const {
-    id,
     first_name,
     last_name,
     current_company,
@@ -102,200 +106,219 @@ export default function StudentProfileModal({
     linkedin_url,
     discord_url,
     email
-  } = modalUser;
+  } = profile;
+
+  useEffect(() => {
+    const initMaterials = async () => {
+      if (id) {
+        try {
+          const response = await axios.get(`/cohorts/${id}/peer_data.json`);
+          setProfile(response.data);
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    initMaterials();
+  }, [id]);
   return (
     <Modal className="small" open={modalState} onClose={() => modalHandler({})} id="student-modal">
-      <StyledContainer>
-        <Title>
-          {first_name} {last_name}
-        </Title>
-        {preferred_pronoun && (
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/peers/ic_person.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Text data-testid="preferred-pronoun">{preferred_pronoun}</Text>
-          </StyledRow>
-        )}
-        {bio_text && (
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/peers/ic_clear_all.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Text data-testid="introduction">{bio_text}</Text>
-          </StyledRow>
-        )}
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/job.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text data-testid="company-name">
-            {current_position} @ <span className="company-name">{current_company?.name}</span>
-          </Text>
-        </StyledRow>
-        {current_industry_category_selections?.length > 0 && (
-          <>
+      {profile && (
+        <>
+          <StyledContainer>
+            <Title>
+              {first_name} {last_name}
+            </Title>
+            {preferred_pronoun && (
+              <StyledRow>
+                <img
+                  alt="sketch icon"
+                  src="/static/peers/ic_person.svg"
+                  width={20}
+                  height={20}
+                  style={{ marginRight: 15 }}
+                />
+                <Text data-testid="preferred-pronoun">{preferred_pronoun}</Text>
+              </StyledRow>
+            )}
+            {bio_text && (
+              <StyledRow>
+                <img
+                  alt="sketch icon"
+                  src="/static/peers/ic_clear_all.svg"
+                  width={20}
+                  height={20}
+                  style={{ marginRight: 15 }}
+                />
+                <Text data-testid="introduction">{bio_text}</Text>
+              </StyledRow>
+            )}
             <StyledRow>
               <img
                 alt="sketch icon"
-                src="/static/peers/industry.svg"
+                src="/static/peers/job.svg"
                 width={20}
                 height={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={{ marginRight: 10 }}>Industry</Text>
-              <ColoredContainer className="gaped">
-                {current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
-                    {capitalCase(industry)}
-                  </Label>
-                ))}
-              </ColoredContainer>
+              <Text data-testid="company-name">
+                {current_position} @ <span className="company-name">{current_company?.name}</span>
+              </Text>
             </StyledRow>
-            <ColoredContainerMobile className="gaped">
-              {current_industry_category_selections?.length > 0 &&
-                current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
-                    {capitalCase(industry)}
-                  </Label>
-                ))}
-            </ColoredContainerMobile>
-          </>
-        )}
-        {strengths?.length > 0 && (
-          <>
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/star.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Text style={{ marginRight: 10 }}>Strengths</Text>
-              <ColoredContainer className="gaped">
-                {strengths?.map((strength: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="success"
-                    testId={`strength-${index}`}
+            {current_industry_category_selections?.length > 0 && (
+              <>
+                <StyledRow>
+                  <img
+                    alt="sketch icon"
+                    src="/static/peers/industry.svg"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Text style={{ marginRight: 10 }}>Industry</Text>
+                  <ColoredContainer className="gaped">
+                    {current_industry_category_selections?.map((industry: any, index: number) => (
+                      <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                        {capitalCase(industry)}
+                      </Label>
+                    ))}
+                  </ColoredContainer>
+                </StyledRow>
+                <ColoredContainerMobile className="gaped">
+                  {current_industry_category_selections?.length > 0 &&
+                    current_industry_category_selections?.map((industry: any, index: number) => (
+                      <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                        {capitalCase(industry)}
+                      </Label>
+                    ))}
+                </ColoredContainerMobile>
+              </>
+            )}
+            {strengths?.length > 0 && (
+              <>
+                <StyledRow>
+                  <img
+                    alt="sketch icon"
+                    src="/static/peers/star.svg"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Text style={{ marginRight: 10 }}>Strengths</Text>
+                  <ColoredContainer className="gaped">
+                    {strengths?.map((strength: any, index: number) => (
+                      <Label
+                        key={index}
+                        variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                        color="success"
+                        testId={`strength-${index}`}
+                      >
+                        {capitalCase(strength)}
+                      </Label>
+                    ))}
+                  </ColoredContainer>
+                </StyledRow>
+                <ColoredContainerMobile className="gaped">
+                  {strengths?.length > 0 &&
+                    strengths?.map((strength: any, index: number) => (
+                      <Label
+                        key={index}
+                        variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                        color="success"
+                      >
+                        {capitalCase(strength)}
+                      </Label>
+                    ))}
+                </ColoredContainerMobile>
+              </>
+            )}
+            {phone && (
+              <StyledRow>
+                <img
+                  alt="sketch icon"
+                  src="/static/contact/smartphone.svg"
+                  width={20}
+                  height={20}
+                  style={{ marginRight: 15 }}
+                />
+                <Text>{phone}</Text>
+              </StyledRow>
+            )}
+          </StyledContainer>
+          {(linkedin_url || discord_url) && (
+            <StyledContainer>
+              <Title>Socials</Title>
+              {discord_url && !dispalyChatLink && (
+                <StyledRow>
+                  <img
+                    alt="sketch icon"
+                    src="/static/peers/discord.svg"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Link href={discord_url} target="_blank" data-testid="discord-url">
+                    <Text data-testid="discord-text">Message {first_name} on Discord</Text>
+                  </Link>
+                </StyledRow>
+              )}
+              {linkedin_url && (
+                <StyledRow>
+                  <img
+                    alt="sketch icon"
+                    src="/static/peers/linkedin.svg"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Link
+                    href={linkedin_url}
+                    onClick={() =>
+                      trackPeersPageEvent(
+                        cohortName,
+                        cohortIntake,
+                        PEERS_PAGE_EVENTS.member_details_modal,
+                        PEERS_PAGE_EVENTS.opened_linked_in
+                      )
+                    }
+                    target="_blank"
+                    data-testid="linkedin-url"
                   >
-                    {capitalCase(strength)}
-                  </Label>
-                ))}
-              </ColoredContainer>
-            </StyledRow>
-            <ColoredContainerMobile className="gaped">
-              {strengths?.length > 0 &&
-                strengths?.map((strength: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="success"
-                  >
-                    {capitalCase(strength)}
-                  </Label>
-                ))}
-            </ColoredContainerMobile>
-          </>
-        )}
-        {phone && (
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/contact/smartphone.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Text>{phone}</Text>
-          </StyledRow>
-        )}
-      </StyledContainer>
-      {(linkedin_url || discord_url) && (
-        <StyledContainer>
-          <Title>Socials</Title>
-          {discord_url && !dispalyChatLink && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/discord.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link href={discord_url} target="_blank" data-testid="discord-url">
-                <Text data-testid="discord-text">Message {first_name} on Discord</Text>
-              </Link>
-            </StyledRow>
-          )}
-          {linkedin_url && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/linkedin.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link
-                href={linkedin_url}
-                onClick={() =>
-                  trackPeersPageEvent(
-                    cohortName,
-                    cohortIntake,
-                    PEERS_PAGE_EVENTS.member_details_modal,
-                    PEERS_PAGE_EVENTS.opened_linked_in
-                  )
-                }
-                target="_blank"
-                data-testid="linkedin-url"
-              >
-                {' '}
-                <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
-              </Link>
-            </StyledRow>
-          )}
-          <StyledRow>
-            <img
-              alt="sketch icon"
-              src="/static/peers/mail.svg"
-              width={20}
-              height={20}
-              style={{ marginRight: 15 }}
-            />
-            <Text data-testid="user-email">{email}</Text>
-          </StyledRow>
+                    {' '}
+                    <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
+                  </Link>
+                </StyledRow>
+              )}
+              <StyledRow>
+                <img
+                  alt="sketch icon"
+                  src="/static/peers/mail.svg"
+                  width={20}
+                  height={20}
+                  style={{ marginRight: 15 }}
+                />
+                <Text data-testid="user-email">{email}</Text>
+              </StyledRow>
 
-          {dispalyChatLink && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/icons/navbar/ic_chat.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
-                {' '}
-                <Text>Message {first_name} through ScholarSite</Text>
-              </Link>
-            </StyledRow>
+              {dispalyChatLink && (
+                <StyledRow>
+                  <img
+                    alt="sketch icon"
+                    src="/static/icons/navbar/ic_chat.svg"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
+                    {' '}
+                    <Text>Message {first_name} through ScholarSite</Text>
+                  </Link>
+                </StyledRow>
+              )}
+            </StyledContainer>
           )}
-        </StyledContainer>
+        </>
       )}
     </Modal>
   );
