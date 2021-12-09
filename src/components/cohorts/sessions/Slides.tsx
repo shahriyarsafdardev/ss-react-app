@@ -264,7 +264,13 @@ export default function Slides({
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (pdfUrl) onTrack(SLIDE_EVENTS.opened);
+    if (pdfUrl) {
+      onTrack(SLIDE_EVENTS.opened);
+      setNumPages(null);
+      setPageNumber(1);
+      setViewType(VIEW_TYPES.STANDARD_VIEW);
+      setError(false);
+    }
   }, [pdfUrl]);
 
   const classes = useStyles();
