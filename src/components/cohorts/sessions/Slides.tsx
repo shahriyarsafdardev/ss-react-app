@@ -39,15 +39,40 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 const StyledPage = styled(Page)(({ theme }) => ({
-  '.react-pdf__Page__canvas': {
-    width: '100% !important',
-    height: 'auto !important'
+  '.react-pdf__Page__svg': { height: '380px !important' },
+  '.react-pdf__Page__svg > svg': { height: '380px !important' },
+  [theme.breakpoints.between(1300, 1400)]: {
+    '.react-pdf__Page__svg': { width: '550px !important' },
+    '.react-pdf__Page__svg > svg': { width: '550px !important' }
   },
-  [theme.breakpoints.between(1200, 1400)]: {
-    height: 'auto !important'
+  [theme.breakpoints.between(1200, 1300)]: {
+    '.react-pdf__Page__svg': { width: '500px !important' },
+    '.react-pdf__Page__svg > svg': { width: '500px !important' },
+    '.react-pdf__Page': { width: '500px !important' }
+  },
+  [theme.breakpoints.down(1200)]: {
+    '.react-pdf__Page__svg': { width: '100% !important' },
+    '.react-pdf__Page__svg > svg': { width: '100% !important' },
+    '.react-pdf__Page': { width: '100% !important' }
+  },
+  [theme.breakpoints.between(800, 900)]: {
+    '.react-pdf__Page__svg': { height: '100% !important' },
+    '.react-pdf__Page__svg > svg': { height: '100% !important' },
+    '.react-pdf__Page': { height: '100% !important' }
   },
   [theme.breakpoints.between(600, 700)]: {
-    height: 'auto !important'
+    '.react-pdf__Page__svg': { height: '300px !important' },
+    '.react-pdf__Page__svg > svg': { height: '300px !important' },
+    '.react-pdf__Page': { height: '300px !important' }
+  },
+  [theme.breakpoints.down(800)]: {
+    '.react-pdf__Page__svg': { height: '380px !important' },
+    '.react-pdf__Page__svg > svg': { height: '380px !important' }
+  },
+  [theme.breakpoints.down('sm')]: {
+    '.react-pdf__Page__svg': { height: '100% !important' },
+    '.react-pdf__Page__svg > svg': { height: '100% !important' },
+    '.react-pdf__Page': { height: '100% !important' }
   }
 }));
 
@@ -291,14 +316,14 @@ export default function Slides({
         ) : (
           <StyledPage
             renderMode="svg"
-            scale={0.6}
+            scale={0.7}
             pageNumber={pageNumber}
             renderAnnotationLayer={true}
           />
         )}
       </PdfDocument>
       {numPages !== null && (
-        <div>
+        <div style={{ marginTop: '20px' }}>
           <Navigation
             pdfUrl={pdfUrl}
             pdfDownloadable={pdfDownloadable}
