@@ -132,7 +132,7 @@ export default function Messaging() {
     }
   }, [isMobileNavVisible]);
 
-  if (!client) {
+  if (!client || !peers || !cohort) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -174,6 +174,7 @@ export default function Messaging() {
                   setIsCreating,
                   setIsEditing,
                   cohortID,
+                  peers,
                   cohortUsers: enrollments || []
                 }}
               />

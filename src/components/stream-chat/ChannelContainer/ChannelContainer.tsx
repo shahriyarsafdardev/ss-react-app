@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
-import axios from 'utils/axios';
 import './ChannelContainer.css';
 
 import { ChannelInner } from './ChannelInner';
@@ -12,6 +11,7 @@ import { TeamMessage } from '../TeamMessage/TeamMessage';
 import { TeamMessageInput } from '../TeamMessageInput/TeamMessageInput';
 
 import { CloseThreadIcon } from '../../../assets';
+import { StudentProfile } from '../../../@types/cohorts';
 
 import type {
   TeamAttachmentType,
@@ -29,6 +29,7 @@ type Props = {
   isEditing?: boolean;
   cohortID: string;
   cohortUsers: any;
+  peers: StudentProfile[];
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -58,8 +59,16 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
 };
 
 export const ChannelContainer: React.FC<Props> = (props) => {
-  const { createType, isCreating, isEditing, setIsCreating, setIsEditing, cohortID, cohortUsers } =
-    props;
+  const {
+    createType,
+    isCreating,
+    isEditing,
+    setIsCreating,
+    setIsEditing,
+    cohortID,
+    cohortUsers,
+    peers
+  } = props;
 
   const { channel } = useChatContext<
     TeamAttachmentType,
@@ -70,7 +79,6 @@ export const ChannelContainer: React.FC<Props> = (props) => {
     TeamReactionType,
     TeamUserType
   >();
-
   const [pinsOpen, setPinsOpen] = useState(false);
   const [navigate, setNavigate] = useState<boolean>(false);
   const [path, setPath] = useState<string>('');
@@ -124,7 +132,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
         EmptyStateIndicator={ChannelEmptyState}
         HeaderComponent={ChannelEmptyState}
         Input={TeamMessageInput}
-        Message={(messageProps) => <TeamMessage {...messageProps} {...{ setPinsOpen }} />}
+        Message={(messageProps) => <TeamMessage {...messageProps} {...{ setPinsOpen, peers }} />}
         ThreadHeader={(threadProps) => <ThreadHeader {...threadProps} {...{ setPinsOpen }} />}
         TypingIndicator={() => null}
       >

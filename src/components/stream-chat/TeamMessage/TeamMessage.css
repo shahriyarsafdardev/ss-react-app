@@ -1,3 +1,69 @@
+.str-chat__avatar-tooltip {
+  display: flex;
+  position: absolute;
+  z-index: 5;
+  border: 1px solid #dbd6d6;
+  background-color: #fdfdfd;
+  border-radius: 15px;
+  font-size: small;
+  margin-left: 100px;
+  margin-bottom: 5px;
+}
+.str-chat__avatar-tooltip-info {
+  padding: 10px;
+  max-width: 230px;
+  text-transform: capitalize;
+  display: flex;
+  flex-direction: column;
+}
+
+.str-chat__avatar-tooltip-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+}
+
+.str-chat__avatar-tooltip-image img {
+  border-radius: 15px;
+  width: 100%;
+}
+.str-chat__avatar-tooltip-info-name {
+  color: #5858d0;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.str-chat__avatar-tooltip-info-company {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  margin-bottom: 0.6rem;
+  color: #071a33;
+}
+
+.str-chat__avatar-tooltip-info-speciality {
+  font-size: 11px;
+  line-height: 16px;
+  margin-bottom: 0.6rem;
+  letter-spacing: 1px;
+  color: #071a33;
+}
+
+.str-chat__avatar-tooltip-info-button {
+  width: 100%;
+  margin-bottom: 0;
+  margin-top: auto;
+  padding: 10px;
+  background-color: #4d4dcd;
+  color: white;
+}
+
+.str-chat__avatar-tooltip-info-button:hover {
+  background-color: #4d4dcd;
+  opacity: 0.9;
+}
 .str-chat__message-team:hover {
   background: #e9e9ea;
 }
