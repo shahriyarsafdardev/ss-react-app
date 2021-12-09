@@ -5,7 +5,9 @@
       "id": "d1aa12c2-7658-4490-8fab-ec2b5187fe13",
       "name": "Network Effects and Economies of Scale",
       "description": "\u003cul\u003e\u003cli\u003eGain economic frameworks to understand and manage network businesses\u003c/li\u003e\u003cli\u003eUnderstand cost/benefit aspects of platform-based network businesses\u003c/li\u003e\u003cli\u003eIdentify strategic considerations for two-sided and multi-sided platform businesses\u003c/li\u003e\u003c/ul\u003e",
-      "recording_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4",
+      "recording_urls": [
+        "https://scholarsite-public.s3.eu-west-2.amazonaws.com/EODP_Session_1.mp4"
+      ],
       "recording_thumbnail_url": "",
       "time": "2022-09-27T13:00:00.000Z",
       "times": ["2022-09-27T13:00:00.000Z", "2022-09-27T16:00:00.000Z"],
@@ -17,6 +19,9 @@
       "presentation_pdf_url": "https://scholarsite-development.s3.eu-west-2.amazonaws.com/b76175e56e97c7d132b4a92672675d61.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=AKIA32SPNRMKDMICUAPB%2F20211201%2Feu-west-2%2Fs3%2Faws4_request\u0026X-Amz-Date=20211201T223230Z\u0026X-Amz-Expires=604800\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=c2163da881e228eadd39d00a610fda8224a8de970606699b8f704b23d4631778",
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
+      "custom_name": "Custom 1",
+      "summary_notes_included": true,
+      "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
     },
@@ -24,7 +29,7 @@
       "id": "85e935e9-2365-48f3-8109-946607c32be0",
       "name": "Designing Digital Platforms",
       "description": "\u003cul\u003e\u003cli\u003eIdentify the building blocks of designing platform marketplaces\u003c/li\u003e\u003cli\u003eGrasp frameworks for pricing strategies and the workings of online auctions\u003c/li\u003e\u003cli\u003eUnderstand the role of big data as a strategic asset in platform marketplaces\u003c/li\u003e\u003c/ul\u003e",
-      "recording_url": "",
+      "recording_urls": [],
       "recording_thumbnail_url": "",
       "time": "2022-09-30T03:00:00.000Z",
       "times": ["2022-10-27T13:00:00.000Z", "2022-11-27T16:00:00.000Z"],
@@ -34,6 +39,9 @@
       "zoom_url": "",
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
+      "custom_name": "Custom 1",
+      "summary_notes_included": true,
+      "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
     },
@@ -41,7 +49,7 @@
       "id": "281935e9-2365-48f3-8109-94660745nb34",
       "name": "Designing Digital Platforms",
       "description": "\u003cul\u003e\u003cli\u003eIdentify the building blocks of designing platform marketplaces\u003c/li\u003e\u003cli\u003eGrasp frameworks for pricing strategies and the workings of online auctions\u003c/li\u003e\u003cli\u003eUnderstand the role of big data as a strategic asset in platform marketplaces\u003c/li\u003e\u003c/ul\u003e",
-      "recording_url": "",
+      "recording_urls": [],
       "recording_thumbnail_url": "",
       "time": "2022-09-30T03:00:00.000Z",
       "times": ["2022-12-27T13:00:00.000Z"],
@@ -51,6 +59,9 @@
       "zoom_url": "",
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
+      "custom_name": "Custom 1",
+      "summary_notes_included": true,
+      "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
     }

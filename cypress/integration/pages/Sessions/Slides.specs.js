@@ -2,6 +2,8 @@ describe('Sessions > Slides', () => {
   before(() => {
     cy.server();
     cy.login();
+    cy.get('#sessions-1').click({ multiple: true, force: true });
+
   });
 
   context('When the session slides are not uploaded', () => {

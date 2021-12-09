@@ -2,6 +2,8 @@ describe('Sessions > Resources', () => {
   before(() => {
     cy.server();
     cy.login();
+    cy.get('#sessions-1').click({ multiple: true, force: true });
+
   });
 
   context('When session resources are not uploaded', () => {
