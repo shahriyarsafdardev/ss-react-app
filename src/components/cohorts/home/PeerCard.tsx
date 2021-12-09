@@ -166,7 +166,7 @@ export default function PeerCard({
   }, [item]);
 
   return (
-    <StyledBox>
+    <StyledBox data-testid="peer-card">
       <StyledProfileContainer>
         <StyledImageContainer>
           <StyledProfile src={item.profile_image_url} alt={item.first_name} />
@@ -239,6 +239,7 @@ export default function PeerCard({
       )}
       <ActionButtons>
         <Button
+          data-testid="view-profile"
           variant="outlined"
           component={RouterLink}
           to={`/cohorts/${cohortID}/peers?user_id=${item.id}`}
@@ -247,6 +248,7 @@ export default function PeerCard({
           View Profile
         </Button>
         <Button
+          data-testid="start-chat"
           variant="contained"
           component={RouterLink}
           to={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${item.id}`}

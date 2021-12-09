@@ -86,12 +86,16 @@ const NetworkSuggestion = ({
 
   return (
     <SectionContainer
+      data-testid="network-suggestion-card"
       className="card-3"
       sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
     >
       {random_peers ? (
         <>
-          <Box style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <Box
+            data-testid="greeting-text"
+            style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
+          >
             <Box>
               <p style={{ fontSize: '18px' }}>
                 👋 Say hi to some of your{' '}
@@ -105,6 +109,7 @@ const NetworkSuggestion = ({
           <StyledBoxContainer>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <img
+              data-testid="left-arrow-icon"
               src="/static/cohorts-home/left-arrow.svg"
               onClick={handlePrevious}
               onKeyDown={handlePrevious}
@@ -127,6 +132,7 @@ const NetworkSuggestion = ({
             </Card>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <img
+              data-testid="right-arrow-icon"
               src="/static/cohorts-home/right-arrow.svg"
               onClick={handleNext}
               onKeyDown={handleNext}
@@ -136,6 +142,7 @@ const NetworkSuggestion = ({
           </StyledBoxContainer>
           <Divider variant="middle" sx={{ marginTop: '15px' }} />
           <Button
+            data-testid="sell-all-peers"
             to={`/cohorts/${cohort?.id}/peers`}
             component={RouterLink}
             sx={{ marginTop: '15px' }}

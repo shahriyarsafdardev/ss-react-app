@@ -6,6 +6,7 @@ import MarkCheckbox from './MarkCheckbox';
 
 type PreReadingRowProps = {
   item: SessionMaterial;
+  number: Number;
   checkboxHanlder: Function;
   onPreReadingClick: Function;
 };
@@ -63,21 +64,27 @@ const StyledBox = styled(Box)(({ theme }) => ({
 export default function PreReadingRow({
   item,
   checkboxHanlder,
-  onPreReadingClick
+  onPreReadingClick,
+  number
 }: PreReadingRowProps) {
   return (
     <StyledBox className="main">
       <StyledBox className="inner">
-        <p>{item.name}</p>
+        <p data-testid={`prereading-name-${number}`}>{item.name}</p>
         <StyledBox className="secondary">
           <span>{item.info_text}</span>
-          <StyledLink href={item.action_url} target="_blank" onClick={() => onPreReadingClick()}>
+          <StyledLink
+            data-testid={`prereading-link-${number}`}
+            href={item.action_url}
+            target="_blank"
+            onClick={() => onPreReadingClick()}
+          >
             {item.action_text}
           </StyledLink>
         </StyledBox>
       </StyledBox>
       <StyledBox className="check-box">
-        <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} />
+        <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} number={number} />
       </StyledBox>
     </StyledBox>
   );
