@@ -99,7 +99,10 @@ function QnATab() {
     const initMaterials = async () => {
       try {
         await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
-          // setList(list.filter((question) => question.id !== res.data.question_id));
+          const index = list.findIndex((question) => question.id === questionID);
+          const updatedList: Question[] = [...list];
+          updatedList[index].skipped = true;
+          setList(updatedList);
           enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
         });
       } catch (error) {
@@ -179,6 +182,7 @@ function QnATab() {
                 questions={list}
                 removeComment={removeComment}
                 onDeleteClick={handleDelete}
+                onSkipClick={handleSkipQuestion}
               />
             )}
           </StyledBox>

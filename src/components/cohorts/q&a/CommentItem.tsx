@@ -22,6 +22,7 @@ interface CommentItemProps extends ListItemProps {
   image: string;
   admin: boolean;
   removeComment: Function;
+  skipQuestion: Function;
 }
 
 const StyledPreview = styled('img')(({ theme }) => ({
@@ -53,7 +54,8 @@ export default function CommentItem({
   image,
   postedAt,
   admin,
-  removeComment
+  removeComment,
+  skipQuestion
 }: CommentItemProps) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
@@ -116,7 +118,12 @@ export default function CommentItem({
                   {fDate(postedAt)}
                 </Typography>
               </Stack>
-              {admin && <DeleteOption handleDelete={() => handleDelete()} />}
+              {admin && (
+                <DeleteOption
+                  handleDelete={() => handleDelete()}
+                  handleSkipQuestion={skipQuestion}
+                />
+              )}
             </Stack>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {message}

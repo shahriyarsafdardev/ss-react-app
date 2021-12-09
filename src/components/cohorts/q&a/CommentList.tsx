@@ -10,9 +10,10 @@ import CommentItem from './CommentItem';
 type CommentListProps = {
   post: Question;
   removeComment: Function;
+  skipQuestion: Function;
 };
 
-export default function CommentList({ post, removeComment }: CommentListProps) {
+export default function CommentList({ post, removeComment, skipQuestion }: CommentListProps) {
   const { comments } = post;
   const { user } = useAuth();
   return (
@@ -28,6 +29,7 @@ export default function CommentList({ post, removeComment }: CommentListProps) {
           image={comment.image}
           removeComment={removeComment}
           admin={comment.user_id === user?.id || user?.type === 'admin'}
+          skipQuestion={skipQuestion}
         />
       ))}
     </Stack>

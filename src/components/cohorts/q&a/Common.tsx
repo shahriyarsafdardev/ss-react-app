@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import cancel from '@iconify/icons-ic/cancel';
+import CheckCircle from '@iconify/icons-ic/check-circle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // material
@@ -40,7 +41,13 @@ export const CircularLoader = () => (
   </StyledCircularLoader>
 );
 
-export const DeleteOption = ({ handleDelete }: { handleDelete: Function }) => {
+export const DeleteOption = ({
+  handleDelete,
+  handleSkipQuestion
+}: {
+  handleDelete: Function;
+  handleSkipQuestion: Function;
+}) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -82,6 +89,22 @@ export const DeleteOption = ({ handleDelete }: { handleDelete: Function }) => {
             }}
           />
           Delete
+        </MenuItem>
+        <MenuItem
+          id="comment-settings"
+          onClick={() => handleSkipQuestion()}
+          sx={{ typography: 'body2', py: 1, px: 2.5 }}
+        >
+          <Box
+            component={Icon}
+            icon={CheckCircle}
+            sx={{
+              mr: 2,
+              width: 24,
+              height: 24
+            }}
+          />
+          Mark as answered
         </MenuItem>
       </MenuPopover>
     </Box>

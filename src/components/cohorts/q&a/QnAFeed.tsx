@@ -18,12 +18,14 @@ const QnAFeed = ({
   questions,
   addComment,
   onDeleteClick,
-  removeComment
+  removeComment,
+  onSkipClick
 }: {
   questions: Question[];
   addComment: Function;
   onDeleteClick: Function;
   removeComment: Function;
+  onSkipClick: Function;
 }) => {
   const { user } = useAuth();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
@@ -40,6 +42,7 @@ const QnAFeed = ({
             onDeleteClick={onDeleteClick}
             removeComment={(comment_id: string) => removeComment(question.id, comment_id)}
             onTrack={(action: string) => sendAnalyticsData('Questions Feed', action)}
+            handleSkip={onSkipClick}
           />
         ))}
     </StyledFeedContainer>

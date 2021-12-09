@@ -38,7 +38,8 @@ export default function QuestionRow({
   onDeleteClick,
   canDelete,
   removeComment,
-  onTrack
+  onTrack,
+  handleSkip
 }: {
   question: Question;
   addComment: Function;
@@ -46,6 +47,7 @@ export default function QuestionRow({
   canDelete: Boolean;
   removeComment: Function;
   onTrack: Function;
+  handleSkip: Function;
 }) {
   const [isHiddenView, setView] = useState(question.answered);
   const dispatch = useDispatch();
@@ -154,7 +156,12 @@ export default function QuestionRow({
               )}
             </Typography>
           </Stack>
-          {canDelete && <DeleteOption handleDelete={() => onDeleteClick(question.id)} />}
+          {canDelete && (
+            <DeleteOption
+              handleDelete={() => onDeleteClick(question.id)}
+              handleSkipQuestion={() => handleSkip(question.id)}
+            />
+          )}
         </Box>
       </VisibilitySensor>
       {!isHiddenView && (
@@ -188,7 +195,7 @@ export default function QuestionRow({
   const renderComments = () =>
     question.comments.length > 0 && (
       <div>
-        <CommentList removeComment={removeComment} post={question} />
+        <CommentList removeComment={removeComment} post={question} skipQuestion={handleSkip} />
       </div>
     );
 
