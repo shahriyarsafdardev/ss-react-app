@@ -95,6 +95,7 @@ const SessionPrereading = ({
           {activeSession ? (
             <>
               <Box
+                data-testid="to-do-header"
                 style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
               >
                 {preReadingsCompleted() ? (
@@ -161,6 +162,7 @@ const SessionPrereading = ({
                 {list.map((preReading, index) => (
                   <PreReadingRow
                     key={index}
+                    number={index}
                     item={preReading}
                     onPreReadingClick={() =>
                       sendAnalyticsData(
