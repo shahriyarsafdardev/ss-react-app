@@ -19,19 +19,29 @@ describe('Sessions > List', () => {
     cy.login();
   });
 
-  it('Displays the correct number of sessions', () => {});
-  it('Displays correct title of each session', () => {});
-  it('Displays correct number of each session', () => {});
-
-  context('Before the session starts', () => {
-    before(() => {
-      cy.setClockToBeforeSession(sessionFixture.sessions[0].time, 12);
-      cy.get('#session-list-1').click({ force: true });
-    });
-    it('Shows the correct time and message', () => {});
+  it('Displays a row for each session', () => {
+    // assert test it for all row are present
   });
 
-  context('After the session finishes', () => {
-    it('Shows the correct time and message', () => {});
+  describe('Sessions > List', () => {
+    it('Displays the session details', () => {
+      // Assert title, number and length
+    });
+
+    context('Before the session starts', () => {
+      before(() => {
+        cy.setClockToBeforeSession(sessionFixture.sessions[0].time, 12);
+        cy.get('#session-list-1').click({ force: true });
+      });
+      it('Displays an `upcoming` message', () => {});
+    });
+
+    context('During the session', () => {
+      it('Displays a `recorded` message', () => {});
+    });
+
+    context('After the session finishes', () => {
+      it('Displays a `recorded` message', () => {});
+    });
   });
 });
