@@ -39,8 +39,8 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 const StyledPage = styled(Page)(({ theme }) => ({
-  '.react-pdf__Page__svg': { height: '380px !important' },
-  '.react-pdf__Page__svg > svg': { height: '380px !important' },
+  '.react-pdf__Page__svg': { height: '375px !important', width: '100% !important' },
+  '.react-pdf__Page__svg > svg': { height: '375px !important', width: '100% !important' },
   [theme.breakpoints.between(1300, 1400)]: {
     '.react-pdf__Page__svg': { width: '550px !important' },
     '.react-pdf__Page__svg > svg': { width: '550px !important' }
@@ -52,18 +52,12 @@ const StyledPage = styled(Page)(({ theme }) => ({
   },
   [theme.breakpoints.down(1200)]: {
     '.react-pdf__Page__svg': { width: '100% !important' },
-    '.react-pdf__Page__svg > svg': { width: '100% !important' },
-    '.react-pdf__Page': { width: '100% !important' }
+    '.react-pdf__Page__svg > svg': { width: '100% !important' }
   },
   [theme.breakpoints.between(800, 900)]: {
     '.react-pdf__Page__svg': { height: '100% !important' },
     '.react-pdf__Page__svg > svg': { height: '100% !important' },
     '.react-pdf__Page': { height: '100% !important' }
-  },
-  [theme.breakpoints.between(600, 700)]: {
-    '.react-pdf__Page__svg': { height: '300px !important' },
-    '.react-pdf__Page__svg > svg': { height: '300px !important' },
-    '.react-pdf__Page': { height: '300px !important' }
   },
   [theme.breakpoints.down(800)]: {
     '.react-pdf__Page__svg': { height: '380px !important' },
@@ -77,11 +71,12 @@ const StyledPage = styled(Page)(({ theme }) => ({
 }));
 
 const PdfDocument = styled(Document)(({ theme }) => ({
-  // height: '700px',
+  position: 'relative',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   margin: '0.75rem 0rem',
+  '.react-pdf__Page': { position: 'absolute !important', top: 0, left: 0, right: 0 },
   [theme.breakpoints.down('sm')]: {
     height: 'auto'
   },
@@ -95,14 +90,17 @@ const PdfDocument = styled(Document)(({ theme }) => ({
     height: 'auto',
     minHeight: '280px !important'
   },
-  [theme.breakpoints.between(701, 900)]: {
+  [theme.breakpoints.between(601, 900)]: {
     height: 'auto !important',
     minHeight: '400px !important'
   },
-
-  [theme.breakpoints.between(401, 700)]: {
+  [theme.breakpoints.between(401, 500)]: {
     height: 'auto !important',
-    minHeight: '320px !important'
+    minHeight: '250px !important'
+  },
+  [theme.breakpoints.between(500, 600)]: {
+    height: 'auto !important',
+    minHeight: '325px !important'
   },
   [theme.breakpoints.between(300, 400)]: {
     height: 'auto !important',
