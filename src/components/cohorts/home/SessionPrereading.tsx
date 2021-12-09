@@ -101,9 +101,9 @@ const SessionPrereading = ({
                   <>
                     <Box>
                       <p style={{ fontSize: '18px' }}>
-                        🎉 You’re all ready to go for{' '}
+                        🎉 You’re all ready to go for{activeSession.custom_name ? ' our ' : ' '}
                         <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          Session {activeSession?.number}
+                          {activeSession.custom_name || `Session ${activeSession?.number}`}
                         </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
@@ -122,9 +122,9 @@ const SessionPrereading = ({
                   <>
                     <Box>
                       <p style={{ fontSize: '18px' }}>
-                        Get Ready for{' '}
+                        Get Ready for{activeSession.custom_name ? ' our ' : ' '}
                         <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          Session {activeSession?.number}
+                          {activeSession.custom_name || `Session ${activeSession?.number}`}
                         </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>
