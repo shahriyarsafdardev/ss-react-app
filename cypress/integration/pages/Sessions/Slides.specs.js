@@ -1,9 +1,10 @@
+import sessionFixture from '../../../fixtures/session/sessions.json';
 describe('Sessions > Slides', () => {
   before(() => {
     cy.server();
     cy.login();
     cy.get('#sessions-1').click({ multiple: true, force: true });
-
+    cy.get('[data-testid=session-slides]').click({ force: true })
   });
 
   context('When the session slides are not uploaded', () => {

@@ -45,15 +45,15 @@ Cypress.Commands.add('setClockToAfterSession', (times) => {
 Cypress.Commands.add('connectorLineBetweenTwoSessions', () => {
   return cy.get('[data-testid=cohort-timeline-connector]').children();
 });
-Cypress.Commands.add('circleIndicatingSession', (sessionNumber) => {
-  cy.get(`[data-testid=timeline-step-icon-${sessionNumber + 1}]`);
-});
-Cypress.Commands.add('circleIndicatingIncompleteSession', (sessionNumber) => {
-  cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-circle');
-});
-Cypress.Commands.add('circleIndicatingCompleteSession', (sessionNumber) => {
-  cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-completedIcon');
-});
+// Cypress.Commands.add('circleIndicatingSession', (sessionNumber) => {
+//   cy.get(`[data-testid=timeline-step-icon-${sessionNumber + 1}]`);
+// });
+// Cypress.Commands.add('circleIndicatingIncompleteSession', (sessionNumber) => {
+//   cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-circle');
+// });
+// Cypress.Commands.add('circleIndicatingCompleteSession', (sessionNumber) => {
+//   cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-completedIcon');
+// });
 Cypress.Commands.add('timeBelowIncompleteSession', (sessionNumber) => {
   cy.get(`[data-testid=session-time-${sessionNumber + 1}]`);
 });
@@ -118,9 +118,9 @@ describe('Home > Timeline', () => {
         .should('have.css', 'background-color')
         .and('eq', 'rgb(234, 234, 240)');
     });
-    it('Displays a empty circle on a session', () => {
-      cy.circleIndicatingIncompleteSession(sessionNumber).should('be.visible');
-    });
+    // it('Displays a empty circle on a session', () => {
+    //   cy.circleIndicatingIncompleteSession(sessionNumber).should('be.visible');
+    // });
     it('Displays time under the session', () => {
       cy.timeBelowIncompleteSession(sessionNumber).should('be.visible') &&
         cy.dateBelowIncompleteSession(sessionNumber).should('be.visible');
@@ -181,9 +181,9 @@ describe('Home > Timeline', () => {
     before(() => {
       cy.setClockToAfterSession(getTimes(completedSessionNumber));
     });
-    it('Displays a filled circle on a session', () => {
-      cy.circleIndicatingCompleteSession(completedSessionNumber).should('be.visible');
-    });
+    // it('Displays a filled circle on a session', () => {
+    //   cy.circleIndicatingCompleteSession(completedSessionNumber).should('be.visible');
+    // });
   });
   context('When all sessions are completed', () => {
     before(() => {
