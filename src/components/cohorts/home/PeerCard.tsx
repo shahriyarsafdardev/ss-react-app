@@ -182,12 +182,18 @@ export default function PeerCard({
               style={{ cursor: 'pointer' }}
             />
             <StyledNameContainer>
-              <Typography sx={{ fontSize: '20px', fontWeight: 700 }}>
+              <Typography data-testid="peer-name" sx={{ fontSize: '20px', fontWeight: 700 }}>
                 {item.first_name} {item.last_name}
               </Typography>
-              <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}>
+              <Typography
+                data-testid="peer-position"
+                sx={{ fontSize: '12px', fontWeight: 400, color: '#637381' }}
+              >
                 {item.current_position} @{' '}
-                <span style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}>
+                <span
+                  data-testid="peer-company"
+                  style={{ color: 'rgba(99, 115, 129, 1)', fontWeight: 'bold' }}
+                >
                   {' '}
                   {item.current_company.name}{' '}
                 </span>
