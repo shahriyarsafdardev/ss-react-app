@@ -1,5 +1,5 @@
 import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
-
+import peer from '../../../fixtures/peer/peers.json'
 Cypress.Commands.add('getNetworkSuggestionCard', () => {
   return cy.get('[data-testid=network-suggestion-card]')
 });
@@ -9,7 +9,7 @@ Cypress.Commands.add('getGreetingText', () => {
 });
 
 Cypress.Commands.add('getPeerCard', () => {
-  return cy.get('[data-testid=peer-card]')
+  return cy.get(`[data-testid=peer-card]`)
 });
 
 Cypress.Commands.add('leftArrowIcon', () => {
@@ -56,6 +56,12 @@ describe('Home > Networking', () => {
   it('Displays a peer card', () => {
     cy.getPeerCard()
     .should('be.visible')
+    cy.get('[data-testid=peer-name]')
+    .should('contain', peer.peers[0].first_name+" "+peer.peers[0].last_name)
+    cy.get('[data-testid=peer-position]')
+    .should('contain', peer.peers[0].current_position+" @")
+    cy.get('[data-testid=peer-company]')
+    .should('contain', peer.peers[0].current_company.name)
   });
 
   it('Displays a left arrow icon', () => {
@@ -79,7 +85,7 @@ describe('Home > Networking', () => {
     .should('be.visible')
     .click()
   });
-  
+
   it('Displays a view profile button on peer card', () => {
     cy.viewProfile()
     .should('be.visible')

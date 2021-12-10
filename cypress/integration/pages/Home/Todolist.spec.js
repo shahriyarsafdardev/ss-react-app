@@ -2,7 +2,8 @@ import sessionFixture from '../../../fixtures/session/sessions.json';
 import userFixture from '../../../fixtures/login/login.json';
 import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
 import sessionMaterials from '../../../fixtures/session/session_materials.json';
-import submitChecklist from '../../../fixtures/session/submit_checklist.json';
+import submit_checklist_true from '../../../fixtures/session/submit_checklist_true.json';
+import submit_checklist_false from '../../../fixtures/session/submit_checklist_false.json'
 import moment from 'moment';
 const serverUrl = Cypress.env('serverUrl');
 
@@ -68,6 +69,26 @@ Cypress.Commands.add('getSummaryNotes', () => {
   return cy.get('[data-testid=summary-notes]')
 });
 
+Cypress.Commands.add('markedCheck', () => {
+  cy.fixture('../fixtures/session/session_materials.json').as('sessionMaterial');
+  cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
+  .as('checklist');
+  cy.unCheckedBox().click()
+  cy.get('@checklist').then((xhr) => {
+    expect(xhr.request.body.complete).to.eq(submit_checklist_true.complete);
+  })
+});
+
+Cypress.Commands.add('markedUncheck', () => {
+  cy.fixture('../fixtures/session/session_materials.json').as('sessionMaterial');
+  cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
+  .as('checklist');
+  cy.unCheckedBox().click()
+  cy.get('@checklist').then((xhr) => {
+    expect(xhr.request.body.complete).to.eq(submit_checklist_false.complete);
+  })
+});
+
 describe('Home > To do', () => {
   beforeEach(() => {
     cy.server();
@@ -114,37 +135,28 @@ describe('Home > To do', () => {
         should('not.have.attr', 'checked')
       });
 
-
-    /*it('Allows a user to mark and unmark materials as complete', () => {
+      it('Allows a user to mark and unmark materials as complete', () => {
       // click and item
-      cy.intercept
-      ('POST',
-      `${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json`,
-      (req) => {
-        req.reply({
-          statusCode: 200, // default
-          fixture: 'session/submit_checklist.json'
-        })
-      }).as('checklist');
-      cy.unCheckedBox().click()
-      cy.get('@checklist').then((response) => {
-        expect(response.statusCode).to.equal(200)
-      })*/
+        cy.markedCheck()
       // assert that progress bar has changed
       // assert that backend call was made
       // uncheck an item
+        cy.markedUncheck()
       // assert that progress bar has changed
       // assert that backend call was made
-    });
-      /*context('When all the pre-reading materials are completed', () => {
+      });
+
+      context('When all the pre-reading materials are completed', () => {
         it('Displays a text all ready for session', () => {
-          cy.unCheckedBox().click()
+          cy.markedCheck()
+          cy.getHeaderText()
+          .should('contain','🎉 You’re all ready to go for Session '+ sessionFixture.sessions[0].number)
         });
       });
-    });*/
+    });
   });
 
-  context('When current time is less than one hour before any session', () => {
+  /*context('When current time is less than one hour before any session', () => {
     beforeEach(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
     });
@@ -165,7 +177,7 @@ describe('Home > To do', () => {
       cy.joinZoom()
       .should("have.attr", "href", sessionFixture.sessions[0].zoom_url);
     });
-  });
+  });*/
 
   context('When there are no more upcoming sessions', () => {
     before(() => {
