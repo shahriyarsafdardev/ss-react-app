@@ -81,15 +81,17 @@ const StyledBox = styled(Box)(() => ({
   }
 }));
 
-function QontoStepIcon(props: StepIconProps) {
-  const { active, completed, className } = props;
+export type ExtraStepIconProps = Omit<StepIconProps, 'testid'> & { testid: string };
 
+function QontoStepIcon(props: ExtraStepIconProps) {
+  const { active, completed, className, testid } = props;
+  console.log(testid);
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
       {completed ? (
-        <Circle className="QontoStepIcon-completedIcon" />
+        <Circle className="QontoStepIcon-completedIcon" data-testid={testid} />
       ) : (
-        <CircleOutlinedIcon className="QontoStepIcon-circle" />
+        <CircleOutlinedIcon className="QontoStepIcon-circle" data-testid={testid} />
       )}
     </QontoStepIconRoot>
   );
@@ -203,14 +205,22 @@ export default function DesktopStepper({
           style={{ marginTop: '10px' }}
         >
           <Step key={99} sx={{ minWidth: '180px' }}>
-            <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} />}>
+            <StepLabel
+              StepIconComponent={(props) => (
+                <QontoStepIcon {...props} testid="timeline-welcome-step-icon" />
+              )}
+            >
               <StyledSession data-testid="timeline-welcome">Welcome</StyledSession>
             </StepLabel>
           </Step>
           {sessions &&
             sessions?.map((session) => (
               <Step key={session.number} sx={{ minWidth: '180px' }}>
-                <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} />}>
+                <StepLabel
+                  StepIconComponent={(props) => (
+                    <QontoStepIcon {...props} testid={`timeline-step-icon-${session?.number}`} />
+                  )}
+                >
                   <div>
                     <StyledSession
                       data-testid={`session-name-${session?.number}`}
