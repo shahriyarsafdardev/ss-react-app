@@ -212,15 +212,10 @@ export default function DesktopStepper({
               <Step key={session.number} sx={{ minWidth: '180px' }}>
                 <StepLabel StepIconComponent={(props) => <QontoStepIcon {...props} />}>
                   <div>
-                    <StyledSession
-                      data-testid={`session-name-${session?.number}`}
-                    >{`Session ${session.number}`}</StyledSession>
-                    <StyledDate
-                      className="session-time"
-                      data-testid={`session-time-${session?.number}`}
-                    >
-                      {formatMultipleTimes(session.times, session.length)}
-                    </StyledDate>
+                    <StyledSession>
+                      {session.custom_name ? session.custom_name : `Session ${session.number}`}
+                    </StyledSession>
+                    <StyledDate>{formatMultipleTimes(session.times, session.length)}</StyledDate>
                     {displayMultipleDates(session.times) ? (
                       <StyledDate
                         className="session-date"
