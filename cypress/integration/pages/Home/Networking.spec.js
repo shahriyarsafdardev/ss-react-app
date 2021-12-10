@@ -13,11 +13,11 @@ Cypress.Commands.add('getPeerCard', () => {
 });
 
 Cypress.Commands.add('leftArrowIcon', () => {
-  return cy.get('[data-testid=left-arrow-icon]')
+  return cy.get('[data-testid=left-arrow-icon-network]')
 });
 
 Cypress.Commands.add('rightArrowIcon', () => {
-  return cy.get('[data-testid=right-arrow-icon]')
+  return cy.get('[data-testid=right-arrow-icon-network]')
 });
 
 Cypress.Commands.add('seeAllPeers', () => {

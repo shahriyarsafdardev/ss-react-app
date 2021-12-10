@@ -156,8 +156,8 @@ describe('Home > To do', () => {
     });
   });
 
-  /*context('When current time is less than one hour before any session', () => {
-    beforeEach(() => {
+  context('When current time is less than one hour before any session', () => {
+    before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
     });
 
@@ -177,11 +177,11 @@ describe('Home > To do', () => {
       cy.joinZoom()
       .should("have.attr", "href", sessionFixture.sessions[0].zoom_url);
     });
-  });*/
+  });
 
   context('When there are no more upcoming sessions', () => {
     before(() => {
-      cy.setClockToAfterSession(sessionFixture.sessions[1].time,2)
+      cy.setClockToAfterSession(sessionFixture.sessions[2].times[0],3)
     });
 
     it('Displays a Summary notes',()=>{

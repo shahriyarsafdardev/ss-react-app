@@ -109,7 +109,7 @@ const NetworkSuggestion = ({
           <StyledBoxContainer>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <img
-              data-testid="left-arrow-icon"
+              data-testid="left-arrow-icon-network"
               src="/static/cohorts-home/left-arrow.svg"
               onClick={handlePrevious}
               onKeyDown={handlePrevious}
@@ -132,7 +132,7 @@ const NetworkSuggestion = ({
             </Card>
             {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <img
-              data-testid="right-arrow-icon"
+              data-testid="right-arrow-icon-network"
               src="/static/cohorts-home/right-arrow.svg"
               onClick={handleNext}
               onKeyDown={handleNext}
