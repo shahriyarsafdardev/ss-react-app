@@ -58,9 +58,9 @@ const UserItem: React.FC<ItemProps> = (props) => {
 
   return (
     <div className="user-item__wrapper">
-      {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${user.id}`} />}
+      {member && navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${user.id}`} />}
       <div
-        className="user-item__name-wrapper"
+        className={member ? 'user-item__name-wrapper' : 'user-item__name-container'}
         role="button"
         onKeyPress={() => {}}
         tabIndex={0}
