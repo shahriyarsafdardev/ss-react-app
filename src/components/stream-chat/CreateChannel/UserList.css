@@ -56,6 +56,12 @@
   width: 60%;
 }
 
+.user-item__name-container {
+  display: flex;
+  align-items: center;
+  width: 60%;
+}
+
 .user-item_invite {
   cursor: pointer;
 }

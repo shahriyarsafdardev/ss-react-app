@@ -58,13 +58,13 @@ const UserItem: React.FC<ItemProps> = (props) => {
 
   return (
     <div className="user-item__wrapper">
-      {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${user.id}`} />}
+      {member && navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${user.id}`} />}
       <div
         className="user-item__name-wrapper"
         role="button"
         onKeyPress={() => {}}
         tabIndex={0}
-        onClick={() => setNavigate(true)}
+        onClick={member ? () => setNavigate(true) : handleClick}
       >
         <Avatar image={user.image} name={user.name || user.id} size={32} />
         <p className="user-item__name">{user.name || user.id}</p>
