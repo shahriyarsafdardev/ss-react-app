@@ -1,48 +1,64 @@
 import sessionFixture from '../../../fixtures/session/sessions.json';
-import userFixture from '../../../fixtures/login/login.json';
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
+import {
+  displayMultipleDates,
+  formatMultipleTimes,
+  sortedTimes
+} from '../../../../src/components/cohorts/home/Common';
 import moment from 'moment';
 
+const getTimes = (sessionNumber) => {
+  return sessionFixture.sessions[sessionNumber].times;
+};
 Cypress.Commands.add('welcomeText', () => {
-  return cy.contains('p', 'Welcome')
+  return cy.get('[data-testid=timeline-welcome]');
 });
-
-Cypress.Commands.add('leftArrowIconDisbaled', () => {
-  return cy.get('.disabled , [alt="left arrow"]')
+Cypress.Commands.add('leftArrowIcon', () => {
+  return cy.get('[data-testid=left-arrow-icon]');
 });
-
-Cypress.Commands.add('rightArrowIconDisbaled', () => {
-  return cy.get('.disabled , [alt="right arrow"]')
+Cypress.Commands.add('rightArrowIcon', () => {
+  return cy.get('[data-testid=right-arrow-icon]');
 });
-
-Cypress.Commands.add('rightArrowIconActive', () => {
-  return cy.get('.active , [alt="right arrow"]')
-});
-
 Cypress.Commands.add('cohortCompletionText', () => {
-  return cy.contains('p', 'Cohort Completion')
+  return cy.get('[data-testid=cohort-completion]');
 });
-
-Cypress.Commands.add('sessionOneText', () => {
-  return cy.contains('p', 'Session 1')
+Cypress.Commands.add('sessionText', (sessionNumber) => {
+  return cy.get(`[data-testid=session-name-${sessionNumber + 1}]`);
 });
-
-Cypress.Commands.add('sessionCompleteText', () => {
-  return cy.contains('p', 'Complete')
+Cypress.Commands.add('sessionCompleteText', (sessionNumber) => {
+  return cy.get(`[data-testid=session-time-${sessionNumber + 1}]`).should('contain', 'Complete');
 });
-
-Cypress.Commands.add('reviewContent', () => {
-  return cy.contains('a', 'Review Content')
+Cypress.Commands.add('reviewContent', (sessionNumber) => {
+  cy.get(`[data-testid=session-review-content-${sessionNumber + 1}]`);
 });
-
-Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
-  var dateTime = moment(session).subtract(time, 'hours');
-      cy.clock(new Date(dateTime.format()));
+Cypress.Commands.add('setClockToBeforeSession', (times) => {
+  //find min from times
+  const sorted = sortedTimes(times);
+  var dateTime = moment(sorted[0]).subtract(2, 'hours');
+  cy.clock(new Date(dateTime.format()));
 });
-
-Cypress.Commands.add('setClockToAfterSession', (session, time)=> {
-  var dateTime = moment(session).add(time, 'hours');
-      cy.clock(new Date(dateTime.format()));
+Cypress.Commands.add('setClockToAfterSession', (times) => {
+  //find max form times
+  const sorted = sortedTimes(times);
+  var dateTime = moment(sorted[sorted.length - 1]).add(2, 'hours');
+  cy.clock(new Date(dateTime.format()));
+});
+Cypress.Commands.add('connectorLineBetweenTwoSessions', () => {
+  return cy.get('[data-testid=cohort-timeline-connector]').children();
+});
+Cypress.Commands.add('circleIndicatingSession', (sessionNumber) => {
+  cy.get(`[data-testid=timeline-step-icon-${sessionNumber + 1}]`);
+});
+Cypress.Commands.add('circleIndicatingIncompleteSession', (sessionNumber) => {
+  cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-circle');
+});
+Cypress.Commands.add('circleIndicatingCompleteSession', (sessionNumber) => {
+  cy.circleIndicatingSession(sessionNumber).should('have.class', 'QontoStepIcon-completedIcon');
+});
+Cypress.Commands.add('timeBelowIncompleteSession', (sessionNumber) => {
+  cy.get(`[data-testid=session-time-${sessionNumber + 1}]`);
+});
+Cypress.Commands.add('dateBelowIncompleteSession', (sessionNumber) => {
+  cy.get(`[data-testid=session-multiple-dates-${sessionNumber + 1}]`);
 });
 
 describe('Home > Timeline', () => {
@@ -102,9 +118,9 @@ describe('Home > Timeline', () => {
         .should('have.css', 'background-color')
         .and('eq', 'rgb(234, 234, 240)');
     });
-    // it('Displays a empty circle on a session', () => {
-    //   cy.circleIndicatingIncompleteSession(sessionNumber).should('be.visible');
-    // });
+    it('Displays a empty circle on a session', () => {
+      cy.circleIndicatingIncompleteSession(sessionNumber).should('be.visible');
+    });
     it('Displays time under the session', () => {
       cy.timeBelowIncompleteSession(sessionNumber).should('be.visible') &&
         cy.dateBelowIncompleteSession(sessionNumber).should('be.visible');
@@ -165,9 +181,9 @@ describe('Home > Timeline', () => {
     before(() => {
       cy.setClockToAfterSession(getTimes(completedSessionNumber));
     });
-    // it('Displays a filled circle on a session', () => {
-    //   cy.circleIndicatingCompleteSession(completedSessionNumber).should('be.visible');
-    // });
+    it('Displays a filled circle on a session', () => {
+      cy.circleIndicatingCompleteSession(completedSessionNumber).should('be.visible');
+    });
   });
   context('When all sessions are completed', () => {
     before(() => {

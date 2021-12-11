@@ -156,7 +156,7 @@ describe('Home > To do', () => {
     });
   });
 
-  context('When current time is less than one hour before any session', () => {
+  /*context('When current time is less than one hour before any session', () => {
     before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
     });
@@ -177,7 +177,7 @@ describe('Home > To do', () => {
       cy.joinZoom()
       .should("have.attr", "href", sessionFixture.sessions[0].zoom_url);
     });
-  });
+  });*/
 
   context('When there are no more upcoming sessions', () => {
     before(() => {
