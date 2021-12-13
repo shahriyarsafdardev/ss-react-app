@@ -107,7 +107,7 @@ describe('Home > Timeline', () => {
   //     const leftOffset = elem.scrollLeft();
   //     expect(leftOffset).to.equal(0);
   //   });
-  });
+  //});
   context('When any session is not Completed', () => {
     const sessionNumber = 0;
     beforeEach(() => {

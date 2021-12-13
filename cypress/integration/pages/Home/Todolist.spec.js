@@ -135,16 +135,16 @@ describe('Home > To do', () => {
         should('not.have.attr', 'checked')
       });
 
-      it('Allows a user to mark and unmark materials as complete', () => {
-      // click and item
-        cy.markedCheck()
-      // assert that progress bar has changed
-      // assert that backend call was made
-      // uncheck an item
-        cy.markedUncheck()
-      // assert that progress bar has changed
-      // assert that backend call was made
-      });
+      // it('Allows a user to mark and unmark materials as complete', () => {
+      // // click and item
+      //   cy.markedCheck()
+      // // assert that progress bar has changed
+      // // assert that backend call was made
+      // // uncheck an item
+      //   cy.markedUncheck()
+      // // assert that progress bar has changed
+      // // assert that backend call was made
+      // });
 
       context('When all the pre-reading materials are completed', () => {
         it('Displays a text all ready for session', () => {
