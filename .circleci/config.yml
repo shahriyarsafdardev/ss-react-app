@@ -34,12 +34,11 @@ jobs:
           name: Run server
           command: yarn start
           background: true
-          wait-on: 'http://localhost:3000'
-          
+
       - run:
           name: Run tests
-          command: yarn cypress run
           wait-on: 'http://localhost:3000'
+          command: yarn cypress run
 
 workflows:
   version: 2
