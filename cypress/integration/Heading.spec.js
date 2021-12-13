@@ -1,6 +1,6 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import userFixture from '../../../fixtures/login/login.json';
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
+import sessionFixture from '../fixtures/session/sessions.json';
+import userFixture from '../fixtures/login/login.json';
+import cohortsFixture from '../fixtures/cohorts/cohorts.json'
 import moment from 'moment';
 
 Cypress.Commands.add('getHeading', () => {

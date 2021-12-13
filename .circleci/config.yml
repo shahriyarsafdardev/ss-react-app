@@ -37,7 +37,6 @@ jobs:
 
       - run:
           name: Run tests
-          wait-on: 'http://localhost:3000'
           command: yarn cypress run
 
 workflows:
