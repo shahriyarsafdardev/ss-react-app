@@ -146,13 +146,13 @@ describe('Home > To do', () => {
       // // assert that backend call was made
       // });
 
-      context('When all the pre-reading materials are completed', () => {
-        it('Displays a text all ready for session', () => {
-          cy.markedCheck()
-          cy.getHeaderText()
-          .should('contain','🎉 You’re all ready to go for Session '+ sessionFixture.sessions[0].number)
-        });
-      });
+      // context('When all the pre-reading materials are completed', () => {
+      //   it('Displays a text all ready for session', () => {
+      //     cy.markedCheck()
+      //     cy.getHeaderText()
+      //     .should('contain','🎉 You’re all ready to go for Session '+ sessionFixture.sessions[0].number)
+      //   });
+      // });
     });
   });
 
