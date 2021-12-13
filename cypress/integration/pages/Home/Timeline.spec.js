@@ -151,15 +151,27 @@ describe('Home > Timeline', () => {
   });
   context('When a session is Completed', () => {
     const completedSessionNumber = 0;
-    beforeEach(() => {
+    before(() => {
       cy.setClockToAfterSession(getTimes(completedSessionNumber));
     });
     it('Displays a completed text under the completed session', () => {
       cy.sessionCompleteText(completedSessionNumber).should('be.visible');
     });
+  });
+  context('When a session is Completed', () => {
+    const completedSessionNumber = 0;
+    before(() => {
+      cy.setClockToAfterSession(getTimes(completedSessionNumber));
+    });
     it('Displays review content text under the completed session', () => {
       cy.reviewContent(completedSessionNumber).should('be.visible');
     });
+  });
+    context('When a session is Completed', () => {
+      const completedSessionNumber = 0;
+      before(() => {
+        cy.setClockToAfterSession(getTimes(completedSessionNumber));
+      });
     it('Displays the correct session details when clicked on review content', () => {
       cy.reviewContent(completedSessionNumber).click();
       cy.url().should('contain', `session=${completedSessionNumber + 1}`);
