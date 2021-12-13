@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Run server
           command: yarn start
-          wait-on: 'http://localhost:3000'
+          wait-on: 'http://localhost:3003'
 
       - run:
           name: Run tests
