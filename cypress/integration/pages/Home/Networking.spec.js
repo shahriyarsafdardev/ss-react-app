@@ -74,17 +74,17 @@ describe('Home > Networking', () => {
     .should('be.visible')
   });
 
-  it('Displays a new peer card when left arrow icon is clicked', () => {
-    cy.leftArrowIcon()
-    .should('be.visible')
-    .click()
-  });
+  // it('Displays a new peer card when left arrow icon is clicked', () => {
+  //   cy.leftArrowIcon()
+  //   .should('be.visible')
+  //   .click()
+  // });
 
-  it('Displays a new peer card when right arrow icon is clicked', () => {
-    cy.rightArrowIcon()
-    .should('be.visible')
-    .click()
-  });
+  // it('Displays a new peer card when right arrow icon is clicked', () => {
+  //   cy.rightArrowIcon()
+  //   .should('be.visible')
+  //   .click()
+  // });
 
   it('Displays a view profile button on peer card', () => {
     cy.viewProfile()
