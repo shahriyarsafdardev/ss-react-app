@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect, useState } from 'react';
-import { Button, Container, Box, Theme, TextField, Typography } from '@material-ui/core';
+import { Button, Container, Box, Theme, useMediaQuery, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/src/Page/AnnotationLayer.css';
 import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { styled } from '@material-ui/core/styles';
+import { useTheme, styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import { SLIDE_EVENTS } from 'utils/amplitude';
 import Message from '../../Message';
@@ -39,35 +39,8 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 const StyledPage = styled(Page)(({ theme }) => ({
-  '.react-pdf__Page__svg': { height: '375px !important', width: '100% !important' },
-  '.react-pdf__Page__svg > svg': { height: '375px !important', width: '100% !important' },
-  [theme.breakpoints.between(1300, 1400)]: {
-    '.react-pdf__Page__svg': { width: '550px !important' },
-    '.react-pdf__Page__svg > svg': { width: '550px !important' }
-  },
-  [theme.breakpoints.between(1200, 1300)]: {
-    '.react-pdf__Page__svg': { width: '500px !important' },
-    '.react-pdf__Page__svg > svg': { width: '500px !important' },
-    '.react-pdf__Page': { width: '500px !important' }
-  },
-  [theme.breakpoints.down(1200)]: {
-    '.react-pdf__Page__svg': { width: '100% !important' },
-    '.react-pdf__Page__svg > svg': { width: '100% !important' }
-  },
-  [theme.breakpoints.between(800, 900)]: {
-    '.react-pdf__Page__svg': { height: '100% !important' },
-    '.react-pdf__Page__svg > svg': { height: '100% !important' },
-    '.react-pdf__Page': { height: '100% !important' }
-  },
-  [theme.breakpoints.down(800)]: {
-    '.react-pdf__Page__svg': { height: '380px !important' },
-    '.react-pdf__Page__svg > svg': { height: '380px !important' }
-  },
-  [theme.breakpoints.down('sm')]: {
-    '.react-pdf__Page__svg': { height: '100% !important' },
-    '.react-pdf__Page__svg > svg': { height: '100% !important' },
-    '.react-pdf__Page': { height: '100% !important' }
-  }
+  '.react-pdf__Page__canvas': { height: 'auto !important', width: '100% !important' },
+  '.react-pdf__Page__textContent': { height: 'auto !important', width: '100% !important' }
 }));
 
 const PdfDocument = styled(Document)(({ theme }) => ({
@@ -75,47 +48,23 @@ const PdfDocument = styled(Document)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  margin: '0.75rem 0rem',
-  '.react-pdf__Page': { position: 'absolute !important', top: 0, left: 0, right: 0 },
-  [theme.breakpoints.down('sm')]: {
-    height: 'auto'
-  },
-  [theme.breakpoints.between(1200, 1400)]: {
-    width: '100%',
-    height: 'auto',
-    minHeight: '280px !important'
-  },
-  [theme.breakpoints.between(901, 1200)]: {
-    width: '100%',
-    height: 'auto',
-    minHeight: '280px !important'
-  },
-  [theme.breakpoints.between(601, 900)]: {
-    height: 'auto !important',
-    minHeight: '400px !important'
-  },
-  [theme.breakpoints.between(401, 500)]: {
-    height: 'auto !important',
-    minHeight: '250px !important'
-  },
-  [theme.breakpoints.between(500, 600)]: {
-    height: 'auto !important',
-    minHeight: '325px !important'
-  },
-  [theme.breakpoints.between(300, 400)]: {
-    height: 'auto !important',
-    minHeight: '200px !important'
-  }
+  margin: '0.75rem 0rem'
 }));
 
 const useStyles = makeStyles((theme: Theme) => ({
   modalView: {
-    maxWidth: '900px',
-    height: '550px',
-    margin: 'auto'
+    maxWidth: '1300px',
+    height: '700px',
+    margin: 'auto',
+    [theme.breakpoints.down('md')]: {
+      height: '400px'
+    }
   },
   standard: {
-    height: '347px'
+    height: '350px',
+    [theme.breakpoints.down('md')]: {
+      height: '250px'
+    }
   },
   actionsContainer: {
     display: 'flex'
@@ -284,13 +233,47 @@ export default function Slides({
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [viewType, setViewType] = useState<string>(VIEW_TYPES.STANDARD_VIEW);
+  const [scale, setScale] = useState<number>(1);
   const [error, setError] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (pdfUrl) onTrack(SLIDE_EVENTS.opened);
   }, [pdfUrl]);
 
+  useEffect(() => {
+    const getScale = () => {
+      if (isMobile) {
+        const width = window?.innerWidth;
+        if (viewType === VIEW_TYPES.STANDARD_VIEW) {
+          return width / 1.135 / 1000;
+        }
+        return width / 1.05 / 1000;
+      }
+      if (viewType === VIEW_TYPES.STANDARD_VIEW) {
+        return 0.62;
+      }
+      return 1.2;
+    };
+    setScale(getScale());
+  }, [window?.innerWidth, viewType, useMediaQuery(theme.breakpoints.down('sm'))]);
+
   const classes = useStyles();
+
+  const getScale = () => {
+    if (isMobile) {
+      const width = window?.innerWidth;
+      if (viewType === VIEW_TYPES.STANDARD_VIEW) {
+        return width / 1.135 / 1000;
+      }
+      return width / 1.05 / 1000;
+    }
+    if (viewType === VIEW_TYPES.STANDARD_VIEW) {
+      return 0.62;
+    }
+    return 1.2;
+  };
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -313,15 +296,16 @@ export default function Slides({
           </div>
         ) : (
           <StyledPage
-            renderMode="svg"
-            scale={0.7}
+            renderMode="canvas"
+            scale={scale}
+            renderTextLayer={false}
             pageNumber={pageNumber}
             renderAnnotationLayer={true}
           />
         )}
       </PdfDocument>
       {numPages !== null && (
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '20px', marginBottom: '3px' }}>
           <Navigation
             pdfUrl={pdfUrl}
             pdfDownloadable={pdfDownloadable}
@@ -344,7 +328,7 @@ export default function Slides({
     ) : (
       <div>
         <Modal open={true} onClose={() => setViewType(VIEW_TYPES.STANDARD_VIEW)}>
-          <div style={{ height: '710px' }}>{pdfSlider(VIEW_TYPES.FULL_VIEW)}</div>
+          {pdfSlider(VIEW_TYPES.FULL_VIEW)}
         </Modal>
       </div>
     );
