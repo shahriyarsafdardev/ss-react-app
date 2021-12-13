@@ -37,6 +37,8 @@ jobs:
       - run:
           name: Run tests
           command: yarn cypress run
+          wait-on: 'http://localhost:3000'
+          spec: 'cypress/integration/pages/*.js'
 
 workflows:
   version: 2
