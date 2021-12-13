@@ -1,6 +1,6 @@
 const serverUrl = Cypress.env('serverUrl');
 
-import homeFixture from '../fixtures/onboarding/home.json';
+import homeFixture from '../../fixtures/onboarding/home.json';
 
 describe('Onboarding Flow', () => {
   const assertStepCompleted = (

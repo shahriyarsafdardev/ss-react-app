@@ -1,8 +1,8 @@
-import Heading from './pages/Home/Heading';
-import Peerlist from './pages/Home/Peerlist';
-import Timeline from './pages/Home/Timeline';
-import Todolist from './pages/Home/Todolist';
-import sessionFixture from '../fixtures/session/sessions.json';
+import Heading from './Heading';
+import Peerlist from './Peerlist';
+import Timeline from '../pages/Home/Timeline';
+import Todolist from './Todolist';
+import sessionFixture from '../../fixtures/session/sessions.json';
 import moment from 'moment';
 
 describe('Home page specs', () => {

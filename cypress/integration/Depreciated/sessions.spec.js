@@ -6,7 +6,7 @@ const clockIcon = '/static/icons/ic_clock.svg';
 const populatedSession = 1; // The resources, summary notes, slides and recording are set to null in this fixture
 const emptySession = 0; // The resources, summary notes, slides and recording are present in this fixture
 
-import sessionFixture from '../fixtures/session/sessions.json';
+import sessionFixture from '../../fixtures/session/sessions.json';
 
 describe('Sessions Tab', () => {
   before(() => {

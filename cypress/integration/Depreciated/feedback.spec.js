@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 const serverUrl = Cypress.env('serverUrl');
-import feedbackFixture from '../fixtures/feedback/feedbackQuestions.json';
+import feedbackFixture from '../../fixtures/feedback/feedbackQuestions.json';
 
 describe('Session Survey Flow', () => {
   before(() => {

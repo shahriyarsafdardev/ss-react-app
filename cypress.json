@@ -6,5 +6,6 @@
   "ignoreTestFiles": "*e2e*",
   "video": false,
   "viewportWidth": 1080,
-  "viewportHeight": 920
+  "viewportHeight": 920,
+  "defaultCommandTimeout": 2000000
 }

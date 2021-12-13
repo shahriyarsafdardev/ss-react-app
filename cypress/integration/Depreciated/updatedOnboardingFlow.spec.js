@@ -1,7 +1,7 @@
 const serverUrl = Cypress.env('serverUrl');
 
-import homeFixture from '../fixtures/onboarding/home_refactored.json';
-import userProfileFixture from '../fixtures/onboarding/saveUserProfileRefactored.json';
+import homeFixture from '../../fixtures/onboarding/home_refactored.json';
+import userProfileFixture from '../../fixtures/onboarding/saveUserProfileRefactored.json';
 const cohortId = '9550cc85-305a-438c-a115-e791a16c91f0';
 const enrollmentId = 'f1b1b3f1-afad-4aec-8a4f-240698ac246c';
 const onboardingHeaderText = 'Build Your Profile';
