@@ -25,8 +25,9 @@ jobs:
   test:
     docker:
       - image: circleci/node:16-browsers
+    environment:
+      REACT_APP_ROOT_URL: $REACT_APP_ROOT_URL_STAGING
     resource_class: xlarge
-
     steps:
       - checkout
       - run:
@@ -35,8 +36,6 @@ jobs:
       - run:
           name: Run server
           command: yarn start
-          environment:
-            REACT_APP_ROOT_URL: $REACT_APP_ROOT_URL_STAGING
           background: true
 
       - run:
