@@ -26,7 +26,7 @@ jobs:
     docker:
       - image: circleci/node:16-browsers
     environment:
-      REACT_APP_ROOT_URL: $REACT_APP_ROOT_URL_STAGING
+      REACT_APP_ROOT_URL: REACT_APP_ROOT_URL_STAGING
     resource_class: xlarge
     steps:
       - checkout
