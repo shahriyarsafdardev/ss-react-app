@@ -44,7 +44,6 @@ jobs:
       - run:
           name: Run tests
           command: yarn cypress run
-            browser: chrome
 
 workflows:
   version: 2
