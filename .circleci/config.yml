@@ -26,8 +26,7 @@ jobs:
     docker:
       - image: circleci/node:16-browsers
     resource_class: xlarge
-    environment:
-      REACT_APP_ROOT_URL: $REACT_APP_ROOT_URL_STAGING
+
     steps:
       - checkout
       - run:
@@ -36,6 +35,8 @@ jobs:
       - run:
           name: Run server
           command: yarn start
+          environment:
+            REACT_APP_ROOT_URL: $REACT_APP_ROOT_URL_STAGING
           background: true
 
       - run:
@@ -43,7 +44,7 @@ jobs:
       - run:
           name: Run tests
           command: yarn cypress run
-          browser: chrome
+            browser: chrome
 
 workflows:
   version: 2
