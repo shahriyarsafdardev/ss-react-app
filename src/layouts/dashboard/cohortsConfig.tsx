@@ -12,11 +12,12 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts')
 };
 
-const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
-  rawCohorts.map((cohort: any) => {
+const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => ({
+  subheader: header,
+  items: rawCohorts.map((cohort: any) => {
     const object: any = {
       id: cohort.id,
-      title: cohort.name,
+      title: instructor ? cohort.intake_name : cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
@@ -27,12 +28,23 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
         },
         { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
-          title: 'networking',
+          title: instructor ? 'members' : 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
           notifications: false
         }
       ]
     };
+    if (instructor) {
+      object.children = [
+        {
+          title: 'registrations',
+          path: cohort.discord_directory_url,
+          externalUrl: true,
+          notifications: false
+        },
+        ...object.children
+      ];
+    }
     if (cohort.name === 'Building & Investing in Network Effects') {
       object.children = [
         ...object.children,
@@ -67,8 +79,8 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
       ];
     }
     object.children = [...object.children];
-
     return object;
-  });
+  })
+});
 
 export default cohortsConfig;

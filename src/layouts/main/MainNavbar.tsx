@@ -97,7 +97,7 @@ export default function MainNavbar() {
           <Box sx={{ flexGrow: 1 }} />
 
           <MHidden width="mdDown">
-            <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+            {/* <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} /> */}
           </MHidden>
 
           <Button
@@ -109,7 +109,7 @@ export default function MainNavbar() {
           </Button>
 
           <MHidden width="mdUp">
-            <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />
+            {/* <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} /> */}
           </MHidden>
         </Container>
       </ToolbarStyle>

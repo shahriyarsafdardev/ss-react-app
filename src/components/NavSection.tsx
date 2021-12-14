@@ -26,7 +26,8 @@ const ListSubheaderStyle = styled((props) => (
   marginTop: theme.spacing(3),
   marginBottom: theme.spacing(2),
   paddingLeft: theme.spacing(5),
-  color: theme.palette.text.primary
+  color: '#4D4DCD',
+  textTransform: 'uppercase'
 }));
 
 interface ListItemStyleProps extends ListItemButtonProps {
@@ -253,26 +254,18 @@ function NavItem({
 
 interface NavSectionProps extends BoxProps {
   isShow?: boolean | undefined;
-  cohortsData?: any | undefined;
   navConfig: {
     subheader: string;
     items: NavItemProps[];
-  }[];
+  };
 }
 
-export default function NavSection({
-  navConfig,
-  cohortsData = [],
-  isShow = true,
-  ...other
-}: NavSectionProps) {
-  const combinedItems = [...cohortsData, ...navConfig[0].items];
-
+export default function NavSection({ navConfig, isShow = true, ...other }: NavSectionProps) {
   return (
     <Box {...other}>
-      <List key={navConfig[0].subheader} disablePadding>
-        {isShow && <ListSubheaderStyle>{navConfig[0].subheader}</ListSubheaderStyle>}
-        {combinedItems.map((item: NavItemProps) => (
+      <List key={navConfig.subheader} disablePadding>
+        {isShow && <ListSubheaderStyle>{navConfig.subheader}</ListSubheaderStyle>}
+        {navConfig.items.map((item: NavItemProps) => (
           <NavItem key={item.title} item={item} isShow={isShow} />
         ))}
       </List>
