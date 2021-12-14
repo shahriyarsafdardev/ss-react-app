@@ -59,7 +59,11 @@ const CohortTimeLine = ({
 
   return (
     <Box>
-      <Typography variant="h3" style={{ marginBottom: '20px', minHeight: '48px' }}>
+      <Typography
+        variant="h3"
+        style={{ marginBottom: '20px', minHeight: '48px' }}
+        data-testid="cohort-header"
+      >
         {sessions && header}
       </Typography>
       <SectionContainer className="timeline">
