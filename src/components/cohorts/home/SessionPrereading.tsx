@@ -89,12 +89,13 @@ const SessionPrereading = ({
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
   return (
-    <SectionContainer className="card-2">
+    <SectionContainer className="card-2" data-testid="to-do-card">
       {sessions && cohort ? (
         <>
           {activeSession ? (
             <>
               <Box
+                data-testid="to-do-header"
                 style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
               >
                 {preReadingsCompleted() ? (
@@ -161,6 +162,7 @@ const SessionPrereading = ({
                 {list.map((preReading, index) => (
                   <PreReadingRow
                     key={index}
+                    number={index}
                     item={preReading}
                     onPreReadingClick={() =>
                       sendAnalyticsData(

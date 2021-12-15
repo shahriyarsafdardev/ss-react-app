@@ -39,6 +39,7 @@ export default function SessionMaterials({
               onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
               key={index}
               item={preReading}
+              number={index}
               checkboxHanlder={(value: boolean) => {
                 onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
                 dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));

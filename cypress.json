@@ -1,10 +1,10 @@
 {
-  "baseUrl": "http://localhost:3001",
+  "baseUrl": "http://localhost:3000",
   "env": {
-    "serverUrl": "http://localhost:3000/api/v1"
+    "serverUrl": "https://scholarsite-staging.herokuapp.com/api/v1"
   },
   "ignoreTestFiles": "*e2e*",
   "video": false,
-  "viewportWidth": 1400,
-  "viewportHeight": 800
+  "viewportWidth": 1080,
+  "viewportHeight": 920
 }
