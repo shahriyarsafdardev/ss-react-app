@@ -137,13 +137,13 @@ export const UserList: React.FC<Props> = (props) => {
           response = await client.queryUsers(
             { id: { $in: newMembers }, $and: [{ name: { $autocomplete: query } }] },
             { created_at: -1 },
-            { limit: 20, offset }
+            { limit: 80, offset }
           );
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
             { created_at: -1 },
-            { limit: 20, offset }
+            { limit: 80, offset }
           );
         }
         if (query && response.users.length) {
@@ -167,7 +167,7 @@ export const UserList: React.FC<Props> = (props) => {
 
   const offSetHandler = () => {
     if (offset < cohortUsers.length) {
-      setOffset(offset + 20);
+      setOffset(offset + 80);
     }
   };
   if (error) {
