@@ -77,13 +77,13 @@ describe('Home > Networking', () => {
   it('Displays a new peer card when left arrow icon is clicked', () => {
     cy.leftArrowIcon()
     .should('be.visible')
-    .click()
+    .click({ multiple: true, force: true });
   });
 
   it('Displays a new peer card when right arrow icon is clicked', () => {
     cy.rightArrowIcon()
     .should('be.visible')
-    .click()
+    .click({ multiple: true, force: true });
   });
 
   it('Displays a view profile button on peer card', () => {

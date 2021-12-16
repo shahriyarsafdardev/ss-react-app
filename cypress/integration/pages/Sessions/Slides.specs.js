@@ -47,13 +47,13 @@ describe('Sessions > Slides', () => {
     it('Slides to previous page when right button is clicked', () => {
       cy.get('[data-testid=slides-right]')
       .should('be.visible')
-      .click()
+      .click({ multiple: true, force: true });
       cy.loadSlides(sessionFixture.sessions[0].presentation_pdf_url)
     });
     it('Slides to next page when left button is clicked', () => {
       cy.get('[data-testid=slides-left]')
       .should('be.visible')
-      .click()
+      .click({ multiple: true, force: true });
       cy.loadSlides(sessionFixture.sessions[0].presentation_pdf_url)
     });
     it('Displays full screen button', () => {

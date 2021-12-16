@@ -173,7 +173,7 @@ describe('Home > Timeline', () => {
         cy.setClockToAfterSession(getTimes(completedSessionNumber));
       });
     it('Displays the correct session details when clicked on review content', () => {
-      cy.reviewContent(completedSessionNumber).click();
+      cy.reviewContent(completedSessionNumber).click({ multiple: true, force: true });;
       cy.url().should('contain', `session=${completedSessionNumber + 1}`);
     });
   });

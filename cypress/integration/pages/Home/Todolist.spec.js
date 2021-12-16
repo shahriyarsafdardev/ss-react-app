@@ -73,7 +73,7 @@ Cypress.Commands.add('markedCheck', () => {
   cy.fixture('../fixtures/session/session_materials.json').as('sessionMaterial');
   cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
   .as('checklist');
-  cy.unCheckedBox().click()
+  cy.unCheckedBox().click({ multiple: true, force: true });
   cy.wait('@checklist')
   cy.get('@checklist').then((xhr) => {
     expect(xhr.request.body.complete).to.eq(submit_checklist_true.complete);
@@ -84,7 +84,7 @@ Cypress.Commands.add('markedUncheck', () => {
   cy.fixture('../fixtures/session/session_materials.json').as('sessionMaterial');
   cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
   .as('checklist');
-  cy.unCheckedBox().click()
+  cy.unCheckedBox().click({ multiple: true, force: true });
   cy.wait('@checklist')
   cy.get('@checklist').then((xhr) => {
     expect(xhr.request.body.complete).to.eq(submit_checklist_false.complete);
