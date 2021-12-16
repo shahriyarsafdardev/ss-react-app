@@ -5,6 +5,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -54,6 +55,9 @@ export default function SessionsTab() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const { user } = useAuth();
+
+  const isLearner = user?.type === 'learner';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
   const filteredSessions: Session[] = sessions?.filter(
@@ -116,11 +120,15 @@ export default function SessionsTab() {
               <SessionsInnerContainer container>
                 <Grid item md={8} sm={12}>
                   <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                    <SessionBoard session={filteredSessions && filteredSessions[selectedSession]} />
+                    <SessionBoard
+                      session={filteredSessions && filteredSessions[selectedSession]}
+                      isLearner={isLearner}
+                    />
                   </SessionContext.Provider>
                 </Grid>
                 <SessionListDesktopContainer item md={4}>
                   <SessionList
+                    isLearner={isLearner}
                     onClick={setSelectedSession}
                     selectedSession={selectedSession}
                     sessionsList={trimmedSessionData}

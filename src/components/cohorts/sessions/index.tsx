@@ -4,3 +4,4 @@ export { default as SurveyForm } from './SurveyForm';
 export { default as Slides } from './Slides';
 export { default as Resources } from './Resources';
 export { default as SessionMaterials } from './SessionMaterials';
+export { default as InstructorSessionMaterials } from './instructor_components/SessionMaterials';
