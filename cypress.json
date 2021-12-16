@@ -5,6 +5,6 @@
   },
   "ignoreTestFiles": "*e2e*",
   "video": false,
-  "viewportWidth": 1080,
+  "viewportWidth": 1500,
   "viewportHeight": 920
 }
