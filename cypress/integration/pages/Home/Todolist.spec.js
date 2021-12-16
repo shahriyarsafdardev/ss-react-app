@@ -74,6 +74,7 @@ Cypress.Commands.add('markedCheck', () => {
   cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
   .as('checklist');
   cy.unCheckedBox().click()
+  cy.wait('@checklist')
   cy.get('@checklist').then((xhr) => {
     expect(xhr.request.body.complete).to.eq(submit_checklist_true.complete);
   })
@@ -84,6 +85,7 @@ Cypress.Commands.add('markedUncheck', () => {
   cy.route('POST',`${serverUrl}/cohort_sessions/${sessionFixture.sessions[0].id}/session_materials/${sessionMaterials[1].id}/submit_checklist.json` ,'@sessionMaterial')
   .as('checklist');
   cy.unCheckedBox().click()
+  cy.wait('@checklist')
   cy.get('@checklist').then((xhr) => {
     expect(xhr.request.body.complete).to.eq(submit_checklist_false.complete);
   })
@@ -103,7 +105,7 @@ describe('Home > To do', () => {
   context('When there is an upcoming session', () => {
     it('Displays a get ready text for the next session', () => {
       cy.getHeaderText()
-      .should('contain','Get Ready for Session '+ sessionFixture.sessions[0].number)
+      .should('contain','Get Ready for our Session '+ sessionFixture.sessions[0].number)
     });
 
     it('Displays a circular progress bar for that session', () => {
@@ -135,28 +137,28 @@ describe('Home > To do', () => {
         should('not.have.attr', 'checked')
       });
 
-      // it('Allows a user to mark and unmark materials as complete', () => {
-      // // click and item
-      //   cy.markedCheck()
-      // // assert that progress bar has changed
-      // // assert that backend call was made
-      // // uncheck an item
-      //   cy.markedUncheck()
-      // // assert that progress bar has changed
-      // // assert that backend call was made
-      // });
+      it('Allows a user to mark and unmark materials as complete', () => {
+      // click and item
+        cy.markedCheck()
+      // assert that progress bar has changed
+      // assert that backend call was made
+      // uncheck an item
+        cy.markedUncheck()
+      // assert that progress bar has changed
+      // assert that backend call was made
+      });
 
-      // context('When all the pre-reading materials are completed', () => {
-      //   it('Displays a text all ready for session', () => {
-      //     cy.markedCheck()
-      //     cy.getHeaderText()
-      //     .should('contain','🎉 You’re all ready to go for Session '+ sessionFixture.sessions[0].number)
-      //   });
-      // });
+      context('When all the pre-reading materials are completed', () => {
+        it('Displays a text all ready for session', () => {
+          cy.markedCheck()
+          cy.getHeaderText()
+          .should('contain','🎉 You’re all ready to go for our Session '+ sessionFixture.sessions[0].number)
+        });
+      });
     });
   });
 
-  /*context('When current time is less than one hour before any session', () => {
+  context('When current time is less than one hour before any session', () => {
     before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
     });
@@ -165,23 +167,33 @@ describe('Home > To do', () => {
       cy.getSessionTime()
       .should('be.visible')
     });
+  });
 
+  context('When current time is less than one hour before any session', () => {
+    before(() => {
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
+    });
     it('Displays time remaining in session to start', () => {
       cy.getTimeMinutes()
       .should('be.visible')
       cy.getTimeSeconds()
       .should('be.visible')
     });
+  });
 
+  context('When current time is less than one hour before any session', () => {
+    before(() => {
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,0.30)
+    });
     it('Displays a join zoom button', () => {
       cy.joinZoom()
       .should("have.attr", "href", sessionFixture.sessions[0].zoom_url);
     });
-  });*/
+  });
 
   context('When there are no more upcoming sessions', () => {
     before(() => {
-      cy.setClockToAfterSession(sessionFixture.sessions[2].times[0],3)
+      cy.setClockToAfterSession(sessionFixture.sessions[3].times[0],3)
     });
 
     it('Displays a Summary notes',()=>{

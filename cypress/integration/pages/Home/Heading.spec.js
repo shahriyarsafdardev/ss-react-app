@@ -65,7 +65,7 @@ describe('Home > Heading', () => {
 
   context('When all Sessions are completed', () => {
     before(() => {
-      cy.setClockToAfterSession(sessionFixture.sessions[2].times[0],3)
+      cy.setClockToAfterSession(sessionFixture.sessions[3].times[0],3)
     });
 
     it('Displays a personalised Completed message', () => {
