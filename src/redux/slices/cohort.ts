@@ -109,6 +109,34 @@ const slice = createSlice({
         }
       }
     },
+    updateApplicationSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].enrollments;
+        const targetEnrollmentIndex = updated.findIndex(
+          (enrollment) => enrollment.id === action.payload.enrollment_id
+        );
+
+        if (targetEnrollmentIndex !== -1) {
+          updated[targetEnrollmentIndex].status = action.payload.status;
+          state.cohorts[targetCohortIndex].enrollments = updated;
+        }
+      }
+    },
+    deleteApplicationSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].enrollments;
+
+        state.cohorts[targetCohortIndex].enrollments = updated.filter(
+          (enrollment) => enrollment.id !== action.payload.enrollmentID
+        );
+      }
+    },
     updateSessionFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohortID
@@ -136,6 +164,62 @@ export function getCohorts() {
       setAuthorizationToken();
       const response = await axios.get('/cohorts.json');
       dispatch(slice.actions.getCohortsSuccess(response.data.cohorts));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function acceptApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/accept_application.json`
+      );
+
+      dispatch(slice.actions.updateApplicationSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function rejectApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/reject_application.json`
+      );
+
+      dispatch(slice.actions.updateApplicationSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function paymentRemindApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/payment_reminder.json`
+      );
+
+      dispatch(slice.actions.updateApplicationSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function deleteApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.delete(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/delete_application.json`
+      );
+
+      dispatch(slice.actions.deleteApplicationSuccess({ cohortID, enrollmentID }));
     } catch (error) {
       console.log(error);
     }

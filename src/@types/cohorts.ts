@@ -108,14 +108,15 @@ export type Notification = {
 
 export type Enrollment = {
   id: string;
+  first_name: string;
+  last_name: string;
   name: string;
   email: string;
   linkedin_url: string;
   price: number;
   status: string;
   stream: string;
-  application_rejected: boolean;
-  application_accepted: boolean;
+  coupon_code: string;
   time: string;
 };
 

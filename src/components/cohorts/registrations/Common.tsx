@@ -1,14 +1,24 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, MenuItem, Stack, Typography, Button, IconButton } from '@material-ui/core';
+import { Box, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { Modal } from 'components/animate';
+
+import {
+  acceptApplication,
+  deleteApplication,
+  rejectApplication,
+  paymentRemindApplication
+} from 'redux/slices/cohort';
+
 import forwardArrow from '@iconify/icons-eva/arrow-ios-forward-fill';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 
 // material
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/styles';
+import { useDispatch } from '../../../redux/store';
 import { Enrollment } from '../../../@types/cohorts';
 import MenuPopover from '../../MenuPopover';
 
@@ -95,16 +105,48 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
     </StyledViewButton>
   </Stack>
 );
+const EnrollmentModal = ({
+  state,
+  onClose,
+  onComplete
+}: {
+  state: boolean;
+  onClose: Function;
+  onComplete: Function;
+}) => (
+  <Modal open={state} onClose={() => onClose()}>
+    <p>EnrollmentForm</p>
+  </Modal>
+);
 
 export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
+  const [formModalState, setFormModalState] = useState(false);
   const [modalMesage, setModalMessage] = useState('');
   const [action, setAction] = useState('');
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
 
   const handleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleAction = () => {
+    if (action === 'accept_application') {
+      dispatch(acceptApplication(cohort_id, enrollment.id));
+    } else if (action === 'payment_reminder') {
+      dispatch(paymentRemindApplication(cohort_id, enrollment.id));
+    } else if (action === 'reject_application') {
+      dispatch(rejectApplication(cohort_id, enrollment.id));
+    } else if (action === 'delete_application') {
+      dispatch(deleteApplication(cohort_id, enrollment.id));
+    }
+    setAction('');
+    setOpen(false);
+    setModalState(false);
+    setModalMessage('');
   };
 
   return (
@@ -117,7 +159,18 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           setOpen(false);
           setModalState(false);
         }}
-        onConfirm={() => {}}
+        onConfirm={() => handleAction()}
+      />
+      <EnrollmentModal
+        state={formModalState}
+        onClose={() => {
+          setOpen(false);
+          setFormModalState(false);
+        }}
+        onComplete={() => {
+          setOpen(false);
+          setFormModalState(false);
+        }}
       />
       <Box>
         <IconButton
@@ -143,7 +196,11 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
                   setModalMessage(
                     `Are you sure you want to accept ${enrollment.name}’s application and send a payment link for USD ${enrollment.price}`
                   );
-                  setAction('accept_application');
+                  setAction(
+                    enrollment.status === 'Application Received'
+                      ? 'accept_application'
+                      : 'payment_reminder'
+                  );
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
@@ -153,7 +210,20 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
                   ? 'Accept Application'
                   : 'Send Payment Reminder'}
               </MenuItem>
-              <MenuItem sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}>
+              <MenuItem
+                onClick={() => {
+                  setModalMessage(
+                    `Are you sure you want to reject ${enrollment.name}’s application.`
+                  );
+                  setAction(
+                    enrollment.status === 'Application Received'
+                      ? 'reject_application'
+                      : 'set_not_interested'
+                  );
+                  setModalState(true);
+                }}
+                sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+              >
                 <StyledIcon src="/static/registration/Close.svg" />
                 {enrollment.status === 'Application Received'
                   ? 'Reject Application'
@@ -161,7 +231,10 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               </MenuItem>
             </>
           )}
-          <MenuItem sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}>
+          <MenuItem
+            onClick={() => setFormModalState(true)}
+            sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+          >
             <StyledIcon src="/static/registration/Info.svg" />
             View Details
           </MenuItem>
@@ -170,7 +243,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               setModalMessage(
                 `Are you sure you want to delete the application from ${enrollment.name}: ${enrollment.email}`
               );
-              setAction('accept_application');
+              setAction('delete_application');
               setModalState(true);
             }}
             sx={{ typography: 'subtitle2', color: '#FF4842', py: 1, px: 2.5 }}
