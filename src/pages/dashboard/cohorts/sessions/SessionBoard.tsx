@@ -22,7 +22,8 @@ import {
   Description,
   Summary,
   SurveyForm,
-  Slides
+  Slides,
+  InstructorSessionMaterials
 } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -37,6 +38,7 @@ import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
 type SessionBoardProps = {
   session: Session | undefined;
   selectedTab: number;
+  isLearner: boolean;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -172,7 +174,7 @@ const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session, selectedTab }: SessionBoardProps) {
+export default function SessionBoard({ session, isLearner, selectedTab }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(selectedTab);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
@@ -238,15 +240,28 @@ export default function SessionBoard({ session, selectedTab }: SessionBoardProps
         innerContent={session?.description || ''}
         resourcesPresent={session?.session_materials && session?.session_materials?.length > 0}
       />
-      <SessionMaterials
-        groupedMaterials={session?.session_materials || []}
-        sessionId={session?.id}
-        cohortId={id}
-        key="session_materials"
-        onTrack={(eventData: string) =>
-          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-        }
-      />
+      {!isLearner ? (
+        <InstructorSessionMaterials
+          groupedMaterialsProp={session?.session_materials || []}
+          sessionId={session?.id}
+          cohortId={id}
+          key="instructor_session_materials"
+          onTrack={
+            (eventData: string) => {}
+            // sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+          }
+        />
+      ) : (
+        <SessionMaterials
+          groupedMaterials={session?.session_materials || []}
+          sessionId={session?.id}
+          cohortId={id}
+          key="session_materials"
+          onTrack={(eventData: string) =>
+            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+          }
+        />
+      )}
     </>,
     <Slides
       key={session?.id}
