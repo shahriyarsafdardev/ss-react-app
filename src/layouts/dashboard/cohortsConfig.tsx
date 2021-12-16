@@ -38,8 +38,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       object.children = [
         {
           title: 'registrations',
-          path: cohort.discord_directory_url,
-          externalUrl: true,
+          path: PATH_DASHBOARD.cohorts.registrations(cohort.id),
           notifications: false
         },
         ...object.children

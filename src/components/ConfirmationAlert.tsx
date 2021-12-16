@@ -4,11 +4,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Box,
-  IconButton,
   Typography
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
 
 type ConfirmationAlertProps = {
   title: string;
@@ -25,21 +22,16 @@ const ConfirmationAlert = ({
   onConfirm,
   open
 }: ConfirmationAlertProps) => (
-  <Dialog open={open} maxWidth="sm" fullWidth>
-    <DialogTitle>{title}</DialogTitle>
-    <Box position="absolute" top={0} right={0}>
-      <IconButton onClick={() => onCancel()}>
-        <Close />
-      </IconButton>
-    </Box>
+  <Dialog open={open} maxWidth="xs" fullWidth>
+    {title && <DialogTitle>{title}</DialogTitle>}
     <DialogContent>
-      <Typography>{alertText}</Typography>
+      <Typography sx={{ fontWeight: 600, textAlign: 'center' }}>{alertText}</Typography>
     </DialogContent>
     <DialogActions>
-      <Button color="secondary" variant="contained" onClick={() => onCancel()}>
+      <Button variant="outlined" onClick={() => onCancel()}>
         Cancel
       </Button>
-      <Button color="error" variant="contained" onClick={() => onConfirm()}>
+      <Button variant="contained" onClick={() => onConfirm()}>
         Confirm
       </Button>
     </DialogActions>

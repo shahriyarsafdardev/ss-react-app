@@ -46,7 +46,7 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
-  const visibleHeaders = ['messaging', 'home'];
+  const visibleHeaders = ['messaging', 'home', 'registrations'];
 
   useEffect(() => {
     const tab = window.location.href.split('/');

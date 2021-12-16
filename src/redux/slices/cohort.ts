@@ -58,6 +58,15 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
     },
+    getEnrollmentsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, enrollments: action.payload.enrollments };
+      }
+    },
 
     updateOnboardingStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
@@ -141,6 +150,17 @@ export function getPeers(cohortID: string, userID: string) {
       const { cohort_id } = response.data;
 
       dispatch(slice.actions.getPeersSuccess({ peers, cohort_id, userID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getEnrollments(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/enrollments.json`);
+      dispatch(slice.actions.getEnrollmentsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
