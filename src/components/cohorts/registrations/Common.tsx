@@ -10,6 +10,7 @@ import {
   acceptApplication,
   deleteApplication,
   rejectApplication,
+  updateApplication,
   paymentRemindApplication
 } from 'redux/slices/cohort';
 
@@ -170,10 +171,15 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const classes = useStyles();
-  const newEnrollment = { ...enrollment };
 
   const handleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleUpdate = async (enrollment: Enrollment) => {
+    await dispatch(updateApplication(cohort_id, enrollment));
+    setAction('');
+    setModalState(false);
   };
 
   const handleAction = () => {
@@ -210,6 +216,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           setOpen(false);
           setFormModalState(false);
         }}
+        zIndex={1400}
         className={classes.enrollmentModal}
       >
         <EnrollmentForm
@@ -217,7 +224,8 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             setOpen(false);
             setFormModalState(false);
           }}
-          enrollment={newEnrollment}
+          onSubmit={(enrollment: Enrollment) => handleUpdate(enrollment)}
+          enrollment={enrollment}
         />
       </Modal>
       <Box>
@@ -297,7 +305,10 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             </>
           )}
           <MenuItem
-            onClick={() => setFormModalState(true)}
+            onClick={() => {
+              setOpen(false);
+              setFormModalState(true);
+            }}
             sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
           >
             <StyledIcon src="/static/registration/Info.svg" />

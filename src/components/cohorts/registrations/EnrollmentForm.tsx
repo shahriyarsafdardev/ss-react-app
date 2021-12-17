@@ -1,7 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
 import * as Yup from 'yup';
-import { RootState, useSelector } from 'redux/store';
-
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import { Box, Grid, Card, Stack, TextField } from '@material-ui/core';
@@ -9,23 +6,7 @@ import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-// axios
 import { Enrollment } from '../../../@types/cohorts';
-import axios from '../../../utils/axios';
-
-interface InitialState {
-  id: string;
-  first_name: string;
-  last_name: string;
-  name: string;
-  email: string;
-  linkedin_url: string;
-  price: number;
-  status: string;
-  stream: string;
-  coupon_code: string;
-  time: string;
-}
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 130,
@@ -36,10 +17,12 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function EnrollmentForm({
   enrollment,
-  onClose
+  onClose,
+  onSubmit
 }: {
   onClose: Function;
   enrollment: Enrollment;
+  onSubmit: Function;
 }) {
   const UpdateUserSchema = Yup.object().shape({
     first_name: Yup.string()
@@ -51,17 +34,17 @@ export default function EnrollmentForm({
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
 
-  const formik = useFormik<InitialState>({
+  const formik = useFormik<Enrollment>({
     enableReinitialize: true,
-    initialValues: { ...enrollment },
+    initialValues: enrollment,
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
+      await onSubmit(values);
       onClose();
     }
   });
 
-  const { values, errors, touched, isSubmitting, handleSubmit, handleChange, getFieldProps } =
-    formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   return (
     <>
