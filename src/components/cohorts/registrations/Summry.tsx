@@ -1,4 +1,3 @@
-import { uniq } from 'lodash';
 import { KeyMetricHighlight, InfoTooltip, changeOccur } from './Common';
 import { Enrollment } from '../../../@types/cohorts';
 
@@ -20,11 +19,13 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             metric={enrollments.length}
             currentTimePeriodLabel={<span>Applications Recieved</span>}
             difference={changeOccur(enrollments, [])}
-            infoTooltip={(difference: string) => (
+            infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`Applications Received this week ${difference} vs last week`}</strong>
+                    <strong>{`${difference} new Application${
+                      difference > 1 ? 's' : ''
+                    } Received this week`}</strong>
                   </div>
                 }
               />
@@ -42,11 +43,13 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               'Paid'
             ])}
             currentTimePeriodLabel={<span>Applications Accepted</span>}
-            infoTooltip={(difference: string) => (
+            infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`Applications Accepted this week ${difference} vs last week`}</strong>
+                    <strong>{`${difference} Application${
+                      difference > 1 ? 's' : ''
+                    } Accepted this week`}</strong>
                   </div>
                 }
               />
@@ -60,11 +63,13 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             }
             difference={changeOccur(enrollments, ['Payment link opened', 'Paid'])}
             currentTimePeriodLabel={<span>Payment Links Opened</span>}
-            infoTooltip={(difference: string) => (
+            infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`Payment Links Opened this week ${difference} vs last week`}</strong>
+                    <strong>{`${difference} user${
+                      difference > 1 ? 's' : ''
+                    } opened payment link this week`}</strong>
                   </div>
                 }
               />
@@ -74,11 +79,13 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
             difference={changeOccur(enrollments, ['Paid'])}
             currentTimePeriodLabel={<span>Paid</span>}
-            infoTooltip={(difference: string) => (
+            infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`Paid this week ${difference} vs last week`}</strong>
+                    <strong>{`${difference} new payment${
+                      difference > 1 ? 's were ' : ' was '
+                    } processed this week`}</strong>
                   </div>
                 }
               />

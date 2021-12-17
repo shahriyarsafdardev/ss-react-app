@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
+import { Box, Button, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
@@ -228,7 +228,45 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           enrollment={enrollment}
         />
       </Modal>
-      <Box>
+      <Stack
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        direction={{ xs: 'column', md: 'row' }}
+      >
+        {enrollment.status == 'Application Received' && (
+          <>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                setModalMessage(
+                  <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
+                );
+                setAction('reject_application');
+                setModalState(true);
+              }}
+            >
+              Reject
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to accept {enrollment.name}’s application and send a
+                    payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
+                  </p>
+                );
+                setAction('accept_application');
+                setModalState(true);
+              }}
+            >
+              Accept
+            </Button>
+          </>
+        )}
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
@@ -245,62 +283,40 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             setOpen(false);
           }}
         >
-          {enrollment.status !== 'Application Rejected' && enrollment.status !== 'Paid' && (
+          {(enrollment.status === 'Application Accepted' ||
+            enrollment.status === 'Payment link opened') && (
             <>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    enrollment.status === 'Application Received' ? (
-                      <p>
-                        Are you sure you want to accept {enrollment.name}’s application and send a
-                        payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
-                      </p>
-                    ) : (
-                      <p>
-                        Are you sure you want to send a payment reminder to {enrollment.name} :{' '}
-                        {enrollment.email}
-                      </p>
-                    )
+                    <p>
+                      Are you sure you want to send a payment reminder to {enrollment.name} :{' '}
+                      {enrollment.email}
+                    </p>
                   );
-                  setAction(
-                    enrollment.status === 'Application Received'
-                      ? 'accept_application'
-                      : 'payment_reminder'
-                  );
+                  setAction('payment_reminder');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Check.svg" />
-                {enrollment.status === 'Application Received'
-                  ? 'Accept Application'
-                  : 'Send Payment Reminder'}
+                Send Payment Reminder
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    enrollment.status === 'Application Received' ? (
-                      <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
-                    ) : (
-                      <p>
-                        Are you sure you want to mark ${enrollment.name}’s application as not
-                        interested
-                      </p>
-                    )
+                    <p>
+                      Are you sure you want to mark ${enrollment.name}’s application as not
+                      interested
+                    </p>
                   );
-                  setAction(
-                    enrollment.status === 'Application Received'
-                      ? 'reject_application'
-                      : 'set_not_interested'
-                  );
+                  setAction('set_not_interested');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Close.svg" />
-                {enrollment.status === 'Application Received'
-                  ? 'Reject Application'
-                  : 'Mark as Not Interested'}
+                Mark as Not Interested
               </MenuItem>
             </>
           )}
@@ -331,7 +347,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             Delete Applicant
           </MenuItem>
         </MenuPopover>
-      </Box>
+      </Stack>
     </>
   );
 };
@@ -340,13 +356,11 @@ export const KeyMetricHighlight = ({
   metric,
   difference,
   currentTimePeriodLabel,
-  previousTimePeriodLabel,
   infoTooltip
 }: {
   metric?: any;
   difference?: any;
   currentTimePeriodLabel?: any;
-  previousTimePeriodLabel?: any;
   infoTooltip: any;
 }) => {
   const classes = useStyles();
