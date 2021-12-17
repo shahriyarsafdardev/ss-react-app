@@ -32,14 +32,16 @@ const StyledText = styled(Typography)(() => ({
 
 export default function MarkCheckbox({
   completed,
-  onChange
+  onChange,
+  number
 }: {
   completed: boolean;
   onChange: Function;
+  number?: Number;
 }) {
   return (
     <StyledCheckBox onClick={() => onChange(!completed)}>
-      <Checkbox checked={completed} />
+      <Checkbox checked={completed} data-testid={`check-box-${number}`} />
       <StyledText> {completed ? 'Marked as Complete' : 'Mark as Complete'}</StyledText>
     </StyledCheckBox>
   );

@@ -248,7 +248,7 @@ export default function SessionBoard({ session }: SessionBoardProps) {
       />
     </>,
     <Slides
-      key="slidesTab"
+      key={session?.id}
       onTrack={(eventData: string) =>
         sendAnalyticsData(sessionNumber, SESSION_EVENTS.slides_tab, eventData)
       }

@@ -13,7 +13,7 @@ import JoinZoomPrompt from '../JoinZoomPrompt';
 import { Summary } from '../sessions';
 
 const StyledSessionPrereadingContainer = styled(Box)(() => ({
-  height: '400px',
+  height: '100%',
   overflowY: 'scroll',
   '&::-webkit-scrollbar': { width: '5px' },
   '&::-webkit-scrollbar-thumb': { borderRadius: '4px', backgroundColor: 'rgba(0, 0, 0, .3)' }
@@ -89,21 +89,22 @@ const SessionPrereading = ({
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
   return (
-    <SectionContainer className="card-2">
+    <SectionContainer className="card-2" data-testid="to-do-card">
       {sessions && cohort ? (
         <>
           {activeSession ? (
             <>
               <Box
+                data-testid="to-do-header"
                 style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
               >
                 {preReadingsCompleted() ? (
                   <>
                     <Box>
                       <p style={{ fontSize: '18px' }}>
-                        🎉 You’re all ready to go for{' '}
+                        🎉 You’re all ready to go for{activeSession.custom_name ? ' our ' : ' '}
                         <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          Session {activeSession?.number}
+                          {activeSession.custom_name || `Session ${activeSession?.number}`}
                         </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
@@ -122,9 +123,9 @@ const SessionPrereading = ({
                   <>
                     <Box>
                       <p style={{ fontSize: '18px' }}>
-                        Get Ready for{' '}
+                        Get Ready for{activeSession.custom_name ? ' our ' : ' '}
                         <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          Session {activeSession?.number}
+                          {activeSession.custom_name || `Session ${activeSession?.number}`}
                         </span>
                       </p>
                       <p style={{ fontSize: '14px' }}>
@@ -161,6 +162,7 @@ const SessionPrereading = ({
                 {list.map((preReading, index) => (
                   <PreReadingRow
                     key={index}
+                    number={index}
                     item={preReading}
                     onPreReadingClick={() =>
                       sendAnalyticsData(
@@ -175,7 +177,7 @@ const SessionPrereading = ({
               </StyledSessionPrereadingContainer>
             </>
           ) : (
-            <Box style={{ height: '400px', overflow: 'scroll' }}>
+            <Box style={{ height: '100%', overflowY: 'scroll' }}>
               <Summary onTrack={() => {}} key="summary" innerContent={cohort.goodbye_message} />
             </Box>
           )}
