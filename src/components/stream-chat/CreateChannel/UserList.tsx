@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import useAuth from 'hooks/useAuth';
 import './UserList.css';
 import moment from 'moment';
-import type { ChannelFilters, ChannelMemberResponse, UserResponse } from 'stream-chat';
+import type { UserResponse } from 'stream-chat';
 
 import { InviteIcon } from '../../../assets';
 
@@ -124,10 +124,21 @@ export const UserList: React.FC<Props> = (props) => {
       try {
         let newMembers = cohortUsers;
         if (showMembers && channel) {
-          const joinedUsers = await channel?.queryMembers({});
-          const joinedMembers = joinedUsers?.members.map((member) => member.user);
+          let joinedUsers: any = [];
+          let flag = true;
+          let memberOffset = 0;
+          while (flag) {
+            // eslint-disable-next-line no-await-in-loop
+            const data: any = await channel?.queryMembers({}, {}, { offset: memberOffset });
+            joinedUsers = [...joinedUsers, ...data.members];
+            if (data?.members.length === 0) {
+              flag = false;
+            }
+            memberOffset += 100;
+          }
+          const joinedMembers = joinedUsers.map((member: { user: any }) => member.user);
           setMembers(joinedMembers);
-          const memberIDs = joinedMembers?.map((member) => member?.id);
+          const memberIDs = joinedMembers?.map((member: { id: any }) => member?.id);
           newMembers = cohortUsers.filter((u: any) => !memberIDs?.includes(u));
         }
         let response;
@@ -155,7 +166,8 @@ export const UserList: React.FC<Props> = (props) => {
           setListEmpty(true);
         }
         setUsersResponse(response.users.length);
-      } catch (event) {
+      } catch (err) {
+        console.log('Error: ', err);
         setError(true);
       }
 
@@ -198,22 +210,6 @@ export const UserList: React.FC<Props> = (props) => {
                       cohortID={cohortID}
                     />
                   ))}
-                {usersResponse !== 0 && (
-                  <button
-                    style={{
-                      height: '45px',
-                      padding: '10px 0',
-                      backgroundColor: '#4d4dcd',
-                      cursor: 'pointer',
-                      color: '#FFFFFF',
-                      fontSize: '18px'
-                    }}
-                    type="button"
-                    onClick={() => offSetHandler()}
-                  >
-                    Load more
-                  </button>
-                )}
               </>
             )}
           </ListContainer>
@@ -230,17 +226,16 @@ export const UserList: React.FC<Props> = (props) => {
             <div className="user-list__message">Loading users...</div>
           ) : (
             <>
-              {users?.length &&
-                users.map((user, i) => (
-                  <UserItem
-                    index={i}
-                    key={user.id}
-                    setSelectedUsers={setSelectedUsers}
-                    member={false}
-                    user={user}
-                    cohortID={cohortID}
-                  />
-                ))}
+              {users?.map((user, i) => (
+                <UserItem
+                  index={i}
+                  key={user.id}
+                  setSelectedUsers={setSelectedUsers}
+                  member={false}
+                  user={user}
+                  cohortID={cohortID}
+                />
+              ))}
               {usersResponse !== 0 && (
                 <button
                   style={{
