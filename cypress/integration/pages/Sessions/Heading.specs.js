@@ -12,7 +12,7 @@ describe('Sessions > Heading', () => {
     cy.server();
     cy.login();
     //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
-    cy.get('#sessions-1').
+    cy.get('#sessions-2').
     click({ multiple: true, force: true });
   });
 

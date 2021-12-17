@@ -3,7 +3,7 @@ describe('Sessions > Resources', () => {
   before(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-1').click({ multiple: true, force: true });
+    cy.get('#sessions-2').click({ multiple: true, force: true });
     cy.get('[data-testid=session-resources]').click({ force: true });
   });
 

@@ -17,7 +17,7 @@ describe('Sessions > List', () => {
   before(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-1')
+    cy.get('#sessions-2')
     .click({ multiple: true, force: true });
   });
 

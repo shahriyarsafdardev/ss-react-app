@@ -3,7 +3,7 @@ describe('Sessions > Summary', () => {
   before(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-1').
+    cy.get('#sessions-2').
     click({ multiple: true, force: true });
     cy.get('[data-testid=session-notes]')
     .click({ force: true });
