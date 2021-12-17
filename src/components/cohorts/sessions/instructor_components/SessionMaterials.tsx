@@ -8,6 +8,7 @@ import { GroupedSessionMaterial } from '../../../../@types/cohorts';
 import PreReadingRow from '../../home/PreReadingRow';
 import { useDispatch } from '../../../../redux/store';
 import { updateMaterialStatus } from '../../../../redux/slices/cohort';
+import SessionMaterialForm from './SessionMaterialForm';
 
 const ResourcesContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
@@ -44,6 +45,7 @@ export default function SessionMaterials({
 }: SessionMaterialProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [modalState, setModalState] = useState(false);
 
   const [groupedMaterials, setGroupedMaterials] =
     useState<GroupedSessionMaterial[]>(groupedMaterialsProp);
@@ -109,6 +111,12 @@ export default function SessionMaterials({
 
   return (
     <ResourcesContainer id="session_materials">
+      <SessionMaterialForm
+        modalState={modalState}
+        modalHandler={setModalState}
+        action="create"
+        onSave={}
+      />
       <DragDropContext onDragEnd={onDragEnd}>
         {/* Prereading materials list */}
         <Droppable key="list-0" droppableId="0">
@@ -153,6 +161,7 @@ export default function SessionMaterials({
                   ))}
                 </div>
                 <StyledButton
+                  onClick={() => setModalState(true)}
                   variant="outlined"
                   startIcon={<img src="/static/icons/plus-icon.svg" alt="plus" />}
                 >
