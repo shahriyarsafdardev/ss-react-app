@@ -4,6 +4,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Box, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
+import moment from 'moment';
 
 import {
   acceptApplication,
@@ -21,6 +22,7 @@ import { makeStyles } from '@material-ui/styles';
 import { useDispatch } from '../../../redux/store';
 import { Enrollment } from '../../../@types/cohorts';
 import MenuPopover from '../../MenuPopover';
+import EnrollmentForm from './EnrollmentForm';
 
 const StyledIcon = styled('img')(() => ({
   marginRight: 5,
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   highlightContainer: {
     backgroundColor: 'white',
-    height: '135px',
+    // height: '135px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
@@ -58,11 +60,46 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     fontSize: '48px'
   },
+  enrollmentModal: {
+    width: '60% !important',
+    margin: 'auto'
+  },
   positive: {
     color: '#219653'
   },
   negative: {
     color: '#dd491a'
+  },
+  innerDiv: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  infoIcon: {
+    marginLeft: '3px',
+    marginBottom: 'auto',
+    marginTop: '13px'
+  },
+  difference: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: '8px',
+    padding: '1px 8px',
+    height: '48px',
+    borderRadius: '6px',
+    alignItems: 'center'
+  },
+  primary: {
+    color: '#2F80ED !important',
+    background: 'rgba(47, 128, 237, 0.12)'
+  },
+  warning: {
+    color: '#B78103',
+    background: 'rgba(255, 193, 7, 0.16)'
+  },
+  success: {
+    color: '#00AB55',
+    background: 'rgba(84, 214, 44, 0.16)'
   }
 }));
 
@@ -76,9 +113,26 @@ export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAli
       classes={{ tooltip: leftAlign ? classes.left : classes.center }}
       title={<span className="ui-copy text-white">{title}</span>}
     >
-      <img className="inline ml-1" src="/static/registration/Info.svg" alt="Info Icon" />
+      <img className={classes.infoIcon} src="/static/registration/Info.svg" alt="Info Icon" />
     </Tooltip>
   );
+};
+
+export const changeOccur = (enrollments: Enrollment[], statuses: string[] | undefined) => {
+  const totalEnrollments = statuses
+    ? enrollments.filter((e: { status: string }) => statuses.includes(e.status))
+    : enrollments;
+  const currentWeek = moment().isoWeek();
+  const lastWeek = moment().isoWeek() - 1;
+  const newEnrollments = totalEnrollments.filter((e) => currentWeek === moment(e.time).isoWeek());
+  const lastWeekEnrollments = totalEnrollments.filter((e) => lastWeek === moment(e.time).isoWeek());
+  const difference = newEnrollments.length - lastWeekEnrollments.length;
+  // const difference = totalEnrollments.length - newEnrollments.length;
+  return {
+    color: pickColor(statuses ? statuses[0] : 'Application Received'),
+    total: totalEnrollments.length,
+    difference
+  };
 };
 
 export const RegistrationsHeader = ({}) => (
@@ -105,29 +159,18 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
     </StyledViewButton>
   </Stack>
 );
-const EnrollmentModal = ({
-  state,
-  onClose,
-  onComplete
-}: {
-  state: boolean;
-  onClose: Function;
-  onComplete: Function;
-}) => (
-  <Modal open={state} onClose={() => onClose()}>
-    <p>EnrollmentForm</p>
-  </Modal>
-);
 
 export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
   const [formModalState, setFormModalState] = useState(false);
-  const [modalMesage, setModalMessage] = useState('');
+  const [modalMesage, setModalMessage] = useState<JSX.Element>(<></>);
   const [action, setAction] = useState('');
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const classes = useStyles();
+  const newEnrollment = { ...enrollment };
 
   const handleOpen = () => {
     setOpen(!open);
@@ -146,7 +189,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
     setAction('');
     setOpen(false);
     setModalState(false);
-    setModalMessage('');
+    setModalMessage(<></>);
   };
 
   return (
@@ -161,17 +204,22 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
         }}
         onConfirm={() => handleAction()}
       />
-      <EnrollmentModal
-        state={formModalState}
+      <Modal
+        open={formModalState}
         onClose={() => {
           setOpen(false);
           setFormModalState(false);
         }}
-        onComplete={() => {
-          setOpen(false);
-          setFormModalState(false);
-        }}
-      />
+        className={classes.enrollmentModal}
+      >
+        <EnrollmentForm
+          onClose={() => {
+            setOpen(false);
+            setFormModalState(false);
+          }}
+          enrollment={newEnrollment}
+        />
+      </Modal>
       <Box>
         <IconButton
           aria-label="more"
@@ -194,7 +242,17 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    `Are you sure you want to accept ${enrollment.name}’s application and send a payment link for USD ${enrollment.price}`
+                    enrollment.status === 'Application Received' ? (
+                      <p>
+                        Are you sure you want to accept {enrollment.name}’s application and send a
+                        payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
+                      </p>
+                    ) : (
+                      <p>
+                        Are you sure you want to send a payment reminder to {enrollment.name} :{' '}
+                        {enrollment.email}
+                      </p>
+                    )
                   );
                   setAction(
                     enrollment.status === 'Application Received'
@@ -213,7 +271,14 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    `Are you sure you want to reject ${enrollment.name}’s application.`
+                    enrollment.status === 'Application Received' ? (
+                      <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
+                    ) : (
+                      <p>
+                        Are you sure you want to mark ${enrollment.name}’s application as not
+                        interested
+                      </p>
+                    )
                   );
                   setAction(
                     enrollment.status === 'Application Received'
@@ -241,7 +306,10 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           <MenuItem
             onClick={() => {
               setModalMessage(
-                `Are you sure you want to delete the application from ${enrollment.name}: ${enrollment.email}`
+                <p>
+                  Are you sure you want to <span style={{ color: '#ff4842' }}>delete</span> the
+                  application from {enrollment.name}: {enrollment.email}.
+                </p>
               );
               setAction('delete_application');
               setModalState(true);
@@ -261,30 +329,43 @@ export const KeyMetricHighlight = ({
   metric,
   difference,
   currentTimePeriodLabel,
-  previousTimePeriodLabel
+  previousTimePeriodLabel,
+  infoTooltip
 }: {
   metric?: any;
   difference?: any;
   currentTimePeriodLabel?: any;
   previousTimePeriodLabel?: any;
+  infoTooltip: any;
 }) => {
   const classes = useStyles();
   return (
     <div className={classes.highlightContainer}>
       <p className="font-semibold">{currentTimePeriodLabel} </p>
-      <h1 className={classes.heading}>{metric}</h1>
-      {/* {difference != null && (
-      <p>
-        {difference >= 0 ? (
-          <span className={classes.positive}> +{difference} </span>
-        ) : (
-          <span className={classes.negative}> {difference} </span>
+      <div className={classes.innerDiv}>
+        <h1 className={classes.heading}>{metric}</h1>
+        {difference !== null && difference.difference > 0 && (
+          <>
+            <p className={`${classPicker(classes, difference.color)} ${classes.difference}`}>
+              <span>
+                {' '}
+                {difference.difference >= 0 && '+'}
+                {difference.difference}{' '}
+              </span>
+            </p>
+            {infoTooltip && infoTooltip(difference.difference)}
+          </>
         )}
-        vs {previousTimePeriodLabel}
-      </p>
-    )} */}
+      </div>
     </div>
   );
+};
+
+const classPicker = (classes: { primary: any; warning: any; success: any }, className: string) => {
+  if (className === 'primary') return classes.primary;
+  if (className === 'warning') return classes.warning;
+  if (className === 'success') return classes.success;
+  return '';
 };
 
 export const pickColor = (status: string) => {

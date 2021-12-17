@@ -9,7 +9,7 @@ import {
 
 type ConfirmationAlertProps = {
   title: string;
-  alertText: string;
+  alertText: JSX.Element | string;
   open: boolean;
   onCancel: Function;
   onConfirm: Function;
@@ -28,10 +28,18 @@ const ConfirmationAlert = ({
       <Typography sx={{ fontWeight: 600, textAlign: 'center' }}>{alertText}</Typography>
     </DialogContent>
     <DialogActions>
-      <Button variant="outlined" onClick={() => onCancel()}>
+      <Button
+        variant="outlined"
+        onClick={() => onCancel()}
+        style={{ width: '-webkit-fill-available' }}
+      >
         Cancel
       </Button>
-      <Button variant="contained" onClick={() => onConfirm()}>
+      <Button
+        variant="contained"
+        onClick={() => onConfirm()}
+        style={{ width: '-webkit-fill-available' }}
+      >
         Confirm
       </Button>
     </DialogActions>

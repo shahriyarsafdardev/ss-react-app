@@ -1,10 +1,8 @@
 import { uniq } from 'lodash';
-import { KeyMetricHighlight, InfoTooltip } from './Common';
+import { KeyMetricHighlight, InfoTooltip, changeOccur } from './Common';
 import { Enrollment } from '../../../@types/cohorts';
 
 export default function Summary({ enrollments }: { enrollments: Enrollment[] }) {
-  const streams = uniq(enrollments?.filter((e: any) => e.stream));
-
   return (
     <div style={{ marginBottom: '3rem' }}>
       <>
@@ -21,6 +19,16 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
           <KeyMetricHighlight
             metric={enrollments.length}
             currentTimePeriodLabel={<span>Applications Recieved</span>}
+            difference={changeOccur(enrollments, [])}
+            infoTooltip={(difference: string) => (
+              <InfoTooltip
+                title={
+                  <div>
+                    <strong>{`Applications Received this week ${difference} vs last week`}</strong>
+                  </div>
+                }
+              />
+            )}
           />
           <KeyMetricHighlight
             metric={
@@ -28,33 +36,21 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status)
               ).length
             }
-            currentTimePeriodLabel={
-              <span>
-                Applications Accepted
-                <InfoTooltip
-                  title={
-                    <div>
-                      <strong>Stream Breakdown</strong>
-                      <ul>
-                        {streams.map((e: any, index: any) => (
-                          <li key={index}>
-                            {e || 'Empty'} ===&gt;{' '}
-                            {
-                              enrollments.filter(
-                                (r: { status: string; stream: any }) =>
-                                  ['Application Accepted', 'Payment link opened', 'Paid'].includes(
-                                    r.status
-                                  ) && r.stream == e
-                              ).length
-                            }
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  }
-                />
-              </span>
-            }
+            difference={changeOccur(enrollments, [
+              'Application Accepted',
+              'Payment link opened',
+              'Paid'
+            ])}
+            currentTimePeriodLabel={<span>Applications Accepted</span>}
+            infoTooltip={(difference: string) => (
+              <InfoTooltip
+                title={
+                  <div>
+                    <strong>{`Applications Accepted this week ${difference} vs last week`}</strong>
+                  </div>
+                }
+              />
+            )}
           />
           <KeyMetricHighlight
             metric={
@@ -62,60 +58,31 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 ['Payment link opened', 'Paid'].includes(e.status)
               ).length
             }
-            currentTimePeriodLabel={
-              <span>
-                Payment Links Opened
-                <InfoTooltip
-                  title={
-                    <div>
-                      <strong>Stream Breakdown</strong>
-                      <ul>
-                        {streams.map((e: any, index: any) => (
-                          <li key={index}>
-                            {e || 'Empty'} ===&gt;{' '}
-                            {
-                              enrollments.filter(
-                                (r: { status: string; stream: any }) =>
-                                  ['Payment link opened', 'Paid'].includes(r.status) &&
-                                  r.stream == e
-                              ).length
-                            }
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  }
-                />
-              </span>
-            }
+            difference={changeOccur(enrollments, ['Payment link opened', 'Paid'])}
+            currentTimePeriodLabel={<span>Payment Links Opened</span>}
+            infoTooltip={(difference: string) => (
+              <InfoTooltip
+                title={
+                  <div>
+                    <strong>{`Payment Links Opened this week ${difference} vs last week`}</strong>
+                  </div>
+                }
+              />
+            )}
           />
           <KeyMetricHighlight
-            metric={enrollments.filter((e: { status: string }) => e.status == 'Paid').length}
-            currentTimePeriodLabel={
-              <span>
-                Paid
-                <InfoTooltip
-                  title={
-                    <div>
-                      <strong>Stream Breakdown</strong>
-                      <ul>
-                        {streams.map((e: any, index: any) => (
-                          <li key={index}>
-                            {e || 'Empty'} ===&gt;{' '}
-                            {
-                              enrollments.filter(
-                                (r: { status: string; stream: any }) =>
-                                  r.status == 'Paid' && r.stream == e
-                              ).length
-                            }
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  }
-                />
-              </span>
-            }
+            metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
+            difference={changeOccur(enrollments, ['Paid'])}
+            currentTimePeriodLabel={<span>Paid</span>}
+            infoTooltip={(difference: string) => (
+              <InfoTooltip
+                title={
+                  <div>
+                    <strong>{`Paid this week ${difference} vs last week`}</strong>
+                  </div>
+                }
+              />
+            )}
           />
         </div>
       </>
