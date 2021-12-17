@@ -17,8 +17,7 @@ describe('Sessions > List', () => {
   before(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-2')
-    .click({ multiple: true, force: true });
+    cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   it('Displays all sessions that are allowed to display in Session Tab', () => {

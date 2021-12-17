@@ -11,9 +11,7 @@ describe('Sessions > Heading', () => {
   before(() => {
     cy.server();
     cy.login();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
-    cy.get('#sessions-2').
-    click({ multiple: true, force: true });
+    cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   it('Displays correct session number', () => {

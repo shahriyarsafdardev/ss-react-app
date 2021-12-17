@@ -9,7 +9,7 @@ describe('Sessions > Slides', () => {
   before(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-2').click({ multiple: true, force: true });
+    cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   context('When the session slides are not uploaded', () => {

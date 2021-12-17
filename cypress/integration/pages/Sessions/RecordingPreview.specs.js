@@ -22,8 +22,7 @@ describe('Sessions > RecordingsPreview', () => {
   beforeEach(() => {
     cy.server();
     cy.login();
-    cy.get('#sessions-2')
-    .click({ multiple: true, force: true });
+    cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   context('When remaining session time is more than 1 day', () => {
