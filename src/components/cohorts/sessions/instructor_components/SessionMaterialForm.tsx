@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'components/animate';
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, Typography, TextField, Tabs, Tab } from '@material-ui/core';
@@ -61,6 +61,14 @@ const SessionMaterialForm = ({
   const [source, setSource] = useState('');
   const [url, setUrl] = useState('');
   const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    setTab(0);
+    setTitle('');
+    setSource('');
+    setUrl('');
+    setFile(null);
+  }, [modalState]);
 
   const handleSave = () => {
     onSave({
