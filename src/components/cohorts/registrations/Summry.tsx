@@ -1,20 +1,14 @@
+import moment from 'moment';
+import { Grid, Stack } from '@material-ui/core';
 import { KeyMetricHighlight, InfoTooltip, changeOccur } from './Common';
 import { Enrollment } from '../../../@types/cohorts';
 
 export default function Summary({ enrollments }: { enrollments: Enrollment[] }) {
+  const startOfWeek = moment().startOf('week').add(1, 'days').format('Do of MMMM');
   return (
-    <div style={{ marginBottom: '3rem' }}>
-      <>
-        <div
-          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10"
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-around',
-            margin: 'auto'
-          }}
-        >
+    <Stack sx={{ margin: '0 1rem 2rem 1rem' }} maxWidth="xl">
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.length}
             currentTimePeriodLabel={<span>Applications Recieved</span>}
@@ -23,14 +17,21 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`${difference} new Application${
-                      difference > 1 ? 's' : ''
-                    } Received this week`}</strong>
+                    <strong>
+                      {`${difference} new application${
+                        difference > 1 ? 's were ' : ' was '
+                      } recieved`}
+                      <br />
+                      {`since Monday the ${startOfWeek}`}
+                    </strong>
                   </div>
                 }
               />
             )}
-          />
+          />{' '}
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={
               enrollments.filter((e: { status: string }) =>
@@ -47,14 +48,21 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`${difference} Application${
-                      difference > 1 ? 's' : ''
-                    } Accepted this week`}</strong>
+                    <strong>
+                      {`${difference} new application${
+                        difference > 1 ? 's were ' : ' was '
+                      } accepted`}
+                      <br />
+                      {`since Monday the ${startOfWeek}`}
+                    </strong>
                   </div>
                 }
               />
             )}
-          />
+          />{' '}
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={
               enrollments.filter((e: { status: string }) =>
@@ -67,14 +75,21 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`${difference} user${
-                      difference > 1 ? 's' : ''
-                    } opened payment link this week`}</strong>
+                    <strong>
+                      {`${difference} new payment link${
+                        difference > 1 ? 's were ' : ' was '
+                      } opened`}
+                      <br />
+                      {`since Monday the ${startOfWeek}`}
+                    </strong>
                   </div>
                 }
               />
             )}
-          />
+          />{' '}
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
             difference={changeOccur(enrollments, ['Paid'])}
@@ -83,16 +98,20 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               <InfoTooltip
                 title={
                   <div>
-                    <strong>{`${difference} new payment${
-                      difference > 1 ? 's were ' : ' was '
-                    } processed this week`}</strong>
+                    <strong>
+                      {`${difference} new payment${
+                        difference > 1 ? 's were ' : ' was '
+                      } recveived since`}
+                      <br />
+                      {`since Monday the ${startOfWeek}`}
+                    </strong>
                   </div>
                 }
               />
             )}
-          />
-        </div>
-      </>
-    </div>
+          />{' '}
+        </Grid>
+      </Grid>
+    </Stack>
   );
 }

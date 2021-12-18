@@ -55,7 +55,11 @@ export default function RegistrationsTab() {
     <Page title="ScholarSite | Homepage">
       <Summary enrollments={enrollments} />
       <RegistrationsContainer>
-        <RegistrationsHeader />
+        <RegistrationsHeader
+          enrollments={enrollments}
+          cohort_name={cohort.name}
+          cohort_intake={cohort.intake}
+        />
         <RegistrationsList enrollments={enrollments.slice(0, limit)} />
         {limit !== enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />

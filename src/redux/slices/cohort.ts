@@ -214,6 +214,20 @@ export function rejectApplication(cohortID: string, enrollmentID: string) {
   };
 }
 
+export function notInterestedApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/not_interested.json`
+      );
+
+      dispatch(slice.actions.updateApplicationSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function paymentRemindApplication(cohortID: string, enrollmentID: string) {
   return async () => {
     try {
