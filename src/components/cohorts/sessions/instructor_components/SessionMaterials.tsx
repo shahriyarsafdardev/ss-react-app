@@ -4,6 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { makeStyles } from '@material-ui/styles';
 import axios from 'utils/axios';
+import { useSnackbar } from 'notistack5';
 import { GroupedSessionMaterial } from '../../../../@types/cohorts';
 import PreReadingRow from '../../home/PreReadingRow';
 import { useDispatch } from '../../../../redux/store';
@@ -43,6 +44,7 @@ export default function SessionMaterials({
   cohortId,
   onTrack
 }: SessionMaterialProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
@@ -109,13 +111,32 @@ export default function SessionMaterials({
     }
   };
 
+  const onSavePrereading = (data: {}) => {
+    axios
+      .post(`/cohort_sessions/${sessionId}/session_materials.json`, { data })
+      .then((res) => {
+        const tempMaterials: GroupedSessionMaterial[] = [...groupedMaterials];
+
+        tempMaterials[0] = {
+          ...tempMaterials[0],
+          session_materials: [res.data, ...tempMaterials[0].session_materials]
+        };
+        setGroupedMaterials(tempMaterials);
+        enqueueSnackbar('Prereading created successfully', { variant: 'success' });
+        setModalState(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <ResourcesContainer id="session_materials">
       <SessionMaterialForm
         modalState={modalState}
         modalHandler={setModalState}
         action="create"
-        onSave={}
+        onSave={(formData: any) => onSavePrereading({ ...formData, category: 'prereading' })}
       />
       <DragDropContext onDragEnd={onDragEnd}>
         {/* Prereading materials list */}
