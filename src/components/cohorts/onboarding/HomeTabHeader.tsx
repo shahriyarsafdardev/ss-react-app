@@ -1,7 +1,5 @@
 import React from 'react';
 import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core//Step';
-import StepLabel from '@material-ui/core//StepLabel';
 import { Typography, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';

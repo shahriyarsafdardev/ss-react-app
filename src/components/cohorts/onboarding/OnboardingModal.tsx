@@ -6,11 +6,14 @@ import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
-import ProfileForm from 'pages/dashboard/cohorts/Home/ProfileForm';
 import { useDispatch, RootState, useSelector } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
+
+import ProfileForm from './UserInfoForm';
+import CompanyInfoForm from './CompanyInfoForm';
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
+
 import {
   Question1,
   Question2,
@@ -280,10 +283,21 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 2) {
+      // return (
+      //   <Question1
+      //     currentAnswer={responses[`question-${activeStep}`]}
+      //     setCurrentAnswer={updateAnswers}
+      //   />
+      // );
       return (
-        <Question1
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
+        <CompanyInfoForm
+          companyProfile={{
+            name: homeConfig?.participant_profile.current_company || '',
+            logo_url: '',
+            industries: homeConfig?.participant_profile.current_industry_category_selections || [],
+            number_of_employees: ''
+          }}
+          onSubmit={() => {}}
         />
       );
     }
@@ -425,25 +439,23 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             </StyledButton>
           )}
 
-          {activeStep !== 1 && (
-            <StyledButton
-              variant="contained"
-              className="next"
-              loading={isSubmitting}
-              disabled={
-                activeStep > 0 &&
-                activeStep !== 1 &&
-                activeStep <= 10 &&
-                (!responses[`question-${activeStep}`] ||
-                  responses[`question-${activeStep}`].length === 0)
-              }
-              onClick={() => onStepChange(activeStep)}
-              data-testid="btn-next"
-            >
-              {activeStep === 10 ? 'Submit' : 'Next'}
-            </StyledButton>
-          )}
-          {activeStep === 1 && (
+          <StyledButton
+            variant="contained"
+            className="next"
+            loading={isSubmitting}
+            disabled={
+              activeStep > 0 &&
+              activeStep !== 1 &&
+              activeStep <= 10 &&
+              (!responses[`question-${activeStep}`] ||
+                responses[`question-${activeStep}`].length === 0)
+            }
+            onClick={() => onStepChange(activeStep)}
+            data-testid="btn-next"
+          >
+            {activeStep === 10 ? 'Submit' : 'Next'}
+          </StyledButton>
+          {/* {activeStep === 1 && (
             <StyledButton
               form="profile-form"
               type="submit"
@@ -453,7 +465,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             >
               Next
             </StyledButton>
-          )}
+          )} */}
         </ButtonsContainer>
       </ContentContainer>
     </OnboardingStepsContainer>
