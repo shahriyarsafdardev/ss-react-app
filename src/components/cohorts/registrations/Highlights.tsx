@@ -6,13 +6,13 @@ import { Enrollment } from '../../../@types/cohorts';
 export default function Summary({ enrollments }: { enrollments: Enrollment[] }) {
   const startOfWeek = moment().startOf('week').add(1, 'days').format('Do of MMMM');
   return (
-    <Stack sx={{ margin: '0 1rem 2rem 1rem' }} maxWidth="xl">
+    <Stack sx={{ margin: '0 1rem 1.2rem 1rem' }} maxWidth="xl">
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.length}
             currentTimePeriodLabel={<span>Applications Recieved</span>}
-            difference={changeOccur(enrollments, [])}
+            difference={changeOccur(enrollments, [], 'time')}
             infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
@@ -38,11 +38,17 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status)
               ).length
             }
-            difference={changeOccur(enrollments, [
-              'Application Accepted',
-              'Payment link opened',
-              'Paid'
-            ])}
+            difference={changeOccur(
+              enrollments,
+              [
+                'Application Accepted',
+                'Payment link opened',
+                'Paid',
+                'Application Rejected',
+                'Not Interested'
+              ],
+              'application_accepted_time'
+            )}
             currentTimePeriodLabel={<span>Applications Accepted</span>}
             infoTooltip={(difference: number) => (
               <InfoTooltip
@@ -69,7 +75,11 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 ['Payment link opened', 'Paid'].includes(e.status)
               ).length
             }
-            difference={changeOccur(enrollments, ['Payment link opened', 'Paid'])}
+            difference={changeOccur(
+              enrollments,
+              ['Payment link opened', 'Paid', 'Application Rejected', 'Not Interested'],
+              'payment_link_opened_time'
+            )}
             currentTimePeriodLabel={<span>Payment Links Opened</span>}
             infoTooltip={(difference: number) => (
               <InfoTooltip
@@ -92,7 +102,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
-            difference={changeOccur(enrollments, ['Paid'])}
+            difference={changeOccur(enrollments, ['Paid'], 'paid_time')}
             currentTimePeriodLabel={<span>Paid</span>}
             infoTooltip={(difference: number) => (
               <InfoTooltip
@@ -103,7 +113,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                         difference > 1 ? 's were ' : ' was '
                       } recveived since`}
                       <br />
-                      {`since Monday the ${startOfWeek}`}
+                      {`Monday the ${startOfWeek}`}
                     </strong>
                   </div>
                 }

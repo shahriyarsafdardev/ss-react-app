@@ -109,22 +109,6 @@ const slice = createSlice({
         }
       }
     },
-    updateApplicationSuccess(state, action) {
-      const targetCohortIndex = state.cohorts.findIndex(
-        (cohort) => cohort.id === action.payload.cohort_id
-      );
-      if (targetCohortIndex !== -1) {
-        const updated = state.cohorts[targetCohortIndex].enrollments;
-        const targetEnrollmentIndex = updated.findIndex(
-          (enrollment) => enrollment.id === action.payload.enrollment_id
-        );
-
-        if (targetEnrollmentIndex !== -1) {
-          updated[targetEnrollmentIndex].status = action.payload.status;
-          state.cohorts[targetCohortIndex].enrollments = updated;
-        }
-      }
-    },
     updateRegistrationSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -193,7 +177,9 @@ export function acceptApplication(cohortID: string, enrollmentID: string) {
         `/cohorts/${cohortID}/enrollments/${enrollmentID}/accept_application.json`
       );
 
-      dispatch(slice.actions.updateApplicationSuccess(response.data));
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -207,7 +193,9 @@ export function rejectApplication(cohortID: string, enrollmentID: string) {
         `/cohorts/${cohortID}/enrollments/${enrollmentID}/reject_application.json`
       );
 
-      dispatch(slice.actions.updateApplicationSuccess(response.data));
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -221,7 +209,9 @@ export function notInterestedApplication(cohortID: string, enrollmentID: string)
         `/cohorts/${cohortID}/enrollments/${enrollmentID}/not_interested.json`
       );
 
-      dispatch(slice.actions.updateApplicationSuccess(response.data));
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -235,7 +225,9 @@ export function paymentRemindApplication(cohortID: string, enrollmentID: string)
         `/cohorts/${cohortID}/enrollments/${enrollmentID}/payment_reminder.json`
       );
 
-      dispatch(slice.actions.updateApplicationSuccess(response.data));
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -245,7 +237,7 @@ export function paymentRemindApplication(cohortID: string, enrollmentID: string)
 export function deleteApplication(cohortID: string, enrollmentID: string) {
   return async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `/cohorts/${cohortID}/enrollments/${enrollmentID}/delete_application.json`
       );
 

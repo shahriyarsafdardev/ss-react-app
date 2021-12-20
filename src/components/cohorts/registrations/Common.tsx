@@ -120,16 +120,18 @@ export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAli
   );
 };
 
-export const changeOccur = (enrollments: Enrollment[], statuses: string[]) => {
+export const changeOccur = (enrollments: any, statuses: string[], type: string) => {
   const totalEnrollments =
     statuses.length > 0
       ? enrollments.filter((e: { status: string }) => statuses.includes(e.status))
       : enrollments;
   const startDate = moment().startOf('week').add(1, 'days');
-  const newEnrollments = totalEnrollments.filter((e) => moment(e.time) > startDate);
+  const newEnrollments = totalEnrollments.filter(
+    (e: any) => !!e[type] && moment(e[type]) >= startDate
+  );
   const difference = newEnrollments.length;
   return {
-    color: pickColor(statuses ? statuses[0] : 'Application Received'),
+    color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
     total: totalEnrollments.length,
     difference
   };
@@ -277,7 +279,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
                 setModalMessage(
                   <p>
                     Are you sure you want to accept {enrollment.name}’s application and send a
-                    payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
+                    payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price || 0}</p>{' '}
                   </p>
                 );
                 setAction('accept_application');
@@ -303,42 +305,56 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             setOpen(false);
           }}
         >
-          {(enrollment.status === 'Application Accepted' ||
-            enrollment.status === 'Payment link opened') && (
+          {enrollment.status == 'Application Received' && (
             <>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
                     <p>
-                      Are you sure you want to send a payment reminder to {enrollment.name} :{' '}
-                      {enrollment.email}
+                      Are you sure you want to accept {enrollment.name}’s application and send a
+                      payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
                     </p>
                   );
-                  setAction('payment_reminder');
+                  setAction('accept_application');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Check.svg" />
-                Send Payment Reminder
+                Accept Application
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    <p>
-                      Are you sure you want to mark ${enrollment.name}’s application as not
-                      interested
-                    </p>
+                    <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
                   );
-                  setAction('set_not_interested');
+                  setAction('reject_application');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Close.svg" />
-                Mark as Not Interested
+                Reject Application
               </MenuItem>
             </>
+          )}
+          {(enrollment.status === 'Application Accepted' ||
+            enrollment.status === 'Payment link opened') && (
+            <MenuItem
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to mark ${enrollment.name}’s application as not interested
+                  </p>
+                );
+                setAction('set_not_interested');
+                setModalState(true);
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <StyledIcon src="/static/registration/Close.svg" />
+              Mark as Not Interested
+            </MenuItem>
           )}
           <MenuItem
             onClick={() => {
