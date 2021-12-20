@@ -118,6 +118,9 @@ export type Enrollment = {
   stream: string;
   coupon_code: string;
   time: string;
+  application_accepted_time: string;
+  payment_link_opened_time: string;
+  paid_time: string;
 };
 
 export type Cohort = {

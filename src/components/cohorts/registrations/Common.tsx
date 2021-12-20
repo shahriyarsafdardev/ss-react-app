@@ -1,16 +1,18 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
+import { Box, Button, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
+import * as XLSX from 'xlsx';
 
 import {
   acceptApplication,
   deleteApplication,
   rejectApplication,
   updateApplication,
+  notInterestedApplication,
   paymentRemindApplication
 } from 'redux/slices/cohort';
 
@@ -28,7 +30,8 @@ import EnrollmentForm from './EnrollmentForm';
 const StyledIcon = styled('img')(() => ({
   marginRight: 5,
   width: 24,
-  height: 24
+  height: 24,
+  cursor: 'pointer'
 }));
 
 const StyledViewButton = styled(Typography)(() => ({
@@ -49,14 +52,12 @@ const useStyles = makeStyles((theme) => ({
   },
   highlightContainer: {
     backgroundColor: 'white',
-    // height: '135px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
     padding: '1rem 2rem',
     boxShadow: 'rgb(145 158 171 / 24%) 0px 0px 2px, rgb(145 158 171 / 24%) 0px 16px 32px -4px',
-    borderRadius: '16px',
-    width: '252px'
+    borderRadius: '16px'
   },
   heading: {
     fontSize: '48px'
@@ -119,33 +120,57 @@ export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAli
   );
 };
 
-export const changeOccur = (enrollments: Enrollment[], statuses: string[] | undefined) => {
-  const totalEnrollments = statuses
-    ? enrollments.filter((e: { status: string }) => statuses.includes(e.status))
-    : enrollments;
-  const currentWeek = moment().isoWeek();
-  const lastWeek = moment().isoWeek() - 1;
-  const newEnrollments = totalEnrollments.filter((e) => currentWeek === moment(e.time).isoWeek());
-  const lastWeekEnrollments = totalEnrollments.filter((e) => lastWeek === moment(e.time).isoWeek());
-  const difference = newEnrollments.length - lastWeekEnrollments.length;
-  // const difference = totalEnrollments.length - newEnrollments.length;
+export const changeOccur = (enrollments: any, statuses: string[], type: string) => {
+  const totalEnrollments =
+    statuses.length > 0
+      ? enrollments.filter((e: { status: string }) => statuses.includes(e.status))
+      : enrollments;
+  const startDate = moment().startOf('week').add(1, 'days');
+  const newEnrollments = totalEnrollments.filter(
+    (e: any) => !!e[type] && moment(e[type]) >= startDate
+  );
+  const difference = newEnrollments.length;
   return {
-    color: pickColor(statuses ? statuses[0] : 'Application Received'),
+    color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
     total: totalEnrollments.length,
     difference
   };
 };
 
-export const RegistrationsHeader = ({}) => (
-  <Stack
-    direction="row"
-    justifyContent="space-between"
-    width="-webkit-fill-available"
-    sx={{ mx: 2, mb: 2 }}
-  >
-    <Typography variant="h5">Registrations List</Typography>
-  </Stack>
-);
+export const RegistrationsHeader = ({
+  enrollments,
+  cohort_name,
+  cohort_intake
+}: {
+  enrollments: Enrollment[];
+  cohort_name: string;
+  cohort_intake: any;
+}) => {
+  const data = enrollments.map((e) => ({
+    'Cohort Name': cohort_name,
+    'Cohort Intake': cohort_intake,
+    'Submission Time': e.time,
+    'First Name': e.first_name,
+    'Last Name': e.last_name,
+    Email: e.email,
+    LinkedIn: e.linkedin_url,
+    Status: e.status,
+    Stream: e.stream
+  }));
+  const fileName = `${moment().format()}-${cohort_name} Enrollments Data`;
+
+  return (
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      width="-webkit-fill-available"
+      sx={{ mx: 2, mb: 2 }}
+    >
+      <Typography variant="h5">Registrations List</Typography>
+      <ExportToExcel data={data} fileName={fileName} />
+    </Stack>
+  );
+};
 
 export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) => (
   <Stack
@@ -191,6 +216,8 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
       dispatch(rejectApplication(cohort_id, enrollment.id));
     } else if (action === 'delete_application') {
       dispatch(deleteApplication(cohort_id, enrollment.id));
+    } else if (action === 'set_not_interested') {
+      dispatch(notInterestedApplication(cohort_id, enrollment.id));
     }
     setAction('');
     setOpen(false);
@@ -228,7 +255,40 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           enrollment={enrollment}
         />
       </Modal>
-      <Box>
+      <Stack
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        direction={{ xs: 'column', md: 'row' }}
+      >
+        {enrollment.status == 'Application Received' && (
+          <>
+            <StyledIcon
+              onClick={() => {
+                setModalMessage(
+                  <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
+                );
+                setAction('reject_application');
+                setModalState(true);
+              }}
+              src="/static/registration/cross.svg"
+            />
+
+            <StyledIcon
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to accept {enrollment.name}’s application and send a
+                    payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price || 0}</p>{' '}
+                  </p>
+                );
+                setAction('accept_application');
+                setModalState(true);
+              }}
+              src="/static/registration/Check.svg"
+            />
+          </>
+        )}
         <IconButton
           aria-label="more"
           aria-controls="long-menu"
@@ -245,64 +305,56 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             setOpen(false);
           }}
         >
-          {enrollment.status !== 'Application Rejected' && enrollment.status !== 'Paid' && (
+          {enrollment.status == 'Application Received' && (
             <>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    enrollment.status === 'Application Received' ? (
-                      <p>
-                        Are you sure you want to accept {enrollment.name}’s application and send a
-                        payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
-                      </p>
-                    ) : (
-                      <p>
-                        Are you sure you want to send a payment reminder to {enrollment.name} :{' '}
-                        {enrollment.email}
-                      </p>
-                    )
+                    <p>
+                      Are you sure you want to accept {enrollment.name}’s application and send a
+                      payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
+                    </p>
                   );
-                  setAction(
-                    enrollment.status === 'Application Received'
-                      ? 'accept_application'
-                      : 'payment_reminder'
-                  );
+                  setAction('accept_application');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Check.svg" />
-                {enrollment.status === 'Application Received'
-                  ? 'Accept Application'
-                  : 'Send Payment Reminder'}
+                Accept Application
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    enrollment.status === 'Application Received' ? (
-                      <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
-                    ) : (
-                      <p>
-                        Are you sure you want to mark ${enrollment.name}’s application as not
-                        interested
-                      </p>
-                    )
+                    <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
                   );
-                  setAction(
-                    enrollment.status === 'Application Received'
-                      ? 'reject_application'
-                      : 'set_not_interested'
-                  );
+                  setAction('reject_application');
                   setModalState(true);
                 }}
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Close.svg" />
-                {enrollment.status === 'Application Received'
-                  ? 'Reject Application'
-                  : 'Mark as Not Interested'}
+                Reject Application
               </MenuItem>
             </>
+          )}
+          {(enrollment.status === 'Application Accepted' ||
+            enrollment.status === 'Payment link opened') && (
+            <MenuItem
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to mark ${enrollment.name}’s application as not interested
+                  </p>
+                );
+                setAction('set_not_interested');
+                setModalState(true);
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <StyledIcon src="/static/registration/Close.svg" />
+              Mark as Not Interested
+            </MenuItem>
           )}
           <MenuItem
             onClick={() => {
@@ -331,7 +383,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             Delete Applicant
           </MenuItem>
         </MenuPopover>
-      </Box>
+      </Stack>
     </>
   );
 };
@@ -340,13 +392,11 @@ export const KeyMetricHighlight = ({
   metric,
   difference,
   currentTimePeriodLabel,
-  previousTimePeriodLabel,
   infoTooltip
 }: {
   metric?: any;
   difference?: any;
   currentTimePeriodLabel?: any;
-  previousTimePeriodLabel?: any;
   infoTooltip: any;
 }) => {
   const classes = useStyles();
@@ -379,14 +429,42 @@ const classPicker = (classes: { primary: any; warning: any; success: any }, clas
   return '';
 };
 
+export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
+  const exportToCSV = (items: any, fileName: string) => {
+    const wscols = [
+      { wch: 50 },
+      { wch: 15 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 20 },
+      { wch: 50 },
+      { wch: 70 },
+      { wch: 30 },
+      { wch: 30 }
+    ];
+
+    const sheet = XLSX.utils.json_to_sheet(items);
+    sheet['!cols'] = wscols;
+    const file = { Sheets: { data: sheet }, SheetNames: ['data'] };
+    XLSX.writeFile(file, `${fileName}.xlsx`);
+  };
+
+  return (
+    <Button variant="outlined" color="primary" onClick={() => exportToCSV(data, fileName)}>
+      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+      Excel Export
+    </Button>
+  );
+};
+
 export const pickColor = (status: string) => {
   if (status === 'Application Accepted') {
     return 'warning';
   }
-  if (status === 'Application Rejected') {
+  if (status === 'Application Rejected' || status === 'Not Interested') {
     return 'default';
   }
-  if (status === 'Application Received') {
+  if (status === 'Application Received' || status === 'Partial Application Received') {
     return 'primary';
   }
   if (status === 'Payment link opened') {

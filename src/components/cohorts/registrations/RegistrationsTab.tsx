@@ -5,7 +5,7 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import { getEnrollments } from 'redux/slices/cohort';
 import { RegistrationsHeader, RegistrationsFooter } from './Common';
-import Summary from './Summry';
+import Highlights from './Highlights';
 import RegistrationsList from './RegistrationsList';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 
@@ -53,9 +53,13 @@ export default function RegistrationsTab() {
   }
   return (
     <Page title="ScholarSite | Homepage">
-      <Summary enrollments={enrollments} />
+      <Highlights enrollments={enrollments} />
       <RegistrationsContainer>
-        <RegistrationsHeader />
+        <RegistrationsHeader
+          enrollments={enrollments}
+          cohort_name={cohort.name}
+          cohort_intake={cohort.intake}
+        />
         <RegistrationsList enrollments={enrollments.slice(0, limit)} />
         {limit !== enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
