@@ -266,7 +266,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
             <StyledIcon
               onClick={() => {
                 setModalMessage(
-                  <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
+                  <p>Are you sure you want to reject {enrollment.name}’s application.</p>
                 );
                 setAction('reject_application');
                 setModalState(true);
@@ -326,7 +326,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               <MenuItem
                 onClick={() => {
                   setModalMessage(
-                    <p>Are you sure you want to reject ${enrollment.name}’s application.</p>
+                    <p>Are you sure you want to reject {enrollment.name}’s application.</p>
                   );
                   setAction('reject_application');
                   setModalState(true);
@@ -344,7 +344,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               onClick={() => {
                 setModalMessage(
                   <p>
-                    Are you sure you want to mark ${enrollment.name}’s application as not interested
+                    Are you sure you want to mark {enrollment.name}’s application as not interested
                   </p>
                 );
                 setAction('set_not_interested');
