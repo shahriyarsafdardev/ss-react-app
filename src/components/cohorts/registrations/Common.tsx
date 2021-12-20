@@ -5,7 +5,7 @@ import { Box, Button, MenuItem, Stack, Typography, IconButton } from '@material-
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 
 import {
   acceptApplication,
@@ -167,7 +167,7 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      <ExportToExcel data={data} fileName={fileName} />
+      {/* <ExportToExcel data={data} fileName={fileName} /> */}
     </Stack>
   );
 };
@@ -429,33 +429,33 @@ const classPicker = (classes: { primary: any; warning: any; success: any }, clas
   return '';
 };
 
-export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
-  const exportToCSV = (items: any, fileName: string) => {
-    const wscols = [
-      { wch: 50 },
-      { wch: 15 },
-      { wch: 20 },
-      { wch: 20 },
-      { wch: 20 },
-      { wch: 50 },
-      { wch: 70 },
-      { wch: 30 },
-      { wch: 30 }
-    ];
+// export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
+//   const exportToCSV = (items: any, fileName: string) => {
+//     const wscols = [
+//       { wch: 50 },
+//       { wch: 15 },
+//       { wch: 20 },
+//       { wch: 20 },
+//       { wch: 20 },
+//       { wch: 50 },
+//       { wch: 70 },
+//       { wch: 30 },
+//       { wch: 30 }
+//     ];
 
-    const sheet = XLSX.utils.json_to_sheet(items);
-    sheet['!cols'] = wscols;
-    const file = { Sheets: { data: sheet }, SheetNames: ['data'] };
-    XLSX.writeFile(file, `${fileName}.xlsx`);
-  };
+//     const sheet = XLSX.utils.json_to_sheet(items);
+//     sheet['!cols'] = wscols;
+//     const file = { Sheets: { data: sheet }, SheetNames: ['data'] };
+//     // XLSX.writeFile(file, `${fileName}.xlsx`);
+//   };
 
-  return (
-    <Button variant="outlined" color="primary" onClick={() => exportToCSV(data, fileName)}>
-      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
-      Excel Export
-    </Button>
-  );
-};
+//   return (
+//     <Button variant="outlined" color="primary" onClick={() => exportToCSV(data, fileName)}>
+//       <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+//       Excel Export
+//     </Button>
+//   );
+// };
 
 export const pickColor = (status: string) => {
   if (status === 'Application Accepted') {
