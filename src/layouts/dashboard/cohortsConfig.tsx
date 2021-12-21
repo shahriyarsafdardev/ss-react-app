@@ -17,7 +17,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
   items: rawCohorts.map((cohort: any) => {
     const object: any = {
       id: cohort.id,
-      title: instructor ? cohort.intake_name : cohort.name,
+      title: instructor ? cohort.intake_name || `Intake ${cohort.intake}` : cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
