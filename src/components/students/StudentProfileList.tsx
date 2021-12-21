@@ -13,11 +13,11 @@ type StudentProfileListProps = {
 };
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'currentRole', label: 'Current Role', alignRight: false },
-  { id: 'goodAt', label: 'What I am good at', alignRight: false },
-  { id: 'lookingFor', label: 'What I am looking for', alignRight: false }
+  { id: 'name', label: 'Name' },
+  { id: 'company', label: 'Company' },
+  { id: 'currentRole', label: 'Current Role' },
+  { id: 'goodAt', label: 'What I am good at' },
+  { id: 'lookingFor', label: 'What I am looking for' }
 ];
 
 export default function StudentProfileList({ students, modalHandler }: StudentProfileListProps) {

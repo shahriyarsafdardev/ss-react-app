@@ -27,7 +27,7 @@ export default function UserListHead({
     <TableHead>
       <TableRow>
         {headLabel.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.alignRight ? 'right' : 'left'}>
+          <TableCell key={headCell.id} align={headCell.align || 'left'}>
             {headCell.label}
           </TableCell>
         ))}

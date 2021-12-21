@@ -38,7 +38,7 @@ interface ListItemStyleProps extends ListItemButtonProps {
 
 const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => ({
   ...theme.typography.body2,
-  height: 48,
+  minHeight: 48,
   position: 'relative',
   textTransform: 'capitalize',
   paddingLeft: theme.spacing(5),

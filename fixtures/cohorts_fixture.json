@@ -3,7 +3,6 @@
     "id": "uuid",
     "name": "string",
     "discord_directory_url": "string",
-    "enrollments": "string[]",
     "isOnboarded": "boolean"
   }
 ]
