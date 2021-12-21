@@ -21,6 +21,11 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
+        {
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
         { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
           title: instructor ? 'students' : 'networking',
@@ -34,15 +39,6 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         {
           title: 'registrations',
           path: PATH_DASHBOARD.cohorts.registrations(cohort.id),
-          notifications: false
-        },
-        ...object.children
-      ];
-    } else {
-      object.children = [
-        {
-          title: 'home',
-          path: PATH_DASHBOARD.cohorts.home(cohort.id),
           notifications: false
         },
         ...object.children

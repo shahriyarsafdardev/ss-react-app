@@ -1,7 +1,7 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress, Divider, Typography, Stack, Avatar, Link } from '@material-ui/core';
 import { uniq } from 'lodash';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
@@ -13,6 +13,12 @@ export const SectionContainer = styled('div')(({ theme }) => ({
     height: '150px',
     [theme.breakpoints.down('sm')]: {
       height: '310px'
+    }
+  },
+  '&.analytics': {
+    height: '190px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
     }
   },
   '&.card-2': {
@@ -32,6 +38,20 @@ export const SectionContainer = styled('div')(({ theme }) => ({
       height: '750px'
     }
   }
+}));
+
+const AnalyticsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%'
+}));
+
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  width: '100%',
+  margin: '0.5rem 0'
 }));
 
 const StyledCircularLoader = styled(Box)(({ theme }) => ({
@@ -121,3 +141,179 @@ export const CircularLoader = () => (
     <CircularProgress />
   </StyledCircularLoader>
 );
+
+export const InfoTooltip = ({ title }: { title?: any }) => (
+  <Tooltip arrow placement="top" title={<span className="ui-copy text-white">{title}</span>}>
+    <img src="/static/registration/Info.svg" alt="Info Icon" />
+  </Tooltip>
+);
+
+export const RevenueHighlight = ({
+  heading,
+  value,
+  type,
+  difference,
+  tooltipMessage
+}: {
+  heading?: any;
+  value?: any;
+  type?: any;
+  difference: any;
+  tooltipMessage: string;
+}) => (
+  <Stack direction="column" alignItems="center" spacing={1}>
+    <Stack direction="row" spacing={1}>
+      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
+        {heading}
+      </Typography>
+      <InfoTooltip title={tooltipMessage} />
+    </Stack>
+    <Typography variant="h3">
+      {type === 'price' && '$'}
+      {value}
+    </Typography>
+    <Stack direction="row">
+      <img src="/static/home/increase.svg" alt="increase arrow" />
+      <Typography variant="subtitle2">+{difference}%</Typography>
+    </Stack>
+  </Stack>
+);
+
+export const CompanyHighlight = ({
+  name,
+  image,
+  count
+}: {
+  name?: string;
+  image?: string;
+  count?: number;
+}) => (
+  <Stack direction="column" alignItems="center">
+    <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
+
+    <Typography variant="subtitle2">{name}</Typography>
+    <Typography variant="caption" color="#637381">
+      {count} participants
+    </Typography>
+  </Stack>
+);
+
+export const IndustryHighlight = ({
+  name,
+  link,
+  count
+}: {
+  name?: string;
+  link?: string;
+  count?: number;
+}) => (
+  <Stack direction="column" alignItems="center">
+    <Typography variant="subtitle2">{name}</Typography>
+    <Typography variant="caption" color="#637381">
+      {count} participants
+    </Typography>
+    <a href={link}>
+      <Typography variant="caption" color="#637381">
+        Explore
+      </Typography>
+    </a>
+  </Stack>
+);
+
+export const getAnalyticsData = () => [
+  <AnalyticsContainer key="1">
+    <Typography variant="h6">Your cohort has been getting great traction!</Typography>
+    <StyledDivider />
+    <Stack
+      sx={{ width: '100%', height: '100%' }}
+      direction="row"
+      justifyContent="space-around"
+      alignItems="center"
+    >
+      <RevenueHighlight
+        heading="Your Earnings"
+        value={12765}
+        type="price"
+        difference={12}
+        tooltipMessage="80% of all revenue from registrations"
+      />
+      <RevenueHighlight
+        heading="In The Pipeline"
+        value={128765}
+        type="price"
+        difference={6}
+        tooltipMessage="80% * (Combined value of all unconverted registrations)"
+      />
+      <RevenueHighlight
+        heading="Page Impressions"
+        value={1765}
+        type="number"
+        difference={10}
+        tooltipMessage="Registration page views"
+      />
+    </Stack>
+  </AnalyticsContainer>,
+  <AnalyticsContainer key="2">
+    <Typography variant="h6">Students from 12 companies have aleady joined!</Typography>
+    <StyledDivider />
+    <Stack
+      sx={{ width: '100%', height: '100%' }}
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
+      <CompanyHighlight name="Adobe" count={13} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Dropbox" count={8} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Apple" count={5} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Microsoft" count={4} image="/static/home/increase.svg" />
+      <CompanyHighlight name="BBC" count={2} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Atlassian" count={1} image="/static/home/increase.svg" />
+    </Stack>
+  </AnalyticsContainer>,
+  <AnalyticsContainer key="3">
+    <Typography variant="h6">From countries all over the world</Typography>
+    <StyledDivider />
+    <Stack
+      sx={{ width: '100%', height: '100%' }}
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
+      <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
+      <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
+      <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
+    </Stack>
+  </AnalyticsContainer>,
+  <AnalyticsContainer key="4">
+    <Typography variant="h6">In a variety of roles</Typography>
+    <StyledDivider />
+    <Stack
+      sx={{ width: '100%', height: '100%' }}
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
+      <IndustryHighlight name="Product" count={13} link="/" />
+      <IndustryHighlight name="Founder" count={5} link="/" />
+      <IndustryHighlight name="Data" count={2} link="/" />
+      <IndustryHighlight name="Research" count={1} link="/" />
+    </Stack>
+  </AnalyticsContainer>,
+  <AnalyticsContainer key="5">
+    <Typography variant="h6">And industries</Typography>
+    <StyledDivider />
+    <Stack
+      sx={{ width: '100%', height: '100%' }}
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="center"
+    >
+      <IndustryHighlight name="SaaS" count={13} link="/" />
+      <IndustryHighlight name="Health Care" count={5} link="/" />
+      <IndustryHighlight name="Pharma" count={2} link="/" />
+      <IndustryHighlight name="Space" count={1} link="/" />
+    </Stack>
+  </AnalyticsContainer>
+];

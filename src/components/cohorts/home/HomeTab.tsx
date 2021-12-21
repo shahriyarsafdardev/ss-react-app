@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import useAuth from 'hooks/useAuth';
 import Page from 'components/Page';
 import axios from 'utils/axios';
 import moment from 'moment';
 import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
-import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
+import CohortAnalytics from './CohortAnalytics';
+
 import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
@@ -96,7 +98,11 @@ const Index = () => {
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Container style={{ marginBottom: '50px' }}>
-            <CohortTimeLine cohort={cohort} sessions={sessions} />
+            {mode === 'Member' ? (
+              <CohortTimeLine cohort={cohort} sessions={sessions} />
+            ) : (
+              <CohortAnalytics />
+            )}{' '}
             <StyledBox>
               <SessionPrereading
                 cohort={cohort}
