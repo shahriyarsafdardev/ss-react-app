@@ -18,7 +18,13 @@ const CircularProgressbar = ({
   const percentage = (completedSteps / totalSteps) * 100;
 
   return (
-    <svg className="CircularProgressbar" viewBox="0 0 100 100" width={50} height={50}>
+    <svg
+      className="CircularProgressbar"
+      viewBox="0 0 100 100"
+      width={50}
+      height={50}
+      data-testid="progress-bar"
+    >
       <path
         className="CircularProgressbar-trail"
         d={pathDescription}

@@ -7,8 +7,8 @@ function path(root: string, sublink: string) {
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '';
 // export const ROOT_URL = 'http://localhost:8000/api/v1';
-export const ROOT_URL = 'https://app.scholarsite.io/api/v1';
-// export const ROOT_URL = 'https://scholarsite-staging.herokuapp.com/api/v1';
+// export const ROOT_URL = 'http://localhost:3001/api/v1';
+export const ROOT_URL = process.env.REACT_APP_ROOT_URL || 'https://app.scholarsite.io/api/v1';
 // staging url = 'https://scholarsite-staging.herokuapp.com/api/v1';
 // local url = 'http://localhost:3000/api/v1';
 
@@ -72,6 +72,8 @@ export const PATH_DASHBOARD = {
   cohorts: {
     root: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}`),
     sessions: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/sessions`),
+    registrations: (cohortID: string) =>
+      path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/registrations`),
     peers: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/peers`),
     messaging: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/messaging`),
     home: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/home`),

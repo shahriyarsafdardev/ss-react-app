@@ -12,27 +12,51 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts')
 };
 
-const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
-  rawCohorts.map((cohort: any) => {
+const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => ({
+  subheader: header,
+  items: rawCohorts.map((cohort: any) => {
     const object: any = {
       id: cohort.id,
-      title: cohort.name,
+      title: instructor ? cohort.intake_name : cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
-        {
-          title: 'home',
-          path: PATH_DASHBOARD.cohorts.home(cohort.id),
-          notifications: false
-        },
         { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
-          title: 'networking',
+          title: instructor ? 'students' : 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
           notifications: false
         }
       ]
     };
+    if (instructor) {
+      object.children = [
+        {
+          title: 'registrations',
+          path: PATH_DASHBOARD.cohorts.registrations(cohort.id),
+          notifications: false
+        },
+        ...object.children
+      ];
+    } else {
+      object.children = [
+        {
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
+        ...object.children
+      ];
+    }
+    object.children = [
+      ...object.children,
+      {
+        title: 'Q&A',
+        path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+        notifications: false,
+        category: 'Question'
+      }
+    ];
     if (cohort.name === 'Building & Investing in Network Effects') {
       object.children = [
         ...object.children,
@@ -41,12 +65,6 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
           path: cohort.discord_directory_url,
           externalUrl: true,
           notifications: false
-        },
-        {
-          title: 'Q&A',
-          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: false,
-          category: 'Question'
         }
       ];
     } else {
@@ -57,18 +75,12 @@ const cohortsConfig = (rawCohorts: any, isAdmin = false) =>
           path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
           notifications: true,
           category: 'Messaging'
-        },
-        {
-          title: 'Q&A',
-          path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
-          notifications: false,
-          category: 'Question'
         }
       ];
     }
     object.children = [...object.children];
-
     return object;
-  });
+  })
+});
 
 export default cohortsConfig;

@@ -61,6 +61,7 @@ export type RecordingUrl = {
   name: string;
   recording_url: string;
 };
+
 export type Session = {
   id: string;
   name: string;
@@ -105,19 +106,39 @@ export type Notification = {
   createdAt: Date;
 };
 
+export type Enrollment = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  name: string;
+  email: string;
+  linkedin_url: string;
+  price: number;
+  status: string;
+  stream: string;
+  coupon_code: string;
+  time: string;
+  application_accepted_time: string;
+  payment_link_opened_time: string;
+  paid_time: string;
+};
+
 export type Cohort = {
   id: string;
   name: string;
   code: string;
+  intake_name: string;
+  session_times: string;
   host_names: string;
   is_host: boolean;
   isOnboarded: boolean;
+  released_for_learners: boolean;
   intake: number;
   questions_url: string;
   goodbye_message: string;
   peers: StudentProfile[];
   sessions: Session[];
-  enrollments: String[];
+  enrollments: Enrollment[];
   random_peers: StudentProfile[];
 };
 

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { dispatch } from '../store';
-import { Cohort } from '../../@types/cohorts';
+import { Cohort, Enrollment } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
 
 // utils
@@ -58,6 +58,15 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
     },
+    getEnrollmentsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, enrollments: action.payload.enrollments };
+      }
+    },
 
     updateOnboardingStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
@@ -100,6 +109,34 @@ const slice = createSlice({
         }
       }
     },
+    updateRegistrationSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].enrollments;
+        const targetEnrollmentIndex = updated.findIndex(
+          (enrollment) => enrollment.id === action.payload.enrollment.id
+        );
+
+        if (targetEnrollmentIndex !== -1) {
+          updated[targetEnrollmentIndex] = action.payload.enrollment;
+          state.cohorts[targetCohortIndex].enrollments = updated;
+        }
+      }
+    },
+    deleteApplicationSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].enrollments;
+
+        state.cohorts[targetCohortIndex].enrollments = updated.filter(
+          (enrollment) => enrollment.id !== action.payload.enrollmentID
+        );
+      }
+    },
     updateSessionFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohortID
@@ -133,6 +170,99 @@ export function getCohorts() {
   };
 }
 
+export function acceptApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/accept_application.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function rejectApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/reject_application.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function notInterestedApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/not_interested.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function paymentRemindApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/payment_reminder.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function deleteApplication(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      await axios.delete(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/delete_application.json`
+      );
+
+      dispatch(slice.actions.deleteApplicationSuccess({ cohortID, enrollmentID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateApplication(cohortID: string, enrollment: Enrollment) {
+  return async () => {
+    try {
+      const response = await axios.put(`/cohorts/${cohortID}/enrollments/${enrollment.id}.json`, {
+        enrollment
+      });
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function getPeers(cohortID: string, userID: string) {
   return async () => {
     try {
@@ -141,6 +271,17 @@ export function getPeers(cohortID: string, userID: string) {
       const { cohort_id } = response.data;
 
       dispatch(slice.actions.getPeersSuccess({ peers, cohort_id, userID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getEnrollments(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/enrollments.json`);
+      dispatch(slice.actions.getEnrollmentsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }

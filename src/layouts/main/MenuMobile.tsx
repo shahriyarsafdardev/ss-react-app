@@ -75,7 +75,7 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }: MenuMobileItemProps)
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <NavSection
+            {/* <NavSection
               navConfig={children}
               sx={{
                 '&.MuiList-root:last-child .MuiListItem-root': {
@@ -118,7 +118,7 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }: MenuMobileItemProps)
                   }
                 }
               }}
-            />
+            /> */}
           </Box>
         </Collapse>
       </div>
