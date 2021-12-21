@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import useAuth from 'hooks/useAuth';
 import Page from 'components/Page';
 import axios from 'utils/axios';
 import moment from 'moment';
@@ -13,6 +14,8 @@ import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
+import CohortAnalytics from './CohortAnalytics';
+
 import { firstUpcomingDate } from './Common';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -33,6 +36,7 @@ const Index = () => {
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const { user } = useAuth();
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -89,7 +93,11 @@ const Index = () => {
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         <Container style={{ marginBottom: '50px' }}>
-          <CohortTimeLine cohort={cohort} sessions={sessions} />
+          {user?.view_type === 'Member' ? (
+            <CohortTimeLine cohort={cohort} sessions={sessions} />
+          ) : (
+            <CohortAnalytics />
+          )}
           <StyledBox>
             <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
             <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />

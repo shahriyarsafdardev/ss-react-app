@@ -10,7 +10,7 @@ import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
 import Circle from '@material-ui/icons/Circle';
 
 import { Session } from '../../../@types/cohorts';
-import { displayMultipleDates, formatMultipleTimes } from './Common';
+import { displayMultipleDates, formatMultipleTimes, getAnalyticsData } from './Common';
 
 const StyledSession = styled(Typography)(() => ({
   fontSize: '14px',
