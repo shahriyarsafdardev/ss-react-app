@@ -165,7 +165,7 @@ const TimerPreview = ({
         {displayType !== 'small' && (
           <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
         )}
-        <Typography variant="subtitle1">
+        <Typography variant="subtitle1" data-testid="session-start-time-text">
           {`The ${moment(new Date(time)).format('h:mm a')} session is opening soon, come join us!`}
         </Typography>
         <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
@@ -213,9 +213,9 @@ const SessionInProgress = ({
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
         <Box className={classes.smallContent2}>
-          <Typography variant="subtitle1">{`The ${moment(new Date(sessionTimeValue)).format(
-            'h:mm a'
-          )} Session is live now!`}</Typography>
+          <Typography variant="subtitle1" data-testid="session-time-text">
+            {`The ${moment(new Date(sessionTimeValue)).format('h:mm a')} Session is live now!`}
+          </Typography>
         </Box>
         {zoomUrl && (
           <Button

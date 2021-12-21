@@ -41,11 +41,11 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../../components/_d
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'name', label: 'Name' },
+  { id: 'company', label: 'Company' },
+  { id: 'role', label: 'Role' },
+  { id: 'isVerified', label: 'Verified' },
+  { id: 'status', label: 'Status' },
   { id: '' }
 ];
 
