@@ -20,7 +20,7 @@ const RegistrationsContainer = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  margin: '0 1rem',
+  margin: '0 1rem 1rem 1rem',
   padding: '1rem 0',
   background: 'white',
   borderRadius: '10px',
@@ -29,7 +29,7 @@ const RegistrationsContainer = styled(Box)(() => ({
 
 export default function RegistrationsTab() {
   const dispatch = useDispatch();
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(10);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
