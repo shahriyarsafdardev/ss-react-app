@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
-import useAuth from 'hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import { getCategories, getInstructorCohorts, getLearnerCohorts } from './Common';
 import { RootState, useSelector } from '../../redux/store';
 // hooks
@@ -76,15 +76,20 @@ type DashboardSidebarProps = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
   const { cohorts } = useSelector((state: RootState) => state.cohort);
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
 
-  const [viewMode, setViewMode] = useState(user?.type === 'learner' ? 'Member' : 'Instructor');
+  const setViewMode = (mode: string) => {
+    if (user) {
+      const new_user: any = user;
+      updateProfile({ ...new_user, view_type: mode });
+    }
+  };
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
   const switchView = () => {
-    if (viewMode === 'Instructor') {
+    if (user?.view_type === 'Instructor') {
       setViewMode('Member');
     } else {
       setViewMode('Instructor');
@@ -111,14 +116,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <LogoContainer>
         <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
       </LogoContainer>
-      {viewMode === 'Member' && (
+      {user?.view_type === 'Member' && (
         <NavSection
           navConfig={cohortsConfig(getLearnerCohorts(cohorts), 'Your Cohorts', false)}
           isShow={!isCollapse}
         />
       )}
-      {viewMode === 'Instructor' &&
-        getCategories(cohorts).map((category) => (
+      {user?.view_type === 'Instructor' &&
+        getCategories(cohorts).map((category: string) => (
           <NavSection
             key={category}
             navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
@@ -132,18 +137,20 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <ViewSwitcherStyle>
             <p style={{ textAlign: 'center' }}>
               You are currently viewing the
-              <b> {viewMode} Dashboard,</b> to access your{' '}
-              {viewMode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
-              bellow:
+              <b> {user?.view_type} Dashboard,</b> to access your{' '}
+              {user?.view_type === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the
+              toggle bellow:
             </p>
             <SwitcherButtonContainer>
-              <LabelStyled className={viewMode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
+              <LabelStyled className={user?.view_type === 'Member' ? 'blue' : 'gray'}>
+                Member
+              </LabelStyled>
               <Switch
                 size="small"
-                checked={viewMode === 'Instructor'}
+                checked={user?.view_type === 'Instructor'}
                 onChange={() => switchView()}
               />
-              <LabelStyled className={viewMode === 'Instructor' ? 'blue' : 'gray'}>
+              <LabelStyled className={user?.view_type === 'Instructor' ? 'blue' : 'gray'}>
                 Instructor
               </LabelStyled>
             </SwitcherButtonContainer>
@@ -154,54 +161,58 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   );
 
   return (
-    <RootStyle
-      sx={{
-        width: {
-          lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH
-        },
-        ...(collapseClick && {
-          position: 'absolute'
-        })
-      }}
-    >
-      <MHidden width="lgUp">
-        <Drawer
-          open={isOpenSidebar}
-          onClose={onCloseSidebar}
-          PaperProps={{
-            sx: { width: DRAWER_WIDTH }
+    <>
+      {cohorts && (
+        <RootStyle
+          sx={{
+            width: {
+              lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH
+            },
+            ...(collapseClick && {
+              position: 'absolute'
+            })
           }}
         >
-          {renderContent}
-        </Drawer>
-      </MHidden>
+          <MHidden width="lgUp">
+            <Drawer
+              open={isOpenSidebar}
+              onClose={onCloseSidebar}
+              PaperProps={{
+                sx: { width: DRAWER_WIDTH }
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          </MHidden>
 
-      <MHidden width="lgDown">
-        <Drawer
-          open
-          variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
-          PaperProps={{
-            sx: {
-              width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              ...(isCollapse && {
-                width: COLLAPSE_WIDTH
-              }),
-              ...(collapseHover && {
-                borderRight: 0,
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-                boxShadow: (theme) => theme.customShadows.z20,
-                bgcolor: (theme) => alpha(theme.palette.background.default, 0.88)
-              })
-            }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </MHidden>
-    </RootStyle>
+          <MHidden width="lgDown">
+            <Drawer
+              open
+              variant="persistent"
+              onMouseEnter={onHoverEnter}
+              onMouseLeave={onHoverLeave}
+              PaperProps={{
+                sx: {
+                  width: DRAWER_WIDTH,
+                  bgcolor: 'background.default',
+                  ...(isCollapse && {
+                    width: COLLAPSE_WIDTH
+                  }),
+                  ...(collapseHover && {
+                    borderRight: 0,
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
+                    boxShadow: (theme) => theme.customShadows.z20,
+                    bgcolor: (theme) => alpha(theme.palette.background.default, 0.88)
+                  })
+                }
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          </MHidden>
+        </RootStyle>
+      )}
+    </>
   );
 }

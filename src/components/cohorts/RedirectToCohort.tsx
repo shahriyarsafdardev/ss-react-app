@@ -13,7 +13,7 @@ export default function RedirectToCohort() {
       navigationUrl = `/cohorts/${cohorts[0].id}/home`;
     } else {
       const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
-      navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
+      navigationUrl = `/cohorts/${hostCohorts[0].id}/home`;
     }
   } else {
     return <LoadingScreen />;
