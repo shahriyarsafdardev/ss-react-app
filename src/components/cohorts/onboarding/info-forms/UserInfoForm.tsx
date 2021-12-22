@@ -3,7 +3,6 @@ import { RootState, useSelector } from 'redux/store';
 
 // material
 import {
-  Box,
   Grid,
   Card,
   Stack,
@@ -15,13 +14,11 @@ import {
   FormControl,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
 
 // hooks
-import { styled } from '@material-ui/core/styles';
 import { UploadAvatar } from 'components/upload';
-// axios
 import axios from 'utils/axios';
+import { NavigationButtons } from './dataTypes';
 
 type UserInfoType = {
   profile_image_url: File | any;
@@ -33,35 +30,11 @@ type UserInfoType = {
   linkedin_url: string;
 };
 
-const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 130,
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
-};
-
-const getOptions = (options: any) =>
-  options.map((option: any) => ({
-    value: option,
-    label: option
-  }));
-
 export default function UserInfoForm({
   onSubmit,
-  showSubmitButton = true,
-  userProfile,
-  isOnboardingModal = false
+  userProfile
 }: {
-  showSubmitButton?: boolean;
   onSubmit: Function;
-  isOnboardingModal: boolean;
   userProfile?: {
     first_name: string;
     last_name: string;
@@ -81,9 +54,7 @@ export default function UserInfoForm({
   };
 }) {
   const [companies, setCompanies] = useState<string[]>();
-  const { role_options, industry_options, preferred_pronoun_options } = useSelector(
-    (state: RootState) => state.profileOptions
-  );
+  const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
 
   const fillUserValues = () => ({
     profile_image_url: userProfile?.profile_image_url,
@@ -96,19 +67,6 @@ export default function UserInfoForm({
   });
 
   const [infoObject, setInfoObject] = useState<UserInfoType>(fillUserValues());
-
-  // const handleDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     const file = acceptedFiles[0];
-  //     if (file) {
-  //       setFieldValue('profile_image_url', {
-  //         image: file,
-  //         preview: URL.createObjectURL(file)
-  //       });
-  //     }
-  //   },
-  //   [setFieldValue]
-  // );
 
   const handleDrop = (files: any) => {
     onUpdateAttribute('profile_image_url', {
@@ -158,9 +116,6 @@ export default function UserInfoForm({
                 </Typography>
               }
             />
-            {/* <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
-              {touched.profile_image_url && errors.profile_image_url}
-            </FormHelperText> */}
           </Card>
         </Grid>
 
@@ -173,24 +128,12 @@ export default function UserInfoForm({
                   label="First Name"
                   value={infoObject?.first_name}
                   onChange={(e) => onUpdateAttribute('first_name', e.target.value)}
-                  // error={Boolean(touched.first_name && errors.first_name)}
-                  // helperText={touched.first_name && errors.first_name}
-
-                  // inputProps={{
-                  //   'data-testid': 'first-name'
-                  // }}
                 />
                 <TextField
                   fullWidth
                   label="Last Name"
                   value={infoObject?.last_name}
                   onChange={(e) => onUpdateAttribute('last_name', e.target.value)}
-
-                  // error={Boolean(touched.last_name && errors.last_name)}
-                  // helperText={touched.last_name && errors.last_name}
-                  // inputProps={{
-                  //   'data-testid': 'last-name'
-                  // }}
                 />
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
@@ -233,8 +176,6 @@ export default function UserInfoForm({
                     labelId="pronoun-label"
                     value={infoObject?.preferred_pronoun}
                     onChange={(e) => onUpdateAttribute('preferred_pronoun', e.target.value)}
-                    // id="multiple-checkbox-pronoun"
-                    // data-testid="preferred-pronoun"
                     sx={{ zIndex: 1500 }}
                   >
                     {preferred_pronoun_options?.map((pronoun: string) => (
@@ -250,22 +191,18 @@ export default function UserInfoForm({
                   label="LinkedIn URL"
                   value={infoObject?.linkedin_url}
                   onChange={(e) => onUpdateAttribute('linkedin_url', e.target.value)}
-                  // inputProps={{
-                  //   'data-testid': 'current-position'
-                  // }}
                 />
               </Stack>
             </Stack>
-            {showSubmitButton && (
-              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <StyledLoadingButton type="submit" variant="contained" id="btn-submit">
-                  Save Changes
-                </StyledLoadingButton>
-              </Box>
-            )}
           </Card>
         </Grid>
       </Grid>
+      <NavigationButtons
+        showPrevButton={false}
+        disabled={false}
+        onPreviousHandler={() => {}}
+        onNextHandler={() => onSubmit(infoObject)}
+      />
     </>
   );
 }

@@ -9,8 +9,14 @@ import { LoadingButton } from '@material-ui/lab';
 import { useDispatch, RootState, useSelector } from 'redux/store';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 
-import ProfileForm from './UserInfoForm';
-import CompanyInfoForm from './CompanyInfoForm';
+import {
+  UserInfoForm,
+  CompanyInfoForm,
+  RoleInfoForm,
+  NetworkingForm,
+  HouseKeepingForm
+} from './info-forms';
+
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
 
@@ -149,17 +155,50 @@ const StyledVideoPreview = styled('video')(({ theme }) => ({
   }
 }));
 
+const FormTypes = {
+  userInfo: 'userinfo',
+  roleInfo: 'roleinfo',
+  companyInfo: 'companyinfo',
+  networkingInfo: 'networkinginfo',
+  housekeepingInfo: 'housekeepinginfo'
+};
+
+type OnboardingDataType = {
+  first_name: string;
+  last_name: string;
+  country: string;
+  city: string;
+  preferred_pronoun: string;
+  linkedin_url: string;
+  compnay_name: string;
+  company_industries: string[];
+  number_of_employees: string;
+  role_title: string;
+  role_category: string;
+  do_manage_team: boolean;
+  role_description: string;
+  networking_roles_categories: string[];
+  networking_industries_categories: string[];
+  interested_in_being_matched: boolean;
+  date_of_birth: string;
+  cohort_understanding: string;
+  referred_by: string;
+  payed_by: string;
+};
+
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
   const dispatch = useDispatch();
   const [responses, setResponses] = useState<any>({});
   const totalSteps = 11;
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [companyLogo, setCompanyLogo] = useState(null);
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -167,6 +206,82 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const { role_options, industry_options } = useSelector(
     (state: RootState) => state.profileOptions
   );
+
+  const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
+    first_name: '',
+    last_name: '',
+    country: '',
+    city: '',
+    preferred_pronoun: '',
+    linkedin_url: '',
+    compnay_name: '',
+    company_industries: [],
+    number_of_employees: '',
+    role_title: '',
+    role_category: '',
+    do_manage_team: false,
+    role_description: '',
+    networking_roles_categories: [],
+    networking_industries_categories: [],
+    interested_in_being_matched: false,
+    date_of_birth: '',
+    cohort_understanding: '',
+    referred_by: '',
+    payed_by: ''
+  });
+
+  const updateOnboardingData = (type: string, data: any) => {
+    if (type === FormTypes.userInfo) {
+      const tempData: OnboardingDataType = {
+        ...onboardingData,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        country: data.country,
+        city: data.city,
+        preferred_pronoun: data.preferred_pronoun,
+        linkedin_url: data.linkedin_url
+      };
+      setProfilePicture(data.profile_image_url);
+      setOnboardingData(tempData);
+    } else if (type === FormTypes.roleInfo) {
+      const tempData: OnboardingDataType = {
+        ...onboardingData,
+        role_title: data.role_title,
+        role_category: data.role_category,
+        role_description: data.role_description,
+        do_manage_team: data.do_manage_team
+      };
+      setOnboardingData(tempData);
+    } else if (type === FormTypes.companyInfo) {
+      const tempData: OnboardingDataType = {
+        ...onboardingData,
+        compnay_name: data.name,
+        company_industries: data.industries,
+        number_of_employees: data.number_of_employees
+      };
+      setCompanyLogo(data.logo_url);
+      setOnboardingData(tempData);
+    } else if (type === FormTypes.networkingInfo) {
+      const tempData: OnboardingDataType = {
+        ...onboardingData,
+        networking_industries_categories: data.networking_industries_categories,
+        networking_roles_categories: data.networking_roles_categories,
+        interested_in_being_matched: data.interested_in_being_matched
+      };
+      setOnboardingData(tempData);
+    } else if (type === FormTypes.housekeepingInfo) {
+      const tempData: OnboardingDataType = {
+        ...onboardingData,
+        cohort_understanding: data.current_understanding,
+        payed_by: data.payed_by,
+        referred_by: data.referred_by
+      };
+      setOnboardingData(tempData);
+    } else {
+      console.log('Unknown form type passed!');
+    }
+    setActiveStep(activeStep + 1);
+  };
 
   useEffect(() => {
     axios
@@ -265,30 +380,18 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   };
 
   const selectStep = () => {
-    if (activeStep === 0) {
-      return <Step1 />;
-    }
-
     if (activeStep === 1) {
       return (
         <div>
-          <ProfileForm
+          <UserInfoForm
             userProfile={homeConfig?.participant_profile}
-            isOnboardingModal={true}
-            onSubmit={onFormSubmitHandler}
-            showSubmitButton={false}
+            onSubmit={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
           />
         </div>
       );
     }
 
     if (activeStep === 2) {
-      // return (
-      //   <Question1
-      //     currentAnswer={responses[`question-${activeStep}`]}
-      //     setCurrentAnswer={updateAnswers}
-      //   />
-      // );
       return (
         <CompanyInfoForm
           companyProfile={{
@@ -297,34 +400,50 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             industries: homeConfig?.participant_profile.current_industry_category_selections || [],
             number_of_employees: ''
           }}
-          onSubmit={() => {}}
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.companyInfo, data)}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
     }
 
     if (activeStep === 3) {
       return (
-        <Question2
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-          options={role_options}
+        <RoleInfoForm
+          infoDetails={{
+            role_title: 'Test title',
+            role_description: 'Test description',
+            role_category: 'Experimentation',
+            do_manage_team: false
+          }}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.roleInfo, data)}
         />
       );
     }
     if (activeStep === 4) {
       return (
-        <Question4
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
-          options={industry_options}
+        <NetworkingForm
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.networkingInfo, data)}
+          infoDetails={{
+            networking_industries_categories: [],
+            networking_roles_categories: [],
+            interested_in_being_matched: false
+          }}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
     }
     if (activeStep === 5) {
       return (
-        <Question5
-          currentAnswer={responses[`question-${activeStep}`]}
-          setCurrentAnswer={updateAnswers}
+        <HouseKeepingForm
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
+          infoDetails={{
+            date_of_birth: '',
+            current_understanding: '',
+            payed_by: '',
+            referred_by: ''
+          }}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
     }
@@ -427,46 +546,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           showProgressBar={true}
         />
         {selectStep()}
-        <ButtonsContainer>
-          {activeStep !== 0 && (
-            <StyledButton
-              disabled={activeStep <= 0}
-              className="previous"
-              variant="outlined"
-              onClick={onPreviousHandler}
-            >
-              Previous
-            </StyledButton>
-          )}
-
-          <StyledButton
-            variant="contained"
-            className="next"
-            loading={isSubmitting}
-            disabled={
-              activeStep > 0 &&
-              activeStep !== 1 &&
-              activeStep <= 10 &&
-              (!responses[`question-${activeStep}`] ||
-                responses[`question-${activeStep}`].length === 0)
-            }
-            onClick={() => onStepChange(activeStep)}
-            data-testid="btn-next"
-          >
-            {activeStep === 10 ? 'Submit' : 'Next'}
-          </StyledButton>
-          {/* {activeStep === 1 && (
-            <StyledButton
-              form="profile-form"
-              type="submit"
-              variant="contained"
-              className="next"
-              data-testid="btn-submit"
-            >
-              Next
-            </StyledButton>
-          )} */}
-        </ButtonsContainer>
       </ContentContainer>
     </OnboardingStepsContainer>
   );
