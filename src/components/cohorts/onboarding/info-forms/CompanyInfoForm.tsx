@@ -4,22 +4,12 @@ import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 
 // material
-import { Box, Grid, Card, Stack, Typography, InputLabel, FormControl } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Grid, Card, Stack, Typography, InputLabel, FormControl } from '@material-ui/core';
 
-// hooks
-import { styled } from '@material-ui/core/styles';
 import { UploadAvatar } from 'components/upload';
 // axios
 import axios from 'utils/axios';
-import { CompanyProfileType } from './dataTypes';
-
-const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 130,
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
+import { CompanyProfileType, NavigationButtons } from './dataTypes';
 
 const customStyles = {
   placeholder: (provided: any, state: any) => ({
@@ -41,10 +31,12 @@ const numberOfEmployeesList = [
 
 export default function CompanyInfoForm({
   onSubmit,
-  companyProfile
+  companyProfile,
+  onPrevHandler
 }: {
   onSubmit: Function;
   companyProfile: CompanyProfileType;
+  onPrevHandler: Function;
 }) {
   const [companies, setCompanies] = useState<string[]>();
   const { industry_options } = useSelector((state: RootState) => state.profileOptions);
@@ -154,16 +146,15 @@ export default function CompanyInfoForm({
                 />
               </FormControl>
             </Stack>
-            {false && (
-              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <StyledLoadingButton type="submit" variant="contained" id="btn-submit">
-                  Save Changes
-                </StyledLoadingButton>
-              </Box>
-            )}
           </Card>
         </Grid>
       </Grid>
+      <NavigationButtons
+        showPrevButton={true}
+        disabled={false}
+        onPreviousHandler={onPrevHandler}
+        onNextHandler={() => onSubmit(infoObject)}
+      />
     </>
   );
 }
