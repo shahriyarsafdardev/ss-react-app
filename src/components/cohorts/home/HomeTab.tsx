@@ -13,6 +13,8 @@ import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
+import Registrations from './Registrations';
+import LoadingScreen from '../../LoadingScreen';
 import SessionPrereading from './SessionPrereading';
 import CohortAnalytics from './CohortAnalytics';
 
@@ -31,6 +33,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
 const Index = () => {
   const dispatch = useDispatch();
   const [hasOnboarded, setHasOnboarded] = useState(true);
@@ -43,7 +51,6 @@ const Index = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
-
   useEffect(() => {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
@@ -88,18 +95,33 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  if (!cohort) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
   return (
     <Page title="ScholarSite | Homepage">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         <Container style={{ marginBottom: '50px' }}>
-          {user?.view_type === 'Member' ? (
-            <CohortTimeLine cohort={cohort} sessions={sessions} />
+          {user?.view_type === 'Instructor' && cohort.registration_phase ? (
+            <CohortAnalytics key={user?.view_type} cohort_id={cohort?.id} />
           ) : (
-            <CohortAnalytics />
+            <CohortTimeLine key={user?.view_type} cohort={cohort} sessions={sessions} />
           )}
           <StyledBox>
-            <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
+            {user?.view_type === 'Instructor' ? (
+              <Registrations cohort={cohort} sessions={sessions} activeSession={activeSession} />
+            ) : (
+              <SessionPrereading
+                cohort={cohort}
+                sessions={sessions}
+                activeSession={activeSession}
+              />
+            )}
             <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
           </StyledBox>
         </Container>

@@ -23,6 +23,7 @@ const CohortTimeLine = ({
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
+    setHeader('');
     let currentSessionNumber = 0;
     let flag = true;
     let isHeaderSet = false;
@@ -58,7 +59,7 @@ const CohortTimeLine = ({
   }, [sessions]);
 
   return (
-    <Box>
+    <Box key={cohort.id}>
       <Typography
         variant="h3"
         style={{ marginBottom: '20px', minHeight: '48px' }}

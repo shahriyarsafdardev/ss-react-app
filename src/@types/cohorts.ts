@@ -121,6 +121,10 @@ export type Enrollment = {
   application_accepted_time: string;
   payment_link_opened_time: string;
   paid_time: string;
+  current_company: Company;
+  current_position: string;
+  current_role_category_selections: string[];
+  current_industry_category_selections: string[];
 };
 
 export type Cohort = {
@@ -130,6 +134,7 @@ export type Cohort = {
   intake_name: string;
   session_times: string;
   host_names: string;
+  registration_phase: boolean;
   is_host: boolean;
   isOnboarded: boolean;
   released_for_learners: boolean;

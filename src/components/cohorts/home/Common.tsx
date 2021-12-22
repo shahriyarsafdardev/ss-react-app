@@ -1,8 +1,9 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, CircularProgress, Divider, Typography, Stack, Avatar, Link } from '@material-ui/core';
-import { uniq } from 'lodash';
+import { Box, CircularProgress, Divider, Typography, Stack, Avatar } from '@material-ui/core';
+import { uniq, groupBy } from 'lodash';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
+import { Enrollment } from '../../../@types/cohorts';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -193,7 +194,7 @@ export const CompanyHighlight = ({
 
     <Typography variant="subtitle2">{name}</Typography>
     <Typography variant="caption" color="#637381">
-      {count} participants
+      {count} participant{count !== 1 && 's'}
     </Typography>
   </Stack>
 );
@@ -210,7 +211,7 @@ export const IndustryHighlight = ({
   <Stack direction="column" alignItems="center">
     <Typography variant="subtitle2">{name}</Typography>
     <Typography variant="caption" color="#637381">
-      {count} participants
+      {count} participant{count !== 1 && 's'}
     </Typography>
     <a href={link}>
       <Typography variant="caption" color="#637381">
@@ -219,101 +220,222 @@ export const IndustryHighlight = ({
     </a>
   </Stack>
 );
+const getRevenue = (enrollments: Enrollment[]) => {
+  const totalEnrollments = enrollments.filter((e) => e.status === 'Paid');
+  let totalRevenue = 0;
+  let currentWeekRevenue = 0;
+  totalEnrollments.map((enrollment) => {
+    totalRevenue += Number(enrollment.price);
+    return enrollment;
+  });
+  const startDate = moment().startOf('week').add(1, 'days');
+  const newEnrollments = totalEnrollments.filter(
+    (e: any) => !!e.paid_time && moment(e.paid_time) >= startDate
+  );
+  newEnrollments.map((enrollment) => {
+    currentWeekRevenue += Number(enrollment.price);
+    return enrollment;
+  });
+  totalRevenue *= 0.8;
+  currentWeekRevenue *= 0.8;
+  const difference = totalRevenue - currentWeekRevenue;
+  return {
+    total: totalRevenue,
+    increase: (currentWeekRevenue / difference) * 100 || 0
+  };
+};
 
-export const getAnalyticsData = () => [
-  <AnalyticsContainer key="1">
-    <Typography variant="h6">Your cohort has been getting great traction!</Typography>
-    <StyledDivider />
-    <Stack
-      sx={{ width: '100%', height: '100%' }}
-      direction="row"
-      justifyContent="space-around"
-      alignItems="center"
-    >
-      <RevenueHighlight
-        heading="Your Earnings"
-        value={12765}
-        type="price"
-        difference={12}
-        tooltipMessage="80% of all revenue from registrations"
-      />
-      <RevenueHighlight
-        heading="In The Pipeline"
-        value={128765}
-        type="price"
-        difference={6}
-        tooltipMessage="80% * (Combined value of all unconverted registrations)"
-      />
-      <RevenueHighlight
-        heading="Page Impressions"
-        value={1765}
-        type="number"
-        difference={10}
-        tooltipMessage="Registration page views"
-      />
-    </Stack>
-  </AnalyticsContainer>,
-  <AnalyticsContainer key="2">
-    <Typography variant="h6">Students from 12 companies have aleady joined!</Typography>
-    <StyledDivider />
-    <Stack
-      sx={{ width: '100%', height: '100%' }}
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <CompanyHighlight name="Adobe" count={13} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Dropbox" count={8} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Apple" count={5} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Microsoft" count={4} image="/static/home/increase.svg" />
-      <CompanyHighlight name="BBC" count={2} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Atlassian" count={1} image="/static/home/increase.svg" />
-    </Stack>
-  </AnalyticsContainer>,
-  <AnalyticsContainer key="3">
-    <Typography variant="h6">From countries all over the world</Typography>
-    <StyledDivider />
-    <Stack
-      sx={{ width: '100%', height: '100%' }}
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
-      <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
-      <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
-    </Stack>
-  </AnalyticsContainer>,
-  <AnalyticsContainer key="4">
-    <Typography variant="h6">In a variety of roles</Typography>
-    <StyledDivider />
-    <Stack
-      sx={{ width: '100%', height: '100%' }}
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <IndustryHighlight name="Product" count={13} link="/" />
-      <IndustryHighlight name="Founder" count={5} link="/" />
-      <IndustryHighlight name="Data" count={2} link="/" />
-      <IndustryHighlight name="Research" count={1} link="/" />
-    </Stack>
-  </AnalyticsContainer>,
-  <AnalyticsContainer key="5">
-    <Typography variant="h6">And industries</Typography>
-    <StyledDivider />
-    <Stack
-      sx={{ width: '100%', height: '100%' }}
-      direction="row"
-      justifyContent="space-evenly"
-      alignItems="center"
-    >
-      <IndustryHighlight name="SaaS" count={13} link="/" />
-      <IndustryHighlight name="Health Care" count={5} link="/" />
-      <IndustryHighlight name="Pharma" count={2} link="/" />
-      <IndustryHighlight name="Space" count={1} link="/" />
-    </Stack>
-  </AnalyticsContainer>
-];
+const getPipelineRevenue = (enrollments: Enrollment[]) => {
+  const totalEnrollments = enrollments.filter((e) => e.status !== 'Paid');
+  let totalRevenue = 0;
+  let currentWeekRevenue = 0;
+  totalEnrollments.map((enrollment) => {
+    totalRevenue += Number(enrollment.price);
+    return enrollment;
+  });
+  const startDate = moment().startOf('week').add(1, 'days');
+  const newEnrollments = totalEnrollments.filter(
+    (e: any) => !!e.time && moment(e.time) >= startDate
+  );
+  newEnrollments.map((enrollment) => {
+    currentWeekRevenue += Number(enrollment.price);
+    return enrollment;
+  });
+  totalRevenue *= 0.8;
+  currentWeekRevenue *= 0.8;
+  const difference = totalRevenue - currentWeekRevenue;
+  return {
+    total: totalRevenue,
+    increase: (currentWeekRevenue / difference) * 100 || 0
+  };
+};
+
+const getCompanies = (enrollments: Enrollment[]) => {
+  const grouped = groupBy(enrollments, 'current_company.name');
+  const sorted: any[] = [];
+  const keys = Object.keys(grouped);
+  keys.map((key) => {
+    if (key !== 'undefined') {
+      sorted.push({
+        name: key,
+        count: grouped[key].length,
+        logo: grouped[key][0].current_company.logo_url
+      });
+    }
+  });
+  return sortItemsWithCount(sorted);
+};
+
+const getRoles = (enrollments: Enrollment[], type: string) => {
+  const grouped: any = {};
+  enrollments.map((enrollment: any) => {
+    if (enrollment[type] && enrollment[type] != []) {
+      enrollment[type].map((item: any) => {
+        if (grouped[item]) {
+          grouped[item] += 1;
+        } else {
+          grouped[item] = 1;
+        }
+      });
+    }
+  });
+  const sorted: any[] = [];
+  const keys = Object.keys(grouped);
+  keys.map((key) => {
+    if (key) {
+      sorted.push({
+        name: key,
+        count: grouped[key]
+      });
+    }
+  });
+  return sortItemsWithCount(sorted);
+};
+
+export const sortItemsWithCount = (items: any[]) =>
+  [...items].sort((a, b) => (a.count > b.count ? -1 : 1));
+
+export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) => {
+  const revenue = getRevenue(enrollments);
+  const pipeline = getPipelineRevenue(enrollments);
+  const companies = getCompanies(enrollments);
+  const roles = getRoles(enrollments, 'current_role_category_selections');
+  const industries = getRoles(enrollments, 'current_industry_category_selections');
+
+  const items = [
+    <AnalyticsContainer key="1">
+      <Typography variant="h6">Your cohort has been getting great traction!</Typography>
+      <StyledDivider />
+      <Stack
+        sx={{ width: '100%', height: '100%' }}
+        direction="row"
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <RevenueHighlight
+          heading="Your Earnings"
+          value={revenue.total}
+          type="price"
+          difference={revenue.increase}
+          tooltipMessage="80% of all revenue from registrations"
+        />
+        <RevenueHighlight
+          heading="In The Pipeline"
+          value={pipeline.total}
+          type="price"
+          difference={pipeline.increase}
+          tooltipMessage="80% * (Combined value of all unconverted registrations)"
+        />
+        <RevenueHighlight
+          heading="Page Impressions"
+          value={1765}
+          type="number"
+          difference={10}
+          tooltipMessage="Registration page views"
+        />
+      </Stack>
+    </AnalyticsContainer>
+  ];
+  if (companies.length > 0) {
+    items.push(
+      <AnalyticsContainer key="2">
+        <Typography variant="h6">
+          Students from {companies.length} companie{companies.length === 1 ? ' has' : 's have'}{' '}
+          aleady joined!
+        </Typography>
+        <StyledDivider />
+        <Stack
+          sx={{ width: '100%', height: '100%' }}
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          {companies.slice(0, 6).map((company) => (
+            <CompanyHighlight
+              key={company.name}
+              name={company.name}
+              count={company.count}
+              image={company.logo}
+            />
+          ))}
+        </Stack>
+      </AnalyticsContainer>
+    );
+  }
+  items.push(
+    <AnalyticsContainer key="3">
+      <Typography variant="h6">From countries all over the world</Typography>
+      <StyledDivider />
+      <Stack
+        sx={{ width: '100%', height: '100%' }}
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+      >
+        <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
+        <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
+        <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
+        <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
+        <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
+      </Stack>
+    </AnalyticsContainer>
+  );
+  if (roles.length > 0) {
+    items.push(
+      <AnalyticsContainer key="4">
+        <Typography variant="h6">In a variety of roles</Typography>
+        <StyledDivider />
+        <Stack
+          sx={{ width: '100%', height: '100%' }}
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          {roles.slice(0, 4).map((role) => (
+            <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
+          ))}
+        </Stack>
+      </AnalyticsContainer>
+    );
+  }
+  if (industries.length > 0) {
+    items.push(
+      <AnalyticsContainer key="5">
+        <Typography variant="h6">And industries</Typography>
+        <StyledDivider />
+        <Stack
+          sx={{ width: '100%', height: '100%' }}
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+        >
+          {industries.slice(0, 4).map((role) => (
+            <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
+          ))}
+        </Stack>
+      </AnalyticsContainer>
+    );
+  }
+
+  return items;
+};
