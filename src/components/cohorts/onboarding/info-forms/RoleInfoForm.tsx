@@ -59,6 +59,8 @@ export default function RoleInfoForm({
                     label="Role Categories"
                     onChange={(e) => onUpdateAttribute('role_category', e.target.value)}
                     defaultValue={infoObject.role_category}
+                    multiple
+                    renderValue={(selected: any) => selected.join(', ')}
                   >
                     {role_options?.map((name: any) => (
                       <MenuItem key={name} value={name}>

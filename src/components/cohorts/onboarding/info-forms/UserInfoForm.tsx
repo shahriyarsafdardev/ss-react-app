@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
+import { Country, City } from 'country-state-city';
 
-// material
 import {
   Grid,
   Card,
@@ -15,9 +15,7 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 
-// hooks
 import { UploadAvatar } from 'components/upload';
-import axios from 'utils/axios';
 import { NavigationButtons } from './dataTypes';
 
 type UserInfoType = {
@@ -35,26 +33,27 @@ export default function UserInfoForm({
   userProfile
 }: {
   onSubmit: Function;
-  userProfile?: {
+  userProfile: {
     first_name: string;
     last_name: string;
     linkedin_url: string;
-    discord_url: string;
     profile_image_url: File | any;
-    current_company: string;
     preferred_pronoun: string;
-    current_position: string;
-    strengths: string[];
-    current_role_category_selections: string[];
-    current_industry_category_selections: string[];
-    interests: string[];
-    bio_text: string;
-    opted_in_for_matching_suggestions: boolean;
-    networking_matching_preferences: string[];
+    country: string;
+    city: string;
   };
 }) {
-  const [companies, setCompanies] = useState<string[]>();
   const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
+  const [citiesList, setCityList] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (userProfile.country) {
+      const countryCode = Country.getAllCountries().find(
+        (countryItem) => countryItem.name === userProfile.country
+      )?.isoCode;
+      setCityList(City?.getCitiesOfCountry(countryCode || '')?.map((city) => city.name) || []);
+    }
+  }, []);
 
   const fillUserValues = () => ({
     profile_image_url: userProfile?.profile_image_url,
@@ -80,15 +79,6 @@ export default function UserInfoForm({
     tempInfo = { ...tempInfo, [attribute]: value };
     setInfoObject(tempInfo);
   };
-
-  useEffect(() => {
-    axios
-      .get('/cohorts/select_fields_data.json')
-      .then((res) => res.data)
-      .then((payload) => {
-        payload?.companies && setCompanies(payload.companies);
-      });
-  }, []);
 
   return (
     <>
@@ -142,11 +132,20 @@ export default function UserInfoForm({
                   <MaterialSelect
                     fullWidth
                     label="Country"
-                    onChange={(e) => onUpdateAttribute('country', e.target.value)}
+                    onChange={(e) => {
+                      const countryCode = Country.getAllCountries().find(
+                        (country) => country.name === e.target.value
+                      )?.isoCode;
+                      setCityList(
+                        City?.getCitiesOfCountry(countryCode || '')?.map((city) => city.name) || []
+                      );
+                      onUpdateAttribute('country', e.target.value);
+                    }}
+                    defaultValue={userProfile.country}
                   >
-                    {companies?.map((name: any) => (
-                      <MenuItem key={name} value={name}>
-                        <ListItemText primary={name} />
+                    {Country.getAllCountries().map((country: any) => (
+                      <MenuItem key={country.name} value={country.name}>
+                        <ListItemText primary={country.name} />
                       </MenuItem>
                     ))}
                   </MaterialSelect>
@@ -158,12 +157,19 @@ export default function UserInfoForm({
                     fullWidth
                     label="City"
                     onChange={(e) => onUpdateAttribute('city', e.target.value)}
+                    defaultValue={userProfile.city}
                   >
-                    {companies?.map((name: any) => (
-                      <MenuItem key={name} value={name}>
-                        <ListItemText primary={name} />
+                    {citiesList?.length > 0 ? (
+                      citiesList.map((city: any) => (
+                        <MenuItem key={city} value={city}>
+                          <ListItemText primary={city} />
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem>
+                        <ListItemText primary="Please select a country first" />
                       </MenuItem>
-                    ))}
+                    )}
                   </MaterialSelect>
                 </FormControl>
               </Stack>

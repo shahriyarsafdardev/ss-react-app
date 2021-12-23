@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Modal } from 'components/animate';
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, Typography, TextField, Tabs, Tab } from '@material-ui/core';
-import { DropzoneArea } from 'material-ui-dropzone';
+// import { DropzoneArea } from 'material-ui-dropzone';
 
 const FormContainer = styled('div')(() => ({
   maxWidth: '700px',
@@ -26,14 +26,14 @@ const StyledTabs = styled(Tabs)(() => ({
   }
 }));
 
-const StyledDropzone = styled(DropzoneArea)(() => ({
-  marginTop: '20px',
-  backgroundColor: 'white',
-  '&.MuiDropzoneArea-root-31': {
-    minHeight: '150px',
-    border: '2px dashed'
-  }
-}));
+// const StyledDropzone = styled(DropzoneArea)(() => ({
+//   marginTop: '20px',
+//   backgroundColor: 'white',
+//   '&.MuiDropzoneArea-root-31': {
+//     minHeight: '150px',
+//     border: '2px dashed'
+//   }
+// }));
 
 const StyledButton = styled(Button)(() => ({
   width: '150px'
@@ -81,7 +81,7 @@ const SessionMaterialForm = ({
 
   const tabContent = [
     <Box key="file" style={{ paddingTop: 20 }}>
-      <StyledDropzone datatest-id="hey" dropzoneText="Upload or drag and drop your file here." />
+      {/* <StyledDropzone datatest-id="hey" dropzoneText="Upload or drag and drop your file here." /> */}
     </Box>,
     <Box key="url">
       <TextField
