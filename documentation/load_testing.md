@@ -3,7 +3,7 @@
 This document is about how we can start JMeter and can run load testing on ScholarSite
 
 ## Starting JMeter
-
+Download link for JMeter: https://jmeter.apache.org/download_jmeter.cgi
 - Once you have downloaded the JMeter zip folder, go to the folder location, and then extract the zip folder
 - Once the folder is extracted go open the terminal and go that folder and then go inside the bin folder here
 - Run the command sh jmeter.sh to run JMeter
@@ -30,7 +30,7 @@ This document is about how we can start JMeter and can run load testing on Schol
 > > > Assertion on response of login HTTP Request
 > >
 > > View Results Tree
-> > 
+> >
 > > View Results in Table
 
 ![image (8)](https://user-images.githubusercontent.com/95229345/146619600-b912c013-0a95-4c32-b5b5-8960ad734108.png)
@@ -45,7 +45,7 @@ In the thread group, we define the number of users that we are going to the user
 
 ### Login (HTTP Request)
 - In the HTTP Request, we add the name of our request
-- In protocol, we added HTTPS 
+- In protocol, we added HTTPS
 - In Server Name, we have to add our APP ROOT URL
 - In HTTP Request, we add the type of Request and in the path, we add the endpoint we need to test
 - Here, we added the parameters which we need for the endpoint
