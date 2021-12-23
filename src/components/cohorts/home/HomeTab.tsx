@@ -19,6 +19,8 @@ import SessionPrereading from './SessionPrereading';
 import CohortAnalytics from './CohortAnalytics';
 
 import { firstUpcomingDate } from './Common';
+import CohortGuides from './CohortGuides';
+
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -97,6 +99,13 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  if (!cohort || !sessions || sessions.length === 0) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   return (
@@ -120,7 +129,11 @@ const Index = () => {
                   activeSession={activeSession}
                 />
               )}
-              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+              {mode === 'Instructor' ? (
+                <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
+              ) : (
+                <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+              )}
             </StyledBox>
           </Container>
         </AnalyticsContext.Provider>

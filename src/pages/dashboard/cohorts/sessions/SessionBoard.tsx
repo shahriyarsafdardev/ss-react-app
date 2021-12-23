@@ -38,6 +38,7 @@ import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
 type SessionBoardProps = {
   session: Session | undefined;
   isLearner: boolean;
+  selectedTab: number;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -173,8 +174,8 @@ const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session, isLearner }: SessionBoardProps) {
-  const [currentTab, setCurrentTab] = useState(0);
+export default function SessionBoard({ session, selectedTab, isLearner }: SessionBoardProps) {
+  const [currentTab, setCurrentTab] = useState(selectedTab);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const dispatch = useDispatch();

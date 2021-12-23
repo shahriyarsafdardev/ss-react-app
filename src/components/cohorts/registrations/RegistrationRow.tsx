@@ -7,9 +7,10 @@ import { Actions, Tags, pickColor } from './Common';
 type RegistrationRowProps = {
   enrollment: Enrollment;
   index: number;
+  page: string;
 };
 
-export default function RegistrationRow({ enrollment, index }: RegistrationRowProps) {
+export default function RegistrationRow({ enrollment, index, page }: RegistrationRowProps) {
   const theme = useTheme();
 
   const { id, first_name, email, name, status, time, price, linkedin_url } = enrollment;
@@ -40,29 +41,33 @@ export default function RegistrationRow({ enrollment, index }: RegistrationRowPr
           )}
         </Stack>
       </TableCell>
-      <TableCell
-        style={{ width: 170 }}
-        align="center"
-        data-testid={`registration${id ? `-${id}` : ''}-time`}
-      >
-        {time}
-      </TableCell>
-      <TableCell
-        style={{ width: 100 }}
-        align="center"
-        data-testid={`registration${id ? `-${id}` : ''}-price`}
-      >
-        ${price || 0}
-      </TableCell>
-      <TableCell style={{ width: 300 }} align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={pickColor(status)}
-          testId={`registration${id ? `-${id}` : ''}-status`}
-        >
-          {status}
-        </Label>
-      </TableCell>
+      {page !== 'Home' && (
+        <>
+          <TableCell
+            style={{ width: 170 }}
+            align="center"
+            data-testid={`registration${id ? `-${id}` : ''}-time`}
+          >
+            {time}
+          </TableCell>
+          <TableCell
+            style={{ width: 100 }}
+            align="center"
+            data-testid={`registration${id ? `-${id}` : ''}-price`}
+          >
+            ${price || 0}
+          </TableCell>
+          <TableCell style={{ width: 300 }} align="center">
+            <Label
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color={pickColor(status)}
+              testId={`registration${id ? `-${id}` : ''}-status`}
+            >
+              {status}
+            </Label>
+          </TableCell>
+        </>
+      )}
       <TableCell
         style={{ width: 120 }}
         align="center"

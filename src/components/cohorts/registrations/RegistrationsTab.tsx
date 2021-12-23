@@ -60,9 +60,9 @@ export default function RegistrationsTab() {
           cohort_name={cohort.name}
           cohort_intake={cohort.intake}
         />
-        <RegistrationsList enrollments={enrollments.slice(0, limit)} />
+        <RegistrationsList page="Registrations" enrollments={enrollments.slice(0, limit)} />
         {limit !== enrollments.length && (
-          <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
+          <RegistrationsFooter color="#212B36" handleClick={() => setLimit(enrollments.length)} />
         )}
       </RegistrationsContainer>
     </Page>
