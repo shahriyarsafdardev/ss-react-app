@@ -1,9 +1,21 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, CircularProgress, Divider, Typography, Stack, Avatar } from '@material-ui/core';
-import { uniq, groupBy } from 'lodash';
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Typography,
+  Stack,
+  Avatar,
+  LinearProgress
+} from '@material-ui/core';
+import ReactApexChart from 'react-apexcharts';
+//
+import { uniq, groupBy, merge } from 'lodash';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
+import BaseOptionChart from '../../charts/BaseOptionChart';
 import { Enrollment, Session } from '../../../@types/cohorts';
+import { fShortenNumber } from '../../../utils/formatNumber';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -111,6 +123,21 @@ export const zoomTimesPreview = (times: string[]) => {
   return `${formatList(sortedTimeslist)} ${getLocalTimeZone()}`;
 };
 
+export const findLastSession = (sessions: Session[]) => {
+  let found = false;
+  let sessionIndex = sessions.length - 1;
+  sessions?.forEach((session, index) => {
+    if (!found && moment(firstUpcomingDate(session.times)).add(1, 'hour') > moment()) {
+      sessionIndex = index;
+      found = true;
+    }
+  });
+  if (found && sessionIndex > 0) {
+    return sessions[sessionIndex - 1];
+  }
+  return sessions[sessionIndex];
+};
+
 export const displayMultipleDates = (times: string[]) => {
   const upcomings = uniq(
     upcomingTimes(times).map((time) => moment(new Date(time)).format('dddd, MMM DD'))
@@ -179,6 +206,47 @@ export const RevenueHighlight = ({
     </Stack>
   </Stack>
 );
+
+export const StarResponses = ({
+  heading,
+  value,
+  total
+}: {
+  heading?: any;
+  value?: any;
+  total?: any;
+}) => (
+  <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
+    <Stack direction="row" spacing={1} justifyContent="space-between">
+      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
+        {heading}
+      </Typography>
+      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
+        {value}/{total}
+      </Typography>
+    </Stack>
+    <LinearProgress
+      variant="determinate"
+      value={(value / total) * 100}
+      sx={{
+        width: '100%',
+        flexGrow: 1,
+        bgcolor: 'divider'
+      }}
+    />
+  </Stack>
+);
+
+export const ChartDonut = ({ data, labels }: { data: any; labels: string[] }) => {
+  const chartOptions = merge(BaseOptionChart(), {
+    labels,
+    stroke: { show: false },
+    legend: { horizontalAlign: 'center' },
+    plotOptions: { pie: { donut: { size: '90%' } } }
+  });
+
+  return <ReactApexChart type="donut" series={data} options={chartOptions} width={400} />;
+};
 
 export const CompanyHighlight = ({
   name,
@@ -334,21 +402,21 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
       >
         <RevenueHighlight
           heading="Your Earnings"
-          value={revenue.total}
+          value={fShortenNumber(revenue.total)}
           type="price"
           difference={revenue.increase}
           tooltipMessage="80% of all revenue from registrations"
         />
         <RevenueHighlight
           heading="In The Pipeline"
-          value={pipeline.total}
+          value={fShortenNumber(pipeline.total)}
           type="price"
           difference={pipeline.increase}
           tooltipMessage="80% * (Combined value of all unconverted registrations)"
         />
         <RevenueHighlight
           heading="Page Impressions"
-          value={1765}
+          value={fShortenNumber(1765)}
           type="number"
           difference={10}
           tooltipMessage="Registration page views"
