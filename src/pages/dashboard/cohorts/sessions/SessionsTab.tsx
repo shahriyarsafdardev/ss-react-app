@@ -50,6 +50,7 @@ const LoadingContainer = styled(Box)(() => ({
 export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [analyticsSent, setAnalyticsSent] = useState(false);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -89,6 +90,7 @@ export default function SessionsTab() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     let sessionNumber = Number(params.get('session'));
+    setSelectedTab(Number(params.get('tab')));
     sessionNumber--;
     if (
       filteredSessions &&
@@ -123,8 +125,9 @@ export default function SessionsTab() {
                 <Grid item md={8} sm={12}>
                   <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
                     <SessionBoard
-                      session={filteredSessions && filteredSessions[selectedSession]}
+                      selectedTab={selectedTab}
                       isLearner={isLearner}
+                      session={filteredSessions && filteredSessions[selectedSession]}
                     />
                   </SessionContext.Provider>
                 </Grid>

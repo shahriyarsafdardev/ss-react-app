@@ -7,9 +7,10 @@ import { Actions, pickColor } from './Common';
 type RegistrationRowProps = {
   enrollment: Enrollment;
   index: number;
+  page: string;
 };
 
-export default function RegistrationRow({ enrollment, index }: RegistrationRowProps) {
+export default function RegistrationRow({ enrollment, index, page }: RegistrationRowProps) {
   const theme = useTheme();
 
   const { id, name, status, time, price, linkedin_url } = enrollment;
@@ -27,34 +28,44 @@ export default function RegistrationRow({ enrollment, index }: RegistrationRowPr
           </Typography>
         </Stack>
       </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-time`}>
-        {time}
-      </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-linkedin-url`}>
+      {page !== 'Home' && (
+        <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-time`}>
+          {time}
+        </TableCell>
+      )}
+      <TableCell
+        style={{ width: 150 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-linkedin-url`}
+      >
         {linkedin_url && (
           <Link
             underline="always"
             href={linkedin_url}
             target="_blank"
-            color="#071A33"
+            color={page === 'Home' ? '#4d4dcd' : '#071A33'}
             sx={{ typography: 'body2' }}
           >
-            Open
+            {page === 'Home' ? 'Open Link' : 'Open'}
           </Link>
         )}
       </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-price`}>
-        ${price || 0}
-      </TableCell>
-      <TableCell style={{ width: 300 }} align="center">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={pickColor(status)}
-          testId={`registration${id ? `-${id}` : ''}-status`}
-        >
-          {status}
-        </Label>
-      </TableCell>
+      {page !== 'Home' && (
+        <>
+          <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-price`}>
+            ${price || 0}
+          </TableCell>
+          <TableCell style={{ width: 300 }} align="center">
+            <Label
+              variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+              color={pickColor(status)}
+              testId={`registration${id ? `-${id}` : ''}-status`}
+            >
+              {status}
+            </Label>
+          </TableCell>
+        </>
+      )}
       <TableCell
         style={{ width: 250 }}
         align="center"

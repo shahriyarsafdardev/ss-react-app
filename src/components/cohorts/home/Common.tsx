@@ -3,7 +3,7 @@ import { Box, CircularProgress, Divider, Typography, Stack, Avatar } from '@mate
 import { uniq, groupBy } from 'lodash';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, Session } from '../../../@types/cohorts';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -436,6 +436,55 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
       </AnalyticsContainer>
     );
   }
+
+  return items;
+};
+
+const getSessionDueDate = (session: Session, days: number) => {
+  const date = moment(firstUpcomingDate(session.times)).subtract(days, 'days').format('MMMM Do');
+  if (moment().format('MMMM Do') === date) {
+    return 'Today';
+  }
+  return date;
+};
+
+export const getCohortGuides = (cohortID: string, sessions: Session[]) => {
+  const items = [
+    {
+      heading: 'Distribution Playbook',
+      link: '/',
+      complete: false,
+      due: getSessionDueDate(sessions[0], 7)
+    },
+    {
+      heading: 'Zoom Setup Guide',
+      link: '/',
+      complete: false,
+      due: getSessionDueDate(sessions[0], 7)
+    },
+    {
+      heading: 'Platform Tour',
+      link: '/',
+      complete: false,
+      due: getSessionDueDate(sessions[0], 7)
+    }
+  ];
+  sessions.map((session) => {
+    items.push(
+      {
+        heading: `${session.custom_name || `Session ${session.number}`}: Upload Materials`,
+        link: `/cohorts/${cohortID}/sessions?session=${session.number}&tab=0`,
+        complete: session.session_materials.length > 0,
+        due: getSessionDueDate(session, 2)
+      },
+      {
+        heading: `${session.custom_name || `Session ${session.number}`}: Upload Slides`,
+        link: `/cohorts/${cohortID}/sessions?session=${session.number}&tab=1`,
+        complete: !!session.presentation_pdf_url,
+        due: getSessionDueDate(session, 1)
+      }
+    );
+  });
 
   return items;
 };
