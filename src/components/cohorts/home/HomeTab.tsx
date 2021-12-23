@@ -17,7 +17,7 @@ import Registrations from './Registrations';
 import LoadingScreen from '../../LoadingScreen';
 import SessionPrereading from './SessionPrereading';
 import CohortAnalytics from './CohortAnalytics';
-
+import SurveyFeedback from './SurveyFeedback';
 import { firstUpcomingDate } from './Common';
 import CohortGuides from './CohortGuides';
 
@@ -115,13 +115,19 @@ const Index = () => {
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Container style={{ marginBottom: '50px' }}>
             {mode === 'Instructor' && cohort.registration_phase ? (
-              <CohortAnalytics key={user?.view_type} cohort_id={cohort?.id} />
+              <CohortAnalytics key={mode} cohort_id={cohort?.id} />
             ) : (
-              <CohortTimeLine key={user?.view_type} cohort={cohort} sessions={sessions} />
+              <CohortTimeLine key={mode} cohort={cohort} sessions={sessions} />
             )}
             <StyledBox>
               {mode === 'Instructor' ? (
-                <Registrations cohort={cohort} sessions={sessions} activeSession={activeSession} />
+                <>
+                  {cohort.registration_phase ? (
+                    <Registrations cohort={cohort} />
+                  ) : (
+                    <SurveyFeedback sessions={sessions} />
+                  )}
+                </>
               ) : (
                 <SessionPrereading
                   cohort={cohort}
@@ -129,6 +135,8 @@ const Index = () => {
                   activeSession={activeSession}
                 />
               )}
+            </StyledBox>
+            <StyledBox>
               {mode === 'Instructor' ? (
                 <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
               ) : (
