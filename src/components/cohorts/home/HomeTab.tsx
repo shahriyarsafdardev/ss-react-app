@@ -17,7 +17,7 @@ import Registrations from './Registrations';
 import LoadingScreen from '../../LoadingScreen';
 import SessionPrereading from './SessionPrereading';
 import CohortAnalytics from './CohortAnalytics';
-
+import SurveyFeedback from './SurveyFeedback';
 import { firstUpcomingDate } from './Common';
 import CohortGuides from './CohortGuides';
 
@@ -118,7 +118,13 @@ const Index = () => {
           )}
           <StyledBox>
             {user?.view_type === 'Instructor' ? (
-              <Registrations cohort={cohort} />
+              <>
+                {cohort.registration_phase ? (
+                  <Registrations cohort={cohort} />
+                ) : (
+                  <SurveyFeedback sessions={sessions} />
+                )}
+              </>
             ) : (
               <SessionPrereading
                 cohort={cohort}
