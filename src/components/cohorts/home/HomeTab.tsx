@@ -19,6 +19,7 @@ import SessionPrereading from './SessionPrereading';
 import CohortAnalytics from './CohortAnalytics';
 
 import { firstUpcomingDate } from './Common';
+import CohortGuides from './CohortGuides';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -95,7 +96,7 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
-  if (!cohort) {
+  if (!cohort || !sessions || sessions.length === 0) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -114,7 +115,7 @@ const Index = () => {
           )}
           <StyledBox>
             {user?.view_type === 'Instructor' ? (
-              <Registrations cohort={cohort} sessions={sessions} activeSession={activeSession} />
+              <Registrations cohort={cohort} />
             ) : (
               <SessionPrereading
                 cohort={cohort}
@@ -122,7 +123,11 @@ const Index = () => {
                 activeSession={activeSession}
               />
             )}
-            <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+            {user?.view_type === 'Instructor' ? (
+              <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
+            ) : (
+              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+            )}
           </StyledBox>
         </Container>
       </AnalyticsContext.Provider>

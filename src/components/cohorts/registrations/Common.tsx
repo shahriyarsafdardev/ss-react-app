@@ -172,12 +172,18 @@ export const RegistrationsHeader = ({
   );
 };
 
-export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) => (
+export const RegistrationsFooter = ({
+  handleClick,
+  color = '#212B36'
+}: {
+  handleClick: Function;
+  color: string;
+}) => (
   <Stack
     direction="row-reverse"
     justifyContent="space-between"
     width="-webkit-fill-available"
-    sx={{ pr: 6, pt: 2, mt: 2, color: '#212B36', borderTop: '1px solid rgba(224, 224, 224, 1)' }}
+    sx={{ pr: 6, pt: 2, mt: 2, color, borderTop: '1px solid rgba(224, 224, 224, 1)' }}
   >
     <StyledViewButton variant="subtitle2" onClick={() => handleClick()}>
       View All
