@@ -12,7 +12,7 @@ export type CompanyProfileType = {
 
 export type InfoType = {
   role_title: string;
-  role_category: string;
+  role_category: string[];
   do_manage_team: boolean;
   role_description: string;
 };
@@ -78,12 +78,16 @@ export const NavigationButtons = ({
   showPrevButton = true,
   disabled,
   onPreviousHandler,
-  onNextHandler
+  onNextHandler,
+  isSubmitBtn = false,
+  isSubmitting = false
 }: {
   showPrevButton: boolean;
   disabled: boolean;
   onPreviousHandler: Function;
   onNextHandler: Function;
+  isSubmitBtn?: boolean;
+  isSubmitting?: boolean;
 }) => (
   <ButtonsContainer>
     {showPrevButton && (
@@ -95,11 +99,11 @@ export const NavigationButtons = ({
     <StyledButton
       variant="contained"
       className="next"
-      // loading={isSubmitting}
+      loading={isSubmitting}
       disabled={disabled}
       onClick={() => onNextHandler()}
     >
-      Next
+      {isSubmitBtn ? 'Submit' : 'Next'}
     </StyledButton>
   </ButtonsContainer>
 );

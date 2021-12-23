@@ -1,14 +1,22 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import CreatableSelect from 'react-select/creatable';
-import Select from 'react-select';
 
-// material
-import { Grid, Card, Stack, Typography, InputLabel, FormControl } from '@material-ui/core';
+import {
+  Grid,
+  Card,
+  Stack,
+  Typography,
+  FormControl,
+  MenuItem,
+  ListItemText,
+  InputLabel,
+  Select as MaterialSelect
+} from '@material-ui/core';
 
 import { UploadAvatar } from 'components/upload';
-// axios
 import axios from 'utils/axios';
+
 import { CompanyProfileType, NavigationButtons } from './dataTypes';
 
 const customStyles = {
@@ -93,57 +101,56 @@ export default function CompanyInfoForm({
             />
           </Card>
         </Grid>
-
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl fullWidth>
-                <InputLabel>Company Name</InputLabel>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="company-name">Select or create company name</label>
                 <CreatableSelect
                   defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
                   options={companies?.map((option) => ({ value: option, label: option }))}
                   isClearable={false}
                   styles={customStyles}
                   backspaceRemovesValue={true}
-                  placeholder={<div>Company Name</div>}
+                  placeholder="Company Name"
                   isSearchable
                   onChange={(e) => onUpdateAttribute('name', e?.value)}
                 />
               </FormControl>
 
               <FormControl fullWidth>
-                <CreatableSelect
-                  defaultValue={infoObject.industries.map((option) => ({
-                    value: option,
-                    label: option
-                  }))}
-                  options={industry_options?.map((option) => ({ value: option, label: option }))}
-                  isClearable={false}
-                  styles={customStyles}
-                  isMulti
-                  backspaceRemovesValue={true}
-                  placeholder={<div>Company Industries</div>}
-                  isSearchable
-                  onChange={(e) =>
-                    onUpdateAttribute(
-                      'industries',
-                      e.map((item) => item.value)
-                    )
-                  }
-                />
+                <InputLabel>Company Industries</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Company Industries"
+                  onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}
+                  defaultValue={infoObject.industries}
+                  multiple
+                  renderValue={(selected: any) => selected.join(', ')}
+                >
+                  {industry_options?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
               </FormControl>
 
               <FormControl fullWidth>
-                <Select
-                  options={numberOfEmployeesList?.map((option) => ({
-                    value: option,
-                    label: option
-                  }))}
-                  isClearable={false}
-                  backspaceRemovesValue={true}
-                  placeholder="Number of Employees"
-                  onChange={(e) => onUpdateAttribute('number_of_employees', e?.value)}
-                />
+                <InputLabel>Number of Employees</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Number of Employees"
+                  onChange={(e) => onUpdateAttribute('number_of_employees', e.target.value)}
+                  defaultValue={infoObject.number_of_employees}
+                >
+                  {numberOfEmployeesList.map((item: any) => (
+                    <MenuItem key={item} value={item}>
+                      <ListItemText primary={item} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
               </FormControl>
             </Stack>
           </Card>
