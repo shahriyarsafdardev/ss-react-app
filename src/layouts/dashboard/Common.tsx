@@ -6,4 +6,6 @@ export const getCategories = (cohorts: Cohort[]) =>
 export const getLearnerCohorts = (cohorts: Cohort[]) =>
   cohorts.filter((cohort) => cohort.released_for_learners);
 export const getInstructorCohorts = (cohorts: Cohort[], category: string) =>
-  cohorts.filter((cohort) => cohort.name?.toLowerCase() === category && cohort.is_host);
+  cohorts
+    .filter((cohort) => cohort.name?.toLowerCase() === category && cohort.is_host)
+    .sort((a, b) => a.intake - b.intake);
