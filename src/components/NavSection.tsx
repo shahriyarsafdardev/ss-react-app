@@ -26,6 +26,7 @@ const ListSubheaderStyle = styled((props) => (
   marginTop: theme.spacing(3),
   marginBottom: theme.spacing(2),
   paddingLeft: theme.spacing(5),
+  paddingRight: theme.spacing(2),
   color: '#4D4DCD',
   textTransform: 'uppercase'
 }));
