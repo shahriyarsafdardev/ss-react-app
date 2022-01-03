@@ -54,7 +54,7 @@ const CohortAnalytics = ({ cohort_id }: { cohort_id: string }) => {
   useEffect(() => {
     let counterId: any;
     if (autoScroll) {
-      counterId = setTimeout(() => increaseIndex(), 2000);
+      counterId = setTimeout(() => increaseIndex(), 10000);
     } else {
       clearTimeout(counterId);
     }

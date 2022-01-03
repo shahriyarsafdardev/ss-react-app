@@ -113,15 +113,15 @@ export default function BaseOptionChart(): ApexOptions {
       opacity: 1,
       gradient: {
         type: 'vertical',
-        shadeIntensity: 0,
+        shadeIntensity: 1,
         opacityFrom: 0.4,
-        opacityTo: 0,
+        opacityTo: 1,
         stops: [0, 100]
       }
     },
 
     // Datalabels
-    dataLabels: { enabled: false },
+    dataLabels: { enabled: true },
 
     // Stroke
     stroke: {
@@ -182,7 +182,7 @@ export default function BaseOptionChart(): ApexOptions {
       pie: {
         donut: {
           labels: {
-            show: true,
+            show: false,
             value: LABEL_VALUE,
             total: LABEL_TOTAL
           }
@@ -195,8 +195,7 @@ export default function BaseOptionChart(): ApexOptions {
           background: theme.palette.grey[500_16]
         },
         dataLabels: {
-          value: LABEL_VALUE,
-          total: LABEL_TOTAL
+          value: LABEL_VALUE
         }
       },
       // Radar

@@ -81,7 +81,7 @@ export default function ToDoItem({ item, onClick }: ToDoItemProps) {
         <p>
           <strong>{item.heading}</strong>
         </p>
-        <StyledBox className={`secondary, ${item.due === 'Today' ? 'red' : ''}`}>
+        <StyledBox className={`secondary, ${item.due === 'Today' && !item.complete ? 'red' : ''}`}>
           <span>{item.complete ? 'Complete' : `Complete by: ${item.due}`}</span>
         </StyledBox>
       </StyledBox>

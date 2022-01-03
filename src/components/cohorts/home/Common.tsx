@@ -8,14 +8,44 @@ import {
   Avatar,
   LinearProgress
 } from '@material-ui/core';
-import ReactApexChart from 'react-apexcharts';
+import Chart from 'react-apexcharts';
 //
-import { uniq, groupBy, merge } from 'lodash';
+import { uniq, groupBy, merge, sum } from 'lodash';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 import BaseOptionChart from '../../charts/BaseOptionChart';
 import { Enrollment, Session } from '../../../@types/cohorts';
 import { fShortenNumber } from '../../../utils/formatNumber';
+
+const StyledComment = styled(Typography)(({ theme }) => ({
+  background: '#F7F8F9',
+  marginBottom: '20px',
+  borderRadius: '8px',
+  padding: '10px',
+  fontSize: '13px'
+}));
+
+const ChartWrapperStyle = styled('div')(({ theme }) => ({
+  height: 500,
+  '& .apexcharts-canvas svg': { height: 400 },
+  '& .apexcharts-pie': { height: 350 },
+  '& .apexcharts-inner': { height: 350 },
+  '& .apexcharts-canvas .apexcharts-svg foreignObject': {
+    overflow: 'visible',
+    height: 'fit-content',
+    outerHeight: 'fit-content'
+  },
+  '& .foreignObject': {
+    overflow: 'visible',
+    outerHeight: 'fit-content'
+  },
+  '& .apexcharts-legend': {
+    height: 75,
+    alignContent: 'center',
+    position: 'relative !important' as 'relative',
+    borderBottom: `solid 1px ${theme.palette.divider}`
+  }
+}));
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -176,6 +206,70 @@ export const InfoTooltip = ({ title }: { title?: any }) => (
   </Tooltip>
 );
 
+const Heading = ({ heading }: { heading: string }) => (
+  <Typography alignItems="center" flexDirection="row" variant="subtitle2" sx={{ fontSize: '15px' }}>
+    {heading}
+  </Typography>
+);
+const getStarResponses = (answers: any) => {
+  const responses = sum(Object.values(answers));
+  const values = sum(Object.keys(answers).map((key: any) => Number(key) * Number(answers[key])));
+  return (values / responses).toFixed(1);
+};
+
+export const DisplaySurveyResponse = ({ question }: { question: any }) => {
+  if (question.type === 'slider') {
+    const responseValue = Number(getStarResponses(question.answers));
+    return (
+      <StarResponses
+        heading={question.question}
+        value={responseValue}
+        total={10}
+        percent={(responseValue / 10) * 100}
+      />
+    );
+  }
+  if (question.type === 'multiple-choice') {
+    return (
+      <ChartWrapperStyle>
+        <ChartDonut
+          heading={question.question}
+          data={Object.values(question.answers)}
+          labels={Object.keys(question.answers)}
+        />
+      </ChartWrapperStyle>
+    );
+  }
+  if (question.type === 'text-input') {
+    const commnets = Object.keys(question.answers).filter((answer) => answer.length > 5);
+    return (
+      <>
+        <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
+          <Stack direction="row" spacing={1} justifyContent="space-between">
+            <Heading heading={question.question} />
+          </Stack>
+          {commnets.map((answer) => (
+            <StyledComment key={answer} variant="body2">
+              {answer}
+            </StyledComment>
+          ))}
+        </Stack>
+      </>
+    );
+  }
+  if (question.type === 'star-rating') {
+    const responseValue = Number(getStarResponses(question.answers));
+    return (
+      <StarResponses
+        heading={question.question}
+        value={responseValue}
+        percent={(responseValue / 5) * 100}
+        total={5}
+      />
+    );
+  }
+  return <></>;
+};
 export const RevenueHighlight = ({
   heading,
   value,
@@ -191,9 +285,7 @@ export const RevenueHighlight = ({
 }) => (
   <Stack direction="column" alignItems="center" spacing={1}>
     <Stack direction="row" spacing={1}>
-      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
-        {heading}
-      </Typography>
+      <Heading heading={heading} />
       <InfoTooltip title={tooltipMessage} />
     </Stack>
     <Typography variant="h3">
@@ -210,42 +302,67 @@ export const RevenueHighlight = ({
 export const StarResponses = ({
   heading,
   value,
-  total
+  total,
+  percent
 }: {
   heading?: any;
   value?: any;
   total?: any;
+  percent?: any;
 }) => (
   <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
     <Stack direction="row" spacing={1} justifyContent="space-between">
-      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
-        {heading}
-      </Typography>
-      <Typography alignItems="center" flexDirection="row" variant="subtitle2">
-        {value}/{total}
-      </Typography>
+      <Heading heading={heading} />
+      <Heading heading={`${value}/${total}`} />
     </Stack>
     <LinearProgress
       variant="determinate"
-      value={(value / total) * 100}
+      value={percent}
+      color={
+        (percent < 50 && 'error') ||
+        (percent >= 70 && percent < 90 && 'warning') ||
+        (percent >= 90 && 'success') ||
+        'primary'
+      }
       sx={{
         width: '100%',
         flexGrow: 1,
-        bgcolor: 'divider'
+        bgcolor: 'divider',
+        height: '5.5px'
       }}
     />
   </Stack>
 );
 
-export const ChartDonut = ({ data, labels }: { data: any; labels: string[] }) => {
+export const ChartDonut = ({
+  heading,
+  data,
+  labels
+}: {
+  heading: string;
+  data: any;
+  labels: string[];
+}) => {
   const chartOptions = merge(BaseOptionChart(), {
     labels,
     stroke: { show: false },
-    legend: { horizontalAlign: 'center' },
-    plotOptions: { pie: { donut: { size: '90%' } } }
+    legend: { horizontalAlign: 'flex-start' },
+    fill: {
+      type: 'gradient'
+    },
+    plotOptions: {
+      pie: { startAngle: -90, endAngle: 270, donut: { size: '65%' } }
+    }
   });
 
-  return <ReactApexChart type="donut" series={data} options={chartOptions} width={400} />;
+  return (
+    <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
+      <Stack direction="row" spacing={1} justifyContent="space-between">
+        <Heading heading={heading} />
+      </Stack>
+      <Chart type="donut" series={data} options={chartOptions} />
+    </Stack>
+  );
 };
 
 export const CompanyHighlight = ({
@@ -281,7 +398,7 @@ export const IndustryHighlight = ({
     <Typography variant="caption" color="#637381">
       {count} participant{count !== 1 && 's'}
     </Typography>
-    <a href={link}>
+    <a href={link} style={{ color: '#637381' }}>
       <Typography variant="caption" color="#637381">
         Explore
       </Typography>
@@ -424,13 +541,36 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
       </Stack>
     </AnalyticsContainer>
   ];
-  if (companies.length > 0) {
+  if (enrollments.filter((e) => e.status === 'Paid').length > 9) {
+    if (companies.length > 0) {
+      items.push(
+        <AnalyticsContainer key="2">
+          <Typography variant="h6">
+            Students from {companies.length} companie{companies.length === 1 ? ' has' : 's have'}{' '}
+            aleady joined!
+          </Typography>
+          <StyledDivider />
+          <Stack
+            sx={{ width: '100%', height: '100%' }}
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            {companies.slice(0, 6).map((company) => (
+              <CompanyHighlight
+                key={company.name}
+                name={company.name}
+                count={company.count}
+                image={company.logo}
+              />
+            ))}
+          </Stack>
+        </AnalyticsContainer>
+      );
+    }
     items.push(
-      <AnalyticsContainer key="2">
-        <Typography variant="h6">
-          Students from {companies.length} companie{companies.length === 1 ? ' has' : 's have'}{' '}
-          aleady joined!
-        </Typography>
+      <AnalyticsContainer key="3">
+        <Typography variant="h6">From countries all over the world</Typography>
         <StyledDivider />
         <Stack
           sx={{ width: '100%', height: '100%' }}
@@ -438,71 +578,50 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
           justifyContent="space-evenly"
           alignItems="center"
         >
-          {companies.slice(0, 6).map((company) => (
-            <CompanyHighlight
-              key={company.name}
-              name={company.name}
-              count={company.count}
-              image={company.logo}
-            />
-          ))}
+          <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
+          <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
+          <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
+          <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
+          <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
         </Stack>
       </AnalyticsContainer>
     );
-  }
-  items.push(
-    <AnalyticsContainer key="3">
-      <Typography variant="h6">From countries all over the world</Typography>
-      <StyledDivider />
-      <Stack
-        sx={{ width: '100%', height: '100%' }}
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-      >
-        <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
-        <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
-        <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
-        <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
-        <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
-      </Stack>
-    </AnalyticsContainer>
-  );
-  if (roles.length > 0) {
-    items.push(
-      <AnalyticsContainer key="4">
-        <Typography variant="h6">In a variety of roles</Typography>
-        <StyledDivider />
-        <Stack
-          sx={{ width: '100%', height: '100%' }}
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-        >
-          {roles.slice(0, 4).map((role) => (
-            <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
-          ))}
-        </Stack>
-      </AnalyticsContainer>
-    );
-  }
-  if (industries.length > 0) {
-    items.push(
-      <AnalyticsContainer key="5">
-        <Typography variant="h6">And industries</Typography>
-        <StyledDivider />
-        <Stack
-          sx={{ width: '100%', height: '100%' }}
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-        >
-          {industries.slice(0, 4).map((role) => (
-            <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
-          ))}
-        </Stack>
-      </AnalyticsContainer>
-    );
+    if (roles.length > 0) {
+      items.push(
+        <AnalyticsContainer key="4">
+          <Typography variant="h6">In a variety of roles</Typography>
+          <StyledDivider />
+          <Stack
+            sx={{ width: '100%', height: '100%' }}
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            {roles.slice(0, 4).map((role) => (
+              <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
+            ))}
+          </Stack>
+        </AnalyticsContainer>
+      );
+    }
+    if (industries.length > 0) {
+      items.push(
+        <AnalyticsContainer key="5">
+          <Typography variant="h6">And industries</Typography>
+          <StyledDivider />
+          <Stack
+            sx={{ width: '100%', height: '100%' }}
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            {industries.slice(0, 4).map((role) => (
+              <IndustryHighlight key={role.name} name={role.name} count={role.count} link="/" />
+            ))}
+          </Stack>
+        </AnalyticsContainer>
+      );
+    }
   }
 
   return items;
