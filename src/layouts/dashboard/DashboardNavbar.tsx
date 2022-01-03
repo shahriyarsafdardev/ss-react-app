@@ -46,14 +46,18 @@ type DashboardNavbarProps = {
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
-  const visibleHeaders = ['messaging', 'home', 'registrations'];
+  const visibleHeaders = ['messaging', 'home', 'registrations', 'sessions', 'peers', 'Q&A'];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
     const section = tab.reverse()[0];
     if (tab.length > 5) {
       if (visibleHeaders.includes(section)) {
-        setCurrentTab(section);
+        if (section === 'peers') {
+          setCurrentTab('networking');
+        } else {
+          setCurrentTab(section);
+        }
       } else {
         setCurrentTab(null);
       }

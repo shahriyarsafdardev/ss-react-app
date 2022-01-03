@@ -5,6 +5,7 @@ import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { EVENT_TYPES, sendAmplitudeData, trackMessagingEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
 import { getPeers } from '../../../../redux/slices/cohort';
 
@@ -146,7 +147,8 @@ export default function Messaging() {
 
   return (
     <Page title="ScholarSite | Messaging" id="page">
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+      <EmptyMessagingTab cohortHost={cohort?.host_names} />
+      {/* <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <Box id="box">
           <div key={cohortID} className="chat_wrapper">
             <Chat {...{ client, i18nInstance }} theme="team light">
@@ -195,7 +197,7 @@ export default function Messaging() {
             </Chat>
           </div>
         </Box>
-      </AnalyticsContext.Provider>
+      </AnalyticsContext.Provider> */}
     </Page>
   );
 }
