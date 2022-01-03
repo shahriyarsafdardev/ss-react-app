@@ -93,21 +93,21 @@ describe('Home > Timeline', () => {
       expect(leftOffset).to.not.equal(0);
     });
   });
-  // it('Timeline scrolls to the left when left arrow icon is clicked', () => {
-  //   cy.rightArrowIcon()
-  //     .should('have.class', 'active')
-  //     .and('be.visible')
-  //     .click({ multiple: true, force: true });
-  //   cy.leftArrowIcon()
-  //     .should('have.class', 'active')
-  //     .and('be.visible')
-  //     .click({ multiple: true, force: true });
-  //   cy.wait(1000);
-  //   cy.get('#timeline-div').then((elem) => {
-  //     const leftOffset = elem.scrollLeft();
-  //     expect(leftOffset).to.equal(0);
-  //   });
-  //});
+  it('Timeline scrolls to the left when left arrow icon is clicked', () => {
+    cy.rightArrowIcon()
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
+    cy.leftArrowIcon()
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
+    cy.wait(1000);
+    cy.get('#timeline-div').then((elem) => {
+      const leftOffset = elem.scrollLeft();
+      expect(leftOffset).to.equal(0);
+    });
+  });
   context('When any session is not Completed', () => {
     const sessionNumber = 0;
     beforeEach(() => {
