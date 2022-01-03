@@ -12,7 +12,7 @@ import {
   ListItemText,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { NetworkInfoType, NavigationButtons } from './dataTypes';
+import { NetworkInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const YES_NO_OPTIONS = ['Yes', 'No'];
 
@@ -106,7 +106,7 @@ export default function NetworkingForm({
       </Grid>
       <NavigationButtons
         showPrevButton={true}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit(infoObject)}
       />

@@ -13,7 +13,7 @@ import {
   ListItemText,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { InfoType, NavigationButtons } from './dataTypes';
+import { InfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const YES_NO_OPTIONS = ['Yes', 'No'];
 
@@ -38,10 +38,10 @@ export default function RoleInfoForm({
 
   return (
     <>
-      <br />
       <Grid container spacing={1}>
         <Grid item xs={12} md={12}>
-          <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
+          <br />
+          <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl fullWidth>
                 <TextField
@@ -101,7 +101,7 @@ export default function RoleInfoForm({
       </Grid>
       <NavigationButtons
         showPrevButton={true}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit(infoObject)}
       />
