@@ -82,6 +82,7 @@ const ContentContainer = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   borderTopRightRadius: '25px',
   borderBottomRightRadius: '25px',
+  maxWidth: '720px',
   [theme.breakpoints.down(1250)]: {
     borderRadius: '25px',
     height: '100%'

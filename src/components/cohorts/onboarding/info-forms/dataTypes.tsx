@@ -33,7 +33,7 @@ export type HouseKeepingInfoType = {
 const ButtonsContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     display: 'flex',
-    flex_direction: 'column'
+    flexDirection: 'column'
   }
 }));
 
@@ -91,7 +91,12 @@ export const NavigationButtons = ({
 }) => (
   <ButtonsContainer>
     {showPrevButton && (
-      <StyledButton className="previous" variant="outlined" onClick={() => onPreviousHandler()}>
+      <StyledButton
+        className="previous"
+        disabled={isSubmitting}
+        variant="outlined"
+        onClick={() => onPreviousHandler()}
+      >
         Previous
       </StyledButton>
     )}
@@ -107,3 +112,9 @@ export const NavigationButtons = ({
     </StyledButton>
   </ButtonsContainer>
 );
+
+export const checkFormValidity = (form: Object) => {
+  const invalidFields = Object.values(form).map((item) => !item || item.length === 0);
+
+  return invalidFields.filter((field) => field === true).length > 0;
+};

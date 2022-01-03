@@ -13,7 +13,7 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 import { DesktopDatePicker } from '@material-ui/lab';
-import { HouseKeepingInfoType, NavigationButtons } from './dataTypes';
+import { HouseKeepingInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const COHORT_UNDERSTADING_OPTIONS = [
   '1 (Complete Beginner)',
@@ -121,7 +121,7 @@ export default function HouseKeepingForm({
       </Grid>
       <NavigationButtons
         showPrevButton={true}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => {
           onSubmit(infoObject);

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    maxWidth: '700px',
+    maxWidth: '1000px',
     [theme.breakpoints.down('md')]: {
       maxWidth: '100%',
       padding: '0 20px'
@@ -68,7 +68,7 @@ const EmptyHomeTab = ({ cohortCode, cohortHost }: { cohortCode: string; cohortHo
   return (
     <Container className={classes.container}>
       <Box className={classes.inner}>
-        <Typography variant="h3">
+        <Typography variant="h3" textAlign="center">
           👋 Hi {user?.first_name}
           {cohortCode && `, welcome to the ${cohortCode} Cohort!`}
         </Typography>

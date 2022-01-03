@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 import { UploadAvatar } from 'components/upload';
-import { NavigationButtons } from './dataTypes';
+import { NavigationButtons, checkFormValidity } from './dataTypes';
 
 type UserInfoType = {
   profile_image_url: File | any;
@@ -59,8 +59,8 @@ export default function UserInfoForm({
     profile_image_url: userProfile?.profile_image_url,
     first_name: userProfile?.first_name || '',
     last_name: userProfile?.last_name || '',
-    country: '',
-    city: '',
+    country: userProfile?.country,
+    city: userProfile?.city,
     preferred_pronoun: userProfile?.preferred_pronoun || '',
     linkedin_url: userProfile?.linkedin_url || ''
   });
@@ -137,9 +137,12 @@ export default function UserInfoForm({
                         (country) => country.name === e.target.value
                       )?.isoCode;
                       setCityList(
-                        City?.getCitiesOfCountry(countryCode || '')?.map((city) => city.name) || []
+                        City?.getCitiesOfCountry(countryCode || '')
+                          ?.map((city) => city.name)
+                          .filter((value, index, self) => self.indexOf(value) === index) || []
                       );
                       onUpdateAttribute('country', e.target.value);
+                      onUpdateAttribute('city', null);
                     }}
                     defaultValue={userProfile.country}
                   >
@@ -205,7 +208,7 @@ export default function UserInfoForm({
       </Grid>
       <NavigationButtons
         showPrevButton={false}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={() => {}}
         onNextHandler={() => onSubmit(infoObject)}
       />
