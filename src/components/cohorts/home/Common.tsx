@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
+import { Icon } from '@iconify/react';
+import downArrow from '@iconify/icons-eva/arrow-ios-downward-fill';
+import upArrow from '@iconify/icons-eva/arrow-ios-upward-fill';
 import {
   Box,
   CircularProgress,
@@ -19,10 +23,16 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 
 const StyledComment = styled(Typography)(({ theme }) => ({
   background: '#F7F8F9',
-  marginBottom: '20px',
   borderRadius: '8px',
   padding: '10px',
   fontSize: '13px'
+}));
+
+const StyledIconButton = styled(Typography)(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer'
 }));
 
 const ChartWrapperStyle = styled('div')(({ theme }) => ({
@@ -248,11 +258,7 @@ export const DisplaySurveyResponse = ({ question }: { question: any }) => {
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Heading heading={question.question} />
           </Stack>
-          {commnets.map((answer) => (
-            <StyledComment key={answer} variant="body2">
-              {answer}
-            </StyledComment>
-          ))}
+          <TextResponses responses={commnets} />
         </Stack>
       </>
     );
@@ -361,6 +367,45 @@ export const ChartDonut = ({
         <Heading heading={heading} />
       </Stack>
       <Chart type="donut" series={data} options={chartOptions} />
+    </Stack>
+  );
+};
+
+export const TextResponses = ({ responses }: { responses: any }) => {
+  const [limit, setLimit] = useState(2);
+
+  return (
+    <Stack direction="column" spacing={1}>
+      {responses.slice(0, limit).map((response: string) => (
+        <StyledComment key={response} variant="body2">
+          {response}
+        </StyledComment>
+      ))}
+      <Stack
+        direction="row-reverse"
+        justifyContent="space-between"
+        width="-webkit-fill-available"
+        sx={{
+          pr: 6,
+          pt: 2,
+          mt: 2,
+          color: '#071A33',
+          fontSize: '14px',
+          borderTop: '1px solid rgba(224, 224, 224, 1)'
+        }}
+      >
+        {limit === 2 ? (
+          <StyledIconButton variant="subtitle2" onClick={() => setLimit(responses.length)}>
+            View All
+            <Box component={Icon} icon={downArrow} sx={{ width: 16, height: 16, ml: 1 }} />
+          </StyledIconButton>
+        ) : (
+          <StyledIconButton variant="subtitle2" onClick={() => setLimit(2)}>
+            View Less
+            <Box component={Icon} icon={upArrow} sx={{ width: 16, height: 16, ml: 1 }} />
+          </StyledIconButton>
+        )}
+      </Stack>{' '}
     </Stack>
   );
 };
