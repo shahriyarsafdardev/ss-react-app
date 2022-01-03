@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
+
 import CreatableSelect from 'react-select/creatable';
 
 import {
@@ -18,13 +19,6 @@ import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 
 import { CompanyProfileType, NavigationButtons } from './dataTypes';
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
-};
 
 const numberOfEmployeesList = [
   '1-10',
@@ -111,10 +105,11 @@ export default function CompanyInfoForm({
                   defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
                   options={companies?.map((option) => ({ value: option, label: option }))}
                   isClearable={false}
-                  styles={customStyles}
                   backspaceRemovesValue={true}
                   placeholder="Company Name"
                   isSearchable
+                  menuPortalTarget={document.body}
+                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                   onChange={(e) => onUpdateAttribute('name', e?.value)}
                 />
               </FormControl>
