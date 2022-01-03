@@ -1,4 +1,4 @@
-import { Stack, Button, Typography } from '@material-ui/core';
+import { Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 const StyledFeedContainer = styled(Stack)(({ theme }) => ({
@@ -12,11 +12,12 @@ const StyledFeedContainer = styled(Stack)(({ theme }) => ({
     width: '90%'
   }
 }));
-const Description = styled(Typography)(() => ({
-  fontSize: '15px',
-  lineHeight: '31px',
-  textAlign: 'center',
-  color: '#071A33'
+
+const StyledPara = styled('p')(() => ({
+  fontFamily: 'Public Sans',
+  fontSize: '14px',
+  lineHeight: '28px',
+  textAlign: 'center'
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -51,9 +52,11 @@ const handleClick = () => {
 const EmptyFeed = ({ hosts }: { hosts: string }) => (
   <StyledFeedContainer>
     <StyledPreview src="/static/empty_tabs.png" alt="empty feed" />
-    <Description sx={{ fontWeight: '600' }}>
-      {`${hosts} hasn’t recieved any questions yet but you could be the first to ask! Potential topics are not restricted, your question can refer to a Session or a problem you’re facing at work, and will be answered by ${hosts} in video format!`}
-    </Description>
+    <StyledPara>
+      <b>{hosts} hasn’t recieved any questions yet but you could be the first to ask!</b> Potential
+      topics are not restricted, your question can refer to a Session or a problem you’re facing at
+      work, and will be answered by {hosts} in video format!
+    </StyledPara>
     <StyledButton onClick={() => handleClick()} variant="contained">
       ASK YOUR QUESTION
     </StyledButton>

@@ -15,6 +15,7 @@ import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import { CohortContext } from 'contexts/CohortContext';
+import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -68,7 +69,6 @@ export default function PeersTab() {
       return false;
     });
   }
-  console.log(filteredPeers);
 
   const createSelectMenu = (items: string) => {
     const newItems: any = filteredPeers
@@ -218,7 +218,8 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      {peers ? (
+      <EmptyNetworkingTab cohortHost={cohort?.host_names} />
+      {/* {peers ? (
         <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
           <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
           <StudentProfileModal
@@ -249,7 +250,7 @@ export default function PeersTab() {
         <LoadingContainer>
           <LoadingScreen />
         </LoadingContainer>
-      )}
+      )} */}
     </Page>
   );
 }

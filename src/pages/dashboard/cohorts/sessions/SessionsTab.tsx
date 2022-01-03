@@ -6,6 +6,7 @@ import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/am
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
+import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -114,7 +115,8 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {filteredSessions && filteredSessions.length > 0 ? (
+        <EmptySessionsTab cohortHost={cohort?.host_names} />
+        {/* {filteredSessions && filteredSessions.length > 0 ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
               <SessionsInnerContainer container>
@@ -146,7 +148,7 @@ export default function SessionsTab() {
           <LoadingContainer>
             <LoadingScreen />
           </LoadingContainer>
-        )}
+        )} */}
       </Page>
     </CohortContext.Provider>
   );
