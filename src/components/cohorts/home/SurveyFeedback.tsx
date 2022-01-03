@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import { sum } from 'lodash';
 import axios from '../../../utils/axios';
 import { Session } from '../../../@types/cohorts';
-import {
-  CircularLoader,
-  SectionContainer,
-  findLastSession,
-  StarResponses,
-  ChartDonut
-} from './Common';
+import { CircularLoader, SectionContainer, findLastSession, DisplaySurveyResponse } from './Common';
 
 const StyledSurveyContainer = styled(Box)(() => ({
   height: '405px',
@@ -21,8 +16,8 @@ const StyledSurveyContainer = styled(Box)(() => ({
   justifyContent: 'flex-start'
 }));
 
-const Registrations = ({ sessions }: { sessions: Session[] }) => {
-  const [data, setData] = useState([]);
+const SurveyFeedback = ({ sessions }: { sessions: Session[] }) => {
+  const [data, setData] = useState<any>([]);
   const session = findLastSession(sessions);
 
   useEffect(() => {
@@ -51,12 +46,15 @@ const Registrations = ({ sessions }: { sessions: Session[] }) => {
               <p style={{ fontSize: '18px', fontWeight: 700 }}>
                 Check out your {session.custom_name || `Session ${session.number}`} feedback!
               </p>
-              <p style={{ fontSize: '14px' }}>You recieved 43 responses to the session survey!</p>
+              <p style={{ fontSize: '14px' }}>
+                You recieved {sum(Object.values(data[0]?.answers))} responses to the session survey!
+              </p>
             </Box>
           </Box>
           <StyledSurveyContainer>
-            <StarResponses heading="Test Question" value={4.5} total={5} />
-            <ChartDonut data={[11, 33, 7]} labels={['Yes', 'No', 'Maybe']} />
+            {data.map((q: any) => (
+              <DisplaySurveyResponse key={q?.question} question={q} />
+            ))}
           </StyledSurveyContainer>
         </>
       ) : (
@@ -66,4 +64,4 @@ const Registrations = ({ sessions }: { sessions: Session[] }) => {
   );
 };
 
-export default Registrations;
+export default SurveyFeedback;
