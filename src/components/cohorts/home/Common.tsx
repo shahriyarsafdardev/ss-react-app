@@ -3,6 +3,7 @@ import { styled } from '@material-ui/core/styles';
 import { Icon } from '@iconify/react';
 import downArrow from '@iconify/icons-eva/arrow-ios-downward-fill';
 import upArrow from '@iconify/icons-eva/arrow-ios-upward-fill';
+import { Country } from 'country-state-city';
 import {
   Box,
   CircularProgress,
@@ -413,14 +414,20 @@ export const TextResponses = ({ responses }: { responses: any }) => {
 export const CompanyHighlight = ({
   name,
   image,
+  type,
   count
 }: {
   name?: string;
   image?: string;
+  type: string;
   count?: number;
 }) => (
   <Stack direction="column" alignItems="center">
-    <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
+    {type === 'country' ? (
+      <Typography variant="h2">{image}</Typography>
+    ) : (
+      <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
+    )}
 
     <Typography variant="subtitle2">{name}</Typography>
     <Typography variant="caption" color="#637381">
@@ -470,8 +477,8 @@ const getRevenue = (enrollments: Enrollment[]) => {
   currentWeekRevenue *= 0.8;
   const difference = totalRevenue - currentWeekRevenue;
   return {
-    total: totalRevenue,
-    increase: (currentWeekRevenue / difference) * 100 || 0
+    total: totalRevenue.toFixed(2),
+    increase: ((currentWeekRevenue / difference) * 100 || 0).toFixed(2)
   };
 };
 
@@ -516,6 +523,24 @@ const getCompanies = (enrollments: Enrollment[]) => {
   return sortItemsWithCount(sorted);
 };
 
+const getCountries = (enrollments: Enrollment[]) => {
+  const grouped = groupBy(enrollments, 'country');
+  const sorted: any[] = [];
+  const keys = Object.keys(grouped);
+  const countries = Country.getAllCountries();
+
+  keys.map((key) => {
+    if (key !== 'null') {
+      sorted.push({
+        name: key,
+        count: grouped[key].length,
+        flag: countries?.find((countryItem) => countryItem.name === grouped[key][0].country)?.flag
+      });
+    }
+  });
+  return sortItemsWithCount(sorted);
+};
+
 const getRoles = (enrollments: Enrollment[], type: string) => {
   const grouped: any = {};
   enrollments.map((enrollment: any) => {
@@ -549,6 +574,7 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
   const revenue = getRevenue(enrollments);
   const pipeline = getPipelineRevenue(enrollments);
   const companies = getCompanies(enrollments);
+  const countries = getCountries(enrollments);
   const roles = getRoles(enrollments, 'current_role_category_selections');
   const industries = getRoles(enrollments, 'current_industry_category_selections');
 
@@ -603,6 +629,7 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
           >
             {companies.slice(0, 6).map((company) => (
               <CompanyHighlight
+                type="company"
                 key={company.name}
                 name={company.name}
                 count={company.count}
@@ -613,24 +640,30 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
         </AnalyticsContainer>
       );
     }
-    items.push(
-      <AnalyticsContainer key="3">
-        <Typography variant="h6">From countries all over the world</Typography>
-        <StyledDivider />
-        <Stack
-          sx={{ width: '100%', height: '100%' }}
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-        >
-          <CompanyHighlight name="Germany" count={13} image="/static/home/increase.svg" />
-          <CompanyHighlight name="Denmark" count={12} image="/static/home/increase.svg" />
-          <CompanyHighlight name="France" count={2} image="/static/home/increase.svg" />
-          <CompanyHighlight name="Ghana" count={1} image="/static/home/increase.svg" />
-          <CompanyHighlight name="Australia" count={1} image="/static/home/increase.svg" />
-        </Stack>
-      </AnalyticsContainer>
-    );
+    if (countries.length > 0) {
+      items.push(
+        <AnalyticsContainer key="3">
+          <Typography variant="h6">From countries all over the world</Typography>
+          <StyledDivider />
+          <Stack
+            sx={{ width: '100%', height: '100%' }}
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            {countries.slice(0, 5).map((country) => (
+              <CompanyHighlight
+                type="country"
+                key={country.name}
+                name={country.name}
+                count={country.count}
+                image={country.flag}
+              />
+            ))}
+          </Stack>
+        </AnalyticsContainer>
+      );
+    }
     if (roles.length > 0) {
       items.push(
         <AnalyticsContainer key="4">
