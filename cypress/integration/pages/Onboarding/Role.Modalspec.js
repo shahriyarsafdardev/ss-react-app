@@ -31,12 +31,10 @@ describe('Onboarding > RoleDetails', () => {
     it('Able to input in the text field for Brief description of your role and responsibilities?', () => {
     });
   });
-  context('When all Role Details is filled', () => {
-    it('All information is saved sucessfully ', () => {
-      //click next
-    });
-    it('All information is cleared ', () => {
-      //click previous
+  it("navigates to the previous page when 'Previous' is clicked", () => {
+  });
+  context("when all inputs are filled for Role information", () => {
+    it("navigates to the next page when 'Next' is clicked", () => {
     });
   });
 });

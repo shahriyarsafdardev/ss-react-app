@@ -37,9 +37,8 @@ describe('Onboarding > PersonalDetails', () => {
     it('Able to input in the text field for LinkedIn Url', () => {
     });
   });
-  context('When all personal information is filled', () => {
-    it('All information is saved sucessfully ', () => {
-      // click next
+  context("when all inputs are filled for personal information", () => {
+    it("navigates to the next page when 'Next' is clicked", () => {
     });
   });
 });
