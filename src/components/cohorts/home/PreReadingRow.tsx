@@ -76,7 +76,7 @@ export default function PreReadingRow({
           <span>{item.info_text}</span>
           <StyledLink
             data-testid={`prereading-link-${number}`}
-            href={item.action_url}
+            href={item.action_url || item.file_url}
             target="_blank"
             onClick={() => onPreReadingClick()}
           >

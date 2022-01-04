@@ -34,14 +34,9 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-interface CustomFile extends File {
-  path?: string;
-  preview?: string;
-}
-
 interface UploadSingleFileProps extends DropzoneOptions {
   error?: boolean;
-  file: CustomFile | string | null;
+  file: File | null;
   sx?: SxProps<Theme>;
 }
 
@@ -67,21 +62,18 @@ export default function UploadSingleFile({
         bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
       }}
     >
-      {fileRejections.map(({ file, errors }) => {
-        const { path, size }: CustomFile = file;
-        return (
-          <Box key={path} sx={{ my: 1 }}>
-            <Typography variant="subtitle2" noWrap>
-              {path} - {fData(size)}
+      {fileRejections.map(({ file, errors }) => (
+        <Box key={file.name} sx={{ my: 1 }}>
+          <Typography variant="subtitle2" noWrap>
+            {file.name} - {fData(file.size)}
+          </Typography>
+          {errors.map((e) => (
+            <Typography key={e.code} variant="caption" component="p">
+              - {e.message}
             </Typography>
-            {errors.map((e) => (
-              <Typography key={e.code} variant="caption" component="p">
-                - {e.message}
-              </Typography>
-            ))}
-          </Box>
-        );
-      })}
+          ))}
+        </Box>
+      ))}
     </Paper>
   );
 
@@ -104,9 +96,15 @@ export default function UploadSingleFile({
         <UploadIllustration sx={{ width: 220 }} />
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
-          <Typography gutterBottom variant="h5">
-            Drop or Select file
-          </Typography>
+          {file ? (
+            <Typography gutterBottom variant="h5" sx={{ color: 'success.main' }}>
+              {file.name}
+            </Typography>
+          ) : (
+            <Typography gutterBottom variant="h5">
+              Drop or Select file
+            </Typography>
+          )}
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Drop files here or click&nbsp;
@@ -121,11 +119,11 @@ export default function UploadSingleFile({
           </Typography>
         </Box>
 
-        {file && (
+        {file && file.type?.split('/')[0] === 'image' && (
           <Box
             component="img"
             alt="file preview"
-            src={isString(file) ? file : file.preview}
+            src={URL.createObjectURL(file)}
             sx={{
               top: 8,
               borderRadius: 1,

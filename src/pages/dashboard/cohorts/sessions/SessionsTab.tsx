@@ -60,7 +60,7 @@ export default function SessionsTab() {
   );
   const { user } = useAuth();
 
-  const isLearner = user?.type === 'learner';
+  const isLearner = user?.view_type === 'Member';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
   const filteredSessions: Session[] = sessions?.filter(

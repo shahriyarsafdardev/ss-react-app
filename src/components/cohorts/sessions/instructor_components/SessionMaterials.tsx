@@ -48,6 +48,7 @@ export default function SessionMaterials({
   const classes = useStyles();
   const dispatch = useDispatch();
   const [modalState, setModalState] = useState(false);
+  const [category, setCategory] = useState('Pre-Reading');
 
   const [groupedMaterials, setGroupedMaterials] =
     useState<GroupedSessionMaterial[]>(groupedMaterialsProp);
@@ -111,15 +112,26 @@ export default function SessionMaterials({
     }
   };
 
-  const onSavePrereading = (data: {}) => {
+  const onSavePrereading = (data: any) => {
+    const uploadData = new FormData();
+
+    uploadData.append('title', data.title);
+    uploadData.append('source', data.source);
+    uploadData.append('url', data.url);
+    uploadData.append('category', category);
+    uploadData.append('file', data.file);
+
     axios
-      .post(`/cohort_sessions/${sessionId}/session_materials.json`, { data })
+      .post(`/cohort_sessions/${sessionId}/session_materials.json`, uploadData)
       .then((res) => {
         const tempMaterials: GroupedSessionMaterial[] = [...groupedMaterials];
+        const index = tempMaterials.findIndex(
+          (material) => material.category === res.data.category
+        );
 
-        tempMaterials[0] = {
-          ...tempMaterials[0],
-          session_materials: [res.data, ...tempMaterials[0].session_materials]
+        tempMaterials[index] = {
+          ...tempMaterials[index],
+          session_materials: [res.data, ...tempMaterials[index].session_materials]
         };
         setGroupedMaterials(tempMaterials);
         enqueueSnackbar('Prereading created successfully', { variant: 'success' });
@@ -140,20 +152,23 @@ export default function SessionMaterials({
         modalState={modalState}
         modalHandler={setModalState}
         action="create"
-        onSave={(formData: any) => onSavePrereading({ ...formData, category: 'prereading' })}
+        category={category}
+        onSave={(formData: any) => onSavePrereading(formData)}
       />
       <DragDropContext onDragEnd={onDragEnd}>
-        {/* Prereading materials list */}
-        {groupedMaterials[1] && (
-          <Droppable key="list-0" droppableId="0">
+        {groupedMaterials.map((group, index) => (
+          <Droppable key={group.category} droppableId={`${index}`}>
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{ marginBottom: '20px' }}
+              >
                 <Box>
-                  <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>
-                    {groupedMaterials[0].category}
-                  </p>
+                  <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>{group.category}s:</p>
+
                   <div style={{ maxHeight: '500px', overflowY: 'scroll', paddingBottom: '50px' }}>
-                    {groupedMaterials[0].session_materials.map((preReading, index) => (
+                    {group.session_materials.map((preReading, index) => (
                       <Draggable draggableId={preReading.id} index={index} key={index}>
                         {(provided, snapshot) => (
                           <div
@@ -188,72 +203,20 @@ export default function SessionMaterials({
                     ))}
                   </div>
                   <StyledButton
-                    onClick={() => setModalState(true)}
+                    onClick={() => {
+                      setCategory(group.category);
+                      setModalState(true);
+                    }}
                     variant="outlined"
                     startIcon={<img src="/static/icons/plus-icon.svg" alt="plus" />}
                   >
-                    Add Pre-Reading
+                    Add {group.category}
                   </StyledButton>
                 </Box>
               </div>
             )}
           </Droppable>
-        )}
-        {/* Supplimentary materials list */}
-        {groupedMaterials[1] && (
-          <Droppable key="list-1" droppableId="1">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{ marginTop: '20px' }}
-              >
-                <Box>
-                  <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>
-                    {groupedMaterials[1].category}
-                  </p>
-                  <div style={{ maxHeight: '500px', overflowY: 'scroll', paddingBottom: '50px' }}>
-                    {groupedMaterials[1].session_materials.map((preReading, index) => (
-                      <Draggable draggableId={preReading.id} index={index} key={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className={snapshot.isDragging ? classes.draggingListItem : ''}
-                          >
-                            <div style={{ display: 'flex' }}>
-                              <div style={{ display: 'flex', maxWidth: '25px' }}>
-                                <img src="/static/icons/drag-dots.svg" alt="dots" />
-                              </div>
-                              <PreReadingRow
-                                onPreReadingClick={() => {}}
-                                // onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
-                                key={preReading.index}
-                                item={preReading}
-                                number={preReading.index}
-                                checkboxHanlder={(value: boolean) => {
-                                  // onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
-                                  // dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
-                                }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                  </div>
-                  <StyledButton
-                    variant="outlined"
-                    startIcon={<img src="/static/icons/plus-icon.svg" alt="plus" />}
-                  >
-                    Add Supplementary Material
-                  </StyledButton>
-                </Box>
-              </div>
-            )}
-          </Droppable>
-        )}
+        ))}
       </DragDropContext>
     </ResourcesContainer>
   );
