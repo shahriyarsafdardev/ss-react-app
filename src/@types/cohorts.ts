@@ -123,6 +123,7 @@ export type Enrollment = {
   payment_link_opened_time: string;
   paid_time: string;
   current_company: Company;
+  country: string;
   current_position: string;
   current_role_category_selections: string[];
   current_industry_category_selections: string[];

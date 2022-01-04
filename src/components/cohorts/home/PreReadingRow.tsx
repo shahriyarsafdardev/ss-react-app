@@ -6,7 +6,7 @@ import MarkCheckbox from './MarkCheckbox';
 
 type PreReadingRowProps = {
   item: SessionMaterial;
-  number: Number;
+  number: Number | undefined;
   checkboxHanlder: Function;
   onPreReadingClick: Function;
 };
