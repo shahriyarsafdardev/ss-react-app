@@ -31,12 +31,10 @@ describe('Onboarding > CompanyDetails', () => {
     it('All info fills automatically ', () => {
     });
   });
-  context('When all company information is filled', () => {
-    it('All information is saved sucessfully ', () => {
-      //click next
-    });
-    it('All information is cleared ', () => {
-      //click previous
+  it("navigates to the previous page when 'Previous' is clicked", () => {
+  });
+  context("when all inputs are filled for Company information", () => {
+    it("navigates to the next page when 'Next' is clicked", () => {
     });
   });
 });

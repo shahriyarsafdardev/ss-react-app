@@ -23,12 +23,10 @@ describe('Onboarding > Networking', () => {
     it('Able to select a value from the dropdown for Are you interested in being matched with a fellow cohort member via email based on interests?', () => {
     });
   });
-  context('When all Networking Preferences is filled', () => {
-    it('All information is saved sucessfully ', () => {
-      //click next
-    });
-    it('All information is cleared ', () => {
-      //click previous
+  it("navigates to the previous page when 'Previous' is clicked", () => {
+  });
+  context("when all inputs are filled for Networking", () => {
+    it("navigates to the next page when 'Next' is clicked", () => {
     });
   });
 });

@@ -27,12 +27,10 @@ describe('Onboarding > Housekeeping Questions', () => {
     it('Able to select a value from the dropdown for Who is paying for this cohort ?', () => {
     });
   });
-  context('When all Networking Preferences is filled', () => {
-    it('All information is saved sucessfully ', () => {
-      //click submit
-    });
-    it('All information is cleared ', () => {
-      //click previous
+  it("navigates to the previous page when 'Previous' is clicked", () => {
+  });
+  context("when all inputs are filled for Housekeeping information", () => {
+    it("navigates to the next page when 'Next' is clicked", () => {
     });
   });
 });
