@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Modal } from 'components/animate';
 import { styled } from '@material-ui/core/styles';
 import { Box, Button, Typography, TextField, Tabs, Tab } from '@material-ui/core';
-// import { DropzoneArea } from 'material-ui-dropzone';
+import { UploadSingleFile } from '../../../upload';
 
 const FormContainer = styled('div')(() => ({
   maxWidth: '700px',
@@ -26,15 +26,6 @@ const StyledTabs = styled(Tabs)(() => ({
   }
 }));
 
-// const StyledDropzone = styled(DropzoneArea)(() => ({
-//   marginTop: '20px',
-//   backgroundColor: 'white',
-//   '&.MuiDropzoneArea-root-31': {
-//     minHeight: '150px',
-//     border: '2px dashed'
-//   }
-// }));
-
 const StyledButton = styled(Button)(() => ({
   width: '150px'
 }));
@@ -49,10 +40,12 @@ const SessionMaterialForm = ({
   action,
   onSave,
   modalHandler,
-  modalState
+  modalState,
+  category
 }: {
   action: string;
   onSave: Function;
+  category: string;
   modalHandler: Function;
   modalState: boolean;
 }) => {
@@ -60,7 +53,7 @@ const SessionMaterialForm = ({
   const [title, setTitle] = useState('');
   const [source, setSource] = useState('');
   const [url, setUrl] = useState('');
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     setTab(0);
@@ -81,7 +74,13 @@ const SessionMaterialForm = ({
 
   const tabContent = [
     <Box key="file" style={{ paddingTop: 20 }}>
-      {/* <StyledDropzone datatest-id="hey" dropzoneText="Upload or drag and drop your file here." /> */}
+      <UploadSingleFile
+        file={file}
+        onDrop={(files) => {
+          setFile(files[0]);
+          console.log(files[0]);
+        }}
+      />
     </Box>,
     <Box key="url">
       <TextField
@@ -97,7 +96,7 @@ const SessionMaterialForm = ({
   return (
     <Modal open={modalState} onClose={() => modalHandler(false)}>
       <FormContainer>
-        <Typography variant="h4">Create Prereading</Typography>
+        <Typography variant="h4">Create {category}</Typography>
         <Box>
           <TextField
             value={title}

@@ -59,7 +59,7 @@ export default function SessionsTab() {
   );
   const { user } = useAuth();
 
-  const isLearner = user?.type === 'learner';
+  const isLearner = user?.view_type === 'Member';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
   const filteredSessions: Session[] = sessions?.filter(
@@ -117,7 +117,7 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        <EmptySessionsTab cohortHost={cohort?.host_names} />
+      <EmptySessionsTab cohortHost={cohort?.host_names} />
         {/* {filteredSessions && filteredSessions.length > 0 ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
