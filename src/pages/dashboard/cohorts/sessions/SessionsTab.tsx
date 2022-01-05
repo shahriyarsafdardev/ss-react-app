@@ -117,7 +117,7 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-      <EmptySessionsTab cohortHost={cohort?.host_names} />
+        <EmptySessionsTab cohortHost={cohort?.host_names} />
         {/* {filteredSessions && filteredSessions.length > 0 ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <SessionsContainer>
