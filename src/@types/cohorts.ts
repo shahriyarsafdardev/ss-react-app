@@ -115,11 +115,13 @@ export type Enrollment = {
   linkedin_url: string;
   price: number;
   status: string;
+  notes: string;
   stream: string;
   coupon_code: string;
   time: string;
   application_accepted_time: string;
   payment_link_opened_time: string;
+  payment_reminder_time: string;
   paid_time: string;
 };
 

@@ -35,17 +35,23 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
           <KeyMetricHighlight
             metric={
               enrollments.filter((e: { status: string }) =>
-                ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status)
+                [
+                  'Application Accepted',
+                  'Application Accepted (R)',
+                  'Payment link opened',
+                  'Paid'
+                ].includes(e.status)
               ).length
             }
             difference={changeOccur(
               enrollments,
               [
                 'Application Accepted',
+                'Application Accepted (R)',
                 'Payment link opened',
                 'Paid',
                 'Application Rejected',
-                'Not Interested'
+                'No Longer Interested'
               ],
               'application_accepted_time'
             )}
@@ -77,7 +83,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             }
             difference={changeOccur(
               enrollments,
-              ['Payment link opened', 'Paid', 'Application Rejected', 'Not Interested'],
+              ['Payment link opened', 'Paid', 'Application Rejected', 'No Longer Interested'],
               'payment_link_opened_time'
             )}
             currentTimePeriodLabel={<span>Payment Links Opened</span>}

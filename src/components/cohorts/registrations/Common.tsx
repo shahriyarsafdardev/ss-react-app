@@ -338,8 +338,19 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               </MenuItem>
             </>
           )}
-          {(enrollment.status === 'Application Accepted' ||
-            enrollment.status === 'Payment link opened') && (
+          {enrollment.status === 'Application Accepted (R)' && (
+            <Typography
+              variant="body2"
+              flexDirection="column"
+              sx={{ color: '#637381', py: 1, px: 2.5 }}
+            >
+              (R) = A payment reminder email
+              <br /> was sent on {moment(enrollment.payment_reminder_time).format('MMMM Do YYYY')}
+            </Typography>
+          )}
+          {['Application Accepted (R)', 'Application Accepted', 'Payment link opened'].includes(
+            enrollment.status
+          ) && (
             <MenuItem
               onClick={() => {
                 setModalMessage(
@@ -458,10 +469,10 @@ const classPicker = (classes: { primary: any; warning: any; success: any }, clas
 // };
 
 export const pickColor = (status: string) => {
-  if (status === 'Application Accepted') {
+  if (status === 'Application Accepted' || status === 'Application Accepted (R)') {
     return 'warning';
   }
-  if (status === 'Application Rejected' || status === 'Not Interested') {
+  if (status === 'Application Rejected' || status === 'No Longer Interested') {
     return 'default';
   }
   if (status === 'Application Received' || status === 'Partial Application Received') {
