@@ -1,9 +1,9 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
 import {
   displayMultipleDates,
   formatMultipleTimes,
   sortedTimes
-} from '../../../../src/components/cohorts/home/Common';
+} from '../../../../../src/components/cohorts/home/Common';
 import moment from 'moment';
 
 const getTimes = (sessionNumber) => {
