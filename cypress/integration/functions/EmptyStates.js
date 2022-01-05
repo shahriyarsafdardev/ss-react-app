@@ -1,0 +1,40 @@
+export class emptyStates
+{
+  headerHome(){
+  }
+  personalisedWelcomeMessage(){
+  }
+  informationText(){
+  }
+  personalisedQAText(){
+  }
+  addSessionsToMyCalendarButton(){
+  }
+  personalisedButtonForQA(){
+  }
+  headerMessaging(){
+  }
+  informationalTextForMessaging(){
+  }
+  headerForNetworking(){
+  }
+  informationalTextForNetworking(){
+  }
+  headerQA(){
+  }
+  textBoxToWriteQuestion(){
+  }
+  addRecordingButton(){
+  }
+  askAQuestionButton(){
+  }
+  textForNoQuestionsYet(){
+  }
+  askYourQuestionButton(){
+  }
+  headerSession(){
+  }
+  textForScholarSite(){
+  }
+}
+export default  emptyStates
