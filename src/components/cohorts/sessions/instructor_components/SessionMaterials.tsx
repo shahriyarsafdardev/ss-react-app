@@ -170,6 +170,7 @@ export default function SessionMaterials({
                               // onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
                               key={preReading.index}
                               item={preReading}
+                              number={preReading.index}
                               checkboxHanlder={(value: boolean) => {
                                 // onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
                                 // dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
@@ -219,6 +220,7 @@ export default function SessionMaterials({
                               // onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
                               key={preReading.index}
                               item={preReading}
+                              number={preReading.index}
                               checkboxHanlder={(value: boolean) => {
                                 // onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
                                 // dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
