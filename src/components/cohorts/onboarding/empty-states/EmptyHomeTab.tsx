@@ -51,8 +51,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   btns: {
-    padding: '12px 0',
-    width: '300px',
+    padding: '12px 20px',
+    minWidth: '300px',
     textTransform: 'unset',
     '&.mr': {
       marginRight: '50px'
