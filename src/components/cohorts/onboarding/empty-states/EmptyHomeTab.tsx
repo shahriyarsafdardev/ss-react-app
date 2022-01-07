@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Box, Button } from '@material-ui/core';
 import { Theme, styled } from '@material-ui/core/styles';
 import useAuth from 'hooks/useAuth';
+import { LoadingButton } from '@material-ui/lab';
+import axios from 'utils/axios';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -61,9 +64,33 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const EmptyHomeTab = ({ cohortCode, cohortHost }: { cohortCode: string; cohortHost: string }) => {
+const EmptyHomeTab = ({
+  cohortCode,
+  cohortHost,
+  cohortID
+}: {
+  cohortCode: string;
+  cohortHost: string;
+  cohortID: string;
+}) => {
   const classes = useStyles();
   const { user } = useAuth();
+  const [calendarLink, setCalendarLink] = useState('');
+
+  useEffect(() => {
+    axios
+      .get(`/cohorts/${cohortID}/calendar_link.json`)
+      .then((res) => res.data)
+      .then((payload) => {
+        if (payload?.link) setCalendarLink(payload.link);
+      });
+  }, [cohortID, cohortCode, cohortHost]);
+
+  const calendarAlert = () => {
+    if (!calendarLink) {
+      alert('There is no calendar attached to this cohort');
+    }
+  };
 
   return (
     <Container className={classes.container}>
@@ -87,10 +114,15 @@ const EmptyHomeTab = ({ cohortCode, cohortHost }: { cohortCode: string; cohortHo
           forward to seeing you soon!
         </Typography>
         <Box className={classes.btnContainer}>
-          <Button className={`${classes.btns} mr`} variant="contained">
+          <LoadingButton
+            className={`${classes.btns} mr`}
+            href={calendarLink}
+            onClick={calendarAlert}
+            variant="contained"
+          >
             Add Sessions to my calendar
-          </Button>
-          <Button className={classes.btns} variant="outlined">
+          </LoadingButton>
+          <Button href={`/cohorts/${cohortID}/Q&A`} className={classes.btns} variant="outlined">
             Ask {cohortHost} a question through Q&A
           </Button>
         </Box>
