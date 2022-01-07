@@ -33,8 +33,12 @@ const StyledPara = styled('p')(() => ({
 const EmptySessionsTab = ({ cohortHost }: { cohortHost: string }) => (
   <Container>
     <StyledBox>
-      <img src="/static/cohort-empty-states/emptySessionState.svg" alt="empty-session" />
-      <StyledPara>
+      <img
+        data-testid="empty-session-img"
+        src="/static/cohort-empty-states/emptySessionState.svg"
+        alt="empty-session"
+      />
+      <StyledPara data-testid="empty-session-information-text">
         <b>
           ScholarSite Sessions allows you to seemlesly access recordings, slides and materials
           during and outside of session times.

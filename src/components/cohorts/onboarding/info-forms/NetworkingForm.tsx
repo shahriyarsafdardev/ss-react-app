@@ -47,6 +47,7 @@ export default function NetworkingForm({
               <FormControl fullWidth>
                 <InputLabel>Which roles are you interested in connecting with?</InputLabel>
                 <MaterialSelect
+                  data-testid="network-roles"
                   fullWidth
                   label="Which roles are you interested in connecting with?"
                   onChange={(e) => onUpdateAttribute('networking_roles_categories', e.target.value)}
@@ -64,6 +65,7 @@ export default function NetworkingForm({
               <FormControl fullWidth>
                 <InputLabel>Which industries are you interested in connecting with?</InputLabel>
                 <MaterialSelect
+                  data-testid="network-industeries"
                   fullWidth
                   label="Which industries are you interested in connecting with?"
                   onChange={(e) =>
@@ -86,6 +88,7 @@ export default function NetworkingForm({
                   interests?
                 </InputLabel>
                 <MaterialSelect
+                  data-testid="network-fellow-member"
                   fullWidth
                   label="Are you interested in being matched with a fellow cohort member via email based on interests?"
                   onChange={(e) =>

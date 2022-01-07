@@ -84,7 +84,7 @@ export default function UserInfoForm({
     <>
       <br />
       <Grid container spacing={1}>
-        <Grid item xs={12} md={4}>
+        <Grid data-testid="user-avatar-upload" item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
               accept="image/*"
@@ -114,12 +114,14 @@ export default function UserInfoForm({
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <TextField
+                  data-testid="user-first-name"
                   fullWidth
                   label="First Name"
                   value={infoObject?.first_name}
                   onChange={(e) => onUpdateAttribute('first_name', e.target.value)}
                 />
                 <TextField
+                  data-testid="user-last-name"
                   fullWidth
                   label="Last Name"
                   value={infoObject?.last_name}
@@ -130,6 +132,7 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Country</InputLabel>
                   <MaterialSelect
+                    data-testid="user-country"
                     fullWidth
                     label="Country"
                     onChange={(e) => {
@@ -157,6 +160,7 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>City</InputLabel>
                   <MaterialSelect
+                    data-testid="user-city"
                     fullWidth
                     label="City"
                     onChange={(e) => onUpdateAttribute('city', e.target.value)}
@@ -180,6 +184,7 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
                   <MaterialSelect
+                    data-testid="user-pronoun-label"
                     fullWidth
                     label="Pronouns"
                     labelId="pronoun-label"
@@ -196,6 +201,7 @@ export default function UserInfoForm({
                 </FormControl>
 
                 <TextField
+                  data-testid="user-linkedIn-url"
                   fullWidth
                   label="LinkedIn URL"
                   value={infoObject?.linkedin_url}

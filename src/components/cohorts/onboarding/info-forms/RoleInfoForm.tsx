@@ -43,7 +43,7 @@ export default function RoleInfoForm({
           <br />
           <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
-              <FormControl fullWidth>
+              <FormControl data-testid="role-title" fullWidth>
                 <TextField
                   fullWidth
                   label="Role Title"
@@ -55,6 +55,7 @@ export default function RoleInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Role Categories</InputLabel>
                   <MaterialSelect
+                    data-testid="role-categories"
                     fullWidth
                     label="Role Categories"
                     onChange={(e) => onUpdateAttribute('role_category', e.target.value)}
@@ -72,6 +73,7 @@ export default function RoleInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Do you manage a team or division?</InputLabel>
                   <MaterialSelect
+                    data-testid="role-manage"
                     fullWidth
                     label="Do you manage a team or division?"
                     onChange={(e) => onUpdateAttribute('do_manage_team', e.target.value === 'Yes')}
@@ -87,6 +89,7 @@ export default function RoleInfoForm({
               </Stack>
               <FormControl fullWidth>
                 <TextField
+                  data-testid="role-responsibilities"
                   fullWidth
                   label="Brief description of your role and responsibilities?"
                   value={infoObject?.role_description}

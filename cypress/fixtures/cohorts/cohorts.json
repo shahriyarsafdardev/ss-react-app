@@ -10,7 +10,9 @@
       "intake": "85",
       "isOnboarded": true,
       "name": "The Economics of Digital Platforms",
-      "questions_url": null
+      "questions_url": null,
+      "released_for_learners": true,
+      "host_names": "tester"
     }
   ]
 }

@@ -41,13 +41,13 @@ const StyledPara = styled('p')(() => ({
 const EmptyNetworkingTab = ({ cohortHost }: { cohortHost: string }) => (
   <Container>
     <StyledBox>
-      <Box>
+      <Box data-testid="empty-networking-img">
         <img src="/static/cohort-empty-states/sample-user-1.svg" alt="empty-state-user" />
         <img src="/static/cohort-empty-states/sample-user-2.svg" alt="empty-state-user" />
         <img src="/static/cohort-empty-states/sample-user-3.svg" alt="empty-state-user" />
         <img src="/static/cohort-empty-states/sample-user-4.svg" alt="empty-state-user" />
       </Box>
-      <StyledPara>
+      <StyledPara data-testid="empty-networking-information-text">
         <b>
           ScholarSite Networking includes a complete overview of your fellow cohort members
           including their experience, interests and skills.

@@ -59,7 +59,7 @@ export default function HouseKeepingForm({
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
+                <FormControl data-testid="housekeeping-dob" fullWidth>
                   <DesktopDatePicker
                     label="Date of birth"
                     onChange={(value) => {
@@ -72,6 +72,7 @@ export default function HouseKeepingForm({
                 <FormControl fullWidth>
                   <InputLabel>Current understanding of cohort topic</InputLabel>
                   <MaterialSelect
+                    data-testid="housekeeping-cohort-tpoic"
                     fullWidth
                     label="Current understanding of cohort topic"
                     onChange={(e) => onUpdateAttribute('current_understanding', e.target.value)}
@@ -88,6 +89,7 @@ export default function HouseKeepingForm({
               <FormControl fullWidth>
                 <InputLabel>How did you hear about this cohort?</InputLabel>
                 <MaterialSelect
+                  data-testid="housekeeping-about-cohort"
                   fullWidth
                   label="How did you hear about this cohort?"
                   onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
@@ -103,6 +105,7 @@ export default function HouseKeepingForm({
               <FormControl fullWidth>
                 <InputLabel>Who is paying for this cohort ?</InputLabel>
                 <MaterialSelect
+                  data-testid="housekeeping-payment"
                   fullWidth
                   label="Who is paying for this cohort ?"
                   onChange={(e) => onUpdateAttribute('payed_by', e.target.value)}

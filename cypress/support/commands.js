@@ -21,7 +21,7 @@ Cypress.Commands.add('login', () => {
   ).as('onboarding_complete');
   cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/peers.json`, '@peers').as('peersData');
   cy.visit('/');
-  const email = 'waqas@scholar.com';
+  const email = 'aqibmaqqbool@gmail.com';
   const password = '123456';
   cy.get('[data-testid=email]').type(email);
   cy.get('[data-testid=password]').type(password);
