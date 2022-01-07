@@ -88,7 +88,11 @@ const Index = () => {
 
   return (
     <Page title="ScholarSite | Homepage">
-      <EmptyHomeTab cohortCode={cohort?.code} cohortHost={cohort?.host_names} />
+      <EmptyHomeTab
+        cohortID={cohort_id}
+        cohortCode={cohort?.code}
+        cohortHost={cohort?.host_names}
+      />
       {/* <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {!false && <OnboardingModal onSubmit={() => {}} />}
         <Container style={{ marginBottom: '50px' }}>
