@@ -5,7 +5,7 @@ import { Box, Button, MenuItem, Stack, Typography, IconButton } from '@material-
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
-// import * as XLSX from 'xlsx';
+import writeXlsxFile from 'write-excel-file';
 
 import {
   acceptApplication,
@@ -147,17 +147,17 @@ export const RegistrationsHeader = ({
   cohort_intake: any;
 }) => {
   const data = enrollments.map((e) => ({
-    'Cohort Name': cohort_name,
-    'Cohort Intake': cohort_intake,
-    'Submission Time': e.time,
-    'First Name': e.first_name,
-    'Last Name': e.last_name,
-    Email: e.email,
-    LinkedIn: e.linkedin_url,
-    Status: e.status,
-    Stream: e.stream
+    cohort_name,
+    cohort_intake,
+    submission_time: e.time,
+    first_name: e.first_name,
+    last_name: e.last_name,
+    email: e.email,
+    linkedin: e.linkedin_url,
+    status: e.status,
+    stream: e.stream
   }));
-  const fileName = `${moment().format()}-${cohort_name} Enrollments Data`;
+  const fileName = `${moment().format('MM-DD-YYYY-hh-mm')}-${cohort_name} Enrollments Data`;
 
   return (
     <Stack
@@ -167,7 +167,7 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      {/* <ExportToExcel data={data} fileName={fileName} /> */}
+      <ExportToExcel data={data} fileName={fileName} />
     </Stack>
   );
 };
@@ -429,33 +429,68 @@ const classPicker = (classes: { primary: any; warning: any; success: any }, clas
   return '';
 };
 
-// export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
-//   const exportToCSV = (items: any, fileName: string) => {
-//     const wscols = [
-//       { wch: 50 },
-//       { wch: 15 },
-//       { wch: 20 },
-//       { wch: 20 },
-//       { wch: 20 },
-//       { wch: 50 },
-//       { wch: 70 },
-//       { wch: 30 },
-//       { wch: 30 }
-//     ];
+export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
+  const exportExcel = async (objects: any, fileName: string) => {
+    const schema = [
+      {
+        column: 'Cohort Name',
+        value: (student: any) => student.cohort_name,
+        width: 50
+      },
+      {
+        column: 'Cohort Intake',
+        value: (student: any) => student.cohort_intake,
+        width: 15
+      },
+      {
+        column: 'Submission Time',
+        value: (student: any) => student.submission_time,
+        width: 20
+      },
+      {
+        column: 'First Name',
+        value: (student: any) => student.first_name,
+        width: 20
+      },
+      {
+        column: 'Last Name',
+        value: (student: any) => student.last_name,
+        width: 20
+      },
+      {
+        column: 'Email',
+        value: (student: any) => student.email,
+        width: 50
+      },
+      {
+        column: 'LinkedIn URL',
+        value: (student: any) => student.linkedin,
+        width: 50
+      },
+      {
+        column: 'Application Status',
+        value: (student: any) => student.status,
+        width: 30
+      },
+      {
+        column: 'Stream',
+        value: (student: any) => student.stream,
+        width: 30
+      }
+    ];
+    await writeXlsxFile(objects, {
+      schema,
+      fileName
+    });
+  };
 
-//     const sheet = XLSX.utils.json_to_sheet(items);
-//     sheet['!cols'] = wscols;
-//     const file = { Sheets: { data: sheet }, SheetNames: ['data'] };
-//     // XLSX.writeFile(file, `${fileName}.xlsx`);
-//   };
-
-//   return (
-//     <Button variant="outlined" color="primary" onClick={() => exportToCSV(data, fileName)}>
-//       <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
-//       Excel Export
-//     </Button>
-//   );
-// };
+  return (
+    <Button variant="outlined" color="primary" onClick={() => exportExcel(data, fileName)}>
+      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+      Excel Export
+    </Button>
+  );
+};
 
 export const pickColor = (status: string) => {
   if (status === 'Application Accepted') {
