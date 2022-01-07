@@ -133,6 +133,7 @@ export default function UserInfoForm({
                     fullWidth
                     label="Country"
                     onChange={(e) => {
+                      onUpdateAttribute('country', e.target.value);
                       const countryCode = Country.getAllCountries().find(
                         (country) => country.name === e.target.value
                       )?.isoCode;
@@ -141,8 +142,6 @@ export default function UserInfoForm({
                           ?.map((city) => city.name)
                           .filter((value, index, self) => self.indexOf(value) === index) || []
                       );
-                      onUpdateAttribute('country', e.target.value);
-                      onUpdateAttribute('city', null);
                     }}
                     defaultValue={userProfile.country}
                   >
