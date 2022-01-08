@@ -11,7 +11,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.length}
-            currentTimePeriodLabel={<span>Applications Recieved</span>}
+            currentTimePeriodLabel={<span>Applications Received</span>}
             difference={changeOccur(enrollments, [], 'time')}
             infoTooltip={(difference: number) => (
               <InfoTooltip
@@ -20,7 +20,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                     <strong>
                       {`${difference} new application${
                         difference > 1 ? 's were ' : ' was '
-                      } recieved`}
+                      } received`}
                       <br />
                       {`since Monday the ${startOfWeek}`}
                     </strong>
