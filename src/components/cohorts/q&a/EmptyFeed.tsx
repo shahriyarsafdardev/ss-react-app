@@ -52,7 +52,7 @@ const EmptyFeed = ({ hosts }: { hosts: string }) => (
   <StyledFeedContainer>
     <StyledPreview src="/static/empty_tabs.png" alt="empty feed" />
     <Description sx={{ fontWeight: '600' }}>
-      {`${hosts} hasn’t recieved any questions yet but you could be the first to ask! Potential topics are not restricted, your question can refer to a Session or a problem you’re facing at work, and will be answered by ${hosts} in video format!`}
+      {`${hosts} hasn’t received any questions yet but you could be the first to ask! Potential topics are not restricted, your question can refer to a Session or a problem you’re facing at work, and will be answered by ${hosts} in video format!`}
     </Description>
     <StyledButton onClick={() => handleClick()} variant="contained">
       ASK YOUR QUESTION
