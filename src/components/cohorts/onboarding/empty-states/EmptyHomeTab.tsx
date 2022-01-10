@@ -87,6 +87,8 @@ const EmptyHomeTab = ({
   }, [cohortID, cohortCode, cohortHost]);
 
   const calendarAlert = () => {
+    axios.post(`/cohorts/${cohortID}/enrollments/calendar_added.json`);
+
     if (!calendarLink) {
       alert('There is no calendar attached to this cohort');
     }
