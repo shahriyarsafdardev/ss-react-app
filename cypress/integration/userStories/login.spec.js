@@ -5,7 +5,7 @@ import cohortsFixture from '../../fixtures/cohorts/cohorts.json';
 import moment from 'moment';
 
 Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
-  var dateTime = moment(session).subtract(time, 'days');
+  var dateTime = moment(session).subtract(time, 'hours');
       cy.clock(new Date(dateTime.format()));
 });
 describe('When a learner logs in', () => {
@@ -16,7 +16,7 @@ describe('When a learner logs in', () => {
 
   context('More than one week before session starts', () => {
     beforeEach(() =>{
-      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,7)
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,170)
     });
 
     it('Opens the Home#Empty page by default', () => {

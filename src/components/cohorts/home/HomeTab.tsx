@@ -15,6 +15,7 @@ import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
 
+// eslint-disable-next-line import/no-named-as-default
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -88,13 +89,13 @@ const Index = () => {
 
   return (
     <Page title="ScholarSite | Homepage">
-      <EmptyHomeTab
+      {/* <EmptyHomeTab
         cohortID={cohort_id}
         cohortCode={cohort?.code}
         cohortHost={cohort?.host_names}
-      />
-      {/* <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {!false && <OnboardingModal onSubmit={() => {}} />}
+      /> */}
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        {hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
         <Container style={{ marginBottom: '50px' }}>
           <CohortTimeLine cohort={cohort} sessions={sessions} />
           <StyledBox>
@@ -102,7 +103,7 @@ const Index = () => {
             <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
           </StyledBox>
         </Container>
-      </AnalyticsContext.Provider> */}
+      </AnalyticsContext.Provider>
     </Page>
   );
 };

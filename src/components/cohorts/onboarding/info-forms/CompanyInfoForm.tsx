@@ -117,11 +117,11 @@ export default function CompanyInfoForm({
               <FormControl fullWidth>
                 <InputLabel>Company Industries</InputLabel>
                 <MaterialSelect
-                  data-testid="company-industry"
                   fullWidth
                   label="Company Industries"
                   onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}
                   defaultValue={infoObject.industries}
+                  inputProps={{ 'data-testid': 'company-industry' }}
                   multiple
                   renderValue={(selected: any) => selected.join(', ')}
                 >
@@ -136,11 +136,11 @@ export default function CompanyInfoForm({
               <FormControl fullWidth>
                 <InputLabel>Number of Employees</InputLabel>
                 <MaterialSelect
-                  data-testid="company-employees"
                   fullWidth
                   label="Number of Employees"
                   onChange={(e) => onUpdateAttribute('number_of_employees', e.target.value)}
                   defaultValue={infoObject.number_of_employees}
+                  inputProps={{ 'data-testid': 'company-employees' }}
                 >
                   {numberOfEmployeesList.map((item: any) => (
                     <MenuItem key={item} value={item}>

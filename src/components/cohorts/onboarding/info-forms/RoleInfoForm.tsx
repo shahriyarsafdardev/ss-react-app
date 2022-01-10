@@ -43,8 +43,9 @@ export default function RoleInfoForm({
           <br />
           <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
-              <FormControl data-testid="role-title" fullWidth>
+              <FormControl fullWidth>
                 <TextField
+                  inputProps={{ 'data-testid': 'role-title' }}
                   fullWidth
                   label="Role Title"
                   value={infoObject?.role_title}
@@ -55,13 +56,13 @@ export default function RoleInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Role Categories</InputLabel>
                   <MaterialSelect
-                    data-testid="role-categories"
                     fullWidth
                     label="Role Categories"
                     onChange={(e) => onUpdateAttribute('role_category', e.target.value)}
                     defaultValue={infoObject.role_category}
                     multiple
                     renderValue={(selected: any) => selected.join(', ')}
+                    inputProps={{ 'data-testid': 'role-categories' }}
                   >
                     {role_options?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -73,11 +74,11 @@ export default function RoleInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Do you manage a team or division?</InputLabel>
                   <MaterialSelect
-                    data-testid="role-manage"
                     fullWidth
                     label="Do you manage a team or division?"
                     onChange={(e) => onUpdateAttribute('do_manage_team', e.target.value === 'Yes')}
                     defaultValue={infoObject.do_manage_team === true ? 'Yes' : 'No'}
+                    inputProps={{ 'data-testid': 'role-manage' }}
                   >
                     {YES_NO_OPTIONS?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -89,7 +90,7 @@ export default function RoleInfoForm({
               </Stack>
               <FormControl fullWidth>
                 <TextField
-                  data-testid="role-responsibilities"
+                  inputProps={{ 'data-testid': 'role-responsibilities' }}
                   fullWidth
                   label="Brief description of your role and responsibilities?"
                   value={infoObject?.role_description}

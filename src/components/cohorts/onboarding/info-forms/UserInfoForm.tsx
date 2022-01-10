@@ -84,8 +84,8 @@ export default function UserInfoForm({
     <>
       <br />
       <Grid container spacing={1}>
-        <Grid data-testid="user-avatar-upload" item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+        <Grid item xs={12} md={4}>
+          <Card data-testid="user-avatar-upload" sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
               accept="image/*"
               file={infoObject?.profile_image_url}
@@ -114,14 +114,14 @@ export default function UserInfoForm({
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <TextField
-                  data-testid="user-first-name"
+                  inputProps={{ 'data-testid': 'user-first-name' }}
                   fullWidth
                   label="First Name"
                   value={infoObject?.first_name}
                   onChange={(e) => onUpdateAttribute('first_name', e.target.value)}
                 />
                 <TextField
-                  data-testid="user-last-name"
+                  inputProps={{ 'data-testid': 'user-last-name' }}
                   fullWidth
                   label="Last Name"
                   value={infoObject?.last_name}
@@ -132,7 +132,6 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>Country</InputLabel>
                   <MaterialSelect
-                    data-testid="user-country"
                     fullWidth
                     label="Country"
                     onChange={(e) => {
@@ -147,6 +146,7 @@ export default function UserInfoForm({
                       );
                     }}
                     defaultValue={userProfile.country}
+                    inputProps={{ 'data-testid': 'user-country' }}
                   >
                     {Country.getAllCountries().map((country: any) => (
                       <MenuItem key={country.name} value={country.name}>
@@ -159,11 +159,11 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel>City</InputLabel>
                   <MaterialSelect
-                    data-testid="user-city"
                     fullWidth
                     label="City"
                     onChange={(e) => onUpdateAttribute('city', e.target.value)}
                     defaultValue={userProfile.city}
+                    inputProps={{ 'data-testid': 'user-city' }}
                   >
                     {citiesList?.length > 0 ? (
                       citiesList.map((city: any) => (
