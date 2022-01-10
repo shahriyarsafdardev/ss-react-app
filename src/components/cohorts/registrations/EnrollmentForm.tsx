@@ -146,6 +146,21 @@ export default function EnrollmentForm({
                       }}
                     />
                   </Stack>
+                  <Stack width="100%" spacing={2}>
+                    <TextField
+                      fullWidth
+                      id="notes"
+                      multiline
+                      minRows={3}
+                      label="Notes"
+                      {...getFieldProps('notes')}
+                      error={Boolean(touched.notes && errors.notes)}
+                      helperText={touched.notes && errors.notes}
+                      inputProps={{
+                        'data-testid': 'notes'
+                      }}
+                    />
+                  </Stack>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
                   <StyledLoadingButton
