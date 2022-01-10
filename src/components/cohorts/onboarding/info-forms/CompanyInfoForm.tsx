@@ -18,7 +18,7 @@ import {
 import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 
-import { CompanyProfileType, NavigationButtons } from './dataTypes';
+import { CompanyProfileType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const numberOfEmployeesList = [
   '1-10',
@@ -155,7 +155,7 @@ export default function CompanyInfoForm({
       </Grid>
       <NavigationButtons
         showPrevButton={true}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit(infoObject)}
       />

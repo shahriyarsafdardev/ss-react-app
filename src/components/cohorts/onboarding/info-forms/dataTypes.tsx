@@ -114,7 +114,9 @@ export const NavigationButtons = ({
 );
 
 export const checkFormValidity = (form: Object) => {
-  const invalidFields = Object.values(form).map((item) => !item || item.length === 0);
+  const invalidFields = Object.values(form).map((item) =>
+    item === false ? item : !item || item.length === 0
+  );
 
   return invalidFields.filter((field) => field === true).length > 0;
 };
