@@ -14,8 +14,6 @@ import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
-
-// eslint-disable-next-line import/no-named-as-default
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -36,6 +34,7 @@ const Index = () => {
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -87,11 +86,13 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  const shouldOpenModal = () => !hasOnboarded && mode !== 'Instructor';
+
   return (
     <Page title="ScholarSite | Homepage">
-      {cohort?.released_for_learners === true ? (
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
+          {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
           <Container style={{ marginBottom: '50px' }}>
             <CohortTimeLine cohort={cohort} sessions={sessions} />
             <StyledBox>

@@ -53,6 +53,7 @@ export default function PeersTab() {
   const [view, setView] = useState('grid');
   const { user } = useAuth();
   const url = new URLSearchParams(useLocation().search);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -252,7 +253,7 @@ export default function PeersTab() {
 
   return (
     <Page title="ScholarSite | Peers">
-      {cohort?.released_for_learners === true ? (
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         renderPeers()
       ) : (
         <EmptyNetworkingTab key={cohort_id} cohortHost={cohort?.host_names} />

@@ -58,6 +58,7 @@ export default function Messaging() {
   const [createType, setCreateType] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ export default function Messaging() {
 
   return (
     <Page title="ScholarSite | Messaging" id="page">
-      {cohort?.released_for_learners === true ? (
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Box id="box">
             <div key={cohortID} className="chat_wrapper">

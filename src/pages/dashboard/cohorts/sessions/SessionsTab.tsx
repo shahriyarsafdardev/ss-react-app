@@ -51,6 +51,7 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -150,7 +151,7 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {cohort?.released_for_learners === true ? (
+        {cohort?.released_for_learners === true || mode === 'Instructor' ? (
           cohortSessions()
         ) : (
           <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />
