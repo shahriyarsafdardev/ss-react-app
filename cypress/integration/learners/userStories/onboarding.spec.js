@@ -1,12 +1,12 @@
 // Each it block should mnatch a container element by its test id
-import home_refactored from '../../fixtures/onboarding/home_refactored.json'
-import save_user_profile from '../../fixtures/onboarding/saveUserProfileRefactored.json'
+import home_refactored from '../../../fixtures/onboarding/home_refactored.json'
+import save_user_profile from '../../../fixtures/onboarding/saveUserProfileRefactored.json'
 const serverUrl = Cypress.env('serverUrl');
 
 describe('When a user visits the home page of a cohort for the first time', () => {
   beforeEach(() => {
     cy.server();
-    cy.login({});
+    cy.login({onboardingpath : 'session/onboarding_not_completed.json'});
   });
 
   it('Opens an onboarding modal',() => {
@@ -139,7 +139,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      
+      cy.get('[data-testid="company-industries-dropdown"]')
+      .click()
+      cy.contains('li', home_refactored.participant_profile.current_industry_category_selections[0])
+      .click()
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() =>  {
@@ -158,7 +161,14 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     context('If any input is empty',() => {
-      it('Displays a disabled “Next” button',() => {});
+      it('Displays a disabled “Next” button',() => {
+        cy.get('[data-testid="company-industries-dropdown"]')
+        .click()
+        cy.contains('li', home_refactored.participant_profile.current_industry_category_selections[0])
+        .click()
+        cy.get('[data-testid="btn_next"]')
+        .and("have.attr", "disabled")
+      });
     })
 
     context('If all inputs are filled', () => {
@@ -212,7 +222,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      // Enter new details for each
+      cy.get('[data-testid="role-responsibilities"]')
+      .should('be.visible')
+      .clear()
+      .type('new data')
+      .and("contain",  'new data')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
@@ -231,8 +245,14 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     context('If any input is empty', () => {
-      it('Displays a disabled “Next” button', () => {});
-    })
+      it('Displays a disabled “Next” button', () => {
+        cy.get('[data-testid="role-responsibilities"]')
+        .should('be.visible')
+        .clear()
+        cy.get('[data-testid="btn_next"]')
+        .and("have.attr", "disabled")
+      });
+    });
 
     context('If all inputs are filled', () => {
       it('Allows users to navigate to the next page through the “Next” button',() =>{
@@ -243,8 +263,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
         .should('be.visible')
         .and('contain','Networking Preferences')
       });
-    })
+    });
   });
+
 
   describe('Page 4', () => {
     beforeEach(() => {
@@ -283,7 +304,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      // Enter new details for each
+      cy.get('[data-testid="network-fellow-member-dropdown"]')
+      .click()
+      cy.contains('li', home_refactored.participant_profile.networking_industries_categories[0])
+      .click()
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
@@ -302,7 +326,14 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     context('If any input is empty', () => {
-      it('Displays a disabled “Next” button', () => {});
+      it('Displays a disabled “Next” button', () => {
+        cy.get('[data-testid="network-fellow-member-dropdown"]')
+        .click()
+        cy.contains('li', home_refactored.participant_profile.networking_industries_categories[0])
+        .click()
+        cy.get('[data-testid="btn_next"]')
+        .and("have.attr", "disabled")
+      });
     });
 
     context('If all inputs are filled', () => {
@@ -324,6 +355,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
     });
+
     it('Displays a "House Keeping" form',() => {
       // Assert title
       cy.get('[data-testid="onboard-title"]')
@@ -362,7 +394,13 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      // Enter new details for each
+      cy.get('[data-testid="housekeeping-dob"]')
+      .children().eq(0)
+      .children().eq(1)
+      .children().eq(0)
+      .clear()
+      .type('11/11/2021')
+      .and("have.attr", "value", '11/11/2021')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons', () => {
@@ -381,7 +419,15 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     context('If any input is empty',() => {
-      it('Displays a disabled “Next” button',() => {});
+      it('Displays a disabled “Next” button',() => {
+        cy.get('[data-testid="housekeeping-dob"]')
+        .children().eq(0)
+        .children().eq(1)
+        .children().eq(0)
+        .clear()
+        cy.get('[data-testid="btn_next"]')
+        .and("have.attr", "disabled")
+      });
     })
 
     context('If all inputs are filled', () => {
@@ -427,6 +473,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
         cy.get('[data-testid="dashboard-navbar-home"]')
         .should('be.visible')
       });
-    })
+    });
   });
 });

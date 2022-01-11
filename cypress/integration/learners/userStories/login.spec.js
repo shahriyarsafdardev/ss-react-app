@@ -1,22 +1,12 @@
 // Each it block should mnatch a container element by its test id
-import sessionFixture from '../../fixtures/session/sessions.json';
-import userFixture from '../../fixtures/login/login.json';
-import cohortsFixture from '../../fixtures/cohorts/cohorts.json';
-import moment from 'moment';
+import userFixture from '../../../fixtures/login/login.json';
+import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
 
-Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
-  var dateTime = moment(session).subtract(time, 'days');
-      cy.clock(new Date(dateTime.format()));
-});
 describe('When a learner logs in', () => {
-  beforeEach(() => {
-    cy.server();
-    cy.login({ onboardingpath : 'session/onboardingNotCompleted.json', sessionpath : 'session/emptysessions.json'});
-  });
-
-  context('More than one week before session starts', () => {
-    beforeEach(() =>{
-      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,8)
+  context('When cohort.released_for_learners == false', () => {
+    beforeEach(() => {
+      cy.server();
+      cy.login({cohortspath :'cohorts/cohortforemptystate.json' });
     });
 
     it('Opens the Home#Empty page by default', () => {
@@ -108,19 +98,62 @@ describe('When a learner logs in', () => {
     });
   });
 
-  context('Less than one week before session starts', () => {
-    it('Opens the Home page by default', () => {});
+  context('When cohort.released_for_learners == true', () => {
+    beforeEach(() => {
+      cy.server();
+      cy.login({});
+    });
+
+    it('Opens the Home page by default', () => {
+      cy.url()
+      .should('include', 'home')
+      cy.get('[data-testid="dashboard-navbar-home"]')
+      .should('be.visible')
+    });
+
     describe('When the Sessions is selected from the Sidebar', () => {
-      it('Opens Sessions page');
+      it('Opens Sessions page',() => {
+        cy.get('[data-testid="navbar-sessions"]')
+        .should('be.visible')
+        .click()
+        cy.url().should('include', 'sessions')
+        cy.get('[data-testid="dashboard-navbar-sessions"]')
+        .should('be.visible')
+      });
     });
+
     describe('When the Messaging is selected from the Sidebar', () => {
-      it('Opens Messaging page');
+      it('Opens Messaging page',() => {
+        cy.get('[data-testid="navbar-messaging"]')
+        .should('be.visible')
+        .click()
+        cy.url().should('include', 'messaging')
+        cy.get('[data-testid="dashboard-navbar-messaging"]')
+        .should('be.visible')
+      });
     });
+
     describe('When the Networking is selected from the Sidebar', () => {
-      it('Opens Networking page');
+      it('Opens Networking page',() => {
+        cy.get('[data-testid="navbar-networking"]')
+        .should('be.visible').click()
+        cy.url()
+        .should('include', 'peers')
+        cy.get('[data-testid="dashboard-navbar-networking"]').
+        should('be.visible')
+      });
     });
+
     describe('When the Q&A is selected from the Sidebar', () => {
-      it('Opens Q&A page');
+      it('Opens Q&A page',() => {
+        cy.get('[data-testid="navbar-Q&A"]')
+        .should('be.visible')
+        .click()
+        cy.url().
+        should('include', 'Q&A')
+        cy.get('[data-testid="dashboard-navbar-Q&A"]')
+        .should('be.visible')
+      });
     });
   });
 });

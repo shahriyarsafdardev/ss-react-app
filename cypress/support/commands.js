@@ -1,5 +1,5 @@
 Cypress.Commands.add('login', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/login.json',
-sessionpath = 'session/sessions.json', onboardingpath = 'session/onboarding.json',
+sessionpath = 'session/sessions.json', onboardingpath = 'session/onboarding_completed.json',
 sessionmaterialspath = 'session/session_materials.json', peerpath = 'peer/peers.json',
 homepath = 'onboarding/home_refactored.json'}) => {
   const serverUrl = Cypress.env('serverUrl');

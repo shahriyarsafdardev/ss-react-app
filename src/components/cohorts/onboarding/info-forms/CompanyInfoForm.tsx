@@ -117,6 +117,7 @@ export default function CompanyInfoForm({
               <FormControl fullWidth>
                 <InputLabel>Company Industries</InputLabel>
                 <MaterialSelect
+                  data-testid="company-industries-dropdown"
                   fullWidth
                   label="Company Industries"
                   onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}

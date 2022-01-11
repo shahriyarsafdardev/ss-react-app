@@ -65,6 +65,7 @@ export default function NetworkingForm({
               <FormControl fullWidth>
                 <InputLabel>Which industries are you interested in connecting with?</InputLabel>
                 <MaterialSelect
+                  data-testid="network-fellow-member-dropdown"
                   fullWidth
                   label="Which industries are you interested in connecting with?"
                   onChange={(e) =>
