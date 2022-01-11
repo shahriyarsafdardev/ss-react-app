@@ -89,21 +89,29 @@ const Index = () => {
 
   return (
     <Page title="ScholarSite | Homepage">
-      {/* <EmptyHomeTab
-        cohortID={cohort_id}
-        cohortCode={cohort?.code}
-        cohortHost={cohort?.host_names}
-      /> */}
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
-        <Container style={{ marginBottom: '50px' }}>
-          <CohortTimeLine cohort={cohort} sessions={sessions} />
-          <StyledBox>
-            <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
-            <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-          </StyledBox>
-        </Container>
-      </AnalyticsContext.Provider>
+      {cohort?.released_for_learners === true ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          {!hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
+          <Container style={{ marginBottom: '50px' }}>
+            <CohortTimeLine cohort={cohort} sessions={sessions} />
+            <StyledBox>
+              <SessionPrereading
+                cohort={cohort}
+                sessions={sessions}
+                activeSession={activeSession}
+              />
+              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+            </StyledBox>
+          </Container>
+        </AnalyticsContext.Provider>
+      ) : (
+        <EmptyHomeTab
+          key={cohort_id}
+          cohortID={cohort_id}
+          cohortCode={cohort?.code}
+          cohortHost={cohort?.host_names}
+        />
+      )}
     </Page>
   );
 };

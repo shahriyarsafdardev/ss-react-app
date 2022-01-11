@@ -147,57 +147,60 @@ export default function Messaging() {
 
   return (
     <Page title="ScholarSite | Messaging" id="page">
-      <EmptyMessagingTab cohortHost={cohort?.host_names} />
-      {/* <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <Box id="box">
-          <div key={cohortID} className="chat_wrapper">
-            <Chat {...{ client, i18nInstance }} theme="team light">
-              <DesktopView>
-                <ChannelListContainer
-                  {...{
-                    isCreating,
-                    options,
-                    setCreateType,
-                    setIsCreating,
-                    setIsEditing,
-                    cohortID,
-                    cohortUsers: enrollments || [],
-                    sort,
-                    loggedinUserID
-                  }}
-                />
-              </DesktopView>
+      {cohort?.released_for_learners === true ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <Box id="box">
+            <div key={cohortID} className="chat_wrapper">
+              <Chat {...{ client, i18nInstance }} theme="team light">
+                <DesktopView>
+                  <ChannelListContainer
+                    {...{
+                      isCreating,
+                      options,
+                      setCreateType,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID
+                    }}
+                  />
+                </DesktopView>
 
-              <ChannelContainer
-                {...{
-                  createType,
-                  isCreating,
-                  isEditing,
-                  setIsCreating,
-                  setIsEditing,
-                  cohortID,
-                  cohortUsers: enrollments || []
-                }}
-              />
-              <MobileView>
-                <SidePanel
-                  props={{
+                <ChannelContainer
+                  {...{
+                    createType,
                     isCreating,
-                    options,
-                    setCreateType,
+                    isEditing,
                     setIsCreating,
                     setIsEditing,
                     cohortID,
-                    cohortUsers: enrollments || [],
-                    sort,
-                    loggedinUserID
+                    cohortUsers: enrollments || []
                   }}
                 />
-              </MobileView>
-            </Chat>
-          </div>
-        </Box>
-      </AnalyticsContext.Provider> */}
+                <MobileView>
+                  <SidePanel
+                    props={{
+                      isCreating,
+                      options,
+                      setCreateType,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID
+                    }}
+                  />
+                </MobileView>
+              </Chat>
+            </div>
+          </Box>
+        </AnalyticsContext.Provider>
+      ) : (
+        <EmptyMessagingTab cohortHost={cohort?.host_names} />
+      )}
     </Page>
   );
 }
