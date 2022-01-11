@@ -1,0 +1,118 @@
+import { useState } from 'react';
+import { RootState, useSelector } from 'redux/store';
+
+// material
+import {
+  Grid,
+  Card,
+  Stack,
+  InputLabel,
+  FormControl,
+  MenuItem,
+  ListItemText,
+  Select as MaterialSelect
+} from '@material-ui/core';
+import { NetworkInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
+
+const YES_NO_OPTIONS = ['Yes', 'No'];
+
+export default function NetworkingForm({
+  onSubmit,
+  infoDetails,
+  onPrevHandler
+}: {
+  onPrevHandler: Function;
+  onSubmit: Function;
+  infoDetails: NetworkInfoType;
+}) {
+  const { role_options, industry_options } = useSelector(
+    (state: RootState) => state.profileOptions
+  );
+
+  const [infoObject, setInfoObject] = useState<NetworkInfoType>(infoDetails);
+
+  const onUpdateAttribute = (attribute: string, value: any) => {
+    let tempInfo = { ...infoObject };
+    tempInfo = { ...tempInfo, [attribute]: value };
+    setInfoObject(tempInfo);
+  };
+
+  return (
+    <>
+      <br />
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={12}>
+          <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
+            <Stack spacing={{ xs: 2, md: 3 }}>
+              <FormControl fullWidth>
+                <InputLabel>Which roles are you interested in connecting with?</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Which roles are you interested in connecting with?"
+                  onChange={(e) => onUpdateAttribute('networking_roles_categories', e.target.value)}
+                  defaultValue={infoObject.networking_roles_categories}
+                  multiple
+                  renderValue={(selected) => selected.join(', ')}
+                  inputProps={{ 'data-testid': 'network-roles' }}
+                >
+                  {role_options?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>Which industries are you interested in connecting with?</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Which industries are you interested in connecting with?"
+                  onChange={(e) =>
+                    onUpdateAttribute('networking_industries_categories', e.target.value)
+                  }
+                  defaultValue={infoObject.networking_industries_categories}
+                  inputProps={{ 'data-testid': 'network-industeries' }}
+                  multiple
+                  renderValue={(selected) => selected.join(', ')}
+                >
+                  {industry_options?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>
+                  Are you interested in being matched with a fellow cohort member via email based on
+                  interests?
+                </InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Are you interested in being matched with a fellow cohort member via email based on interests?"
+                  onChange={(e) =>
+                    onUpdateAttribute('interested_in_being_matched', e.target.value === 'Yes')
+                  }
+                  defaultValue={infoObject.interested_in_being_matched === true ? 'Yes' : 'No'}
+                  inputProps={{ 'data-testid': 'network-fellow-member' }}
+                >
+                  {YES_NO_OPTIONS?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
+              </FormControl>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+      <NavigationButtons
+        showPrevButton={true}
+        disabled={checkFormValidity(infoObject)}
+        onPreviousHandler={onPrevHandler}
+        onNextHandler={() => onSubmit(infoObject)}
+      />
+    </>
+  );
+}

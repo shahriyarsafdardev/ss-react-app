@@ -5,6 +5,7 @@ import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { EVENT_TYPES, sendAmplitudeData, trackMessagingEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
 import { getPeers } from '../../../../redux/slices/cohort';
 
@@ -57,6 +58,7 @@ export default function Messaging() {
   const [createType, setCreateType] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -146,56 +148,60 @@ export default function Messaging() {
 
   return (
     <Page title="ScholarSite | Messaging" id="page">
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <Box id="box">
-          <div key={cohortID} className="chat_wrapper">
-            <Chat {...{ client, i18nInstance }} theme="team light">
-              <DesktopView>
-                <ChannelListContainer
-                  {...{
-                    isCreating,
-                    options,
-                    setCreateType,
-                    setIsCreating,
-                    setIsEditing,
-                    cohortID,
-                    cohortUsers: enrollments || [],
-                    sort,
-                    loggedinUserID
-                  }}
-                />
-              </DesktopView>
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <Box id="box">
+            <div key={cohortID} className="chat_wrapper">
+              <Chat {...{ client, i18nInstance }} theme="team light">
+                <DesktopView>
+                  <ChannelListContainer
+                    {...{
+                      isCreating,
+                      options,
+                      setCreateType,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID
+                    }}
+                  />
+                </DesktopView>
 
-              <ChannelContainer
-                {...{
-                  createType,
-                  isCreating,
-                  isEditing,
-                  setIsCreating,
-                  setIsEditing,
-                  cohortID,
-                  cohortUsers: enrollments || []
-                }}
-              />
-              <MobileView>
-                <SidePanel
-                  props={{
+                <ChannelContainer
+                  {...{
+                    createType,
                     isCreating,
-                    options,
-                    setCreateType,
+                    isEditing,
                     setIsCreating,
                     setIsEditing,
                     cohortID,
-                    cohortUsers: enrollments || [],
-                    sort,
-                    loggedinUserID
+                    cohortUsers: enrollments || []
                   }}
                 />
-              </MobileView>
-            </Chat>
-          </div>
-        </Box>
-      </AnalyticsContext.Provider>
+                <MobileView>
+                  <SidePanel
+                    props={{
+                      isCreating,
+                      options,
+                      setCreateType,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID
+                    }}
+                  />
+                </MobileView>
+              </Chat>
+            </div>
+          </Box>
+        </AnalyticsContext.Provider>
+      ) : (
+        <EmptyMessagingTab cohortHost={cohort?.host_names} />
+      )}
     </Page>
   );
 }

@@ -5,6 +5,8 @@ import LoadingScreen from 'components/LoadingScreen';
 import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import useAuth from 'hooks/useAuth';
+import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -49,11 +51,15 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const { user } = useAuth();
+
+  const isLearner = user?.type === 'learner';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
   const filteredSessions: Session[] = sessions?.filter(
@@ -105,39 +111,50 @@ export default function SessionsTab() {
     trackSessionsPageEvent(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  const cohortSessions = () =>
+    filteredSessions && filteredSessions.length > 0 ? (
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <SessionsContainer>
+          <SessionsInnerContainer container>
+            <Grid item md={8} sm={12}>
+              <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
+                <SessionBoard
+                  session={filteredSessions && filteredSessions[selectedSession]}
+                  isLearner={isLearner}
+                />
+              </SessionContext.Provider>
+            </Grid>
+            <SessionListDesktopContainer item md={4}>
+              <SessionList
+                isLearner={isLearner}
+                onClick={setSelectedSession}
+                selectedSession={selectedSession}
+                sessionsList={trimmedSessionData}
+              />
+            </SessionListDesktopContainer>
+          </SessionsInnerContainer>
+          <SessionListSidebar
+            setSelectedSession={setSelectedSession}
+            selectedSession={selectedSession}
+            sessionsList={trimmedSessionData}
+          />
+        </SessionsContainer>
+      </AnalyticsContext.Provider>
+    ) : (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+
   return (
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="ScholarSite | Sessions">
-        {filteredSessions && filteredSessions.length > 0 ? (
-          <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-            <SessionsContainer>
-              <SessionsInnerContainer container>
-                <Grid item md={8} sm={12}>
-                  <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                    <SessionBoard session={filteredSessions && filteredSessions[selectedSession]} />
-                  </SessionContext.Provider>
-                </Grid>
-                <SessionListDesktopContainer item md={4}>
-                  <SessionList
-                    onClick={setSelectedSession}
-                    selectedSession={selectedSession}
-                    sessionsList={trimmedSessionData}
-                  />
-                </SessionListDesktopContainer>
-              </SessionsInnerContainer>
-              <SessionListSidebar
-                setSelectedSession={setSelectedSession}
-                selectedSession={selectedSession}
-                sessionsList={trimmedSessionData}
-              />
-            </SessionsContainer>
-          </AnalyticsContext.Provider>
+        {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+          cohortSessions()
         ) : (
-          <LoadingContainer>
-            <LoadingScreen />
-          </LoadingContainer>
+          <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />
         )}
       </Page>
     </CohortContext.Provider>

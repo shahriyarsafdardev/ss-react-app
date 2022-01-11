@@ -15,6 +15,7 @@ import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import { CohortContext } from 'contexts/CohortContext';
+import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -52,6 +53,7 @@ export default function PeersTab() {
   const [view, setView] = useState('grid');
   const { user } = useAuth();
   const url = new URLSearchParams(useLocation().search);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -68,7 +70,6 @@ export default function PeersTab() {
       return false;
     });
   }
-  console.log(filteredPeers);
 
   const createSelectMenu = (items: string) => {
     const newItems: any = filteredPeers
@@ -216,39 +217,46 @@ export default function PeersTab() {
     />
   );
 
+  const renderPeers = () =>
+    peers ? (
+      <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
+        <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
+        <StudentProfileModal
+          modalState={Object.keys(modalState).length > 0}
+          modalHandler={modalHandler}
+          modalUser={modalState}
+          cohortID={cohort_id}
+          dispalyChatLink={
+            modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'
+          }
+        />
+        <StudentProfileFilters
+          companies={companies}
+          selectedCompanies={selectedCompanies}
+          strengths={strengths}
+          selectedStrengths={selectedStrengths}
+          interests={interests}
+          selectedInterests={selectedInterests}
+          handleCompanyChange={handleChange}
+          handleStrengthChange={handleStrengthChange}
+          handleInterestChange={handleInterestChange}
+          setView={setView}
+          view={view}
+        />
+        {view === 'grid' ? showCardView() : showTableView()}
+      </Container>
+    ) : (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+
   return (
     <Page title="ScholarSite | Peers">
-      {peers ? (
-        <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
-          <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
-          <StudentProfileModal
-            modalState={Object.keys(modalState).length > 0}
-            modalHandler={modalHandler}
-            modalUser={modalState}
-            cohortID={cohort_id}
-            dispalyChatLink={
-              modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'
-            }
-          />
-          <StudentProfileFilters
-            companies={companies}
-            selectedCompanies={selectedCompanies}
-            strengths={strengths}
-            selectedStrengths={selectedStrengths}
-            interests={interests}
-            selectedInterests={selectedInterests}
-            handleCompanyChange={handleChange}
-            handleStrengthChange={handleStrengthChange}
-            handleInterestChange={handleInterestChange}
-            setView={setView}
-            view={view}
-          />
-          {view === 'grid' ? showCardView() : showTableView()}
-        </Container>
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+        renderPeers()
       ) : (
-        <LoadingContainer>
-          <LoadingScreen />
-        </LoadingContainer>
+        <EmptyNetworkingTab key={cohort_id} cohortHost={cohort?.host_names} />
       )}
     </Page>
   );

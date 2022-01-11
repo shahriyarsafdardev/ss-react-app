@@ -6,7 +6,7 @@ import MarkCheckbox from './MarkCheckbox';
 
 type PreReadingRowProps = {
   item: SessionMaterial;
-  number: Number;
+  number: Number | undefined;
   checkboxHanlder: Function;
   onPreReadingClick: Function;
 };
@@ -20,6 +20,7 @@ const StyledLink = styled('a')(() => ({
 
 const StyledBox = styled(Box)(({ theme }) => ({
   '&.main': {
+    width: '100%',
     backgroundColor: 'rgba(229, 231, 235, 0.3)',
     marginBottom: '20px',
     display: 'flex',

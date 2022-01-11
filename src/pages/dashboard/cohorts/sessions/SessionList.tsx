@@ -7,13 +7,19 @@ type SessionListProps = {
   selectedSession: number;
   sessionsList: SessionListItem[];
   onClick: Function;
+  isLearner?: boolean;
 };
 
 const ListContainer = styled('div')((props) => ({
   width: '100%'
 }));
 
-export default function SessionList({ sessionsList, onClick, selectedSession }: SessionListProps) {
+export default function SessionList({
+  sessionsList,
+  onClick,
+  selectedSession,
+  isLearner
+}: SessionListProps) {
   return (
     <ListContainer>
       <Box marginBottom={2}>
@@ -22,6 +28,7 @@ export default function SessionList({ sessionsList, onClick, selectedSession }: 
       <Box data-testid="sessions-list-container" id="sessions-list-container">
         {sessionsList.map((session, index) => (
           <SessionRow
+            isLearner={isLearner}
             key={session.id}
             isSelected={index === selectedSession}
             onClick={onClick}
