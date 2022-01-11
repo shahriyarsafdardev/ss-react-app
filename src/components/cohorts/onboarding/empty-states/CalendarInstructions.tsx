@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Theme, styled } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -13,27 +15,37 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontFamily: 'Roboto',
     marginBottom: '100px'
   },
+  heading: {
+    textAlign: 'left',
+    width: '100%',
+    marginLeft: '50px'
+  },
   textone: {
-    marginTop: '50px',
+    color: '#919EAB',
+    marginTop: '5px',
     fontWeight: 400,
-    fontSize: '14px',
-    lineHeight: '28px',
-    textAlign: 'center'
+    fontSize: '18px',
+    lineHeight: '32px'
   },
   texttwo: {
     fontWeight: 700,
-    fontSize: '18px',
+    fontSize: '16px',
     lineHeight: '30px',
     textAlign: 'left'
   },
   col4: {
-    maxWidth: '45%',
+    padding: '20px',
+    width: '48%',
+    boxShadow:
+      '0px 0px 2px rgba(145, 158, 171, 0.24), 0px 16px 32px -4px rgba(145, 158, 171, 0.24)',
+    borderRadius: '16px',
     [theme.breakpoints.down(1000)]: {
-      maxWidth: '80%'
+      width: '80%'
     }
   },
   section: {
-    maxWidth: '900px',
+    width: '1000px',
+    marginTop: '20px',
     display: 'flex',
     justifyContent: 'space-between',
     [theme.breakpoints.down(1000)]: {
@@ -44,8 +56,45 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   mt5: {
-    marginTop: '30px'
+    padding: '10px 25px',
+    background: 'rgba(77, 77, 205, 0.03)',
+    borderRadius: '8px',
+    marginTop: '15px'
+  },
+  itemNum: {
+    fontSize: '14px',
+    minWidth: '24px',
+    width: '24px',
+    height: '24px',
+    background: 'rgba(77, 77, 205, 0.05)',
+    textAlign: 'center',
+    marginRight: '10px'
+  },
+  decorated: {
+    color: '#4d4dcd'
+  },
+  backBtn: {
+    display: 'flex',
+    fontWeight: 'bold',
+    color: '#4d4dcd',
+    fontSize: '18px',
+    lineHeight: '27px',
+    cursor: 'pointer',
+    marginBottom: '10px'
   }
+}));
+
+const Head = styled('div')(() => ({
+  textAlign: 'left',
+  display: 'flex',
+  fontSize: '18px',
+  fontWeight: 'bold'
+}));
+
+const Item = styled('div')(() => ({
+  display: 'flex',
+  marginTop: '10px',
+  letterSpacing: '1px'
 }));
 
 const CalendarInstructions = ({
@@ -59,83 +108,183 @@ const CalendarInstructions = ({
 
   const googleCalendar = () => (
     <Box className={classes.col4}>
-      <Typography variant="h4" textAlign="center">
+      <Head>
+        <img
+          src="/static/icons/google-calendar.svg"
+          alt="gcal-icon"
+          style={{ marginRight: '5px' }}
+        />
         Google Calendar
-      </Typography>
+      </Head>
+
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On Web:</p>
-        <ol>
-          <li>Click on “Add other calendars” next to the “Other calendars” heading.</li>
-          <li>Click on “From URL”.</li>
-          <li>Paste in “{calendarUrl}”</li>
-          <li>Press “Save”</li>
-        </ol>
+
+        <Item>
+          <div className={classes.itemNum}>1</div>
+          <p>
+            Click on <span className={classes.decorated}>“Add other calendars”</span> next to the
+            <span className={classes.decorated}>“Other calendars”</span> heading.
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>
+          <p>
+            Click on <span className={classes.decorated}>“From URL”</span>
+          </p>
+          .
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>3</div>
+          <p>
+            Paste in <span className={classes.decorated}>“{calendarUrl}”</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>4</div>Press{' '}
+          <p>
+            <span className={classes.decorated}>“Save”</span>
+          </p>
+        </Item>
       </Box>
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On iOS:</p>
-        <ol>
-          <li>Follow the above process on web.</li>
-          <li>
-            You may need to visit https://calendar.google.com/calendar/syncselect and turn on
-            syncing for the cohort calendar.
-          </li>
-        </ol>
+
+        <Item>
+          <div className={classes.itemNum}>1</div>
+          <p>
+            Follow the above process <span className={classes.decorated}>on web.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>
+          <p>
+            You may need to visit{' '}
+            <span className={classes.decorated}>
+              https://calendar.google.com/calendar/syncselect
+            </span>{' '}
+            and turn on syncing for the cohort calendar.
+          </p>
+        </Item>
       </Box>
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On Android:</p>
-        <ol>
-          <li>Follow the above process on web.</li>
-          <li>
-            You may need to turn on syncing in your Calendar app. In the sidebar, click on
-            “Settings”, tap on the imported calendar, and then toggle on “Sync.”
-          </li>
-        </ol>
+
+        <Item>
+          <div className={classes.itemNum}>1</div>
+          <p>
+            Follow the above process <span className={classes.decorated}>on web.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>{' '}
+          <p>
+            You may need to turn on syncing in your Calendar app. In the sidebar, click on{' '}
+            <span className={classes.decorated}>“Settings”</span>, tap on the imported calendar, and
+            then toggle on <span className={classes.decorated}>“Sync.”</span>
+          </p>
+        </Item>
       </Box>
     </Box>
   );
 
   const ical = () => (
     <Box className={classes.col4}>
-      <Typography variant="h4" textAlign="center">
+      <Head>
+        <img src="/static/icons/ical.svg" alt="ical-icon" style={{ marginRight: '5px' }} />
         iCal
-      </Typography>
+      </Head>
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On desktop:</p>
-        <ol>
-          <li>Click File {'>'} New Calendar Subscription.</li>
-          <li>Paste “{calendarUrl}”</li>
-          <li>Press “Save”</li>
-        </ol>
+
+        <Item>
+          <div className={classes.itemNum}>1</div>
+          <p>
+            Click <span className={classes.decorated}>File {'>'} New Calendar Subscription.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>
+          <p>
+            Paste <span className={classes.decorated}>“{calendarUrl}”</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>3</div>
+          <p>
+            Press <span className={classes.decorated}>“Save”.</span>
+          </p>
+        </Item>
       </Box>
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On mobile:</p>
-        <ol>
-          <li>Open the Settings app.</li>
-          <li>Tap on “Accounts & Passwords”.</li>
-          <li>Tap on “Add Account”.</li>
-          <li>Tap on “Other”.</li>
-          <li>Tap on “Add Subscribed Calendar”.</li>
-          <li>Paste “{calendarUrl}” into the Server field</li>
-          <li>Add a description</li>
-          <li>Press “Save”</li>
-        </ol>
+
+        <Item>
+          <div className={classes.itemNum}>1</div>
+          <p>
+            Open the <span className={classes.decorated}>Settings app.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>
+          <p>
+            Tap on <span className={classes.decorated}>“Accounts & Passwords”.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>3</div>
+          <p>
+            Tap on <span className={classes.decorated}>“Add Account”.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>4</div>
+          <p>
+            Tap on <span className={classes.decorated}>“Other”.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>5</div>
+          <p>
+            Tap on <span className={classes.decorated}>“Add Subscribed Calendar”.</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>6</div>
+          <p>
+            Paste <span className={classes.decorated}>“{calendarUrl}” into the Server field</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>7</div>
+          <p>
+            Add a <span className={classes.decorated}>description</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>8</div>
+          <p>
+            Press <span className={classes.decorated}>“Save”</span>
+          </p>
+        </Item>
       </Box>
     </Box>
   );
 
   return (
     <div className={classes.wrapper}>
-      <Typography variant="h3" textAlign="center">
-        ✋ Having trouble adding the cohort calendar?
-      </Typography>
-      <Typography className={classes.textone}>Try the following steps</Typography>
+      <Box className={classes.heading}>
+        <div className={classes.backBtn} onClick={() => onBack(false)}>
+          <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
+          Return
+        </div>
+        <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
+        <p className={classes.textone}>Try the following steps</p>
+      </Box>
       <Box className={classes.section}>
         {googleCalendar()}
         {ical()}
       </Box>
-      <Button variant="contained" onClick={() => onBack(false)} style={{ marginTop: '15px' }}>
-        Go Back
-      </Button>
     </div>
   );
 };
