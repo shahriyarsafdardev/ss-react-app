@@ -1,17 +1,16 @@
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/login.json',
+sessionpath = 'session/sessions.json', onboardingpath = 'session/onboarding.json',
+sessionmaterialspath = 'session/session_materials.json', peerpath = 'peer/peers.json',
+homepath = 'onboarding/home_refactored.json'}) => {
   const serverUrl = Cypress.env('serverUrl');
-  cy.fixture('cohorts/cohorts.json').as('cohortsData');
-  cy.fixture('login/login.json').as('loginData');
-  cy.fixture('session/sessions.json').as('sessionData');
-  cy.fixture('session/onboarding.json').as('onboardingData');
-  cy.fixture('session/session_materials.json').as('sessionMaterials');
-  cy.fixture('peer/peers.json').as('peers');
-  cy.fixture('onboarding/home_refactored.json').as('homeData');
-  cy.route(
-    'GET',
-    `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=5386e36b-0f15-4d39-b698-41e6672ec2c0`,
-    '@homeData'
-  ).as('home');
+  cy.fixture(cohortspath).as('cohortsData');
+  cy.fixture(loginpath ).as('loginData');
+  cy.fixture(sessionpath).as('sessionData');
+  cy.fixture(onboardingpath).as('onboardingData');
+  cy.fixture(sessionmaterialspath ).as('sessionMaterials');
+  cy.fixture(peerpath).as('peers');
+  cy.fixture(homepath).as('homeData');
+  cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=5386e36b-0f15-4d39-b698-41e6672ec2c0`, '@homeData').as('home');
   cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
   cy.route(
     'GET',

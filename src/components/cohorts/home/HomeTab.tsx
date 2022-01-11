@@ -16,9 +16,6 @@ import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
-// eslint-disable-next-line import/no-named-as-default
-import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
-
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',

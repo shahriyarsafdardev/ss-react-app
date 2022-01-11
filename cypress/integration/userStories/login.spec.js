@@ -5,18 +5,18 @@ import cohortsFixture from '../../fixtures/cohorts/cohorts.json';
 import moment from 'moment';
 
 Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
-  var dateTime = moment(session).subtract(time, 'hours');
+  var dateTime = moment(session).subtract(time, 'days');
       cy.clock(new Date(dateTime.format()));
 });
 describe('When a learner logs in', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({ onboardingpath : 'session/onboardingNotCompleted.json', sessionpath : 'session/emptysessions.json'});
   });
 
   context('More than one week before session starts', () => {
     beforeEach(() =>{
-      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,170)
+      cy.setClockToBeforeSession(sessionFixture.sessions[0].time,8)
     });
 
     it('Opens the Home#Empty page by default', () => {

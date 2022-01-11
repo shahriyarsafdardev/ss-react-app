@@ -6,11 +6,12 @@ const serverUrl = Cypress.env('serverUrl');
 describe('When a user visits the home page of a cohort for the first time', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
   });
 
   it('Opens an onboarding modal',() => {
-
+    cy.get('[data-testid="onboarding-form-modal"]')
+      .should('be.visible')
   });
 
   describe('Page 1', () => {
@@ -138,7 +139,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      // Enter new details for each
+      
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() =>  {
