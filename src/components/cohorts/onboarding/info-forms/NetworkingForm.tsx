@@ -53,6 +53,7 @@ export default function NetworkingForm({
                   defaultValue={infoObject.networking_roles_categories}
                   multiple
                   renderValue={(selected) => selected.join(', ')}
+                  inputProps={{ 'data-testid': 'network-roles' }}
                 >
                   {role_options?.map((name: any) => (
                     <MenuItem key={name} value={name}>
@@ -70,6 +71,7 @@ export default function NetworkingForm({
                     onUpdateAttribute('networking_industries_categories', e.target.value)
                   }
                   defaultValue={infoObject.networking_industries_categories}
+                  inputProps={{ 'data-testid': 'network-industeries' }}
                   multiple
                   renderValue={(selected) => selected.join(', ')}
                 >
@@ -92,6 +94,7 @@ export default function NetworkingForm({
                     onUpdateAttribute('interested_in_being_matched', e.target.value === 'Yes')
                   }
                   defaultValue={infoObject.interested_in_being_matched === true ? 'Yes' : 'No'}
+                  inputProps={{ 'data-testid': 'network-fellow-member' }}
                 >
                   {YES_NO_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>

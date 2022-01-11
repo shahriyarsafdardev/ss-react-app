@@ -186,6 +186,7 @@ function NavItem({
 
                 return (
                   <ListItemStyle
+                    data-testid={`navbar-${title}`}
                     disableGutters
                     key={`${title}-${userNotifications.length}`}
                     id={`${title}-${index}`}

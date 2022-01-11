@@ -4,9 +4,11 @@ import { useLocation } from 'react-router-dom';
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
+import { updateInstructorViewState } from 'redux/slices/viewMode';
 import useAuth from '../../hooks/useAuth';
 import { getCategories, getInstructorCohorts, getLearnerCohorts } from './Common';
 import { RootState, useSelector } from '../../redux/store';
+
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
@@ -76,23 +78,17 @@ type DashboardSidebarProps = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
   const { cohorts } = useSelector((state: RootState) => state.cohort);
-  const { user, updateProfile } = useAuth();
-
-  const setViewMode = (mode: string) => {
-    if (user) {
-      const new_user: any = user;
-      updateProfile({ ...new_user, view_type: mode });
-    }
-  };
+  const { mode } = useSelector((state: RootState) => state.instructorView);
+  const { user } = useAuth();
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
   const switchView = () => {
-    if (user?.view_type === 'Instructor') {
-      setViewMode('Member');
+    if (mode === 'Instructor') {
+      updateInstructorViewState('Member');
     } else {
-      setViewMode('Instructor');
+      updateInstructorViewState('Instructor');
     }
   };
 
@@ -116,14 +112,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <LogoContainer>
         <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
       </LogoContainer>
-      {user?.view_type === 'Member' && (
+      {mode === 'Member' && (
         <NavSection
-          navConfig={cohortsConfig(getLearnerCohorts(cohorts), 'Your Cohorts', false)}
+          navConfig={cohortsConfig(cohorts, 'Your Cohorts', false)}
           isShow={!isCollapse}
         />
       )}
-      {user?.view_type === 'Instructor' &&
-        getCategories(cohorts).map((category: string) => (
+      {mode === 'Instructor' &&
+        getCategories(cohorts).map((category) => (
           <NavSection
             key={category}
             navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
@@ -137,20 +133,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <ViewSwitcherStyle>
             <p style={{ textAlign: 'center' }}>
               You are currently viewing the
-              <b> {user?.view_type} Dashboard,</b> to access your{' '}
-              {user?.view_type === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the
-              toggle bellow:
+              <b> {mode} Dashboard,</b> to access your{' '}
+              {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
+              below:
             </p>
             <SwitcherButtonContainer>
-              <LabelStyled className={user?.view_type === 'Member' ? 'blue' : 'gray'}>
-                Member
-              </LabelStyled>
-              <Switch
-                size="small"
-                checked={user?.view_type === 'Instructor'}
-                onChange={() => switchView()}
-              />
-              <LabelStyled className={user?.view_type === 'Instructor' ? 'blue' : 'gray'}>
+              <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
+              <Switch size="small" checked={mode === 'Instructor'} onChange={() => switchView()} />
+              <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
                 Instructor
               </LabelStyled>
             </SwitcherButtonContainer>

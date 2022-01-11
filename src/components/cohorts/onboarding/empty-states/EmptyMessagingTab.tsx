@@ -29,8 +29,12 @@ const StyledPara = styled('p')(() => ({
 const EmptyMessagingTab = ({ cohortHost }: { cohortHost: string }) => (
   <Container>
     <StyledBox>
-      <img src="/static/cohort-empty-states/emptyMessagingState.svg" alt="empty-session" />
-      <StyledPara>
+      <img
+        data-testid="empty-messaging-img"
+        src="/static/cohort-empty-states/emptyMessagingState.svg"
+        alt="empty-session"
+      />
+      <StyledPara data-testid="empty-messaging-information-text">
         <b>
           ScholarSite Messaging allows you to seemlessly interact with your peers and instructor
           during and outside of Sessions.

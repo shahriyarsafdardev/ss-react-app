@@ -48,6 +48,7 @@ const Index = () => {
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -105,41 +106,58 @@ const Index = () => {
       </LoadingContainer>
     );
   }
+  if (!cohort || !sessions || sessions.length === 0) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+  const shouldOpenModal = () => !hasOnboarded && mode !== 'Instructor';
+
   return (
     <Page title="ScholarSite | Homepage">
-      <EmptyHomeTab cohortCode={cohort?.code} cohortHost={cohort?.host_names} />
-      {/* <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {!false && <OnboardingModal onSubmit={() => {}} />}
-        <Container style={{ marginBottom: '50px' }}>
-          {user?.view_type === 'Instructor' && cohort.registration_phase ? (
-            <CohortAnalytics key={user?.view_type} cohort_id={cohort?.id} />
-          ) : (
-            <CohortTimeLine key={user?.view_type} cohort={cohort} sessions={sessions} />
-          )}
-          <StyledBox>
-            {user?.view_type === 'Instructor' ? (
-              <>
-                {cohort.registration_phase ? (
-                  <Registrations cohort={cohort} />
-                ) : (
-                  <SurveyFeedback sessions={sessions} />
-                )}
-              </>
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
+          <Container style={{ marginBottom: '50px' }}>
+            {mode === 'Instructor' && cohort.registration_phase ? (
+              <CohortAnalytics key={mode} cohort_id={cohort?.id} />
             ) : (
-              <SessionPrereading
-                cohort={cohort}
-                sessions={sessions}
-                activeSession={activeSession}
-              />
+              <CohortTimeLine key={mode} cohort={cohort} sessions={sessions} />
             )}
-            {user?.view_type === 'Instructor' ? (
-              <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
-            ) : (
-              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-            )}
-          </StyledBox>
-        </Container>
-      </AnalyticsContext.Provider> */}
+            <StyledBox>
+              {mode === 'Instructor' ? (
+                <>
+                  {cohort.registration_phase ? (
+                    <Registrations cohort={cohort} />
+                  ) : (
+                    <SurveyFeedback sessions={sessions} />
+                  )}
+                </>
+              ) : (
+                <SessionPrereading
+                  cohort={cohort}
+                  sessions={sessions}
+                  activeSession={activeSession}
+                />
+              )}
+              {mode === 'Instructor' ? (
+                <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
+              ) : (
+                <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+              )}
+            </StyledBox>
+          </Container>
+        </AnalyticsContext.Provider>
+      ) : (
+        <EmptyHomeTab
+          key={cohort_id}
+          cohortID={cohort_id}
+          cohortCode={cohort?.code}
+          cohortHost={cohort?.host_names}
+        />
+      )}
     </Page>
   );
 };

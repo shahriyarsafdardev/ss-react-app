@@ -188,9 +188,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           interested_in_being_matched:
             payload.participant_profile.opted_in_for_matching_suggestions,
           date_of_birth: payload.participant_profile.date_of_birth,
-          cohort_understanding: '',
-          referred_by: '',
-          payed_by: ''
+          cohort_understanding: payload.participant_profile.current_understanding,
+          referred_by: payload.participant_profile.referred_by,
+          payed_by: payload.participant_profile.payed_by
         });
       });
   }, [cohort_id, user?.id]);

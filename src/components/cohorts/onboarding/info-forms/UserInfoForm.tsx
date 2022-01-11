@@ -85,7 +85,7 @@ export default function UserInfoForm({
       <br />
       <Grid container spacing={1}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+          <Card data-testid="user-avatar-upload" sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
               accept="image/*"
               file={infoObject?.profile_image_url}
@@ -114,12 +114,14 @@ export default function UserInfoForm({
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <TextField
+                  inputProps={{ 'data-testid': 'user-first-name' }}
                   fullWidth
                   label="First Name"
                   value={infoObject?.first_name}
                   onChange={(e) => onUpdateAttribute('first_name', e.target.value)}
                 />
                 <TextField
+                  inputProps={{ 'data-testid': 'user-last-name' }}
                   fullWidth
                   label="Last Name"
                   value={infoObject?.last_name}
@@ -133,6 +135,7 @@ export default function UserInfoForm({
                     fullWidth
                     label="Country"
                     onChange={(e) => {
+                      onUpdateAttribute('country', e.target.value);
                       const countryCode = Country.getAllCountries().find(
                         (country) => country.name === e.target.value
                       )?.isoCode;
@@ -141,10 +144,9 @@ export default function UserInfoForm({
                           ?.map((city) => city.name)
                           .filter((value, index, self) => self.indexOf(value) === index) || []
                       );
-                      onUpdateAttribute('country', e.target.value);
-                      onUpdateAttribute('city', null);
                     }}
                     defaultValue={userProfile.country}
+                    inputProps={{ 'data-testid': 'user-country' }}
                   >
                     {Country.getAllCountries().map((country: any) => (
                       <MenuItem key={country.name} value={country.name}>
@@ -161,6 +163,7 @@ export default function UserInfoForm({
                     label="City"
                     onChange={(e) => onUpdateAttribute('city', e.target.value)}
                     defaultValue={userProfile.city}
+                    inputProps={{ 'data-testid': 'user-city' }}
                   >
                     {citiesList?.length > 0 ? (
                       citiesList.map((city: any) => (
@@ -180,6 +183,7 @@ export default function UserInfoForm({
                 <FormControl fullWidth>
                   <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
                   <MaterialSelect
+                    data-testid="user-pronoun-label"
                     fullWidth
                     label="Pronouns"
                     labelId="pronoun-label"
@@ -196,6 +200,7 @@ export default function UserInfoForm({
                 </FormControl>
 
                 <TextField
+                  data-testid="user-linkedIn-url"
                   fullWidth
                   label="LinkedIn URL"
                   value={infoObject?.linkedin_url}
