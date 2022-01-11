@@ -14,6 +14,7 @@ import CohortTimeLine from './CohortTimeLine';
 import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
+import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 
 // eslint-disable-next-line import/no-named-as-default
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
@@ -36,6 +37,7 @@ const Index = () => {
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -87,23 +89,33 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  const shouldOpenModal = () => !hasOnboarded && mode !== 'Instructor';
+
   return (
     <Page title="ScholarSite | Homepage">
-      {/* <EmptyHomeTab
-        cohortID={cohort_id}
-        cohortCode={cohort?.code}
-        cohortHost={cohort?.host_names}
-      /> */}
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {hasOnboarded && <OnboardingModal onSubmit={() => {}} />}
-        <Container style={{ marginBottom: '50px' }}>
-          <CohortTimeLine cohort={cohort} sessions={sessions} />
-          <StyledBox>
-            <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
-            <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-          </StyledBox>
-        </Container>
-      </AnalyticsContext.Provider>
+      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
+          <Container style={{ marginBottom: '50px' }}>
+            <CohortTimeLine cohort={cohort} sessions={sessions} />
+            <StyledBox>
+              <SessionPrereading
+                cohort={cohort}
+                sessions={sessions}
+                activeSession={activeSession}
+              />
+              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+            </StyledBox>
+          </Container>
+        </AnalyticsContext.Provider>
+      ) : (
+        <EmptyHomeTab
+          key={cohort_id}
+          cohortID={cohort_id}
+          cohortCode={cohort?.code}
+          cohortHost={cohort?.host_names}
+        />
+      )}
     </Page>
   );
 };

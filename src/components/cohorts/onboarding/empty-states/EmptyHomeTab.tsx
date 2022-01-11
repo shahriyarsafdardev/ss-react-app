@@ -103,6 +103,8 @@ const EmptyHomeTab = ({
     }
   };
 
+  const httpCalendarLink = () => (calendarLink ? calendarLink.replace('webcal', 'https') : '');
+
   return (
     <Container className={classes.container}>
       {!instructionsOpened ? (
@@ -152,7 +154,7 @@ const EmptyHomeTab = ({
           </Box>
         </Box>
       ) : (
-        <CalendarInstructions calendarUrl={calendarLink} onBack={setInstructionsOpened} />
+        <CalendarInstructions calendarUrl={httpCalendarLink()} onBack={setInstructionsOpened} />
       )}
     </Container>
   );

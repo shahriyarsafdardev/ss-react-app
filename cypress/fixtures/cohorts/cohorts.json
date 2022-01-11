@@ -3,7 +3,13 @@
     {
       "code": "EDU",
       "discord_directory_url": "https://discord.com/",
-      "enrollments": ["d03a6dca-f8f1-4a80-86bc-1bc64120013b", "5386e36b-0f15-4d39-b698-41e6672ec2c0","0120670a-657e-432e-b196-484d0e60ade5","8b0310a7-3a1b-4240-bb0c-0899556dd3fc","136fe6ed-94e3-4ec0-b0b7-ef0cad3c70ad"],
+      "enrollments": [
+        "d03a6dca-f8f1-4a80-86bc-1bc64120013b",
+        "5386e36b-0f15-4d39-b698-41e6672ec2c0",
+        "0120670a-657e-432e-b196-484d0e60ade5",
+        "8b0310a7-3a1b-4240-bb0c-0899556dd3fc",
+        "136fe6ed-94e3-4ec0-b0b7-ef0cad3c70ad"
+      ],
       "goodbye_message": "<p>Good Bye</p>",
       "id": "9550cc85-305a-438c-a115-e791a16c91f0",
       "intake_name": "Testing Intake Name",

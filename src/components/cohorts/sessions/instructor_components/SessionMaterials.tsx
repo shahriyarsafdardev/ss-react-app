@@ -194,54 +194,60 @@ export default function SessionMaterials({
           )}
         </Droppable>
         {/* Supplimentary materials list */}
-        <Droppable key="list-1" droppableId="1">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps} style={{ marginTop: '20px' }}>
-              <Box>
-                <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>
-                  {groupedMaterials[1].category}
-                </p>
-                <div style={{ maxHeight: '500px', overflowY: 'scroll', paddingBottom: '50px' }}>
-                  {groupedMaterials[1].session_materials.map((preReading, index) => (
-                    <Draggable draggableId={preReading.id} index={index} key={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={snapshot.isDragging ? classes.draggingListItem : ''}
-                        >
-                          <div style={{ display: 'flex' }}>
-                            <div style={{ display: 'flex', maxWidth: '25px' }}>
-                              <img src="/static/icons/drag-dots.svg" alt="dots" />
+        {groupedMaterials[1] && (
+          <Droppable key="list-1" droppableId="1">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{ marginTop: '20px' }}
+              >
+                <Box>
+                  <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>
+                    {groupedMaterials[1].category}
+                  </p>
+                  <div style={{ maxHeight: '500px', overflowY: 'scroll', paddingBottom: '50px' }}>
+                    {groupedMaterials[1].session_materials.map((preReading, index) => (
+                      <Draggable draggableId={preReading.id} index={index} key={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={snapshot.isDragging ? classes.draggingListItem : ''}
+                          >
+                            <div style={{ display: 'flex' }}>
+                              <div style={{ display: 'flex', maxWidth: '25px' }}>
+                                <img src="/static/icons/drag-dots.svg" alt="dots" />
+                              </div>
+                              <PreReadingRow
+                                onPreReadingClick={() => {}}
+                                // onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
+                                key={preReading.index}
+                                item={preReading}
+                                number={preReading.index}
+                                checkboxHanlder={(value: boolean) => {
+                                  // onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
+                                  // dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
+                                }}
+                              />
                             </div>
-                            <PreReadingRow
-                              onPreReadingClick={() => {}}
-                              // onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
-                              key={preReading.index}
-                              item={preReading}
-                              number={preReading.index}
-                              checkboxHanlder={(value: boolean) => {
-                                // onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
-                                // dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));
-                              }}
-                            />
                           </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                </div>
-                <StyledButton
-                  variant="outlined"
-                  startIcon={<img src="/static/icons/plus-icon.svg" alt="plus" />}
-                >
-                  Add Supplementary Material
-                </StyledButton>
-              </Box>
-            </div>
-          )}
-        </Droppable>
+                        )}
+                      </Draggable>
+                    ))}
+                  </div>
+                  <StyledButton
+                    variant="outlined"
+                    startIcon={<img src="/static/icons/plus-icon.svg" alt="plus" />}
+                  >
+                    Add Supplementary Material
+                  </StyledButton>
+                </Box>
+              </div>
+            )}
+          </Droppable>
+        )}
       </DragDropContext>
     </ResourcesContainer>
   );
