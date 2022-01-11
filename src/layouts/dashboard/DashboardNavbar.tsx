@@ -80,7 +80,11 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         </MHidden>
 
         {currentTab && (
-          <Typography variant="h4" style={{ color: '#071A33', textTransform: 'capitalize' }}>
+          <Typography
+            data-testid={`dashboard-navbar-${currentTab}`}
+            variant="h4"
+            style={{ color: '#071A33', textTransform: 'capitalize' }}
+          >
             {currentTab}
           </Typography>
         )}

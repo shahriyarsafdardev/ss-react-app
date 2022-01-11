@@ -45,6 +45,7 @@ export default function RoleInfoForm({
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl fullWidth>
                 <TextField
+                  inputProps={{ 'data-testid': 'role-title' }}
                   fullWidth
                   label="Role Title"
                   value={infoObject?.role_title}
@@ -61,6 +62,7 @@ export default function RoleInfoForm({
                     defaultValue={infoObject.role_category}
                     multiple
                     renderValue={(selected: any) => selected.join(', ')}
+                    inputProps={{ 'data-testid': 'role-categories' }}
                   >
                     {role_options?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -76,6 +78,7 @@ export default function RoleInfoForm({
                     label="Do you manage a team or division?"
                     onChange={(e) => onUpdateAttribute('do_manage_team', e.target.value === 'Yes')}
                     defaultValue={infoObject.do_manage_team === true ? 'Yes' : 'No'}
+                    inputProps={{ 'data-testid': 'role-manage' }}
                   >
                     {YES_NO_OPTIONS?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -87,6 +90,7 @@ export default function RoleInfoForm({
               </Stack>
               <FormControl fullWidth>
                 <TextField
+                  inputProps={{ 'data-testid': 'role-responsibilities' }}
                   fullWidth
                   label="Brief description of your role and responsibilities?"
                   value={infoObject?.role_description}

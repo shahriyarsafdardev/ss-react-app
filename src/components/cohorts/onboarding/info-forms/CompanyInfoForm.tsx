@@ -18,7 +18,7 @@ import {
 import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 
-import { CompanyProfileType, NavigationButtons } from './dataTypes';
+import { CompanyProfileType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const numberOfEmployeesList = [
   '1-10',
@@ -71,7 +71,7 @@ export default function CompanyInfoForm({
     <>
       <br />
       <Grid container spacing={1}>
-        <Grid item xs={12} md={4}>
+        <Grid data-testid="company-logo" item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
               accept="image/*"
@@ -98,7 +98,7 @@ export default function CompanyInfoForm({
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
-              <FormControl fullWidth>
+              <FormControl data-testid="company-name" fullWidth>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label htmlFor="company-name">Select or create company name</label>
                 <CreatableSelect
@@ -121,6 +121,7 @@ export default function CompanyInfoForm({
                   label="Company Industries"
                   onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}
                   defaultValue={infoObject.industries}
+                  inputProps={{ 'data-testid': 'company-industry' }}
                   multiple
                   renderValue={(selected: any) => selected.join(', ')}
                 >
@@ -139,6 +140,7 @@ export default function CompanyInfoForm({
                   label="Number of Employees"
                   onChange={(e) => onUpdateAttribute('number_of_employees', e.target.value)}
                   defaultValue={infoObject.number_of_employees}
+                  inputProps={{ 'data-testid': 'company-employees' }}
                 >
                   {numberOfEmployeesList.map((item: any) => (
                     <MenuItem key={item} value={item}>
@@ -153,7 +155,7 @@ export default function CompanyInfoForm({
       </Grid>
       <NavigationButtons
         showPrevButton={true}
-        disabled={false}
+        disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit(infoObject)}
       />

@@ -59,14 +59,16 @@ export default function HouseKeepingForm({
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
+                <FormControl data-testid="housekeeping-dob" fullWidth>
                   <DesktopDatePicker
                     label="Date of birth"
                     onChange={(value) => {
                       onUpdateAttribute('date_of_birth', value?.toString());
                     }}
                     value={infoObject.date_of_birth || new Date()}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => (
+                      <TextField inputProps={{ 'data-testid': 'housekeeping-dob' }} {...params} />
+                    )}
                   />
                 </FormControl>
                 <FormControl fullWidth>
@@ -76,6 +78,7 @@ export default function HouseKeepingForm({
                     label="Current understanding of cohort topic"
                     onChange={(e) => onUpdateAttribute('current_understanding', e.target.value)}
                     defaultValue={infoObject.current_understanding}
+                    inputProps={{ 'data-testid': 'housekeeping-cohort-tpoic' }}
                   >
                     {COHORT_UNDERSTADING_OPTIONS?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -92,6 +95,7 @@ export default function HouseKeepingForm({
                   label="How did you hear about this cohort?"
                   onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
                   defaultValue={infoObject.referred_by}
+                  inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
                 >
                   {REFERRER_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
@@ -107,6 +111,7 @@ export default function HouseKeepingForm({
                   label="Who is paying for this cohort ?"
                   onChange={(e) => onUpdateAttribute('payed_by', e.target.value)}
                   defaultValue={infoObject.payed_by}
+                  inputProps={{ 'data-testid': 'housekeeping-payment' }}
                 >
                   {PAYING_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
