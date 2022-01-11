@@ -66,17 +66,19 @@ export default function HouseKeepingForm({
                       onUpdateAttribute('date_of_birth', value?.toString());
                     }}
                     value={infoObject.date_of_birth || new Date()}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => (
+                      <TextField inputProps={{ 'data-testid': 'housekeeping-dob' }} {...params} />
+                    )}
                   />
                 </FormControl>
                 <FormControl fullWidth>
                   <InputLabel>Current understanding of cohort topic</InputLabel>
                   <MaterialSelect
-                    data-testid="housekeeping-cohort-tpoic"
                     fullWidth
                     label="Current understanding of cohort topic"
                     onChange={(e) => onUpdateAttribute('current_understanding', e.target.value)}
                     defaultValue={infoObject.current_understanding}
+                    inputProps={{ 'data-testid': 'housekeeping-cohort-tpoic' }}
                   >
                     {COHORT_UNDERSTADING_OPTIONS?.map((name: any) => (
                       <MenuItem key={name} value={name}>
@@ -89,11 +91,11 @@ export default function HouseKeepingForm({
               <FormControl fullWidth>
                 <InputLabel>How did you hear about this cohort?</InputLabel>
                 <MaterialSelect
-                  data-testid="housekeeping-about-cohort"
                   fullWidth
                   label="How did you hear about this cohort?"
                   onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
                   defaultValue={infoObject.referred_by}
+                  inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
                 >
                   {REFERRER_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
@@ -105,11 +107,11 @@ export default function HouseKeepingForm({
               <FormControl fullWidth>
                 <InputLabel>Who is paying for this cohort ?</InputLabel>
                 <MaterialSelect
-                  data-testid="housekeeping-payment"
                   fullWidth
                   label="Who is paying for this cohort ?"
                   onChange={(e) => onUpdateAttribute('payed_by', e.target.value)}
                   defaultValue={infoObject.payed_by}
+                  inputProps={{ 'data-testid': 'housekeeping-payment' }}
                 >
                   {PAYING_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>

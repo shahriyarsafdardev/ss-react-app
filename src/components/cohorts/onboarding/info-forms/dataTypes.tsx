@@ -92,6 +92,7 @@ export const NavigationButtons = ({
   <ButtonsContainer>
     {showPrevButton && (
       <StyledButton
+        data-testid="btn_previous"
         className="previous"
         disabled={isSubmitting}
         variant="outlined"
@@ -102,6 +103,7 @@ export const NavigationButtons = ({
     )}
 
     <StyledButton
+      data-testid="btn_next"
       variant="contained"
       className="next"
       loading={isSubmitting}
