@@ -92,9 +92,9 @@ const Index = () => {
 
   return (
     <Page title="ScholarSite | Homepage">
+      {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
           <Container style={{ marginBottom: '50px' }}>
             <CohortTimeLine cohort={cohort} sessions={sessions} />
             <StyledBox>
