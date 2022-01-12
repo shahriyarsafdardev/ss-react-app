@@ -142,6 +142,10 @@ export default function SessionMaterials({
       });
   };
 
+  if (groupedMaterials.length === 0) {
+    return null;
+  }
+
   return (
     <ResourcesContainer id="session_materials">
       <SessionMaterialForm

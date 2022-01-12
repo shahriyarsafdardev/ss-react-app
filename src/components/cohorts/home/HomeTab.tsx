@@ -109,9 +109,9 @@ const Index = () => {
 
   return (
     <Page title="ScholarSite | Homepage">
+      {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
           <Container style={{ marginBottom: '50px' }}>
             {mode === 'Instructor' && cohort.registration_phase ? (
               <CohortAnalytics key={mode} cohort_id={cohort?.id} />

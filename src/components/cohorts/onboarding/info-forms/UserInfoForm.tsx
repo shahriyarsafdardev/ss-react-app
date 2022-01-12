@@ -140,6 +140,7 @@ export default function UserInfoForm({
                     label="Country"
                     onChange={(e) => {
                       onUpdateAttribute('country', e.target.value);
+                      onUpdateAttribute('city', '');
                       setCities(e.target.value);
                     }}
                     defaultValue={userProfile.country}
