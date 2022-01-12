@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import useAuth from 'hooks/useAuth';
 import Page from 'components/Page';
 import axios from 'utils/axios';
 import moment from 'moment';
@@ -47,7 +46,6 @@ const Index = () => {
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
-  const { user } = useAuth();
   const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -106,13 +104,7 @@ const Index = () => {
       </LoadingContainer>
     );
   }
-  if (!cohort || !sessions || sessions.length === 0) {
-    return (
-      <LoadingContainer>
-        <LoadingScreen />
-      </LoadingContainer>
-    );
-  }
+
   const shouldOpenModal = () => !hasOnboarded && mode !== 'Instructor';
 
   return (
