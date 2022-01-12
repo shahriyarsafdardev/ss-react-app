@@ -7,6 +7,7 @@ import moment from 'moment';
 import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
+import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -35,6 +36,7 @@ const Index = () => {
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
+  const { user } = useAuth();
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -86,7 +88,7 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
-  const shouldOpenModal = () => !hasOnboarded && mode !== 'Instructor';
+  const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   return (
     <Page title="ScholarSite | Homepage">
