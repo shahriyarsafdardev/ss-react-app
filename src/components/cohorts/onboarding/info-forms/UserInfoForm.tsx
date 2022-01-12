@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
-import { Country, City } from 'country-state-city';
+// import { Country, City } from 'country-state-city';
 
 import {
   Grid,
@@ -47,12 +47,12 @@ export default function UserInfoForm({
   const [citiesList, setCityList] = useState<string[]>([]);
 
   useEffect(() => {
-    if (userProfile.country) {
-      const countryCode = Country.getAllCountries().find(
-        (countryItem) => countryItem.name === userProfile.country
-      )?.isoCode;
-      setCityList(City?.getCitiesOfCountry(countryCode || '')?.map((city) => city.name) || []);
-    }
+    // if (userProfile.country) {
+    //   const countryCode = Country.getAllCountries().find(
+    //     (countryItem) => countryItem.name === userProfile.country
+    //   )?.isoCode;
+    //   setCityList(City?.getCitiesOfCountry(countryCode || '')?.map((city) => city.name) || []);
+    // }
   }, []);
 
   const fillUserValues = () => ({
@@ -129,7 +129,7 @@ export default function UserInfoForm({
                 />
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                   <InputLabel>Country</InputLabel>
                   <MaterialSelect
                     fullWidth
@@ -154,7 +154,7 @@ export default function UserInfoForm({
                       </MenuItem>
                     ))}
                   </MaterialSelect>
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl fullWidth>
                   <InputLabel>City</InputLabel>
