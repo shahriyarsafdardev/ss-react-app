@@ -13,6 +13,7 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 import { DesktopDatePicker } from '@material-ui/lab';
+import MaterialUiPhoneNumber from 'material-ui-phone-number';
 import { HouseKeepingInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const COHORT_UNDERSTADING_OPTIONS = [
@@ -35,15 +36,18 @@ const PAYING_OPTIONS = ['I am', 'My employer', 'Other'];
 export default function HouseKeepingForm({
   onSubmit,
   infoDetails,
+  phoneNumberValue,
   onPrevHandler,
   isSubmitting = false
 }: {
   onSubmit: Function;
   onPrevHandler: Function;
+  phoneNumberValue: string;
   infoDetails: HouseKeepingInfoType;
   isSubmitting?: boolean;
 }) {
   const [infoObject, setInfoObject] = useState<HouseKeepingInfoType>(infoDetails);
+  const [phoneNumber, setPhoneNumber] = useState<any>(phoneNumberValue || '');
 
   const onUpdateAttribute = (attribute: string, value: any) => {
     let tempInfo = { ...infoObject };
@@ -72,22 +76,31 @@ export default function HouseKeepingForm({
                   />
                 </FormControl>
                 <FormControl fullWidth>
-                  <InputLabel>Current understanding of cohort topic</InputLabel>
-                  <MaterialSelect
-                    fullWidth
-                    label="Current understanding of cohort topic"
-                    onChange={(e) => onUpdateAttribute('current_understanding', e.target.value)}
-                    defaultValue={infoObject.current_understanding}
-                    inputProps={{ 'data-testid': 'housekeeping-cohort-tpoic' }}
-                  >
-                    {COHORT_UNDERSTADING_OPTIONS?.map((name: any) => (
-                      <MenuItem key={name} value={name}>
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
-                  </MaterialSelect>
+                  <MaterialUiPhoneNumber
+                    label="Phone"
+                    defaultCountry="us"
+                    variant="outlined"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e)}
+                  />
                 </FormControl>
               </Stack>
+              <FormControl fullWidth>
+                <InputLabel>Current understanding of cohort topic</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Current understanding of cohort topic"
+                  onChange={(e) => onUpdateAttribute('current_understanding', e.target.value)}
+                  defaultValue={infoObject.current_understanding}
+                  inputProps={{ 'data-testid': 'housekeeping-cohort-tpoic' }}
+                >
+                  {COHORT_UNDERSTADING_OPTIONS?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
+              </FormControl>
               <FormControl fullWidth>
                 <InputLabel>How did you hear about this cohort?</InputLabel>
                 <MaterialSelect
@@ -129,7 +142,7 @@ export default function HouseKeepingForm({
         disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => {
-          onSubmit(infoObject);
+          onSubmit({ ...infoObject, phone_number: phoneNumber });
         }}
         isSubmitBtn={true}
         isSubmitting={isSubmitting}
