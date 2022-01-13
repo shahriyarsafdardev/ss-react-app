@@ -1,60 +1,85 @@
-Describe (Sidebar)
+describe('Sidebar', () => {
+  beforeEach(() => {
+    cy.server();
+    cy.loginasadmin({});
+  });
+  // context('when in instructor mode', () => {
+  //   it('Displays the instructor sidebar', () => {
+  //     //(match by id)
+  //   });
+  //   it('Displays a CourseSection for each course the user is a host of', () => {
 
-  Context (when in instructor mode)
+  //   });
+    // describe('CourseSection', () => {
+    //   it('Displays a header with the course name', () => {
 
-    It (Displays the instructor sidebar) (match by id)  
+    //   });
 
-    It (Displays a CourseSection for each course the user is a host of)
-    
-    Describe (CourseSection)
+    //   it('Displays a CohortTab for each cohort within that course', () => {
 
-      It (Displays a header with the course name)
-      
-      It (Displays a CohortTab for each cohort within that course)
-      
-      Describe (InstructorCohortTab)
-      
-          It (Is labelled by its code)
-          
-          It (Opens a InstructorCohortPageList when clicked)
+    //   });
+    //   describe('InstructorCohortTab', () => {
+    //     it('Is labelled by its code', () => {
 
-          Describe (InstructorCohortPageList)
-          
-            It (Allows the Instructor Home page to be opened) 
+    //     });
+    //     it('Opens a InstructorCohortPageList when clicked', () => {
 
-            It (Allows the Networking page to be opened) 
+    //     });
 
-            It (Allows the Sessions page to be opened) 
+    //     describe('InstructorCohortPageList', () => {
+    //       it('Allows the Instructor Home page to be opened', () => {
 
-            It (Allows the Q&A page to be opened) 
+    //       });
+    //       it('Allows the Networking page to be opened', () => {
 
-  Context (when in learner mode)
+    //       });
+    //       it('Allows the Sessions page to be opened', () => {
 
-    It (Displays the learner sidebar) (match by id)  
+    //       });
+    //       it('Allows the Q&A page to be opened', ()=>{
 
-    It (Displays a LearnerCohortTab for each cohort the instructor hosts or is enrolled in)
+    //       });
+        // });
+    //  });
+    // });
+  //});
+  // context('when in learner mode', () => {
+  //   it('Displays the learner sidebar', () => {
+  //     //(match by id)
+  //   });
+  //   it('Displays a LearnerCohortTab for each cohort the instructor hosts or is enrolled in', () => {
 
-    Describe (LearnerCohortTab)
+  //   });
 
-      It (Is labelled by its name and code)
-          
-      It (Opens a LearnerCohortPageList when clicked)
+  //   describe('LearnerCohortTab', () => {
+  //     it('Is labelled by its name and code', () => {
 
-      Describe (LearnerCohortPageList)
-      
-        It (Allows the Learner Home page to be opened without the onboarding flow appearing) 
+  //     });
+  //     it('Opens a LearnerCohortPageList when clicked' ,() => {
 
-        It (Allows the Networking page to be opened) 
+  //     });
+  //     describe('LearnerCohortPageList', () => {
+  //       it('Allows the Learner Home page to be opened without the onboarding flow appearing', () => {
 
-        It (Allows the Sessions page to be opened) 
+  //       });
+  //       it('Allows the Networking page to be opened', () => {
 
-        It (Allows the Q&A page to be opened) 
+  //       });
+  //       it('Allows the Sessions page to be opened', () => {
 
+  //       });
+  //       it('Allows the Q&A page to be opened', () => {
 
-  Describe (ModeToggle)
+  //       });
+  //     });
+  //   });
+  // });
+  describe('ModeToggle',() => {
+    it('Displays info text',() => {
 
-    It (Displays info text)
-
-    It (Alows toggle between instructor and student mode) (press, match by id and assert that page is reloaded to first on the menu bar)
-
-
+    });
+    it('Alows toggle between instructor and student mode',()=>{
+      //(press, match by id and assert that page is reloaded to first on the menu bar)
+    });
+  });
+});

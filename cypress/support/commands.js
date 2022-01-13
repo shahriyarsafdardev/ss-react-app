@@ -52,3 +52,19 @@ Cypress.Commands.add('form', () => {
     'https://linkedin.com/aqibmaqqbool_react_dev'
   );
 });
+Cypress.Commands.add('loginasadmin', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/admin-login.json',}) => {
+  const serverUrl = Cypress.env('serverUrl');
+  cy.fixture(cohortspath).as('cohortsData');
+  cy.fixture(loginpath ).as('loginData');
+  cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
+  cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+  cy.visit('/');
+  const email = 'waqasnazir9@gmail.com';
+  const password = '123456';
+  cy.get('[data-testid=email]').type(email);
+  cy.get('[data-testid=password]').type(password);
+
+  cy.get('[data-testid=loginBtn]').click();
+
+  cy.wait(['@login', '@cohorts']);
+});
