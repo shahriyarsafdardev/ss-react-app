@@ -119,6 +119,7 @@ type OnboardingDataType = {
   cohort_understanding: string;
   referred_by: string;
   payed_by: string;
+  phone_number: string;
 };
 
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
@@ -156,7 +157,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     date_of_birth: '',
     cohort_understanding: '',
     referred_by: '',
-    payed_by: ''
+    payed_by: '',
+    phone_number: ''
   });
 
   useEffect(() => {
@@ -191,7 +193,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           date_of_birth: payload.participant_profile.date_of_birth,
           cohort_understanding: payload.participant_profile.current_understanding,
           referred_by: payload.participant_profile.referred_by,
-          payed_by: payload.participant_profile.payed_by
+          payed_by: payload.participant_profile.payed_by,
+          phone_number: payload.participant_profile.phone_number
         });
       });
   }, [cohort_id, user?.id]);
@@ -245,7 +248,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         cohort_understanding: data.current_understanding,
         payed_by: data.payed_by,
         referred_by: data.referred_by,
-        date_of_birth: data.date_of_birth
+        date_of_birth: data.date_of_birth,
+        phone_number: data.phone_number
       };
       setIsSubmitting(true);
       submitData(tempData);
@@ -344,6 +348,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             payed_by: onboardingData.payed_by,
             referred_by: onboardingData.referred_by
           }}
+          phoneNumberValue={onboardingData.phone_number}
           isSubmitting={isSubmitting}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
