@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    fontFamily: 'Roboto',
     marginBottom: '100px'
   },
   heading: {
@@ -65,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '14px',
     minWidth: '24px',
     width: '24px',
-    height: '24px',
+    height: '20px',
     background: 'rgba(77, 77, 205, 0.05)',
     textAlign: 'center',
     marginRight: '10px'
@@ -94,7 +93,8 @@ const Head = styled('div')(() => ({
 const Item = styled('div')(() => ({
   display: 'flex',
   marginTop: '10px',
-  letterSpacing: '1px'
+  letterSpacing: '1px',
+  wordBreak: 'break-word'
 }));
 
 const CalendarInstructions = ({

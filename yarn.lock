@@ -6349,12 +6349,10 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-country-state-city@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/country-state-city/-/country-state-city-3.0.1.tgz#f25c469c3d5d23a46c20d03e1c0c156c179d22ce"
-  integrity sha512-vOEg/Q3uOmlvXrByBUJ9/aVSeekM7a//QNcR+ftNr2F9C4LJN3bSIWXgwm5BOF1Lr5d6JVeKg9h/zFz6nW19eA==
-  dependencies:
-    copy-webpack-plugin "^9.0.0"
+country-city-location@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/country-city-location/-/country-city-location-1.0.13.tgz#c9121d8ba2927e91a941418a55371583d80a4660"
+  integrity sha512-OrnSsyDs3Ru+ldOxC1JpjCLh/yCe/BN66OgJCYpjn8Qk3zYRTFt/ZfJgW9pgc0QpAL/2TZfzXfUw8RMkRFgjRQ==
 
 crc@3.2.1:
   version "3.2.1"

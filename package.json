@@ -2,6 +2,9 @@
   "name": "@minimal/material-kit-react",
   "author": "minimals.cc",
   "version": "2.4.0",
+  "engines": {
+    "node": "16.x"
+  },
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -81,7 +84,7 @@
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.19.0",
     "change-case": "^4.1.2",
-    "country-state-city": "^3.0.1",
+    "country-city-location": "^1.0.13",
     "cypress": "^8.5.0",
     "d3-array": "^3.0.1",
     "d3-scale": "^4.0.0",

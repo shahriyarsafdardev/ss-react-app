@@ -85,7 +85,6 @@ export type ExtraStepIconProps = Omit<StepIconProps, 'testid'> & { testid: strin
 
 function QontoStepIcon(props: ExtraStepIconProps) {
   const { active, completed, className, testid } = props;
-  console.log(testid);
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
       {completed ? (
