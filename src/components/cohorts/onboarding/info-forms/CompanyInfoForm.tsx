@@ -34,8 +34,14 @@ const numberOfEmployeesList = [
 export default function CompanyInfoForm({
   onSubmit,
   companyProfile,
-  onPrevHandler
+  onPrevHandler,
+  showPrevButton = true,
+  isSubmitable = false,
+  isSubmitting = false
 }: {
+  showPrevButton?: boolean;
+  isSubmitable?: boolean;
+  isSubmitting?: boolean;
   onSubmit: Function;
   companyProfile: CompanyProfileType;
   onPrevHandler: Function;
@@ -154,7 +160,9 @@ export default function CompanyInfoForm({
         </Grid>
       </Grid>
       <NavigationButtons
-        showPrevButton={true}
+        isSubmitting={isSubmitting}
+        isSubmitBtn={isSubmitable}
+        showPrevButton={showPrevButton}
         disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit(infoObject)}

@@ -23,6 +23,8 @@ type ParticipantProfile = {
   bio_text: string;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
+  company_image_url: string;
+  number_of_employees: string;
 };
 
 // ----------------------------------------------------------------------
@@ -45,7 +47,9 @@ export default function AccountGeneral() {
     strengths: user?.strengths || [],
     bio_text: user?.bio_text || '',
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
-    networking_matching_preferences: user?.networking_matching_preferences || []
+    networking_matching_preferences: user?.networking_matching_preferences || [],
+    company_image_url: user?.company_image_url,
+    number_of_employees: user?.number_of_employees
   };
 
   const onFormSubmitHandler = async (values: ParticipantProfile) => {
