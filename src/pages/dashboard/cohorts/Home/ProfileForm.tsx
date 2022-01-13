@@ -1,6 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useState, useCallback } from 'react';
 import * as Yup from 'yup';
 import { RootState, useSelector } from 'redux/store';
+import { Modal } from 'components/animate';
+import { CompanyInfoForm } from 'components/cohorts/onboarding/info-forms';
+import { useSnackbar } from 'notistack5';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
@@ -22,10 +27,30 @@ import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
+import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from '../../../../components/upload';
 // axios
 import axios from '../../../../utils/axios';
 import MultiSelect from '../../../../components/MultiSelect';
+
+const CompanyModalContainer = styled('div')(() => ({
+  padding: '12px 14px',
+  borderRadius: '8px',
+  border: '1px solid rgba(0, 0, 0, 0.12)',
+  display: 'flex',
+  alignItems: 'center',
+  img: {
+    height: '30px',
+    width: '30px',
+    borderRadius: '25px',
+    marginRight: '10px'
+  },
+  div: {
+    marginLeft: 'auto',
+    textDecoration: 'underline',
+    cursor: 'pointer'
+  }
+}));
 
 interface InitialState {
   linkedin_url: string;
@@ -47,27 +72,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
-};
-
-const greenCustomsStyle = {
-  ...customStyles
-};
-
-const blueCustomsStyle = {
-  ...customStyles
-};
-
-const getOptions = (options: any) =>
-  options.map((option: any) => ({
-    value: option,
-    label: option
-  }));
 
 export default function ProfileForm({
   onSubmit,
@@ -93,10 +97,16 @@ export default function ProfileForm({
     interests: string[];
     bio_text: string;
     opted_in_for_matching_suggestions: boolean;
-    networking_matching_preferences: string[];
+    networking_matching_preferences: [];
+    company_image_url: string;
+    number_of_employees: string;
   };
 }) {
-  const [companies, setCompanies] = useState<string[]>();
+  const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const { updateProfile } = useAuth();
+
   const { role_options, industry_options, preferred_pronoun_options } = useSelector(
     (state: RootState) => state.profileOptions
   );
@@ -120,13 +130,9 @@ export default function ProfileForm({
       preferred_pronoun: '',
       current_position: '',
       profile_image_url: null,
-      interests: [],
       current_role_category_selections: [],
       current_industry_category_selections: [],
-      strengths: [],
-      bio_text: '',
-      opted_in_for_matching_suggestions: false,
-      networking_matching_preferences: []
+      bio_text: ''
     },
     validationSchema: UpdateUserSchema,
     onSubmit: async (values) => {
@@ -150,18 +156,65 @@ export default function ProfileForm({
     [setFieldValue]
   );
 
-  useEffect(() => {
-    axios
-      .get('/cohorts/select_fields_data.json')
-      .then((res) => res.data)
-      .then((payload) => {
-        payload?.companies && setCompanies(payload.companies);
+  const companyLabel = () => (
+    <CompanyModalContainer>
+      <img src={userProfile?.company_image_url || ''} alt="company-logo" />
+      {userProfile?.current_company}
+      <div onClick={() => setModal(true)}>Edit</div>
+    </CompanyModalContainer>
+  );
+
+  const onSaveCompanyInfo = async (data: any) => {
+    setLoading(true);
+    const companyData = new FormData();
+    data?.logo_url?.image && companyData.append('company_logo_image', data?.logo_url?.image);
+    companyData.append('current_company', data?.name);
+    companyData.append('company_industries', data?.industries);
+    companyData.append('number_of_employees', data?.number_of_employees);
+
+    await axios
+      .post('/users/update_company_profile', companyData)
+      .then((response) => {
+        if (response.status === 200) {
+          setModal(false);
+          enqueueSnackbar(response.data.message, { variant: 'success' });
+          updateProfile({ ...response.data.user });
+        } else {
+          enqueueSnackbar(response.data.message, { variant: 'error' });
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        enqueueSnackbar(err.message, { variant: 'error' });
+        setLoading(false);
       });
-  }, []);
+  };
+
+  const companySettingsModal = () => (
+    <Modal open={modal} onClose={() => setModal(false)}>
+      <CompanyInfoForm
+        onSubmit={(data: any) => {
+          onSaveCompanyInfo(data);
+        }}
+        showPrevButton={false}
+        onPrevHandler={() => {}}
+        isSubmitable={true}
+        isSubmitting={loading}
+        companyProfile={{
+          name: userProfile?.current_company || '',
+          logo_url: userProfile?.company_image_url || '',
+          industries: userProfile?.current_industry_category_selections || [],
+          number_of_employees: userProfile?.number_of_employees || ''
+        }}
+      />
+    </Modal>
+  );
 
   return (
     <>
       <br />
+      {modal && companySettingsModal()}
       <FormikProvider value={formik}>
         <Form autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={1}>
@@ -238,32 +291,20 @@ export default function ProfileForm({
                         ))}
                       </MaterialSelect>
                     </FormControl>
-                    <FormControl fullWidth>
-                      <InputLabel id="multiple-checkbox-company-label">Current Company</InputLabel>
-                      <MaterialSelect
-                        fullWidth
-                        label="Current Company"
-                        labelId="company-label"
-                        id="multiple-checkbox-company"
-                        data-testid="current-company"
-                        {...getFieldProps('current_company')}
-                      >
-                        {companies?.map((name: any) => (
-                          <MenuItem key={name} value={name}>
-                            <ListItemText primary={name} />
-                          </MenuItem>
-                        ))}
-                      </MaterialSelect>
-                    </FormControl>
+                    <TextField fullWidth label="LinkedIn URL" {...getFieldProps('linkedin_url')} />
                   </Stack>
-                  <TextField
-                    fullWidth
-                    label="Current role"
-                    {...getFieldProps('current_position')}
-                    inputProps={{
-                      'data-testid': 'current-position'
-                    }}
-                  />
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <TextField
+                      fullWidth
+                      label="Current role"
+                      {...getFieldProps('current_position')}
+                      inputProps={{
+                        'data-testid': 'current-position'
+                      }}
+                    />
+                    <FormControl fullWidth>{companyLabel()}</FormControl>
+                  </Stack>
+
                   {!isOnboardingModal && (
                     <>
                       <TextField
