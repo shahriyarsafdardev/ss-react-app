@@ -275,7 +275,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const selectStep = () => {
     if (activeStep === 1) {
       return (
-        <div>
+        <div data-testid="onboarding-form-modal">
           <UserInfoForm
             userProfile={{
               first_name: onboardingData.first_name || '',
