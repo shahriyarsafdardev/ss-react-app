@@ -71,8 +71,8 @@ export default function CompanyInfoForm({
     <>
       <br />
       <Grid container spacing={1}>
-        <Grid data-testid="company-logo" item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+        <Grid item xs={12} md={4}>
+          <Card data-testid="company-logo" sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
               accept="image/*"
               file={infoObject?.logo_url}

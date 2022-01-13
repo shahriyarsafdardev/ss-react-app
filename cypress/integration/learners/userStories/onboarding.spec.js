@@ -1,6 +1,6 @@
 // Each it block should mnatch a container element by its test id
 import home_refactored from '../../../fixtures/onboarding/home_refactored.json'
-import save_user_profile from '../../../fixtures/onboarding/saveUserProfileRefactored.json'
+
 const serverUrl = Cypress.env('serverUrl');
 
 describe('When a user visits the home page of a cohort for the first time', () => {
@@ -57,6 +57,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="profile-url"]')
       .should('be.visible')
       .and("have.attr", "src", home_refactored.participant_profile.profile_image_url)
+      cy.get('[data-testid="user-linkedIn-url"]')
+      .should('be.visible')
+      .and("have.attr", "value", home_refactored.participant_profile.linkedin_url)
     });
 
     it('Allows users to update or enter new details', () => {
@@ -71,6 +74,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .clear()
       .type('New Name')
       .and("have.attr", "value", 'New Name')
+      cy.get('[data-testid="user-linkedIn-url"]')
+      .should('be.visible')
+      .clear()
+      .type('New link to linkedin')
+      .and("have.attr", "value", 'New link to linkedin')
     });
 
     context('If any input is empty', () => {
@@ -108,10 +116,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
       // Assert pressense of inputs
-      cy.get('[data-testid="company-logo"]')
+      cy.get('[data-testid="profile-url"]')
       .should('be.visible')
-      cy.get('[data-testid="company-name"]')
-      .should('be.visible')
+      cy.get('[data-testid="company-name"]').then(($el)  => {
+        Cypress.dom.isVisible($el)
+      })
       cy.get('[data-testid="company-industry"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
@@ -126,11 +135,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .should('be.visible')
       .children().eq(1)
       .and("contain", home_refactored.participant_profile.current_company)
-      cy.get('[data-testid="company-logo"]')
-      .children().eq(0)
-      .children().eq(0)
-      .children().eq(0)
-      .children().eq(1)
+      cy.get('[data-testid="profile-url"]')
       .and("have.attr", "src", home_refactored.participant_profile.company_logo_url)
       cy.get('[data-testid="company-industry"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_industry_category_selections[0])

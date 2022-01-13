@@ -200,7 +200,7 @@ export default function UserInfoForm({
                 </FormControl>
 
                 <TextField
-                  data-testid="user-linkedIn-url"
+                  inputProps={{ 'data-testid': 'user-linkedIn-url' }}
                   fullWidth
                   label="LinkedIn URL"
                   value={infoObject?.linkedin_url}
