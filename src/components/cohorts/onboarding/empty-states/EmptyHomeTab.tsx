@@ -109,26 +109,37 @@ const EmptyHomeTab = ({
     <Container className={classes.container}>
       {!instructionsOpened ? (
         <Box className={classes.inner}>
-          <Typography variant="h3" textAlign="center">
+          <Typography data-testid="empty-home-welcome-text" variant="h3" textAlign="center">
             👋 Hi {user?.first_name}
             {cohortCode && `, welcome to the ${cohortCode} Cohort!`}
           </Typography>
-          <Typography variant="caption" className={classes.textone}>
+          <Typography
+            data-testid="empty-home-cohort-information-text"
+            variant="caption"
+            className={classes.textone}
+          >
             We can’t wait to get to know you and the rest of the cohort. You will recieve complete
             access to the ScholarSite portal one week before {cohortHost && `${cohortHost}’s`}{' '}
             cohort begins. This includes access to Networking, Messaging and the Session Materials.
             We’ll make sure to send you an email reminder once this date arrives!
           </Typography>
-          <Typography className={classes.texttwo}>
+          <Typography
+            data-testid="empty-home-cohort-information-text-1"
+            className={classes.texttwo}
+          >
             Right now, we highly recommend that you add the upcoming Session times to you’re
             calendar by pressing the button below.
           </Typography>
-          <Typography className={classes.texttwo}>
+          <Typography
+            data-testid="empty-home-cohort-information-text-2"
+            className={classes.texttwo}
+          >
             You can also start asking {cohortHost && `${cohortHost}’s`} questions through Q&A. We
             look forward to seeing you soon!
           </Typography>
           <Box className={classes.btnContainer}>
             <LoadingButton
+              data-testid="empty-home-add-to-calendar-btn"
               className={`${classes.btns} mr`}
               href={calendarLink}
               onClick={calendarAlert}
@@ -136,7 +147,12 @@ const EmptyHomeTab = ({
             >
               Add Sessions to my calendar
             </LoadingButton>
-            <Button href={`/cohorts/${cohortID}/Q&A`} className={classes.btns} variant="outlined">
+            <Button
+              data-testid="empty-home-ask-question-btn"
+              href={`/cohorts/${cohortID}/Q&A`}
+              className={classes.btns}
+              variant="outlined"
+            >
               Ask {cohortHost} a question through Q&A
             </Button>
           </Box>
