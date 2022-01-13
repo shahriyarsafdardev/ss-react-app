@@ -13,7 +13,6 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 import { DesktopDatePicker } from '@material-ui/lab';
-import MaterialUiPhoneNumber from 'material-ui-phone-number';
 import { HouseKeepingInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const COHORT_UNDERSTADING_OPTIONS = [
@@ -76,12 +75,10 @@ export default function HouseKeepingForm({
                   />
                 </FormControl>
                 <FormControl fullWidth>
-                  <MaterialUiPhoneNumber
+                  <TextField
                     label="Phone"
-                    defaultCountry="us"
-                    variant="outlined"
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e)}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </FormControl>
               </Stack>
