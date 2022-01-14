@@ -18,12 +18,14 @@ describe('Sidebar', () => {
     it('Displays a CourseSection for each course the user is a host of', () => {
       // cy.get(`[data-testid="navbar-chort-${cohorts_fixture.cohorts[0].intake_name}"]`)
       // .should('be.visible')
+      // need to work on this specs
     });
     describe('CourseSection', () => {
       it('Displays a header with the course name', () => {
         // cy.get(`[data-testid="navbar-chort-${cohorts_fixture.cohorts[0].intake_name}"]`)
         // .should('be.visible')
         // .and('contain', cohorts_fixture.cohorts[0].intake_name)
+        // need to work on this specs
       });
 
       it('Displays a CohortTab for each cohort within that course', () => {
