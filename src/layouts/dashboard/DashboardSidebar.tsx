@@ -150,7 +150,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {user?.type !== 'learner' && (
         <StyledBox>
           <ViewSwitcherStyle>
-            <p style={{ textAlign: 'center' }}>
+            <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
               You are currently viewing the
               <b> {mode} Dashboard,</b> to access your{' '}
               {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
@@ -158,7 +158,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </p>
             <SwitcherButtonContainer>
               <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
-              <Switch size="small" checked={mode === 'Instructor'} onChange={() => switchView()} />
+              <Switch
+                data-testid="dashboard-switch"
+                size="small"
+                checked={mode === 'Instructor'}
+                onChange={() => switchView()}
+              />
               <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
                 Instructor
               </LabelStyled>
