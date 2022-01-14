@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   heading: {
     textAlign: 'left',
-    width: '100%',
-    marginLeft: '50px'
+    [theme.breakpoints.down(1000)]: {
+      textAlign: 'center'
+    }
   },
   textone: {
     color: '#919EAB',
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'left'
   },
   col4: {
+    marginTop: '20px',
     padding: '20px',
     width: '48%',
     boxShadow:
@@ -43,8 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   section: {
-    width: '1000px',
-    marginTop: '20px',
     display: 'flex',
     justifyContent: 'space-between',
     [theme.breakpoints.down(1000)]: {
@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       alignItems: 'center',
       width: '100%'
     }
+  },
+  outerContainer: {
+    maxWidth: '900px'
   },
   mt5: {
     padding: '10px 25px',
@@ -79,7 +82,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '18px',
     lineHeight: '27px',
     cursor: 'pointer',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    [theme.breakpoints.down(1000)]: {
+      textAlign: 'center',
+      marginLeft: '30px'
+    }
   }
 }));
 
@@ -123,25 +130,31 @@ const CalendarInstructions = ({
         <Item>
           <div className={classes.itemNum}>1</div>
           <p>
+            Open <span className={classes.decorated}>Google Calendar</span>.
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>2</div>
+          <p>
             Click on <span className={classes.decorated}>“Add other calendars”</span> next to the
             <span className={classes.decorated}>“Other calendars”</span> heading.
           </p>
         </Item>
         <Item>
-          <div className={classes.itemNum}>2</div>
+          <div className={classes.itemNum}>3</div>
           <p>
             Click on <span className={classes.decorated}>“From URL”</span>
           </p>
           .
         </Item>
         <Item>
-          <div className={classes.itemNum}>3</div>
+          <div className={classes.itemNum}>4</div>
           <p>
             Paste in <span className={classes.decorated}>“{calendarUrl}”</span>
           </p>
         </Item>
         <Item>
-          <div className={classes.itemNum}>4</div>Press{' '}
+          <div className={classes.itemNum}>5</div>Press{' '}
           <p>
             <span className={classes.decorated}>“Save”</span>
           </p>
@@ -196,21 +209,26 @@ const CalendarInstructions = ({
       </Head>
       <Box className={classes.mt5}>
         <p className={classes.texttwo}>On desktop:</p>
-
         <Item>
           <div className={classes.itemNum}>1</div>
           <p>
-            Click <span className={classes.decorated}>File {'>'} New Calendar Subscription.</span>
+            Open <span className={classes.decorated}>Apple Calendar</span>.
           </p>
         </Item>
         <Item>
           <div className={classes.itemNum}>2</div>
           <p>
-            Paste <span className={classes.decorated}>“{calendarUrl}”</span>
+            Click <span className={classes.decorated}>File {'>'} New Calendar Subscription.</span>
           </p>
         </Item>
         <Item>
           <div className={classes.itemNum}>3</div>
+          <p>
+            Paste <span className={classes.decorated}>“{calendarUrl}”</span>
+          </p>
+        </Item>
+        <Item>
+          <div className={classes.itemNum}>4</div>
           <p>
             Press <span className={classes.decorated}>“Save”.</span>
           </p>
@@ -273,17 +291,19 @@ const CalendarInstructions = ({
 
   return (
     <div className={classes.wrapper}>
-      <Box className={classes.heading}>
-        <div className={classes.backBtn} onClick={() => onBack(false)}>
-          <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
-          Return
-        </div>
-        <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
-        <p className={classes.textone}>Try the following steps</p>
-      </Box>
-      <Box className={classes.section}>
-        {googleCalendar()}
-        {ical()}
+      <Box className={classes.outerContainer}>
+        <Box className={classes.heading}>
+          <div className={classes.backBtn} onClick={() => onBack(false)}>
+            <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
+            Return
+          </div>
+          <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
+          <p className={classes.textone}>Try the following steps</p>
+        </Box>
+        <Box className={classes.section}>
+          {googleCalendar()}
+          {ical()}
+        </Box>
       </Box>
     </div>
   );
