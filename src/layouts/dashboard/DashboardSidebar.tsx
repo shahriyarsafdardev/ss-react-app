@@ -140,6 +140,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {mode === 'Instructor' &&
         getCategories(cohorts).map((category) => (
           <NavSection
+            data-testid="instructor-sidebar"
             key={category}
             navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
             isShow={!isCollapse}

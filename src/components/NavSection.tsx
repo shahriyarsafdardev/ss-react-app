@@ -166,7 +166,11 @@ function NavItem({
 
           {isShow && (
             <>
-              <ListItemText disableTypography primary={title} />
+              <ListItemText
+                data-testid={`navbar-chort-${title}`}
+                disableTypography
+                primary={title}
+              />
               {info && info}
               <Box
                 component={Icon}
@@ -243,10 +247,14 @@ function NavItem({
         ...(isActiveRoot && activeRootStyle)
       }}
     >
-      <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+      <ListItemIconStyle> {icon && icon}</ListItemIconStyle>
       {isShow && (
         <>
-          <ListItemText disableTypography primary={item.title} />
+          <ListItemText
+            data-testid={`navbar-chort-${title}`}
+            disableTypography
+            primary={item.title}
+          />
           {info && info}
         </>
       )}
