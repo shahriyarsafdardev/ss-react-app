@@ -1,7 +1,18 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import * as Yup from 'yup';
+import { Form, FormikProvider, useFormik } from 'formik';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, Tooltip, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
+import {
+  Box,
+  MenuItem,
+  Typography,
+  IconButton,
+  Grid,
+  Stack,
+  Tooltip,
+  TextField
+} from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
@@ -21,8 +32,9 @@ import ConfirmationAlert from 'components/ConfirmationAlert';
 
 // material
 import { makeStyles } from '@material-ui/styles';
+import ReferralCodesModal from './ReferralCodesModal';
 import { useDispatch } from '../../../redux/store';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import MenuPopover from '../../MenuPopover';
 import EnrollmentForm from './EnrollmentForm';
 
@@ -31,6 +43,16 @@ const StyledIcon = styled('img')(() => ({
   width: 24,
   height: 24,
   cursor: 'pointer'
+}));
+
+const StyledStack = styled(Stack)(({ theme }) => ({
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    border: '2px solid lightgray',
+    borderRadius: '5px',
+    background: '#f7f5f5',
+    padding: '5px'
+  }
 }));
 
 const StyledViewButton = styled(Typography)(() => ({
@@ -148,11 +170,15 @@ export const changeOccur = (
 
 export const RegistrationsHeader = ({
   enrollments,
+  codes,
   cohort_name,
+  cohort_id,
   cohort_intake
 }: {
   enrollments: Enrollment[];
+  codes: ReferralCode[];
   cohort_name: string;
+  cohort_id: string;
   cohort_intake: any;
 }) => {
   const data = enrollments.map((e) => ({
@@ -176,7 +202,10 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      {/* <ExportToExcel data={data} fileName={fileName} /> */}
+      <Stack direction="column" spacing={2} justifyContent="center">
+        <ReferralCodesModal cohortID={cohort_id} codes={codes} />
+        {/* <ExportToExcel data={data} fileName={fileName} /> */}
+      </Stack>
     </Stack>
   );
 };
@@ -195,7 +224,89 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
   </Stack>
 );
 
-export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
+export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChange: Function }) => {
+  // const UpdateCodeSchema = Yup.object().shape({
+  //   code: Yup.string().required('Referral Code required')
+  // });
+
+  const formik = useFormik<ReferralCode>({
+    enableReinitialize: true,
+    initialValues: code,
+    onSubmit: (values) => {
+      onChange(values);
+    }
+  });
+
+  const { errors, touched, submitForm, setFieldValue } = formik;
+
+  return (
+    <>
+      <FormikProvider value={formik}>
+        <Form autoComplete="off" id="referral-code-form" noValidate style={{ width: '100%' }}>
+          <Grid container spacing={1}>
+            <Grid item sx={{ m: 'auto', width: '100%' }} spacing={1}>
+              <StyledStack spacing={1} direction={{ xs: 'column', md: 'row' }}>
+                <TextField
+                  fullWidth
+                  id="code"
+                  defaultValue={code.code}
+                  onChange={(e) => {
+                    setFieldValue('code', e.target.value);
+                    submitForm();
+                  }}
+                  label="Referral Code"
+                  error={Boolean(touched.code && errors.code)}
+                  helperText={touched.code && errors.code}
+                  inputProps={{
+                    'data-testid': 'first-name'
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="referrer_benefit"
+                  label="Referrer benefit"
+                  defaultValue={code.referrer_benefit}
+                  onChange={(e) => {
+                    setFieldValue('referrer_benefit', e.target.value);
+                    submitForm();
+                  }}
+                  error={Boolean(touched.referrer_benefit && errors.referrer_benefit)}
+                  helperText={touched.referrer_benefit && errors.referrer_benefit}
+                  inputProps={{
+                    'data-testid': 'last-name'
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="referee_benefit"
+                  label="Referee benefit"
+                  defaultValue={code.referee_benefit}
+                  onChange={(e) => {
+                    setFieldValue('referee_benefit', e.target.value);
+                    submitForm();
+                  }}
+                  error={Boolean(touched.referee_benefit && errors.referee_benefit)}
+                  helperText={touched.referee_benefit && errors.referee_benefit}
+                  inputProps={{
+                    'data-testid': 'referee_benefit'
+                  }}
+                />
+              </StyledStack>
+            </Grid>
+          </Grid>
+        </Form>
+      </FormikProvider>
+    </>
+  );
+};
+
+export const Actions = ({
+  enrollment,
+  codes
+}: {
+  enrollment: Enrollment;
+  codes: ReferralCode[];
+}) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -262,6 +373,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           }}
           onSubmit={(enrollment: Enrollment) => handleUpdate(enrollment)}
           enrollment={enrollment}
+          codes={codes}
         />
       </Modal>
       <Stack

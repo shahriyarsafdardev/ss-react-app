@@ -155,6 +155,14 @@ export type Cohort = {
   enrollments: Enrollment[];
   random_peers: StudentProfile[];
   calendar_invite_url: string;
+  referral_codes: ReferralCode[];
+};
+
+export type ReferralCode = {
+  id: string;
+  code: string;
+  referrer_benefit: string;
+  referee_benefit: string;
 };
 
 export type Comment = {

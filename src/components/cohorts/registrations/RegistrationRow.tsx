@@ -1,15 +1,16 @@
 import { Stack, TableRow, TableCell, Typography, Link } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import Label from 'components/Label';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import { Actions, Tags, pickColor } from './Common';
 
 type RegistrationRowProps = {
   enrollment: Enrollment;
   index: number;
+  codes: ReferralCode[];
 };
 
-export default function RegistrationRow({ enrollment, index }: RegistrationRowProps) {
+export default function RegistrationRow({ enrollment, index, codes }: RegistrationRowProps) {
   const theme = useTheme();
 
   const { id, first_name, email, name, status, time, price, linkedin_url, last_action_date } =
@@ -83,7 +84,7 @@ export default function RegistrationRow({ enrollment, index }: RegistrationRowPr
         align="center"
         data-testid={`registration${id ? `-${id}` : ''}-price`}
       >
-        <Actions enrollment={enrollment} />
+        <Actions codes={codes} enrollment={enrollment} />
       </TableCell>
     </TableRow>
   );

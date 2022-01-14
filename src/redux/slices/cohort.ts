@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { groupByIntake } from 'layouts/dashboard/Common';
 import { dispatch } from '../store';
-import { Cohort, Enrollment } from '../../@types/cohorts';
+import { Cohort, Enrollment, ReferralCode } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
 
 // utils
@@ -55,7 +55,6 @@ const slice = createSlice({
         };
       }
     },
-
     getSessionsSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -63,6 +62,15 @@ const slice = createSlice({
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
+      }
+    },
+    getCodesSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, referral_codes: action.payload.codes };
       }
     },
     getEnrollmentsSuccess(state, action) {
@@ -316,6 +324,30 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateReferralCodes(cohortID: string, codes: ReferralCode[]) {
+  return async () => {
+    try {
+      const response = await axios.post(`/cohorts/${cohortID}/referral_codes/update_codes.json`, {
+        codes
+      });
+      dispatch(slice.actions.getCodesSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getReferralCodes(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/referral_codes.json`);
+      dispatch(slice.actions.getCodesSuccess(response.data));
     } catch (error) {
       console.log(error);
     }

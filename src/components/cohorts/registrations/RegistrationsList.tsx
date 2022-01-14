@@ -2,12 +2,13 @@
 import { Table, TableBody, TableContainer } from '@material-ui/core';
 
 import Scrollbar from 'components/Scrollbar';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import { UserListHead } from '../../_dashboard/user/list';
 import RegistrationRow from './RegistrationRow';
 
 type StudentProfileListProps = {
   enrollments: Enrollment[];
+  codes: ReferralCode[];
 };
 
 const TABLE_HEAD = [
@@ -20,7 +21,7 @@ const TABLE_HEAD = [
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
-export default function RegistrationsList({ enrollments }: StudentProfileListProps) {
+export default function RegistrationsList({ enrollments, codes }: StudentProfileListProps) {
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <Scrollbar>
@@ -36,7 +37,12 @@ export default function RegistrationsList({ enrollments }: StudentProfileListPro
             />
             <TableBody id="registration-list-container" data-testid="registration-list">
               {enrollments.map((enrollment: any, index) => (
-                <RegistrationRow key={enrollment.id} enrollment={enrollment} index={index} />
+                <RegistrationRow
+                  codes={codes}
+                  key={enrollment.id}
+                  enrollment={enrollment}
+                  index={index}
+                />
               ))}
             </TableBody>
           </Table>

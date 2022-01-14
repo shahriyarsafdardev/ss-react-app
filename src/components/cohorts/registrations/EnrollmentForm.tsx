@@ -6,7 +6,7 @@ import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 130,
@@ -17,10 +17,12 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function EnrollmentForm({
   enrollment,
+  codes,
   onClose,
   onSubmit
 }: {
   onClose: Function;
+  codes: ReferralCode[];
   enrollment: Enrollment;
   onSubmit: Function;
 }) {
