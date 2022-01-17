@@ -45,7 +45,6 @@ export default function UserInfoForm({
 }) {
   const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
   const [citiesList, setCityList] = useState<string[]>([]);
-
   useEffect(() => {
     if (userProfile.country) {
       setCities(userProfile.country);
@@ -56,7 +55,11 @@ export default function UserInfoForm({
     const countryCode = countries.find(
       (countryItem: any) => countryItem.Name === country
     )?.Alpha2Code;
-    setCityList(getCitiesByCountryCode(countryCode)?.map((city: any) => city.name) || []);
+    setCityList(
+      getCitiesByCountryCode(countryCode)
+        ?.map((city: any) => city.name)
+        .sort() || []
+    );
   };
 
   const fillUserValues = () => ({
@@ -78,7 +81,7 @@ export default function UserInfoForm({
     });
   };
 
-  const onUpdateAttribute = (attribute: string, value: any) => {
+  const onUpdateAttribute = async (attribute: string, value: any) => {
     let tempInfo = { ...infoObject };
     tempInfo = { ...tempInfo, [attribute]: value };
     setInfoObject(tempInfo);
@@ -138,12 +141,12 @@ export default function UserInfoForm({
                   <MaterialSelect
                     fullWidth
                     label="Country"
-                    onChange={(e) => {
-                      onUpdateAttribute('country', e.target.value);
-                      onUpdateAttribute('city', '');
+                    onChange={async (e) => {
+                      await onUpdateAttribute('country', e.target.value);
+
                       setCities(e.target.value);
                     }}
-                    defaultValue={userProfile.country}
+                    defaultValue={infoObject?.country}
                     inputProps={{ 'data-testid': 'user-country' }}
                   >
                     {countries.map((country: any) => (
@@ -160,7 +163,7 @@ export default function UserInfoForm({
                     fullWidth
                     label="City"
                     onChange={(e) => onUpdateAttribute('city', e.target.value)}
-                    defaultValue={userProfile.city}
+                    defaultValue={infoObject?.city}
                     inputProps={{ 'data-testid': 'user-city' }}
                   >
                     {citiesList?.length > 0 ? (

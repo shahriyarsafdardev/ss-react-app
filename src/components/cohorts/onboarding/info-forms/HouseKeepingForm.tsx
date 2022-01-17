@@ -68,7 +68,7 @@ export default function HouseKeepingForm({
                     onChange={(value) => {
                       onUpdateAttribute('date_of_birth', value?.toString());
                     }}
-                    value={infoObject.date_of_birth || new Date()}
+                    value={new Date()}
                     renderInput={(params) => (
                       <TextField inputProps={{ 'data-testid': 'housekeeping-dob' }} {...params} />
                     )}
