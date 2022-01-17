@@ -119,7 +119,8 @@ export default function Router() {
             { path: '/registrations', element: <RegistrationsTab /> },
             { path: '/messaging', element: <Messaging /> },
             { path: '/home', element: <HomePage /> },
-            { path: '/Q&A', element: <QnA /> }
+            { path: '/Q&A', element: <QnA /> },
+            { path: 'calendar-instructions', element: <CalendarInstructions /> }
           ]
         },
         {
@@ -271,6 +272,9 @@ const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
 
 const HomePage = Loadable(lazy(() => import('components/cohorts/home/HomeTab')));
+const CalendarInstructions = Loadable(
+  lazy(() => import('components/cohorts/onboarding/empty-states/CalendarInstructions'))
+);
 const RegistrationsTab = Loadable(
   lazy(() => import('components/cohorts/registrations/RegistrationsTab'))
 );

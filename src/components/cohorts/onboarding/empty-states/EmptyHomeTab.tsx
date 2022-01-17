@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Box, Button } from '@material-ui/core';
 import { Theme, styled } from '@material-ui/core/styles';
 import useAuth from 'hooks/useAuth';
 import { LoadingButton } from '@material-ui/lab';
 import axios from 'utils/axios';
-import CalendarInstructions from './CalendarInstructions';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -67,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   calendarInstructions: {
     textDecoration: 'underline',
+    color: 'black',
     cursor: 'pointer',
     '&:hover': { color: 'gray' }
   }
@@ -75,103 +75,82 @@ const useStyles = makeStyles((theme: Theme) => ({
 const EmptyHomeTab = ({
   cohortCode,
   cohortHost,
-  cohortID
+  cohortID,
+  calendarLink
 }: {
   cohortCode: string;
   cohortHost: string;
   cohortID: string;
+  calendarLink: string;
 }) => {
   const classes = useStyles();
   const { user } = useAuth();
-  const [calendarLink, setCalendarLink] = useState('');
-  const [instructionsOpened, setInstructionsOpened] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get(`/cohorts/${cohortID}/calendar_link.json`)
-      .then((res) => res.data)
-      .then((payload) => {
-        if (payload?.link) setCalendarLink(payload.link);
-      });
-  }, [cohortID, cohortCode, cohortHost]);
 
   const calendarAlert = () => {
-    axios.post(`/cohorts/${cohortID}/enrollments/calendar_added.json`);
-
     if (!calendarLink) {
       alert('There is no calendar attached to this cohort');
+    } else {
+      axios.post(`/cohorts/${cohortID}/enrollments/calendar_added.json`);
     }
   };
 
-  const httpCalendarLink = () => (calendarLink ? calendarLink.replace('webcal', 'https') : '');
-
   return (
     <Container className={classes.container}>
-      {!instructionsOpened ? (
-        <Box className={classes.inner}>
-          <Typography data-testid="empty-home-welcome-text" variant="h3" textAlign="center">
-            👋 Hi {user?.first_name}
-            {cohortCode && `, welcome to the ${cohortCode} Cohort!`}
-          </Typography>
-          <Typography
-            data-testid="empty-home-cohort-information-text"
-            variant="caption"
-            className={classes.textone}
+      <Box className={classes.inner}>
+        <Typography data-testid="empty-home-welcome-text" variant="h3" textAlign="center">
+          👋 Hi {user?.first_name}
+          {cohortCode && `, welcome to the ${cohortCode} Cohort!`}
+        </Typography>
+        <Typography
+          data-testid="empty-home-cohort-information-text"
+          variant="caption"
+          className={classes.textone}
+        >
+          We can’t wait to get to know you and the rest of the cohort. You will recieve complete
+          access to the ScholarSite portal one week before {cohortHost && `${cohortHost}’s`} cohort
+          begins. This includes access to Networking, Messaging and the Session Materials. We’ll
+          make sure to send you an email reminder once this date arrives!
+        </Typography>
+        <Typography data-testid="empty-home-cohort-information-text-1" className={classes.texttwo}>
+          Right now, we highly recommend that you add the upcoming Session times to you’re calendar
+          by pressing the button below.
+        </Typography>
+        <Typography data-testid="empty-home-cohort-information-text-2" className={classes.texttwo}>
+          You can also start asking {cohortHost && `${cohortHost}’s`} questions through Q&A. We look
+          forward to seeing you soon!
+        </Typography>
+        <Box className={classes.btnContainer}>
+          <LoadingButton
+            data-testid="empty-home-add-to-calendar-btn"
+            className={`${classes.btns} mr`}
+            href={calendarLink}
+            onClick={calendarAlert}
+            variant="contained"
           >
-            We can’t wait to get to know you and the rest of the cohort. You will recieve complete
-            access to the ScholarSite portal one week before {cohortHost && `${cohortHost}’s`}{' '}
-            cohort begins. This includes access to Networking, Messaging and the Session Materials.
-            We’ll make sure to send you an email reminder once this date arrives!
-          </Typography>
-          <Typography
-            data-testid="empty-home-cohort-information-text-1"
-            className={classes.texttwo}
+            Add Sessions to my calendar
+          </LoadingButton>
+          <Button
+            data-testid="empty-home-ask-question-btn"
+            href={`/cohorts/${cohortID}/Q&A`}
+            className={classes.btns}
+            variant="outlined"
           >
-            Right now, we highly recommend that you add the upcoming Session times to you’re
-            calendar by pressing the button below.
-          </Typography>
-          <Typography
-            data-testid="empty-home-cohort-information-text-2"
-            className={classes.texttwo}
-          >
-            You can also start asking {cohortHost && `${cohortHost}’s`} questions through Q&A. We
-            look forward to seeing you soon!
-          </Typography>
-          <Box className={classes.btnContainer}>
-            <LoadingButton
-              data-testid="empty-home-add-to-calendar-btn"
-              className={`${classes.btns} mr`}
-              href={calendarLink}
-              onClick={calendarAlert}
-              variant="contained"
-            >
-              Add Sessions to my calendar
-            </LoadingButton>
-            <Button
-              data-testid="empty-home-ask-question-btn"
-              href={`/cohorts/${cohortID}/Q&A`}
-              className={classes.btns}
-              variant="outlined"
-            >
-              Ask {cohortHost} a question through Q&A
-            </Button>
-          </Box>
-          <Box marginTop="20px">
-            <Typography variant="caption" className={classes.textone}>
-              *** If you’re having trouble adding the calendar please{' '}
-              <span
-                className={classes.calendarInstructions}
-                onClick={() => setInstructionsOpened(true)}
-              >
-                see further information here
-              </span>{' '}
-              ***
-            </Typography>
-          </Box>
+            Ask {cohortHost} a question through Q&A
+          </Button>
         </Box>
-      ) : (
-        <CalendarInstructions calendarUrl={httpCalendarLink()} onBack={setInstructionsOpened} />
-      )}
+        <Box marginTop="20px">
+          <Typography variant="caption" className={classes.textone}>
+            *** If you’re having trouble adding the calendar please{' '}
+            <RouterLink
+              className={classes.calendarInstructions}
+              to={`/cohorts/${cohortID}/calendar-instructions`}
+            >
+              see further information here
+            </RouterLink>{' '}
+            ***
+          </Typography>
+        </Box>
+      </Box>
     </Container>
   );
 };

@@ -149,6 +149,7 @@ export type Cohort = {
   sessions: Session[];
   enrollments: Enrollment[];
   random_peers: StudentProfile[];
+  calendar_invite_url: string;
 };
 
 export type Comment = {
