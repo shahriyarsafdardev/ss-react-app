@@ -110,6 +110,7 @@ const Index = () => {
       ) : (
         <EmptyHomeTab
           key={cohort_id}
+          calendarLink={cohort?.calendar_invite_url}
           cohortID={cohort_id}
           cohortCode={cohort?.code}
           cohortHost={cohort?.host_names}

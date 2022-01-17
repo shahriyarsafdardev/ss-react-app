@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Theme, styled } from '@material-ui/core/styles';
-import { Typography, Box, Button } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { RootState, useSelector } from 'redux/store';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -76,11 +78,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#4d4dcd'
   },
   backBtn: {
+    maxWidth: 'fit-content',
     display: 'flex',
     fontWeight: 'bold',
     color: '#4d4dcd',
     fontSize: '18px',
     lineHeight: '27px',
+    textDecoration: 'none',
     cursor: 'pointer',
     marginBottom: '10px',
     [theme.breakpoints.down(1000)]: {
@@ -104,14 +108,16 @@ const Item = styled('div')(() => ({
   wordBreak: 'break-word'
 }));
 
-const CalendarInstructions = ({
-  calendarUrl,
-  onBack
-}: {
-  calendarUrl: string;
-  onBack: Function;
-}) => {
+const CalendarInstructions = () => {
   const classes = useStyles();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+
+  const calendarLink = cohort?.calendar_invite_url
+    ? cohort?.calendar_invite_url.replace('webcal', 'https')
+    : '';
 
   const googleCalendar = () => (
     <Box className={classes.col4}>
@@ -150,7 +156,7 @@ const CalendarInstructions = ({
         <Item>
           <div className={classes.itemNum}>4</div>
           <p>
-            Paste in <span className={classes.decorated}>“{calendarUrl}”</span>
+            Paste in <span className={classes.decorated}>“{calendarLink}”</span>
           </p>
         </Item>
         <Item>
@@ -224,7 +230,7 @@ const CalendarInstructions = ({
         <Item>
           <div className={classes.itemNum}>3</div>
           <p>
-            Paste <span className={classes.decorated}>“{calendarUrl}”</span>
+            Paste <span className={classes.decorated}>“{calendarLink}”</span>
           </p>
         </Item>
         <Item>
@@ -270,7 +276,7 @@ const CalendarInstructions = ({
         <Item>
           <div className={classes.itemNum}>6</div>
           <p>
-            Paste <span className={classes.decorated}>“{calendarUrl}” into the Server field</span>
+            Paste <span className={classes.decorated}>“{calendarLink}” into the Server field</span>
           </p>
         </Item>
         <Item>
@@ -291,20 +297,24 @@ const CalendarInstructions = ({
 
   return (
     <div className={classes.wrapper}>
-      <Box className={classes.outerContainer}>
-        <Box className={classes.heading}>
-          <div className={classes.backBtn} onClick={() => onBack(false)}>
-            <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
-            Return
-          </div>
-          <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
-          <p className={classes.textone}>Try the following steps</p>
+      {cohort ? (
+        <Box className={classes.outerContainer}>
+          <Box className={classes.heading}>
+            <RouterLink className={classes.backBtn} to={`/cohorts/${cohort_id}/home`}>
+              <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
+              Return
+            </RouterLink>
+            <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
+            <p className={classes.textone}>Try the following steps</p>
+          </Box>
+          <Box className={classes.section}>
+            {googleCalendar()}
+            {ical()}
+          </Box>
         </Box>
-        <Box className={classes.section}>
-          {googleCalendar()}
-          {ical()}
-        </Box>
-      </Box>
+      ) : (
+        <h5>Loading calendar instructions</h5>
+      )}
     </div>
   );
 };
