@@ -116,6 +116,7 @@ export const NavigationButtons = ({
 );
 
 export const checkFormValidity = (form: Object) => {
+  console.log(form);
   const invalidFields = Object.values(form).map((item) =>
     item === false ? item : !item || item.length === 0
   );
