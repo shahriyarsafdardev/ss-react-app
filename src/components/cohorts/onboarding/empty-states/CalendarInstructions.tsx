@@ -115,9 +115,7 @@ const CalendarInstructions = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
-  const calendarLink = cohort?.calendar_invite_url
-    ? cohort?.calendar_invite_url.replace('webcal', 'https')
-    : '';
+  const calendarLink = cohort?.calendar_invite_url;
 
   const googleCalendar = () => (
     <Box className={classes.col4}>
