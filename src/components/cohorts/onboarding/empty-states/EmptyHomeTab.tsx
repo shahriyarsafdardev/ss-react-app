@@ -87,9 +87,7 @@ const EmptyHomeTab = ({
   const { user } = useAuth();
 
   const calendarAlert = () => {
-    if (!calendarLink) {
-      alert('There is no calendar attached to this cohort');
-    } else {
+    if (calendarLink) {
       axios.post(`/cohorts/${cohortID}/enrollments/calendar_added.json`);
     }
   };
@@ -123,7 +121,8 @@ const EmptyHomeTab = ({
           <LoadingButton
             data-testid="empty-home-add-to-calendar-btn"
             className={`${classes.btns} mr`}
-            href={calendarLink}
+            component={RouterLink}
+            to={`/cohorts/${cohortID}/calendar-instructions`}
             onClick={calendarAlert}
             variant="contained"
           >
@@ -137,18 +136,6 @@ const EmptyHomeTab = ({
           >
             Ask {cohortHost} a question through Q&A
           </Button>
-        </Box>
-        <Box marginTop="20px">
-          <Typography variant="caption" className={classes.textone}>
-            *** If you’re having trouble adding the calendar please{' '}
-            <RouterLink
-              className={classes.calendarInstructions}
-              to={`/cohorts/${cohortID}/calendar-instructions`}
-            >
-              see further information here
-            </RouterLink>{' '}
-            ***
-          </Typography>
         </Box>
       </Box>
     </Container>
