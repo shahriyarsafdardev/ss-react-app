@@ -63,7 +63,6 @@ interface InitialState {
   profile_image_url: File | any;
   bio_text: string;
   current_role_category_selections: string[];
-  current_industry_category_selections: string[];
 }
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -107,7 +106,7 @@ export default function ProfileForm({
   const { enqueueSnackbar } = useSnackbar();
   const { updateProfile } = useAuth();
 
-  const { role_options, industry_options, preferred_pronoun_options } = useSelector(
+  const { role_options, preferred_pronoun_options } = useSelector(
     (state: RootState) => state.profileOptions
   );
 
@@ -131,7 +130,6 @@ export default function ProfileForm({
       current_position: '',
       profile_image_url: null,
       current_role_category_selections: [],
-      current_industry_category_selections: [],
       bio_text: ''
     },
     validationSchema: UpdateUserSchema,
@@ -328,19 +326,6 @@ export default function ProfileForm({
                             setFieldValue('current_role_category_selections', e)
                           }
                           maxLimit={2}
-                        />
-                      </Stack>
-                      <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>
-                          Which categories best describe the industry you currently work in?
-                        </Typography>
-                        <MultiSelect
-                          options={industry_options}
-                          values={values.current_industry_category_selections}
-                          onChange={(e: any) =>
-                            setFieldValue('current_industry_category_selections', e)
-                          }
-                          maxLimit={5}
                         />
                       </Stack>
                     </>
