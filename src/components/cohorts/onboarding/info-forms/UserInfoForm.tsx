@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { countries, getCitiesByCountryCode } from 'country-city-location';
+import Select from 'react-select';
 
 import {
   Grid,
@@ -87,6 +88,12 @@ export default function UserInfoForm({
     setInfoObject(tempInfo);
   };
 
+  const onUpdateAttributeGroup = (data: any) => {
+    let tempInfo = { ...infoObject };
+    tempInfo = { ...tempInfo, ...data };
+    setInfoObject(tempInfo);
+  };
+
   return (
     <>
       <br />
@@ -137,51 +144,6 @@ export default function UserInfoForm({
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <FormControl fullWidth>
-                  <InputLabel>Country</InputLabel>
-                  <MaterialSelect
-                    fullWidth
-                    label="Country"
-                    onChange={async (e) => {
-                      await onUpdateAttribute('country', e.target.value);
-
-                      setCities(e.target.value);
-                    }}
-                    defaultValue={infoObject?.country}
-                    inputProps={{ 'data-testid': 'user-country' }}
-                  >
-                    {countries.map((country: any) => (
-                      <MenuItem key={country.Name} value={country.Name}>
-                        <ListItemText primary={country.Name} />
-                      </MenuItem>
-                    ))}
-                  </MaterialSelect>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <InputLabel>City</InputLabel>
-                  <MaterialSelect
-                    fullWidth
-                    label="City"
-                    onChange={(e) => onUpdateAttribute('city', e.target.value)}
-                    defaultValue={infoObject?.city}
-                    inputProps={{ 'data-testid': 'user-city' }}
-                  >
-                    {citiesList?.length > 0 ? (
-                      citiesList.map((city: any) => (
-                        <MenuItem key={city} value={city}>
-                          <ListItemText primary={city} />
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem>
-                        <ListItemText primary="Please select a country first" />
-                      </MenuItem>
-                    )}
-                  </MaterialSelect>
-                </FormControl>
-              </Stack>
-              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
                   <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
                   <MaterialSelect
                     data-testid="user-pronoun-label"
@@ -207,6 +169,42 @@ export default function UserInfoForm({
                   value={infoObject?.linkedin_url}
                   onChange={(e) => onUpdateAttribute('linkedin_url', e.target.value)}
                 />
+              </Stack>
+              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                <FormControl fullWidth>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <label htmlFor="country">Country</label>
+
+                  <Select
+                    data-testid="user-country"
+                    value={{ value: infoObject?.country, label: infoObject?.country }}
+                    options={countries.map((country: any) => ({
+                      value: country.Name,
+                      label: country.Name
+                    }))}
+                    onChange={(e) => {
+                      onUpdateAttributeGroup({ country: e?.value, city: '' });
+                      setCities(e?.value || '');
+                    }}
+                    placeholder="Country"
+                    menuPortalTarget={document.body}
+                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                  />
+                </FormControl>
+
+                <FormControl fullWidth>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <label htmlFor="city">City</label>
+                  <Select
+                    data-testid="user-city"
+                    value={{ value: infoObject?.city, label: infoObject?.city }}
+                    onChange={(e) => onUpdateAttribute('city', e?.value)}
+                    options={citiesList.map((city) => ({ value: city, label: city }))}
+                    placeholder="City"
+                    menuPortalTarget={document.body}
+                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                  />
+                </FormControl>
               </Stack>
             </Stack>
           </Card>
