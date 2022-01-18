@@ -31,6 +31,13 @@ const numberOfEmployeesList = [
   '100,000+'
 ];
 
+type CompanyData = {
+  name: string;
+  logo_url: string;
+  number_of_employees: string;
+  industries: string[];
+};
+
 export default function CompanyInfoForm({
   onSubmit,
   companyProfile,
@@ -46,7 +53,7 @@ export default function CompanyInfoForm({
   companyProfile: CompanyProfileType;
   onPrevHandler: Function;
 }) {
-  const [companies, setCompanies] = useState<string[]>();
+  const [companies, setCompanies] = useState<CompanyData[]>([]);
   const { industry_options } = useSelector((state: RootState) => state.profileOptions);
 
   const [infoObject, setInfoObject] = useState<CompanyProfileType>(companyProfile);
@@ -64,6 +71,12 @@ export default function CompanyInfoForm({
     setInfoObject(tempInfo);
   };
 
+  const onUpdateAttributeGroup = (data: any) => {
+    let tempInfo = { ...infoObject };
+    tempInfo = { ...tempInfo, ...data };
+    setInfoObject(tempInfo);
+  };
+
   useEffect(() => {
     axios
       .get('/cohorts/select_fields_data.json')
@@ -72,6 +85,27 @@ export default function CompanyInfoForm({
         payload?.companies && setCompanies(payload.companies);
       });
   }, []);
+
+  const onCompanyChange = async (e: any) => {
+    if (e.__isNew__) {
+      onUpdateAttributeGroup({
+        logo_url: null,
+        name: e.value,
+        number_of_employees: null,
+        industries: []
+      });
+    } else {
+      const companyObject = companies.find((company) => company.name === e.value);
+      if (companyObject) {
+        onUpdateAttributeGroup({
+          logo_url: companyObject.logo_url,
+          name: companyObject.name,
+          number_of_employees: companyObject.number_of_employees,
+          industries: companyObject.industries
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -109,14 +143,17 @@ export default function CompanyInfoForm({
                 <label htmlFor="company-name">Select or create company name</label>
                 <CreatableSelect
                   defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
-                  options={companies?.map((option) => ({ value: option, label: option }))}
+                  options={companies?.map((company: CompanyData) => ({
+                    value: company.name,
+                    label: company.name
+                  }))}
                   isClearable={false}
                   backspaceRemovesValue={true}
                   placeholder="Company Name"
                   isSearchable
                   menuPortalTarget={document.body}
                   styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  onChange={(e) => onUpdateAttribute('name', e?.value)}
+                  onChange={(e) => onCompanyChange(e)}
                 />
               </FormControl>
 
@@ -127,7 +164,7 @@ export default function CompanyInfoForm({
                   fullWidth
                   label="Company Industries"
                   onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}
-                  defaultValue={infoObject.industries}
+                  value={infoObject.industries}
                   inputProps={{ 'data-testid': 'company-industry' }}
                   multiple
                   renderValue={(selected: any) => selected.join(', ')}
@@ -146,7 +183,7 @@ export default function CompanyInfoForm({
                   fullWidth
                   label="Number of Employees"
                   onChange={(e) => onUpdateAttribute('number_of_employees', e.target.value)}
-                  defaultValue={infoObject.number_of_employees}
+                  value={infoObject.number_of_employees}
                   inputProps={{ 'data-testid': 'company-employees' }}
                 >
                   {numberOfEmployeesList.map((item: any) => (
