@@ -7,9 +7,6 @@ describe('Sidebar', () => {
     cy.loginasadmin({});
   });
   context('when in instructor mode', () => {
-    beforeEach(() => {
-      cy.get('[data-testid="dashboard-switch"]').should('be.visible').click();
-    });
     it('Displays the instructor sidebar', () => {
       cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
     });
@@ -102,6 +99,9 @@ describe('Sidebar', () => {
     });
   });
   context('when in learner mode', () => {
+    beforeEach(() => {
+      cy.get('[data-testid="dashboard-switch"]').should('be.visible').click();
+    });
     it('Displays the learner sidebar', () => {
       cy.get('[data-testid="member-sidebar"]').should('be.visible');
     });
@@ -173,7 +173,7 @@ describe('Sidebar', () => {
       cy.get('[data-testid="dashboard-infotext"]').should('be.visible');
     });
     it('Alows toggle between instructor and student mode', () => {
-      cy.get('[data-testid="dashboard-switch"]').should('be.visible').click();
+      cy.get('[data-testid="dashboard-switch"]').should('be.visible')
       //assertation for instructor mode is on
       cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
       cy.get('[data-testid="dashboard-switch"]').click();
