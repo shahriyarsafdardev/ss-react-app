@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
+import useAuth from 'hooks/useAuth';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import {
@@ -111,11 +112,13 @@ type NavItemProps = {
 function NavItem({
   item,
   isShow,
-  index
+  index,
+  header
 }: {
   index?: number;
   item: NavItemProps;
   isShow?: boolean | undefined;
+  header: string;
 }) {
   const theme = useTheme();
   const location = useLocation();
@@ -124,6 +127,7 @@ function NavItem({
   const isActiveRoot = pathname.includes(path);
   const userNotifications = useSelector((state: RootState) => state.notification.notifications);
   const [open, setOpen] = useState(isActiveRoot);
+  const { user } = useAuth();
 
   useEffect(() => {
     setOpen(isActiveRoot);
@@ -167,7 +171,7 @@ function NavItem({
           {isShow && (
             <>
               <ListItemText
-                data-testid={`navbar-chort-${title}`}
+                data-testid={`navbar-${user?.type}-cohort-${header}-${title}`}
                 disableTypography
                 primary={title}
               />
@@ -184,13 +188,13 @@ function NavItem({
         {isShow && (
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {children.map((item, index) => {
-                const { title, path, externalUrl, category, notifications } = item;
+              {children.map((heading_item, index) => {
+                const { title, path, externalUrl, category, notifications } = heading_item;
                 const isActiveSub = path ? !!matchPath({ path, end: false }, pathname) : false;
 
                 return (
                   <ListItemStyle
-                    data-testid={`navbar-${title}`}
+                    data-testid={`navbar-cohort-${user?.type}-page-list-${header}-${item.title}-${title}`}
                     disableGutters
                     key={`${title}-${userNotifications.length}`}
                     id={`${title}-${index}`}
@@ -251,7 +255,7 @@ function NavItem({
       {isShow && (
         <>
           <ListItemText
-            data-testid={`navbar-chort-${title}`}
+            data-testid={`navbar-cohort-${title}`}
             disableTypography
             primary={item.title}
           />
@@ -274,9 +278,11 @@ export default function NavSection({ navConfig, isShow = true, ...other }: NavSe
   return (
     <Box {...other}>
       <List key={navConfig.subheader} disablePadding>
-        {isShow && <ListSubheaderStyle>{navConfig.subheader}</ListSubheaderStyle>}
+        {isShow && (
+          <ListSubheaderStyle data-testid="navbar-cohort">{navConfig.subheader}</ListSubheaderStyle>
+        )}
         {navConfig.items.map((item: NavItemProps) => (
-          <NavItem key={item.title} item={item} isShow={isShow} />
+          <NavItem key={item.title} item={item} isShow={isShow} header={navConfig.subheader} />
         ))}
       </List>
     </Box>

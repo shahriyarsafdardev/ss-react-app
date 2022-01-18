@@ -1,4 +1,5 @@
 import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../fixtures/login/admin-login.json'
 
 describe('Sidebar', () => {
   beforeEach(() => {
@@ -13,71 +14,88 @@ describe('Sidebar', () => {
       cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
     });
     it('Displays a CourseSection for each course the user is a host of', () => {
-      // cy.get(`[data-testid="navbar-chort-${cohorts_fixture.cohorts[0].intake_name}"]`)
-      // .should('be.visible')
-      // need to work on this specs
+      cy.get('[data-testid="navbar-cohort"]')
+      .should('be.visible')
     });
     describe('CourseSection', () => {
       it('Displays a header with the course name', () => {
-        // cy.get(`[data-testid="navbar-chort-${cohorts_fixture.cohorts[0].intake_name}"]`)
-        // .should('be.visible')
-        // .and('contain', cohorts_fixture.cohorts[0].intake_name)
-        // need to work on this specs
+        cy.get('[data-testid="navbar-cohort"]')
+        .should('be.visible')
+        .and('contain', cohorts_fixture.cohorts[0].name)
       });
 
       it('Displays a CohortTab for each cohort within that course', () => {
-        cy.get(`[data-testid="navbar-chort-${cohorts_fixture.cohorts[0].intake_name}"]`).should(
-          'be.visible'
-        );
+        cy.get(`[data-testid="navbar-${user_fixture.user.type}-cohort-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}"]`)
+        .should('be.visible');
       });
       describe('InstructorCohortTab', () => {
         it('Is labelled by its code', () => {
-          cy.get(
-            `[data-testid="navbar-cohort-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}"]`
-          )
-            .should('be.visible')
-            .and('contain', cohorts_fixture.cohorts[0].intake_name);
+          cy.get(`[data-testid="navbar-${user_fixture.user.type}-cohort-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}"]`)
+          .should('be.visible')
+          .and('contain', cohorts_fixture.cohorts[0].intake_name);
         });
 
         it('Opens the CohortInstructorPageList when clicked', () => {
           // Click it here
           cy.get(
-            `[data-testid="navbar-cohort-istructor-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-registrations"]`
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-registrations"]`
           ).should('be.visible');
           cy.get(
-            `[data-testid="navbar-cohort-istructor-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-students"]`
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-students"]`
           ).should('be.visible');
           cy.get(
-            `[data-testid="navbar-cohort-istructor-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-sessions"]`
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-sessions"]`
           ).should('be.visible');
           cy.get(
-            `[data-testid="navbar-cohort-istructor-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-Q&A"]`
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-Q&A"]`
           ).should('be.visible');
           cy.get(
-            `[data-testid="navbar-cohort-istructor-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-messaging"]`
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-messaging"]`
           ).should('be.visible');
         });
 
         describe('CohortInstructorPageList', () => {
           it('Allows the Instructor registrations page to be opened', () => {
-            cy.get('[data-testid="navbar-registrations"]').should('be.visible').click();
-            cy.get('[data-testid="dashboard-navbar-registrations"]').should('be.visible');
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-registrations"]`
+            )
+            .should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-registrations"]')
+            .should('be.visible');
           });
           it('Allows the Student page to be opened', () => {
-            cy.get('[data-testid="navbar-students"]').should('be.visible').click();
-            cy.get('[data-testid="dashboard-navbar-networking"]').should('be.visible');
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-students"]`
+            )
+            .should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-networking"]')
+            .should('be.visible');
           });
           it('Allows the Sessions page to be opened', () => {
-            cy.get('[data-testid="navbar-sessions"]').should('be.visible').click();
-            cy.get('[data-testid="dashboard-navbar-sessions"]').should('be.visible');
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-sessions"]`
+            ).should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-sessions"]')
+            .should('be.visible');
           });
           it('Allows the Q&A page to be opened', () => {
-            cy.get('[data-testid="navbar-Q&A"]').should('be.visible').click();
-            cy.get('[data-testid="dashboard-navbar-Q&A"]').should('be.visible');
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-Q&A"]`
+            ).should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-Q&A"]')
+            .should('be.visible');
           });
           it('Allows the Messaging page to be opened', () => {
-            cy.get('[data-testid="navbar-messaging"]').should('be.visible').click();
-            cy.get('[data-testid="dashboard-navbar-messaging"]').should('be.visible');
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-messaging"]`
+            ).should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-messaging"]')
+            .should('be.visible');
           });
         });
       });
@@ -88,48 +106,64 @@ describe('Sidebar', () => {
       cy.get('[data-testid="member-sidebar"]').should('be.visible');
     });
     it('Displays a CohortLearnerTab for each cohort the instructor hosts or is enrolled in', () => {
-      cy.get(
-        `[data-testid="navbar-cohort-learner-tab-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}"]`
-      ).should('be.visible');
+      cy.get(`[data-testid="navbar-${user_fixture.user.type}-cohort-Your Cohorts-${cohorts_fixture.cohorts[0].name}"]`)
+      .should('be.visible');
     });
     describe('CohortLearnerTab', () => {
       it('Is labelled by its name and code', () => {
-        cy.get(
-          `[data-testid="navbar-cohort-learner-tab-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].name}"]`
-        )
-          .should('be.visible')
-          .and('contain', cohorts_fixture.cohorts[0].name);
+        cy.get(`[data-testid="navbar-${user_fixture.user.type}-cohort-Your Cohorts-${cohorts_fixture.cohorts[0].name}"]`)
+        .should('be.visible')
+        .and('contain', cohorts_fixture.cohorts[0].name);
       });
       it('Opens a CohortLearnerPageList when clicked', () => {
         cy.get(
-          `[data-testid="navbar-cohort-learner-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-home"]`
+          `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-home"]`
         ).should('be.visible');
         // rest should copy the one above
-        cy.get('[data-testid="navbar-cohort-learner-page-networking"]').should('be.visible');
-        cy.get('[data-testid="navbar-cohort-learner-page-sessions"]').should('be.visible');
-        cy.get('[data-testid="navbar-cohort-learner-page-Q&A"]').should('be.visible');
-        cy.get('[data-testid="navbar-cohort-learner-page-messaging"]').should('be.visible');
+        cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-networking"]`)
+        .should('be.visible');
+        cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-sessions"]`)
+        .should('be.visible');
+        cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-Q&A"]`)
+        .should('be.visible');
+        cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-messaging"]`)
+        .should('be.visible');
       });
       describe('CohortLearnerPageList', () => {
         it('Allows the Learner Home page to be opened without the onboarding flow appearing', () => {
-          cy.get('[data-testid="navbar-home"]').should('be.visible').click();
-          cy.get('[data-testid="dashboard-navbar-home"]').should('be.visible');
+          cy.get(
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-home"]`
+          ).should('be.visible')
+          .click();
+          cy.get('[data-testid="dashboard-navbar-home"]')
+          .should('be.visible');
         });
         it('Allows the Networking page to be opened', () => {
-          cy.get('[data-testid="navbar-networking"]').should('be.visible').click();
-          cy.get('[data-testid="dashboard-navbar-networking"]').should('be.visible');
+          cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-networking"]`)
+          .should('be.visible')
+          .click();
+          cy.get('[data-testid="dashboard-navbar-networking"]')
+          .should('be.visible');
         });
         it('Allows the Sessions page to be opened', () => {
-          cy.get('[data-testid="navbar-sessions"]').should('be.visible').click();
-          cy.get('[data-testid="dashboard-navbar-sessions"]').should('be.visible');
+          cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-sessions"]`)
+          .should('be.visible')
+          .click();
+          cy.get('[data-testid="dashboard-navbar-sessions"]')
+          .should('be.visible');
         });
         it('Allows the Q&A page to be opened', () => {
-          cy.get('[data-testid="navbar-Q&A"]').should('be.visible').click();
-          cy.get('[data-testid="dashboard-navbar-Q&A"]').should('be.visible');
+          cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-Q&A"]`)
+          .should('be.visible')
+          .click();
+          cy.get('[data-testid="dashboard-navbar-Q&A"]')
+          .should('be.visible');
         });
         it('Allows the Messaging page to be opened', () => {
-          cy.get('[data-testid="navbar-messaging"]').should('be.visible').click();
-          cy.get('[data-testid="dashboard-navbar-messaging"]').should('be.visible');
+          cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-messaging"]`)
+          .click();
+          cy.get('[data-testid="dashboard-navbar-messaging"]')
+          .should('be.visible');
         });
       });
     });

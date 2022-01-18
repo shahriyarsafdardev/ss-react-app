@@ -1,7 +1,7 @@
 {
   "user":{
      "id":"5386e36b-0f15-4d39-b698-41e6672ec2c0",
-     "type":["expert", "learner"],
+     "type":"admin",
      "first_name":"Waqas",
      "last_name":"User",
      "full_name":"Waqas User",
