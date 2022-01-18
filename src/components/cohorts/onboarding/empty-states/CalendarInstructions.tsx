@@ -8,6 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
+    margin: 'auto',
     width: '100%',
     maxWidth: '1200px',
     display: 'flex',
