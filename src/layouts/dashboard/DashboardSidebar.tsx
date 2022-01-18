@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Drawer, Switch } from '@material-ui/core';
@@ -77,6 +77,7 @@ type DashboardSidebarProps = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const { user } = useAuth();
@@ -85,16 +86,28 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     useCollapseDrawer();
 
   const switchView = () => {
+    let url = '/';
     if (mode === 'Instructor') {
       updateInstructorViewState('Member');
+      if (cohorts.length > 0) {
+        url = `/cohorts/${cohorts[0].id}/home`;
+      }
     } else {
       updateInstructorViewState('Instructor');
+      const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
+      if (hostCohorts.length > 0) {
+        url = `/cohorts/${hostCohorts[0].id}/registrations`;
+      }
     }
+    navigate(url);
   };
 
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
+    }
+    if (user?.type === 'learner') {
+      updateInstructorViewState('Member');
     }
   }, [pathname]);
 

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
 
 const initialState: { mode: string } = {
-  mode: 'Member'
+  mode: 'Instructor'
 };
 
 const slice = createSlice({
