@@ -1,6 +1,6 @@
 // Each it block should mnatch a container element by its test id
 import home_refactored from '../../../fixtures/onboarding/home_refactored.json'
-
+const dayjs = require('dayjs')
 const serverUrl = Cypress.env('serverUrl');
 
 describe('When a user visits the home page of a cohort for the first time', () => {
@@ -389,7 +389,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .children().eq(0)
       .children().eq(1)
       .children().eq(0)
-      .and("have.attr", "value", home_refactored.participant_profile.date_of_birth)
+      .and("have.attr", "value", dayjs().format('MM/DD/YYYY'))
       cy.get('[data-testid="housekeeping-cohort-tpoic"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_understanding)
       cy.get('[data-testid="housekeeping-about-cohort"]')
