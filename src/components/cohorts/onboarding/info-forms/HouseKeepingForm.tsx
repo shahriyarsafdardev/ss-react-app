@@ -63,14 +63,14 @@ export default function HouseKeepingForm({
         <Grid item xs={12} md={12}>
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
-              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+              {/* <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <FormControl data-testid="housekeeping-dob" fullWidth>
                   <DesktopDatePicker
                     label="Date of birth"
                     onChange={(value) => {
                       onUpdateAttribute('date_of_birth', value?.toString());
                     }}
-                    value={infoObject?.date_of_birth || ''}
+                    value={infoObject?.date_of_birth || null}
                     renderInput={(params) => (
                       <TextField inputProps={{ 'data-testid': 'housekeeping-dob' }} {...params} />
                     )}
@@ -83,7 +83,14 @@ export default function HouseKeepingForm({
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </FormControl>
-              </Stack>
+              </Stack> */}
+              <FormControl fullWidth>
+                <TextField
+                  label="Phone"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </FormControl>
               <FormControl fullWidth>
                 <InputLabel>Current understanding of cohort topic</InputLabel>
                 <MaterialSelect
