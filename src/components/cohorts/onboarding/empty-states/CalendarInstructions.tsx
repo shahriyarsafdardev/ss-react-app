@@ -121,11 +121,11 @@ const CalendarInstructions = () => {
   const googleCalendar = () => (
     <Box className={classes.col4}>
       <Head>
-        <img
+        {/* <img
           src="/static/icons/google-calendar.svg"
           alt="gcal-icon"
           style={{ marginRight: '5px' }}
-        />
+        /> */}
         Google Calendar
       </Head>
 
@@ -209,7 +209,7 @@ const CalendarInstructions = () => {
   const ical = () => (
     <Box className={classes.col4}>
       <Head>
-        <img src="/static/icons/ical.svg" alt="ical-icon" style={{ marginRight: '5px' }} />
+        {/* <img src="/static/icons/ical.svg" alt="ical-icon" style={{ marginRight: '5px' }} /> */}
         iCal
       </Head>
       <Box className={classes.mt5}>
@@ -303,8 +303,9 @@ const CalendarInstructions = () => {
               <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
               Return
             </RouterLink>
-            <Typography variant="h3">✋ Having trouble adding the cohort calendar?</Typography>
-            <p className={classes.textone}>Try the following steps</p>
+            <Typography variant="h3">
+              📅 Here's how you can add the upcoming sessions to your calendar!
+            </Typography>
           </Box>
           <Box className={classes.section}>
             {googleCalendar()}
