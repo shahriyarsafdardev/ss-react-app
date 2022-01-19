@@ -2,7 +2,7 @@ import sessionFixture from '../../../fixtures/session/sessions.json';
 describe('Sessions > Resources', () => {
   before(() => {
     cy.server();
-    cy.login();
+    cy.login({});
     cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
     cy.get('[data-testid=session-resources]').click({ force: true });
   });

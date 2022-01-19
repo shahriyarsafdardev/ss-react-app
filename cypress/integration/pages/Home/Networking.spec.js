@@ -35,7 +35,7 @@ Cypress.Commands.add('viewProfile', () => {
 describe('Home > Networking', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
   });
 
   it('Displays a network sugguestion tab', () => {

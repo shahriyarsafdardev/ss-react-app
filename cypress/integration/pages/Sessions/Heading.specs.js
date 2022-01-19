@@ -10,7 +10,7 @@ Cypress.Commands.add('getTitle', () => {
 describe('Sessions > Heading', () => {
   before(() => {
     cy.server();
-    cy.login();
+    cy.login({});
     cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 

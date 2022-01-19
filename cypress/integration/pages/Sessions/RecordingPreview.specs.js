@@ -21,7 +21,7 @@ Cypress.Commands.add('setClockToAfterSession', (times, hours, type) => {
 describe('Sessions > RecordingsPreview', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
     cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 

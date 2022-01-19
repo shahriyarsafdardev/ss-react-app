@@ -8,7 +8,7 @@ Cypress.Commands.add('loadSlides', (sessionurl) => {
 describe('Sessions > Slides', () => {
   before(() => {
     cy.server();
-    cy.login();
+    cy.login({});
     cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 

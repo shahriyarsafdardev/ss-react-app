@@ -20,7 +20,7 @@ Cypress.Commands.add('setClockToAfterSession', (session, time)=> {
 describe('Home > Heading', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
   });
 
   context('When the current time is more than two hours before any session starts', () => {
