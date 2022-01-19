@@ -25,12 +25,14 @@ export default function CardDetails({
   setStep: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
+  const pattern = /^[0-9\b]+$/;
 
   const ValidationSchema = Yup.object().shape({
     cardName: Yup.string().required('Full Name is required'),
     cardExpiry: Yup.string()
       .required('Card Expiry date is required')
       .max(5, 'Not a valid expiration date. Example: MM/YY')
+      .matches(/^[0-9][0-9]['\/'][0-9][0-9]+$/, 'Not a valid expiration date. Example: MM/YY')
       .test(
         'test-date',
         'Credit Card number is invalid.Example: MM/YY ',
@@ -39,9 +41,9 @@ export default function CardDetails({
     cardCvv: Yup.string()
       .required('Card CVV is required')
       .max(4, 'Cvv is invalid')
-      .test('test-cvv', 'Cvv is invalid', (value) => valid.cvv(value).isValid),
+      .test('test-cvv', 'Cvv is invalid', (value) => validateCardCvv(value)),
     cardNumber: Yup.string()
-      .test('test-number', 'Credit Card number is invalid', (value) => valid.number(value).isValid)
+      .test('test-number', 'Credit Card number is invalid', (value) => validateCardNumber(value))
       .required('Card Number is required')
   });
 
@@ -55,26 +57,41 @@ export default function CardDetails({
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
       if (enrollmentID && cohortID) {
-        try {
-          await axios
-            .post(`/cohorts/${cohortID}/enrollments/${enrollmentID}/add_payment_details.json`, {
-              ...values
-            })
-            .then((res) => {
-              enqueueSnackbar('Details submitted', { variant: 'success' });
-              setStep(3);
-            });
-        } catch (error) {
-          enqueueSnackbar('Application Failed', { variant: 'error' });
-          console.log(error);
-        }
+        await axios
+          .post(`/cohorts/${cohortID}/enrollments/${enrollmentID}/add_payment_details.json`, {
+            ...values
+          })
+          .then((res) => {
+            enqueueSnackbar('Card Details submitted', { variant: 'success' });
+            setStep(3);
+          })
+          .catch((error: any) => {
+            enqueueSnackbar(error.message, { variant: 'error' });
+          });
       } else {
-        enqueueSnackbar('Invalid page URL', { variant: 'error' });
+        enqueueSnackbar('Invalid user credentials', { variant: 'error' });
       }
     }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps, submitForm } = formik;
+  const { values, errors, touched, isSubmitting, getFieldProps, submitForm, setFieldValue } =
+    formik;
+
+  const validateCardCvv = (value: any) => {
+    const properties: any = valid.number(values.cardNumber)?.card;
+    if (properties && value) {
+      return properties.niceType && properties.code.size === value.length;
+    }
+    return false;
+  };
+
+  const validateCardNumber = (value: any) => {
+    const properties: any = valid.number(values.cardNumber);
+    if (properties.card && value) {
+      return properties.card.niceType && properties.card.lengths.includes(value.length);
+    }
+    return false;
+  };
 
   return (
     <>
@@ -119,9 +136,13 @@ export default function CardDetails({
                       <TextField
                         fullWidth
                         label="Credit Card Number"
-                        type="number"
+                        value={values.cardNumber}
+                        onChange={(e) => {
+                          if (e.target.value === '' || pattern.test(e.target.value)) {
+                            setFieldValue('cardNumber', e.target.value);
+                          }
+                        }}
                         variant="outlined"
-                        {...getFieldProps('cardNumber')}
                         error={Boolean(touched.cardNumber && errors.cardNumber)}
                         helperText={touched.cardNumber && errors.cardNumber}
                         inputProps={{
@@ -144,8 +165,12 @@ export default function CardDetails({
                       <TextField
                         fullWidth
                         label="CVV"
-                        type="number"
-                        {...getFieldProps('cardCvv')}
+                        value={values.cardCvv}
+                        onChange={(e) => {
+                          if (e.target.value === '' || pattern.test(e.target.value)) {
+                            setFieldValue('cardCvv', e.target.value);
+                          }
+                        }}
                         error={Boolean(touched.cardCvv && errors.cardCvv)}
                         helperText={touched.cardCvv && errors.cardCvv}
                         inputProps={{
