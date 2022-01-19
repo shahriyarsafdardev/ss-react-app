@@ -86,10 +86,10 @@ export default function Login() {
           </MHidden>
           <StyledStack direction="row" alignItems="center">
             <Box sx={{ flexGrow: 1 }}>
-              <Title gutterBottom>Welcome to your Student Portal</Title>
+              <Title gutterBottom>Welcome to the ScholarSite Portal</Title>
               <Typography sx={{ color: 'text.secondary' }}>
-                ScholarSite’s student portal can be used to access your cohort content, network and
-                messages at any time!
+                ScholarSite’s portal can be used to access your cohort content, network and messages
+                at any time!
               </Typography>
             </Box>
           </StyledStack>
