@@ -122,7 +122,7 @@ const EmptyHomeTab = ({
             onClick={calendarAlert}
             variant="contained"
           >
-            Add Sessions to my calendar
+            Add sessions to my calendar
           </LoadingButton>
           <Button
             data-testid="empty-home-ask-question-btn"
