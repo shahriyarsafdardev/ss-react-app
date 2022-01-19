@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { RootState, useSelector } from 'redux/store';
-
+import MultiSelect from 'components/MultiSelect';
 // material
 import {
   Grid,
@@ -45,43 +46,27 @@ export default function NetworkingForm({
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl fullWidth>
-                <InputLabel>Which roles are you interested in connecting with?</InputLabel>
-                <MaterialSelect
-                  fullWidth
-                  label="Which roles are you interested in connecting with?"
-                  onChange={(e) => onUpdateAttribute('networking_roles_categories', e.target.value)}
-                  defaultValue={infoObject.networking_roles_categories}
-                  multiple
-                  renderValue={(selected) => selected.join(', ')}
-                  inputProps={{ 'data-testid': 'network-roles' }}
-                >
-                  {role_options?.map((name: any) => (
-                    <MenuItem key={name} value={name}>
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
+                <label>Which roles are you interested in connecting with?</label>
+                <MultiSelect
+                  options={role_options}
+                  values={infoObject.networking_roles_categories}
+                  onChange={(value: string[]) =>
+                    onUpdateAttribute('networking_roles_categories', value)
+                  }
+                  data-testid="network-roles"
+                />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel>Which industries are you interested in connecting with?</InputLabel>
-                <MaterialSelect
+                <label>Which industries are you interested in connecting with?</label>
+
+                <MultiSelect
                   data-testid="network-fellow-member-dropdown"
-                  fullWidth
-                  label="Which industries are you interested in connecting with?"
-                  onChange={(e) =>
-                    onUpdateAttribute('networking_industries_categories', e.target.value)
+                  options={industry_options}
+                  values={infoObject.networking_industries_categories}
+                  onChange={(value: string[]) =>
+                    onUpdateAttribute('networking_industries_categories', value)
                   }
-                  defaultValue={infoObject.networking_industries_categories}
-                  inputProps={{ 'data-testid': 'network-industeries' }}
-                  multiple
-                  renderValue={(selected) => selected.join(', ')}
-                >
-                  {industry_options?.map((name: any) => (
-                    <MenuItem key={name} value={name}>
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
+                />
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel>
@@ -94,7 +79,7 @@ export default function NetworkingForm({
                   onChange={(e) =>
                     onUpdateAttribute('interested_in_being_matched', e.target.value === 'Yes')
                   }
-                  defaultValue={infoObject.interested_in_being_matched === true ? 'Yes' : 'No'}
+                  value={infoObject.interested_in_being_matched === true ? 'Yes' : 'No'}
                   inputProps={{ 'data-testid': 'network-fellow-member' }}
                 >
                   {YES_NO_OPTIONS?.map((name: any) => (

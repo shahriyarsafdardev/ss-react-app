@@ -125,7 +125,7 @@ type OnboardingDataType = {
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
@@ -153,7 +153,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     role_description: '',
     networking_roles_categories: [],
     networking_industries_categories: [],
-    interested_in_being_matched: false,
+    interested_in_being_matched: true,
     date_of_birth: '',
     cohort_understanding: '',
     referred_by: '',
@@ -188,9 +188,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           networking_roles_categories: payload.participant_profile.networking_roles_categories,
           networking_industries_categories:
             payload.participant_profile.networking_industries_categories,
-          interested_in_being_matched:
-            payload.participant_profile.opted_in_for_matching_suggestions,
-          date_of_birth: payload.participant_profile.date_of_birth,
+          interested_in_being_matched: true,
+          date_of_birth: '',
           cohort_understanding: payload.participant_profile.current_understanding,
           referred_by: payload.participant_profile.referred_by,
           payed_by: payload.participant_profile.payed_by,
@@ -271,6 +270,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, uploadData)
       .then((res) => {
         enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
+        if (res.data.user) {
+          updateProfile({ ...res.data.user });
+        }
         setIsSubmitting(false);
         setModal(false);
       });
