@@ -11,7 +11,6 @@ type CardType = {
   cardNumber?: string;
   cardExpiry?: string;
   cardCvv?: string;
-  zipCode: string;
 };
 
 export default function CardDetails({
@@ -20,9 +19,9 @@ export default function CardDetails({
   user,
   setStep
 }: {
-  cohortID: string;
-  user: string;
-  enrollmentID: string;
+  cohortID?: string;
+  user?: string;
+  enrollmentID?: string;
   setStep: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -41,10 +40,6 @@ export default function CardDetails({
       .required('Card CVV is required')
       .max(4, 'Cvv is invalid')
       .test('test-cvv', 'Cvv is invalid', (value) => valid.cvv(value).isValid),
-    zipCode: Yup.string()
-      .required('Zip Code is required')
-      .max(6, 'Zip Code is invalid')
-      .test('test-zip', 'Zip Code is invalid', (value) => valid.postalCode(value).isValid),
     cardNumber: Yup.string()
       .test('test-number', 'Credit Card number is invalid', (value) => valid.number(value).isValid)
       .required('Card Number is required')
@@ -55,8 +50,7 @@ export default function CardDetails({
       cardCvv: '',
       cardExpiry: '',
       cardName: '',
-      cardNumber: '',
-      zipCode: ''
+      cardNumber: ''
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
@@ -86,18 +80,18 @@ export default function CardDetails({
     <>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph>
-          👋 Thanks {user}, only one more step!
+          👋 Thanks {user}, do you want to lock in this price?
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          You can enter your payment details now in order to secure your spot in the cohort once you
-          are selected.
+          Submitting your payment details now locks in the current price and increases your chances
+          of being accepted.
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          ScholarSite is compatible with most L&D funding as shown here.
+          Don’t worry though, you can get a refund up to 72 hours before the cohort begins.
         </Typography>
       </Box>
 
-      <Stack alignContent="center" width={{ xs: '100%', md: '40%' }} alignItems="center">
+      <Stack alignContent="center" width={{ xs: '100%', md: '45%' }} alignItems="center">
         <FormikProvider value={formik}>
           <Form
             style={{ width: '100%' }}
@@ -160,49 +154,45 @@ export default function CardDetails({
                         }}
                       />
                     </Stack>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <TextField
-                        fullWidth
-                        type="number"
-                        label="Zip Code"
-                        {...getFieldProps('zipCode')}
-                        error={Boolean(touched.zipCode && errors.zipCode)}
-                        helperText={touched.zipCode && errors.zipCode}
-                        inputProps={{
-                          maxLength: 6,
-                          'data-testid': 'zip-code'
-                        }}
-                      />
-                    </Stack>
                   </Stack>
-                  You will not be charged until you are accepted into the cohort!
                 </Card>
               </Grid>
             </Grid>
           </Form>
         </FormikProvider>
-        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+        <Stack
+          width="100%"
+          spacing={2}
+          alignItems="center"
+          sx={{ mt: 3 }}
+          direction={{ xs: 'column', md: 'row' }}
+        >
           <LoadingButton
             type="submit"
+            color="primary"
             variant="outlined"
             loading={isSubmitting}
             onClick={() => setStep(3)}
             id="btn-submit"
-            sx={{ width: 150 }}
+            fullWidth
+            sx={{
+              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
+            }}
           >
             Skip this step
           </LoadingButton>
           <LoadingButton
             type="submit"
+            fullWidth
             variant="contained"
+            color="primary"
             loading={isSubmitting}
             onClick={() => submitForm()}
             id="btn-submit"
-            sx={{ width: 150, ml: 2 }}
           >
-            Submit
+            Lock in price
           </LoadingButton>
-        </Box>
+        </Stack>
       </Stack>
     </>
   );

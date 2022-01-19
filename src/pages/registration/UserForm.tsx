@@ -1,52 +1,29 @@
-import { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import axios from 'utils/axios';
 import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
 
-import {
-  Grid,
-  Card,
-  Box,
-  Stack,
-  TextField,
-  Typography,
-  MenuItem,
-  ListItemText,
-  InputLabel,
-  FormControl,
-  Select as MaterialSelect
-} from '@material-ui/core';
+import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
 
 type UserType = {
-  first_name: string;
-  last_name: string;
-  current_company: string;
-  current_position: string;
-  linkedin_url: string;
+  first_name?: string;
+  last_name?: string;
+  linkedin_url?: string;
+  enrollment_id?: string;
 };
 
 export default function UserForm({
   submitValues,
   cohortID,
-  email
+  user
 }: {
   submitValues: Function;
   cohortID: string;
-  email: string;
+  user: UserType;
 }) {
-  const [companies, setCompanies] = useState<string[]>();
   const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    axios
-      .get('/cohorts/select_fields_data.json')
-      .then((res) => res.data)
-      .then((payload) => {
-        payload?.companies && setCompanies(payload.companies);
-      });
-  }, []);
   const ValidationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
@@ -54,26 +31,18 @@ export default function UserForm({
   });
 
   const formik = useFormik<UserType>({
-    initialValues: {
-      first_name: '',
-      last_name: '',
-      current_company: '',
-      current_position: '',
-      linkedin_url: ''
-    },
+    initialValues: { ...user },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
-      if (email && cohortID) {
+      if (values.enrollment_id && cohortID) {
         try {
           await axios
-            .post(`/cohorts/${cohortID}/enrollments.json`, { ...values, email })
+            .post(`/cohorts/${cohortID}/enrollments/${values.enrollment_id}/update_profile.json`, {
+              ...values
+            })
             .then((res) => {
               enqueueSnackbar('Application Submitted', { variant: 'success' });
-              submitValues({
-                enrollment_id: res.data.enrollment_id,
-                host: res.data.host,
-                user: values.first_name
-              });
+              submitValues({ ...values });
             });
         } catch (error) {
           enqueueSnackbar('Application Failed', { variant: 'error' });
@@ -85,7 +54,7 @@ export default function UserForm({
     }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, isSubmitting, getFieldProps, submitForm } = formik;
 
   return (
     <>
@@ -98,7 +67,7 @@ export default function UserForm({
         </Typography>
       </Box>
 
-      <Stack alignContent="center" width={{ xs: '100%', md: '80%' }} alignItems="center">
+      <Stack alignContent="center" width={{ xs: '100%', md: '70%' }} alignItems="center">
         <FormikProvider value={formik}>
           <Form
             style={{ width: '100%' }}
@@ -135,38 +104,6 @@ export default function UserForm({
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                       <TextField
                         fullWidth
-                        label="Current Role"
-                        {...getFieldProps('current_position')}
-                        error={Boolean(touched.current_position && errors.current_position)}
-                        helperText={touched.current_position && errors.current_position}
-                        inputProps={{
-                          'data-testid': 'current_position'
-                        }}
-                      />
-                      <FormControl fullWidth>
-                        <InputLabel id="multiple-checkbox-pronoun-label">
-                          Current Company
-                        </InputLabel>
-                        <MaterialSelect
-                          fullWidth
-                          label="Current Company"
-                          labelId="company-label"
-                          id="multiple-checkbox-company"
-                          data-testid="preferred-company"
-                          sx={{ zIndex: 1500 }}
-                          {...getFieldProps('current_company')}
-                        >
-                          {companies?.map((company: string) => (
-                            <MenuItem key={company} value={company}>
-                              <ListItemText primary={company} />
-                            </MenuItem>
-                          ))}
-                        </MaterialSelect>
-                      </FormControl>
-                    </Stack>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <TextField
-                        fullWidth
                         label="LinkedIn URL"
                         {...getFieldProps('linkedin_url')}
                         error={Boolean(touched.linkedin_url && errors.linkedin_url)}
@@ -176,35 +113,23 @@ export default function UserForm({
                         }}
                       />
                     </Stack>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <TextField
-                        fullWidth
-                        label="Personal Bio"
-                        {...getFieldProps('bio_text')}
-                        multiline
-                        rows={4}
-                        inputProps={{
-                          'data-testid': 'user-introduction'
-                        }}
-                      />
-                    </Stack>
                   </Stack>
-                  <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                    <LoadingButton
-                      type="submit"
-                      variant="contained"
-                      loading={isSubmitting}
-                      id="btn-submit"
-                      sx={{ width: 70 }}
-                    >
-                      Next
-                    </LoadingButton>
-                  </Box>
                 </Card>
               </Grid>
             </Grid>
           </Form>
         </FormikProvider>
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+          onClick={() => submitForm()}
+          id="btn-submit"
+          fullWidth
+          sx={{ mt: 3 }}
+        >
+          Finalise Application
+        </LoadingButton>
       </Stack>
     </>
   );
