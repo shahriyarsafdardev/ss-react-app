@@ -104,18 +104,14 @@ const EmptyHomeTab = ({
           variant="caption"
           className={classes.textone}
         >
-          We can’t wait to get to know you and the rest of the cohort. You will recieve complete
-          access to the ScholarSite portal one week before {cohortHost && `${cohortHost}’s`} cohort
-          begins. This includes access to Networking, Messaging and the Session Materials. We’ll
-          make sure to send you an email reminder once this date arrives!
+          We can’t wait to get to know you and the rest of the cohort shortly before{' '}
+          {cohortHost && `${cohortHost}’s`} cohort begins. This includes access to Networking,
+          Messaging and the Session Materials. We’ll make sure to send you an email reminder once
+          this date arrives!
         </Typography>
         <Typography data-testid="empty-home-cohort-information-text-1" className={classes.texttwo}>
           Right now, we highly recommend that you add the upcoming Session times to you’re calendar
           by pressing the button below.
-        </Typography>
-        <Typography data-testid="empty-home-cohort-information-text-2" className={classes.texttwo}>
-          You can also start asking {cohortHost && `${cohortHost}’s`} questions through Q&A. We look
-          forward to seeing you soon!
         </Typography>
         <Box className={classes.btnContainer}>
           <LoadingButton
