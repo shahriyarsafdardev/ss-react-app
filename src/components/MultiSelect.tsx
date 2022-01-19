@@ -59,13 +59,14 @@ export default function MultiSelect({
             : 'No options available'
         }
         isClearable={false}
-        styles={customStyles}
         backspaceRemovesValue={true}
         placeholder={<div>Click here to select</div>}
         isMulti
         isSearchable
         onChange={handleChange}
         id="multi-select"
+        menuPortalTarget={document.body}
+        styles={{ ...customStyles, menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
       />
     </div>
   );

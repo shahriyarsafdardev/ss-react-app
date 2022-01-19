@@ -16,9 +16,11 @@ import { DesktopDatePicker } from '@material-ui/lab';
 import { HouseKeepingInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
 
 const COHORT_UNDERSTADING_OPTIONS = [
-  '1 (Complete Beginner)',
-  '2 (Mediocre)',
-  '3 (Well Expirenced)'
+  'No Experience',
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+  'Expert'
 ];
 
 const REFERRER_OPTIONS = [
@@ -68,7 +70,7 @@ export default function HouseKeepingForm({
                     onChange={(value) => {
                       onUpdateAttribute('date_of_birth', value?.toString());
                     }}
-                    value={new Date()}
+                    value={infoObject?.date_of_birth || ''}
                     renderInput={(params) => (
                       <TextField inputProps={{ 'data-testid': 'housekeeping-dob' }} {...params} />
                     )}
