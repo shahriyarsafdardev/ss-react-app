@@ -303,8 +303,8 @@ const CalendarInstructions = () => {
               <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
               Return
             </RouterLink>
-            <Typography variant="h3">
-              📅 Here's how you can add the upcoming sessions to your calendar!
+            <Typography variant="h4">
+              Here's how you can add the upcoming sessions to your calendar!
             </Typography>
           </Box>
           <Box className={classes.section}>
