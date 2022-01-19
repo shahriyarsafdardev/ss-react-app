@@ -6,7 +6,7 @@ import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
 import { updateInstructorViewState } from 'redux/slices/viewMode';
 import useAuth from '../../hooks/useAuth';
-import { getCategories, getInstructorCohorts, getLearnerCohorts } from './Common';
+import { getCategories, getInstructorCohorts, groupByIntake, getLearnerCohorts } from './Common';
 import { RootState, useSelector } from '../../redux/store';
 
 // hooks
@@ -125,12 +125,18 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <LogoContainer>
         <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
       </LogoContainer>
-      {mode === 'Member' && (
-        <NavSection
-          navConfig={cohortsConfig(cohorts, 'Your Cohorts', false)}
-          isShow={!isCollapse}
-        />
-      )}
+      {mode === 'Member' &&
+        groupByIntake(cohorts).map((intakeCategory: string) => (
+          <NavSection
+            key={intakeCategory || 'With no intake Name'}
+            navConfig={cohortsConfig(
+              getLearnerCohorts(cohorts, intakeCategory),
+              intakeCategory || 'With no intake Name',
+              false
+            )}
+            isShow={!isCollapse}
+          />
+        ))}
       {mode === 'Instructor' &&
         getCategories(cohorts).map((category) => (
           <NavSection

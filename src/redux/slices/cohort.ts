@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
+import { groupByIntake } from 'layouts/dashboard/Common';
 import { dispatch } from '../store';
 import { Cohort, Enrollment } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
@@ -24,7 +25,15 @@ const slice = createSlice({
   initialState,
   reducers: {
     getCohortsSuccess(state, action) {
-      state.cohorts = action.payload;
+      const intakeCategories = groupByIntake(action.payload);
+      let sortedCohorts: Cohort[] = [];
+      intakeCategories.forEach((category) => {
+        sortedCohorts = [
+          ...sortedCohorts,
+          ...action.payload.filter((c: Cohort) => c.intake_name === category)
+        ];
+      });
+      state.cohorts = sortedCohorts;
     },
     getPeersSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
