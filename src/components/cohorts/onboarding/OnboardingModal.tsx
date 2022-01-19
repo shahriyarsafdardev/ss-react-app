@@ -345,7 +345,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         <HouseKeepingForm
           onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
           infoDetails={{
-            date_of_birth: onboardingData.date_of_birth || '',
             current_understanding: onboardingData.cohort_understanding,
             payed_by: onboardingData.payed_by,
             referred_by: onboardingData.referred_by

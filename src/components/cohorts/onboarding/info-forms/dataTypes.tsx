@@ -24,7 +24,6 @@ export type NetworkInfoType = {
 };
 
 export type HouseKeepingInfoType = {
-  date_of_birth: undefined | string;
   current_understanding: string;
   payed_by: string;
   referred_by: string;
