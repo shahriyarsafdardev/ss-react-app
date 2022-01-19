@@ -60,7 +60,7 @@ export default function MultiSelect({
         }
         isClearable={false}
         backspaceRemovesValue={true}
-        placeholder={<div>Click here to select</div>}
+        placeholder={<></>}
         isMulti
         isSearchable
         onChange={handleChange}
