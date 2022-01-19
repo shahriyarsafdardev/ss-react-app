@@ -44,7 +44,7 @@ export default function MultiSelect({
   return (
     <div>
       <Select
-        defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
+        value={selectedValues.map((option) => ({ value: option, label: option }))}
         options={
           // eslint-disable-next-line no-nested-ternary
           maxLimit
