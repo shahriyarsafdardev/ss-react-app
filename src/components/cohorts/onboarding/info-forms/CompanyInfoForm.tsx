@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
 
 import CreatableSelect from 'react-select/creatable';
+import MultiSelect from 'components/MultiSelect';
 
 import {
   Grid,
@@ -158,23 +160,13 @@ export default function CompanyInfoForm({
               </FormControl>
 
               <FormControl fullWidth>
-                <InputLabel>Company Industries</InputLabel>
-                <MaterialSelect
+                <label>Company Industries</label>
+                <MultiSelect
                   data-testid="company-industries-dropdown"
-                  fullWidth
-                  label="Company Industries"
-                  onChange={(e: any) => onUpdateAttribute('industries', e.target.value)}
-                  value={infoObject.industries}
-                  inputProps={{ 'data-testid': 'company-industry' }}
-                  multiple
-                  renderValue={(selected: any) => selected.join(', ')}
-                >
-                  {industry_options?.map((name: any) => (
-                    <MenuItem key={name} value={name}>
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
+                  values={infoObject.industries}
+                  options={industry_options}
+                  onChange={(value: string[]) => onUpdateAttribute('industries', value)}
+                />
               </FormControl>
 
               <FormControl fullWidth>
