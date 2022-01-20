@@ -104,7 +104,8 @@ export default function CardDetails({
           of being accepted.
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          Don’t worry though, you can get a refund up to 72 hours before the cohort begins.
+          Don’t worry though, you won't be charged until you are accepted and you can get a refund
+          up to 72 hours before the date of the first session.
         </Typography>
       </Box>
 
