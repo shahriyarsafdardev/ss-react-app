@@ -116,7 +116,7 @@ export default function Registration() {
     );
   };
   return (
-    <RootStyle title="Payment | Minimal-UI">
+    <RootStyle title="ScholarSite Cohort Registration">
       {loading ? (
         <Box padding="200px">
           <LoadingScreen />
