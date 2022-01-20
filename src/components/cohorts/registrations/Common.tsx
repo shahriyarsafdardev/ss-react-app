@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, Button, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
+import { Box, Tooltip, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
@@ -20,7 +20,6 @@ import forwardArrow from '@iconify/icons-eva/arrow-ios-forward-fill';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 
 // material
-import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch } from '../../../redux/store';
 import { Enrollment } from '../../../@types/cohorts';
@@ -284,8 +283,9 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               onClick={() => {
                 setModalMessage(
                   <p>
-                    Are you sure you want to accept {enrollment.name}’s application and send a
-                    payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price || 0}</p>{' '}
+                    Are you sure you want to accept {enrollment.name}’s application and
+                    {enrollment.card_added ? ' charge him' : ' send a payment link'} for
+                    <p style={{ color: '#4D4DCD' }}> USD {enrollment.price}</p>
                   </p>
                 );
                 setAction('accept_application');
@@ -317,8 +317,9 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
                 onClick={() => {
                   setModalMessage(
                     <p>
-                      Are you sure you want to accept {enrollment.name}’s application and send a
-                      payment link for <p style={{ color: '#4D4DCD' }}>USD {enrollment.price}</p>{' '}
+                      Are you sure you want to accept {enrollment.name}’s application and
+                      {enrollment.card_added ? ' charge him' : ' send a payment link'} for
+                      <p style={{ color: '#4D4DCD' }}> USD {enrollment.price}</p>
                     </p>
                   );
                   setAction('accept_application');
@@ -394,6 +395,34 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
   );
 };
 
+export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
+  <>
+    <Stack spacing={2} justifyContent="center" alignItems="center" direction="row">
+      {enrollment.card_added && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } included their payment details when registering`}
+        >
+          <Typography variant="h4">💳</Typography>
+        </Tooltip>
+      )}
+      {enrollment.coupon_code && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } used the referral code “${enrollment.coupon_code}”`}
+        >
+          <Typography variant="h4">🤝</Typography>
+        </Tooltip>
+      )}
+    </Stack>
+  </>
+);
 export const KeyMetricHighlight = ({
   metric,
   difference,

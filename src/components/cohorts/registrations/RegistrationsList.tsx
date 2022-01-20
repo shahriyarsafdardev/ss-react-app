@@ -14,15 +14,15 @@ type RegistrationsListProps = {
 const REGISTRATIONS_HEAD = [
   { id: 'name', label: 'Name' },
   { id: 'time', label: 'Sign Up Date', align: 'center' },
-  { id: 'linkedin_url', label: 'LinkedIn', align: 'center' },
   { id: 'price', label: 'Price', align: 'center' },
   { id: 'status', label: 'Status', align: 'center' },
+  { id: 'tags', label: 'Tags', align: 'center' },
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
 const HOME_HEAD = [
   { id: 'name', label: 'Name' },
-  { id: 'linkedin_url', label: 'LinkedIn', align: 'center' },
+  { id: 'tags', label: 'Tags', align: 'center' },
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
