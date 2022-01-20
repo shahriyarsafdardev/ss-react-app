@@ -63,7 +63,7 @@ export default function UserForm({
           👋 We just need a few more details to process your application
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          Ronny reviews each application in order to ensure a diverse and experienced cohort!
+          We review each application in order to ensure a diverse and experienced cohort!
         </Typography>
       </Box>
 

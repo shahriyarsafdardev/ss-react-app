@@ -97,15 +97,11 @@ export default function CardDetails({
     <>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph>
-          👋 Thanks {user}, do you want to lock in this price?
+          💳 Thanks {user}, just one last step!
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          Submitting your payment details now locks in the current price and increases your chances
-          of being accepted.
-        </Typography>
-        <Typography align="center" sx={{ color: 'text.secondary' }}>
-          Don’t worry though, you won't be charged until you are accepted and you can get a refund
-          up to 72 hours before the date of the first session.
+          You will be charged if you are accepted, and you can get a refund up to 72 hours before
+          the date of the first session.
         </Typography>
       </Box>
 
@@ -195,6 +191,17 @@ export default function CardDetails({
         >
           <LoadingButton
             type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            loading={isSubmitting}
+            onClick={() => submitForm()}
+            id="btn-submit"
+          >
+            Submit
+          </LoadingButton>
+          <LoadingButton
+            type="submit"
             color="primary"
             variant="outlined"
             loading={isSubmitting}
@@ -205,18 +212,7 @@ export default function CardDetails({
               '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
             }}
           >
-            Skip this step
-          </LoadingButton>
-          <LoadingButton
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            loading={isSubmitting}
-            onClick={() => submitForm()}
-            id="btn-submit"
-          >
-            Lock in price
+            Send me email link to pay
           </LoadingButton>
         </Stack>
       </Stack>
