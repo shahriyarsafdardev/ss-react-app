@@ -90,8 +90,8 @@ export default function Registration() {
               🎉 You’ve completed your application!
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }}>
-              {user?.host} will review your submission and accept you into the cohort within 48
-              hours
+              {user?.host} will review your submission within the next 48 hours. You will then
+              recieve an email documenting the outcome and next steps!
             </Typography>
           </Box>
           <Button
