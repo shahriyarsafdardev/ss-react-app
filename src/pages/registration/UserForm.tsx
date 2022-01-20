@@ -54,7 +54,7 @@ export default function UserForm({
     }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps, submitForm } = formik;
+  const { errors, touched, isSubmitting, getFieldProps, submitForm, isValid } = formik;
 
   return (
     <>
@@ -63,7 +63,7 @@ export default function UserForm({
           👋 We just need a few more details to process your application
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          The more info you provide, the better your chances are of being accepted into the cohort!
+          Ronny reviews each application in order to ensure a diverse and experienced cohort!
         </Typography>
       </Box>
 
@@ -123,6 +123,7 @@ export default function UserForm({
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          disabled={!isValid}
           onClick={() => submitForm()}
           id="btn-submit"
           fullWidth
