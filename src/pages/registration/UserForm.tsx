@@ -128,7 +128,7 @@ export default function UserForm({
           fullWidth
           sx={{ mt: 3 }}
         >
-          Finalise Application
+          Submit Application
         </LoadingButton>
       </Stack>
     </>
