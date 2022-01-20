@@ -128,6 +128,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {mode === 'Member' &&
         groupByIntake(cohorts).map((intakeCategory: string) => (
           <NavSection
+            data-testid="member-sidebar"
             key={intakeCategory || 'With no intake Name'}
             navConfig={cohortsConfig(
               getLearnerCohorts(cohorts, intakeCategory),

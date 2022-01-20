@@ -171,12 +171,11 @@ export default function UserInfoForm({
                 />
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
+                <FormControl data-testid="user-country" fullWidth>
                   {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label htmlFor="country">Country</label>
 
                   <Select
-                    data-testid="user-country"
                     value={{ value: infoObject?.country, label: infoObject?.country }}
                     options={countries.map((country: any) => ({
                       value: country.Name,
@@ -192,11 +191,10 @@ export default function UserInfoForm({
                   />
                 </FormControl>
 
-                <FormControl fullWidth>
+                <FormControl data-testid="user-city" fullWidth>
                   {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label htmlFor="city">City</label>
                   <Select
-                    data-testid="user-city"
                     value={{ value: infoObject?.city, label: infoObject?.city }}
                     onChange={(e) => onUpdateAttribute('city', e?.value)}
                     options={citiesList.map((city) => ({ value: city, label: city }))}
