@@ -1,8 +1,8 @@
-import { Stack, TableRow, TableCell, Typography, Link, Button } from '@material-ui/core';
+import { Stack, TableRow, TableCell, Typography, Link } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import Label from 'components/Label';
 import { Enrollment } from '../../../@types/cohorts';
-import { Actions, pickColor } from './Common';
+import { Actions, Tags, pickColor } from './Common';
 
 type RegistrationRowProps = {
   enrollment: Enrollment;
@@ -12,38 +12,46 @@ type RegistrationRowProps = {
 export default function RegistrationRow({ enrollment, index }: RegistrationRowProps) {
   const theme = useTheme();
 
-  const { id, name, status, time, price, linkedin_url } = enrollment;
+  const { id, first_name, email, name, status, time, price, linkedin_url } = enrollment;
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
       <TableCell component="th" scope="row" style={{ width: 200 }} padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography
-            variant="subtitle2"
-            noWrap
-            data-testid={`registration${id ? `-${id}` : ''}-name`}
-          >
-            {name}
-          </Typography>
+          {linkedin_url ? (
+            <Link
+              underline="always"
+              href={linkedin_url}
+              target="_blank"
+              color="#071A33"
+              data-testid={`registration${id ? `-${id}` : ''}-name`}
+              sx={{ typography: 'subtitle2' }}
+            >
+              {first_name === 'Unknown' ? email : name}
+            </Link>
+          ) : (
+            <Typography
+              variant="subtitle2"
+              noWrap
+              data-testid={`registration${id ? `-${id}` : ''}-name`}
+            >
+              {first_name === 'Unknown' ? email : name}
+            </Typography>
+          )}
         </Stack>
       </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-time`}>
+      <TableCell
+        style={{ width: 170 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-time`}
+      >
         {time}
       </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-linkedin-url`}>
-        {linkedin_url && (
-          <Link
-            underline="always"
-            href={linkedin_url}
-            target="_blank"
-            color="#071A33"
-            sx={{ typography: 'body2' }}
-          >
-            Open
-          </Link>
-        )}
-      </TableCell>
-      <TableCell align="center" data-testid={`registration${id ? `-${id}` : ''}-price`}>
+      <TableCell
+        style={{ width: 100 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-price`}
+      >
         ${price || 0}
       </TableCell>
       <TableCell style={{ width: 300 }} align="center">
@@ -54,6 +62,13 @@ export default function RegistrationRow({ enrollment, index }: RegistrationRowPr
         >
           {status}
         </Label>
+      </TableCell>
+      <TableCell
+        style={{ width: 120 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-price`}
+      >
+        <Tags enrollment={enrollment} />
       </TableCell>
       <TableCell
         style={{ width: 250 }}

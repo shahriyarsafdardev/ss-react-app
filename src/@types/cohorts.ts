@@ -118,6 +118,7 @@ export type Enrollment = {
   status: string;
   notes: string;
   stream: string;
+  card_added: boolean;
   coupon_code: string;
   time: string;
   application_accepted_time: string;
