@@ -43,7 +43,7 @@ const EmptySessionsTab = ({ cohortHost }: { cohortHost: string }) => (
           ScholarSite Sessions allows you to seemlesly access recordings, slides and materials
           during and outside of session times.
         </b>{' '}
-        You will recieve complete access to the Sessions page one week before{' '}
+        You will recieve complete access to the Sessions page shortly before{' '}
         {cohortHost && `${cohortHost}’s`} cohort begins. We’ll make sure to send you an email
         reminder once this date arrives!
       </StyledPara>
