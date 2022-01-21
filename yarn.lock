@@ -14626,11 +14626,6 @@ react-motion@^0.5.0:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
-react-payment-inputs@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/react-payment-inputs/-/react-payment-inputs-1.1.8.tgz#fa98567a2829167afed5b61ea950d5105b027711"
-  integrity sha512-7bU/hsxc79HLwJWRx5MRBUDg9LIOIK3uyqRWAVzPv9uPF33ZjuV+ghm6U0YzX/z9Xlab7D1VS++lzn2CK8d0sg==
-
 react-pdf@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-5.4.0.tgz#57083f43f53d44ce4218e4431b5812dcce8526dd"

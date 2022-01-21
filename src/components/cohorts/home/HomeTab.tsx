@@ -135,8 +135,6 @@ const Index = () => {
                   activeSession={activeSession}
                 />
               )}
-            </StyledBox>
-            <StyledBox>
               {mode === 'Instructor' ? (
                 <CohortGuides cohort={cohort} activeSession={activeSession} sessions={sessions} />
               ) : (
