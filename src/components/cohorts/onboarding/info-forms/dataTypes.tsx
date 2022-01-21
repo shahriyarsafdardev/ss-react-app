@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import { LoadingButton } from '@material-ui/lab';
 
@@ -33,6 +33,27 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     display: 'flex',
     flexDirection: 'column'
+  }
+}));
+
+const MainContainer = styled(Box)(({ theme }) => ({
+  textAlign: 'right',
+  marginTop: '30px',
+  [theme.breakpoints.down('sm')]: {
+    textAlign: 'center'
+  },
+  '.txt': {
+    color: '#6C7885',
+    [theme.breakpoints.up('sm')]: {
+      position: 'absolute',
+      right: '50px',
+      bottom: '90px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      position: null,
+      bottom: null,
+      right: null
+    }
   }
 }));
 
@@ -88,30 +109,35 @@ export const NavigationButtons = ({
   isSubmitBtn?: boolean;
   isSubmitting?: boolean;
 }) => (
-  <ButtonsContainer>
-    {showPrevButton && (
-      <StyledButton
-        data-testid="btn_previous"
-        className="previous"
-        disabled={isSubmitting}
-        variant="outlined"
-        onClick={() => onPreviousHandler()}
-      >
-        Previous
-      </StyledButton>
-    )}
+  <MainContainer>
+    <Typography className="txt" variant="caption">
+      Please enter all of your details to {isSubmitBtn ? 'submit' : 'move to the next page'}
+    </Typography>
+    <ButtonsContainer>
+      {showPrevButton && (
+        <StyledButton
+          data-testid="btn_previous"
+          className="previous"
+          disabled={isSubmitting}
+          variant="outlined"
+          onClick={() => onPreviousHandler()}
+        >
+          Previous
+        </StyledButton>
+      )}
 
-    <StyledButton
-      data-testid="btn_next"
-      variant="contained"
-      className="next"
-      loading={isSubmitting}
-      disabled={disabled}
-      onClick={() => onNextHandler()}
-    >
-      {isSubmitBtn ? 'Submit' : 'Next'}
-    </StyledButton>
-  </ButtonsContainer>
+      <StyledButton
+        data-testid="btn_next"
+        variant="contained"
+        className="next"
+        loading={isSubmitting}
+        disabled={disabled}
+        onClick={() => onNextHandler()}
+      >
+        {isSubmitBtn ? 'Submit' : 'Next'}
+      </StyledButton>
+    </ButtonsContainer>
+  </MainContainer>
 );
 
 export const checkFormValidity = (form: Object) => {
