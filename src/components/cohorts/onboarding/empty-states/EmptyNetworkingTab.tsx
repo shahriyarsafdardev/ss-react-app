@@ -52,7 +52,7 @@ const EmptyNetworkingTab = ({ cohortHost }: { cohortHost: string }) => (
           ScholarSite Networking includes a complete overview of your fellow cohort members
           including their experience, interests and skills.
         </b>{' '}
-        You will recieve complete access to Networking one week before{' '}
+        You will recieve complete access to Networking shortly before{' '}
         {cohortHost && `${cohortHost}’s`} cohort begins. We’ll make sure to send you an email
         reminder once this date arrives!
       </StyledPara>
