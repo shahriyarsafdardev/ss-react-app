@@ -42,7 +42,7 @@ jobs:
           command: dockerize -wait http://localhost:3000 -timeout 5m
       - run:
           name: Run tests
-          command: yarn cypress run
+          command: yarn cypress run --headed
 
 workflows:
   version: 2
