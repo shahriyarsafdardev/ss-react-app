@@ -146,7 +146,7 @@ export default function CommentForm({
         <UserAvatar
           alt={user?.displayName}
           src={user?.profile_image_url}
-          sx={{ width: 48, height: 48 }}
+          sx={{ width: 48, height: 48, display: 'flex', justifyContent: 'center' }}
         />
         <FormikProvider value={formik}>
           <StyledForm noValidate autoComplete="off">

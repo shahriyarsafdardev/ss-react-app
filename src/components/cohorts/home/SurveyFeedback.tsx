@@ -51,11 +51,13 @@ const SurveyFeedback = ({ sessions }: { sessions: Session[] }) => {
               </p>
             </Box>
           </Box>
-          <StyledSurveyContainer>
-            {data.map((q: any) => (
-              <DisplaySurveyResponse key={q?.question} question={q} />
-            ))}
-          </StyledSurveyContainer>
+          {sum(Object.values(data[0]?.answers)) > 0 && (
+            <StyledSurveyContainer>
+              {data.map((q: any) => (
+                <DisplaySurveyResponse key={q?.question} question={q} />
+              ))}
+            </StyledSurveyContainer>
+          )}
         </>
       ) : (
         <CircularLoader />

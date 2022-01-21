@@ -3,7 +3,7 @@ import { styled } from '@material-ui/core/styles';
 import { Icon } from '@iconify/react';
 import downArrow from '@iconify/icons-eva/arrow-ios-downward-fill';
 import upArrow from '@iconify/icons-eva/arrow-ios-upward-fill';
-import { Country } from 'country-state-city';
+import { countries } from 'country-city-location';
 import {
   Box,
   CircularProgress,
@@ -231,17 +231,19 @@ const getStarResponses = (answers: any) => {
 export const DisplaySurveyResponse = ({ question }: { question: any }) => {
   if (question.type === 'slider') {
     const responseValue = Number(getStarResponses(question.answers));
-    return (
+    return question.answers ? (
       <StarResponses
         heading={question.question}
         value={responseValue}
         total={10}
         percent={(responseValue / 10) * 100}
       />
+    ) : (
+      <></>
     );
   }
   if (question.type === 'multiple-choice') {
-    return (
+    return question.answers ? (
       <ChartWrapperStyle>
         <ChartDonut
           heading={question.question}
@@ -249,30 +251,34 @@ export const DisplaySurveyResponse = ({ question }: { question: any }) => {
           labels={Object.keys(question.answers)}
         />
       </ChartWrapperStyle>
+    ) : (
+      <></>
     );
   }
   if (question.type === 'text-input') {
     const commnets = Object.keys(question.answers).filter((answer) => answer.length > 5);
-    return (
-      <>
-        <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
-          <Stack direction="row" spacing={1} justifyContent="space-between">
-            <Heading heading={question.question} />
-          </Stack>
-          <TextResponses responses={commnets} />
+    return question.answers ? (
+      <Stack sx={{ mb: 2 }} direction="column" spacing={1}>
+        <Stack direction="row" spacing={1} justifyContent="space-between">
+          <Heading heading={question.question} />
         </Stack>
-      </>
+        <TextResponses responses={commnets} />
+      </Stack>
+    ) : (
+      <></>
     );
   }
   if (question.type === 'star-rating') {
     const responseValue = Number(getStarResponses(question.answers));
-    return (
+    return question.answers ? (
       <StarResponses
         heading={question.question}
         value={responseValue}
         percent={(responseValue / 5) * 100}
         total={5}
       />
+    ) : (
+      <></>
     );
   }
   return <></>;
@@ -414,21 +420,14 @@ export const TextResponses = ({ responses }: { responses: any }) => {
 export const CompanyHighlight = ({
   name,
   image,
-  type,
   count
 }: {
   name?: string;
   image?: string;
-  type: string;
   count?: number;
 }) => (
   <Stack direction="column" alignItems="center">
-    {type === 'country' ? (
-      <Typography variant="h2">{image}</Typography>
-    ) : (
-      <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
-    )}
-
+    <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
     <Typography variant="subtitle2">{name}</Typography>
     <Typography variant="caption" color="#637381">
       {count} participant{count !== 1 && 's'}
@@ -527,14 +526,14 @@ const getCountries = (enrollments: Enrollment[]) => {
   const grouped = groupBy(enrollments, 'country');
   const sorted: any[] = [];
   const keys = Object.keys(grouped);
-  const countries = Country.getAllCountries();
 
   keys.map((key) => {
     if (key !== 'null') {
       sorted.push({
         name: key,
         count: grouped[key].length,
-        flag: countries?.find((countryItem) => countryItem.name === grouped[key][0].country)?.flag
+        flag: countries?.find((countryItem: any) => countryItem.Name === grouped[key][0].country)
+          ?.Flag
       });
     }
   });
@@ -574,7 +573,7 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
   const revenue = getRevenue(enrollments);
   const pipeline = getPipelineRevenue(enrollments);
   const companies = getCompanies(enrollments);
-  const countries = getCountries(enrollments);
+  const userCountries = getCountries(enrollments);
   const roles = getRoles(enrollments, 'current_role_category_selections');
   const industries = getRoles(enrollments, 'current_industry_category_selections');
 
@@ -592,14 +591,14 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
           heading="Your Earnings"
           value={fShortenNumber(revenue.total)}
           type="price"
-          difference={revenue.increase}
+          difference={fShortenNumber(revenue.increase)}
           tooltipMessage="80% of all revenue from registrations"
         />
         <RevenueHighlight
           heading="In The Pipeline"
           value={fShortenNumber(pipeline.total)}
           type="price"
-          difference={pipeline.increase}
+          difference={fShortenNumber(pipeline.increase)}
           tooltipMessage="80% * (Combined value of all unconverted registrations)"
         />
         <RevenueHighlight
@@ -629,7 +628,6 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
           >
             {companies.slice(0, 6).map((company) => (
               <CompanyHighlight
-                type="company"
                 key={company.name}
                 name={company.name}
                 count={company.count}
@@ -640,7 +638,7 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
         </AnalyticsContainer>
       );
     }
-    if (countries.length > 0) {
+    if (userCountries.length > 0) {
       items.push(
         <AnalyticsContainer key="3">
           <Typography variant="h6">From countries all over the world</Typography>
@@ -651,9 +649,8 @@ export const getAnalyticsData = (cohort_id: string, enrollments: Enrollment[]) =
             justifyContent="space-evenly"
             alignItems="center"
           >
-            {countries.slice(0, 5).map((country) => (
+            {userCountries.slice(0, 5).map((country) => (
               <CompanyHighlight
-                type="country"
                 key={country.name}
                 name={country.name}
                 count={country.count}
