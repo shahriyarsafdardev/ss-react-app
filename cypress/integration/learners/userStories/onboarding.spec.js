@@ -405,6 +405,12 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
+      cy.get('[data-testid="housekeeping-payment"]')
+      .parent().click()
+      cy.contains('span', 'Other')
+      .click()
+      cy.get('[data-testid="housekeeping-payment"]')
+      .and("have.attr", "value", "Other")
       // cy.get('[data-testid="housekeeping-dob"]')
       // .children().eq(0)
       // .children().eq(1)
@@ -429,17 +435,17 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .and('contain','Housekeeping Questions')
     });
 
-    context('If any input is empty',() => {
-      it('Displays a disabled “Next” button',() => {
-        // cy.get('[data-testid="housekeeping-dob"]')
-        // .children().eq(0)
-        // .children().eq(1)
-        // .children().eq(0)
-        // .clear()
-        // cy.get('[data-testid="btn_next"]')
-        // .and("have.attr", "disabled")
-      });
-    })
+    // context('If any input is empty',() => {
+    //   it('Displays a disabled “Next” button',() => {
+    //     // cy.get('[data-testid="housekeeping-dob"]')
+    //     // .children().eq(0)
+    //     // .children().eq(1)
+    //     // .children().eq(0)
+    //     // .clear()
+    //     cy.get('[data-testid="btn_next"]')
+    //     .and("have.attr", "disabled")
+    //   });
+    // })
 
     context('If all inputs are filled', () => {
       it('Allows users to submit their onboarding details through the “Submit” button',() => {
@@ -472,10 +478,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
           expect(xhr.response.body.interested_in_being_matched).to.eq(home_refactored.participant_profile.interested_in_being_matched);
           expect(xhr.response.body.networking_roles_categories[0]).to.eq(home_refactored.participant_profile.networking_roles_categories[0]);
           expect(xhr.response.body.networking_industries_categories[0]).to.eq(home_refactored.participant_profile.networking_industries_categories[0]);
-          expect(xhr.response.body.current_understanding).to.eq(home_refactored.participant_profile.current_understanding);
+          //expect(xhr.response.body.current_understanding).to.eq(home_refactored.participant_profile.current_understanding);
           expect(xhr.response.body.referred_by).to.eq(home_refactored.participant_profile.referred_by);
           expect(xhr.response.body.payed_by).to.eq(home_refactored.participant_profile.payed_by);
-          expect(xhr.response.body.date_of_birth).to.eq(home_refactored.participant_profile.date_of_birth);
+          //expect(xhr.response.body.date_of_birth).to.eq(home_refactored.participant_profile.date_of_birth);
           expect(xhr.response.body.opted_in_for_matching_suggestions).to.eq(home_refactored.participant_profile.opted_in_for_matching_suggestions);
         })
         // Assert Home page is opened
