@@ -191,17 +191,6 @@ export default function CardDetails({
         >
           <LoadingButton
             type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            loading={isSubmitting}
-            onClick={() => submitForm()}
-            id="btn-submit"
-          >
-            Submit
-          </LoadingButton>
-          <LoadingButton
-            type="submit"
             color="primary"
             variant="outlined"
             loading={isSubmitting}
@@ -212,7 +201,18 @@ export default function CardDetails({
               '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
             }}
           >
-            Send me email link to pay
+            Pay Later (Not Recommended)
+          </LoadingButton>
+          <LoadingButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            loading={isSubmitting}
+            onClick={() => submitForm()}
+            id="btn-submit"
+          >
+            Submit
           </LoadingButton>
         </Stack>
       </Stack>
