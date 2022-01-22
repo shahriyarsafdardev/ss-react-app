@@ -8,5 +8,6 @@
   "viewportWidth": 1500,
   "viewportHeight": 920,
   "requestTimeout": 80000,
-  "responseTimeout": 80000
+  "responseTimeout": 80000,
+  "chromeWebSecurity": false
 }
