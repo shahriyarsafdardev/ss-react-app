@@ -159,10 +159,9 @@ export default function CompanyInfoForm({
                 />
               </FormControl>
 
-              <FormControl fullWidth>
+              <FormControl data-testid="company-industries-dropdown" fullWidth>
                 <label>Company Industries</label>
                 <MultiSelect
-                  data-testid="company-industries-dropdown"
                   values={infoObject.industries}
                   options={industry_options}
                   onChange={(value: string[]) => onUpdateAttribute('industries', value)}

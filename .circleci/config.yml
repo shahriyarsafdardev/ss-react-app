@@ -43,6 +43,9 @@ jobs:
       - run:
           name: Run tests
           command: yarn cypress run
+      - store_artifacts:
+          path: /home/circleci/project/cypress/screenshots/
+          destination: screenshot
 
 workflows:
   version: 2

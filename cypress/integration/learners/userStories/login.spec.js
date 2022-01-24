@@ -22,11 +22,11 @@ describe('When a learner logs in', () => {
       .and('contain', cohortsFixture.cohorts[0].host_names)
       cy.get('[data-testid="empty-home-cohort-information-text-1"]')
       .should('be.visible')
-      cy.get('[data-testid="empty-home-cohort-information-text-2"]')
-      .should('be.visible')
+      // cy.get('[data-testid="empty-home-cohort-information-text-2"]')
+      // .should('be.visible')
       cy.get('[data-testid="empty-home-add-to-calendar-btn"]')
       .should('be.visible')
-      .and('contain', 'Add Sessions to my calendar')
+      .and('contain', 'Add sessions to my calendar')
       cy.get('[data-testid="empty-home-ask-question-btn"]')
       .should('be.visible')
       .and('contain', 'Ask '+ cohortsFixture.cohorts[0].host_names +' a question through Q&A')
@@ -34,7 +34,9 @@ describe('When a learner logs in', () => {
 
     describe('When the Sessions is selected from the Sidebar', () => {
       it('Opens Sessions#Empty page' , () => {
-        cy.get('[data-testid="navbar-sessions"]')
+        //data-testid="navbar-cohort-admin-page-list-Your Cohorts-Accelerating Innovation with A/B Testing-home"
+        //cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-sessions"]`)
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-sessions"]`)
         .should('be.visible')
         .click()
         cy.url().should('include', 'sessions')
@@ -50,7 +52,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Messaging is selected from the Sidebar', () => {
       it('Opens Messaging#Empty page', () => {
-        cy.get('[data-testid="navbar-messaging"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-messaging"]`)
         .should('be.visible')
         .click()
         cy.url().should('include', 'messaging')
@@ -66,7 +68,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Networking is selected from the Sidebar', () => {
       it('Opens Networking#Empty page', () => {
-        cy.get('[data-testid="navbar-networking"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-networking"]`)
         .should('be.visible').click()
         cy.url()
         .should('include', 'peers')
@@ -82,7 +84,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Q&A is selected from the Sidebar', () => {
       it('Opens Q&A#Empty page', () => {
-        cy.get('[data-testid="navbar-Q&A"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-Q&A"]`)
         .should('be.visible')
         .click()
         cy.url().
@@ -113,7 +115,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Sessions is selected from the Sidebar', () => {
       it('Opens Sessions page',() => {
-        cy.get('[data-testid="navbar-sessions"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-sessions"]`)
         .should('be.visible')
         .click()
         cy.url().should('include', 'sessions')
@@ -124,7 +126,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Messaging is selected from the Sidebar', () => {
       it('Opens Messaging page',() => {
-        cy.get('[data-testid="navbar-messaging"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-messaging"]`)
         .should('be.visible')
         .click()
         cy.url().should('include', 'messaging')
@@ -135,7 +137,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Networking is selected from the Sidebar', () => {
       it('Opens Networking page',() => {
-        cy.get('[data-testid="navbar-networking"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-networking"]`)
         .should('be.visible').click()
         cy.url()
         .should('include', 'peers')
@@ -146,7 +148,7 @@ describe('When a learner logs in', () => {
 
     describe('When the Q&A is selected from the Sidebar', () => {
       it('Opens Q&A page',() => {
-        cy.get('[data-testid="navbar-Q&A"]')
+        cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-Q&A"]`)
         .should('be.visible')
         .click()
         cy.url().

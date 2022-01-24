@@ -94,7 +94,7 @@ Cypress.Commands.add('markedUncheck', () => {
 describe('Home > To do', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
   });
 
   it('Displays a to do tab', () => {

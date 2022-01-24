@@ -1,5 +1,7 @@
 import moment from 'moment';
 import sessionFixture from '../../../fixtures/session/sessions.json';
+import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../fixtures/login/login.json';
 import {
   sortedTimes,
   firstUpcomingDate,
@@ -21,14 +23,17 @@ Cypress.Commands.add('setClockToAfterSession', (times, hours, type) => {
 describe('Sessions > RecordingsPreview', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
-    cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
+    cy.login({});
+    cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
+    .should('be.visible')
+    .click();
+    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   context('When remaining session time is more than 1 day', () => {
     beforeEach(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[1].times, 3, 'days');
-      cy.get('#session-list-1')
+      cy.get('[data-testid=session-list-title-1]').first()
       .click({ force: true });
     });
 
@@ -52,7 +57,7 @@ describe('Sessions > RecordingsPreview', () => {
   context('When remaining session time is less than 1 day', () => {
     beforeEach(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[2].times, 20, 'hours');
-      cy.get('#session-list-2')
+      cy.get('[data-testid=session-list-title-2]').first()
       .click({ force: true });
     });
 
@@ -86,7 +91,7 @@ describe('Sessions > RecordingsPreview', () => {
   context('When session live', () => {
     beforeEach(() => {
       cy.setClockToAfterSession(sessionFixture.sessions[2].times, 10, 'minutes');
-      cy.get('#session-list-2')
+      cy.get('[data-testid=session-list-title-2]').first()
       .click({ force: true });
     });
 
@@ -108,7 +113,7 @@ describe('Sessions > RecordingsPreview', () => {
   context('When session has ended and recording is not uploaded', () => {
     beforeEach(() => {
       cy.setClockToAfterSession(sessionFixture.sessions[2].times, 2, 'hours');
-      cy.get('#session-list-2')
+      cy.get('[data-testid=session-list-title-2]').first()
       .click({ force: true });
     });
 

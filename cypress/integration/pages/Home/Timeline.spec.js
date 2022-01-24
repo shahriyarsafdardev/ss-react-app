@@ -64,7 +64,7 @@ Cypress.Commands.add('dateBelowIncompleteSession', (sessionNumber) => {
 describe('Home > Timeline', () => {
   beforeEach(() => {
     cy.server();
-    cy.login();
+    cy.login({});
   });
   it('Displays a welcome text in timeline', () => {
     cy.welcomeText().should('be.visible');

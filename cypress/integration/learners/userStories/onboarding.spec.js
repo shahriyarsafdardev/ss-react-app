@@ -1,6 +1,7 @@
 // Each it block should mnatch a container element by its test id
 import home_refactored from '../../../fixtures/onboarding/home_refactored.json'
-
+import login_fixture from '../../../fixtures/login/login.json'
+const dayjs = require('dayjs')
 const serverUrl = Cypress.env('serverUrl');
 
 describe('When a user visits the home page of a cohort for the first time', () => {
@@ -28,12 +29,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .should('be.visible')
       cy.get('[data-testid="user-last-name"]')
       .should('be.visible')
-      cy.get('[data-testid="user-country"]').then(($el)  => {
-        Cypress.dom.isVisible($el)
-      })
-      cy.get('[data-testid="user-city"]').then(($el)  => {
-        Cypress.dom.isVisible($el)
-      })
+      cy.get('[data-testid="user-country"]')
+      .should('be.visible')
+      cy.get('[data-testid="user-city"]')
+      .should('be.visible')
       cy.get('[data-testid="user-pronoun-label"]')
       .should('be.visible')
       cy.get('[data-testid="user-linkedIn-url"]')
@@ -51,9 +50,13 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .should('be.visible')
       .and("have.attr", "value", home_refactored.participant_profile.last_name)
       cy.get('[data-testid="user-country"]')
-      .and("have.attr", "value", home_refactored.participant_profile.country)
+      .find('input')
+      .eq(0).parent().parent().children()
+      .and("contain", home_refactored.participant_profile.country)
       cy.get('[data-testid="user-city"]')
-      .and("have.attr", "value", home_refactored.participant_profile.city)
+      .find('input')
+      .eq(0).parent().parent().children()
+      .and("contain", home_refactored.participant_profile.city)
       cy.get('[data-testid="profile-url"]')
       .should('be.visible')
       .and("have.attr", "src", home_refactored.participant_profile.profile_image_url)
@@ -121,9 +124,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="company-name"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
-      cy.get('[data-testid="company-industry"]').then(($el)  => {
-        Cypress.dom.isVisible($el)
-      })
+      // cy.get('[data-testid="company-industry"]').then(($el)  => {
+      //   Cypress.dom.isVisible($el)
+      // })
       cy.get('[data-testid="company-employees"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
@@ -137,16 +140,17 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .and("contain", home_refactored.participant_profile.current_company)
       cy.get('[data-testid="profile-url"]')
       .and("have.attr", "src", home_refactored.participant_profile.company_logo_url)
-      cy.get('[data-testid="company-industry"]')
-      .and("have.attr", "value", home_refactored.participant_profile.current_industry_category_selections[0])
+      // cy.get('[data-testid="company-industry"]')
+      // .and("have.attr", "value", home_refactored.participant_profile.current_industry_category_selections[0])
       cy.get('[data-testid="company-employees"]')
       .and("have.attr", "value", home_refactored.participant_profile.number_of_employees)
     });
 
     it('Allows users to update or enter new details', () => {
-      cy.get('[data-testid="company-industries-dropdown"]')
+      cy.get('[data-testid="company-name"]')
+      .children().eq(1)
       .click()
-      cy.contains('li', home_refactored.participant_profile.current_industry_category_selections[0])
+       cy.contains('div','Joggo' )
       .click()
     });
 
@@ -168,9 +172,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
     context('If any input is empty',() => {
       it('Displays a disabled “Next” button',() => {
         cy.get('[data-testid="company-industries-dropdown"]')
-        .click()
-        cy.contains('li', home_refactored.participant_profile.current_industry_category_selections[0])
-        .click()
+        .type('{backspace}')
+        // cy.contains('li', home_refactored.participant_profile.number_of_employees)
+        // .click()
         cy.get('[data-testid="btn_next"]')
         .and("have.attr", "disabled")
       });
@@ -271,7 +275,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
   });
 
-
   describe('Page 4', () => {
     beforeEach(() => {
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
@@ -301,18 +304,20 @@ describe('When a user visits the home page of a cohort for the first time', () =
     it('Prefills inputs with existing user details', () => {
       // Assert input values using fixture data
       cy.get('[data-testid="network-roles"]')
-      .and("have.attr", "value", home_refactored.participant_profile.networking_roles_categories[0])
+      .find('input').parent().siblings()
+      .and("contain", home_refactored.participant_profile.networking_roles_categories[0])
       cy.get('[data-testid="network-industeries"]')
-      .and("have.attr", "value", home_refactored.participant_profile.networking_industries_categories[0])
+      .find('input').parent().siblings()
+      .and("contain", home_refactored.participant_profile.networking_industries_categories[0])
       cy.get('[data-testid="network-fellow-member"]')
       .and("have.attr", "value", "Yes")
     });
 
     it('Allows users to update or enter new details', () => {
-      cy.get('[data-testid="network-fellow-member-dropdown"]')
+      cy.get('[data-testid="network-industeries"]')
+      .find('input')
       .click()
-      cy.contains('li', home_refactored.participant_profile.networking_industries_categories[0])
-      .click()
+      .type('{enter}')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
@@ -332,10 +337,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
     context('If any input is empty', () => {
       it('Displays a disabled “Next” button', () => {
-        cy.get('[data-testid="network-fellow-member-dropdown"]')
-        .click()
-        cy.contains('li', home_refactored.participant_profile.networking_industries_categories[0])
-        .click()
+        cy.get('[data-testid="network-industeries"]')
+        .type('{backspace}')
+        // .find('input').parent().siblings().children().eq(1)
+        // .and("have.attr", "aria-label", "Remove "+home_refactored.participant_profile.networking_industries_categories[0])
+        // .click()
         cy.get('[data-testid="btn_next"]')
         .and("have.attr", "disabled")
       });
@@ -370,8 +376,8 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
       // Assert pressense of inputs
-      cy.get('[data-testid="housekeeping-dob"]')
-      .should('be.visible')
+      // cy.get('[data-testid="housekeeping-dob"]')
+      // .should('be.visible')
       cy.get('[data-testid="housekeeping-cohort-tpoic"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
@@ -385,11 +391,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
     it('Prefills inputs with existing user details',() => {
       // Assert input values using fixture data
-      cy.get('[data-testid="housekeeping-dob"]')
-      .children().eq(0)
-      .children().eq(1)
-      .children().eq(0)
-      .and("have.attr", "value", home_refactored.participant_profile.date_of_birth)
+      // cy.get('[data-testid="housekeeping-dob"]')
+      // .children().eq(0)
+      // .children().eq(1)
+      // .children().eq(0)
+      // .and("have.attr", "value", dayjs().format('MM/DD/YYYY'))
       cy.get('[data-testid="housekeeping-cohort-tpoic"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_understanding)
       cy.get('[data-testid="housekeeping-about-cohort"]')
@@ -399,13 +405,19 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      cy.get('[data-testid="housekeeping-dob"]')
-      .children().eq(0)
-      .children().eq(1)
-      .children().eq(0)
-      .clear()
-      .type('11/11/2021')
-      .and("have.attr", "value", '11/11/2021')
+      cy.get('[data-testid="housekeeping-payment"]')
+      .parent().click()
+      cy.contains('span', 'Other')
+      .click()
+      cy.get('[data-testid="housekeeping-payment"]')
+      .and("have.attr", "value", "Other")
+      // cy.get('[data-testid="housekeeping-dob"]')
+      // .children().eq(0)
+      // .children().eq(1)
+      // .children().eq(0)
+      // .clear()
+      // .type('11/11/2021')
+      // .and("have.attr", "value", '11/11/2021')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons', () => {
@@ -423,17 +435,17 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .and('contain','Housekeeping Questions')
     });
 
-    context('If any input is empty',() => {
-      it('Displays a disabled “Next” button',() => {
-        cy.get('[data-testid="housekeeping-dob"]')
-        .children().eq(0)
-        .children().eq(1)
-        .children().eq(0)
-        .clear()
-        cy.get('[data-testid="btn_next"]')
-        .and("have.attr", "disabled")
-      });
-    })
+    // context('If any input is empty',() => {
+    //   it('Displays a disabled “Next” button',() => {
+    //     // cy.get('[data-testid="housekeeping-dob"]')
+    //     // .children().eq(0)
+    //     // .children().eq(1)
+    //     // .children().eq(0)
+    //     // .clear()
+    //     cy.get('[data-testid="btn_next"]')
+    //     .and("have.attr", "disabled")
+    //   });
+    // })
 
     context('If all inputs are filled', () => {
       it('Allows users to submit their onboarding details through the “Submit” button',() => {
@@ -466,10 +478,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
           expect(xhr.response.body.interested_in_being_matched).to.eq(home_refactored.participant_profile.interested_in_being_matched);
           expect(xhr.response.body.networking_roles_categories[0]).to.eq(home_refactored.participant_profile.networking_roles_categories[0]);
           expect(xhr.response.body.networking_industries_categories[0]).to.eq(home_refactored.participant_profile.networking_industries_categories[0]);
-          expect(xhr.response.body.current_understanding).to.eq(home_refactored.participant_profile.current_understanding);
+          //expect(xhr.response.body.current_understanding).to.eq(home_refactored.participant_profile.current_understanding);
           expect(xhr.response.body.referred_by).to.eq(home_refactored.participant_profile.referred_by);
           expect(xhr.response.body.payed_by).to.eq(home_refactored.participant_profile.payed_by);
-          expect(xhr.response.body.date_of_birth).to.eq(home_refactored.participant_profile.date_of_birth);
+          //expect(xhr.response.body.date_of_birth).to.eq(home_refactored.participant_profile.date_of_birth);
           expect(xhr.response.body.opted_in_for_matching_suggestions).to.eq(home_refactored.participant_profile.opted_in_for_matching_suggestions);
         })
         // Assert Home page is opened

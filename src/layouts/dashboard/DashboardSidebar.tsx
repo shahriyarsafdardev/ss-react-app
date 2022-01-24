@@ -128,6 +128,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {mode === 'Member' &&
         groupByIntake(cohorts).map((intakeCategory: string) => (
           <NavSection
+            data-testid="member-sidebar"
             key={intakeCategory || 'With no intake Name'}
             navConfig={cohortsConfig(
               getLearnerCohorts(cohorts, intakeCategory),
@@ -140,6 +141,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {mode === 'Instructor' &&
         getCategories(cohorts).map((category) => (
           <NavSection
+            data-testid="instructor-sidebar"
             key={category}
             navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
             isShow={!isCollapse}
@@ -150,7 +152,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       {user?.type !== 'learner' && (
         <StyledBox>
           <ViewSwitcherStyle>
-            <p style={{ textAlign: 'center' }}>
+            <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
               You are currently viewing the
               <b> {mode} Dashboard,</b> to access your{' '}
               {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
@@ -158,7 +160,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </p>
             <SwitcherButtonContainer>
               <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
-              <Switch size="small" checked={mode === 'Instructor'} onChange={() => switchView()} />
+              <Switch
+                data-testid="dashboard-switch"
+                size="small"
+                checked={mode === 'Instructor'}
+                onChange={() => switchView()}
+              />
               <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
                 Instructor
               </LabelStyled>
