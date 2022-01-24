@@ -1,6 +1,6 @@
 /documentation
 /fixtures
-/cypress/fixtures
+/cypress/*
 /src/_test_
 /README.md
-/public/static/*
+/public/static/mock-images/*
