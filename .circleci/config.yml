@@ -37,16 +37,15 @@ jobs:
           name: Run server
           command: yarn start
           background: true
-          
-      - store_artifacts:
-          path: /tmp/screenshots
-          destination: screenshot
 
       - run:
           command: dockerize -wait http://localhost:3000 -timeout 5m
       - run:
           name: Run tests
           command: yarn cypress run
+      - store_artifacts:
+          path: /home/circleci/project/cypress/screenshots/
+          destination: screenshot
 
 workflows:
   version: 2
