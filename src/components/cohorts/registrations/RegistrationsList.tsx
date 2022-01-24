@@ -22,7 +22,7 @@ const REGISTRATIONS_HEAD = [
 
 const HOME_HEAD = [
   { id: 'name', label: 'Name' },
-  { id: 'linkedin_url', label: 'LinkedIn', align: 'center' },
+  { id: 'tags', label: 'Tags', align: 'center' },
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 

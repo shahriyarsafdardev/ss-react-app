@@ -94,9 +94,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       }
     } else {
       updateInstructorViewState('Instructor');
-      const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
+      const hostCohorts = cohorts?.filter((cohort) => cohort.is_host);
       if (hostCohorts.length > 0) {
-        url = `/cohorts/${hostCohorts[0].id}/registrations`;
+        url = `/cohorts/${hostCohorts[0].id}/home`;
       }
     }
     navigate(url);

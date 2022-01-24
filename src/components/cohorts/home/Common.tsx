@@ -427,7 +427,7 @@ export const CompanyHighlight = ({
   count?: number;
 }) => (
   <Stack direction="column" alignItems="center">
-    <Avatar alt={name} src={image} sx={{ width: 30, height: 30 }} />
+    <Avatar alt={name} src={image} sx={{ border: '0.5px solid', width: 30, height: 30 }} />
     <Typography variant="subtitle2">{name}</Typography>
     <Typography variant="caption" color="#637381">
       {count} participant{count !== 1 && 's'}
@@ -712,26 +712,27 @@ const getSessionDueDate = (session: Session, days: number) => {
 };
 
 export const getCohortGuides = (cohortID: string, sessions: Session[]) => {
-  const items = [
-    {
-      heading: 'Distribution Playbook',
-      link: '/',
-      complete: false,
-      due: getSessionDueDate(sessions[0], 7)
-    },
-    {
-      heading: 'Zoom Setup Guide',
-      link: '/',
-      complete: false,
-      due: getSessionDueDate(sessions[0], 7)
-    },
-    {
-      heading: 'Platform Tour',
-      link: '/',
-      complete: false,
-      due: getSessionDueDate(sessions[0], 7)
-    }
-  ];
+  // const items = [
+  //   {
+  //     heading: 'Distribution Playbook',
+  //     link: '/',
+  //     complete: false,
+  //     due: getSessionDueDate(sessions[0], 7)
+  //   },
+  //   {
+  //     heading: 'Zoom Setup Guide',
+  //     link: '/',
+  //     complete: false,
+  //     due: getSessionDueDate(sessions[0], 7)
+  //   },
+  //   {
+  //     heading: 'Platform Tour',
+  //     link: '/',
+  //     complete: false,
+  //     due: getSessionDueDate(sessions[0], 7)
+  //   }
+  // ];
+  const items: any = [];
   sessions.map((session) => {
     items.push(
       {

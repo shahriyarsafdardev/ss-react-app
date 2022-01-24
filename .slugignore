@@ -1,0 +1,6 @@
+/documentation
+/fixtures
+/cypress/fixtures
+/src/_test_
+/README.md
+/public/static/*

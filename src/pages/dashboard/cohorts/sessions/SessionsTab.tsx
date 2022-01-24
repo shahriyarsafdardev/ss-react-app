@@ -5,7 +5,6 @@ import LoadingScreen from 'components/LoadingScreen';
 import { sendAmplitudeData, EVENT_TYPES, trackSessionsPageEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import useAuth from 'hooks/useAuth';
 import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
@@ -58,9 +57,8 @@ export default function SessionsTab() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
-  const { user } = useAuth();
 
-  const isLearner = user?.type === 'learner';
+  const isLearner = mode === 'Member';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
   const filteredSessions: Session[] = sessions?.filter(

@@ -46,14 +46,16 @@ const CohortGuides = ({
                 <CircularProgressbar
                   strokeWidth={14}
                   totalSteps={items.length}
-                  completedSteps={items.filter((item) => item.complete === true).length}
+                  completedSteps={items.filter((item: any) => item.complete === true).length}
                 />
               )}
             </Box>
           </Box>
           <StyledCohortGuidesContainer>
             {items.length > 0 ? (
-              items.map((item) => <ToDoItem key={item.heading} item={item} onClick={() => {}} />)
+              items.map((item: any) => (
+                <ToDoItem key={item.heading} item={item} onClick={() => {}} />
+              ))
             ) : (
               <p>No Cohort guide added yet</p>
             )}

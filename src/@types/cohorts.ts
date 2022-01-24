@@ -50,6 +50,7 @@ export type SessionMaterial = {
   action_text: string;
   info_text: string;
   action_url: string;
+  file_url: string;
   complete: boolean;
   index?: number;
 };
