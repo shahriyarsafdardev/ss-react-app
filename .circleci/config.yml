@@ -37,6 +37,10 @@ jobs:
           name: Run server
           command: yarn start
           background: true
+          
+      - store_artifacts:
+          path: /tmp/screenshots
+          destination: screenshot
 
       - run:
           command: dockerize -wait http://localhost:3000 -timeout 5m
