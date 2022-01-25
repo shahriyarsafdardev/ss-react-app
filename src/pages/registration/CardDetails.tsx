@@ -3,8 +3,21 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
 import valid from 'card-validator';
 import axios from 'utils/axios';
-import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
+import {
+  Grid,
+  Card,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
+} from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
+import { useState } from 'react';
 
 type CardType = {
   cardName?: string;
@@ -16,16 +29,19 @@ type CardType = {
 export default function CardDetails({
   cohortID,
   enrollmentID,
-  user,
+  first_name,
+  last_name,
   setStep
 }: {
   cohortID?: string;
-  user?: string;
+  first_name?: string;
+  last_name?: string;
   enrollmentID?: string;
   setStep: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
+  const [open, setOpen] = useState(false);
 
   const ValidationSchema = Yup.object().shape({
     cardName: Yup.string().required('Full Name is required'),
@@ -51,7 +67,7 @@ export default function CardDetails({
     initialValues: {
       cardCvv: '',
       cardExpiry: '',
-      cardName: '',
+      cardName: `${first_name} ${last_name}`,
       cardNumber: ''
     },
     validationSchema: ValidationSchema,
@@ -95,13 +111,40 @@ export default function CardDetails({
 
   return (
     <>
+      <Dialog open={open} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ textAlign: 'center', marginBottom: '1rem' }}>
+          Are you sure you want to pay later?
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ fontWeight: 500, textAlign: 'center' }}>
+            This does not guarantee your reservation nor locks the price. If approved for the class,
+            you will get an email with a payment link.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setStep(3)}
+            fullWidth
+            sx={{
+              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
+            }}
+          >
+            Yes, I would like to pay later
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => setOpen(false)} fullWidth>
+            No, I would like to pay now
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph>
-          💳 Thanks {user}, just one last step!
+          💳 Thanks {first_name}, just one last step!
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          You will be charged if you are accepted, and you can get a refund up to 72 hours before
-          the date of the first session.
+          You can get a full refund up to 72 hours before the date of the first session, and will
+          only be charged if you are accepted into the cohort.
         </Typography>
       </Box>
 
@@ -194,14 +237,14 @@ export default function CardDetails({
             color="primary"
             variant="outlined"
             loading={isSubmitting}
-            onClick={() => setStep(3)}
+            onClick={() => setOpen(true)}
             id="btn-submit"
             fullWidth
             sx={{
               '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
             }}
           >
-            Pay Later (Not Recommended)
+            Pay Later
           </LoadingButton>
           <LoadingButton
             type="submit"

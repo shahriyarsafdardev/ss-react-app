@@ -68,7 +68,8 @@ export default function Registration() {
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
             cohortID={cohort_id}
-            user={user?.first_name}
+            first_name={user?.first_name}
+            last_name={user?.last_name}
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
           />
@@ -90,8 +91,7 @@ export default function Registration() {
               🎉 You’ve completed your application!
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }}>
-              {user?.host} will review your submission within the next 48 hours. You will then
-              recieve an email documenting the outcome and next steps!
+              You will shortly recieve an email documenting your application outcome and next steps!
             </Typography>
           </Box>
           <Button
