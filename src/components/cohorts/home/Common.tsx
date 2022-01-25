@@ -401,18 +401,22 @@ export const TextResponses = ({ responses }: { responses: any }) => {
           borderTop: '1px solid rgba(224, 224, 224, 1)'
         }}
       >
-        {limit === 2 ? (
-          <StyledIconButton variant="subtitle2" onClick={() => setLimit(responses.length)}>
-            View All
-            <Box component={Icon} icon={downArrow} sx={{ width: 16, height: 16, ml: 1 }} />
-          </StyledIconButton>
-        ) : (
-          <StyledIconButton variant="subtitle2" onClick={() => setLimit(2)}>
-            View Less
-            <Box component={Icon} icon={upArrow} sx={{ width: 16, height: 16, ml: 1 }} />
-          </StyledIconButton>
+        {responses.length > 2 && (
+          <>
+            {limit === 2 ? (
+              <StyledIconButton variant="subtitle2" onClick={() => setLimit(responses.length)}>
+                View All
+                <Box component={Icon} icon={downArrow} sx={{ width: 16, height: 16, ml: 1 }} />
+              </StyledIconButton>
+            ) : (
+              <StyledIconButton variant="subtitle2" onClick={() => setLimit(2)}>
+                View Less
+                <Box component={Icon} icon={upArrow} sx={{ width: 16, height: 16, ml: 1 }} />
+              </StyledIconButton>
+            )}
+          </>
         )}
-      </Stack>{' '}
+      </Stack>
     </Stack>
   );
 };
