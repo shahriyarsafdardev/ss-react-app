@@ -1,6 +1,5 @@
 // material
 import { Table, TableBody, TableContainer } from '@material-ui/core';
-
 import Scrollbar from 'components/Scrollbar';
 import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import { UserListHead } from '../../_dashboard/user/list';

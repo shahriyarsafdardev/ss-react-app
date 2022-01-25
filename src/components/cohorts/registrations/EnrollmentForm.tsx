@@ -1,7 +1,18 @@
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { Box, Grid, Card, Stack, TextField } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Card,
+  Stack,
+  TextField,
+  FormControl,
+  MenuItem,
+  ListItemText,
+  InputLabel,
+  Select as MaterialSelect
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
@@ -46,7 +57,7 @@ export default function EnrollmentForm({
     }
   });
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values } = formik;
 
   return (
     <>
@@ -119,32 +130,47 @@ export default function EnrollmentForm({
                         type: 'number'
                       }}
                     />
+                    <FormControl fullWidth>
+                      <InputLabel>Referral Code</InputLabel>
+                      <MaterialSelect
+                        fullWidth
+                        label="Referral Code"
+                        sx={{ zIndex: 1500 }}
+                        {...getFieldProps('referral_code')}
+                      >
+                        {codes?.map((code: ReferralCode) => (
+                          <MenuItem key={code.code} value={code.code}>
+                            <ListItemText primary={code.code} />
+                          </MenuItem>
+                        ))}
+                      </MaterialSelect>
+                    </FormControl>
+                  </Stack>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
-                      label="Coupon Code"
-                      id="coupon_code"
-                      {...getFieldProps('coupon_code')}
-                      error={Boolean(touched.coupon_code && errors.coupon_code)}
-                      helperText={touched.coupon_code && errors.coupon_code}
+                      id="referrer_benefit"
+                      aria-disabled
+                      label="Referrer Benefit"
+                      value={
+                        codes.filter((code) => code.code === values.referral_code)[0]
+                          ?.referrer_benefit
+                      }
                       inputProps={{
-                        'data-testid': 'coupon-code'
+                        'data-testid': 'referrer_benefit'
                       }}
                     />
-                  </Stack>
-                  <Stack
-                    direction={{ xs: 'column', md: 'row' }}
-                    width={{ xs: '100%', md: '49%' }}
-                    spacing={2}
-                  >
                     <TextField
                       fullWidth
-                      id="stream"
-                      label="Stream (ie Timezone)"
-                      {...getFieldProps('stream')}
-                      error={Boolean(touched.stream && errors.stream)}
-                      helperText={touched.stream && errors.stream}
+                      id="referee_benefit"
+                      aria-disabled
+                      label="Referee Benefit"
+                      value={
+                        codes.filter((code) => code.code === values.referral_code)[0]
+                          ?.referee_benefit
+                      }
                       inputProps={{
-                        'data-testid': 'stream'
+                        'data-testid': 'referee_benefit'
                       }}
                     />
                   </Stack>
