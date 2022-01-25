@@ -239,7 +239,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
         innerContent={session?.description || ''}
         resourcesPresent={session?.session_materials && session?.session_materials?.length > 0}
       />
-      {!isLearner ? (
+      {/* {!isLearner ? (
         <InstructorSessionMaterials
           groupedMaterialsProp={session?.session_materials || []}
           sessionId={session?.id}
@@ -250,17 +250,17 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
             // sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
           }
         />
-      ) : (
-        <SessionMaterials
-          groupedMaterials={session?.session_materials || []}
-          sessionId={session?.id}
-          cohortId={id}
-          key="session_materials"
-          onTrack={(eventData: string) =>
-            sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-          }
-        />
-      )}
+      ) : ( */}
+      <SessionMaterials
+        groupedMaterials={session?.session_materials || []}
+        sessionId={session?.id}
+        cohortId={id}
+        key="session_materials"
+        onTrack={(eventData: string) =>
+          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        }
+      />
+      {/* )} */}
     </>,
     <Slides
       key={session?.id}
