@@ -40,13 +40,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             }
             difference={changeOccur(
               enrollments,
-              [
-                'Application Accepted',
-                'Payment link opened',
-                'Paid',
-                'Application Rejected',
-                'Not Interested'
-              ],
+              ['Application Accepted', 'Payment link opened', 'Paid', 'Application Rejected'],
               'application_accepted_time'
             )}
             currentTimePeriodLabel={<span>Applications Accepted</span>}
@@ -77,7 +71,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             }
             difference={changeOccur(
               enrollments,
-              ['Payment link opened', 'Paid', 'Application Rejected', 'Not Interested'],
+              ['Payment link opened', 'Paid', 'Application Rejected'],
               'payment_link_opened_time'
             )}
             currentTimePeriodLabel={<span>Payment Links Opened</span>}

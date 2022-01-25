@@ -345,7 +345,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
               onClick={() => {
                 setModalMessage(
                   <p>
-                    Are you sure you want to mark {enrollment.name}’s application as not interested
+                    Are you sure you want to mark {enrollment.name}’s application as not interested.
                   </p>
                 );
                 setAction('set_not_interested');
