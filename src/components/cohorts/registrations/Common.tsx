@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
-import * as Yup from 'yup';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack5';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
   Box,
@@ -236,6 +237,7 @@ export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChan
       onChange(values);
     }
   });
+  const { enqueueSnackbar } = useSnackbar();
 
   const { errors, touched, submitForm, setFieldValue } = formik;
 
@@ -245,7 +247,7 @@ export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChan
         <Form autoComplete="off" id="referral-code-form" noValidate style={{ width: '100%' }}>
           <Grid container spacing={1}>
             <Grid item sx={{ m: 'auto', width: '100%' }} spacing={1}>
-              <StyledStack spacing={1} direction={{ xs: 'column', md: 'row' }}>
+              <StyledStack spacing={1} direction={{ xs: 'column', md: 'row' }} alignItems="center">
                 <TextField
                   fullWidth
                   id="code"
@@ -291,6 +293,18 @@ export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChan
                     'data-testid': 'referee_benefit'
                   }}
                 />
+                <CopyToClipboard
+                  text={code.code}
+                  onCopy={() => {
+                    if (code.code) {
+                      enqueueSnackbar('Code Copied', { variant: 'success' });
+                    }
+                  }}
+                >
+                  <Tooltip title="Copy Referral Link" placement="top" arrow>
+                    <StyledIcon src="/static/registration/Copy.svg" />
+                  </Tooltip>
+                </CopyToClipboard>
               </StyledStack>
             </Grid>
           </Grid>

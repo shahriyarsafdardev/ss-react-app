@@ -44,6 +44,7 @@ export default function EnrollmentForm({
       .required('First name required'),
     email: Yup.string().email('Email is invalid').required('Email is required'),
     price: Yup.number().required('Price required'),
+    linkedin_url: Yup.string().url('Must be a valid URL'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
 
@@ -136,7 +137,7 @@ export default function EnrollmentForm({
                         fullWidth
                         label="Referral Code"
                         sx={{ zIndex: 1500 }}
-                        {...getFieldProps('referral_code')}
+                        {...getFieldProps('coupon_code')}
                       >
                         {codes?.map((code: ReferralCode) => (
                           <MenuItem key={code.code} value={code.code}>
@@ -150,26 +151,33 @@ export default function EnrollmentForm({
                     <TextField
                       fullWidth
                       id="referrer_benefit"
-                      aria-disabled
                       label="Referrer Benefit"
                       value={
-                        codes.filter((code) => code.code === values.referral_code)[0]
+                        codes.filter((code) => code.code === values.coupon_code)[0]
+                          ?.referrer_benefit
+                      }
+                      defaultValue={
+                        codes.filter((code) => code.code === values.coupon_code)[0]
                           ?.referrer_benefit
                       }
                       inputProps={{
+                        readOnly: true,
                         'data-testid': 'referrer_benefit'
                       }}
                     />
                     <TextField
                       fullWidth
                       id="referee_benefit"
-                      aria-disabled
                       label="Referee Benefit"
                       value={
-                        codes.filter((code) => code.code === values.referral_code)[0]
-                          ?.referee_benefit
+                        codes.filter((code) => code.code === values.coupon_code)[0]?.referee_benefit
+                      }
+                      defaultValue={
+                        codes.filter((code) => code.code === values.coupon_code)[0]
+                          ?.referrer_benefit
                       }
                       inputProps={{
+                        readOnly: true,
                         'data-testid': 'referee_benefit'
                       }}
                     />
