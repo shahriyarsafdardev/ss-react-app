@@ -10,7 +10,9 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
-            metric={enrollments.length}
+            metric={
+              enrollments.filter((e: { status: string }) => e.status !== 'Not Interested').length
+            }
             currentTimePeriodLabel={<span>Applications Received</span>}
             difference={changeOccur(enrollments, [], 'time')}
             infoTooltip={(difference: number) => (
@@ -28,7 +30,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
-          />{' '}
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
@@ -59,7 +61,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
-          />{' '}
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
@@ -90,7 +92,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
-          />{' '}
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
@@ -113,7 +115,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
-          />{' '}
+          />
         </Grid>
       </Grid>
     </Stack>
