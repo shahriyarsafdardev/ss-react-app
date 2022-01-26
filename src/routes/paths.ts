@@ -75,6 +75,7 @@ export const PATH_DASHBOARD = {
     sessions: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/sessions`),
     registrations: (cohortID: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/registrations`),
+    attendance: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/attendance`),
     peers: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/peers`),
     messaging: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/messaging`),
     home: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/home`),
