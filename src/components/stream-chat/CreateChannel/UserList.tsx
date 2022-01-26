@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
-import useAuth from 'hooks/useAuth';
 import './UserList.css';
 import moment from 'moment';
-import type { ChannelFilters, ChannelMemberResponse, UserResponse } from 'stream-chat';
+import type { UserResponse } from 'stream-chat';
 
 import { InviteIcon } from '../../../assets';
 
@@ -108,7 +107,6 @@ export const UserList: React.FC<Props> = (props) => {
     TeamUserType
   >();
 
-  const { user } = useAuth();
   const [error, setError] = useState(false);
   const [listEmpty, setListEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -135,13 +133,13 @@ export const UserList: React.FC<Props> = (props) => {
         } else if (query) {
           response = await client.queryUsers(
             { id: { $in: newMembers }, $and: [{ name: { $autocomplete: query } }] },
-            { created_at: -1 },
+            { name: 1 },
             { limit: 100 }
           );
         } else {
           response = await client.queryUsers(
             { id: { $in: newMembers } },
-            { created_at: -1 },
+            { name: 1 },
             { limit: 100 }
           );
         }

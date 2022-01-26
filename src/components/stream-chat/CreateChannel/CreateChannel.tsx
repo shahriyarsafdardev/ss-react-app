@@ -49,16 +49,12 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 const ChannelNameInput: React.FC<InputProps> = (props) => {
   const { channelName = '', setChannelName } = props;
-  const handleChange = (event: { preventDefault: () => void; target: { value: string } }) => {
-    event.preventDefault();
-    setChannelName(event.target.value);
-  };
 
   return (
     <div className="channel-name-input__wrapper">
       <p>Name</p>
       <input
-        onChange={handleChange}
+        onChange={(e) => setChannelName(e.target.value)}
         placeholder="channel-name (no spaces)"
         type="text"
         value={channelName}
@@ -91,16 +87,64 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const [channelName, setChannelName] = useState('');
   const { enqueueSnackbar } = useSnackbar();
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([client.userID || '']);
-  const regexForChannelName = /^[a-zA-Z0-9._-]+$/;
+  const regexForChannelName = /^[a-zA-Z0-9_-]*$/;
   const [findUser, setFindUser] = useState<string>('');
 
-  const createChannel = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+  const matchRegex = () => {
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
       enqueueSnackbar('Invalid channel name. Only A-Z, a-z, 0-9 and _- are allowed', {
         variant: 'error'
       });
+      return false;
+    }
+    return true;
+  };
+  const createPublicChannel = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (!matchRegex()) {
+      return;
+    }
+    try {
+      let users: any;
+      if (cohortUsers.length === 0) {
+        users = [];
+      } else {
+        const response = await client.queryUsers(
+          { id: { $in: cohortUsers } },
+          { created_at: -1 },
+          { limit: 99 }
+        );
+        if (response.users.length) {
+          const newusers = response.users.map((user) => user.id);
+          users = [client.userID, ...newusers];
+        } else {
+          users = [];
+        }
+      }
+      try {
+        const newChannel = await client.channel(createType, channelName, {
+          name: channelName,
+          members: users,
+          team: cohortID
+        });
 
+        await newChannel.watch();
+
+        setChannelName('');
+        setIsCreating(false);
+        setSelectedUsers([client.userID || '']);
+        setActiveChannel(newChannel);
+      } catch (err) {
+        console.log(err);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createChannel = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (!matchRegex()) {
       return;
     }
 
@@ -162,14 +206,15 @@ export const CreateChannel: React.FC<Props> = (props) => {
         query={findUser}
         {...{ setSelectedUsers, cohortUsers }}
       />
-      <div
-        className="create-channel__button-wrapper"
-        role="button"
-        onKeyPress={() => {}}
-        tabIndex={0}
-        onClick={createChannel}
-      >
-        <p>{createType === 'team' ? 'Create Channel' : 'Start Chat'}</p>
+      <div className="create-channel__button-wrapper">
+        {createType === 'team' && (
+          <div role="button" onKeyPress={() => {}} tabIndex={0} onClick={createPublicChannel}>
+            <p>Create Public Channel</p>
+          </div>
+        )}
+        <div role="button" onKeyPress={() => {}} tabIndex={0} onClick={createChannel}>
+          <p>{createType === 'team' ? 'Create Channel' : 'Create Message Group'}</p>
+        </div>
       </div>
     </div>
   );
