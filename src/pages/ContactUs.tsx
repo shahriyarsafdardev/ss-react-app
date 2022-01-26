@@ -62,6 +62,23 @@ export default function ContactUs() {
   const contactInfoDetails = [
     {
       id: '7a815eb7-f6c8-4934-90aa-fc578603f42f',
+      first_name: 'Leah Nicolai',
+      last_name: 'Higgins',
+      current_position: 'Cohort Operations Manager',
+      email: 'leah@scholarsite.io',
+      phone: '-',
+      profile_image_url:
+        'https://media-exp1.licdn.com/dms/image/C4E03AQEOzin28rqUMw/profile-displayphoto-shrink_400_400/0/1517282634749?e=1648684800&v=beta&t=0_mOHu3DtCiEW6pEbAzrqhHGTr3_u5l3fp1Udo3Az_0',
+      linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
+      current_company: {
+        id: '',
+        name: 'ScholarSite',
+        logo_url: '/static/contact/companyLogo.svg'
+      }
+      // discord_url: 'https://discordapp.com/users/893656080914186251'
+    },
+    {
+      id: '7a815eb7-f6c8-4934-90aa-fc578603f42f',
       first_name: 'Olivia',
       last_name: 'Nunn',
       current_position: 'Head of Operations',
