@@ -1,10 +1,11 @@
 import { merge } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 //
+import axios from 'utils/axios';
 import { BaseOptionChart } from '../../charts';
 import AttendanceTable from './AttendanceTable';
 import {
@@ -74,31 +75,45 @@ const MOCK_DATA: CohortAttendanceRecord = {
   ]
 };
 
-const getAttendanceFrequency = (type: string) =>
-  [...Array(MOCK_DATA.totalSessions)].map(
-    (x, i) =>
-      MOCK_DATA.sessionAttendanceRecords.filter(
-        (datum: SessionAttendanceRecord) => datum.attendanceData[i] === type
-      ).length
-  );
-
-const CHART_DATA = [
-  {
-    year: 2019,
-    data: [
-      { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
-      { name: 'Live or Async Attendance', data: getAttendanceFrequency(AttendanceType.recorded) }
-    ]
-  }
-];
-
 const AttendanceTab = () => {
   const [seriesData, setSeriesData] = useState(2019);
+  const [cohortAttendanceRecord, setRecord] = useState<CohortAttendanceRecord>({
+    totalSessions: 0,
+    sessionAttendanceRecords: []
+  });
+
+  useEffect(() => {
+    axios
+      .get(`/cohorts/e5659779-2c87-43b1-98f7-93d8b7173d61/cohort_session_attendance.json`)
+      .then((response) => {
+        setRecord(response.data);
+      });
+  }, []);
+
+  const getAttendanceFrequency = (type: string) =>
+    [...Array(cohortAttendanceRecord.totalSessions)].map(
+      (x, i) =>
+        cohortAttendanceRecord.sessionAttendanceRecords.filter(
+          (datum: SessionAttendanceRecord) => datum.attendanceData[i] === type
+        ).length
+    );
+
+  const CHART_DATA = [
+    {
+      year: 2019,
+      data: [
+        { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
+        { name: 'Live or Async Attendance', data: getAttendanceFrequency(AttendanceType.recorded) }
+      ]
+    }
+  ];
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: ['#00AB55', '#FFC107'],
     xaxis: {
-      categories: [...Array(MOCK_DATA.totalSessions)].map((item, index) => `Session ${index + 1}`)
+      categories: [...Array(cohortAttendanceRecord.totalSessions)].map(
+        (item, index) => `Session ${index + 1}`
+      )
     }
   });
 
@@ -115,7 +130,7 @@ const AttendanceTab = () => {
         ))}
       </Card>
       <Box style={{ marginTop: '30px' }}>
-        <AttendanceTable attendance={MOCK_DATA} />
+        <AttendanceTable attendance={cohortAttendanceRecord} />
       </Box>
     </StyledContainer>
   );

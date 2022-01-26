@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Card,
@@ -41,9 +41,13 @@ const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord })
   const [rows, setRows] = useState<SessionAttendanceRecord[]>(attendance.sessionAttendanceRecords);
   const [search, setSearch] = useState('');
 
+  useEffect(() => {
+    setRows(attendance.sessionAttendanceRecords);
+  }, [[...attendance.sessionAttendanceRecords]]);
+
   const handleSearch = (searchVal: string) => {
     setSearch(searchVal);
-    const searchedRows = attendance.sessionAttendanceRecords.filter(
+    const searchedRows = rows.filter(
       (item: SessionAttendanceRecord) =>
         item.name.toLowerCase().includes(searchVal.toLowerCase()) ||
         item.position.toLowerCase().includes(searchVal.toLowerCase())
