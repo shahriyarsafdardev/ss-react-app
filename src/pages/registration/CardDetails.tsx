@@ -115,10 +115,15 @@ export default function CardDetails({
         <DialogTitle sx={{ textAlign: 'center', marginBottom: '1rem' }}>
           Are you sure you want to pay later?
         </DialogTitle>
-        <DialogContent>
-          <Typography sx={{ fontWeight: 500, textAlign: 'center' }}>
-            This does not guarantee your reservation nor locks the price. If approved for the class,
-            you will get an email with a payment link.
+        <DialogContent sx={{ fontWeight: 500 }}>
+          <Typography sx={{ textAlign: 'left' }}>
+            ❌ This does not guarantee the price you were quoted.
+          </Typography>
+          <Typography sx={{ textAlign: 'left' }}>
+            ❌ This does not guarantee a seat in the cohort - Our seats sell out quickly!
+          </Typography>
+          <Typography sx={{ textAlign: 'center', marginTop: '1rem' }}>
+            If approved for the class, you will get an email with a payment link.
           </Typography>
         </DialogContent>
         <DialogActions>
