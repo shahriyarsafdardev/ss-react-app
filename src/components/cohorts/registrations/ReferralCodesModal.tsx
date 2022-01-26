@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Box, Button, Stack } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { useState } from 'react';
+import { Button, Stack } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { updateReferralCodes } from 'redux/slices/cohort';
 import { Modal } from 'components/animate';
+import { useSnackbar } from 'notistack5';
 import { ReferralCode } from '../../../@types/cohorts';
 import ReferralCodesForm from './ReferralCodesForm';
 import { useDispatch } from '../../../redux/store';
@@ -24,11 +24,16 @@ export default function ReferralCodesModal({
 }) {
   const [formModalState, setFormModalState] = useState(false);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const handleSave = async (codes: ReferralCode[]) => {
     const updatedCodes = codes.filter((newCode) => newCode.code !== '');
-    await dispatch(updateReferralCodes(cohortID, updatedCodes));
+    await dispatch(
+      updateReferralCodes(cohortID, updatedCodes, (e: any) =>
+        enqueueSnackbar(e, { variant: 'error' })
+      )
+    );
     setFormModalState(false);
   };
 

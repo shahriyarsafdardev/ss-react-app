@@ -330,14 +330,15 @@ export function getSessions(cohortID: string) {
   };
 }
 
-export function updateReferralCodes(cohortID: string, codes: ReferralCode[]) {
+export function updateReferralCodes(cohortID: string, codes: ReferralCode[], onError: Function) {
   return async () => {
     try {
       const response = await axios.post(`/cohorts/${cohortID}/referral_codes/update_codes.json`, {
         codes
       });
       dispatch(slice.actions.getCodesSuccess(response.data));
-    } catch (error) {
+    } catch (error: any) {
+      onError(error?.error);
       console.log(error);
     }
   };

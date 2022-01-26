@@ -137,6 +137,7 @@ export default function EnrollmentForm({
                         fullWidth
                         label="Referral Code"
                         sx={{ zIndex: 1500 }}
+                        defaultValue={values.coupon_code}
                         {...getFieldProps('coupon_code')}
                       >
                         {codes?.map((code: ReferralCode) => (
@@ -156,10 +157,10 @@ export default function EnrollmentForm({
                         codes.filter((code) => code.code === values.coupon_code)[0]
                           ?.referrer_benefit
                       }
-                      defaultValue={
-                        codes.filter((code) => code.code === values.coupon_code)[0]
+                      InputLabelProps={{
+                        shrink: !!codes.filter((code) => code.code === values.coupon_code)[0]
                           ?.referrer_benefit
-                      }
+                      }}
                       inputProps={{
                         readOnly: true,
                         'data-testid': 'referrer_benefit'
@@ -172,10 +173,10 @@ export default function EnrollmentForm({
                       value={
                         codes.filter((code) => code.code === values.coupon_code)[0]?.referee_benefit
                       }
-                      defaultValue={
-                        codes.filter((code) => code.code === values.coupon_code)[0]
-                          ?.referrer_benefit
-                      }
+                      InputLabelProps={{
+                        shrink: !!codes.filter((code) => code.code === values.coupon_code)[0]
+                          ?.referee_benefit
+                      }}
                       inputProps={{
                         readOnly: true,
                         'data-testid': 'referee_benefit'
