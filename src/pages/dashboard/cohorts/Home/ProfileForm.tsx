@@ -289,7 +289,14 @@ export default function ProfileForm({
                         ))}
                       </MaterialSelect>
                     </FormControl>
-                    <TextField fullWidth label="LinkedIn URL" {...getFieldProps('linkedin_url')} />
+                    <TextField
+                      inputProps={{
+                        'data-testid': 'linkedin_url'
+                      }}
+                      fullWidth
+                      label="LinkedIn URL"
+                      {...getFieldProps('linkedin_url')}
+                    />
                   </Stack>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField

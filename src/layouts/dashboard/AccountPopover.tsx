@@ -65,6 +65,7 @@ export default function AccountPopover() {
   return (
     <>
       <MIconButton
+        data-testid="user-icon"
         ref={anchorRef}
         onClick={handleOpen}
         sx={{
@@ -111,6 +112,7 @@ export default function AccountPopover() {
 
         {MENU_OPTIONS.map((option) => (
           <MenuItem
+            data-testid="user-setting"
             key={option.label}
             id="user-settings"
             to={option.linkTo}

@@ -2,32 +2,38 @@
   "user":{
      "id":"5386e36b-0f15-4d39-b698-41e6672ec2c0",
      "type":"learner",
-     "first_name":"Waqas",
-     "last_name":"User",
-     "full_name":"Waqas User",
-     "email":"waqasnazir9@gmail.com",
-     "profile_image_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqas-nazir",
+     "first_name": "Waqas",
+     "last_name": "Nazir",
+     "email": "waqas@scholar.com",
+     "linkedin_url": "https://linkedin.com/waqas_react_dev",
+     "country": "France",
+     "city": "Paris",
+     "number_of_employees": "10-100",
+     "discord_url": "Test url",
+     "current_position": "Economist",
+     "current_company": "Adobe",
+     "preferred_pronoun": "He/him",
+     "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+     "company_logo_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+     "current_industry_category_selections": ["Agriculture"],
+     "bio_text": "azxd",
+     "current_role_category_selections": ["Data"],
+     "do_manage_team": true,
+     "interested_in_being_matched": true,
+     "networking_roles_categories": ["Accounting"],
+     "networking_industries_categories": ["AR / VR"],
+     "current_understanding": "Beginner",
+     "referred_by": "Google Search",
+     "payed_by": "I am",
+     "date_of_birth": "12/12/1990",
+     "opted_in_for_matching_suggestions": true,
      "strengths":[
 
      ],
-     "current_role_category_selections":[
-
-     ],
-     "current_industry_category_selections":[
-
-     ],
-     "linkedin_url":"",
-     "preferred_pronoun":"",
-     "discord_url":null,
      "interests":[
 
      ],
-     "current_company":null,
-     "current_position":"",
-     "bio_text":"",
-     "opted_in_for_matching_suggestions":false,
      "networking_matching_preferences":[
-
      ],
      "stream_id":"5386e36b-0f15-4d39-b698-41e6672ec2c0",
      "stream_token":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNTM4NmUzNmItMGYxNS00ZDM5LWI2OTgtNDFlNjY3MmVjMmMwIn0.MAuQ1h0cbEhtVhNX7P9u9XpQliG-_Px5Efj5SXBJZgQ"
