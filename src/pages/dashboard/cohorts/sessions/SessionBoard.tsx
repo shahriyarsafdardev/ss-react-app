@@ -11,6 +11,7 @@ import {
   FormControl
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import axios from 'utils/axios';
 import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
@@ -229,6 +230,13 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
     setModal(!feedbacks[session?.id || '']);
   }, [session]);
 
+  const markAttendance = (type: string) => {
+    axios.post(`/cohorts/${id}/cohort_session_attendance`, {
+      session_id: session?.id,
+      status: type
+    });
+  };
+
   const tabsContent = [
     <>
       <Description
@@ -315,6 +323,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
               return false;
             }}
             onPlay={(e) => {
+              markAttendance('watched_recording');
               sendAnalyticsData(
                 sessionNumber,
                 SESSION_EVENTS.recording_video_player,
@@ -347,6 +356,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
             sessionTimesPreview={zoomTimesPreview(session.times)}
             sessionZoomUrl={session.zoom_url}
             onClick={(sessionNumber: number) => {
+              markAttendance('attended_live');
               sendAnalyticsData(
                 sessionNumber,
                 SESSION_EVENTS.zoom_preview,

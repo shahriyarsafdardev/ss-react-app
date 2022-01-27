@@ -186,3 +186,21 @@ export type Question = {
   video_url: string;
   comments: Comment[];
 };
+
+export type SessionAttendanceRecord = {
+  user_id: string;
+  name: string;
+  position: string;
+  attendanceData: string[]; // AttendanceType[]
+};
+
+export type CohortAttendanceRecord = {
+  totalSessions: number;
+  sessionAttendanceRecords: SessionAttendanceRecord[];
+};
+
+export const AttendanceType = {
+  live: 'live',
+  recorded: 'recorded',
+  none: 'none'
+};

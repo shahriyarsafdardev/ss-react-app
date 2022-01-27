@@ -14,6 +14,7 @@ import notificationReducer from './slices/notification';
 import profileOptionsReducer from './slices/profileOptions';
 import sessionFeedbackReducer from './slices/sessionFeedback';
 import instructorViewReducer from './slices/viewMode';
+import cohortAttendanceRecordReducer from './slices/cohortSessionAttendance';
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +43,7 @@ const appReducer = combineReducers({
   profileOptions: profileOptionsReducer,
   sessionFeedback: sessionFeedbackReducer,
   instructorView: instructorViewReducer,
+  cohortSessionAttendance: cohortAttendanceRecordReducer,
   kanban: kanbanReducer,
   product: persistReducer(productPersistConfig, productReducer)
 });
