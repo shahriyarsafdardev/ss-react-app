@@ -37,6 +37,11 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
           notifications: false
         },
         {
+          title: 'networking',
+          path: PATH_DASHBOARD.cohorts.networking(cohort.id),
+          notifications: false
+        },
+        {
           title: 'attendance',
           path: PATH_DASHBOARD.cohorts.attendance(cohort.id),
           notifications: false

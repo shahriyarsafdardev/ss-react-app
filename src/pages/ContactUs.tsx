@@ -68,11 +68,15 @@ export default function ContactUs() {
       email: 'olivia@scholarsite.io',
       phone: '+1 347 225 3144',
       profile_image_url: '/static/contact/Olivia.png',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
       linkedin_url: 'https://www.linkedin.com/in/olivia-nunn-29845990/',
       current_company: {
         id: '',
         name: 'ScholarSite',
-        logo_url: '/static/contact/companyLogo.svg'
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
       },
       discord_url: 'https://discordapp.com/users/893656080914186251'
     },
@@ -84,11 +88,15 @@ export default function ContactUs() {
       current_position: 'Co-Founder & CEO',
       phone: '+1 415 994 7284',
       profile_image_url: '/static/contact/Nick.png',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
       linkedin_url: 'https://www.linkedin.com/in/nicholasrudder/',
       current_company: {
         id: '',
         name: 'ScholarSite',
-        logo_url: '/static/contact/companyLogo.svg'
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
       },
       discord_url: 'https://discordapp.com/users/875140709898928130'
     },
@@ -100,11 +108,15 @@ export default function ContactUs() {
       email: 'adrian@scholarsite.io',
       phone: '+1 415 818 4841',
       profile_image_url: '/static/contact/Adrian.png',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
       linkedin_url: 'https://www.linkedin.com/in/adrian-sarstedt-375623133/',
       current_company: {
         id: '',
         name: 'ScholarSite',
-        logo_url: '/static/contact/companyLogo.svg'
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
       },
       discord_url: 'https://discordapp.com/users/811400748020662284'
     }

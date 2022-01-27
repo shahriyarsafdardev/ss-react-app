@@ -1,6 +1,7 @@
 export type Company = {
   id: string;
   name: string;
+  number_of_employees: string;
   logo_url: string;
 };
 
@@ -13,6 +14,9 @@ export type StudentProfile = {
   current_position: string;
   preferred_pronoun: string;
   linkedin_url: string;
+  is_managing_team: boolean;
+  city: string;
+  country: string;
   current_role_category_selections: string[];
   current_industry_category_selections: string[];
   strengths: string[];
