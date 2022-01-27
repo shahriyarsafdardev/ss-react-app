@@ -86,7 +86,7 @@ const UserItem: React.FC<ItemProps> = (props) => {
 };
 
 type Props = {
-  cohortUsers: any;
+  enrolledUsers: any;
   setSelectedUsers: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   showMembers: boolean;
   admin: boolean;
@@ -94,7 +94,7 @@ type Props = {
 };
 
 export const UserList: React.FC<Props> = (props) => {
-  const { setSelectedUsers, cohortUsers, showMembers, admin, query } = props;
+  const { setSelectedUsers, enrolledUsers, showMembers, admin, query } = props;
   const cohortID = window.location.pathname.split('/')[2] || '';
 
   const { client, channel } = useChatContext<
@@ -119,13 +119,13 @@ export const UserList: React.FC<Props> = (props) => {
       setLoading(true);
 
       try {
-        let newMembers = cohortUsers;
+        let newMembers = enrolledUsers;
         if (showMembers && channel) {
           const joinedUsers = await channel?.queryMembers({});
           const joinedMembers = joinedUsers?.members.map((member) => member.user);
           setMembers(joinedMembers);
           const memberIDs = joinedMembers?.map((member) => member?.id);
-          newMembers = cohortUsers.filter((u: any) => !memberIDs?.includes(u));
+          newMembers = enrolledUsers.filter((u: any) => !memberIDs?.includes(u));
         }
         let response;
         if (newMembers.length === 0) {

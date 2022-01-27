@@ -65,6 +65,7 @@ export const EditChannel: React.FC<Props> = (props) => {
     channel?.data?.name || (channel?.data?.id as string)
   );
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>();
+  const enrolledUsers = cohortUsers.filter((user_id: string) => user_id !== user?.id);
 
   const updateChannel = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
@@ -100,7 +101,7 @@ export const EditChannel: React.FC<Props> = (props) => {
         admin={user?.type === 'admin'}
         query=""
         showMembers={true}
-        {...{ cohortUsers, setSelectedUsers }}
+        {...{ enrolledUsers, setSelectedUsers }}
       />
       {user?.type === 'admin' && (
         <div

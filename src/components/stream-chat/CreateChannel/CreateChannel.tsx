@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Icon } from '@iconify/react';
@@ -7,12 +7,8 @@ import searchFill from '@iconify/icons-eva/search-fill';
 import './CreateChannel.css';
 import { Box, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-
-import type { ChannelFilters } from 'stream-chat';
 import { useSnackbar } from 'notistack5';
-
 import { UserList } from './UserList';
-
 import { CloseCreateChannel } from '../../../assets';
 
 import type {
@@ -89,6 +85,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([client.userID || '']);
   const regexForChannelName = /^[a-zA-Z0-9_-]*$/;
   const [findUser, setFindUser] = useState<string>('');
+  const enrolledUsers = cohortUsers.filter((user_id: string) => user_id !== client.userID);
 
   const matchRegex = () => {
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
@@ -106,11 +103,11 @@ export const CreateChannel: React.FC<Props> = (props) => {
     }
     try {
       let users: any;
-      if (cohortUsers.length === 0) {
+      if (enrolledUsers.length === 0) {
         users = [];
       } else {
         const response = await client.queryUsers(
-          { id: { $in: cohortUsers } },
+          { id: { $in: enrolledUsers } },
           { created_at: -1 },
           { limit: 99 }
         );
@@ -122,7 +119,9 @@ export const CreateChannel: React.FC<Props> = (props) => {
         }
       }
       try {
-        const newChannel = await client.channel(createType, channelName, {
+        const myuuid = uuidv4();
+        const newName = channelName + myuuid;
+        const newChannel = await client.channel(createType, newName, {
           name: channelName,
           members: users,
           team: cohortID
@@ -204,7 +203,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
         admin={true}
         showMembers={false}
         query={findUser}
-        {...{ setSelectedUsers, cohortUsers }}
+        {...{ setSelectedUsers, enrolledUsers }}
       />
       <div className="create-channel__button-wrapper">
         {createType === 'team' && (
