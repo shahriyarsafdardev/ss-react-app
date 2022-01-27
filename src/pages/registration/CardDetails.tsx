@@ -116,21 +116,23 @@ export default function CardDetails({
           Are you sure you want to pay later?
         </DialogTitle>
         <DialogContent sx={{ fontWeight: 500 }}>
-          <Typography sx={{ textAlign: 'left' }}>
-            ❌ This does not guarantee the price you were quoted.
+          <Typography sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}>
+            If you choose to pay later, you will be emailed a payment link. You will have 72 hours
+            to lock in your price and seat. If you are unable to complete the payment within 72
+            hours:
           </Typography>
           <Typography sx={{ textAlign: 'left' }}>
-            ❌ This does not guarantee a seat in the cohort - Our seats sell out quickly!
+            ❌ We cannot guarantee the price you were quoted
           </Typography>
-          <Typography sx={{ textAlign: 'center', marginTop: '1rem' }}>
-            If approved for the class, you will get an email with a payment link.
+          <Typography sx={{ textAlign: 'left' }}>
+            ❌ We cannot guarantee a seat in the cohort - Our seats sell out quickly!{' '}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => setStep(3)}
+            onClick={() => setStep(4)}
             fullWidth
             sx={{
               '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }

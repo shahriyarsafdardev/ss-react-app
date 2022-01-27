@@ -105,6 +105,35 @@ export default function Registration() {
       );
     }
 
+    if (activeStep === 4) {
+      return (
+        <Stack
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h3" align="center" paragraph>
+              🎉 You have 72 hours to lock in your price and seat!
+            </Typography>
+            <Typography align="center" sx={{ color: 'text.secondary' }}>
+              Look for an email with your payment link in the next few hours; if you haven’t
+              recieved any, make sure you check your spam folder.
+            </Typography>
+          </Box>
+          <Button
+            href="https://www.scholarsite.io/pages/get-in-touch"
+            variant="contained"
+            color="primary"
+          >
+            Any questions? Click here to contact ScholarSite
+          </Button>
+        </Stack>
+      );
+    }
+
     return (
       <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
         <UserForm
