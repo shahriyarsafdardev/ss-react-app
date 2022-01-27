@@ -38,7 +38,6 @@ const ContactNote = () => (
       <Typography>
         Please don’t hesitate to contact the ScholarSite support team - we’d love to hear from you!
       </Typography>
-      <Typography>Alternatively feel free to message any one of us on Discord</Typography>
     </Box>
   </ContactInfoNote>
 );
@@ -66,7 +65,7 @@ export default function ContactUs() {
       last_name: 'Higgins',
       current_position: 'Cohort Operations Manager',
       email: 'leah@scholarsite.io',
-      phone: '-',
+      phone: '+1 315 521 6341',
       profile_image_url:
         'https://media-exp1.licdn.com/dms/image/C4E03AQEOzin28rqUMw/profile-displayphoto-shrink_400_400/0/1517282634749?e=1648684800&v=beta&t=0_mOHu3DtCiEW6pEbAzrqhHGTr3_u5l3fp1Udo3Az_0',
       linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
