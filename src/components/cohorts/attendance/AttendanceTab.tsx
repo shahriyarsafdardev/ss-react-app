@@ -6,7 +6,11 @@ import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 //
 import axios from 'utils/axios';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { getAttendance } from 'redux/slices/cohortSessionAttendance';
+
 import { BaseOptionChart } from '../../charts';
+
 import AttendanceTable from './AttendanceTable';
 import {
   CohortAttendanceRecord,
@@ -76,19 +80,27 @@ const MOCK_DATA: CohortAttendanceRecord = {
 };
 
 const AttendanceTab = () => {
-  const [seriesData, setSeriesData] = useState(2019);
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+
+  const cohortSessionAttendance = useSelector(
+    (state: RootState) =>
+      state.cohortSessionAttendance.list.find((e) => e.cohort_id === cohort_id)
+        ?.cohortAttendanceRecord
+  );
+
   const [cohortAttendanceRecord, setRecord] = useState<CohortAttendanceRecord>({
-    totalSessions: 0,
-    sessionAttendanceRecords: []
+    totalSessions: cohortSessionAttendance?.totalSessions || 0,
+    sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
   });
 
   useEffect(() => {
-    axios
-      .get(`/cohorts/e5659779-2c87-43b1-98f7-93d8b7173d61/cohort_session_attendance.json`)
-      .then((response) => {
-        setRecord(response.data);
-      });
-  }, []);
+    if (!cohortSessionAttendance) {
+      dispatch(getAttendance(cohort_id));
+    } else {
+      setRecord(cohortSessionAttendance);
+    }
+  }, [cohortSessionAttendance, cohort_id]);
 
   const getAttendanceFrequency = (type: string) =>
     [...Array(cohortAttendanceRecord.totalSessions)].map(
@@ -98,15 +110,12 @@ const AttendanceTab = () => {
         ).length
     );
 
-  const CHART_DATA = [
-    {
-      year: 2019,
-      data: [
-        { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
-        { name: 'Live or Async Attendance', data: getAttendanceFrequency(AttendanceType.recorded) }
-      ]
-    }
-  ];
+  const CHART_DATA = {
+    data: [
+      { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
+      { name: 'Live or Async Attendance', data: getAttendanceFrequency(AttendanceType.recorded) }
+    ]
+  };
 
   const chartOptions = merge(BaseOptionChart(), {
     colors: ['#00AB55', '#FFC107'],
@@ -121,13 +130,14 @@ const AttendanceTab = () => {
     <StyledContainer id="asd">
       <Card>
         <CardHeader title="Cohort Overview" />
-        {CHART_DATA.map((item) => (
-          <Box key={item.year} sx={{ mt: 3, mx: 3 }} dir="ltr">
-            {item.year === seriesData && (
-              <ReactApexChart type="line" series={item.data} options={chartOptions} height={364} />
-            )}
-          </Box>
-        ))}
+        <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
+          <ReactApexChart
+            type="line"
+            series={CHART_DATA.data}
+            options={chartOptions}
+            height={364}
+          />
+        </Box>
       </Card>
       <Box style={{ marginTop: '30px' }}>
         <AttendanceTable attendance={cohortAttendanceRecord} />

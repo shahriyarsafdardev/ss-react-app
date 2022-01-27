@@ -9,7 +9,8 @@ import {
   TableHead,
   CardHeader,
   TableContainer,
-  TextField
+  TextField,
+  Tooltip
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
@@ -26,13 +27,25 @@ const StyledContainer = styled(Card)(() => ({
 
 const getIcon = (status: any) => {
   if (status === AttendanceType.live) {
-    return <img style={{ margin: 'auto' }} src="/static/icons/attended-live.svg" alt="icon" />;
+    return (
+      <Tooltip arrow placement="top" title="Attended Live">
+        <img style={{ margin: 'auto' }} src="/static/icons/attended-live.svg" alt="icon" />
+      </Tooltip>
+    );
   }
   if (status === AttendanceType.recorded) {
-    return <img style={{ margin: 'auto' }} src="/static/icons/attended-recording.svg" alt="icon" />;
+    return (
+      <Tooltip arrow placement="top" title="Watched Recording">
+        <img style={{ margin: 'auto' }} src="/static/icons/attended-recording.svg" alt="icon" />
+      </Tooltip>
+    );
   }
   if (status === AttendanceType.none) {
-    return <img style={{ margin: 'auto' }} src="/static/icons/not-attended.svg" alt="icon" />;
+    return (
+      <Tooltip arrow placement="top" title="Not Attended">
+        <img style={{ margin: 'auto' }} src="/static/icons/not-attended.svg" alt="icon" />
+      </Tooltip>
+    );
   }
   return null;
 };
