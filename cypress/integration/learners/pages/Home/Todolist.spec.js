@@ -1,9 +1,9 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import userFixture from '../../../fixtures/login/login.json';
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
-import sessionMaterials from '../../../fixtures/session/session_materials.json';
-import submit_checklist_true from '../../../fixtures/session/submit_checklist_true.json';
-import submit_checklist_false from '../../../fixtures/session/submit_checklist_false.json'
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import userFixture from '../../../../fixtures/login/login.json';
+import cohortsFixture from '../../../../fixtures/cohorts/cohorts.json';
+import sessionMaterials from '../../../../fixtures/session/session_materials.json';
+import submit_checklist_true from '../../../../fixtures/session/submit_checklist_true.json';
+import submit_checklist_false from '../../../../fixtures/session/submit_checklist_false.json'
 import moment from 'moment';
 const serverUrl = Cypress.env('serverUrl');
 
@@ -120,15 +120,10 @@ describe('Home > To do', () => {
 
     context('When a session has pre-reading materials', () => {
       it('Displays a pre-reading row for each material', () => {
-        // In this one assertion we want to assert that the following are shown:
-        // The name
         cy.getPreReadingMaterial()
         .should('contain', sessionMaterials[0].name)
-        // The publisher
-        // Open link
         cy.openPreReadingMaterial()
         .should("have.attr", "href", sessionMaterials[0].action_url);
-        // The checkbox (both one that is checked and one that is not checked)
         cy.checkedBox()
         .find('input').
         should('have.attr', 'checked')
@@ -138,14 +133,8 @@ describe('Home > To do', () => {
       });
 
       it('Allows a user to mark and unmark materials as complete', () => {
-      // click and item
         cy.markedCheck()
-      // assert that progress bar has changed
-      // assert that backend call was made
-      // uncheck an item
         cy.markedUncheck()
-      // assert that progress bar has changed
-      // assert that backend call was made
       });
 
       context('When all the pre-reading materials are completed', () => {

@@ -1,6 +1,6 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
-import user_fixture from '../../../fixtures/login/login.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../../fixtures/login/login.json';
 describe('Sessions > Resources', () => {
   beforeEach(() => {
     cy.server();
@@ -8,7 +8,6 @@ describe('Sessions > Resources', () => {
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
     .click();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
     cy.get('[data-testid=session-resources]').click({ force: true });
   });
 

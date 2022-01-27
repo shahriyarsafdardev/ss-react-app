@@ -1,9 +1,9 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
 import {
   displayMultipleDates,
   formatMultipleTimes,
   sortedTimes
-} from '../../../../src/components/cohorts/home/Common';
+} from '../../../../../src/components/cohorts/home/Common';
 import moment from 'moment';
 
 const getTimes = (sessionNumber) => {
@@ -31,13 +31,11 @@ Cypress.Commands.add('reviewContent', (sessionNumber) => {
   cy.get(`[data-testid=session-review-content-${sessionNumber + 1}]`);
 });
 Cypress.Commands.add('setClockToBeforeSession', (times) => {
-  //find min from times
   const sorted = sortedTimes(times);
   var dateTime = moment(sorted[0]).subtract(2, 'hours');
   cy.clock(new Date(dateTime.format()));
 });
 Cypress.Commands.add('setClockToAfterSession', (times) => {
-  //find max form times
   const sorted = sortedTimes(times);
   var dateTime = moment(sorted[sorted.length - 1]).add(2, 'hours');
   cy.clock(new Date(dateTime.format()));

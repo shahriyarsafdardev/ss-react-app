@@ -1,6 +1,6 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import userFixture from '../../../fixtures/login/login.json';
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json'
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import userFixture from '../../../../fixtures/login/login.json';
+import cohortsFixture from '../../../../fixtures/cohorts/cohorts.json'
 import moment from 'moment';
 
 Cypress.Commands.add('getHeading', () => {
@@ -29,12 +29,6 @@ describe('Home > Heading', () => {
     });
 
     it('Displays a personalised welcome message', () => {
-      // here is a sudo code example of what the assertion should look like
-      // heading
-      //   .text()
-      //   .should.eq(
-      //     `👋 Hi ${userFixture.first_name}, welcome to the ${cohortsFixture.code} Cohort!`
-      //   );
       cy.getHeading()
       .should('contain','👋 Hi '+ userFixture.user.first_name + ', welcome to the '+ cohortsFixture.cohorts[0].code +' Cohort!')
     });

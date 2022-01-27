@@ -1,6 +1,6 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
-import user_fixture from '../../../fixtures/login/login.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../../fixtures/login/login.json';
 
 Cypress.Commands.add('getNumber', () => {
   return cy.get('[data-testid=session-number]');
@@ -16,7 +16,6 @@ describe('Sessions > Heading', () => {
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
     .click();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   it('Displays correct session number', () => {

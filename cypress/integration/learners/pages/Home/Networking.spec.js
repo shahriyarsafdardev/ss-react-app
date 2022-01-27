@@ -1,5 +1,5 @@
-import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
-import peer from '../../../fixtures/peer/peers.json'
+import cohortsFixture from '../../../../fixtures/cohorts/cohorts.json';
+import peer from '../../../../fixtures/peer/peers.json'
 Cypress.Commands.add('getNetworkSuggestionCard', () => {
   return cy.get('[data-testid=network-suggestion-card]')
 });

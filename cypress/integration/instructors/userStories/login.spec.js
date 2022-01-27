@@ -33,7 +33,6 @@ describe('Sidebar', () => {
         });
 
         it('Opens the CohortInstructorPageList when clicked', () => {
-          // Click it here
           cy.get(
             `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-registrations"]`
           ).should('be.visible');
@@ -119,7 +118,6 @@ describe('Sidebar', () => {
         cy.get(
           `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-home"]`
         ).should('be.visible');
-        // rest should copy the one above
         cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-networking"]`)
         .should('be.visible');
         cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
@@ -174,10 +172,8 @@ describe('Sidebar', () => {
     });
     it('Alows toggle between instructor and student mode', () => {
       cy.get('[data-testid="dashboard-switch"]').should('be.visible')
-      //assertation for instructor mode is on
       cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
       cy.get('[data-testid="dashboard-switch"]').click();
-      //assertation for member mode is on
       cy.get('[data-testid="member-sidebar"]').should('be.visible');
     });
   });

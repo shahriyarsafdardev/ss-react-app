@@ -1,4 +1,3 @@
-// Each it block should mnatch a container element by its test id
 import home_refactored from '../../../fixtures/onboarding/home_refactored.json'
 import login_fixture from '../../../fixtures/login/login.json'
 const dayjs = require('dayjs')
@@ -17,14 +16,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 1', () => {
     it('Displays a "Personal Details" form',() => {
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Build Your Profile')
-      // Assert description
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
-      // Assert pressense of inputs
       cy.get('[data-testid="user-first-name"]')
       .should('be.visible')
       cy.get('[data-testid="user-last-name"]')
@@ -42,7 +38,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Prefills inputs with existing user details', () => {
-      // Assert input values using fixture data
       cy.get('[data-testid="user-first-name"]')
       .should('be.visible')
       .and("have.attr", "value", home_refactored.participant_profile.first_name)
@@ -66,7 +61,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to update or enter new details', () => {
-      // Enter new details for each
       cy.get('[data-testid="user-first-name"]')
       .should('be.visible')
       .clear()
@@ -111,37 +105,28 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
     });
     it('Displays a "Company Details" form',() =>  {
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Where do you work?')
-      // Assert description
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
-      // Assert pressense of inputs
       cy.get('[data-testid="profile-url"]')
       .should('be.visible')
       cy.get('[data-testid="company-name"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
-      // cy.get('[data-testid="company-industry"]').then(($el)  => {
-      //   Cypress.dom.isVisible($el)
-      // })
       cy.get('[data-testid="company-employees"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
     });
 
     it('Prefills inputs with existing user details', () => {
-      // Assert input values using fixture data
       cy.get('[data-testid="company-name"]')
       .should('be.visible')
       .children().eq(1)
       .and("contain", home_refactored.participant_profile.current_company)
       cy.get('[data-testid="profile-url"]')
       .and("have.attr", "src", home_refactored.participant_profile.company_logo_url)
-      // cy.get('[data-testid="company-industry"]')
-      // .and("have.attr", "value", home_refactored.participant_profile.current_industry_category_selections[0])
       cy.get('[data-testid="company-employees"]')
       .and("have.attr", "value", home_refactored.participant_profile.number_of_employees)
     });
@@ -155,15 +140,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() =>  {
-      // Click previous button to navigate to previous page
       cy.contains('button', 'Previous').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Build Your Profile')
-      // Click "Next"
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Where do you work?')
@@ -173,8 +154,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
       it('Displays a disabled “Next” button',() => {
         cy.get('[data-testid="company-industries-dropdown"]')
         .type('{backspace}')
-        // cy.contains('li', home_refactored.participant_profile.number_of_employees)
-        // .click()
         cy.get('[data-testid="btn_next"]')
         .and("have.attr", "disabled")
       });
@@ -198,14 +177,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
     });
     it('Displays a "Role Info" form',() =>  {
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Tell us about your current role?')
-      // Assert description
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
-      // Assert pressense of inputs
       cy.get('[data-testid="role-title"]')
       .should('be.visible')
       cy.get('[data-testid="role-categories"]').then(($el)  => {
@@ -219,7 +195,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Prefills inputs with existing user details', () => {
-      // Assert input values using fixture data
       cy.get('[data-testid="role-title"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_company)
       cy.get('[data-testid="role-categories"]')
@@ -239,15 +214,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
-      // Click previous button to navigate to previous page
       cy.contains('button', 'Previous').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Where do you work?')
-      // Click "Next"
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Tell us about your current role?')
@@ -282,14 +253,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
     });
     it('Displays a "Networking Preferences" form',() =>  {
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Networking Preferences')
-      // Assert description
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
-      // Assert pressense of inputs
       cy.get('[data-testid="network-roles"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
@@ -302,7 +270,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Prefills inputs with existing user details', () => {
-      // Assert input values using fixture data
       cy.get('[data-testid="network-roles"]')
       .find('input').parent().siblings()
       .and("contain", home_refactored.participant_profile.networking_roles_categories[0])
@@ -321,15 +288,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
-      // Click previous button to navigate to previous page
       cy.contains('button', 'Previous').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Tell us about your current role?')
-      // Click "Next"
       cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Networking Preferences')
@@ -339,9 +302,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
       it('Displays a disabled “Next” button', () => {
         cy.get('[data-testid="network-industeries"]')
         .type('{backspace}')
-        // .find('input').parent().siblings().children().eq(1)
-        // .and("have.attr", "aria-label", "Remove "+home_refactored.participant_profile.networking_industries_categories[0])
-        // .click()
         cy.get('[data-testid="btn_next"]')
         .and("have.attr", "disabled")
       });
@@ -368,16 +328,11 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Displays a "House Keeping" form',() => {
-      // Assert title
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Housekeeping Questions')
-      // Assert description
       cy.get('[data-testid="onboard-header-description"]')
       .should('be.visible')
-      // Assert pressense of inputs
-      // cy.get('[data-testid="housekeeping-dob"]')
-      // .should('be.visible')
       cy.get('[data-testid="housekeeping-cohort-tpoic"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
@@ -390,12 +345,6 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Prefills inputs with existing user details',() => {
-      // Assert input values using fixture data
-      // cy.get('[data-testid="housekeeping-dob"]')
-      // .children().eq(0)
-      // .children().eq(1)
-      // .children().eq(0)
-      // .and("have.attr", "value", dayjs().format('MM/DD/YYYY'))
       cy.get('[data-testid="housekeeping-cohort-tpoic"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_understanding)
       cy.get('[data-testid="housekeeping-about-cohort"]')
@@ -411,25 +360,14 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .click()
       cy.get('[data-testid="housekeeping-payment"]')
       .and("have.attr", "value", "Other")
-      // cy.get('[data-testid="housekeeping-dob"]')
-      // .children().eq(0)
-      // .children().eq(1)
-      // .children().eq(0)
-      // .clear()
-      // .type('11/11/2021')
-      // .and("have.attr", "value", '11/11/2021')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons', () => {
-       // Click previous button to navigate to previous page
        cy.contains('button', 'Previous').should('be.visible').click()
-       // Assert title
        cy.get('[data-testid="onboard-title"]')
        .should('be.visible')
        .and('contain','Networking Preferences')
-       // Click "Next"
        cy.get('[data-testid="btn_next"]').should('be.visible').click()
-       // Assert title
        cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Housekeeping Questions')
@@ -452,11 +390,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
         cy.fixture('/../fixtures/onboarding/saveUserProfileRefactored.json').as('save_user_profile');
         cy.route('POST',`${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/submit_onboarding_answers.json` ,'@save_user_profile')
         .as('submit');
-        // Press Submit
         cy.get('[data-testid="btn_next"]')
         .should('be.visible')
         .click()
-        // Assert the api is called with all the correct details
         cy.wait('@submit')
         cy.get('@submit').then((xhr) => {
           expect(xhr.response.body.first_name).to.eq(home_refactored.participant_profile.first_name);
@@ -478,13 +414,10 @@ describe('When a user visits the home page of a cohort for the first time', () =
           expect(xhr.response.body.interested_in_being_matched).to.eq(home_refactored.participant_profile.interested_in_being_matched);
           expect(xhr.response.body.networking_roles_categories[0]).to.eq(home_refactored.participant_profile.networking_roles_categories[0]);
           expect(xhr.response.body.networking_industries_categories[0]).to.eq(home_refactored.participant_profile.networking_industries_categories[0]);
-          //expect(xhr.response.body.current_understanding).to.eq(home_refactored.participant_profile.current_understanding);
           expect(xhr.response.body.referred_by).to.eq(home_refactored.participant_profile.referred_by);
           expect(xhr.response.body.payed_by).to.eq(home_refactored.participant_profile.payed_by);
-          //expect(xhr.response.body.date_of_birth).to.eq(home_refactored.participant_profile.date_of_birth);
           expect(xhr.response.body.opted_in_for_matching_suggestions).to.eq(home_refactored.participant_profile.opted_in_for_matching_suggestions);
         })
-        // Assert Home page is opened
         cy.url()
         .should('include', 'home')
         cy.get('[data-testid="dashboard-navbar-home"]')

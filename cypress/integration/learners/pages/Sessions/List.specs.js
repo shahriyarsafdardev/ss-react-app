@@ -1,8 +1,8 @@
 import moment from 'moment';
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import { firstUpcomingDate, sortedTimes } from '../../../../src/components/cohorts/home/Common';
-import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
-import user_fixture from '../../../fixtures/login/login.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import { firstUpcomingDate, sortedTimes } from '../../../../../src/components/cohorts/home/Common';
+import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../../fixtures/login/login.json';
 import { waitForDebugger } from 'inspector';
 
 Cypress.Commands.add('setClockToBeforeSession', (times, hours) => {
@@ -23,7 +23,6 @@ describe('Sessions > List', () => {
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
     .click();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   it('Displays all sessions that are allowed to display in Session Tab', () => {
