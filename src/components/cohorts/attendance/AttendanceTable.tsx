@@ -51,20 +51,21 @@ const getIcon = (status: any) => {
 };
 
 const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord }) => {
-  const [rows, setRows] = useState<SessionAttendanceRecord[]>(attendance.sessionAttendanceRecords);
+  const [rows, setRows] = useState<SessionAttendanceRecord[]>([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     setRows(attendance.sessionAttendanceRecords);
-  }, [[...attendance.sessionAttendanceRecords]]);
+  }, [attendance]);
 
   const handleSearch = (searchVal: string) => {
     setSearch(searchVal);
-    const searchedRows = rows.filter(
+    const searchedRows = attendance.sessionAttendanceRecords.filter(
       (item: SessionAttendanceRecord) =>
         item.name.toLowerCase().includes(searchVal.toLowerCase()) ||
         item.position.toLowerCase().includes(searchVal.toLowerCase())
     );
+
     setRows(searchedRows);
   };
 
