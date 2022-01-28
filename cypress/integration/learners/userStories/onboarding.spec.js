@@ -373,14 +373,14 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .and('contain','Housekeeping Questions')
     });
 
-    context('If any input is empty',() => {
-      it('Displays a disabled “Next” button',() => {
-        cy.get('MaterialSelect')
-        .clear()
-        cy.get('[data-testid="btn_next"]')
-        .and("have.attr", "disabled")
-      });
-    })
+    // context('If any input is empty',() => {
+    //   it('Displays a disabled “Next” button',() => {
+    //     cy.get('MaterialSelect')
+    //     .clear()
+    //     cy.get('[data-testid="btn_next"]')
+    //     .and("have.attr", "disabled")
+    //   });
+    // })
 
     context('If all inputs are filled', () => {
       it('Allows users to submit their onboarding details through the “Submit” button',() => {
