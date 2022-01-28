@@ -1,0 +1,6 @@
+/public/static/mock-images/* 
+/documentation
+/fixtures
+/cypress/*
+/src/_test_
+/README.md
