@@ -115,6 +115,7 @@ export default function Router() {
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
             { path: '/peers', element: <PeersTab /> },
+            { path: '/networking', element: <NetworkingTab /> },
             { path: '/sessions', element: <SessionsTab /> },
             { path: '/registrations', element: <RegistrationsTab /> },
             { path: '/attendance', element: <AttendanceTab /> },
@@ -283,6 +284,9 @@ const RegistrationsTab = Loadable(
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
+const NetworkingTab = Loadable(
+  lazy(() => import('../pages/dashboard/cohorts/networking/NetworkingTab'))
+);
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
