@@ -4,8 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-//
-import axios from 'utils/axios';
+
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { getAttendance } from 'redux/slices/cohortSessionAttendance';
 
@@ -102,14 +101,20 @@ const AttendanceTab = () => {
     }
   }, [cohortSessionAttendance, cohort_id]);
 
-  const getAttendanceFrequency = (type: string) =>
-    [...Array(cohortAttendanceRecord.totalSessions)].map(
+  const getAttendanceFrequency = (type: string) => {
+    const totalStudents = cohortAttendanceRecord.sessionAttendanceRecords.length;
+    if (totalStudents === 0) {
+      return Array(10).fill(0);
+    }
+    return [...Array(cohortAttendanceRecord.totalSessions)].map(
       (x, i) =>
-        cohortAttendanceRecord.sessionAttendanceRecords.filter(
+        (cohortAttendanceRecord.sessionAttendanceRecords.filter(
           (datum: SessionAttendanceRecord) => datum.attendanceData[i] === type
-        ).length
+        ).length /
+          totalStudents) *
+        100
     );
-
+  };
   const CHART_DATA = {
     data: [
       { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
@@ -123,6 +128,12 @@ const AttendanceTab = () => {
       categories: [...Array(cohortAttendanceRecord.totalSessions)].map(
         (item, index) => `Session ${index + 1}`
       )
+    },
+    yaxis: {
+      max: 100,
+      labels: {
+        formatter: (item: number, index: number) => `${item}%`
+      }
     }
   });
 
