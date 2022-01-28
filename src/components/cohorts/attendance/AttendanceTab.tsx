@@ -24,59 +24,6 @@ const StyledContainer = styled(Box)(() => ({
   padding: '0 30px',
   maxWidth: '1200px'
 }));
-const MOCK_DATA: CohortAttendanceRecord = {
-  totalSessions: 5,
-  sessionAttendanceRecords: [
-    {
-      user_id: '123-12sfqwesd-f-324234234df-234',
-      name: 'Ingo Schimpff',
-      position: '(UX Designer @ Hane Inc)',
-      attendanceData: [
-        AttendanceType.live,
-        AttendanceType.recorded,
-        AttendanceType.live,
-        AttendanceType.none,
-        AttendanceType.none
-      ]
-    },
-    {
-      user_id: '12wqeq3-12sfsd-f-32asd4234df-234',
-      name: 'Olivia Nunn',
-      position: '(Beast @ ScholarSite)',
-      attendanceData: [
-        AttendanceType.recorded,
-        AttendanceType.recorded,
-        AttendanceType.none,
-        AttendanceType.none,
-        AttendanceType.live
-      ]
-    },
-    {
-      user_id: '123-12sfsd-f-324234234df-23asdasd4',
-      name: 'Nicholas Rudder',
-      position: '(Associate @ Microsoft)',
-      attendanceData: [
-        AttendanceType.none,
-        AttendanceType.live,
-        AttendanceType.recorded,
-        AttendanceType.recorded,
-        AttendanceType.recorded
-      ]
-    },
-    {
-      user_id: '123-12sfsd-f-324234234asdadf-234',
-      name: 'Lexie Sarstedt',
-      position: '(Analyst @ Zen Energy)',
-      attendanceData: [
-        AttendanceType.live,
-        AttendanceType.recorded,
-        AttendanceType.live,
-        AttendanceType.none,
-        AttendanceType.none
-      ]
-    }
-  ]
-};
 
 const AttendanceTab = () => {
   const dispatch = useDispatch();
@@ -115,6 +62,7 @@ const AttendanceTab = () => {
         100
     );
   };
+
   const CHART_DATA = {
     data: [
       { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
@@ -131,6 +79,7 @@ const AttendanceTab = () => {
     },
     yaxis: {
       max: 100,
+      min: 0,
       labels: {
         formatter: (item: number, index: number) => `${item}%`
       }

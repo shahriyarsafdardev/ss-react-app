@@ -100,7 +100,7 @@ const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord })
           </TableHead>
           <TableBody>
             {rows.map((row: SessionAttendanceRecord) => (
-              <TableRow key={row.user_id}>
+              <TableRow hover key={row.user_id}>
                 <TableCell colSpan={3}>{`${row.name} ${row.position}`}</TableCell>
                 {[...Array(attendance.totalSessions)].map((x, i) => (
                   <TableCell key={`data-${i + 1}`}>{getIcon(row.attendanceData[i])}</TableCell>
