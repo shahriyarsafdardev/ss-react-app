@@ -3,10 +3,6 @@ import userFixture from '../../../../fixtures/login/login.json';
 import cohortsFixture from '../../../../fixtures/cohorts/cohorts.json'
 import moment from 'moment';
 
-Cypress.Commands.add('getHeading', () => {
-  return cy.get('[data-testid=cohort-header]')
-});
-
 Cypress.Commands.add('setClockToBeforeSession', (session, time)=> {
   var dateTime = moment(session).subtract(time, 'hours');
       cy.clock(new Date(dateTime.format()));
@@ -29,7 +25,7 @@ describe('Home > Heading', () => {
     });
 
     it('Displays a personalised welcome message', () => {
-      cy.getHeading()
+      cy.get('[data-testid=cohort-header]')
       .should('contain','👋 Hi '+ userFixture.user.first_name + ', welcome to the '+ cohortsFixture.cohorts[0].code +' Cohort!')
     });
   });
@@ -40,7 +36,7 @@ describe('Home > Heading', () => {
     });
 
     it('Displays a get ready message for that session', () => {
-      cy.getHeading()
+      cy.get('[data-testid=cohort-header]')
       .should('contain','🔴 Get ready, Session '+sessionFixture.sessions[0].number+' is starting soon!')
     });
   });
@@ -52,7 +48,7 @@ describe('Home > Heading', () => {
     });
 
     it('Displays a personalised Welcome back message', () => {
-      cy.getHeading()
+      cy.get('[data-testid=cohort-header]')
       .should('contain','👋 Welcome back '+userFixture.user.first_name+', we hope you enjoyed Session '+sessionFixture.sessions[0].number)
     });
   });
@@ -63,7 +59,7 @@ describe('Home > Heading', () => {
     });
 
     it('Displays a personalised Completed message', () => {
-      cy.getHeading()
+      cy.get('[data-testid=cohort-header]')
       .should('contain','🎉 Congratulations, you’ve completed the '+cohortsFixture.cohorts[0].code+' cohort!')
     });
   });
