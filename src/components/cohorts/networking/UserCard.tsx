@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
-import { Box, Stack, Button, Divider, Typography } from '@material-ui/core';
+import { Box, Stack, Link, Button, Divider, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { SectionContainer } from './Common';
-
 import { StudentProfile } from '../../../@types/cohorts';
 
 const StyledProfile = styled('img')(({ theme }) => ({
@@ -74,35 +71,19 @@ const StyledNameContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const trimArray = (data: any) => {
-  const trimCount = 4;
-  if (Array.isArray(data) && data.length > 0) {
-    return { data: data.slice(0, trimCount), other: data.length - trimCount };
-  }
-  return { data: [], other: 0 };
-};
-
 export default function UserCard({
   item,
   match,
-  styleClass
+  styleClass,
+  matchings,
+  matchUser
 }: {
   item: StudentProfile;
   match: boolean;
   styleClass: string;
+  matchings: string | null;
+  matchUser: Function;
 }) {
-  const [strengths, setStrengths] = useState<{
-    data: any[];
-    other: number;
-  }>({
-    data: [],
-    other: 0
-  });
-
-  useEffect(() => {
-    setStrengths(trimArray(item.strengths));
-  }, [item]);
-
   return (
     <SectionContainer className={styleClass}>
       <StyledProfileContainer>
@@ -125,38 +106,39 @@ export default function UserCard({
                     `(${item.current_company?.number_of_employees})`}
                 </Typography>
               )}
+              {matchings && (
+                <Typography sx={{ fontWeight: 400, color: '#637381' }}>
+                  <b>Existing matches: {matchings}</b>
+                </Typography>
+              )}
+              {item.linkedin_url && (
+                <Link
+                  color="primary"
+                  to={item.linkedin_url || '#'}
+                  target="_blank"
+                  component={RouterLink}
+                  sx={{ mt: '0px !important' }}
+                >
+                  Open LinkedIn
+                </Link>
+              )}
             </StyledNameContainer>
           </StyledCompanyContainer>
         </StyledContainer>
       </StyledProfileContainer>
-      <Stack flexDirection="row" alignItems="center" spacing={2}>
-        <Button variant="text" color="primary">
-          Show Description
-        </Button>
-        <Typography color="primary" variant="subtitle2" sx={{ mt: '0px !important' }}>
-          +
-        </Typography>
-        <Button
-          variant="text"
-          color="primary"
-          to={item.linkedin_url || '#'}
-          target="_blank"
-          component={RouterLink}
-          sx={{ mt: '0px !important' }}
-        >
-          Open LinkedIn
-        </Button>
-      </Stack>
+      <Typography sx={{ color: '#637381' }}>
+        {item?.bio_text?.length > 100 ? `${item.bio_text?.substring(0, 100)}...` : item.bio_text}
+      </Typography>
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />
       <Stack spacing={1} justifyContent="flex-start">
-        {item.current_role_category_selections?.length > 0 && (
+        {item?.current_role_category_selections?.length > 0 && (
           <Typography>
             Roles: <b>{item.current_role_category_selections?.join(',')}</b>
           </Typography>
         )}
-        {item.current_industry_category_selections && (
+        {item?.current_industry_category_selections.length > 0 && (
           <Typography>
-            Company Industries: <b>{item.current_industry_category_selections?.join(',')}</b>
+            {/* Company Industries: <b>{item.current_industry_category_selections?.join(',')}</b> */}
           </Typography>
         )}
         <Typography>
@@ -176,7 +158,7 @@ export default function UserCard({
 
       {match && (
         <Box sx={{ mt: 2, width: '100%' }}>
-          <Button variant="contained" color="primary" fullWidth>
+          <Button onClick={() => matchUser(item.id)} variant="contained" color="primary" fullWidth>
             Match
           </Button>
         </Box>

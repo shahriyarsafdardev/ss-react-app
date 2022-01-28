@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
+import moment from 'moment';
 import LoadingScreen from 'components/LoadingScreen';
 import MatchProgress from 'components/cohorts/networking/MatchProgress';
 import AvailableMatches from 'components/cohorts/networking/AvailableMatches';
 import MatchingUser from 'components/cohorts/networking/MatchingUser';
-import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import { getPeers } from 'redux/slices/cohort';
+import { getPeers, matchUsers } from 'redux/slices/cohort';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -31,31 +31,64 @@ const LoadingContainer = styled(Box)(() => ({
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
-
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) =>
       state?.cohort?.cohorts?.filter((cohort: any) => cohort_id === cohort.id)[0]
   );
   const { peers } = cohort || [];
+  const fileName = `${moment().format()}-${cohort?.name} Matchings Data`;
 
   useEffect(() => {
     if (cohort && !peers) {
       dispatch(getPeers(cohort_id.toString(), 'null'));
     }
-  }, [cohort]);
+  }, [cohort, cohort_id, dispatch, peers]);
 
-  const participants = peers?.filter((peer) => peer.type === 'learner');
+  const matched = peers?.filter(
+    (peer) =>
+      peer.type === 'learner' &&
+      peer.opted_in_for_matching_suggestions &&
+      peer.matchings &&
+      peer.matchings.length > 0
+  );
+  const not_matched = peers?.filter(
+    (peer) =>
+      peer.type === 'learner' &&
+      peer.opted_in_for_matching_suggestions &&
+      (!peer.matchings || peer.matchings.length === 0)
+  );
+
+  const handleMatch = async (peer_a_id: string, peer_b_id: string) => {
+    if (peer_a_id && peer_b_id) {
+      await dispatch(matchUsers(peer_a_id, peer_b_id, cohort_id));
+    }
+  };
 
   return (
     <Page title="ScholarSite | Networking">
       {peers ? (
         <Container style={{ marginBottom: '50px' }}>
-          <MatchProgress current={participants[0] ? 1 : 0} total={participants.length} />
+          <MatchProgress
+            cohortID={cohort_id}
+            fileName={fileName}
+            current={matched.length}
+            total={matched.length + not_matched.length}
+          />
           <StyledBox>
-            <MatchingUser user={participants[0]} />
-            <AvailableMatches user={participants[0]} users={participants} />
+            {not_matched.length > 0 ? (
+              <>
+                <MatchingUser user={not_matched[0]} />
+                <AvailableMatches
+                  key={not_matched[0]?.id}
+                  user={not_matched[0]}
+                  matchUsers={handleMatch}
+                  users={matched.concat(not_matched.slice(1, not_matched.length))}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </StyledBox>
         </Container>
       ) : (

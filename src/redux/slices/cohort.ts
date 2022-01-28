@@ -86,6 +86,22 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, isOnboarded: true };
       }
     },
+    updatePeersMatch(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].peers;
+        const targetPeerAIndex = updated.findIndex((peer) => peer.id === action.payload.peer_a_id);
+        const targetPeerBIndex = updated.findIndex((peer) => peer.id === action.payload.peer_b_id);
+
+        if (targetPeerAIndex !== -1 && targetPeerBIndex !== -1) {
+          updated[targetPeerAIndex].matchings = action.payload.result.peer_a_matches;
+          updated[targetPeerBIndex].matchings = action.payload.result.peer_b_matches;
+          state.cohorts[targetCohortIndex].peers = updated;
+        }
+      }
+    },
     updateSessionMaterialCheckStatus(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohortID
@@ -349,6 +365,28 @@ export function updateMaterialStatus(
           cohortID,
           sessionID,
           materialId,
+          result
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function matchUsers(peer_a_id: string, peer_b_id: string, cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(`/cohorts/${cohortID}/match.json`, {
+        peer_a_id,
+        peer_b_id
+      });
+      const result = response.data;
+      dispatch(
+        slice.actions.updatePeersMatch({
+          cohortID,
+          peer_b_id,
+          peer_a_id,
           result
         })
       );

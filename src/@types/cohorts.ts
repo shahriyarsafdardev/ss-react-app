@@ -21,6 +21,7 @@ export type StudentProfile = {
   current_industry_category_selections: string[];
   strengths: string[];
   interests: string[];
+  matchings: string[];
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
   profile_image_url: string;

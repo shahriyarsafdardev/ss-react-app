@@ -12,7 +12,13 @@ const MachingUser = ({ user }: { user: StudentProfile }) => (
             <b>Next:</b> Find a match for {user.first_name} {user.last_name}
           </Typography>
         </SectionContainer>
-        <UserCard match={false} item={user} styleClass="white" />
+        <UserCard
+          match={false}
+          matchings={null}
+          matchUser={() => {}}
+          item={user}
+          styleClass="white"
+        />
       </Stack>
     ) : (
       <CircularLoader />
