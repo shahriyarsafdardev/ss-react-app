@@ -22,6 +22,7 @@ export type StudentProfile = {
   profile_image_url: string;
   bio_text: string;
   type: string | undefined;
+  is_onboarded?: boolean;
 };
 
 type Tag = {
