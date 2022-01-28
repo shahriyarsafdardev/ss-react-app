@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Container, Box } from '@material-ui/core';
+import { Container, Box, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { NavLink as RouterLink } from 'react-router-dom';
 import Page from 'components/Page';
 import axios from 'utils/axios';
 import moment from 'moment';
@@ -97,6 +98,15 @@ const Index = () => {
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Container style={{ marginBottom: '50px' }}>
             <CohortTimeLine cohort={cohort} sessions={sessions} />
+            <Button
+              component={RouterLink}
+              to={`/cohorts/${cohort_id}/calendar-instructions`}
+              style={{ marginTop: '20px' }}
+              fullWidth
+              variant="outlined"
+            >
+              Add sessions to your calendar
+            </Button>
             <StyledBox>
               <SessionPrereading
                 cohort={cohort}
