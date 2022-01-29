@@ -64,7 +64,7 @@ export default function PeersTab() {
 
   if (peers) {
     filteredPeers = peers.filter((peer) => {
-      if (!peer.type && peer.is_onboarded === true) {
+      if (peer.type === 'learner' && peer.is_onboarded === true) {
         return peer;
       }
       return false;
