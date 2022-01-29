@@ -39,15 +39,13 @@ const slice = createSlice({
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
       );
-      const filteredPeers = action.payload.peers.filter((student: any) => {
-        if (!student.type) {
-          if (student.id !== action.payload.userID) {
-            return student;
-          }
-        }
-
-        return false;
-      });
+      const filteredPeers = action.payload.peers.filter(
+        (student: any) =>
+          student.type &&
+          student.type === 'learner' &&
+          student.is_onboarded &&
+          student.id !== action.payload.userID
+      );
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = {

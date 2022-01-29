@@ -69,10 +69,16 @@ export default function ContactUs() {
       profile_image_url:
         'https://media-exp1.licdn.com/dms/image/C4E03AQEOzin28rqUMw/profile-displayphoto-shrink_400_400/0/1517282634749?e=1648684800&v=beta&t=0_mOHu3DtCiEW6pEbAzrqhHGTr3_u5l3fp1Udo3Az_0',
       linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
       current_company: {
         id: '',
         name: 'ScholarSite',
-        logo_url: '/static/contact/companyLogo.svg'
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
       }
       // discord_url: 'https://discordapp.com/users/893656080914186251'
     },
@@ -87,6 +93,8 @@ export default function ContactUs() {
       city: 'New York',
       country: 'America',
       is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
       linkedin_url: 'https://www.linkedin.com/in/olivia-nunn-29845990/',
       current_company: {
         id: '',
@@ -107,6 +115,8 @@ export default function ContactUs() {
       city: 'New York',
       country: 'America',
       is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
       linkedin_url: 'https://www.linkedin.com/in/nicholasrudder/',
       current_company: {
         id: '',
@@ -127,6 +137,8 @@ export default function ContactUs() {
       city: 'New York',
       country: 'America',
       is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
       linkedin_url: 'https://www.linkedin.com/in/adrian-sarstedt-375623133/',
       current_company: {
         id: '',
