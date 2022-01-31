@@ -1,13 +1,6 @@
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
-import user_fixture from '../../../fixtures/login/login.json';
-
-Cypress.Commands.add('getNumber', () => {
-  return cy.get('[data-testid=session-number]');
-});
-Cypress.Commands.add('getTitle', () => {
-  return cy.get('[data-testid=session-title]');
-});
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../../fixtures/login/login.json';
 
 describe('Sessions > Heading', () => {
   before(() => {
@@ -16,15 +9,14 @@ describe('Sessions > Heading', () => {
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
     .click();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   it('Displays correct session number', () => {
-    cy.getNumber().
+    cy.get('[data-testid=session-number]').
     should('contain', sessionFixture.sessions[0].number);
   });
   it('Displays correct session title', () => {
-    cy.getTitle()
+    cy.get('[data-testid=session-title]')
     .should('contain', sessionFixture.sessions[0].name);
   });
 });

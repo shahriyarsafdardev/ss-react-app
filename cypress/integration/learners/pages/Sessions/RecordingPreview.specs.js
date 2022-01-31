@@ -1,12 +1,12 @@
 import moment from 'moment';
-import sessionFixture from '../../../fixtures/session/sessions.json';
-import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
-import user_fixture from '../../../fixtures/login/login.json';
+import sessionFixture from '../../../../fixtures/session/sessions.json';
+import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../../fixtures/login/login.json';
 import {
   sortedTimes,
   firstUpcomingDate,
   zoomTimesPreview
-} from '../../../../src/components/cohorts/home/Common';
+} from '../../../../../src/components/cohorts/home/Common';
 import { time } from 'console';
 
 Cypress.Commands.add('setClockToBeforeSession', (times, hours, type) => {
@@ -27,7 +27,6 @@ describe('Sessions > RecordingsPreview', () => {
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
     .click();
-    //cy.visit(`/cohorts/${sessionFixture.cohort_id}/sessions`);
   });
 
   context('When remaining session time is more than 1 day', () => {

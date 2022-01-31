@@ -1,4 +1,3 @@
-// Each it block should mnatch a container element by its test id
 import userFixture from '../../../fixtures/login/login.json';
 import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
 
@@ -22,8 +21,6 @@ describe('When a learner logs in', () => {
       .and('contain', cohortsFixture.cohorts[0].host_names)
       cy.get('[data-testid="empty-home-cohort-information-text-1"]')
       .should('be.visible')
-      // cy.get('[data-testid="empty-home-cohort-information-text-2"]')
-      // .should('be.visible')
       cy.get('[data-testid="empty-home-add-to-calendar-btn"]')
       .should('be.visible')
       .and('contain', 'Add sessions to my calendar')
@@ -34,8 +31,6 @@ describe('When a learner logs in', () => {
 
     describe('When the Sessions is selected from the Sidebar', () => {
       it('Opens Sessions#Empty page' , () => {
-        //data-testid="navbar-cohort-admin-page-list-Your Cohorts-Accelerating Innovation with A/B Testing-home"
-        //cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-Your Cohorts-${cohorts_fixture.cohorts[0].name}-sessions"]`)
         cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-sessions"]`)
         .should('be.visible')
         .click()
@@ -91,11 +86,6 @@ describe('When a learner logs in', () => {
         should('include', 'Q&A')
         cy.get('[data-testid="dashboard-navbar-Q&A"]')
         .should('be.visible')
-        //cy.get('[data-testid="empty-Q&A-img"]')
-        //.should('be.visible')
-        //cy.get('[data-testid="empty-Q&A-information-text"]')
-        //.should('be.visible')
-        //.and('contain', cohortsFixture.cohorts[0].host_names)
       });
     });
   });
