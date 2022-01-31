@@ -40,6 +40,9 @@ describe('Sidebar', () => {
             `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-students"]`
           ).should('be.visible');
           cy.get(
+            `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-attendance"]`
+          ).should('be.visible');
+          cy.get(
             `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-sessions"]`
           ).should('be.visible');
           cy.get(
@@ -67,6 +70,15 @@ describe('Sidebar', () => {
             .should('be.visible')
             .click();
             cy.get('[data-testid="dashboard-navbar-networking"]')
+            .should('be.visible');
+          });
+          it('Allows the Attendants page to be opened', () => {
+            cy.get(
+              `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-attendance"]`
+            )
+            .should('be.visible')
+            .click();
+            cy.get('[data-testid="dashboard-navbar-attendance"]')
             .should('be.visible');
           });
           it('Allows the Sessions page to be opened', () => {
