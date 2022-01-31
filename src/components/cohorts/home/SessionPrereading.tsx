@@ -13,10 +13,10 @@ import JoinZoomPrompt from '../JoinZoomPrompt';
 import { Summary } from '../sessions';
 
 const StyledSessionPrereadingContainer = styled(Box)(() => ({
-  height: '100%',
+  height: '80%',
   overflowY: 'scroll',
-  '&::-webkit-scrollbar': { width: '5px' },
-  '&::-webkit-scrollbar-thumb': { borderRadius: '4px', backgroundColor: 'rgba(0, 0, 0, .3)' }
+  '&::-webkit-scrollbar': { display: 'none' },
+  '&::-webkit-scrollbar-thumb': { display: 'none' }
 }));
 
 const SessionPrereading = ({
@@ -180,7 +180,12 @@ const SessionPrereading = ({
               </StyledSessionPrereadingContainer>
             </>
           ) : (
-            <Box style={{ height: '100%', overflowY: 'scroll' }}>
+            <Box
+              style={{
+                height: '80%',
+                overflowY: 'scroll'
+              }}
+            >
               <Summary onTrack={() => {}} key="summary" innerContent={cohort.goodbye_message} />
             </Box>
           )}
