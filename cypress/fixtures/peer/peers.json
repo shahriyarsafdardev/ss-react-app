@@ -2,21 +2,34 @@
   "cohort_id": "9550cc85-305a-438c-a115-e791a16c91f0",
   "peers": [
     {
-      "id": "9550cc85-305a-438c-a115-e791a16c91f0",
-      "first_name": "Daniel",
-      "last_name": "Fragiadakis",
-      "email": "danfragiadakis@upwork.com",
-      "current_company": {
-        "id": "be8b7805-1d0b-49f0-9378-b2ed2fdb5a8f",
-        "name": "Upwork",
-        "logo_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/Upwork-logo-1377f4"
+      "id":"f4389356-4d53-473e-9c74-b2cc0d43d4b6",
+      "type":"learner",
+      "first_name":"Barry",
+      "last_name":"Wang",
+      "email":"barry.w@next-insurance.com"
+      ,"bio_text":"Drive growth and marketing initiatives with data \u0026 analytics",
+      "current_company":
+      {
+        "id":"be93ad81-51fa-4a79-a243-cf46da8a0e93",
+        "name":"Next Insurance",
+        "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/Next%20Insurance-logo-5cbfcd",
+        "number_of_employees":"500-1000"
       },
-      "strengths": ["aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa", "aaaaa"],
-      "interests": ["aaaaa"],
-      "linkedin_url": "https://www.linkedin.com/in/daniel-fragiadakis-678ba890",
-      "current_position": "Economist",
-      "discord_url": "https://discordapp.com/users/876953098659192852",
-      "profile_image_url": "https://scholarsite-public.s3.eu-west-2.amazonaws.com/daniel-fragiadakis-3e73b9"
+      "is_managing_team":true,
+      "city":"San Francisco",
+      "matchings":[],
+      "country":"United States of America",
+      "strengths":[],
+      "interests":[],
+      "linkedin_url":"https://www.linkedin.com/",
+      "current_position":"Data Science Manager",
+      "discord_url":null,
+      "profile_image_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/barry-wang-821650",
+      "opted_in_for_matching_suggestions":true,
+      "preferred_pronoun":"He/him",
+      "current_role_category_selections":["Data"],
+      "current_industry_category_selections":["Finance / Fintech"],
+      "is_onboarded":true
     }
   ]
 }
