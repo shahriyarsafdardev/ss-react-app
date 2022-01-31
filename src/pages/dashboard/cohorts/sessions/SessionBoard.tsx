@@ -177,15 +177,18 @@ const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
 export default function SessionBoard({ session, isLearner }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(session?.survey_completed);
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
-  const [modalState, setModal] = useState(!feedbacks[session?.id || '']);
   const { id } = useContext(CohortContext);
   const { sessionNumber } = useContext(SessionContext);
   const params = new URLSearchParams(window.location.search);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const feedback = params.get('open_feedback');
+  const studentFeedback = params.get('student_feedback');
+  const [modalState, setModal] = useState(
+    !feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true')
+  );
 
   const SurveyModal = ({
     state,
@@ -212,6 +215,11 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
       return true;
     }
     if (feedbackSubmitted || session?.survey_completed) return false;
+    if (studentFeedback === 'true') return true;
+    return shouldDisplaySurveyAlert();
+  };
+
+  const shouldDisplaySurveyAlert = () => {
     if (session && session.times) {
       const currentTime = moment();
       const sessionTime = surveyTime(session.times);
@@ -227,7 +235,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
   useEffect(() => {
     setRecording(session?.recording_urls[0]?.recording_url);
     setFeedbackSubmitted(false);
-    setModal(!feedbacks[session?.id || '']);
+    setModal(!feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true'));
   }, [session]);
 
   const markAttendance = (type: string) => {
@@ -391,7 +399,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
             </Select>
           </RecordingSlelectForm>
         )}
-        {shouldDisplaySurveyModal() && (
+        {shouldDisplaySurveyAlert() && (
           <FeedbackButton onClick={() => setModal(true)}>
             <Box className="img-content">
               <img src="/static/icons/navbar/ic_sun.svg" alt="" />
