@@ -11,6 +11,7 @@ type DescriptionProps = {
 };
 
 const DescriptionContainer = styled(Container)(({ theme }) => ({
+  whiteSpace: 'break-spaces',
   [theme.breakpoints.down('sm')]: {
     padding: 0
   },

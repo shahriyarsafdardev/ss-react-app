@@ -89,6 +89,10 @@ const Index = () => {
     trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 
+  const onAddCalendar = () => {
+    sendAnalyticsData(1, 'Cohort Calendar', 'Add Calendar');
+  };
+
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   return (
@@ -99,6 +103,7 @@ const Index = () => {
           <Container style={{ marginBottom: '50px' }}>
             <CohortTimeLine cohort={cohort} sessions={sessions} />
             <Button
+              onClick={() => onAddCalendar()}
               component={RouterLink}
               to={`/cohorts/${cohort_id}/calendar-instructions`}
               style={{ marginTop: '20px' }}
