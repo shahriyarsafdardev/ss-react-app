@@ -48,25 +48,29 @@ const AttendanceTab = () => {
     }
   }, [cohortSessionAttendance, cohort_id]);
 
-  const getAttendanceFrequency = (type: string) => {
+  const getAttendanceFrequency = (types: string[]) => {
     const totalStudents = cohortAttendanceRecord.sessionAttendanceRecords.length;
     if (totalStudents === 0) {
       return Array(10).fill(0);
     }
-    return [...Array(cohortAttendanceRecord.totalSessions)].map(
-      (x, i) =>
-        (cohortAttendanceRecord.sessionAttendanceRecords.filter(
-          (datum: SessionAttendanceRecord) => datum.attendanceData[i] === type
+    return [...Array(cohortAttendanceRecord.totalSessions)].map((x, i) =>
+      (
+        (cohortAttendanceRecord.sessionAttendanceRecords.filter((datum: SessionAttendanceRecord) =>
+          types.includes(datum.attendanceData[i])
         ).length /
           totalStudents) *
         100
+      ).toFixed(2)
     );
   };
 
   const CHART_DATA = {
     data: [
-      { name: 'Live Attendance', data: getAttendanceFrequency(AttendanceType.live) },
-      { name: 'Live or Async Attendance', data: getAttendanceFrequency(AttendanceType.recorded) }
+      { name: 'Live Attendance', data: getAttendanceFrequency([AttendanceType.live]) },
+      {
+        name: 'Live or Async Attendance',
+        data: getAttendanceFrequency([AttendanceType.live, AttendanceType.recorded])
+      }
     ]
   };
 
