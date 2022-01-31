@@ -85,7 +85,6 @@ const SessionPrereading = ({
       }}
     />
   );
-
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
   return (
@@ -155,6 +154,10 @@ const SessionPrereading = ({
                         HOME_PAGE_EVENTS.zoom_preview,
                         HOME_PAGE_EVENTS.opened_zoom_link
                       );
+                      axios.post(`/cohorts/${cohort?.id}/cohort_session_attendance.json`, {
+                        status: 'attended_live',
+                        session_id: activeSession?.id
+                      });
                     }}
                   />
                 )}
