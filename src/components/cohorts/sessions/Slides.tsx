@@ -39,8 +39,9 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 const StyledPage = styled(Page)(({ theme }) => ({
-  '.react-pdf__Page__svg': { height: '375px !important', width: '100% !important' },
-  '.react-pdf__Page__svg > svg': { height: '375px !important', width: '100% !important' },
+  '.react-pdf__Page': { height: '100% !important' },
+  '.react-pdf__Page__svg': { height: '100% !important', width: '100% !important' },
+  '.react-pdf__Page__svg > svg': { height: '100% !important', width: '100% !important' },
   [theme.breakpoints.between(1300, 1400)]: {
     '.react-pdf__Page__svg': { width: '550px !important' },
     '.react-pdf__Page__svg > svg': { width: '550px !important' }
@@ -75,8 +76,13 @@ const PdfDocument = styled(Document)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  margin: '0.75rem 0rem',
-  '.react-pdf__Page': { position: 'absolute !important', top: 0, left: 0, right: 0 },
+  '.react-pdf__Page': {
+    position: 'absolute !important',
+    height: '100%',
+    top: 0,
+    left: 0,
+    right: 0
+  },
   [theme.breakpoints.down('sm')]: {
     height: 'auto'
   },
@@ -110,8 +116,9 @@ const PdfDocument = styled(Document)(({ theme }) => ({
 
 const useStyles = makeStyles((theme: Theme) => ({
   modalView: {
-    maxWidth: '900px',
-    height: '550px',
+    width: '90%',
+    maxWidth: '1200px',
+    height: '625px',
     margin: 'auto'
   },
   standard: {
