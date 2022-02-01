@@ -12,7 +12,8 @@ type RegistrationRowProps = {
 export default function RegistrationRow({ enrollment, index }: RegistrationRowProps) {
   const theme = useTheme();
 
-  const { id, first_name, email, name, status, time, price, linkedin_url } = enrollment;
+  const { id, first_name, email, name, status, time, price, linkedin_url, last_action_date } =
+    enrollment;
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
@@ -46,6 +47,13 @@ export default function RegistrationRow({ enrollment, index }: RegistrationRowPr
         data-testid={`registration${id ? `-${id}` : ''}-time`}
       >
         {time}
+      </TableCell>
+      <TableCell
+        style={{ width: 170 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-last-action-date`}
+      >
+        {last_action_date}
       </TableCell>
       <TableCell
         style={{ width: 100 }}

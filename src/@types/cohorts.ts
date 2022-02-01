@@ -127,6 +127,7 @@ export type Enrollment = {
   card_added: boolean;
   coupon_code: string;
   time: string;
+  last_action_date: string;
   application_accepted_time: string;
   payment_link_opened_time: string;
   paid_time: string;

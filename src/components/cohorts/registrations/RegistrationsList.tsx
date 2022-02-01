@@ -13,6 +13,7 @@ type StudentProfileListProps = {
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
   { id: 'time', label: 'Sign Up Date', align: 'center' },
+  { id: 'last_action_date', label: 'Last Action Date', align: 'center' },
   { id: 'price', label: 'Price', align: 'center' },
   { id: 'status', label: 'Status', align: 'center' },
   { id: 'tags', label: 'Tags', align: 'center' },
