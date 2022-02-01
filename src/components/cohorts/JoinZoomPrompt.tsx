@@ -265,7 +265,7 @@ const renderPlaceHolder = (
   const difference = +sessionTime - +currentTime;
 
   if (difference < 0) {
-    if (Math.floor((Math.abs(difference) / (1000 * 60 * 60)) % 24) < 2) {
+    if (Math.floor(Math.abs(difference)) < 1000 * 3600 * 2) {
       return (
         <SessionInProgress
           displayType={displayType}
