@@ -16,11 +16,13 @@ type UserType = {
 export default function UserForm({
   submitValues,
   cohortID,
-  user
+  user,
+  account
 }: {
   submitValues: Function;
   cohortID: string;
   user: UserType;
+  account: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -63,7 +65,9 @@ export default function UserForm({
           👋 We just need a few more details to process your application
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          We review each application in order to ensure a diverse and experienced cohort!
+          {account
+            ? `All costs will be covered by ${account}’s ScholarSite credits!`
+            : 'We review each application in order to ensure a diverse and experienced cohort!'}
         </Typography>
       </Box>
 

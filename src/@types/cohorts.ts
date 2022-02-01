@@ -121,6 +121,7 @@ export type Enrollment = {
   email: string;
   linkedin_url: string;
   price: number;
+  credit_account: string;
   status: string;
   notes: string;
   stream: string;

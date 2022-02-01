@@ -414,6 +414,17 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
           <Typography variant="h4">🤝</Typography>
         </Tooltip>
       )}
+      {enrollment.credit_account && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } enrolled using ${enrollment.credit_account} credits`}
+        >
+          <Typography variant="h4">🏢</Typography>
+        </Tooltip>
+      )}
     </Stack>
   </>
 );
