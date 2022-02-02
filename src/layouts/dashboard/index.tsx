@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 // material
 import { styled, useTheme } from '@material-ui/core/styles';
 // hooks
+import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
 import DashboardNavbar from './DashboardNavbar';
@@ -38,11 +39,13 @@ export default function DashboardLayout() {
   const theme = useTheme();
   const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      {user?.type !== 'company' ||
+        (true && <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />)}
       <MainStyle
         sx={{
           transition: theme.transitions.create('margin', {

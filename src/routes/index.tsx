@@ -111,6 +111,10 @@ export default function Router() {
           ]
         },
         {
+          path: 'business-dashboard',
+          children: [{ path: '/', element: <BusinessDashboard /> }]
+        },
+        {
           path: 'cohorts/:cohortID',
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
@@ -281,6 +285,10 @@ const CalendarInstructions = Loadable(
 const RegistrationsTab = Loadable(
   lazy(() => import('components/cohorts/registrations/RegistrationsTab'))
 );
+const BusinessDashboard = Loadable(
+  lazy(() => import('components/cohorts/businessCredit/Dashboard'))
+);
+
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
