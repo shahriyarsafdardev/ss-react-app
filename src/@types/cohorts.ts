@@ -211,3 +211,14 @@ export const AttendanceType = {
   recorded: 'recorded',
   none: 'none'
 };
+
+export type CreditObject = {
+  id: string;
+  time: string;
+  type: string;
+  approved: boolean | null;
+  attendee_name: string | null;
+  cohort_name: string | null;
+  cohort_link: string | null;
+  credit_amount: number;
+};

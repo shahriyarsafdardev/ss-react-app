@@ -1,115 +1,11 @@
 import { Container, Box, Typography, Card, CardHeader, Button } from '@material-ui/core';
 import Page from 'components/Page';
-
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { initializeCredit } from 'redux/slices/businessCredit';
+import { useEffect } from 'react';
+import moment from 'moment';
+import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
-
-type CreditObject = {
-  time: string;
-  type: string;
-  approved: boolean | null;
-  attendee_name: string | null;
-  cohort_name: string | null;
-  cohort_link: string | null;
-  credit_amount: number;
-};
-
-const Dummy_Data = {
-  credit_balance: 4000,
-  history: [
-    {
-      time: 'Date',
-      type: 'credit transaction',
-      approved: null,
-      attendee_name: null,
-      cohort_name: null,
-      cohort_link: null,
-      credit_amount: 4000
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: true,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    },
-    {
-      time: 'Date',
-      type: 'credit transaction',
-      approved: null,
-      attendee_name: null,
-      cohort_name: null,
-      cohort_link: null,
-      credit_amount: 4000
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: true,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    },
-    {
-      time: 'Date',
-      type: 'credit transaction',
-      approved: null,
-      attendee_name: null,
-      cohort_name: null,
-      cohort_link: null,
-      credit_amount: 4000
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: true,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    }
-  ],
-  unapproved: [
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: false,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: false,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: false,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    },
-    {
-      time: 'Date',
-      type: 'cohort',
-      approved: false,
-      attendee_name: 'Chris Power',
-      cohort_name: 'The Economics of Digital Platforms',
-      cohort_link: 'https://scholarsite.io',
-      credit_amount: 800
-    }
-  ]
-};
 
 const MyWallet = ({ currentBalance }: { currentBalance: number }) => {
   const classes = useStyles();
@@ -139,8 +35,8 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
     return (
       <Box className={classes.historyRow}>
         <Box className={classes.dateBox}>
-          <p>02</p>
-          <p>Dec</p>
+          <p>{moment(row.time).format('DD')}</p>
+          <p>{moment(row.time).format('MMM')}</p>
         </Box>
         <Box marginLeft="15px">
           <p className={classes.textSmall}>
@@ -169,8 +65,8 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
     return (
       <Box className={classes.historyRow}>
         <Box className={classes.dateBox}>
-          <p>02</p>
-          <p>Dec</p>
+          <p>{moment(row.time).format('DD')}</p>
+          <p>{moment(row.time).format('MMM')}</p>
         </Box>
         <Box marginLeft="15px">
           <div style={{ fontWeight: 600 }}>
@@ -245,18 +141,28 @@ const NewEnrollments = ({ newEnrollments }: { newEnrollments: CreditObject[] }) 
 };
 
 const Dashboard = () => {
+  const { cohortCredit } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    const populateData = async () => {
+      await dispatch(initializeCredit());
+    };
+    populateData();
+  }, []);
+
   return (
-    <Page title="ScholarSite | Business Credit Dashboard">
+    <Page title="ScholarSite | Business Portal">
       <Container>
         <Typography variant="h4">Dashboard</Typography>
         <Box className={classes.sectionContainer}>
           <Box className={classes.width50}>
-            <MyWallet currentBalance={Dummy_Data.credit_balance} />
-            <CreditHistory historyData={Dummy_Data.history} />
+            <MyWallet currentBalance={cohortCredit.credit_balance} />
+            <CreditHistory historyData={cohortCredit.history} />
           </Box>
           <Box className={classes.width50}>
-            <NewEnrollments newEnrollments={Dummy_Data.unapproved} />
+            <NewEnrollments newEnrollments={cohortCredit.unapproved} />
           </Box>
         </Box>
       </Container>

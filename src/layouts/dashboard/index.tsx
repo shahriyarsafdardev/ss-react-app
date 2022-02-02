@@ -44,8 +44,9 @@ export default function DashboardLayout() {
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      {user?.type !== 'company' ||
-        (true && <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />)}
+      {user?.type !== 'company' && (
+        <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      )}
       <MainStyle
         sx={{
           transition: theme.transitions.create('margin', {
