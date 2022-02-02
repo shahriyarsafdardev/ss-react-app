@@ -92,7 +92,7 @@ const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord })
             <TableRow>
               <TableCell colSpan={3}>Participant</TableCell>
               {[...Array(attendance.totalSessions)].map((x, i) => (
-                <TableCell align="center" key={i}>
+                <TableCell data-testid={`Session-${i + 1}`} align="center" key={i}>
                   Session {i + 1}
                 </TableCell>
               ))}
@@ -101,9 +101,14 @@ const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord })
           <TableBody>
             {rows.map((row: SessionAttendanceRecord) => (
               <TableRow hover key={row.user_id}>
-                <TableCell colSpan={3}>{`${row.name} ${row.position}`}</TableCell>
+                <TableCell
+                  data-testid={`user-name-${row.name}`}
+                  colSpan={3}
+                >{`${row.name} ${row.position}`}</TableCell>
                 {[...Array(attendance.totalSessions)].map((x, i) => (
-                  <TableCell key={`data-${i + 1}`}>{getIcon(row.attendanceData[i])}</TableCell>
+                  <TableCell data-testid={`Session-${i + 1}-attendance`} key={`data-${i + 1}`}>
+                    {getIcon(row.attendanceData[i])}
+                  </TableCell>
                 ))}
               </TableRow>
             ))}

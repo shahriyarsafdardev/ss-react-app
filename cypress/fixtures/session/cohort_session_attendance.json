@@ -2,20 +2,10 @@
   "totalSessions":4,
   "sessionAttendanceRecords":[
      {
-        "user_id":"71c2b0f4-b021-4abe-a9d4-1f40e19f0ec6",
-        "name":"Tester 1",
-        "position":"( @ )",
-        "attendanceData":[
-
-        ]
-     },
-     {
         "user_id":"f4389356-4d53-473e-9c74-b2cc0d43d4b6",
         "name":"Tester 2",
         "position":"(Data Science Manager @ Next Insurance)",
-        "attendanceData":[
-
-        ]
+        "attendanceData":["live", "recorded", "none", "recording"]
      }
   ]
 }

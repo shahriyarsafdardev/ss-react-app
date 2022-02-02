@@ -1,26 +1,78 @@
-describe('Attendance Tab', () => {
+import sessionFixture from '../../../fixtures/session/sessions.json'
+import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
+import user_fixture from '../../../fixtures/login/admin-login.json';
+import attendance_fixture from '../../../fixtures/session/cohort_session_attendance.json'
+const serverUrl = Cypress.env('serverUrl');
 
-  describe("Cohort Overview") {
-    it('Displays graph in cohort overview attendence graph', () => {
+describe('Attendance Tab', () => {
+  before(() => {
+    cy.server();
+    cy.loginasadmin({});
+    cy.get(
+      `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-attendance"]`
+    )
+    .should('be.visible')
+    .click();
+    cy.fixture('../fixtures/session/cohort_session_attendance.json').as('attendanceData');
+    cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/cohort_session_attendance.json`, '@attendanceData').as('attendance');
+    cy.wait('@attendance');
+  });
+
+  describe("Cohort Overview", () => {
+    it('Displays graph in cohort overview attendance graph', () => {
+      cy.get('[data-testid="cohort_overview_header"]')
+      .should('be.visible')
     // Assert graph id
-    // Assert live attendence label
-    // Assert async attendence label
+      cy.get('[data-testid="cohort_overview_graph"]')
+      .should('be.visible')
+    // Assert live attendance label
+      cy.contains('span', 'Live Attendance')
+      .should('be.visible')
+    // Assert async attendance label
+      cy.contains('span', 'Live or Async Attendance')
+      .should('be.visible')
     // assert session numbers in x axis
     // Assert percentage in y axis
-    });  
-  }
- 
-  describe("Participant Overview") {
+    });
+  });
+
+  describe("Participant Overview", () => {
     it('Displays all name of participant with position in participant overview section', () => {
+      cy.get(`[data-testid="user-name-${attendance_fixture.sessionAttendanceRecords[0].name}"]`)
+      .should('be.visible')
+      .and("contain" , `${attendance_fixture.sessionAttendanceRecords[0].name} ` +`${attendance_fixture.sessionAttendanceRecords[0].position}`)
     });
+
     it('Displays all session number in participant overview section', () => {
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[0].number}"]`)
+      .should('be.visible')
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[1].number}"]`)
+      .should('be.visible')
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[2].number}"]`)
+      .should('be.visible')
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[3].number}"]`)
+      .should('be.visible')
     });
+
     it('Displays a green tick if user has attended that specific session live', () => {
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[0].number}-attendance"]`)
+      .should('be.visible')
+      .children()
+      .and("have.attr", "aria-label", "Attended Live")
     });
+
     it('Displays a yellow dot if user has viewed that specific session recording', () => {
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[1].number}-attendance"]`)
+      .should('be.visible')
+      .children()
+      .and("have.attr", "aria-label", "Watched Recording")
     });
+
     it('Displays a red cross if user has not attended that specific session live or not viewed that specific session recording', () => {
-    });  
-  }
-  
+      cy.get(`[data-testid="Session-${sessionFixture.sessions[2].number}-attendance"]`)
+      .should('be.visible')
+      .children()
+      .and("have.attr", "aria-label", "Not Attended")
+    });
+  });
 });
