@@ -107,7 +107,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                     <strong>
                       {`${difference} new payment${
                         difference > 1 ? 's were ' : ' was '
-                      } recveived since`}
+                      } received since`}
                       <br />
                       {`Monday the ${startOfWeek}`}
                     </strong>
