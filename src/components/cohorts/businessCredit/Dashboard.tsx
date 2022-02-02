@@ -1,13 +1,24 @@
-import { Container, Box, Typography, Card, CardHeader, Button } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import {
+  Container,
+  Box,
+  Typography,
+  Card,
+  CardHeader,
+  Stack,
+  TextField,
+  Button
+} from '@material-ui/core';
 import Page from 'components/Page';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { initializeCredit } from 'redux/slices/businessCredit';
-import { useEffect } from 'react';
 import moment from 'moment';
+import { LoadingButton } from '@material-ui/lab';
+import { Modal } from 'components/animate';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
 
-const MyWallet = ({ currentBalance }: { currentBalance: number }) => {
+const MyWallet = ({ currentBalance, setModal }: { currentBalance: number; setModal: Function }) => {
   const classes = useStyles();
 
   return (
@@ -21,7 +32,9 @@ const MyWallet = ({ currentBalance }: { currentBalance: number }) => {
           <Typography variant="body1">Credits</Typography>
         </Box>
         <Box>
-          <Button variant="contained">Top Up Credits</Button>
+          <Button onClick={() => setModal(true)} variant="contained">
+            Top Up Credits
+          </Button>
         </Box>
       </Box>
     </Card>
@@ -144,6 +157,8 @@ const Dashboard = () => {
   const { cohortCredit } = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [modal, setModal] = useState(false);
+  const [credits, setCredits] = useState<any>(0);
 
   useEffect(() => {
     const populateData = async () => {
@@ -155,10 +170,37 @@ const Dashboard = () => {
   return (
     <Page title="ScholarSite | Business Portal">
       <Container>
+        <Modal
+          open={modal}
+          onClose={() => {
+            setModal(false);
+          }}
+          zIndex={1400}
+          className={classes.creditsModal}
+        >
+          <Card sx={{ p: 3, height: 1, overflow: 'visible', background: 'white' }}>
+            <Stack width="100%" spacing={2}>
+              <TextField
+                fullWidth
+                id="credits"
+                type="number"
+                label="Add Credits"
+                value={credits}
+                onChange={(e) => setCredits(e.target.value)}
+              />
+            </Stack>
+
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+              <LoadingButton type="submit" variant="contained" id="btn-submit">
+                Save Changes
+              </LoadingButton>
+            </Box>
+          </Card>
+        </Modal>
         <Typography variant="h4">Dashboard</Typography>
         <Box className={classes.sectionContainer}>
           <Box className={classes.width50}>
-            <MyWallet currentBalance={cohortCredit.credit_balance} />
+            <MyWallet setModal={setModal} currentBalance={cohortCredit.credit_balance} />
             <CreditHistory historyData={cohortCredit.history} />
           </Box>
           <Box className={classes.width50}>

@@ -27,6 +27,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
   mt20: {
     marginTop: '20px'
   },
+  creditsModal: {
+    width: '50% !important',
+    margin: 'auto'
+  },
   yearLine: {
     color: '#C4C4C4',
     borderBottom: '1px solid #E3E7EA',
