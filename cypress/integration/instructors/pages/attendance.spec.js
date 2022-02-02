@@ -18,7 +18,7 @@ describe('Attendance Tab', () => {
       it('Displays empty Participant overview section', () => {
       });
     });
-    context('When there are participants are there', () => {
+    context('When there are participants', () => {
       it('Displays all name of participant with position in participant overview section', () => {
       });
       it('Displays all session number in participant overview section', () => {
