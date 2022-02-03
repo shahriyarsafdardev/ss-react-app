@@ -220,6 +220,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
   };
 
   const shouldDisplaySurveyAlert = () => {
+    if (feedbackSubmitted || session?.survey_completed) return false;
     if (session && session.times) {
       const currentTime = moment();
       const sessionTime = surveyTime(session.times);
