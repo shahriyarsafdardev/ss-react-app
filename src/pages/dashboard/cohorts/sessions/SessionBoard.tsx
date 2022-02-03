@@ -385,7 +385,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
               onChange={(e: any) => {
                 setRecording(e.target.value);
               }}
-              label="Recording"
+              label="Select Recording"
             >
               {session?.recording_urls.map((recording_url, index) => (
                 <MenuItem
