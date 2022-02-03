@@ -2,6 +2,7 @@ import sessionFixture from '../../../fixtures/session/sessions.json'
 import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
 import user_fixture from '../../../fixtures/login/admin-login.json';
 import attendance_fixture from '../../../fixtures/session/cohort_session_attendance.json'
+
 const serverUrl = Cypress.env('serverUrl');
 
 describe('Attendance Tab', () => {
@@ -32,26 +33,43 @@ describe('Attendance Tab', () => {
       cy.contains('span', 'Live or Async Attendance')
       .should('be.visible')
     // assert session numbers in x axis
+      cy.get('[data-testid="cohort_overview_graph"]')
+      .should('be.visible')
+      .find('text.apexcharts-xaxis-label')
+      .should('have.length', `${attendance_fixture.totalSessions}`)
     // Assert percentage in y axis
+      cy.get('[data-testid="cohort_overview_graph"]')
+      .should('be.visible')
+      .find('g.apexcharts-yaxis-texts-g')
+      .should('be.visible')
     });
   });
 
   describe("Participant Overview", () => {
     it('Displays all name of participant with position in participant overview section', () => {
-      cy.get(`[data-testid="user-name-${attendance_fixture.sessionAttendanceRecords[0].name}"]`)
-      .should('be.visible')
-      .and("contain" , `${attendance_fixture.sessionAttendanceRecords[0].name} ` +`${attendance_fixture.sessionAttendanceRecords[0].position}`)
+      cy.fixture('../fixtures/session/cohort_session_attendance.json')
+      .its('sessionAttendanceRecords')
+      .then((list) => {
+        list.forEach((item) => {
+          cy.log(item)
+          cy.get(`[data-testid="user-name-${item.name}"]`)
+          .should('be.visible')
+          .and("contain" , `${item.name} ` +`${item.position}`)
+        });
+      });
+
     });
 
     it('Displays all session number in participant overview section', () => {
-      cy.get(`[data-testid="Session-${sessionFixture.sessions[0].number}"]`)
-      .should('be.visible')
-      cy.get(`[data-testid="Session-${sessionFixture.sessions[1].number}"]`)
-      .should('be.visible')
-      cy.get(`[data-testid="Session-${sessionFixture.sessions[2].number}"]`)
-      .should('be.visible')
-      cy.get(`[data-testid="Session-${sessionFixture.sessions[3].number}"]`)
-      .should('be.visible')
+      cy.fixture('../fixtures/session/sessions.json')
+      .its('sessions')
+      .then((list) => {
+        list.forEach((item) => {
+          cy.log(item.number)
+          cy.get(`[data-testid="Session-${item.number}"]`).
+          should('be.visible')
+        });
+      });
     });
 
     it('Displays a green tick if user has attended that specific session live', () => {

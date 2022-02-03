@@ -200,8 +200,8 @@ describe('Sidebar', () => {
     it('Displays info text', () => {
       cy.get('[data-testid="dashboard-infotext"]').should('be.visible');
     });
-    
-    it('Alows toggle between instructor and student mode', () => {
+
+    it('Allows toggle between instructor and student mode', () => {
       cy.get('[data-testid="dashboard-switch"]').should('be.visible')
       cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
       cy.get('[data-testid="dashboard-switch"]').click();
