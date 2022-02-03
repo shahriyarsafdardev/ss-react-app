@@ -82,7 +82,7 @@ export default function PeersTab() {
     // get all the companies to choose from peers.
     let newCompanies = filteredPeers?.map((peer) => peer.current_company.name);
     // make the companies array unique
-    newCompanies = Array.from(new Set(newCompanies)).sort();
+    newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
     setCompanies(newCompanies);
     // make select items for strengths
     const Strengths: any = createSelectMenu('strengths');
