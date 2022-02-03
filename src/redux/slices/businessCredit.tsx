@@ -21,8 +21,7 @@ const slice = createSlice({
   name: 'cohortCredit',
   initialState,
   reducers: {
-    credit(state, action) {},
-    initialize(state, action) {
+    populateCredit(state, action) {
       const { id, credit_balance, history, unapproved } = action.payload.data;
 
       state.id = id;
@@ -35,13 +34,51 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export function topUpCredit() {
-  // dispatch(slice.actions.credit());
-}
-
 export function initializeCredit() {
   return async () => {
     const response = await axios.get('/credit_accounts');
-    dispatch(slice.actions.initialize({ data: response.data }));
+    dispatch(slice.actions.populateCredit({ data: response.data }));
+  };
+}
+
+export function addCredit(
+  accountID: string,
+  value: number,
+  onSuccess: Function,
+  onFailure: Function
+) {
+  return async () => {
+    await axios
+      .post(`/credit_accounts/${accountID}/add_credit.json`, {
+        amount: value
+      })
+      .then((response) => {
+        dispatch(slice.actions.populateCredit({ data: response.data }));
+        onSuccess();
+      })
+      .catch((err) => {
+        onFailure();
+      });
+  };
+}
+
+export function approveCredit(
+  accountID: string,
+  enrollmentId: string,
+  onSuccess: Function,
+  onFailure: Function
+) {
+  return async () => {
+    await axios
+      .post(`/credit_accounts/${accountID}/approve_application.json`, {
+        enrollment_id: enrollmentId
+      })
+      .then((response) => {
+        dispatch(slice.actions.populateCredit({ data: response.data }));
+        onSuccess();
+      })
+      .catch((err) => {
+        onFailure();
+      });
   };
 }

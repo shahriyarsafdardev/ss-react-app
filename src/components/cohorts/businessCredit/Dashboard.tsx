@@ -6,17 +6,24 @@ import {
   Card,
   CardHeader,
   Stack,
-  TextField,
-  Button
+  InputLabel,
+  Button,
+  FormControl,
+  MenuItem,
+  ListItemText,
+  Select as MaterialSelect
 } from '@material-ui/core';
 import Page from 'components/Page';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import { initializeCredit } from 'redux/slices/businessCredit';
+import { initializeCredit, addCredit, approveCredit } from 'redux/slices/businessCredit';
 import moment from 'moment';
 import { LoadingButton } from '@material-ui/lab';
 import { Modal } from 'components/animate';
+import { useSnackbar } from 'notistack5';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
+
+const Credit_Topup_Options = ['5000', '100000', '20000'];
 
 const MyWallet = ({ currentBalance, setModal }: { currentBalance: number; setModal: Function }) => {
   const classes = useStyles();
@@ -68,7 +75,7 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
             <div>{row.cohort_name}</div>
             <img src="/static/icons/ic-link.svg" alt="link" />
           </a>
-          <div className={classes.textSmall}>800 credits</div>
+          <div className={classes.textSmall}>{row.credit_amount} credits</div>
         </Box>
       </Box>
     );
@@ -85,7 +92,7 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
           <div style={{ fontWeight: 600 }}>
             <div>Credit Top up</div>
           </div>
-          <div className={classes.textSmall}>800 credits</div>
+          <div className={classes.textSmall}>{row.credit_amount} credits</div>
         </Box>
       </Box>
     );
@@ -111,7 +118,13 @@ const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
   );
 };
 
-const NewEnrollments = ({ newEnrollments }: { newEnrollments: CreditObject[] }) => {
+const NewEnrollments = ({
+  newEnrollments,
+  onApproveCredit
+}: {
+  newEnrollments: CreditObject[];
+  onApproveCredit: Function;
+}) => {
   const classes = useStyles();
 
   const ApprovalRow = ({ row }: { row: CreditObject }) => (
@@ -121,6 +134,7 @@ const NewEnrollments = ({ newEnrollments }: { newEnrollments: CreditObject[] }) 
         <Button
           value="outlined"
           startIcon={<img src="/static/registration/Check.svg" alt="checkMark" />}
+          onClick={() => onApproveCredit(row.id)}
         >
           Approve
         </Button>
@@ -158,7 +172,8 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [modal, setModal] = useState(false);
-  const [credits, setCredits] = useState<any>(0);
+  const [credits, setCredits] = useState<number>(5000);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const populateData = async () => {
@@ -166,6 +181,42 @@ const Dashboard = () => {
     };
     populateData();
   }, []);
+
+  const onAddCredit = async () => {
+    dispatch(
+      addCredit(
+        cohortCredit.id,
+        credits,
+        () => {
+          enqueueSnackbar('Credit Added Successfully', { variant: 'success' });
+          setModal(false);
+        },
+        () => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          enqueueSnackbar('Please try again', { variant: 'error' });
+          setModal(false);
+        }
+      )
+    );
+  };
+
+  const onApproveCredit = (enrollmentID: string) => {
+    dispatch(
+      approveCredit(
+        cohortCredit.id,
+        enrollmentID,
+        () => {
+          enqueueSnackbar('Application Approved Successfully', { variant: 'success' });
+          setModal(false);
+        },
+        () => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          enqueueSnackbar('Please try again', { variant: 'error' });
+          setModal(false);
+        }
+      )
+    );
+  };
 
   return (
     <Page title="ScholarSite | Business Portal">
@@ -180,18 +231,25 @@ const Dashboard = () => {
         >
           <Card sx={{ p: 3, height: 1, overflow: 'visible', background: 'white' }}>
             <Stack width="100%" spacing={2}>
-              <TextField
-                fullWidth
-                id="credits"
-                type="number"
-                label="Add Credits"
-                value={credits}
-                onChange={(e) => setCredits(e.target.value)}
-              />
+              <FormControl fullWidth>
+                <InputLabel>Credit Amount Topup</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="Credit Amount Topup"
+                  onChange={(e) => setCredits(Number(e.target.value))}
+                  defaultValue={Credit_Topup_Options[0]}
+                >
+                  {Credit_Topup_Options?.map((value: string) => (
+                    <MenuItem key={value} value={value}>
+                      <ListItemText primary={value} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
+              </FormControl>{' '}
             </Stack>
 
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-              <LoadingButton type="submit" variant="contained" id="btn-submit">
+              <LoadingButton type="submit" onClick={() => onAddCredit()} variant="contained">
                 Save Changes
               </LoadingButton>
             </Box>
@@ -204,7 +262,10 @@ const Dashboard = () => {
             <CreditHistory historyData={cohortCredit.history} />
           </Box>
           <Box className={classes.width50}>
-            <NewEnrollments newEnrollments={cohortCredit.unapproved} />
+            <NewEnrollments
+              onApproveCredit={onApproveCredit}
+              newEnrollments={cohortCredit.unapproved}
+            />
           </Box>
         </Box>
       </Container>
