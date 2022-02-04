@@ -220,6 +220,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
   };
 
   const shouldDisplaySurveyAlert = () => {
+    if (feedbackSubmitted || session?.survey_completed) return false;
     if (session && session.times) {
       const currentTime = moment();
       const sessionTime = surveyTime(session.times);
@@ -384,7 +385,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
               onChange={(e: any) => {
                 setRecording(e.target.value);
               }}
-              label="Recording"
+              label="Select Recording"
             >
               {session?.recording_urls.map((recording_url, index) => (
                 <MenuItem

@@ -327,7 +327,7 @@ export default function Slides({
         ) : (
           <StyledPage
             renderMode="svg"
-            scale={0.7}
+            scale={type === VIEW_TYPES.FULL_VIEW ? 1.15 : 0.65}
             pageNumber={pageNumber}
             renderAnnotationLayer={true}
           />
