@@ -15,13 +15,26 @@ import {
 } from '@material-ui/core';
 import Page from 'components/Page';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import { initializeCredit, addCredit, approveCredit } from 'redux/slices/businessCredit';
+import {
+  initializeCredit,
+  addCredit,
+  approveCredit,
+  rejectCredit
+} from 'redux/slices/businessCredit';
 import moment from 'moment';
 import { LoadingButton } from '@material-ui/lab';
 import { Modal } from 'components/animate';
 import { useSnackbar } from 'notistack5';
+import { styled } from '@material-ui/core/styles';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
+
+const StyledIcon = styled('img')(() => ({
+  marginRight: 5,
+  width: 20,
+  height: 21,
+  cursor: 'pointer'
+}));
 
 const Credit_Topup_Options = ['5000', '100000', '20000'];
 
@@ -120,10 +133,12 @@ const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
 
 const NewEnrollments = ({
   newEnrollments,
-  onApproveCredit
+  onApproveCredit,
+  onRejectCredit
 }: {
   newEnrollments: CreditObject[];
   onApproveCredit: Function;
+  onRejectCredit: Function;
 }) => {
   const classes = useStyles();
 
@@ -132,10 +147,21 @@ const NewEnrollments = ({
       <HistoryRow row={row} />
       <Box className={classes.approveBtn}>
         <Button
-          value="outlined"
-          startIcon={<img src="/static/registration/Check.svg" alt="checkMark" />}
-          onClick={() => onApproveCredit(row.id)}
+          variant="outlined"
+          onClick={() => onRejectCredit(row.id)}
+          color="error"
+          sx={{ mr: 2 }}
         >
+          <StyledIcon src="/static/registration/cross.svg" />
+          Reject
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => onApproveCredit(row.id)}
+          sx={{ ml: 2 }}
+        >
+          <StyledIcon src="/static/registration/Check.svg" />
           Approve
         </Button>
       </Box>
@@ -218,6 +244,24 @@ const Dashboard = () => {
     );
   };
 
+  const onRejectCredit = (enrollmentID: string) => {
+    dispatch(
+      rejectCredit(
+        cohortCredit.id,
+        enrollmentID,
+        () => {
+          enqueueSnackbar('Application Rejected Successfully', { variant: 'success' });
+          setModal(false);
+        },
+        () => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          enqueueSnackbar('Please try again', { variant: 'error' });
+          setModal(false);
+        }
+      )
+    );
+  };
+
   return (
     <Page title="ScholarSite | Business Portal">
       <Container>
@@ -264,6 +308,7 @@ const Dashboard = () => {
           <Box className={classes.width50}>
             <NewEnrollments
               onApproveCredit={onApproveCredit}
+              onRejectCredit={onRejectCredit}
               newEnrollments={cohortCredit.unapproved}
             />
           </Box>

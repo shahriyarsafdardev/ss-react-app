@@ -82,3 +82,22 @@ export function approveCredit(
       });
   };
 }
+
+export function rejectCredit(
+  accountID: string,
+  enrollmentId: string,
+  onSuccess: Function,
+  onFailure: Function
+) {
+  return async () => {
+    await axios
+      .delete(`/credit_accounts/${accountID}/reject_application?enrollment_id=${enrollmentId}`)
+      .then((response) => {
+        dispatch(slice.actions.populateCredit({ data: response.data }));
+        onSuccess();
+      })
+      .catch((err) => {
+        onFailure();
+      });
+  };
+}

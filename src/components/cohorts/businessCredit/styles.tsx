@@ -84,11 +84,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     borderTop: '1px solid #E3E7EA',
     padding: '13px 0 0 0',
-    justifyContent: 'center',
-    '& > button': {
-      border: '1px solid #4d4dcd',
-      padding: '5px 30px'
-    }
+    justifyContent: 'center'
+  },
+  buttonIcon: {
+    marginRight: 5,
+    width: 24,
+    height: 24,
+    cursor: 'pointer'
   },
   boxTwo: {
     backgroundColor: 'rgba(77, 77, 205, 0.02)',
