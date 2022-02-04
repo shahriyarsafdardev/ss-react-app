@@ -38,6 +38,13 @@
       content="ScholarSite’s student portal can be used to access your cohort content, network and messages at any time!"
     />
     <meta property="og:image" content="%PUBLIC_URL%/static/opengraph.png" />
+
+    <script>
+      var host = 'www.portal.scholarsite.io' || 'portal.scholarsite.io';
+      if (host == window.location.host && window.location.protocol != 'https:') {
+        window.location.protocol = 'https';
+      }
+    </script>
   </head>
 
   <body>
