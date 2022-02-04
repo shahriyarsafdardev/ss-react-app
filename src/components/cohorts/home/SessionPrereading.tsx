@@ -87,6 +87,15 @@ const SessionPrereading = ({
   );
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
+  const isZoomLinkVisible = () => {
+    if (activeSession) {
+      const sessionTime = moment(firstUpcomingDate(activeSession.times));
+      // Show zoom link preview before 1 hour and till 2 hours after session time
+      return sessionTime < moment().add(1, 'hours') && moment().subtract(2, 'hours') < sessionTime;
+    }
+    return false;
+  };
+
   return (
     <SectionContainer className="card-2" data-testid="to-do-card">
       {sessions && cohort ? (
@@ -142,7 +151,7 @@ const SessionPrereading = ({
                 )}
               </Box>
               <StyledSessionPrereadingContainer>
-                {moment(firstUpcomingDate(activeSession.times)).subtract(1, 'hours') < moment() && (
+                {isZoomLinkVisible() && (
                   <JoinZoomPrompt
                     displayType="small"
                     sessionTimeValue={firstUpcomingDate(activeSession.times)}
