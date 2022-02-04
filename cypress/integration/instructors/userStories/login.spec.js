@@ -2,7 +2,7 @@ import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
 import user_fixture from '../../../fixtures/login/admin-login.json'
 
 describe('Sidebar', () => {
-  beforeEach(() => {
+  before(() => {
     cy.server();
     cy.loginasadmin({});
   });
@@ -119,7 +119,7 @@ describe('Sidebar', () => {
     });
   });
   context('when in learner mode', () => {
-    beforeEach(() => {
+    before(() => {
       cy.get('[data-testid="dashboard-switch"]').should('be.visible').click();
     });
 
@@ -203,9 +203,9 @@ describe('Sidebar', () => {
 
     it('Allows toggle between instructor and student mode', () => {
       cy.get('[data-testid="dashboard-switch"]').should('be.visible')
-      cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
-      cy.get('[data-testid="dashboard-switch"]').click();
       cy.get('[data-testid="member-sidebar"]').should('be.visible');
+      cy.get('[data-testid="dashboard-switch"]').click();
+      cy.get('[data-testid="instructor-sidebar"]').should('be.visible');
     });
   });
 });

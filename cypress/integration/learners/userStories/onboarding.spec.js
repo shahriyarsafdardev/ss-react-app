@@ -425,7 +425,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
 });
 
 describe('When onboarding flow is completed', () => {
-  beforeEach(() => {
+  before(() => {
     cy.server();
     cy.login({});
   });
