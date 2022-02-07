@@ -93,9 +93,10 @@ const AttendanceTab = () => {
   return (
     <StyledContainer id="asd">
       <Card>
-        <CardHeader title="Cohort Overview" />
+        <CardHeader title="Cohort Overview" data-testid="cohort_overview_header" />
         <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
           <ReactApexChart
+            data-testid="cohort_overview_graph"
             type="line"
             series={CHART_DATA.data}
             options={chartOptions}

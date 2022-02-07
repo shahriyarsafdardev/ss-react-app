@@ -3,7 +3,7 @@ import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
 
 describe('When a learner logs in', () => {
   context('When cohort.released_for_learners == false', () => {
-    beforeEach(() => {
+    before(() => {
       cy.server();
       cy.login({cohortspath :'cohorts/cohortforemptystate.json' });
     });
@@ -91,7 +91,7 @@ describe('When a learner logs in', () => {
   });
 
   context('When cohort.released_for_learners == true', () => {
-    beforeEach(() => {
+    before(() => {
       cy.server();
       cy.login({});
     });

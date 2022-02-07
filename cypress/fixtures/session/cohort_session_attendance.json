@@ -1,0 +1,11 @@
+{
+  "totalSessions":4,
+  "sessionAttendanceRecords":[
+     {
+        "user_id":"f4389356-4d53-473e-9c74-b2cc0d43d4b6",
+        "name":"Tester 2",
+        "position":"(Data Science Manager @ Next Insurance)",
+        "attendanceData":["live", "recorded", "none", "recording"]
+     }
+  ]
+}
