@@ -1,31 +1,13 @@
 import { useEffect, useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  Card,
-  CardHeader,
-  Stack,
-  InputLabel,
-  Button,
-  FormControl,
-  MenuItem,
-  ListItemText,
-  Select as MaterialSelect
-} from '@material-ui/core';
+import { Container, Box, Typography, Card, CardHeader, Button } from '@material-ui/core';
 import Page from 'components/Page';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import {
-  initializeCredit,
-  addCredit,
-  approveCredit,
-  rejectCredit
-} from 'redux/slices/businessCredit';
+import { initializeCredit, approveCredit, rejectCredit } from 'redux/slices/businessCredit';
 import moment from 'moment';
-import { LoadingButton } from '@material-ui/lab';
 import { Modal } from 'components/animate';
 import { useSnackbar } from 'notistack5';
 import { styled } from '@material-ui/core/styles';
+import TopupForm from './TopupForm';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
 
@@ -35,8 +17,6 @@ const StyledIcon = styled('img')(() => ({
   height: 21,
   cursor: 'pointer'
 }));
-
-const Credit_Topup_Options = ['5000', '100000', '20000'];
 
 const MyWallet = ({ currentBalance, setModal }: { currentBalance: number; setModal: Function }) => {
   const classes = useStyles();
@@ -198,7 +178,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [modal, setModal] = useState(false);
-  const [credits, setCredits] = useState<number>(5000);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -207,24 +186,6 @@ const Dashboard = () => {
     };
     populateData();
   }, []);
-
-  const onAddCredit = async () => {
-    dispatch(
-      addCredit(
-        cohortCredit.id,
-        credits,
-        () => {
-          enqueueSnackbar('Credit Added Successfully', { variant: 'success' });
-          setModal(false);
-        },
-        () => {
-          enqueueSnackbar('Some error occurred!', { variant: 'error' });
-          enqueueSnackbar('Please try again', { variant: 'error' });
-          setModal(false);
-        }
-      )
-    );
-  };
 
   const onApproveCredit = (enrollmentID: string) => {
     dispatch(
@@ -273,31 +234,7 @@ const Dashboard = () => {
           zIndex={1400}
           className={classes.creditsModal}
         >
-          <Card sx={{ p: 3, height: 1, overflow: 'visible', background: 'white' }}>
-            <Stack width="100%" spacing={2}>
-              <FormControl fullWidth>
-                <InputLabel>Credit Amount Topup</InputLabel>
-                <MaterialSelect
-                  fullWidth
-                  label="Credit Amount Topup"
-                  onChange={(e) => setCredits(Number(e.target.value))}
-                  defaultValue={Credit_Topup_Options[0]}
-                >
-                  {Credit_Topup_Options?.map((value: string) => (
-                    <MenuItem key={value} value={value}>
-                      <ListItemText primary={value} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
-              </FormControl>{' '}
-            </Stack>
-
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-              <LoadingButton type="submit" onClick={() => onAddCredit()} variant="contained">
-                Save Changes
-              </LoadingButton>
-            </Box>
-          </Card>
+          <TopupForm accountID={cohortCredit.id} setModal={setModal} />
         </Modal>
         <Typography variant="h4">Dashboard</Typography>
         <Box className={classes.sectionContainer}>

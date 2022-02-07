@@ -164,6 +164,13 @@ export type Comment = {
   user_id: string;
 };
 
+export type CardType = {
+  cardName?: string;
+  cardNumber?: string;
+  cardExpiry?: string;
+  cardCvv?: string;
+};
+
 export type Question = {
   answer: string;
   answer_audio_url: string;

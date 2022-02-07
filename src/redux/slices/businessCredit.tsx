@@ -41,24 +41,9 @@ export function initializeCredit() {
   };
 }
 
-export function addCredit(
-  accountID: string,
-  value: number,
-  onSuccess: Function,
-  onFailure: Function
-) {
-  return async () => {
-    await axios
-      .post(`/credit_accounts/${accountID}/add_credit.json`, {
-        amount: value
-      })
-      .then((response) => {
-        dispatch(slice.actions.populateCredit({ data: response.data }));
-        onSuccess();
-      })
-      .catch((err) => {
-        onFailure();
-      });
+export function addCredit(data: any) {
+  return () => {
+    dispatch(slice.actions.populateCredit({ data }));
   };
 }
 
