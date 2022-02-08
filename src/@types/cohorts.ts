@@ -141,6 +141,7 @@ export type Cohort = {
   session_times: string;
   host_names: string;
   is_host: boolean;
+  is_free: boolean;
   isOnboarded: boolean;
   released_for_learners: boolean;
   intake: number;

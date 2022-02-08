@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useEffect, useState } from 'react';
-import { Button, Container, Box, Theme, TextField, Typography } from '@material-ui/core';
+import { Button, Container, Box, Theme, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
@@ -282,11 +282,13 @@ const VIEW_TYPES = {
 export default function Slides({
   pdfUrl,
   pdfDownloadable,
-  onTrack
+  onTrack,
+  isFree
 }: {
   pdfUrl: string | undefined;
   pdfDownloadable: boolean | undefined;
   onTrack: Function;
+  isFree: boolean;
 }) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -365,10 +367,16 @@ export default function Slides({
   return (
     <Container>
       {/* // eslint-disable-next-line no-nested-ternary */}
-      {pdfUrl && pdfUrl !== '' ? (
+      {!isFree && pdfUrl && pdfUrl !== '' ? (
         renderView()
       ) : (
-        <Message content="The presentation slides will be available shortly after this session." />
+        <Message
+          content={
+            isFree
+              ? 'We restrict slides access to paid participants'
+              : 'The presentation slides will be available shortly after this session.'
+          }
+        />
       )}
     </Container>
   );

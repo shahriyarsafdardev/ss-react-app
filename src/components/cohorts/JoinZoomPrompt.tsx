@@ -233,7 +233,7 @@ const SessionInProgress = ({
   );
 };
 
-const ExpiredSession = ({ displayType }: { displayType: string }) => {
+const ExpiredSession = ({ displayType, isFree }: { displayType: string; isFree: boolean }) => {
   const classes = useStyes();
 
   return (
@@ -245,7 +245,9 @@ const ExpiredSession = ({ displayType }: { displayType: string }) => {
           className={displayType === 'small' ? classes.smallContent2 : classes.content2}
           data-testid="session-ended"
         >
-          This live session has finished, the recording will be available soon!
+          {isFree
+            ? 'We restrict recording access to paid participants'
+            : 'This live session has finished, the recording will be available soon!'}
         </Typography>
       </div>
     </div>
@@ -257,6 +259,7 @@ const renderPlaceHolder = (
   sessionTimesPreview: string,
   sessionTimeValue: string,
   sessionZoomUrl: string | null,
+  isFree: boolean,
   onClick: Function
 ) => {
   const currentTime = new Date();
@@ -275,7 +278,7 @@ const renderPlaceHolder = (
         />
       );
     }
-    return <ExpiredSession displayType={displayType} />;
+    return <ExpiredSession isFree={isFree} displayType={displayType} />;
   }
 
   const daysRemaining = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -303,12 +306,14 @@ export default function JoinZoomPrompt({
   sessionZoomUrl,
   sessionTimesPreview,
   displayType,
+  isFree,
   onClick
 }: {
   sessionTimeValue: string;
   displayType: string;
   sessionTimesPreview: string;
   sessionZoomUrl: string | null;
+  isFree: boolean;
   onClick: Function;
 }) {
   const classes = useStyes();
@@ -323,6 +328,7 @@ export default function JoinZoomPrompt({
         sessionTimesPreview,
         sessionTimeValue,
         sessionZoomUrl,
+        isFree,
         onClick
       )}
     </div>

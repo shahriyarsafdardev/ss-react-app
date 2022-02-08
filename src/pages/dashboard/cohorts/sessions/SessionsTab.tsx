@@ -121,6 +121,7 @@ export default function SessionsTab() {
                 <SessionBoard
                   session={filteredSessions && filteredSessions[selectedSession]}
                   isLearner={isLearner}
+                  isFree={cohort.is_free}
                 />
               </SessionContext.Provider>
             </Grid>

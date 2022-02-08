@@ -101,7 +101,7 @@ export default function UserInfoForm({
         <Grid item xs={12} md={4}>
           <Card data-testid="user-avatar-upload" sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
-              accept="image/*"
+              accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
               file={infoObject?.profile_image_url}
               maxSize={3145728}
               onDrop={handleDrop}

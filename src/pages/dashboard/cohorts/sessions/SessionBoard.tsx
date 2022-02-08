@@ -39,6 +39,7 @@ import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
 type SessionBoardProps = {
   session: Session | undefined;
   isLearner: boolean;
+  isFree: boolean;
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
@@ -174,7 +175,7 @@ const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
   }
 }));
 
-export default function SessionBoard({ session, isLearner }: SessionBoardProps) {
+export default function SessionBoard({ session, isLearner, isFree }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(session?.survey_completed);
@@ -286,6 +287,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
       }
       pdfUrl={session?.presentation_pdf_url}
       pdfDownloadable={session?.presentation_pdf_downloadable}
+      isFree={isFree}
     />,
     <Summary
       key="summary"
@@ -323,7 +325,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
           </SessionNumber>
           <SessionTitle data-testid="session-title">{session.name}</SessionTitle>
         </Box>
-        {session.recording_urls && session.recording_urls.length ? (
+        {!isFree && session.recording_urls && session.recording_urls.length ? (
           <StyledVideoPreview
             src={recording}
             poster={session.recording_thumbnail_url}
@@ -361,6 +363,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
         ) : (
           <JoinZoomPrompt
             displayType="large"
+            isFree={isFree}
             sessionTimeValue={firstUpcomingDate(session.times)}
             sessionTimesPreview={zoomTimesPreview(session.times)}
             sessionZoomUrl={session.zoom_url}
@@ -374,7 +377,7 @@ export default function SessionBoard({ session, isLearner }: SessionBoardProps) 
             }}
           />
         )}
-        {session.recording_urls && session?.recording_urls?.length > 1 && (
+        {!isFree && session.recording_urls && session?.recording_urls?.length > 1 && (
           <RecordingSlelectForm data-testid="view-mode">
             <InputLabel id="view-label">Select Recording</InputLabel>
             <Select

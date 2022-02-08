@@ -154,6 +154,7 @@ const SessionPrereading = ({
                 {isZoomLinkVisible() && (
                   <JoinZoomPrompt
                     displayType="small"
+                    isFree={false}
                     sessionTimeValue={firstUpcomingDate(activeSession.times)}
                     sessionTimesPreview={zoomTimesPreview(activeSession.times)}
                     sessionZoomUrl={activeSession.zoom_url}

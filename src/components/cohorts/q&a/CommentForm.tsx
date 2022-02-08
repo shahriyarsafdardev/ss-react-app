@@ -195,7 +195,7 @@ export default function CommentForm({
               type="file"
               ref={fileInputRef}
               style={{ display: 'none' }}
-              accept="image/*"
+              accept=".jpg, .jpeg, .png, .gif, .jfif"
               onChange={(e) => uploadeImage(e)}
             />
           </StyledForm>

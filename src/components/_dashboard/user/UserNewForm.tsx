@@ -118,7 +118,7 @@ export default function UserNewForm({ isEdit, currentUser }: UserNewFormProps) {
 
               <Box sx={{ mb: 5 }}>
                 <UploadAvatar
-                  accept="image/*"
+                  accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
                   file={values.avatarUrl}
                   maxSize={3145728}
                   onDrop={handleDrop}

@@ -116,7 +116,7 @@ export default function CompanyInfoForm({
         <Grid item xs={12} md={4}>
           <Card data-testid="company-logo" sx={{ py: 10, px: 3, textAlign: 'center' }}>
             <UploadAvatar
-              accept="image/*"
+              accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
               file={infoObject?.logo_url}
               maxSize={3145728}
               onDrop={handleDrop}
