@@ -96,5 +96,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: 'rgba(77, 77, 205, 0.02)',
     padding: '10px 20px',
     marginBottom: '10px'
+  },
+  invoiceLink: {
+    marginLeft: 'auto',
+    textDecoration: 'none',
+    fontSize: '14px'
   }
 }));

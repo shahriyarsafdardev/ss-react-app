@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Modal } from 'components/animate';
 import { useSnackbar } from 'notistack5';
 import { styled } from '@material-ui/core/styles';
+import { ROOT_URL } from 'routes/paths';
 import TopupForm from './TopupForm';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
@@ -51,7 +52,7 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
           <p>{moment(row.time).format('DD')}</p>
           <p>{moment(row.time).format('MMM')}</p>
         </Box>
-        <Box marginLeft="15px">
+        <Box marginLeft="15px" width="100%">
           <p className={classes.textSmall}>
             <span>{row.attendee_name}</span> {row.approved ? 'attended' : 'wants to attend'}
           </p>
@@ -64,11 +65,24 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
             }}
             href={row.cohort_link || ''}
             target="_blank"
+            rel="noreferrer"
           >
             <div>{row.cohort_name}</div>
             <img src="/static/icons/ic-link.svg" alt="link" />
           </a>
-          <div className={classes.textSmall}>{row.credit_amount} credits</div>
+          <div style={{ display: 'flex' }}>
+            <div className={classes.textSmall}>{row.credit_amount} credits</div>
+            {row.approved && (
+              <a
+                href={`${ROOT_URL}/invoice.pdf?id=${row.id}`}
+                target="_blank"
+                className={classes.invoiceLink}
+                rel="noreferrer"
+              >
+                Get Invoice
+              </a>
+            )}
+          </div>
         </Box>
       </Box>
     );
@@ -223,19 +237,23 @@ const Dashboard = () => {
     );
   };
 
+  const TopupModal = () => (
+    <Modal
+      open={modal}
+      onClose={() => {
+        setModal(false);
+      }}
+      zIndex={1400}
+      className={classes.creditsModal}
+    >
+      <TopupForm accountID={cohortCredit.id} setModal={setModal} />
+    </Modal>
+  );
+
   return (
     <Page title="ScholarSite | Business Portal">
       <Container>
-        <Modal
-          open={modal}
-          onClose={() => {
-            setModal(false);
-          }}
-          zIndex={1400}
-          className={classes.creditsModal}
-        >
-          <TopupForm accountID={cohortCredit.id} setModal={setModal} />
-        </Modal>
+        <TopupModal />
         <Typography variant="h4">Dashboard</Typography>
         <Box className={classes.sectionContainer}>
           <Box className={classes.width50}>
