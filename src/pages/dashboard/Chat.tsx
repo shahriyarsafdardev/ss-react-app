@@ -11,7 +11,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { ChatSidebar, ChatWindow } from '../../components/_dashboard/chat';
+// import { ChatSidebar, ChatWindow } from '../../components/_dashboard/chat';
 
 // ----------------------------------------------------------------------
 
@@ -31,10 +31,10 @@ export default function Chat() {
           heading="Chat"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Chat' }]}
         />
-        <Card sx={{ height: '72vh', display: 'flex' }}>
+        {/* <Card sx={{ height: '72vh', display: 'flex' }}>
           <ChatSidebar />
           <ChatWindow />
-        </Card>
+        </Card> */}
       </Container>
     </Page>
   );

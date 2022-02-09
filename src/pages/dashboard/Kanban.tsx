@@ -10,7 +10,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { KanbanColumn, KanbanColumnAdd } from '../../components/_dashboard/kanban';
+// import { KanbanColumn, KanbanColumnAdd } from '../../components/_dashboard/kanban';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +108,7 @@ export default function Kanban() {
             { name: 'Kanban' }
           ]}
         />
-        <DragDropContext onDragEnd={onDragEnd}>
+        {/* <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="all-columns" direction="horizontal" type="column">
             {(provided) => (
               <Stack
@@ -131,7 +131,7 @@ export default function Kanban() {
               </Stack>
             )}
           </Droppable>
-        </DragDropContext>
+        </DragDropContext> */}
       </Container>
     </Page>
   );

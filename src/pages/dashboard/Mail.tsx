@@ -12,7 +12,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import { MailList, MailDetails, MailSidebar, MailCompose } from '../../components/_dashboard/mail';
+// import { MailList, MailDetails, MailSidebar, MailCompose } from '../../components/_dashboard/mail';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ export default function Mail() {
             { name: 'Mail' }
           ]}
         />
-        <Card sx={{ height: { md: '72vh' }, display: { md: 'flex' } }}>
+        {/* <Card sx={{ height: { md: '72vh' }, display: { md: 'flex' } }}>
           <MailSidebar
             isOpenSidebar={openSidebar}
             onCloseSidebar={() => setOpenSidebar(false)}
@@ -48,7 +48,7 @@ export default function Mail() {
           />
           {mailId ? <MailDetails /> : <MailList onOpenSidebar={() => setOpenSidebar(true)} />}
           <MailCompose isOpenCompose={openCompose} onCloseCompose={() => setOpenCompose(false)} />
-        </Card>
+        </Card> */}
       </Container>
     </Page>
   );

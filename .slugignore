@@ -1,5 +1,16 @@
 /public/static/mock-images/* 
+/public/static/about/* 
+/public/static/auth/* 
+/public/static/faqs/* 
+/public/static/home/* 
+/public/static/illustrations/* 
 /documentation
+src/components/_dashboard/chat/* 
+src/components/_dashboard/e-commerce/checkout/* 
+src/components/_dashboard/general-ecommerce/* 
+src/components/_dashboard/general-booking/* 
+src/components/_dashboard/kanban/* 
+src/components/_dashboard/mail/* 
 /fixtures
 /cypress/*
 /src/_test_
