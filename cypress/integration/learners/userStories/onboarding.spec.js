@@ -7,11 +7,13 @@ describe('When a user visits the home page of a cohort for the first time', () =
   beforeEach(() => {
     cy.server();
     cy.login({onboardingpath : 'session/onboarding_not_completed.json'});
+    cy.fixture('/FieldsData/selectFieldsData.json').as('fieldData');
+    cy.route('GET', `${serverUrl}/cohorts/select_fields_data.json`, '@fieldData').as('field');
   });
 
   it('Opens an onboarding modal',() => {
     cy.get('[data-testid="onboarding-form-modal"]')
-      .should('be.visible')
+    .should('be.visible')
   });
 
   describe('Page 1', () => {
@@ -135,7 +137,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
       cy.get('[data-testid="company-name"]')
       .children().eq(1)
       .click()
-       cy.contains('div','Joggo' )
+       cy.contains('div','Amazon' )
       .click()
     });
 
