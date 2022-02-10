@@ -82,6 +82,7 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
           }}
         />
         <Avatar
+          data-testid={`peer${peer.id ? `-${peer.id}` : ''}-company-logo`}
           alt={first_name}
           src={current_company.logo_url}
           sx={{
@@ -92,7 +93,11 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
             bottom: -34
           }}
         />
-        <CoverImgStyle alt="cover" src={profile_image_url} />
+        <CoverImgStyle
+          data-testid={`peer${peer.id ? `-${peer.id}` : ''}-profile-picture`}
+          alt="cover"
+          src={profile_image_url}
+        />
       </CardMediaStyle>
 
       <Typography

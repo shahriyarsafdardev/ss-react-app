@@ -2,15 +2,55 @@
   "strengths": ["Test A", "Test B", "Statistics", "Data Science", "Philosphy", "Network Effects"],
   "interests": ["Test interest 1", "Test interest 2", "Growing My Network", "Discussing Materials"],
   "companies": [
-    "Test company 1",
-    "Test company 2",
-    "Upwork",
-    "Adobe",
-    "Amazon",
-    "Google",
-    "Spotify",
-    "Outschool",
-    "Nick Scali Limited",
-    "Logoi Learning Systems"
+    {
+      "name":"Test company 1",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Test company 2",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Upwork",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Adobe",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Amazon",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Google",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Spotify",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Outschool",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Nick Scali Limited",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    },
+    {
+      "name":"Logoi Learning Systems",
+      "logo_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+      "number_of_employees":"500-1000"
+    }
   ]
 }
