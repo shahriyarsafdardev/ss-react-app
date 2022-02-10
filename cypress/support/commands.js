@@ -3,6 +3,7 @@ sessionpath = 'session/sessions.json', onboardingpath = 'session/onboarding_comp
 sessionmaterialspath = 'session/session_materials.json', peerpath = 'peer/peers.json',
 homepath = 'onboarding/home_refactored.json'}) => {
   const serverUrl = Cypress.env('serverUrl');
+  const baseUrl = Cypress.env('baseUrl');
   cy.fixture(cohortspath).as('cohortsData');
   cy.fixture(loginpath ).as('loginData');
   cy.fixture(sessionpath).as('sessionData');
@@ -33,7 +34,7 @@ homepath = 'onboarding/home_refactored.json'}) => {
     `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/peers.json`,
     '@peers'
   ).as('peersData');
-  cy.visit('/');
+  cy.visit(`${baseUrl}`);
   const email = 'waqasnazir9@gmail.com';
   const password = '123456';
   cy.get('[data-testid=email]').type(email);
@@ -54,11 +55,12 @@ Cypress.Commands.add('form', () => {
 });
 Cypress.Commands.add('loginasadmin', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/admin-login.json',}) => {
   const serverUrl = Cypress.env('serverUrl');
+  const baseUrl = Cypress.env('baseUrl');
   cy.fixture(cohortspath).as('cohortsData');
   cy.fixture(loginpath ).as('loginData');
   cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
   cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
-  cy.visit('/');
+  cy.visit(`${baseUrl}`);
   const email = 'waqasnazir9@gmail.com';
   const password = '123456';
   cy.get('[data-testid=email]').type(email);

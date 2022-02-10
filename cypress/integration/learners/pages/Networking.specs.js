@@ -1,6 +1,7 @@
 import userFixture from '../../../fixtures/login/login.json';
 import cohortsFixture from '../../../fixtures/cohorts/cohorts.json';
-import peersFixture from '../../../fixtures/peer/peers.json'
+import peersFixture from '../../../fixtures/peer/peers.json';
+const baseUrl = Cypress.env('baseUrl');
 
 describe('Networking Tab', () => {
   beforeEach(() => {
@@ -109,7 +110,7 @@ describe('Networking Tab', () => {
         .click()
         //assert url contains user id
         cy.url()
-        .should('eq',`http://localhost:3001/cohorts/`+`${peersFixture.cohort_id}`+`/messaging?direct=true&receiver_id=`+`${peersFixture.peers[0].id}`)
+        .should('eq',`${baseUrl}`+`/cohorts/`+`${peersFixture.cohort_id}`+`/messaging?direct=true&receiver_id=`+`${peersFixture.peers[0].id}`)
       });
     });
   });
