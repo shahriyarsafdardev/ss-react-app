@@ -47,6 +47,7 @@ type HomeResponse = {
     current_industry_category_selections: string[];
     do_manage_team: boolean;
     bio_text: string;
+    new_user: boolean;
     date_of_birth: string;
     referred_by: string;
     payed_by: string;

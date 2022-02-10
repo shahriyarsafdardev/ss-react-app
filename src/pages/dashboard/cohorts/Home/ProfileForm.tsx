@@ -95,6 +95,7 @@ export default function ProfileForm({
     current_industry_category_selections: string[];
     interests: string[];
     bio_text: string;
+    new_user: boolean;
     opted_in_for_matching_suggestions: boolean;
     networking_matching_preferences: [];
     company_image_url: string;

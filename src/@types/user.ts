@@ -150,6 +150,7 @@ export type ParticipantProfile = {
   current_industry_category_selections: string[] | any;
   interests: string[] | any;
   bio_text: string;
+  new_user: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
 };

@@ -21,6 +21,7 @@ type ParticipantProfile = {
   strengths: string[] | any;
   interests: string[] | any;
   bio_text: string;
+  new_user: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
   company_image_url: string;
@@ -46,6 +47,7 @@ export default function AccountGeneral() {
     interests: user?.interests || [],
     strengths: user?.strengths || [],
     bio_text: user?.bio_text || '',
+    new_user: user?.new_user || false,
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
     networking_matching_preferences: user?.networking_matching_preferences || [],
     company_image_url: user?.company_image_url,
