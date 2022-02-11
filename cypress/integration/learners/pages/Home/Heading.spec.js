@@ -24,7 +24,7 @@ describe('Home > Heading', () => {
       cy.setClockToBeforeSession(sessionFixture.sessions[0].time,2)
     });
 
-    it('Displays a personalised welcome message', () => {
+    it('Displays a personalized welcome message', () => {
       cy.get('[data-testid=cohort-header]')
       .should('contain','👋 Hi '+ userFixture.user.first_name + ', welcome to the '+ cohortsFixture.cohorts[0].code +' Cohort!')
     });
@@ -47,7 +47,7 @@ describe('Home > Heading', () => {
       cy.setClockToBeforeSession(sessionFixture.sessions[1].time,1)
     });
 
-    it('Displays a personalised Welcome back message', () => {
+    it('Displays a personalized Welcome back message', () => {
       cy.get('[data-testid=cohort-header]')
       .should('contain','👋 Welcome back '+userFixture.user.first_name+', we hope you enjoyed Session '+sessionFixture.sessions[0].number)
     });
@@ -58,7 +58,7 @@ describe('Home > Heading', () => {
       cy.setClockToAfterSession(sessionFixture.sessions[3].times[0],3)
     });
 
-    it('Displays a personalised Completed message', () => {
+    it('Displays a personalized Completed message', () => {
       cy.get('[data-testid=cohort-header]')
       .should('contain','🎉 Congratulations, you’ve completed the '+cohortsFixture.cohorts[0].code+' cohort!')
     });
