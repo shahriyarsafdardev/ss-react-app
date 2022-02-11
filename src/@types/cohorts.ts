@@ -7,6 +7,7 @@ export type Company = {
 
 export type StudentProfile = {
   id: string;
+  slug: string;
   first_name: string;
   last_name: string;
   email: string;

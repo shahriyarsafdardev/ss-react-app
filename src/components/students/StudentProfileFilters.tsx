@@ -18,13 +18,7 @@ const ViewSelector = styled('div')(() => ({
 type StudentProfileFiltersProps = {
   companies: string[];
   selectedCompanies: string[];
-  strengths: string[];
-  selectedStrengths: string[];
-  interests: string[];
-  selectedInterests: string[];
   handleCompanyChange: (e: any) => void;
-  handleStrengthChange: (e: any) => void;
-  handleInterestChange: (e: any) => void;
   setView: (value: string) => void;
   view: string;
 };
@@ -40,13 +34,7 @@ const FilterFormControl = styled(FormControl)(({ theme }) => ({
 export default function StudentProfileFilters({
   companies,
   selectedCompanies,
-  strengths,
-  selectedStrengths,
-  interests,
-  selectedInterests,
   handleCompanyChange,
-  handleStrengthChange,
-  handleInterestChange,
   setView,
   view
 }: StudentProfileFiltersProps) {
@@ -114,52 +102,6 @@ export default function StudentProfileFilters({
           ))}
         </Select>
       </FilterFormControl>
-      <FilterFormControl data-testid="strength-select">
-        <InputLabel id="multiple-checkbox-label">Filter by Strengths</InputLabel>
-        <Select
-          labelId="strength-label"
-          id="multiple-checkbox-strength"
-          multiple
-          value={selectedStrengths}
-          onChange={(e) => {
-            handleStrengthChange(e);
-            trackFilters('Strength Filter');
-          }}
-          label="Filter by Strengths"
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
-        >
-          {strengths?.map((name: any) => (
-            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
-              <Checkbox checked={selectedStrengths.indexOf(name) > -1} />
-              <ListItemText primary={name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FilterFormControl>
-      {/* <FilterFormControl data-testid="interest-select">
-        <InputLabel id="multiple-checkbox-label">Filter by Interests</InputLabel>
-        <Select
-          labelId="interest-label"
-          id="multiple-checkbox-interest"
-          multiple
-          value={selectedInterests}
-          onChange={(e) => {
-            handleInterestChange(e);
-            trackFilters('Interests Filter');
-          }}
-          label="Filter by Interests"
-          renderValue={(selected) => selected.join(', ')}
-          MenuProps={{ sx: { maxHeight: 500, main: { paddingRight: 8 } } }}
-        >
-          {interests?.map((name: any) => (
-            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
-              <Checkbox checked={selectedInterests.indexOf(name) > -1} />
-              <ListItemText primary={name} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FilterFormControl> */}
     </ViewSelector>
   );
 }

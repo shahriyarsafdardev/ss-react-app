@@ -8,14 +8,16 @@ import {
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
 import { useLocation } from 'react-router-dom';
+import moment from 'moment';
 
 // material
-import { Container, Box } from '@material-ui/core';
+import { Container, Box, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import { CohortContext } from 'contexts/CohortContext';
 import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
+import { ExportToExcel } from 'components/students/Common';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -46,9 +48,6 @@ export default function PeersTab() {
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>([]);
-  const [strengths, setStrengths] = useState<string[]>([]);
-  const [selectedStrengths, setSelectedStrengths] = useState<string[]>([]);
-  const [interests, setInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [view, setView] = useState('grid');
   const { user } = useAuth();
@@ -85,15 +84,7 @@ export default function PeersTab() {
     newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
     setCompanies(newCompanies);
     // make select items for strengths
-    const Strengths: any = createSelectMenu('strengths');
-    setStrengths(Strengths);
-    // make select items for interests
-    const Interests: any = createSelectMenu('interests');
-    setInterests(Interests);
-    // remove sort on tab change
     setSelectedCompanies([]);
-    setSelectedStrengths([]);
-    setSelectedInterests([]);
     const user_id = url.get('user_id');
     if (user_id && peers?.length > 0) {
       const peer = peers.filter((peer) => peer.id === user_id)[0];
@@ -121,13 +112,7 @@ export default function PeersTab() {
 
     setSelectedCompanies(value);
   };
-  const handleStrengthChange = (event: any) => {
-    const {
-      target: { value }
-    } = event;
 
-    setSelectedStrengths(value);
-  };
   const handleInterestChange = (event: any) => {
     const {
       target: { value }
@@ -140,26 +125,6 @@ export default function PeersTab() {
       dispatch(getPeers(cohort_id.toString(), 'null'));
     }
   }, [dispatch, cohort]);
-
-  useEffect(() => {
-    const filtereStudents = applyFilters();
-    const filteredInterests = filtereStudents
-      ?.map((student: any) => student?.interests)
-      ?.flat(1)
-      .sort();
-    const filterInterestsList: any = filteredInterests?.filter(
-      (x: any, i: any, a: any) => a.indexOf(x) === i
-    );
-    const filteredStrengths = filtereStudents
-      ?.map((student: any) => student?.strengths)
-      ?.flat(1)
-      .sort();
-    const filterStrengthsList: any = filteredStrengths?.filter(
-      (x: any, i: any, a: any) => a.indexOf(x) === i
-    );
-    setInterests(filterInterestsList);
-    setStrengths(filterStrengthsList);
-  }, [selectedCompanies]);
 
   const applyFilters = useCallback(() => {
     let filteredStudents: any = filteredPeers;
@@ -178,16 +143,8 @@ export default function PeersTab() {
       );
     }
 
-    if (selectedStrengths.length > 0) {
-      filteredStudents = filteredStudents?.filter(
-        (student: any) =>
-          selectedStrengths?.filter((strength) =>
-            student.strengths.find((item: any) => item === strength)
-          ).length
-      );
-    }
     return filteredStudents;
-  }, [selectedCompanies, selectedStrengths, selectedInterests, peers]);
+  }, [selectedCompanies, selectedInterests, peers]);
 
   const trackModalEvent = () =>
     trackPeersPageEvent(
@@ -230,19 +187,26 @@ export default function PeersTab() {
             modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'
           }
         />
-        <StudentProfileFilters
-          companies={companies}
-          selectedCompanies={selectedCompanies}
-          strengths={strengths}
-          selectedStrengths={selectedStrengths}
-          interests={interests}
-          selectedInterests={selectedInterests}
-          handleCompanyChange={handleChange}
-          handleStrengthChange={handleStrengthChange}
-          handleInterestChange={handleInterestChange}
-          setView={setView}
-          view={view}
-        />
+        <Stack
+          width="100%"
+          flexDirection={{ xs: 'column', md: 'row' }}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <StudentProfileFilters
+            companies={companies}
+            selectedCompanies={selectedCompanies}
+            handleCompanyChange={handleChange}
+            setView={setView}
+            view={view}
+          />
+          {user?.type === 'admin' && mode === 'Instructor' && (
+            <ExportToExcel
+              students={filteredPeers}
+              fileName={`${moment().format()}-${cohort?.name} Students Data`}
+            />
+          )}
+        </Stack>
         {view === 'grid' ? showCardView() : showTableView()}
       </Container>
     ) : (
