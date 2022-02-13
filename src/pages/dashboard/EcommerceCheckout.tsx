@@ -17,12 +17,12 @@ import { ProductState } from '../../@types/products';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {
-  CheckoutCart,
-  CheckoutPayment,
-  CheckoutOrderComplete,
-  CheckoutBillingAddress
-} from '../../components/_dashboard/e-commerce/checkout';
+// import {
+//   CheckoutCart,
+//   CheckoutPayment,
+//   CheckoutOrderComplete,
+//   CheckoutBillingAddress
+// } from '../../components/_dashboard/e-commerce/checkout';
 
 // ----------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ export default function EcommerceCheckout() {
           </Grid>
         </Grid>
 
-        {!isComplete ? (
+        {/* {!isComplete ? (
           <>
             {activeStep === 0 && <CheckoutCart />}
             {activeStep === 1 && <CheckoutBillingAddress />}
@@ -145,7 +145,7 @@ export default function EcommerceCheckout() {
           </>
         ) : (
           <CheckoutOrderComplete open={isComplete} />
-        )}
+        )} */}
       </Container>
     </Page>
   );

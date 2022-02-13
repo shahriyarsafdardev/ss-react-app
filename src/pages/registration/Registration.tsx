@@ -31,17 +31,23 @@ export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
+  const credit_account_id = url.get('credit_account') || '';
 
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
     referrer: url.get('referrer') || ''
   });
 
+  const [account, setAccount] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   const updateUserData = async (data: any) => {
     setUser({ ...user, ...data });
-    setActiveStep(2);
+    if (account) {
+      setActiveStep(3);
+    } else {
+      setActiveStep(2);
+    }
   };
 
   useEffect(() => {
@@ -49,14 +55,16 @@ export default function Registration() {
       axios
         .post(`/cohorts/${cohort_id}/enrollments.json`, {
           email: user?.email,
-          coupon_code: user?.referrer
+          coupon_code: user?.referrer,
+          account_id: credit_account_id
         })
         .then((res) => {
           res.data &&
             setUser({
               ...user,
-              ...res.data
+              ...res.data.user
             });
+          setAccount(res.data.account);
           setLoading(false);
         });
     }
@@ -88,10 +96,14 @@ export default function Registration() {
         >
           <Box sx={{ mb: 5 }}>
             <Typography variant="h3" align="center" paragraph>
-              🎉 You’ve completed your application!
+              {account
+                ? `🎉 Thanks ${user.first_name}, your enrollment has been sent to ${account} for approval!`
+                : '🎉 You’ve completed your application!'}
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }}>
-              You will shortly recieve an email documenting your application outcome and next steps!
+              {account
+                ? 'You will recieve an update shortly!'
+                : 'You will shortly recieve an email documenting your application outcome and next steps!'}
             </Typography>
           </Box>
           <Button
@@ -139,6 +151,7 @@ export default function Registration() {
         <UserForm
           cohortID={cohort_id}
           user={user}
+          account={account}
           submitValues={(data: any) => updateUserData(data)}
         />
       </Stack>

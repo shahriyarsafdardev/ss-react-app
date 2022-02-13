@@ -7,16 +7,22 @@ export default function RedirectToCohort() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { user } = useAuth();
   let navigationUrl = '/';
-
-  if (!!user && cohorts.length > 0) {
-    if (user.type === 'learner') {
-      navigationUrl = `/cohorts/${cohorts[0].id}/home`;
+  if (user) {
+    if (user.type === 'company') {
+      navigationUrl = `/business-dashboard`;
+    } else if (cohorts.length > 0) {
+      if (user.type === 'learner') {
+        navigationUrl = `/cohorts/${cohorts[0].id}/home`;
+      } else {
+        const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
+        navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
+      }
     } else {
-      const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
-      navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
+      return <LoadingScreen />;
     }
   } else {
     return <LoadingScreen />;
   }
+
   return <Navigate to={navigationUrl} replace />;
 }

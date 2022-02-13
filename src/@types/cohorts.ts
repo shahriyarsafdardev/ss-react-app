@@ -122,6 +122,7 @@ export type Enrollment = {
   email: string;
   linkedin_url: string;
   price: number;
+  credit_account: string;
   status: string;
   notes: string;
   stream: string;
@@ -163,6 +164,13 @@ export type Comment = {
   user_image: string;
   image: string;
   user_id: string;
+};
+
+export type CardType = {
+  cardName?: string;
+  cardNumber?: string;
+  cardExpiry?: string;
+  cardCvv?: string;
 };
 
 export type Question = {
@@ -212,4 +220,15 @@ export const AttendanceType = {
   live: 'live',
   recorded: 'recorded',
   none: 'none'
+};
+
+export type CreditObject = {
+  id: string;
+  time: string;
+  type: string;
+  approved: boolean | null;
+  attendee_name: string | null;
+  cohort_name: string | null;
+  cohort_link: string | null;
+  credit_amount: number;
 };

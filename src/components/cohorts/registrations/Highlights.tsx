@@ -14,7 +14,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
               enrollments.filter((e: { status: string }) => e.status !== 'Not Interested').length
             }
             currentTimePeriodLabel={<span>Applications Received</span>}
-            difference={changeOccur(enrollments, [], 'time')}
+            difference={changeOccur(enrollments, [], 'time', false)}
             infoTooltip={(difference: number) => (
               <InfoTooltip
                 title={
@@ -36,14 +36,18 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={
-              enrollments.filter((e: { status: string }) =>
-                ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status)
+              enrollments.filter(
+                (e: { status: string }) =>
+                  ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status) ||
+                  e.status.split(' ')[0] === 'Awaiting' ||
+                  e.status.split(' ')[1] === 'Approval'
               ).length
             }
             difference={changeOccur(
               enrollments,
               ['Application Accepted', 'Payment link opened', 'Paid', 'Application Rejected'],
-              'application_accepted_time'
+              'application_accepted_time',
+              true
             )}
             currentTimePeriodLabel={<span>Applications Accepted</span>}
             infoTooltip={(difference: number) => (
@@ -74,7 +78,8 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             difference={changeOccur(
               enrollments,
               ['Payment link opened', 'Paid', 'Application Rejected'],
-              'payment_link_opened_time'
+              'payment_link_opened_time',
+              false
             )}
             currentTimePeriodLabel={<span>Payment Links Opened</span>}
             infoTooltip={(difference: number) => (
@@ -98,7 +103,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
-            difference={changeOccur(enrollments, ['Paid'], 'paid_time')}
+            difference={changeOccur(enrollments, ['Paid'], 'paid_time', false)}
             currentTimePeriodLabel={<span>Paid</span>}
             infoTooltip={(difference: number) => (
               <InfoTooltip

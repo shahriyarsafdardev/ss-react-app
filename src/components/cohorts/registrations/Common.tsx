@@ -119,10 +119,20 @@ export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAli
   );
 };
 
-export const changeOccur = (enrollments: any, statuses: string[], type: string) => {
+export const changeOccur = (
+  enrollments: any,
+  statuses: any,
+  type: string,
+  account_status: boolean
+) => {
   const totalEnrollments =
     statuses.length > 0
-      ? enrollments.filter((e: { status: string }) => statuses.includes(e.status))
+      ? enrollments.filter(
+          (e: any) =>
+            statuses.includes(e.status) ||
+            (account_status &&
+              (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
+        )
       : enrollments;
   const startDate = moment().startOf('week').add(1, 'days');
   const newEnrollments = totalEnrollments.filter(
@@ -414,6 +424,30 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
           <Typography variant="h4">🤝</Typography>
         </Tooltip>
       )}
+      {enrollment.credit_account && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } enrolled using ${enrollment.credit_account}'s ScholarSite credits`}
+        >
+          <Typography variant="h4">🏢</Typography>
+        </Tooltip>
+      )}
+      {enrollment.notes && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={
+            enrollment.notes.length > 200
+              ? `${enrollment.notes.substring(0, 200)}...`
+              : enrollment.notes
+          }
+        >
+          <Typography variant="h4">📋</Typography>
+        </Tooltip>
+      )}
     </Stack>
   </>
 );
@@ -493,11 +527,18 @@ export const pickColor = (status: string) => {
   if (status === 'Application Rejected' || status === 'Not Interested') {
     return 'default';
   }
-  if (status === 'Application Received' || status === 'Partial Application Received') {
+  if (
+    status === 'Application Received' ||
+    status === 'Partial Application Received' ||
+    status.split(' ')[0] === 'Awaiting'
+  ) {
     return 'primary';
   }
   if (status === 'Payment link opened') {
     return 'warning';
+  }
+  if (status.split(' ').includes('Denied')) {
+    return 'error';
   }
   return 'success';
 };

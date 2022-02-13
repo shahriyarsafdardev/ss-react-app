@@ -111,6 +111,10 @@ export default function Router() {
           ]
         },
         {
+          path: 'business-dashboard',
+          children: [{ path: '/', element: <BusinessDashboard /> }]
+        },
+        {
           path: 'cohorts/:cohortID',
           children: [
             { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
@@ -134,26 +138,26 @@ export default function Router() {
             { path: 'new-post', element: <BlogNewPost /> }
           ]
         },
-        {
-          path: 'mail',
-          children: [
-            { path: '/', element: <Navigate to="/mail/all" replace /> },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> }
-          ]
-        },
-        {
-          path: 'chat',
-          children: [
-            { path: '/', element: <Chat /> },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> }
-          ]
-        },
-        { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> }
+        // {
+        //   path: 'mail',
+        //   children: [
+        //     { path: '/', element: <Navigate to="/mail/all" replace /> },
+        //     { path: 'label/:customLabel', element: <Mail /> },
+        //     { path: 'label/:customLabel/:mailId', element: <Mail /> },
+        //     { path: ':systemLabel', element: <Mail /> },
+        //     { path: ':systemLabel/:mailId', element: <Mail /> }
+        //   ]
+        // },
+        // {
+        //   path: 'chat',
+        //   children: [
+        //     { path: '/', element: <Chat /> },
+        //     { path: 'new', element: <Chat /> },
+        //     { path: ':conversationKey', element: <Chat /> }
+        //   ]
+        // },
+        { path: 'calendar', element: <Calendar /> }
+        // { path: 'kanban', element: <Kanban /> }
       ]
     },
 
@@ -281,6 +285,10 @@ const CalendarInstructions = Loadable(
 const RegistrationsTab = Loadable(
   lazy(() => import('components/cohorts/registrations/RegistrationsTab'))
 );
+const BusinessDashboard = Loadable(
+  lazy(() => import('components/cohorts/businessCredit/Dashboard'))
+);
+
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
@@ -291,9 +299,9 @@ const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
+// const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+// const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
