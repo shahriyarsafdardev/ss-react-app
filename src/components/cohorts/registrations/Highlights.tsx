@@ -11,7 +11,10 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
             metric={
-              enrollments.filter((e: { status: string }) => e.status !== 'Not Interested').length
+              enrollments.filter(
+                (e: { status: string }) =>
+                  !['Not Interested', 'Partial Application Received'].includes(e.status)
+              ).length
             }
             currentTimePeriodLabel={<span>Applications Received</span>}
             difference={changeOccur(enrollments, [], 'time', false)}

@@ -133,7 +133,7 @@ export const changeOccur = (
             (account_status &&
               (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
         )
-      : enrollments;
+      : enrollments.filter((e: { status: string }) => e.status !== 'Partial Application Received');
   const startDate = moment().startOf('week').add(1, 'days');
   const newEnrollments = totalEnrollments.filter(
     (e: any) => !!e[type] && moment(e[type]) >= startDate
