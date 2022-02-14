@@ -7,3 +7,4 @@ export { default as AccountGeneral } from './AccountGeneral';
 export { default as AccountNotifications } from './AccountNotifications';
 export { default as AccountSocialLinks } from './AccountSocialLinks';
 export { default as AccountNetworking } from './AccountNetworking';
+export { default as BusinessAccount } from './BusinessAccount';

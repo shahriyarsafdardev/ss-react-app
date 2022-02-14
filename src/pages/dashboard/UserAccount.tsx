@@ -8,9 +8,9 @@ import roundPeople from '@iconify/icons-ic/baseline-people';
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
 import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
-import { RootState, useDispatch, useSelector } from '../../redux/store';
 
 // routes
+import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
@@ -19,21 +19,19 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import {
   AccountGeneral,
-  AccountBilling,
-  AccountSocialLinks,
-  AccountNotifications,
   AccountChangePassword,
-  AccountNetworking
+  AccountNetworking,
+  BusinessAccount
 } from '../../components/_dashboard/user/account';
 
 // ----------------------------------------------------------------------
 
+const companyType = 'company';
+
 export default function UserAccount() {
   const { themeStretch } = useSettings();
-  const dispatch = useDispatch();
-  const { cards, invoices, myProfile, addressBook, notifications } = useSelector(
-    (state: RootState) => state.user
-  );
+
+  const { user } = useAuth();
 
   const [currentTab, setCurrentTab] = useState('general');
 
@@ -43,23 +41,39 @@ export default function UserAccount() {
     });
   }, []);
 
-  const ACCOUNT_TABS = [
-    {
-      value: 'general',
-      icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-      component: <AccountGeneral />
-    },
-    {
-      value: 'networking',
-      icon: <Icon icon={roundPeople} width={20} height={20} />,
-      component: <AccountNetworking />
-    },
-    {
-      value: 'change_password',
-      icon: <Icon icon={roundVpnKey} width={20} height={20} />,
-      component: <AccountChangePassword />
-    }
-  ];
+  const getTabs = () =>
+    user?.type === companyType
+      ? [
+          {
+            value: 'general',
+            icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+            component: <BusinessAccount />
+          },
+          {
+            value: 'change_password',
+            icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+            component: <AccountChangePassword />
+          }
+        ]
+      : [
+          {
+            value: 'general',
+            icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+            component: <AccountGeneral />
+          },
+          {
+            value: 'networking',
+            icon: <Icon icon={roundPeople} width={20} height={20} />,
+            component: <AccountNetworking />
+          },
+          {
+            value: 'change_password',
+            icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+            component: <AccountChangePassword />
+          }
+        ];
+
+  const ACCOUNT_TABS = getTabs();
 
   return (
     <Page title="ScholarSite | Settings">
