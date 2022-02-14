@@ -58,6 +58,37 @@ export default function PeersTab() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
+  const userObject = {
+    id: user?.id,
+    slug: user?.displayName,
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    email: user?.email,
+    current_company: {
+      id: '',
+      name: user?.current_company,
+      number_of_employees: '',
+      logo_url: user?.company_image_url
+    },
+    current_position: user?.current_position,
+    preferred_pronoun: user?.preferred_pronoun,
+    linkedin_url: user?.linkedin_url,
+    is_managing_team: user?.is_managing_team,
+    city: '',
+    country: '',
+    current_role_category_selections: user?.current_role_category_selections,
+    current_industry_category_selections: user?.current_industry_category_selections,
+    strengths: user?.strengths,
+    interests: user?.interests,
+    matchings: [],
+    opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
+    networking_matching_preferences: user?.networking_matching_preferences,
+    profile_image_url: user?.profile_image_url,
+    bio_text: user?.bio_text,
+    type: user?.type,
+    is_onboarded: true
+  };
+
   const { peers } = cohort || { peers: null };
   let filteredPeers: Array<StudentProfile> = [];
 
@@ -68,6 +99,7 @@ export default function PeersTab() {
       }
       return false;
     });
+    filteredPeers = [userObject, ...filteredPeers];
   }
 
   const createSelectMenu = (items: string) => {
@@ -86,8 +118,8 @@ export default function PeersTab() {
     // make select items for strengths
     setSelectedCompanies([]);
     const user_id = url.get('user_id');
-    if (user_id && peers?.length > 0) {
-      const peer = peers.filter((peer) => peer.id === user_id)[0];
+    if (user_id && filteredPeers?.length > 0) {
+      const peer = filteredPeers.filter((peer) => peer.id === user_id)[0];
       if (peer) {
         modalHandler(peer);
       }
