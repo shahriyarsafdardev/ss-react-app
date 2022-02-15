@@ -8,6 +8,7 @@ import {
   PinEnabledUserRoles,
   Thread,
   useChannelActionContext,
+  useChannelStateContext,
   Window,
   MessageToSend
 } from 'stream-chat-react';
@@ -53,6 +54,16 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
   };
 
   const { sendMessage } = useChannelActionContext<
+    TeamAttachmentType,
+    TeamChannelType,
+    TeamCommandType,
+    TeamEventType,
+    TeamMessageType,
+    TeamReactionType,
+    TeamUserType
+  >();
+
+  const { thread, channel } = useChannelStateContext<
     TeamAttachmentType,
     TeamChannelType,
     TeamCommandType,
@@ -109,7 +120,13 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
           <MessageList disableQuotedMessages={true} pinPermissions={pinnedPermissions} />
           <MessageInput grow overrideSubmitHandler={overrideSubmitHandler} />
         </Window>
-        <Thread additionalMessageInputProps={{ grow: true, Input: ThreadMessageInput }} />
+        <Thread
+          key={`thread-messages-${thread?.reply_count}-${channel?.state?.messages.length}`}
+          additionalMessageInputProps={{
+            grow: true,
+            Input: ThreadMessageInput
+          }}
+        />
         {pinsOpen && <PinnedMessageList setPinsOpen={setPinsOpen} />}
       </div>
     </GiphyContext.Provider>

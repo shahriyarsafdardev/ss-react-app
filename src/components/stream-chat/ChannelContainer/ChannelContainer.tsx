@@ -42,7 +42,7 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
 
   const getReplyCount = () => {
     if (!thread?.reply_count) return '';
-    if (thread.reply_count === 1) return '1 reply';
+    if (thread.reply_count === 1) return '1 Reply';
     return `${thread.reply_count} Replies`;
   };
 
