@@ -8,7 +8,7 @@ describe('Sessions > Summary', () => {
     cy.login({});
     cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
     .should('be.visible')
-    .click();
+    .click({ force: true });
   });
 
   context('When session summary is added', () => {
