@@ -26,6 +26,7 @@ export const PATH_PAGE = {
   pricing: '/pricing',
   payment: '/payment',
   registration: '/registration',
+  businessDashboard: '/business-dashboard',
   about: '/about-us',
   contact: '/contact-us',
   chat: '/chat',
