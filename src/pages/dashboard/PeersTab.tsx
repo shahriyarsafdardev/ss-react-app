@@ -99,7 +99,7 @@ export default function PeersTab() {
       }
       return false;
     });
-    filteredPeers = [userObject, ...filteredPeers];
+    filteredPeers = [...filteredPeers];
   }
 
   const createSelectMenu = (items: string) => {
