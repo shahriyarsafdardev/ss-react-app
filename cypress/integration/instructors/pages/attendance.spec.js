@@ -13,7 +13,7 @@ describe('Attendance Tab', () => {
       `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].name}-${cohorts_fixture.cohorts[0].intake_name}-attendance"]`
     )
     .should('be.visible')
-    .click();
+    .click({ force: true });
     cy.fixture('../fixtures/session/cohort_session_attendance.json').as('attendanceData');
     cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/cohort_session_attendance.json`, '@attendanceData').as('attendance');
     cy.wait('@attendance');
