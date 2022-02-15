@@ -53,13 +53,16 @@ Cypress.Commands.add('form', () => {
     'https://linkedin.com/aqibmaqqbool_react_dev'
   );
 });
-Cypress.Commands.add('loginasadmin', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/admin-login.json',}) => {
+Cypress.Commands.add('loginasadmin', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/admin-login.json',
+enrollmentspath='cohorts/enrollments.json'}) => {
   const serverUrl = Cypress.env('serverUrl');
   const baseUrl = Cypress.env('baseUrl');
   cy.fixture(cohortspath).as('cohortsData');
   cy.fixture(loginpath ).as('loginData');
+  cy.fixture(enrollmentspath).as('enrollmentData')
   cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
   cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+  cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/enrollments.json`, '@enrollmentData').as('enrollment');
   cy.visit(`${baseUrl}`);
   const email = 'waqasnazir9@gmail.com';
   const password = '123456';
@@ -68,5 +71,5 @@ Cypress.Commands.add('loginasadmin', ({cohortspath = 'cohorts/cohorts.json', log
 
   cy.get('[data-testid=loginBtn]').click();
 
-  cy.wait(['@login', '@cohorts']);
+  cy.wait(['@login', '@cohorts', '@enrollment']);
 });

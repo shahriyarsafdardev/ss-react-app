@@ -24,8 +24,8 @@ describe('Networking Tab', () => {
     cy.get('[data-testid="company-select"]')
     .should('be.visible')
     //assert filter by strength
-    cy.get('[data-testid="strength-select"]')
-    .should('be.visible')
+    // cy.get('[data-testid="strength-select"]')
+    // .should('be.visible')
     //assert correct number of peer cards are visible
     cy.get('[data-testid="peers-grid"]')
     .should('be.visible')
