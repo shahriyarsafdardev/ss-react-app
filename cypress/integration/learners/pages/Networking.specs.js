@@ -4,7 +4,7 @@ import peersFixture from '../../../fixtures/peer/peers.json';
 const baseUrl = Cypress.env('baseUrl');
 
 describe('Networking Tab', () => {
-  beforeEach(() => {
+  before(() => {
     cy.server();
     cy.login({});
     cy.get(`[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-networking"]`)
@@ -24,8 +24,8 @@ describe('Networking Tab', () => {
     cy.get('[data-testid="company-select"]')
     .should('be.visible')
     //assert filter by strength
-    cy.get('[data-testid="strength-select"]')
-    .should('be.visible')
+    // cy.get('[data-testid="strength-select"]')
+    // .should('be.visible')
     //assert correct number of peer cards are visible
     cy.get('[data-testid="peers-grid"]')
     .should('be.visible')
@@ -62,7 +62,7 @@ describe('Networking Tab', () => {
   });
 
   context('When a peer card is clicked on', () => {
-    beforeEach(() => {
+    before(() => {
       cy.get(`[data-testid="peer-card-${peersFixture.peers[0].id}"]`)
       .should('be.visible')
       .click()

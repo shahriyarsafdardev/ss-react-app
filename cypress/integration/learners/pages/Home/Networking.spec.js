@@ -2,7 +2,7 @@ import cohortsFixture from '../../../../fixtures/cohorts/cohorts.json';
 import peer from '../../../../fixtures/peer/peers.json'
 
 describe('Home > Networking', () => {
-  beforeEach(() => {
+  before(() => {
     cy.server();
     cy.login({});
   });
