@@ -94,7 +94,8 @@ describe('When a user visits the home page of a cohort for the first time', () =
     context('If all inputs are filled', () => {
       it('Allows users to navigate to the next page through the “Next” button', () => {
         cy.get('[data-testid="btn_next"]')
-        .should('be.visible').click()
+        .should('be.visible')
+        .click()
         cy.get('[data-testid="onboard-title"]')
         .should('be.visible')
         .and('contain','Where do you work?')
@@ -104,7 +105,9 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 2', () => {
     beforeEach(() => {
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
     });
     it('Displays a "Company Details" form',() =>  {
       cy.get('[data-testid="onboard-title"]')
@@ -142,11 +145,15 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() =>  {
-      cy.contains('button', 'Previous').should('be.visible').click()
+      cy.contains('button', 'Previous')
+      .should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Build Your Profile')
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]').
+      should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Where do you work?')
@@ -175,8 +182,12 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 3', () => {
     beforeEach(() => {
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
     });
     it('Displays a "Role Info" form',() =>  {
       cy.get('[data-testid="onboard-title"]')
@@ -212,15 +223,19 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .should('be.visible')
       .clear()
       .type('new data')
-      .and("contain",  'new data')
+      .and("contain", 'new data')
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
-      cy.contains('button', 'Previous').should('be.visible').click()
+      cy.contains('button', 'Previous')
+      .should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Where do you work?')
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]').
+      should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Tell us about your current role?')
@@ -250,9 +265,15 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 4', () => {
     beforeEach(() => {
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
     });
     it('Displays a "Networking Preferences" form',() =>  {
       cy.get('[data-testid="onboard-title"]')
@@ -290,11 +311,15 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons',() => {
-      cy.contains('button', 'Previous').should('be.visible').click()
+      cy.contains('button', 'Previous')
+      .should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Tell us about your current role?')
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
       cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Networking Preferences')
@@ -323,10 +348,18 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 5', () => {
     beforeEach(() => {
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
-      cy.get('[data-testid="btn_next"]').should('be.visible').click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
+      cy.get('[data-testid="btn_next"]')
+      .should('be.visible')
+      .click()
     });
 
     it('Displays a "House Keeping" form',() => {
@@ -365,11 +398,15 @@ describe('When a user visits the home page of a cohort for the first time', () =
     });
 
     it('Allows users to navigate to the previous page through the "Previous" buttons', () => {
-       cy.contains('button', 'Previous').should('be.visible').click()
+       cy.contains('button', 'Previous')
+       .should('be.visible')
+       .click()
        cy.get('[data-testid="onboard-title"]')
        .should('be.visible')
        .and('contain','Networking Preferences')
-       cy.get('[data-testid="btn_next"]').should('be.visible').click()
+       cy.get('[data-testid="btn_next"]')
+       .should('be.visible')
+       .click()
        cy.get('[data-testid="onboard-title"]')
       .should('be.visible')
       .and('contain','Housekeeping Questions')
