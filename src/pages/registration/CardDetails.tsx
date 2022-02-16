@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
 import valid from 'card-validator';
+import TermsCheckBox from 'components/TermsCheckBox';
 import axios from 'utils/axios';
 import {
   Grid,
@@ -24,6 +25,7 @@ type CardType = {
   cardNumber?: string;
   cardExpiry?: string;
   cardCvv?: string;
+  acceptedTerms: boolean;
 };
 
 export default function CardDetails({
@@ -68,7 +70,8 @@ export default function CardDetails({
       cardCvv: '',
       cardExpiry: '',
       cardName: `${first_name} ${last_name}`,
-      cardNumber: ''
+      cardNumber: '',
+      acceptedTerms: false
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
@@ -226,6 +229,10 @@ export default function CardDetails({
                         }}
                       />
                     </Stack>
+                    <TermsCheckBox
+                      value={values.acceptedTerms}
+                      onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
+                    />
                   </Stack>
                 </Card>
               </Grid>
@@ -258,6 +265,7 @@ export default function CardDetails({
             fullWidth
             variant="contained"
             color="primary"
+            disabled={!values.acceptedTerms}
             loading={isSubmitting}
             onClick={() => submitForm()}
             id="btn-submit"

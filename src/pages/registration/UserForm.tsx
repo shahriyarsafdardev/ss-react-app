@@ -5,12 +5,14 @@ import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
 
 import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
+import TermsCheckBox from 'components/TermsCheckBox';
 
 type UserType = {
   first_name?: string;
   last_name?: string;
   linkedin_url?: string;
   enrollment_id?: string;
+  acceptedTerms: boolean;
 };
 
 export default function UserForm({
@@ -33,7 +35,7 @@ export default function UserForm({
   });
 
   const formik = useFormik<UserType>({
-    initialValues: { ...user },
+    initialValues: { ...user, acceptedTerms: false },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
       if (values.enrollment_id && cohortID) {
@@ -56,7 +58,16 @@ export default function UserForm({
     }
   });
 
-  const { errors, touched, isSubmitting, getFieldProps, submitForm, isValid } = formik;
+  const {
+    errors,
+    values,
+    touched,
+    isSubmitting,
+    getFieldProps,
+    submitForm,
+    setFieldValue,
+    isValid
+  } = formik;
 
   return (
     <>
@@ -117,6 +128,12 @@ export default function UserForm({
                         }}
                       />
                     </Stack>
+                    {account && (
+                      <TermsCheckBox
+                        value={values.acceptedTerms}
+                        onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
+                      />
+                    )}
                   </Stack>
                 </Card>
               </Grid>
@@ -127,7 +144,7 @@ export default function UserForm({
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          disabled={!isValid}
+          disabled={!isValid || (!!account && !values.acceptedTerms)}
           onClick={() => submitForm()}
           id="btn-submit"
           fullWidth
