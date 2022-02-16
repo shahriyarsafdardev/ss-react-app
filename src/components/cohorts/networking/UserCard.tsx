@@ -129,14 +129,14 @@ export default function UserCard({
       {item.bio_text && <Typography sx={{ color: '#637381' }}>{item.bio_text}</Typography>}
       <Divider variant="middle" sx={{ margin: '10px 0px' }} />
       <Stack spacing={1} justifyContent="flex-start">
-        {item?.current_role_category_selections?.length > 0 && (
+        {Array(item?.current_role_category_selections)?.length > 0 && (
           <Typography>
-            Roles: <b>{item.current_role_category_selections?.join(',')}</b>
+            Roles: <b>{Array(item.current_role_category_selections)?.join(',')}</b>
           </Typography>
         )}
-        {item?.current_industry_category_selections?.length > 0 && (
+        {Array(item?.current_industry_category_selections)?.length > 0 && (
           <Typography>
-            Company Industries: <b>{item.current_industry_category_selections?.join(',')}</b>
+            Company Industries: <b>{Array(item.current_industry_category_selections)?.join(',')}</b>
           </Typography>
         )}
         <Typography>
