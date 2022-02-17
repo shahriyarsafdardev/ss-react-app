@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // material
 import { Box, Button, Card, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -10,7 +10,13 @@ import { ReferralCode } from '../../../@types/cohorts';
 import { ReferralCodeRow } from './Common';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  width: 130,
+  width: '50%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+const ActionButton = styled(Button)(({ theme }) => ({
+  width: '50%',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -18,10 +24,12 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function ReferralCodesForm({
   codes,
-  onSubmit
+  onSubmit,
+  cohortName
 }: {
   codes: ReferralCode[];
   onSubmit: Function;
+  cohortName: string;
 }) {
   const [referralCodes, setReferralCodes] = useState<ReferralCode[]>(codes);
   const [loading, setLoading] = useState(false);
@@ -30,8 +38,8 @@ export default function ReferralCodesForm({
     const newCode = {
       id: uuidv4().toString(),
       code: '',
-      referrer_benefit: '',
-      referee_benefit: ''
+      referral_message: '',
+      referral_notes: ''
     };
     setReferralCodes([...referralCodes, newCode]);
   };
@@ -43,28 +51,39 @@ export default function ReferralCodesForm({
 
   return (
     <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
-      <Stack width="100%" height="100%" minHeight="150px">
-        {referralCodes.length > 0 && <h3 style={{ marginBottom: '0.5rem' }}>Referral Codes</h3>}
-        <Stack width="100%" direction="column" alignItems="center" spacing={1}>
-          {referralCodes.map((code, i) => (
-            <ReferralCodeRow
-              key={code.id}
-              onChange={(newCode: ReferralCode) => updateCode(i, newCode)}
-              code={code}
-            />
-          ))}
-          <Button
-            sx={{ width: 'fit-content' }}
+      <Stack width="100%" height="100%" minHeight="150px" justifyContent="center">
+        {referralCodes.length > 0 && (
+          <>
+            <h3>Referral Codes</h3>
+            <Stack width="100%" direction="column" alignItems="center" spacing={1} sx={{ my: 3 }}>
+              {referralCodes.map((code, i) => (
+                <ReferralCodeRow
+                  key={code.id}
+                  onChange={(newCode: ReferralCode) => updateCode(i, newCode)}
+                  code={code}
+                  cohortName={cohortName}
+                />
+              ))}
+            </Stack>
+          </>
+        )}
+        <Stack
+          width={{ xs: '100%', md: '70%' }}
+          direction={{ xs: 'column', md: 'row' }}
+          alignItems="center"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mx: 'auto' }}
+        >
+          <ActionButton
             variant="contained"
             color="primary"
             disabled={loading}
             onClick={() => addNewCode()}
           >
             Add New Referral Code
-          </Button>
-        </Stack>
-        {referralCodes.length > 0 && (
-          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+          </ActionButton>
+          {referralCodes.length > 0 && (
             <StyledLoadingButton
               onClick={() => {
                 setLoading(true);
@@ -76,8 +95,8 @@ export default function ReferralCodesForm({
             >
               Save Changes
             </StyledLoadingButton>
-          </Box>
-        )}
+          )}
+        </Stack>
       </Stack>
     </Card>
   );

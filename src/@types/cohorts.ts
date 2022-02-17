@@ -161,8 +161,8 @@ export type Cohort = {
 export type ReferralCode = {
   id: string;
   code: string;
-  referrer_benefit: string;
-  referee_benefit: string;
+  referral_message: string;
+  referral_notes: string;
 };
 
 export type Comment = {

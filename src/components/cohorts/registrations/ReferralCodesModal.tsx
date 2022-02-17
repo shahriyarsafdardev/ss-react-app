@@ -17,10 +17,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ReferralCodesModal({
   codes,
-  cohortID
+  cohortID,
+  cohortName
 }: {
   codes: ReferralCode[];
   cohortID: string;
+  cohortName: string;
 }) {
   const [formModalState, setFormModalState] = useState(false);
   const classes = useStyles();
@@ -47,7 +49,11 @@ export default function ReferralCodesModal({
         zIndex={1400}
         className={classes.codeModal}
       >
-        <ReferralCodesForm onSubmit={(codes: ReferralCode[]) => handleSave(codes)} codes={codes} />
+        <ReferralCodesForm
+          onSubmit={(codes: ReferralCode[]) => handleSave(codes)}
+          codes={codes}
+          cohortName={cohortName}
+        />
       </Modal>
       <Stack
         spacing={1}

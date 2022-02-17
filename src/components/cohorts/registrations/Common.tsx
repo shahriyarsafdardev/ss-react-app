@@ -11,6 +11,7 @@ import {
   IconButton,
   Grid,
   Stack,
+  Link,
   Tooltip,
   TextField
 } from '@material-ui/core';
@@ -40,10 +41,8 @@ import MenuPopover from '../../MenuPopover';
 import EnrollmentForm from './EnrollmentForm';
 
 const StyledIcon = styled('img')(() => ({
-  marginRight: 5,
   width: 24,
-  height: 24,
-  cursor: 'pointer'
+  height: 24
 }));
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -204,7 +203,7 @@ export const RegistrationsHeader = ({
     >
       <Typography variant="h5">Registrations List</Typography>
       <Stack direction="column" spacing={2} justifyContent="center">
-        <ReferralCodesModal cohortID={cohort_id} codes={codes} />
+        <ReferralCodesModal cohortName={cohort_name} cohortID={cohort_id} codes={codes} />
         {/* <ExportToExcel data={data} fileName={fileName} /> */}
       </Stack>
     </Stack>
@@ -225,7 +224,15 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
   </Stack>
 );
 
-export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChange: Function }) => {
+export const ReferralCodeRow = ({
+  code,
+  cohortName,
+  onChange
+}: {
+  code: ReferralCode;
+  cohortName: string;
+  onChange: Function;
+}) => {
   // const UpdateCodeSchema = Yup.object().shape({
   //   code: Yup.string().required('Referral Code required')
   // });
@@ -239,7 +246,9 @@ export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChan
   });
   const { enqueueSnackbar } = useSnackbar();
 
-  const { errors, touched, submitForm, setFieldValue } = formik;
+  const { errors, touched, submitForm, setFieldValue, values } = formik;
+  const cohortSlug = convertToSlug(cohortName);
+  const referralLink = `https://www.scholarsite.io/pages/${cohortSlug}?referrer=${values.code}`;
 
   return (
     <>
@@ -265,46 +274,53 @@ export const ReferralCodeRow = ({ code, onChange }: { code: ReferralCode; onChan
                 />
                 <TextField
                   fullWidth
-                  id="referrer_benefit"
-                  label="Referrer benefit"
-                  defaultValue={code.referrer_benefit}
+                  id="referral_message"
+                  label="Referral Message"
+                  defaultValue={code.referral_message}
                   onChange={(e) => {
-                    setFieldValue('referrer_benefit', e.target.value);
+                    setFieldValue('referral_message', e.target.value);
                     submitForm();
                   }}
-                  error={Boolean(touched.referrer_benefit && errors.referrer_benefit)}
-                  helperText={touched.referrer_benefit && errors.referrer_benefit}
+                  error={Boolean(touched.referral_message && errors.referral_message)}
+                  helperText={touched.referral_message && errors.referral_message}
                   inputProps={{
                     'data-testid': 'last-name'
                   }}
                 />
                 <TextField
                   fullWidth
-                  id="referee_benefit"
-                  label="Referee benefit"
-                  defaultValue={code.referee_benefit}
+                  id="referral_notes"
+                  label="Referral Notes"
+                  defaultValue={code.referral_notes}
                   onChange={(e) => {
-                    setFieldValue('referee_benefit', e.target.value);
+                    setFieldValue('referral_notes', e.target.value);
                     submitForm();
                   }}
-                  error={Boolean(touched.referee_benefit && errors.referee_benefit)}
-                  helperText={touched.referee_benefit && errors.referee_benefit}
+                  error={Boolean(touched.referral_notes && errors.referral_notes)}
+                  helperText={touched.referral_notes && errors.referral_notes}
                   inputProps={{
-                    'data-testid': 'referee_benefit'
+                    'data-testid': 'referral_notes'
                   }}
                 />
-                <CopyToClipboard
-                  text={code.code}
-                  onCopy={() => {
-                    if (code.code) {
-                      enqueueSnackbar('Code Copied', { variant: 'success' });
-                    }
-                  }}
-                >
-                  <Tooltip title="Copy Referral Link" placement="top" arrow>
-                    <StyledIcon src="/static/registration/Copy.svg" />
+                <IconButton>
+                  <CopyToClipboard
+                    text={referralLink}
+                    onCopy={() => {
+                      if (referralLink) {
+                        enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+                      }
+                    }}
+                  >
+                    <Tooltip title="Copy Referral Link" placement="top" arrow>
+                      <StyledIcon src="/static/registration/Copy.svg" />
+                    </Tooltip>
+                  </CopyToClipboard>
+                </IconButton>
+                <IconButton key={referralLink} component={Link} target="_blank" href={referralLink}>
+                  <Tooltip title="Open Referral Link" placement="top" arrow>
+                    <StyledIcon src="/static/registration/Export.svg" />
                   </Tooltip>
-                </CopyToClipboard>
+                </IconButton>
               </StyledStack>
             </Grid>
           </Grid>
@@ -668,3 +684,8 @@ export const pickColor = (status: string) => {
   }
   return 'success';
 };
+
+export const convertToSlug = (Text: string) =>
+  Text.toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '');

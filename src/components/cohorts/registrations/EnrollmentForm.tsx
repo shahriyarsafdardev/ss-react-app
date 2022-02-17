@@ -44,7 +44,7 @@ export default function EnrollmentForm({
       .required('First name required'),
     email: Yup.string().email('Email is invalid').required('Email is required'),
     price: Yup.number().required('Price required'),
-    linkedin_url: Yup.string().url('Must be a valid URL'),
+    linkedin_url: Yup.string().required('LinkedIn Url required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
 
@@ -57,8 +57,10 @@ export default function EnrollmentForm({
       onClose();
     }
   });
+  const codeOptions = [null, ...codes.map((code) => code.code)];
 
   const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values } = formik;
+  const userCode = codes.filter((code) => code.code === values.coupon_code)[0];
 
   return (
     <>
@@ -140,46 +142,39 @@ export default function EnrollmentForm({
                         defaultValue={values.coupon_code}
                         {...getFieldProps('coupon_code')}
                       >
-                        {codes?.map((code: ReferralCode) => (
-                          <MenuItem key={code.code} value={code.code}>
-                            <ListItemText primary={code.code} />
+                        {codeOptions?.map((code: any) => (
+                          <MenuItem key={code} value={code}>
+                            <ListItemText primary={code || 'None'} />
                           </MenuItem>
                         ))}
                       </MaterialSelect>
                     </FormControl>
                   </Stack>
-                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                  <Stack key={userCode?.id} direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
-                      id="referrer_benefit"
-                      label="Referrer Benefit"
-                      value={
-                        codes.filter((code) => code.code === values.coupon_code)[0]
-                          ?.referrer_benefit
-                      }
+                      id="referral_message"
+                      label="Referral Message"
+                      value={userCode?.referral_message}
                       InputLabelProps={{
-                        shrink: !!codes.filter((code) => code.code === values.coupon_code)[0]
-                          ?.referrer_benefit
+                        shrink: !!userCode?.referral_message
                       }}
                       inputProps={{
                         readOnly: true,
-                        'data-testid': 'referrer_benefit'
+                        'data-testid': 'referral_message'
                       }}
                     />
                     <TextField
                       fullWidth
-                      id="referee_benefit"
-                      label="Referee Benefit"
-                      value={
-                        codes.filter((code) => code.code === values.coupon_code)[0]?.referee_benefit
-                      }
+                      id="referral_notes"
+                      label="Referral Notes"
+                      value={userCode?.referral_notes}
                       InputLabelProps={{
-                        shrink: !!codes.filter((code) => code.code === values.coupon_code)[0]
-                          ?.referee_benefit
+                        shrink: !!userCode?.referral_notes
                       }}
                       inputProps={{
                         readOnly: true,
-                        'data-testid': 'referee_benefit'
+                        'data-testid': 'referral_notes'
                       }}
                     />
                   </Stack>
