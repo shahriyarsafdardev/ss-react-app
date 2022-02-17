@@ -275,6 +275,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         }
         setIsSubmitting(false);
         setModal(false);
+      })
+      .catch((err) => {
+        setIsSubmitting(false);
+        enqueueSnackbar(`Error occurred`, { variant: 'error' });
+        enqueueSnackbar('Please try again', { variant: 'info' });
       });
   };
 
