@@ -41,7 +41,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '50vh',
     overflowY: 'scroll',
     '&::-webkit-scrollbar': { display: 'none' },
-    '&::-webkit-scrollbar-thumb': { display: 'none' }
+    '&::-webkit-scrollbar-thumb': { display: 'none' },
+    [theme.breakpoints.down('md')]: {
+      height: 'auto',
+      maxHeight: '400px'
+    }
   },
   upcomingContainer: {
     marginTop: '10px',

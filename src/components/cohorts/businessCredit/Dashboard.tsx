@@ -8,9 +8,11 @@ import { Modal } from 'components/animate';
 import { useSnackbar } from 'notistack5';
 import { styled } from '@material-ui/core/styles';
 import { ROOT_URL } from 'routes/paths';
+import useAuth from 'hooks/useAuth';
 import TopupForm from './TopupForm';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
+import { EmptyStateNewEnrollments, EmptyStateHistory } from './EmptyStates';
 
 const StyledIcon = styled('img')(() => ({
   marginRight: 5,
@@ -19,12 +21,20 @@ const StyledIcon = styled('img')(() => ({
   cursor: 'pointer'
 }));
 
-const MyWallet = ({ currentBalance, setModal }: { currentBalance: number; setModal: Function }) => {
+const MyWallet = ({
+  currentBalance,
+  setModal,
+  accountName
+}: {
+  currentBalance: number;
+  setModal: Function;
+  accountName: string;
+}) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.sectionCard}>
-      <Typography variant="h5">Your ScholarSite Wallet</Typography>
+      <Typography variant="h5">{accountName && `${accountName}'s`} ScholarSite Wallet</Typography>
       <Box display="flex" justifyContent="space-between" marginTop="10px">
         <Box display="flex" alignItems="baseline">
           <Typography variant="h3" color="#4D4DCD">
@@ -120,9 +130,13 @@ const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
       <Box className={classes.rowContainer}>
         {/* <Box className={classes.yearLine}>2021</Box> */}
         <Box marginTop="15px">
-          {historyData.map((row: CreditObject, index: number) => (
-            <HistoryRow key={`${row.credit_amount}-${index}-${row.time}`} row={row} />
-          ))}
+          {historyData.length > 0 ? (
+            historyData.map((row: CreditObject, index: number) => (
+              <HistoryRow key={`${row.credit_amount}-${index}-${row.time}`} row={row} />
+            ))
+          ) : (
+            <EmptyStateHistory />
+          )}
         </Box>
       </Box>
     </Card>
@@ -183,9 +197,13 @@ const NewEnrollments = ({
         }
       />
       <Box className={classes.upcomingContainer}>
-        {newEnrollments.map((row: CreditObject, index: number) => (
-          <ApprovalRow key={`${row.credit_amount}-${index}-${row.time}`} row={row} />
-        ))}
+        {newEnrollments.length > 0 ? (
+          newEnrollments.map((row: CreditObject, index: number) => (
+            <ApprovalRow key={`${row.credit_amount}-${index}-${row.time}`} row={row} />
+          ))
+        ) : (
+          <EmptyStateNewEnrollments />
+        )}
       </Box>
     </Card>
   );
@@ -197,6 +215,7 @@ const Dashboard = () => {
   const classes = useStyles();
   const [modal, setModal] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuth();
 
   useEffect(() => {
     const populateData = async () => {
@@ -258,10 +277,17 @@ const Dashboard = () => {
     <Page title="ScholarSite | Business Portal">
       <Container>
         <TopupModal />
-        {/* <Typography variant="h4">Dashboard</Typography> */}
+        <Typography variant="h4">
+          👋 Hi {user?.first_name}, welcome to the {`${cohortCredit.accountName}'s`} ScholarSite
+          Dashboard
+        </Typography>
         <Box className={classes.sectionContainer}>
           <Box className={classes.width50}>
-            <MyWallet setModal={setModal} currentBalance={cohortCredit.credit_balance} />
+            <MyWallet
+              setModal={setModal}
+              currentBalance={cohortCredit.credit_balance}
+              accountName={cohortCredit.accountName}
+            />
             <CreditHistory historyData={cohortCredit.history} />
           </Box>
           <Box className={classes.width50}>

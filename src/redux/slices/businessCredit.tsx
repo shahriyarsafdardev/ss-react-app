@@ -4,6 +4,7 @@ import { dispatch } from '../store';
 import { CreditObject } from '../../@types/cohorts';
 
 type InitialStateType = {
+  accountName: string;
   id: string;
   credit_balance: number;
   history: CreditObject[];
@@ -11,6 +12,7 @@ type InitialStateType = {
 };
 
 const initialState: InitialStateType = {
+  accountName: '',
   id: '',
   credit_balance: 0,
   history: [],
@@ -22,8 +24,9 @@ const slice = createSlice({
   initialState,
   reducers: {
     populateCredit(state, action) {
-      const { id, credit_balance, history, unapproved } = action.payload.data;
+      const { id, credit_balance, history, unapproved, accountName } = action.payload.data;
 
+      state.accountName = accountName;
       state.id = id;
       state.credit_balance = credit_balance;
       state.history = history;

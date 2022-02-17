@@ -5,6 +5,7 @@ import { alpha, styled } from '@material-ui/core/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 // hooks
 import { useEffect, useState } from 'react';
+import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
@@ -25,7 +26,8 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   backgroundColor: alpha(theme.palette.background.default, 0.72),
   [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${DRAWER_WIDTH}px)`
+    // width: `calc(100% - ${DRAWER_WIDTH}px)`
+    width: '100%'
   }
 }));
 
@@ -37,6 +39,14 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   }
 }));
 
+const CompanyLogo = styled(Box)(({ theme }) => ({
+  margin: '2rem 0 0 2rem',
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+    margin: '0'
+  }
+}));
+
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
@@ -45,6 +55,7 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
+  const { user } = useAuth();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const visibleHeaders = [
     'messaging',
@@ -73,37 +84,45 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   }, [window.location.href]);
 
   return (
-    <RootStyle
-      sx={{
-        ...(isCollapse && {
-          width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px)` }
-        })
-      }}
-    >
-      <ToolbarStyle>
-        <MHidden width="lgUp">
-          <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-            <Icon icon={menu2Fill} />
-          </IconButton>
-        </MHidden>
+    <Box>
+      <RootStyle
+        sx={{
+          ...(isCollapse && {
+            width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px)` }
+          })
+        }}
+      >
+        <ToolbarStyle>
+          <MHidden width="lgUp">
+            <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
+              <Icon icon={menu2Fill} />
+            </IconButton>
+          </MHidden>
 
-        {currentTab && (
-          <Typography
-            data-testid={`dashboard-navbar-${currentTab}`}
-            variant="h4"
-            style={{ color: '#071A33', textTransform: 'capitalize' }}
-          >
-            {currentTab}
-          </Typography>
-        )}
+          {currentTab && (
+            <Typography
+              data-testid={`dashboard-navbar-${currentTab}`}
+              variant="h4"
+              style={{ color: '#071A33', textTransform: 'capitalize' }}
+            >
+              {currentTab}
+            </Typography>
+          )}
 
-        <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ flexGrow: 1 }}>
+            {user?.type === 'company' && (
+              <CompanyLogo>
+                <img src="/static/business-empty-states/scholarsite-logo.svg" alt="logo" />
+              </CompanyLogo>
+            )}
+          </Box>
 
-        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <NotificationsPopover />
-          <AccountPopover />
-        </Stack>
-      </ToolbarStyle>
-    </RootStyle>
+          <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+            <NotificationsPopover />
+            <AccountPopover />
+          </Stack>
+        </ToolbarStyle>
+      </RootStyle>
+    </Box>
   );
 }
