@@ -70,7 +70,7 @@ export default function Messaging() {
   const peers = cohort?.peers;
   const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
 
-  const enrollments = peers?.map((peer) => peer.id);
+  const enrollments = peers?.filter((peer) => peer.id !== loggedinUserID)?.map((peer) => peer.id);
 
   const LoadingContainer = styled(Box)(() => ({
     position: 'absolute',
@@ -80,7 +80,7 @@ export default function Messaging() {
 
   useEffect(() => {
     if (cohort && !peers) {
-      dispatch(getPeers(cohortID.toString(), 'null'));
+      dispatch(getPeers(cohortID.toString(), loggedinUserID));
     }
   }, [dispatch, cohort]);
 
