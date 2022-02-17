@@ -8,7 +8,9 @@ export default function RedirectToCohort() {
   const { user } = useAuth();
   let navigationUrl = '/';
   if (user) {
-    if (user.type === 'company') {
+    if (user.new_user) {
+      navigationUrl = `/auth/first-login`;
+    } else if (user.type === 'company') {
       navigationUrl = `/business-dashboard`;
     } else if (cohorts.length > 0) {
       if (user.type === 'learner') {

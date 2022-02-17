@@ -52,7 +52,7 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
         await login(values.email, values.password);
         enqueueSnackbar('Login success', {
@@ -66,9 +66,9 @@ export default function LoginForm() {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
-        resetForm();
+        values.password = '';
         if (isMountedRef.current) {
           setSubmitting(false);
           setErrors({ afterSubmit: error.message });
