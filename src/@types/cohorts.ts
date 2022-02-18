@@ -75,6 +75,7 @@ export type Session = {
   name: string;
   number: number;
   survey_completed: boolean;
+  collect_feedback: boolean;
   length: string;
   times: string[];
   zoom_url: string;

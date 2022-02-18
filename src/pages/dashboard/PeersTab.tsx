@@ -15,7 +15,6 @@ import { Container, Box, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
-import { CohortContext } from 'contexts/CohortContext';
 import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
 import { ExportToExcel } from 'components/students/Common';
 import LoadingScreen from '../../components/LoadingScreen';
@@ -58,56 +57,12 @@ export default function PeersTab() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
-  const userObject = {
-    id: user?.id,
-    slug: user?.displayName,
-    first_name: user?.first_name,
-    last_name: user?.last_name,
-    email: user?.email,
-    current_company: {
-      id: '',
-      name: user?.current_company,
-      number_of_employees: '',
-      logo_url: user?.company_image_url
-    },
-    current_position: user?.current_position,
-    preferred_pronoun: user?.preferred_pronoun,
-    linkedin_url: user?.linkedin_url,
-    is_managing_team: user?.is_managing_team,
-    city: '',
-    country: '',
-    current_role_category_selections: user?.current_role_category_selections,
-    current_industry_category_selections: user?.current_industry_category_selections,
-    strengths: user?.strengths,
-    interests: user?.interests,
-    matchings: [],
-    opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
-    networking_matching_preferences: user?.networking_matching_preferences,
-    profile_image_url: user?.profile_image_url,
-    bio_text: user?.bio_text,
-    type: user?.type,
-    is_onboarded: true
-  };
-
   const { peers } = cohort || { peers: null };
   let filteredPeers: Array<StudentProfile> = [];
 
   if (peers) {
-    filteredPeers = peers.filter((peer) => {
-      if (peer.type === 'learner' && peer.is_onboarded === true) {
-        return peer;
-      }
-      return false;
-    });
-    filteredPeers = [...filteredPeers];
+    filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.is_onboarded === true);
   }
-
-  const createSelectMenu = (items: string) => {
-    const newItems: any = filteredPeers
-      ? filteredPeers?.map((peer: any) => peer[items]?.map((item: any) => item)).sort()
-      : [];
-    return Array.from<any>(new Set([].concat(...newItems)));
-  };
 
   useEffect(() => {
     // get all the companies to choose from peers.
@@ -145,16 +100,9 @@ export default function PeersTab() {
     setSelectedCompanies(value);
   };
 
-  const handleInterestChange = (event: any) => {
-    const {
-      target: { value }
-    } = event;
-
-    setSelectedInterests(value);
-  };
   useEffect(() => {
     if (cohort && !peers) {
-      dispatch(getPeers(cohort_id.toString(), 'null'));
+      dispatch(getPeers(cohort_id.toString(), user?.id));
     }
   }, [dispatch, cohort]);
 

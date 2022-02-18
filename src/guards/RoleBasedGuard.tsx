@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
-import { Container, Alert, AlertTitle } from '@material-ui/core';
+import { Navigate } from 'react-router-dom';
+import useAuth from 'hooks/useAuth';
+import { RootState, useSelector } from '../redux/store';
 
 // ----------------------------------------------------------------------
 
@@ -8,24 +10,18 @@ type RoleBasedGuardProp = {
   children: ReactNode | string;
 };
 
-const useCurrentRole = () => {
-  // Logic here to get current user role
-  const role = 'admin';
-  return role;
-};
-
 export default function RoleBasedGuard({ accessibleRoles, children }: RoleBasedGuardProp) {
-  const currentRole = useCurrentRole();
+  const { user } = useAuth();
+  const currentRole = user?.type;
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
-  if (!accessibleRoles.includes(currentRole)) {
-    return (
-      <Container>
-        <Alert severity="error">
-          <AlertTitle>Permission Denied</AlertTitle>
-          You do not have permission to access this page
-        </Alert>
-      </Container>
-    );
+  const isNotHost = cohort && currentRole === 'expert' && !cohort.is_host;
+
+  if (!currentRole || !accessibleRoles.includes(currentRole) || isNotHost) {
+    return <Navigate to="/404" replace />;
   }
 
   return <>{children}</>;

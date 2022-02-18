@@ -1,13 +1,12 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
-import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
-// import RoleBasedGuard from '../guards/RoleBasedGuard';
+import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 import RedirectToCohort from '../components/cohorts/RedirectToCohort';
@@ -40,6 +39,10 @@ const Loadable = (Component: React.ElementType) => (props: any) => {
 };
 
 export default function Router() {
+  const companyRoles = ['company'];
+  const learnerAdminRoles = ['admin', 'learner'];
+  const expertRoles = ['admin', 'expert'];
+  const learnerRoles = ['learner', ...expertRoles];
   return useRoutes([
     {
       path: 'auth',
@@ -63,6 +66,8 @@ export default function Router() {
         { path: 'login-unprotected', element: <Login /> },
         { path: 'register-unprotected', element: <Register /> },
         { path: 'reset-password', element: <ResetPassword /> },
+        { path: 'first-login', element: <ResetUserPassword /> },
+        { path: 'unlock-user', element: <UnlockUser /> },
         { path: 'update-password', element: <UpdatePassword /> },
         { path: 'verify', element: <VerifyCode /> }
       ]
@@ -112,21 +117,88 @@ export default function Router() {
         },
         {
           path: 'business-dashboard',
-          children: [{ path: '/', element: <BusinessDashboard /> }]
+          element: (
+            <RoleBasedGuard accessibleRoles={companyRoles}>
+              <Dashboard />
+            </RoleBasedGuard>
+          )
         },
         {
           path: 'cohorts/:cohortID',
           children: [
-            { path: '/', element: <Navigate to="/dashboard/user/profile" replace /> },
-            { path: '/peers', element: <PeersTab /> },
-            { path: '/networking', element: <NetworkingTab /> },
-            { path: '/sessions', element: <SessionsTab /> },
-            { path: '/registrations', element: <RegistrationsTab /> },
-            { path: '/attendance', element: <AttendanceTab /> },
-            { path: '/messaging', element: <Messaging /> },
-            { path: '/home', element: <HomePage /> },
-            { path: '/Q&A', element: <QnA /> },
-            { path: 'calendar-instructions', element: <CalendarInstructions /> }
+            { path: '/', element: <RedirectToCohort /> },
+            {
+              path: '/peers',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <PeersTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/networking',
+              element: (
+                <RoleBasedGuard accessibleRoles={expertRoles}>
+                  <NetworkingTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/sessions',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <SessionsTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/registrations',
+              element: (
+                <RoleBasedGuard accessibleRoles={expertRoles}>
+                  <RegistrationsTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/attendance',
+              element: (
+                <RoleBasedGuard accessibleRoles={expertRoles}>
+                  <AttendanceTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/messaging',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <Messaging />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/home',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <HomePage />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/Q&A',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <QnA />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: 'calendar-instructions',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerAdminRoles}>
+                  <CalendarInstructions />
+                </RoleBasedGuard>
+              )
+            }
           ]
         },
         {
@@ -138,26 +210,26 @@ export default function Router() {
             { path: 'new-post', element: <BlogNewPost /> }
           ]
         },
-        // {
-        //   path: 'mail',
-        //   children: [
-        //     { path: '/', element: <Navigate to="/mail/all" replace /> },
-        //     { path: 'label/:customLabel', element: <Mail /> },
-        //     { path: 'label/:customLabel/:mailId', element: <Mail /> },
-        //     { path: ':systemLabel', element: <Mail /> },
-        //     { path: ':systemLabel/:mailId', element: <Mail /> }
-        //   ]
-        // },
-        // {
-        //   path: 'chat',
-        //   children: [
-        //     { path: '/', element: <Chat /> },
-        //     { path: 'new', element: <Chat /> },
-        //     { path: ':conversationKey', element: <Chat /> }
-        //   ]
-        // },
-        { path: 'calendar', element: <Calendar /> }
-        // { path: 'kanban', element: <Kanban /> }
+        {
+          path: 'mail',
+          children: [
+            { path: '/', element: <Navigate to="/mail/all" replace /> },
+            { path: 'label/:customLabel', element: <Mail /> },
+            { path: 'label/:customLabel/:mailId', element: <Mail /> },
+            { path: ':systemLabel', element: <Mail /> },
+            { path: ':systemLabel/:mailId', element: <Mail /> }
+          ]
+        },
+        {
+          path: 'chat',
+          children: [
+            { path: '/', element: <Chat /> },
+            { path: 'new', element: <Chat /> },
+            { path: ':conversationKey', element: <Chat /> }
+          ]
+        },
+        { path: 'calendar', element: <Calendar /> },
+        { path: 'kanban', element: <Kanban /> }
       ]
     },
 
@@ -252,6 +324,8 @@ const Login = Loadable(lazy(() => import('../pages/authentication/Login')));
 const Register = Loadable(lazy(() => import('../pages/authentication/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/authentication/ResetPassword')));
 const UpdatePassword = Loadable(lazy(() => import('../pages/authentication/UpdatePassword')));
+const ResetUserPassword = Loadable(lazy(() => import('../pages/user_auth/ResetUserPassword')));
+const UnlockUser = Loadable(lazy(() => import('../pages/user_auth/UnlockUser')));
 const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
@@ -277,6 +351,7 @@ const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')
 const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
+const Dashboard = Loadable(lazy(() => import('components/cohorts/businessCredit/Dashboard')));
 
 const HomePage = Loadable(lazy(() => import('components/cohorts/home/HomeTab')));
 const CalendarInstructions = Loadable(
@@ -285,10 +360,6 @@ const CalendarInstructions = Loadable(
 const RegistrationsTab = Loadable(
   lazy(() => import('components/cohorts/registrations/RegistrationsTab'))
 );
-const BusinessDashboard = Loadable(
-  lazy(() => import('components/cohorts/businessCredit/Dashboard'))
-);
-
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
@@ -299,9 +370,9 @@ const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-// const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
+const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-// const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));

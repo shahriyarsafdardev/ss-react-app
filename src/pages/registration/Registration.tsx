@@ -25,6 +25,7 @@ type UserType = {
   host?: string;
   enrollment_id?: string;
   referrer?: string;
+  acceptedTerms: boolean;
 };
 
 export default function Registration() {
@@ -35,7 +36,8 @@ export default function Registration() {
 
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
-    referrer: url.get('referrer') || ''
+    referrer: url.get('referrer') || '',
+    acceptedTerms: false
   });
 
   const [account, setAccount] = useState<string>('');

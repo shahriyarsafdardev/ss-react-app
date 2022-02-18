@@ -16,7 +16,9 @@ export const PATH_AUTH = {
   loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
   register: path(ROOTS_AUTH, '/register'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
-  resetPassword: path(ROOTS_AUTH, '/reset-password'),
+  resetPassword: path(ROOTS_AUTH, '/first-login'),
+  unlockUser: path(ROOTS_AUTH, '/unlock-user'),
+  resetUserPassword: path(ROOTS_AUTH, '/reset-password'),
   verify: path(ROOTS_AUTH, '/verify')
 };
 
@@ -26,6 +28,7 @@ export const PATH_PAGE = {
   pricing: '/pricing',
   payment: '/payment',
   registration: '/registration',
+  businessDashboard: '/business-dashboard',
   about: '/about-us',
   contact: '/contact-us',
   chat: '/chat',

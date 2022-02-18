@@ -222,16 +222,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
 
   const shouldDisplaySurveyAlert = () => {
     if (feedbackSubmitted || session?.survey_completed) return false;
-    if (session && session.times) {
-      const currentTime = moment();
-      const sessionTime = surveyTime(session.times);
-      const surveyReleaseTime = moment(sessionTime).add(30, 'minutes');
-      const surveyCloseTime = moment(sessionTime).add(48, 'hours');
-      if (currentTime > surveyReleaseTime && currentTime < surveyCloseTime) {
-        return true;
-      }
-    }
-    return false;
+    return session?.collect_feedback;
   };
 
   useEffect(() => {
