@@ -36,7 +36,6 @@ export default function ReferralCodesModal({
         enqueueSnackbar(e, { variant: 'error' })
       )
     );
-    setFormModalState(false);
   };
 
   return (
@@ -50,6 +49,7 @@ export default function ReferralCodesModal({
         className={classes.codeModal}
       >
         <ReferralCodesForm
+          key={String(codes.length)}
           onSubmit={(codes: ReferralCode[]) => handleSave(codes)}
           codes={codes}
           cohortName={cohortName}

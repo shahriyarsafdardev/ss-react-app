@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // material
-import { Box, Button, Card, Stack } from '@material-ui/core';
+import { Button, Card, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -42,6 +42,12 @@ export default function ReferralCodesForm({
       referral_notes: ''
     };
     setReferralCodes([...referralCodes, newCode]);
+  };
+
+  const saveChanges = async () => {
+    setLoading(true);
+    await onSubmit(referralCodes);
+    setLoading(false);
   };
   const updateCode = (index: number, code: ReferralCode) => {
     const updatedCodes = [...referralCodes];
@@ -86,8 +92,7 @@ export default function ReferralCodesForm({
           {referralCodes.length > 0 && (
             <StyledLoadingButton
               onClick={() => {
-                setLoading(true);
-                onSubmit(referralCodes);
+                saveChanges();
               }}
               variant="contained"
               loading={loading}
