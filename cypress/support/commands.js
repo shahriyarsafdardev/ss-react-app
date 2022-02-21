@@ -71,18 +71,20 @@ enrollmentspath='cohorts/enrollments.json'}) => {
   cy.get('[data-testid=loginBtn]').click();
   cy.wait(['@login', '@cohorts', '@enrollment']);
 });
-Cypress.Commands.add('loginascompany', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/company-login.json'}) => {
+Cypress.Commands.add('loginascompany', ({cohortspath = 'cohorts/cohorts.json', loginpath = 'login/company-login.json', creditpath= 'credit/credits.json'}) => {
   const serverUrl = Cypress.env('serverUrl');
   const baseUrl = Cypress.env('baseUrl');
   cy.fixture(cohortspath).as('cohortsData');
-  cy.fixture(loginpath ).as('loginData');
+  cy.fixture(loginpath).as('loginData');
+  cy.fixture(creditpath).as('creditData');
   cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
   cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+  cy.route('GET', `${serverUrl}/credit_accounts`, '@creditData').as('credit');
   cy.visit(`${baseUrl}`);
   const email = 'waqasnazir9@gmail.com';
   const password = '123456';
   cy.get('[data-testid=email]').type(email);
   cy.get('[data-testid=password]').type(password);
   cy.get('[data-testid=loginBtn]').click();
-  cy.wait(['@login', '@cohorts']);
+  cy.wait(['@login', '@cohorts', '@credit']);
 });

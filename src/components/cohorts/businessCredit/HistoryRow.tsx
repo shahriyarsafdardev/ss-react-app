@@ -9,14 +9,17 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
 
   if (row.type === 'cohort') {
     return (
-      <Box className={classes.historyRow}>
-        <Box className={classes.dateBox}>
+      <Box data-testid={`history-${row.id}`} className={classes.historyRow}>
+        <Box data-testid={`enrollment-time-${row.time}`} className={classes.dateBox}>
           <p>{moment(row.time).format('DD')}</p>
           <p>{moment(row.time).format('MMM')}</p>
         </Box>
         <Box marginLeft="15px" width="100%">
           <p className={classes.textSmall}>
-            <span>{row.attendee_name}</span> {row.approved ? 'attended' : 'wants to attend'}
+            <span data-testid={`enrollment-attendee-name-${row.attendee_name}`}>
+              {row.attendee_name}
+            </span>{' '}
+            {row.approved ? 'attended' : 'wants to attend'}
           </p>
           <a
             style={{
@@ -29,11 +32,14 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <div>{row.cohort_name}</div>
+            <div data-testid={`enrollment-cohort-name-${row.cohort_name}`}>{row.cohort_name}</div>
             {/* <img src="/static/icons/ic-link.svg" alt="link" /> */}
           </a>
           <div style={{ display: 'flex', marginTop: '5px' }}>
-            <div className={classes.textSmall}>
+            <div
+              data-testid={`enrollment-credits-${row.credit_amount}`}
+              className={classes.textSmall}
+            >
               {row.credit_amount} credits
               {row.approved && (
                 <a

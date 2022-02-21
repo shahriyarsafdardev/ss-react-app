@@ -80,7 +80,7 @@ const Dashboard = () => {
     <Page title="ScholarSite | Business Portal">
       <Container>
         <TopupModal />
-        <Typography variant="h4">
+        <Typography data-testid="welcome-header" variant="h4">
           👋 Hi {user?.first_name}, welcome to the {`${cohortCredit.accountName}'s`} ScholarSite
           Dashboard
         </Typography>

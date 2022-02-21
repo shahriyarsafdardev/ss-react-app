@@ -35,6 +35,7 @@ const BoxContainer = styled(Box)(({ theme }) => ({
 export const EmptyStateNewEnrollments = () => (
   <BoxContainer className="enrollments">
     <img
+      data-testid="Empty-enrollments"
       src="/static/business-empty-states/enrollments.svg"
       style={{ padding: '30px 30px' }}
       alt="empty-state"
@@ -47,6 +48,7 @@ export const EmptyStateNewEnrollments = () => (
 export const EmptyStateHistory = () => (
   <BoxContainer className="history">
     <img
+      data-testid="Empty-history"
       src="/static/business-empty-states/history.svg"
       style={{ padding: '30px 30px' }}
       alt="empty-state"
