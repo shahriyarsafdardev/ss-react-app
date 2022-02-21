@@ -1,16 +1,26 @@
 
 describe('Company User Type Login', () => {
-  it('Displays ScholarSite header', () => {
-    //Assert ScholarSite header
-    //Assert Business Dashboard header
+  beforeEach(() => {
+    cy.server();
+    cy.loginascompany({});
   });
-  it('Displays Dashboard header', () => {
-    //Assert Dashboard header
-  });
+  // it('Displays ScholarSite header', () => {
+  //   //Assert ScholarSite header
+  //   //Assert Business Dashboard header
+  // });
+  // it('Displays Dashboard header', () => {
+  //   //Assert Dashboard header
+  // });
   it('Displays My Wallet, New Enrollments and History section', () => {
     //Assert My Wallet section header
+    cy.get('[data-testid=wallet-header]')
+    .should('be.visible')
     //Assert New Enrollments section header
+    cy.get('[data-testid=new-enrollments-header]')
+    .should('be.visible')
     //Assert History section header
+    cy.get('[data-testid=history-header]')
+    .should('be.visible')
   });
   context('when there is no data on dashboard', () => {
     it('Displays empty My Wallet section', () => {
@@ -23,37 +33,37 @@ describe('Company User Type Login', () => {
       //Assert empty section placeholder for History section
     });
   });
-  context('when there is data on dashboard', () => {
-    it('Displays data My Wallet section', () => {
-      //Assert credits in My Wallet
-      //Assert Credits label
-      //Assert Top Up Credits button
-    });
-    describe('New Enrollments section', () => {
-      it('Displays data in New Enrollments section', () => {
-        //Assert correct count to new enrollments
-        //Assert Display of all new enrollments
-      });
-      it('Displays information on a new enrollment', () => {
-        //Assert enrollment date
-        //Assert user name with text "want to attend"
-        //Assert cohort title
-        //Assert credits amount
-        //Assert Approve button
-        //Assert Reject button
-      });
-    });
+  // context('when there is data on dashboard', () => {
+  //   it('Displays data My Wallet section', () => {
+  //     //Assert credits in My Wallet
+  //     //Assert Credits label
+  //     //Assert Top Up Credits button
+  //   });
+  //   describe('New Enrollments section', () => {
+  //     it('Displays data in New Enrollments section', () => {
+  //       //Assert correct count to new enrollments
+  //       //Assert Display of all new enrollments
+  //     });
+  //     it('Displays information on a new enrollment', () => {
+  //       //Assert enrollment date
+  //       //Assert user name with text "want to attend"
+  //       //Assert cohort title
+  //       //Assert credits amount
+  //       //Assert Approve button
+  //       //Assert Reject button
+  //     });
+  //   });
 
-    describe('History section', () => {
-      it('Displays data in History section', () => {
-        //Assert Display of all History records
-      });
-      it('Displays information on a new enrollment', () => {
-        //Assert date
-        //Assert user name with text "attended"
-        //Assert cohort title
-        //Assert credits amount
-      });
-    });
-  });
+  //   describe('History section', () => {
+  //     it('Displays data in History section', () => {
+  //       //Assert Display of all History records
+  //     });
+  //     it('Displays information on a new enrollment', () => {
+  //       //Assert date
+  //       //Assert user name with text "attended"
+  //       //Assert cohort title
+  //       //Assert credits amount
+  //     });
+  //   });
+  // });
 });
