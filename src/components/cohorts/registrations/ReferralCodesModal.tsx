@@ -48,12 +48,14 @@ export default function ReferralCodesModal({
         zIndex={1400}
         className={classes.codeModal}
       >
-        <ReferralCodesForm
-          key={String(codes.length)}
-          onSubmit={(codes: ReferralCode[]) => handleSave(codes)}
-          codes={codes}
-          cohortName={cohortName}
-        />
+        {codes && (
+          <ReferralCodesForm
+            key={String(codes?.length)}
+            onSubmit={(codes: ReferralCode[]) => handleSave(codes)}
+            codes={codes}
+            cohortName={cohortName}
+          />
+        )}
       </Modal>
       <Stack
         spacing={1}
