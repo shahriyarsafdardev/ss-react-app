@@ -1,12 +1,23 @@
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { Box, Grid, Card, Stack, TextField } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  Card,
+  Stack,
+  TextField,
+  FormControl,
+  MenuItem,
+  ListItemText,
+  InputLabel,
+  Select as MaterialSelect
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 130,
@@ -17,10 +28,12 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function EnrollmentForm({
   enrollment,
+  codes,
   onClose,
   onSubmit
 }: {
   onClose: Function;
+  codes: ReferralCode[];
   enrollment: Enrollment;
   onSubmit: Function;
 }) {
@@ -31,6 +44,7 @@ export default function EnrollmentForm({
       .required('First name required'),
     email: Yup.string().email('Email is invalid').required('Email is required'),
     price: Yup.number().required('Price required'),
+    linkedin_url: Yup.string().required('LinkedIn Url required'),
     last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
   });
 
@@ -43,8 +57,10 @@ export default function EnrollmentForm({
       onClose();
     }
   });
+  const codeOptions = [null, ...codes.map((code) => code.code)];
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values } = formik;
+  const userCode = codes.filter((code) => code.code === values.coupon_code)[0];
 
   return (
     <>
@@ -117,32 +133,48 @@ export default function EnrollmentForm({
                         type: 'number'
                       }}
                     />
+                    <FormControl fullWidth>
+                      <InputLabel>Referral Code</InputLabel>
+                      <MaterialSelect
+                        fullWidth
+                        label="Referral Code"
+                        sx={{ zIndex: 1500 }}
+                        defaultValue={values.coupon_code}
+                        {...getFieldProps('coupon_code')}
+                      >
+                        {codeOptions?.map((code: any) => (
+                          <MenuItem key={code} value={code}>
+                            <ListItemText primary={code || 'None'} />
+                          </MenuItem>
+                        ))}
+                      </MaterialSelect>
+                    </FormControl>
+                  </Stack>
+                  <Stack key={userCode?.id} direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
                       fullWidth
-                      label="Coupon Code"
-                      id="coupon_code"
-                      {...getFieldProps('coupon_code')}
-                      error={Boolean(touched.coupon_code && errors.coupon_code)}
-                      helperText={touched.coupon_code && errors.coupon_code}
+                      id="referral_message"
+                      label="Referral Message"
+                      value={userCode?.referral_message}
+                      InputLabelProps={{
+                        shrink: !!userCode?.referral_message
+                      }}
                       inputProps={{
-                        'data-testid': 'coupon-code'
+                        readOnly: true,
+                        'data-testid': 'referral_message'
                       }}
                     />
-                  </Stack>
-                  <Stack
-                    direction={{ xs: 'column', md: 'row' }}
-                    width={{ xs: '100%', md: '49%' }}
-                    spacing={2}
-                  >
                     <TextField
                       fullWidth
-                      id="stream"
-                      label="Stream (ie Timezone)"
-                      {...getFieldProps('stream')}
-                      error={Boolean(touched.stream && errors.stream)}
-                      helperText={touched.stream && errors.stream}
+                      id="referral_notes"
+                      label="Referral Notes"
+                      value={userCode?.referral_notes}
+                      InputLabelProps={{
+                        shrink: !!userCode?.referral_notes
+                      }}
                       inputProps={{
-                        'data-testid': 'stream'
+                        readOnly: true,
+                        'data-testid': 'referral_notes'
                       }}
                     />
                   </Stack>

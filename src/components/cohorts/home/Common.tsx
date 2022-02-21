@@ -74,7 +74,7 @@ export const firstUpcomingDate = (times: string[]) => {
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(new Date(time)).format('hh:mm a');
   const sessionEndTime = moment(new Date(time))
-    .add(Number(sessionLength.split(' ')[0]), 'hours')
+    .add(Number(sessionLength?.split(' ')[0]), 'hours')
     .format('hh:mm a');
   if (moment(time).add(1, 'hours') > moment()) {
     return `${sessionStartTime} - ${sessionEndTime} ${getLocalTimeZone()}`;

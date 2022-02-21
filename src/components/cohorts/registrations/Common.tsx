@@ -1,7 +1,20 @@
 import { useState, useRef } from 'react';
 import { Icon } from '@iconify/react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack5';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Box, Tooltip, MenuItem, Stack, Typography, IconButton } from '@material-ui/core';
+import {
+  Box,
+  MenuItem,
+  Typography,
+  IconButton,
+  Grid,
+  Stack,
+  Link,
+  Tooltip,
+  TextField
+} from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import moment from 'moment';
@@ -21,16 +34,25 @@ import ConfirmationAlert from 'components/ConfirmationAlert';
 
 // material
 import { makeStyles } from '@material-ui/styles';
+import ReferralCodesModal from './ReferralCodesModal';
 import { useDispatch } from '../../../redux/store';
-import { Enrollment } from '../../../@types/cohorts';
+import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import MenuPopover from '../../MenuPopover';
 import EnrollmentForm from './EnrollmentForm';
 
 const StyledIcon = styled('img')(() => ({
-  marginRight: 5,
   width: 24,
-  height: 24,
-  cursor: 'pointer'
+  height: 24
+}));
+
+const StyledStack = styled(Stack)(({ theme }) => ({
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    border: '2px solid lightgray',
+    borderRadius: '5px',
+    background: '#f7f5f5',
+    padding: '5px'
+  }
 }));
 
 const StyledViewButton = styled(Typography)(() => ({
@@ -148,11 +170,15 @@ export const changeOccur = (
 
 export const RegistrationsHeader = ({
   enrollments,
+  codes,
   cohort_name,
+  cohort_id,
   cohort_intake
 }: {
   enrollments: Enrollment[];
+  codes: ReferralCode[];
   cohort_name: string;
+  cohort_id: string;
   cohort_intake: any;
 }) => {
   const data = enrollments.map((e) => ({
@@ -176,7 +202,10 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      {/* <ExportToExcel data={data} fileName={fileName} /> */}
+      <Stack direction="column" spacing={2} justifyContent="center">
+        <ReferralCodesModal cohortName={cohort_name} cohortID={cohort_id} codes={codes} />
+        {/* <ExportToExcel data={data} fileName={fileName} /> */}
+      </Stack>
     </Stack>
   );
 };
@@ -195,7 +224,119 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
   </Stack>
 );
 
-export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
+export const ReferralCodeRow = ({
+  code,
+  cohortName,
+  onChange
+}: {
+  code: ReferralCode;
+  cohortName: string;
+  onChange: Function;
+}) => {
+  // const UpdateCodeSchema = Yup.object().shape({
+  //   code: Yup.string().required('Referral Code required')
+  // });
+
+  const formik = useFormik<ReferralCode>({
+    enableReinitialize: true,
+    initialValues: code,
+    onSubmit: (values) => {
+      onChange(values);
+    }
+  });
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { errors, touched, submitForm, setFieldValue, values } = formik;
+  const cohortSlug = convertToSlug(cohortName);
+  const referralLink = `https://www.scholarsite.io/pages/${cohortSlug}?referrer=${values.code}`;
+
+  return (
+    <>
+      <FormikProvider value={formik}>
+        <Form autoComplete="off" id="referral-code-form" noValidate style={{ width: '100%' }}>
+          <Grid container spacing={1}>
+            <Grid item sx={{ m: 'auto', width: '100%' }} spacing={1}>
+              <StyledStack spacing={1} direction={{ xs: 'column', md: 'row' }} alignItems="center">
+                <TextField
+                  fullWidth
+                  id="code"
+                  defaultValue={code.code}
+                  onChange={(e) => {
+                    setFieldValue('code', e.target.value);
+                    submitForm();
+                  }}
+                  label="Referral Code"
+                  error={Boolean(touched.code && errors.code)}
+                  helperText={touched.code && errors.code}
+                  inputProps={{
+                    'data-testid': 'first-name'
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="referral_message"
+                  label="Referral Message"
+                  defaultValue={code.referral_message}
+                  onChange={(e) => {
+                    setFieldValue('referral_message', e.target.value);
+                    submitForm();
+                  }}
+                  error={Boolean(touched.referral_message && errors.referral_message)}
+                  helperText={touched.referral_message && errors.referral_message}
+                  inputProps={{
+                    'data-testid': 'last-name'
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id="referral_notes"
+                  label="Referral Notes"
+                  defaultValue={code.referral_notes}
+                  onChange={(e) => {
+                    setFieldValue('referral_notes', e.target.value);
+                    submitForm();
+                  }}
+                  error={Boolean(touched.referral_notes && errors.referral_notes)}
+                  helperText={touched.referral_notes && errors.referral_notes}
+                  inputProps={{
+                    'data-testid': 'referral_notes'
+                  }}
+                />
+                <IconButton>
+                  <CopyToClipboard
+                    text={referralLink}
+                    onCopy={() => {
+                      if (referralLink) {
+                        enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+                      }
+                    }}
+                  >
+                    <Tooltip title="Copy Referral Link" placement="top" arrow>
+                      <StyledIcon src="/static/registration/Copy.svg" />
+                    </Tooltip>
+                  </CopyToClipboard>
+                </IconButton>
+                <IconButton key={referralLink} component={Link} target="_blank" href={referralLink}>
+                  <Tooltip title="Open Referral Link" placement="top" arrow>
+                    <StyledIcon src="/static/registration/Export.svg" />
+                  </Tooltip>
+                </IconButton>
+              </StyledStack>
+            </Grid>
+          </Grid>
+        </Form>
+      </FormikProvider>
+    </>
+  );
+};
+
+export const Actions = ({
+  enrollment,
+  codes
+}: {
+  enrollment: Enrollment;
+  codes: ReferralCode[];
+}) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -262,6 +403,7 @@ export const Actions = ({ enrollment }: { enrollment: Enrollment }) => {
           }}
           onSubmit={(enrollment: Enrollment) => handleUpdate(enrollment)}
           enrollment={enrollment}
+          codes={codes}
         />
       </Modal>
       <Stack
@@ -542,3 +684,8 @@ export const pickColor = (status: string) => {
   }
   return 'success';
 };
+
+export const convertToSlug = (Text: string) =>
+  Text.toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '');

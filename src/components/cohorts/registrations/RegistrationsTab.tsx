@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
-import { getEnrollments } from 'redux/slices/cohort';
+import { getEnrollments, getReferralCodes } from 'redux/slices/cohort';
 import { RegistrationsHeader, RegistrationsFooter } from './Common';
 import Highlights from './Highlights';
 import RegistrationsList from './RegistrationsList';
@@ -36,15 +36,20 @@ export default function RegistrationsTab() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
-  const { enrollments } = cohort || [];
+  const { enrollments, referral_codes } = cohort || [];
+  const [loading, setLoading] = useState(!referral_codes);
 
   useEffect(() => {
     if (cohort && !enrollments) {
       dispatch(getEnrollments(cohort_id.toString()));
     }
+    if (cohort && !referral_codes) {
+      dispatch(getReferralCodes(cohort_id.toString()));
+      setLoading(false);
+    }
   }, [dispatch, cohort]);
 
-  if (!enrollments) {
+  if (!enrollments || loading) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -56,11 +61,13 @@ export default function RegistrationsTab() {
       <Highlights enrollments={enrollments} />
       <RegistrationsContainer>
         <RegistrationsHeader
+          codes={referral_codes}
           enrollments={enrollments}
           cohort_name={cohort.name}
+          cohort_id={cohort.id}
           cohort_intake={cohort.intake}
         />
-        <RegistrationsList enrollments={enrollments.slice(0, limit)} />
+        <RegistrationsList codes={referral_codes} enrollments={enrollments.slice(0, limit)} />
         {limit !== enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
         )}
