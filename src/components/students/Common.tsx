@@ -74,7 +74,7 @@ export const ExportToExcel = ({
       },
       {
         column: 'Certificate Name',
-        value: (student: any) => student.id,
+        value: (student: any) => student.peer_id,
         width: 50
       }
     ];
