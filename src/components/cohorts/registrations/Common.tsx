@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import writeXlsxFile from 'write-excel-file';
 import { Icon } from '@iconify/react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -9,6 +10,7 @@ import {
   MenuItem,
   Typography,
   IconButton,
+  Button,
   Grid,
   Stack,
   Link,
@@ -181,30 +183,20 @@ export const RegistrationsHeader = ({
   cohort_id: string;
   cohort_intake: any;
 }) => {
-  const data = enrollments.map((e) => ({
-    'Cohort Name': cohort_name,
-    'Cohort Intake': cohort_intake,
-    'Submission Time': e.time,
-    'First Name': e.first_name,
-    'Last Name': e.last_name,
-    Email: e.email,
-    LinkedIn: e.linkedin_url,
-    Status: e.status,
-    Stream: e.stream
-  }));
+  const data = enrollments.map((e) => ({ cohort_id, cohort_name, cohort_intake, ...e }));
   const fileName = `${moment().format()}-${cohort_name} Enrollments Data`;
 
   return (
     <Stack
-      direction="row"
+      direction={{ xs: 'column', md: 'row' }}
       justifyContent="space-between"
       width="-webkit-fill-available"
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      <Stack direction="column" spacing={2} justifyContent="center">
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
         <ReferralCodesModal cohortName={cohort_name} cohortID={cohort_id} codes={codes} />
-        {/* <ExportToExcel data={data} fileName={fileName} /> */}
+        <ExportToExcel registrations={data} fileName={fileName} />
       </Stack>
     </Stack>
   );
@@ -634,33 +626,96 @@ const classPicker = (classes: { primary: any; warning: any; success: any }, clas
   return '';
 };
 
-// export const ExportToExcel = ({ data, fileName }: { data: any; fileName: string }) => {
-//   const exportToCSV = (items: any, fileName: string) => {
-//     const wscols = [
-//       { wch: 50 },
-//       { wch: 15 },
-//       { wch: 20 },
-//       { wch: 20 },
-//       { wch: 20 },
-//       { wch: 50 },
-//       { wch: 70 },
-//       { wch: 30 },
-//       { wch: 30 }
-//     ];
+export const ExportToExcel = ({
+  registrations,
+  fileName
+}: {
+  registrations: any;
+  fileName: string;
+}) => {
+  const exportExcel = async (objects: any, fileName: string) => {
+    const schema = [
+      {
+        column: 'Cohort Name',
+        value: (registration: any) => registration.cohort_name,
+        width: 50
+      },
+      {
+        column: 'Cohort Intake',
+        value: (registration: any) => registration.cohort_intake,
+        width: 20
+      },
+      {
+        column: 'Submission Time',
+        value: (registration: any) => registration.time,
+        width: 30
+      },
+      {
+        column: 'First Name',
+        value: (registration: any) => registration.first_name,
+        width: 25
+      },
+      {
+        column: 'Full Name',
+        value: (registration: any) => `${registration.first_name} ${registration.last_name}`,
+        width: 30
+      },
+      {
+        column: 'Email',
+        value: (registration: any) => registration.email,
+        width: 30
+      },
+      {
+        column: 'LinkedIn',
+        value: (registration: any) => registration.linkedin_url,
+        width: 60
+      },
+      {
+        column: 'Status',
+        value: (registration: any) => registration.status,
+        width: 30
+      },
+      {
+        column: 'Stream',
+        value: (registration: any) => registration.stream,
+        width: 30
+      },
+      {
+        column: 'Price',
+        value: (registration: any) => registration.price,
+        width: 20
+      },
+      {
+        column: 'Referred By',
+        value: (registration: any) => registration.coupon_code,
+        width: 30
+      },
+      {
+        column: 'Payment Link',
+        value: (registration: any) =>
+          `https://app.scholarsite.io/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,
+        width: 120
+      }
+    ];
+    await writeXlsxFile(objects, {
+      schema,
+      fileName
+    });
+  };
 
-//     const sheet = XLSX.utils.json_to_sheet(items);
-//     sheet['!cols'] = wscols;
-//     const file = { Sheets: { data: sheet }, SheetNames: ['data'] };
-//     // XLSX.writeFile(file, `${fileName}.xlsx`);
-//   };
+  const exportData = async () => {
+    if (registrations.length > 0) {
+      exportExcel(registrations, fileName);
+    }
+  };
 
-//   return (
-//     <Button variant="outlined" color="primary" onClick={() => exportToCSV(data, fileName)}>
-//       <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
-//       Excel Export
-//     </Button>
-//   );
-// };
+  return (
+    <Button variant="outlined" color="primary" onClick={() => exportData()}>
+      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+      Excel Export
+    </Button>
+  );
+};
 
 export const pickColor = (status: string) => {
   if (status === 'Application Accepted') {

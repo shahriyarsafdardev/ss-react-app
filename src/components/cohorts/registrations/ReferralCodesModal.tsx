@@ -57,16 +57,9 @@ export default function ReferralCodesModal({
           />
         )}
       </Modal>
-      <Stack
-        spacing={1}
-        justifyContent="center"
-        alignItems="center"
-        direction={{ xs: 'column', md: 'row' }}
-      >
-        <Button variant="outlined" color="primary" onClick={() => setFormModalState(true)}>
-          Manage Referral Codes
-        </Button>
-      </Stack>
+      <Button variant="outlined" color="primary" onClick={() => setFormModalState(true)}>
+        Manage Referral Codes
+      </Button>
     </>
   );
 }
