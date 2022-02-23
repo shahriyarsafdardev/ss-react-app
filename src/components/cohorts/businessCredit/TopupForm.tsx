@@ -112,7 +112,7 @@ export default function TopupForm({
       {step === 0 && (
         <>
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h6" align="center" paragraph>
+            <Typography data-testid="add-credits-header" variant="h6" align="center" paragraph>
               Add Credits to Keep Saving
             </Typography>
             {/* <Typography sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}>
@@ -132,7 +132,7 @@ export default function TopupForm({
             justifyContent="center"
           >
             <FormControl fullWidth>
-              <InputLabel>Top Up Amount</InputLabel>
+              <InputLabel data-testid="top-up-label">Top Up Amount</InputLabel>
               <MaterialSelect
                 fullWidth
                 label="Company Industries"
@@ -146,7 +146,12 @@ export default function TopupForm({
                 ))}
               </MaterialSelect>
             </FormControl>
-            <Button disabled={!(credits > 0)} onClick={() => setStep(1)} variant="contained">
+            <Button
+              data-testid="add-credits-button"
+              disabled={!(credits > 0)}
+              onClick={() => setStep(1)}
+              variant="contained"
+            >
               Add Credits
             </Button>
           </Stack>
@@ -155,7 +160,7 @@ export default function TopupForm({
       {step === 1 && (
         <>
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" align="center" paragraph>
+            <Typography data-testid="charge-header" variant="h4" align="center" paragraph>
               You will be charged USD ${credits} for {credits} Credits
             </Typography>
           </Box>
@@ -251,6 +256,7 @@ export default function TopupForm({
               direction={{ xs: 'column', md: 'row' }}
             >
               <LoadingButton
+                data-testid="back-button"
                 type="submit"
                 color="primary"
                 variant="outlined"
@@ -264,6 +270,7 @@ export default function TopupForm({
                 Back
               </LoadingButton>
               <LoadingButton
+                data-testid="purchase-button"
                 type="submit"
                 fullWidth
                 variant="contained"
