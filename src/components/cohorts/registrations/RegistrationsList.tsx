@@ -8,7 +8,7 @@ import RegistrationRow from './RegistrationRow';
 type StudentProfileListProps = {
   enrollments: Enrollment[];
   codes: ReferralCode[];
-  isAdminView?: Boolean;
+  isAdminView?: boolean;
 };
 
 const TABLE_HEAD = [
@@ -50,7 +50,7 @@ export default function RegistrationsList({
                   key={enrollment.id}
                   enrollment={enrollment}
                   index={index}
-                  cohortCode={isAdminView ? enrollment.cohort_code || 'No Cohort Code' : undefined}
+                  isAdminView={isAdminView}
                 />
               ))}
             </TableBody>

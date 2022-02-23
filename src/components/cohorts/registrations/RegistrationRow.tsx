@@ -8,14 +8,14 @@ type RegistrationRowProps = {
   enrollment: Enrollment;
   index: number;
   codes: ReferralCode[];
-  cohortCode?: string | undefined;
+  isAdminView?: boolean;
 };
 
 export default function RegistrationRow({
   enrollment,
   index,
   codes,
-  cohortCode
+  isAdminView = false
 }: RegistrationRowProps) {
   const theme = useTheme();
 
@@ -24,9 +24,9 @@ export default function RegistrationRow({
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
-      {cohortCode && (
+      {isAdminView && (
         <TableCell style={{ width: 170 }} align="center">
-          {cohortCode}
+          {enrollment?.cohort_code || 'No Cohort Code'}
         </TableCell>
       )}
       <TableCell component="th" scope="row" style={{ width: 150 }} padding="none">
@@ -95,7 +95,7 @@ export default function RegistrationRow({
         align="center"
         data-testid={`registration${id ? `-${id}` : ''}-price`}
       >
-        <Actions codes={codes} enrollment={enrollment} />
+        <Actions codes={codes} isAdminView={isAdminView} enrollment={enrollment} />
       </TableCell>
     </TableRow>
   );

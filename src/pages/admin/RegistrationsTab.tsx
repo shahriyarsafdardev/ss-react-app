@@ -3,7 +3,8 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
-import axios from 'utils/axios';
+import { useDispatch, RootState, useSelector } from 'redux/store';
+import { initializeEnrollments } from 'redux/slices/adminRegistrations';
 import {
   RegistrationsHeader,
   RegistrationsFooter
@@ -31,17 +32,15 @@ const RegistrationsContainer = styled(Box)(() => ({
 
 export default function RegistrationsTab() {
   const [limit, setLimit] = useState(10);
-  const [enrollments, setEnrollments] = useState([]);
+  const dispatch = useDispatch();
+  const enrollments = useSelector((state: RootState) => state.adminRegistrations.enrollments);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`cohorts/enrollments_monthly_data.json`).then((res) => {
-      setEnrollments(res.data.enrollments);
-      setLoading(false);
-    });
+    dispatch(initializeEnrollments()).then((res) => setLoading(false));
   }, []);
 
-  if (!enrollments || loading) {
+  if (loading) {
     return (
       <LoadingContainer>
         <LoadingScreen />

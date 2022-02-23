@@ -1,0 +1,113 @@
+import { createSlice } from '@reduxjs/toolkit';
+import { dispatch } from '../store';
+import { Enrollment } from '../../@types/cohorts';
+import axios from '../../utils/axios';
+
+const initialState: { enrollments: Enrollment[] } = {
+  enrollments: []
+};
+
+const slice = createSlice({
+  name: 'adminRegistrations',
+  initialState,
+  reducers: {
+    setEnrollments(state, action) {
+      state.enrollments = action.payload.enrollments;
+    },
+
+    updateRegistrationSuccess(state, action) {
+      const updated = state.enrollments;
+      const targetEnrollmentIndex = updated.findIndex(
+        (enrollment) => enrollment.id === action.payload.enrollment.id
+      );
+
+      if (targetEnrollmentIndex !== -1) {
+        updated[targetEnrollmentIndex] = action.payload.enrollment;
+        state.enrollments = updated;
+      }
+    },
+    deleteApplicationSuccess(state, action) {
+      const updated = state.enrollments;
+
+      state.enrollments = updated.filter(
+        (enrollment) => enrollment.id !== action.payload.enrollmentID
+      );
+    }
+  }
+});
+
+export default slice.reducer;
+
+export function initializeEnrollments() {
+  return async () => {
+    try {
+      const response = await axios.get(`cohorts/enrollments_monthly_data.json`);
+
+      dispatch(slice.actions.setEnrollments({ enrollments: response.data.enrollments }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function acceptApplicationByAdmin(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/accept_application.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function rejectApplicationByAdmin(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/reject_application.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function notInterestedApplicationByAdmin(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/not_interested.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function deleteApplicationByAdmin(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      await axios.delete(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/delete_application.json`
+      );
+
+      dispatch(slice.actions.deleteApplicationSuccess({ cohortID, enrollmentID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}

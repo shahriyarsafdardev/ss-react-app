@@ -31,6 +31,13 @@ import {
   paymentRemindApplication
 } from 'redux/slices/cohort';
 
+import {
+  acceptApplicationByAdmin,
+  rejectApplicationByAdmin,
+  notInterestedApplicationByAdmin,
+  deleteApplicationByAdmin
+} from 'redux/slices/adminRegistrations';
+
 import forwardArrow from '@iconify/icons-eva/arrow-ios-forward-fill';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 
@@ -332,10 +339,12 @@ export const ReferralCodeRow = ({
 
 export const Actions = ({
   enrollment,
-  codes
+  codes,
+  isAdminView = false
 }: {
   enrollment: Enrollment;
   codes: ReferralCode[];
+  isAdminView?: boolean;
 }) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -344,7 +353,7 @@ export const Actions = ({
   const [modalMesage, setModalMessage] = useState<JSX.Element>(<></>);
   const [action, setAction] = useState('');
   const dispatch = useDispatch();
-  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort_id = window.location.pathname.split('/')[2] || enrollment?.cohort_id || '';
   const classes = useStyles();
 
   const handleOpen = () => {
@@ -358,16 +367,29 @@ export const Actions = ({
   };
 
   const handleAction = () => {
-    if (action === 'accept_application') {
-      dispatch(acceptApplication(cohort_id, enrollment.id));
-    } else if (action === 'payment_reminder') {
-      dispatch(paymentRemindApplication(cohort_id, enrollment.id));
-    } else if (action === 'reject_application') {
-      dispatch(rejectApplication(cohort_id, enrollment.id));
-    } else if (action === 'delete_application') {
-      dispatch(deleteApplication(cohort_id, enrollment.id));
-    } else if (action === 'set_not_interested') {
-      dispatch(notInterestedApplication(cohort_id, enrollment.id));
+    if (isAdminView) {
+      if (action === 'accept_application') {
+        dispatch(acceptApplicationByAdmin(cohort_id, enrollment.id));
+      } else if (action === 'reject_application') {
+        dispatch(rejectApplicationByAdmin(cohort_id, enrollment.id));
+      } else if (action === 'delete_application') {
+        dispatch(deleteApplicationByAdmin(cohort_id, enrollment.id));
+      } else if (action === 'set_not_interested') {
+        dispatch(notInterestedApplicationByAdmin(cohort_id, enrollment.id));
+      }
+    } else {
+      // eslint-disable-next-line no-lonely-if
+      if (action === 'accept_application') {
+        dispatch(acceptApplication(cohort_id, enrollment.id));
+      } else if (action === 'payment_reminder') {
+        dispatch(paymentRemindApplication(cohort_id, enrollment.id));
+      } else if (action === 'reject_application') {
+        dispatch(rejectApplication(cohort_id, enrollment.id));
+      } else if (action === 'delete_application') {
+        dispatch(deleteApplication(cohort_id, enrollment.id));
+      } else if (action === 'set_not_interested') {
+        dispatch(notInterestedApplication(cohort_id, enrollment.id));
+      }
     }
     setAction('');
     setOpen(false);
