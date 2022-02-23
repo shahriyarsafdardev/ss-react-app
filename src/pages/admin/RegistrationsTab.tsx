@@ -10,7 +10,6 @@ import {
 } from '../../components/cohorts/registrations/Common';
 import Highlights from '../../components/cohorts/registrations/Highlights';
 import RegistrationsList from '../../components/cohorts/registrations/RegistrationsList';
-import { RootState, useSelector } from '../../redux/store';
 
 const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
@@ -31,20 +30,11 @@ const RegistrationsContainer = styled(Box)(() => ({
 }));
 
 export default function RegistrationsTab() {
-  const cohort_id = '0e71e836-c24b-40fc-af44-e466c4ec1ab8';
-
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-
   const [limit, setLimit] = useState(10);
   const [enrollments, setEnrollments] = useState([]);
-
-  const { referral_codes } = cohort || [];
-  const [loading, setLoading] = useState(!referral_codes);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('api call >>');
     axios.get(`cohorts/enrollments_monthly_data.json`).then((res) => {
       setEnrollments(res.data.enrollments);
       setLoading(false);
@@ -63,7 +53,11 @@ export default function RegistrationsTab() {
       <Highlights enrollments={enrollments} />
       <RegistrationsContainer>
         <RegistrationsHeader enrollments={enrollments} isAdminView={true} />
-        <RegistrationsList codes={referral_codes} enrollments={enrollments.slice(0, limit)} />
+        <RegistrationsList
+          codes={[]}
+          enrollments={enrollments.slice(0, limit)}
+          isAdminView={true}
+        />
         {limit !== enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
         )}

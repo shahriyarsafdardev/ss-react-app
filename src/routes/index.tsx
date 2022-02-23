@@ -91,7 +91,7 @@ export default function Router() {
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
         {
-          path: '/registrations',
+          path: '/monthly-registrations',
           element: (
             <RoleBasedGuard accessibleRoles={adminRoles}>
               <AdminRegistrations />

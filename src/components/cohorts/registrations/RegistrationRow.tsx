@@ -8,9 +8,15 @@ type RegistrationRowProps = {
   enrollment: Enrollment;
   index: number;
   codes: ReferralCode[];
+  cohortCode?: string | undefined;
 };
 
-export default function RegistrationRow({ enrollment, index, codes }: RegistrationRowProps) {
+export default function RegistrationRow({
+  enrollment,
+  index,
+  codes,
+  cohortCode
+}: RegistrationRowProps) {
   const theme = useTheme();
 
   const { id, first_name, email, name, status, time, price, linkedin_url, last_action_date } =
@@ -18,7 +24,12 @@ export default function RegistrationRow({ enrollment, index, codes }: Registrati
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
-      <TableCell component="th" scope="row" style={{ width: 200 }} padding="none">
+      {cohortCode && (
+        <TableCell style={{ width: 170 }} align="center">
+          {cohortCode}
+        </TableCell>
+      )}
+      <TableCell component="th" scope="row" style={{ width: 150 }} padding="none">
         <Stack direction="row" alignItems="center" spacing={2}>
           {linkedin_url ? (
             <Link

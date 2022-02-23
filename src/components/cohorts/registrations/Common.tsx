@@ -196,7 +196,7 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      {isAdminView && (
+      {!isAdminView && (
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
           <ReferralCodesModal
             cohortName={cohort_name || ''}
