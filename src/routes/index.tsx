@@ -40,6 +40,7 @@ const Loadable = (Component: React.ElementType) => (props: any) => {
 
 export default function Router() {
   const companyRoles = ['company'];
+  const adminRoles = ['admin'];
   const learnerAdminRoles = ['admin', 'learner'];
   const expertRoles = ['admin', 'expert'];
   const learnerRoles = ['learner', ...expertRoles];
@@ -89,6 +90,14 @@ export default function Router() {
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
+        {
+          path: '/registrations',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <AdminRegistrations />
+            </RoleBasedGuard>
+          )
+        },
 
         {
           path: 'e-commerce',
@@ -385,6 +394,7 @@ const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Registration = Loadable(lazy(() => import('../pages/registration/Registration')));
+const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

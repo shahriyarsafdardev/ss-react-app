@@ -66,6 +66,7 @@ export default function RegistrationsTab() {
           cohort_name={cohort.name}
           cohort_id={cohort.id}
           cohort_intake={cohort.intake}
+          isAdminView={false}
         />
         <RegistrationsList codes={referral_codes} enrollments={enrollments.slice(0, limit)} />
         {limit !== enrollments.length && (

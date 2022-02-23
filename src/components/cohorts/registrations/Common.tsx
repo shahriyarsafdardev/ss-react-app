@@ -175,13 +175,15 @@ export const RegistrationsHeader = ({
   codes,
   cohort_name,
   cohort_id,
-  cohort_intake
+  cohort_intake,
+  isAdminView = false
 }: {
   enrollments: Enrollment[];
-  codes: ReferralCode[];
-  cohort_name: string;
-  cohort_id: string;
-  cohort_intake: any;
+  codes?: ReferralCode[];
+  cohort_name?: string;
+  cohort_id?: string;
+  cohort_intake?: any;
+  isAdminView: Boolean;
 }) => {
   const data = enrollments.map((e) => ({ cohort_id, cohort_name, cohort_intake, ...e }));
   const fileName = `${moment().format()}-${cohort_name} Enrollments Data`;
@@ -194,10 +196,16 @@ export const RegistrationsHeader = ({
       sx={{ mx: 2, mb: 2 }}
     >
       <Typography variant="h5">Registrations List</Typography>
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
-        <ReferralCodesModal cohortName={cohort_name} cohortID={cohort_id} codes={codes} />
-        <ExportToExcel registrations={data} fileName={fileName} />
-      </Stack>
+      {isAdminView && (
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
+          <ReferralCodesModal
+            cohortName={cohort_name || ''}
+            cohortID={cohort_id || ''}
+            codes={codes || []}
+          />
+          <ExportToExcel registrations={data} fileName={fileName} />
+        </Stack>
+      )}
     </Stack>
   );
 };
