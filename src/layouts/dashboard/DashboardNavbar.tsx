@@ -26,8 +26,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   backgroundColor: alpha(theme.palette.background.default, 0.72),
   [theme.breakpoints.up('lg')]: {
-    // width: `calc(100% - ${DRAWER_WIDTH}px)`
-    width: '100%'
+    width: `calc(100% - ${DRAWER_WIDTH}px)`
   }
 }));
 
@@ -83,46 +82,52 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     }
   }, [window.location.href]);
 
+  let TOP_NAVBAR_WIDTH = '100%';
+  if (user?.type! === 'company') {
+    TOP_NAVBAR_WIDTH = `calc(100% - ${COLLAPSE_WIDTH}px)`;
+  }
+
   return (
     <Box>
-      <RootStyle
-        sx={{
-          ...(isCollapse && {
-            width: { lg: `calc(100% - ${COLLAPSE_WIDTH}px)` }
-          })
-        }}
-      >
-        <ToolbarStyle>
-          <MHidden width="lgUp">
-            <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-              <Icon icon={menu2Fill} />
-            </IconButton>
-          </MHidden>
+      <Box sx={{ flexGrow: 1 }}>
+        {user?.type === 'company' && (
+          <CompanyLogo>
+            <img src="/static/business-empty-states/scholarsite-logo.svg" alt="logo" />
+          </CompanyLogo>
+        )}
+        <RootStyle
+          sx={{
+            ...(isCollapse && {
+              width: { lg: `${TOP_NAVBAR_WIDTH}` }
+            })
+          }}
+        >
+          <ToolbarStyle>
+            <MHidden width="lgUp">
+              <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
+                <Icon icon={menu2Fill} />
+              </IconButton>
+            </MHidden>
 
-          {currentTab && (
-            <Typography
-              data-testid={`dashboard-navbar-${currentTab}`}
-              variant="h4"
-              style={{ color: '#071A33', textTransform: 'capitalize' }}
-            >
-              {currentTab}
-            </Typography>
-          )}
-
-          <Box sx={{ flexGrow: 1 }}>
-            {user?.type === 'company' && (
-              <CompanyLogo>
-                <img src="/static/business-empty-states/scholarsite-logo.svg" alt="logo" />
-              </CompanyLogo>
+            {currentTab && (
+              <Typography
+                data-testid={`dashboard-navbar-${currentTab}`}
+                variant="h4"
+                style={{ color: '#071A33', textTransform: 'capitalize' }}
+              >
+                {currentTab}
+              </Typography>
             )}
-          </Box>
 
-          <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-            <NotificationsPopover />
-            <AccountPopover />
-          </Stack>
-        </ToolbarStyle>
-      </RootStyle>
+            <Box sx={{ flexGrow: 1 }} />
+
+            <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+              <NotificationsPopover />
+              <AccountPopover />
+            </Stack>
+          </ToolbarStyle>
+        </RootStyle>
+      </Box>
     </Box>
   );
 }
