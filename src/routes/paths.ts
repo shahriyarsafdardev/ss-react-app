@@ -82,7 +82,8 @@ export const PATH_DASHBOARD = {
     q_a: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/Q&A`)
   },
   adminTools: {
-    root: path(ROOTS_DASHBOARD, `/monthly-registrations`)
+    root: path(ROOTS_DASHBOARD, `/monthly-registrations`),
+    cohort_sales: path(ROOTS_DASHBOARD, `/cohort_sales`)
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),

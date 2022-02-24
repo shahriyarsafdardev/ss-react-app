@@ -1,10 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-import { Enrollment } from '../../@types/cohorts';
+import { Enrollment, CohortSale } from '../../@types/cohorts';
 import axios from '../../utils/axios';
+import { setSession } from '../../utils/jwt';
 
-const initialState: { enrollments: Enrollment[] } = {
-  enrollments: []
+const initialState: { enrollments: Enrollment[]; cohort_sales: CohortSale[] } = {
+  enrollments: [],
+  cohort_sales: []
+};
+
+const setAuthorizationToken = () => {
+  const accessToken = window.localStorage.getItem('accessToken');
+  setSession(accessToken);
 };
 
 const slice = createSlice({
@@ -13,6 +20,10 @@ const slice = createSlice({
   reducers: {
     setEnrollments(state, action) {
       state.enrollments = action.payload.enrollments;
+    },
+
+    setCohortSales(state, action) {
+      state.cohort_sales = action.payload.cohort_sales;
     },
 
     updateRegistrationSuccess(state, action) {
@@ -41,9 +52,21 @@ export default slice.reducer;
 export function initializeEnrollments() {
   return async () => {
     try {
+      setAuthorizationToken();
       const response = await axios.get(`cohorts/enrollments_monthly_data.json`);
-
       dispatch(slice.actions.setEnrollments({ enrollments: response.data.enrollments }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function initializeSales() {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get('cohorts/cohort_sales.json');
+      dispatch(slice.actions.setCohortSales({ cohort_sales: response.data.cohort_sales }));
     } catch (error) {
       console.log(error);
     }

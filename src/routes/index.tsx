@@ -98,6 +98,14 @@ export default function Router() {
             </RoleBasedGuard>
           )
         },
+        {
+          path: '/cohort_sales',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <AdminSales />
+            </RoleBasedGuard>
+          )
+        },
 
         {
           path: 'e-commerce',
@@ -395,6 +403,7 @@ const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Registration = Loadable(lazy(() => import('../pages/registration/Registration')));
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
+const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

@@ -139,6 +139,17 @@ export type Enrollment = {
   cohort_code?: string;
 };
 
+export type CohortSale = {
+  id: string;
+  code: string;
+  name: string;
+  start_date: string;
+  seats_sold: string;
+  seats_sold_week: string;
+  revenue: number;
+  revenue_week: number;
+};
+
 export type Cohort = {
   id: string;
   name: string;

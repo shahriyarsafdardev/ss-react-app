@@ -34,6 +34,11 @@ const adminToolsConfig = {
       title: 'Registerations',
       path: PATH_DASHBOARD.adminTools.root,
       icon: ICONS.cohorts
+    },
+    {
+      title: 'sales overview',
+      path: PATH_DASHBOARD.adminTools.cohort_sales,
+      icon: ICONS.cohorts
     }
   ]
 };
