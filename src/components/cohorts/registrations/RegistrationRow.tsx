@@ -1,4 +1,4 @@
-import { Stack, TableRow, TableCell, Typography, Link } from '@material-ui/core';
+import { Stack, Tooltip, TableRow, TableCell, Typography, Link } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import Label from 'components/Label';
 import { Enrollment, ReferralCode } from '../../../@types/cohorts';
@@ -19,14 +19,34 @@ export default function RegistrationRow({
 }: RegistrationRowProps) {
   const theme = useTheme();
 
-  const { id, first_name, email, name, status, time, price, linkedin_url, last_action_date } =
-    enrollment;
+  const {
+    id,
+    cohort_code,
+    cohort_name,
+    first_name,
+    email,
+    name,
+    status,
+    time,
+    price,
+    linkedin_url,
+    last_action_date
+  } = enrollment;
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
       {isAdminView && (
         <TableCell style={{ width: 170 }} align="center">
-          {enrollment?.cohort_code || 'No Cohort Code'}
+          <Stack direction="row" spacing={1}>
+            <b>{cohort_code || 'No Cohort Code'}</b>
+            <Tooltip
+              arrow
+              placement="top"
+              title={<span className="ui-copy text-white">{cohort_name}</span>}
+            >
+              <img src="/static/registration/Info.svg" alt="Info Icon" />
+            </Tooltip>
+          </Stack>
         </TableCell>
       )}
       <TableCell component="th" scope="row" style={{ width: 150 }} padding="none">

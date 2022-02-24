@@ -137,6 +137,7 @@ export type Enrollment = {
   paid_time: string;
   cohort_id?: string;
   cohort_code?: string;
+  cohort_name?: string;
 };
 
 export type CohortSale = {
