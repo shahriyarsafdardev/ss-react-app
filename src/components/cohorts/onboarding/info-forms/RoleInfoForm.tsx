@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { RootState, useSelector } from 'redux/store';
+import MultiSelect from 'components/MultiSelect';
 
 // material
 import {
@@ -38,7 +40,7 @@ export default function RoleInfoForm({
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} style={{ maxHeight: '350px', overflow: 'scroll' }}>
         <Grid item xs={12} md={12}>
           <br />
           <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
@@ -53,23 +55,13 @@ export default function RoleInfoForm({
                 />
               </FormControl>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl fullWidth>
-                  <InputLabel>Role Categories</InputLabel>
-                  <MaterialSelect
-                    fullWidth
-                    label="Role Categories"
-                    onChange={(e) => onUpdateAttribute('role_category', e.target.value)}
-                    defaultValue={infoObject.role_category}
-                    multiple
-                    renderValue={(selected: any) => selected.join(', ')}
-                    inputProps={{ 'data-testid': 'role-categories' }}
-                  >
-                    {role_options?.map((name: any) => (
-                      <MenuItem key={name} value={name}>
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
-                  </MaterialSelect>
+                <FormControl data-testid="company-industries-dropdown" fullWidth>
+                  <label>Role Categories</label>
+                  <MultiSelect
+                    values={infoObject.role_category}
+                    options={role_options}
+                    onChange={(value: string[]) => onUpdateAttribute('role_category', value)}
+                  />
                 </FormControl>
                 <FormControl fullWidth>
                   <InputLabel>Do you manage a team or division?</InputLabel>
@@ -96,7 +88,7 @@ export default function RoleInfoForm({
                   value={infoObject?.role_description}
                   onChange={(e) => onUpdateAttribute('role_description', e.target.value)}
                   multiline
-                  rows={4}
+                  rows={3}
                 />
               </FormControl>{' '}
             </Stack>
