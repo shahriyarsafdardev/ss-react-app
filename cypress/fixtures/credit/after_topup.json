@@ -1,0 +1,19 @@
+{
+  "id":"926bac37-f893-40e8-b855-1775e6a440f1",
+  "accountName":"Testing Account",
+  "credit_balance":"5000",
+  "history":[
+    {
+      "id":"909c6d0d-027e-45cf-8d92-14c247bf887c",
+      "time":"20220213T134342Z",
+      "type":"credit transaction",
+      "approved":null,
+      "attendee_name":null,
+      "cohort_name":null,
+      "cohort_link":null,
+      "credit_amount":5000
+    }
+  ],
+  "unapproved":[
+  ]
+}

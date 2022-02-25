@@ -139,7 +139,7 @@ describe('Company User Type Login', () => {
           });
         });
       });
-      it('Displays information on a new enrollment', () => {
+      it('Displays information on history', () => {
         cy.fixture('../fixtures/credit/credits.json')
         .its('history')
         .then((list) => {

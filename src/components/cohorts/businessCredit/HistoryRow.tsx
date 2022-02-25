@@ -61,15 +61,17 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
   if (row.type === 'credit transaction') {
     return (
       <Box className={classes.historyRow}>
-        <Box className={classes.dateBox}>
+        <Box data-testid={`credit-time-${row.time}`} className={classes.dateBox}>
           <p>{moment(row.time).format('DD')}</p>
           <p>{moment(row.time).format('MMM')}</p>
         </Box>
         <Box marginLeft="15px">
           <div style={{ fontWeight: 600 }}>
-            <div>Credit Top up</div>
+            <div data-testid={`credit-${row.id}-top-up`}>Credit Top up</div>
           </div>
-          <div className={classes.textSmall}>{row.credit_amount} credits</div>
+          <div data-testid={`credit-${row.credit_amount}`} className={classes.textSmall}>
+            {row.credit_amount} credits
+          </div>
         </Box>
       </Box>
     );
