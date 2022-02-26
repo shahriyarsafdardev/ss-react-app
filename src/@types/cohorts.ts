@@ -135,6 +135,20 @@ export type Enrollment = {
   application_accepted_time: string;
   payment_link_opened_time: string;
   paid_time: string;
+  cohort_id?: string;
+  cohort_code?: string;
+  cohort_name?: string;
+};
+
+export type CohortSale = {
+  id: string;
+  code: string;
+  name: string;
+  start_date: string;
+  seats_sold: string;
+  seats_sold_week: string;
+  revenue: number;
+  revenue_week: number;
 };
 
 export type Cohort = {

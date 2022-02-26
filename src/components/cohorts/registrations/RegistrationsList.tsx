@@ -8,6 +8,7 @@ import RegistrationRow from './RegistrationRow';
 type StudentProfileListProps = {
   enrollments: Enrollment[];
   codes: ReferralCode[];
+  isAdminView?: boolean;
 };
 
 const TABLE_HEAD = [
@@ -20,7 +21,11 @@ const TABLE_HEAD = [
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
-export default function RegistrationsList({ enrollments, codes }: StudentProfileListProps) {
+export default function RegistrationsList({
+  enrollments,
+  codes,
+  isAdminView = false
+}: StudentProfileListProps) {
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <Scrollbar>
@@ -29,7 +34,11 @@ export default function RegistrationsList({ enrollments, codes }: StudentProfile
             <UserListHead
               order="asc"
               orderBy="time"
-              headLabel={TABLE_HEAD}
+              headLabel={
+                isAdminView
+                  ? [{ id: 'cohortCode', label: 'Cohort Code' }, ...TABLE_HEAD]
+                  : TABLE_HEAD
+              }
               rowCount={enrollments.length}
               numSelected={0}
               onRequestSort={() => {}}
@@ -41,6 +50,7 @@ export default function RegistrationsList({ enrollments, codes }: StudentProfile
                   key={enrollment.id}
                   enrollment={enrollment}
                   index={index}
+                  isAdminView={isAdminView}
                 />
               ))}
             </TableBody>

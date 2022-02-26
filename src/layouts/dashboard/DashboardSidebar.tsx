@@ -18,6 +18,7 @@ import { MHidden } from '../../components/@material-extend';
 
 //
 import sidebarConfig from './SidebarConfig';
+import adminToolsConfig from './AdminToolsConfig';
 import cohortsConfig from './cohortsConfig';
 
 // ----------------------------------------------------------------------
@@ -125,6 +126,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       <LogoContainer>
         <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
       </LogoContainer>
+
+      {user?.type === 'admin' && (
+        <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
+      )}
+
       {mode === 'Member' &&
         groupByIntake(cohorts).map((intakeCategory: string) => (
           <NavSection

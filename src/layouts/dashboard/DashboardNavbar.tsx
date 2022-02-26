@@ -60,6 +60,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'messaging',
     'home',
     'registrations',
+    'cohort_sales',
+    'monthly-registrations',
     'sessions',
     'peers',
     'Q&A',
@@ -69,10 +71,15 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   useEffect(() => {
     const tab = window.location.href.split('/');
     const section = tab.reverse()[0];
-    if (tab.length > 5) {
+
+    if (tab.length > 3) {
       if (visibleHeaders.includes(section)) {
         if (section === 'peers') {
           setCurrentTab('networking');
+        } else if (section === 'cohort_sales') {
+          setCurrentTab('Sales Overview');
+        } else if (section === 'monthly-registrations') {
+          setCurrentTab('Registrations Overview');
         } else {
           setCurrentTab(section);
         }
