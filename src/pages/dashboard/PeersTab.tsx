@@ -61,7 +61,7 @@ export default function PeersTab() {
   let filteredPeers: Array<StudentProfile> = [];
 
   if (peers) {
-    filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.is_onboarded === true);
+    filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.profile_image_url);
   }
 
   useEffect(() => {
