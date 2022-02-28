@@ -19,7 +19,7 @@ export const TeamMessage: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const parentComponent = refContainer?.current?.children[0]?.children[1]?.children;
-    if (parentComponent.length > 0) {
+    if (parentComponent && parentComponent?.length > 0) {
       const previewComponent =
         parentComponent[parentComponent.length - 1]?.children[0]?.children[0];
       const imageComponent = previewComponent?.children[0];
