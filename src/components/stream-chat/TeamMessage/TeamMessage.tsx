@@ -20,8 +20,16 @@ export const TeamMessage: React.FC<Props> = (props) => {
   useEffect(() => {
     const parentComponent = refContainer?.current?.children[0]?.children[1]?.children;
     if (parentComponent && parentComponent?.length > 0) {
-      const previewComponent =
-        parentComponent[parentComponent.length - 1]?.children[0]?.children[0];
+      let previewIndex = parentComponent.length - 1;
+      for (let i = 2; i < parentComponent.length; i++) {
+        if (
+          parentComponent[i].className ===
+          'str-chat__message-attachment str-chat__message-attachment--card str-chat__message-attachment--image str-chat__message-attachment--card--'
+        ) {
+          previewIndex = i;
+        }
+      }
+      const previewComponent = parentComponent[previewIndex]?.children[0]?.children[0];
       const imageComponent = previewComponent?.children[0];
       if (previewComponent && imageComponent && imageComponent.nodeName === 'IMG') {
         imageComponent.addEventListener(
