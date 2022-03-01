@@ -18,6 +18,7 @@ export const PATH_AUTH = {
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
   resetUserPassword: path(ROOTS_AUTH, '/first-login'),
   unlockUser: path(ROOTS_AUTH, '/unlock-user'),
+  unsubscribeEmails: path(ROOTS_AUTH, '/unsubscribe-emails'),
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
   verify: path(ROOTS_AUTH, '/verify')
 };
