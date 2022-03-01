@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack5';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ResetIcon from '@material-ui/icons/RestartAlt';
 
 import {
   Box,
@@ -30,6 +31,7 @@ import {
   updateApplication,
   notInterestedApplication,
   paymentRemindApplication,
+  resetApplicationStatus,
   markApplicationAsPaid
 } from 'redux/slices/cohort';
 
@@ -37,6 +39,7 @@ import {
   acceptApplicationByAdmin,
   rejectApplicationByAdmin,
   markAsPaidByAdmin,
+  resetApplicationStatusAdmin,
   notInterestedApplicationByAdmin,
   deleteApplicationByAdmin
 } from 'redux/slices/adminRegistrations';
@@ -381,6 +384,8 @@ export const Actions = ({
         dispatch(notInterestedApplicationByAdmin(cohort_id, enrollment.id));
       } else if (action === 'mark_as_paid') {
         dispatch(markAsPaidByAdmin(cohort_id, enrollment.id));
+      } else if (action === 'reset_status') {
+        dispatch(resetApplicationStatusAdmin(cohort_id, enrollment.id));
       }
     } else {
       // eslint-disable-next-line no-lonely-if
@@ -396,6 +401,8 @@ export const Actions = ({
         dispatch(notInterestedApplication(cohort_id, enrollment.id));
       } else if (action === 'mark_as_paid') {
         dispatch(markApplicationAsPaid(cohort_id, enrollment.id));
+      } else if (action === 'reset_status') {
+        dispatch(resetApplicationStatus(cohort_id, enrollment.id));
       }
     }
     setAction('');
@@ -502,7 +509,7 @@ export const Actions = ({
                 }}
                 sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
               >
-                <StyledIcon src="/static/registration/Check.svg" />
+                <StyledIcon src="/static/registration/Check.svg" sx={{ mr: 1 }} />
                 Accept Application
               </MenuItem>
               <MenuItem
@@ -515,7 +522,7 @@ export const Actions = ({
                 }}
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
-                <StyledIcon src="/static/registration/Close.svg" />
+                <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
                 Reject Application
               </MenuItem>
             </>
@@ -536,7 +543,7 @@ export const Actions = ({
               }}
               sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
             >
-              <StyledIcon src="/static/registration/Success.svg" />
+              <StyledIcon src="/static/registration/Success.svg" sx={{ mr: 1 }} />
               Mark as Paid
             </MenuItem>
           )}
@@ -554,8 +561,28 @@ export const Actions = ({
               }}
               sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
             >
-              <StyledIcon src="/static/registration/Close.svg" />
+              <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
               Mark as Not Interested
+            </MenuItem>
+          )}
+          {!['Application Received', 'Partial Application Received'].includes(
+            enrollment.status
+          ) && (
+            <MenuItem
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want the status of {enrollment.name}'s enrollment to
+                    Application Received?
+                  </p>
+                );
+                setAction('reset_status');
+                setModalState(true);
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <ResetIcon sx={{ mr: 1 }} />
+              Reset Status
             </MenuItem>
           )}
           <MenuItem
@@ -565,7 +592,7 @@ export const Actions = ({
             }}
             sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
           >
-            <StyledIcon src="/static/registration/Info.svg" />
+            <StyledIcon src="/static/registration/Info.svg" sx={{ mr: 1 }} />
             View Details
           </MenuItem>
           <MenuItem
@@ -581,7 +608,7 @@ export const Actions = ({
             }}
             sx={{ typography: 'subtitle2', color: '#FF4842', py: 1, px: 2.5 }}
           >
-            <StyledIcon src="/static/registration/Trash.svg" />
+            <StyledIcon src="/static/registration/Trash.svg" sx={{ mr: 1 }} />
             Delete Applicant
           </MenuItem>
         </MenuPopover>

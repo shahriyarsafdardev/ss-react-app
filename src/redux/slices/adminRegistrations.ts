@@ -121,6 +121,22 @@ export function markAsPaidByAdmin(cohortID: string, enrollmentID: string) {
   };
 }
 
+export function resetApplicationStatusAdmin(cohortID: string, enrollmentID: string) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/cohorts/${cohortID}/enrollments/${enrollmentID}/reset_status.json`
+      );
+
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function notInterestedApplicationByAdmin(cohortID: string, enrollmentID: string) {
   return async () => {
     try {
