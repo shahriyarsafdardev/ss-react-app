@@ -69,6 +69,7 @@ export default function Router() {
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'first-login', element: <ResetUserPassword /> },
         { path: 'unlock-user', element: <UnlockUser /> },
+        { path: 'unsubscribe-emails', element: <UnsubscribeEmails /> },
         { path: 'update-password', element: <UpdatePassword /> },
         { path: 'verify', element: <VerifyCode /> }
       ]
@@ -343,6 +344,7 @@ const ResetPassword = Loadable(lazy(() => import('../pages/authentication/ResetP
 const UpdatePassword = Loadable(lazy(() => import('../pages/authentication/UpdatePassword')));
 const ResetUserPassword = Loadable(lazy(() => import('../pages/user_auth/ResetUserPassword')));
 const UnlockUser = Loadable(lazy(() => import('../pages/user_auth/UnlockUser')));
+const UnsubscribeEmails = Loadable(lazy(() => import('../pages/user_auth/UnsubscribeEmails')));
 const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
