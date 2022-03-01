@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack5';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 import {
   Box,
   MenuItem,
@@ -28,12 +29,14 @@ import {
   rejectApplication,
   updateApplication,
   notInterestedApplication,
-  paymentRemindApplication
+  paymentRemindApplication,
+  markApplicationAsPaid
 } from 'redux/slices/cohort';
 
 import {
   acceptApplicationByAdmin,
   rejectApplicationByAdmin,
+  markAsPaidByAdmin,
   notInterestedApplicationByAdmin,
   deleteApplicationByAdmin
 } from 'redux/slices/adminRegistrations';
@@ -376,6 +379,8 @@ export const Actions = ({
         dispatch(deleteApplicationByAdmin(cohort_id, enrollment.id));
       } else if (action === 'set_not_interested') {
         dispatch(notInterestedApplicationByAdmin(cohort_id, enrollment.id));
+      } else if (action === 'mark_as_paid') {
+        dispatch(markAsPaidByAdmin(cohort_id, enrollment.id));
       }
     } else {
       // eslint-disable-next-line no-lonely-if
@@ -389,6 +394,8 @@ export const Actions = ({
         dispatch(deleteApplication(cohort_id, enrollment.id));
       } else if (action === 'set_not_interested') {
         dispatch(notInterestedApplication(cohort_id, enrollment.id));
+      } else if (action === 'mark_as_paid') {
+        dispatch(markApplicationAsPaid(cohort_id, enrollment.id));
       }
     }
     setAction('');
@@ -512,6 +519,26 @@ export const Actions = ({
                 Reject Application
               </MenuItem>
             </>
+          )}
+          {!['Paid', 'Not Interested', 'Partial Application Received'].includes(
+            enrollment.status
+          ) && (
+            <MenuItem
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to mark {enrollment.name}’s application as Paid and send
+                    them an email welcoming them to the ScholarSite Portal?
+                  </p>
+                );
+                setAction('mark_as_paid');
+                setModalState(true);
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <StyledIcon src="/static/registration/Success.svg" />
+              Mark as Paid
+            </MenuItem>
           )}
           {(enrollment.status === 'Application Accepted' ||
             enrollment.status === 'Payment link opened') && (
