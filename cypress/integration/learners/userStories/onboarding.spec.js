@@ -186,7 +186,7 @@ describe('When a user visits the home page of a cohort for the first time', () =
       .should('be.visible')
       cy.get('[data-testid="role-title"]')
       .should('be.visible')
-      cy.get('[data-testid="role-categories"]').then(($el)  => {
+      cy.get('[data-testid="role-categories-dropdown"]').then(($el)  => {
         Cypress.dom.isVisible($el)
       })
       cy.get('[data-testid="role-manage"]').then(($el)  => {
@@ -199,8 +199,8 @@ describe('When a user visits the home page of a cohort for the first time', () =
     it('Prefills inputs with existing user details', () => {
       cy.get('[data-testid="role-title"]')
       .and("have.attr", "value", home_refactored.participant_profile.current_company)
-      cy.get('[data-testid="role-categories"]')
-      .and("have.attr", "value", home_refactored.participant_profile.current_role_category_selections[0])
+      cy.contains("div", home_refactored.participant_profile.current_role_category_selections[0])
+      .should('be.visible')
       cy.get('[data-testid="role-manage"]')
       .and("have.attr", "value", "Yes")
       cy.get('[data-testid="role-responsibilities"]')

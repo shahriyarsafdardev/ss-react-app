@@ -55,7 +55,7 @@ export default function RoleInfoForm({
                 />
               </FormControl>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                <FormControl data-testid="company-industries-dropdown" fullWidth>
+                <FormControl data-testid="role-categories-dropdown" fullWidth>
                   <label>Role Categories</label>
                   <MultiSelect
                     values={infoObject.role_category}
