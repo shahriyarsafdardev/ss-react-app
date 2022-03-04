@@ -134,7 +134,7 @@ export default function Messaging() {
     }
   }, [isMobileNavVisible]);
 
-  if (!client) {
+  if (!client || !client.user) {
     return (
       <LoadingContainer>
         <LoadingScreen />

@@ -1,8 +1,7 @@
-import { useState, ReactNode, useEffect } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-// hooks
-import useAuth from '../hooks/useAuth';
+import { ReactNode } from 'react';
+import useAuth from 'hooks/useAuth';
 // pages
+import TermsForm from '../pages/authentication/TermsForm';
 import Login from '../pages/authentication/Login';
 
 // ----------------------------------------------------------------------
@@ -13,18 +12,16 @@ type AuthGuardProps = {
 
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated } = useAuth();
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (!isAuthenticated && pathname !== '/') {
-  //     navigate('/');
-  //   }
-  // }, [pathname, isAuthenticated, navigate]);
+  const { user } = useAuth();
 
   if (!isAuthenticated) {
     return <Login />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {user && !user.accepted_terms && <TermsForm />}
+      {children}
+    </>
+  );
 }
