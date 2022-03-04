@@ -39,6 +39,7 @@ export default function LoginForm() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
+  const [color, setColor] = useState<any>('error');
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -73,6 +74,9 @@ export default function LoginForm() {
           setSubmitting(false);
           setErrors({ afterSubmit: error.message });
         }
+        if (error.color) {
+          setColor(error.color);
+        }
       }
     }
   });
@@ -87,7 +91,7 @@ export default function LoginForm() {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+          {errors.afterSubmit && <Alert severity={color}>{errors.afterSubmit}</Alert>}
 
           <TextField
             fullWidth
