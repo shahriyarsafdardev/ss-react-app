@@ -38,6 +38,13 @@ const StyledButton = styled(Button)(() => ({
   }
 }));
 
+const ModalPage = styled(Page)(({ theme }) => ({
+  '.react-pdf__Page': { height: 'fit-content' },
+  '.react-pdf__Page__svg': { height: 'fit-content !important', width: '100% !important' },
+  '.react-pdf__Page__svg > svg': { height: 'fit-content !important', width: '100% !important' },
+  '.react-pdf__Page__annotations': { height: 'fit-content !important', width: '100% !important' }
+}));
+
 const StyledPage = styled(Page)(({ theme }) => ({
   '.react-pdf__Page': { height: '100% !important' },
   '.react-pdf__Page__svg': { height: '100% !important', width: '100% !important' },
@@ -68,6 +75,19 @@ const StyledPage = styled(Page)(({ theme }) => ({
     '.react-pdf__Page__svg': { height: '100% !important' },
     '.react-pdf__Page__svg > svg': { height: '100% !important' },
     '.react-pdf__Page': { height: '100% !important' }
+  }
+}));
+
+const ModalDocument = styled(Document)(({ theme }) => ({
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '.react-pdf__Page': {
+    width: '100% !important',
+    top: 0,
+    left: 0,
+    right: 0
   }
 }));
 
@@ -118,7 +138,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   modalView: {
     width: '90%',
     maxWidth: '1200px',
-    height: '625px',
+    height: 'fit-content',
     margin: 'auto'
   },
   standard: {
@@ -313,28 +333,53 @@ export default function Slides({
 
   const pdfSlider = (type: string) => (
     <div data-testid="session-pdf-slides">
-      <PdfDocument
-        className={type === VIEW_TYPES.STANDARD_VIEW ? classes.standard : classes.modalView}
-        file={{
-          url: pdfUrl
-        }}
-        externalLinkTarget="_blank"
-        onLoadSuccess={onDocumentLoadSuccess}
-        onLoadError={console.error}
-      >
-        {error ? (
-          <div className={classes.errorBox}>
-            <Typography variant="h4">That slide does not exist</Typography>
-          </div>
-        ) : (
-          <StyledPage
-            renderMode="svg"
-            scale={type === VIEW_TYPES.FULL_VIEW ? 1.15 : 0.65}
-            pageNumber={pageNumber}
-            renderAnnotationLayer={true}
-          />
-        )}
-      </PdfDocument>
+      {type === VIEW_TYPES.STANDARD_VIEW ? (
+        <PdfDocument
+          className={classes.standard}
+          file={{
+            url: pdfUrl
+          }}
+          externalLinkTarget="_blank"
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={console.error}
+        >
+          {error ? (
+            <div className={classes.errorBox}>
+              <Typography variant="h4">That slide does not exist</Typography>
+            </div>
+          ) : (
+            <StyledPage
+              renderMode="svg"
+              scale={0.65}
+              pageNumber={pageNumber}
+              renderAnnotationLayer={true}
+            />
+          )}
+        </PdfDocument>
+      ) : (
+        <ModalDocument
+          className={classes.modalView}
+          file={{
+            url: pdfUrl
+          }}
+          externalLinkTarget="_blank"
+          onLoadSuccess={onDocumentLoadSuccess}
+          onLoadError={console.error}
+        >
+          {error ? (
+            <div className={classes.errorBox}>
+              <Typography variant="h4">That slide does not exist</Typography>
+            </div>
+          ) : (
+            <ModalPage
+              renderMode="svg"
+              scale={1.15}
+              pageNumber={pageNumber}
+              renderAnnotationLayer={true}
+            />
+          )}
+        </ModalDocument>
+      )}
       {numPages !== null && (
         <div style={{ marginTop: '35px' }}>
           <Navigation
@@ -359,7 +404,7 @@ export default function Slides({
     ) : (
       <div>
         <Modal open={true} onClose={() => setViewType(VIEW_TYPES.STANDARD_VIEW)}>
-          <div style={{ height: '710px' }}>{pdfSlider(VIEW_TYPES.FULL_VIEW)}</div>
+          {pdfSlider(VIEW_TYPES.FULL_VIEW)}
         </Modal>
       </div>
     );
