@@ -84,7 +84,7 @@ export default function TermsForm() {
             {step === 0 ? (
               <>👋 Hi {user?.first_name}, we wanted to keep you in the loop!</>
             ) : (
-              <>⚠️ Are you sure? You will loose your access?</>
+              <>⚠️ Are you sure? You will lose your access?</>
             )}
           </DialogTitle>
           <DialogContent>

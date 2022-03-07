@@ -55,7 +55,7 @@ export default function AccountDeleteModal({
       <Dialog open={open} maxWidth={false}>
         <StyledBox>
           <DialogTitle sx={{ fontSize: '20px', fontWeight: '600', textAlign: 'center' }}>
-            ⚠️ Are you sure? You will loose your access?
+            ⚠️ Are you sure? You will lose your access?
           </DialogTitle>
           <DialogContent>
             <Typography align="center" sx={{ fontSize: '15px', mt: 2 }}>
