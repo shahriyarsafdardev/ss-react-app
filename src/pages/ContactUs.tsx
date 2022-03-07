@@ -60,7 +60,7 @@ export default function ContactUs() {
 
   const contactInfoDetails = [
     {
-      id: '7a815eb7-f6c8-4934-90aa-fc578603f42f',
+      id: 'd5781c7f-ff3b-4d5e-9e53-d4cb7e40b68f',
       first_name: 'Leah Nicolai',
       last_name: 'Higgins',
       current_position: 'Cohort Operations Manager',
