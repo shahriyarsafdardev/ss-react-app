@@ -1,4 +1,3 @@
-import { Link as RouterLink } from 'react-router-dom';
 import { Box, Stack, Link, Button, Divider, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { SectionContainer } from './Common';
@@ -114,9 +113,8 @@ export default function UserCard({
               {item.linkedin_url && (
                 <Link
                   color="primary"
-                  to={item.linkedin_url || '#'}
+                  href={item.linkedin_url || '#'}
                   target="_blank"
-                  component={RouterLink}
                   sx={{ mt: '0px !important' }}
                 >
                   Open LinkedIn
