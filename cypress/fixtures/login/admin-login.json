@@ -1,12 +1,13 @@
 {
   "user":{
-     "id":"5386e36b-0f15-4d39-b698-41e6672ec2c0",
+     "id":"741f148b-050c-4deb-af03-25aaf8ac607b",
      "type":"admin",
      "first_name":"Waqas",
      "last_name":"User",
      "full_name":"Waqas User",
      "email":"waqasnazir9@gmail.com",
      "profile_image_url":"https://scholarsite-public.s3.eu-west-2.amazonaws.com/waqasnnnnn-nazir-524d71",
+     "accepted_terms": true,
      "strengths":[
         "Economics",
         "Hiring"
@@ -30,8 +31,8 @@
      "networking_matching_preferences":[
 
      ],
-     "stream_id":"5386e36b-0f15-4d39-b698-41e6672ec2c0",
-     "stream_token":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNTM4NmUzNmItMGYxNS00ZDM5LWI2OTgtNDFlNjY3MmVjMmMwIn0.MAuQ1h0cbEhtVhNX7P9u9XpQliG-_Px5Efj5SXBJZgQ"
+     "stream_id":"741f148b-050c-4deb-af03-25aaf8ac607b",
+     "stream_token":"eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNzQxZjE0OGItMDUwYy00ZGViLWFmMDMtMjVhYWY4YWM2MDdiIn0.ih5YR4AfOhQTQP1psuFm7yCPH12uiixCPyX-J8izXPM"
  },
   "role_options":[
      "Accounting",

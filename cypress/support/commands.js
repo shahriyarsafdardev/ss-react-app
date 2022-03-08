@@ -11,7 +11,7 @@ homepath = 'onboarding/home_refactored.json'}) => {
   cy.fixture(sessionmaterialspath ).as('sessionMaterials');
   cy.fixture(peerpath).as('peers');
   cy.fixture(homepath).as('homeData');
-  cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=5386e36b-0f15-4d39-b698-41e6672ec2c0`, '@homeData').as('home');
+  cy.route('GET', `${serverUrl}/cohorts/9550cc85-305a-438c-a115-e791a16c91f0/onboarding/home.json?cohort_id=9550cc85-305a-438c-a115-e791a16c91f0&participant_id=741f148b-050c-4deb-af03-25aaf8ac607b`, '@homeData').as('home');
   cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
   cy.route(
     'GET',
