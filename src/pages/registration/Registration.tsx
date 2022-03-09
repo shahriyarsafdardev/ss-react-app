@@ -99,12 +99,12 @@ export default function Registration() {
           <Box sx={{ mb: 5 }}>
             <Typography variant="h3" align="center" paragraph>
               {account
-                ? `🎉 Thanks ${user.first_name}, your enrollment has been sent to ${account} for approval!`
+                ? `🎉 Thanks ${user.first_name} you’ll hear back from us shortly`
                 : '🎉 You’ve completed your application!'}
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }}>
               {account
-                ? 'You will recieve an update shortly!'
+                ? `ScholarSite has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
                 : 'You will shortly recieve an email documenting your application outcome and next steps!'}
             </Typography>
           </Box>

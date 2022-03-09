@@ -77,7 +77,7 @@ export default function UserForm({
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
           {account
-            ? `All costs will be covered by ${account}’s ScholarSite credits!`
+            ? `We have an enterprise package deal with ${account} that your team might be eligible for!`
             : 'We review each application in order to ensure a diverse and experienced cohort!'}
         </Typography>
       </Box>
