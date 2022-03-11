@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import ConfirmationAlert from 'components/ConfirmationAlert';
 import { MessageResponse, logChatPromiseExecution } from 'stream-chat';
 
 import {
@@ -47,6 +48,8 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
 
   const [giphyState, setGiphyState] = useState(false);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const [modalState, setModalState] = useState(false);
+  const [message, setMessage] = useState<MessageToSend>({});
 
   const giphyStateObj = {
     giphyState,
@@ -84,15 +87,14 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     messaging: messagingPermissions
   };
 
-  const overrideSubmitHandler = (message: MessageToSend) => {
+  const sendMessageHandler = (messageToSend: MessageToSend) => {
     let updatedMessage = {
-      attachments: message.attachments,
-      mentioned_users: message.mentioned_users,
-      parent_id: message.parent?.id,
-      parent: message.parent as MessageResponse,
-      text: message.text
+      attachments: messageToSend.attachments,
+      mentioned_users: messageToSend.mentioned_users,
+      parent_id: messageToSend.parent?.id,
+      parent: messageToSend.parent as MessageResponse,
+      text: messageToSend.text
     };
-
     if (giphyState) {
       const updatedText = `/giphy ${message.text}`;
       updatedMessage = { ...updatedMessage, text: updatedText };
@@ -112,8 +114,31 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     }
   };
 
+  const overrideSubmitHandler = (message: MessageToSend) => {
+    if (message.text?.includes('@everyone')) {
+      setMessage(message);
+      setModalState(true);
+    } else {
+      sendMessageHandler(message);
+    }
+  };
+
   return (
     <GiphyContext.Provider value={giphyStateObj}>
+      <ConfirmationAlert
+        title=""
+        open={modalState}
+        alertText={`Are you sure you want to send an email notification to all ${
+          Number(channel?.data?.member_count) - 1
+        } members of this channel?`}
+        onCancel={() => {
+          setModalState(false);
+        }}
+        onConfirm={() => {
+          sendMessageHandler(message);
+          setModalState(false);
+        }}
+      />
       <div style={{ display: 'flex', width: '100%' }}>
         <Window>
           <TeamChannelHeader {...{ setIsEditing, setPinsOpen }} />
