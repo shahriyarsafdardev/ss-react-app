@@ -151,6 +151,10 @@ export type ParticipantProfile = {
   interests: string[] | any;
   bio_text: string;
   new_user: boolean;
+  direct_message_notifications: string;
+  everyone_tag_notifications: string;
+  channel_summary_email: string;
+  upcoming_session_email: string;
   accepted_terms: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];

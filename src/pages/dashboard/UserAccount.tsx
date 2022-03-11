@@ -5,6 +5,7 @@ import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 import roundPeople from '@iconify/icons-ic/baseline-people';
 import roundDelete from '@iconify/icons-ic/baseline-delete';
+import bellFill from '@iconify/icons-eva/bell-fill';
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
@@ -23,6 +24,7 @@ import {
   AccountGeneral,
   AccountChangePassword,
   AccountNetworking,
+  AccountNotifications,
   BusinessAccount
 } from '../../components/_dashboard/user/account';
 
@@ -77,6 +79,11 @@ export default function UserAccount() {
             value: 'change_password',
             icon: <Icon icon={roundVpnKey} width={20} height={20} />,
             component: <AccountChangePassword />
+          },
+          {
+            value: 'email_notifications',
+            icon: <Icon icon={bellFill} width={20} height={20} />,
+            component: <AccountNotifications />
           },
           {
             value: 'delete_account',
