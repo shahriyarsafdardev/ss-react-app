@@ -97,12 +97,16 @@ export default function Registration() {
           alignItems="center"
         >
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" paragraph>
+            <Typography variant="h3" align="center" paragraph data-testid="confirmation-message">
               {account
                 ? `🎉 Thanks ${user.first_name} you’ll hear back from us shortly`
                 : '🎉 You’ve completed your application!'}
             </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }}>
+            <Typography
+              align="center"
+              sx={{ color: 'text.secondary' }}
+              data-testid="confirmation-subtext"
+            >
               {account
                 ? `ScholarSite has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
                 : 'You will shortly recieve an email documenting your application outcome and next steps!'}
@@ -112,6 +116,7 @@ export default function Registration() {
             href="https://www.scholarsite.io/#upcoming-cohorts-slider"
             variant="contained"
             color="primary"
+            data-testid="explore-btn"
           >
             Explore more ScholarSite cohorts
           </Button>
@@ -129,10 +134,10 @@ export default function Registration() {
           alignItems="center"
         >
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" paragraph>
+            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
               🎉 You have 72 hours to lock in your price and seat!
             </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }}>
+            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
               Look for an email with your payment link in the next few hours; if you haven’t
               recieved any, make sure you check your spam folder.
             </Typography>
@@ -141,6 +146,7 @@ export default function Registration() {
             href="https://www.scholarsite.io/pages/get-in-touch"
             variant="contained"
             color="primary"
+            data-testid="contact-btn"
           >
             Any questions? Click here to contact ScholarSite
           </Button>

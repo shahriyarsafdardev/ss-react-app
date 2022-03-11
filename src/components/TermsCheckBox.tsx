@@ -4,11 +4,12 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Checkbox onChange={(e) => onChange(e.target.checked)} value={value} />
-      <Typography variant="body2">
+      <Typography variant="body2" data-testid="terms-conditions">
         I hereby accept ScholarSite's{' '}
         <Link
           noWrap
           target="_blank"
+          data-testid="service-link"
           variant="body2"
           href="https://www.scholarsite.io/pages/terms-conditions"
         >
@@ -18,6 +19,7 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
         <Link
           noWrap
           target="_blank"
+          data-testid="policy-link"
           variant="body2"
           href="https://www.scholarsite.io/pages/privacy"
         >

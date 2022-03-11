@@ -72,10 +72,14 @@ export default function UserForm({
   return (
     <>
       <Box sx={{ mb: 5 }}>
-        <Typography variant="h3" align="center" paragraph>
+        <Typography variant="h3" align="center" paragraph data-testid="registration-header">
           👋 We just need a few more details to process your application
         </Typography>
-        <Typography align="center" sx={{ color: 'text.secondary' }}>
+        <Typography
+          align="center"
+          sx={{ color: 'text.secondary' }}
+          data-testid="registration-subtext"
+        >
           {account
             ? `We have an enterprise package deal with ${account} that your team might be eligible for!`
             : 'We review each application in order to ensure a diverse and experienced cohort!'}
@@ -130,6 +134,7 @@ export default function UserForm({
                     </Stack>
                     {account && (
                       <TermsCheckBox
+                        data-testid="registration-checkbox"
                         value={values.acceptedTerms}
                         onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
                       />
@@ -146,6 +151,7 @@ export default function UserForm({
           loading={isSubmitting}
           disabled={!isValid || (!!account && !values.acceptedTerms)}
           onClick={() => submitForm()}
+          data-testid="submit-application"
           id="btn-submit"
           fullWidth
           sx={{ mt: 3 }}
