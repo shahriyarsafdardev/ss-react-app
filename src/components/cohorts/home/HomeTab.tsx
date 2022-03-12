@@ -127,7 +127,7 @@ const Index = () => {
           key={cohort_id}
           calendarLink={cohort?.calendar_invite_url}
           cohortID={cohort_id}
-          cohortCode={cohort?.code}
+          cohortCode={cohort?.name}
           cohortHost={cohort?.host_names}
         />
       )}
