@@ -7,8 +7,6 @@ import { RootState, useSelector } from '../../redux/store';
 export default function RedirectToCohort() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { user } = useAuth();
-  // eslint-disable-next-line no-debugger
-  debugger;
   let navigationUrl = '/';
   if (user) {
     if (user.new_user) {

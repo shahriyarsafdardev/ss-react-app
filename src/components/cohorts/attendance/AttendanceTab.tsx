@@ -1,6 +1,7 @@
 import { merge } from 'lodash';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import LoadingScreen from 'components/LoadingScreen';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -8,8 +9,9 @@ import { styled } from '@material-ui/core/styles';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { getAttendance } from 'redux/slices/cohortSessionAttendance';
 
+import EmptyAttendanceTab from 'components/cohorts/onboarding/empty-states/EmptyAttendanceTab';
 import { BaseOptionChart } from '../../charts';
-
+import Page from '../../Page';
 import AttendanceTable from './AttendanceTable';
 import {
   CohortAttendanceRecord,
@@ -25,9 +27,16 @@ const StyledContainer = styled(Box)(() => ({
   maxWidth: '1200px'
 }));
 
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
 const AttendanceTab = () => {
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const [loading, setLoading] = useState(true);
 
   const cohortSessionAttendance = useSelector(
     (state: RootState) =>
@@ -46,6 +55,7 @@ const AttendanceTab = () => {
     } else {
       setRecord(cohortSessionAttendance);
     }
+    setLoading(false);
   }, [cohortSessionAttendance, cohort_id]);
 
   const getAttendanceFrequency = (types: string[]) => {
@@ -90,24 +100,43 @@ const AttendanceTab = () => {
     }
   });
 
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+
+  const displayData = !(
+    (CHART_DATA.data[0].data.length === 0 && CHART_DATA.data[1].data.length === 0) ||
+    (Math.max(...CHART_DATA.data[0].data) === 0 && Math.max(...CHART_DATA.data[1].data) === 0)
+  );
+
   return (
-    <StyledContainer id="asd">
-      <Card>
-        <CardHeader title="Cohort Overview" data-testid="cohort_overview_header" />
-        <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
-          <ReactApexChart
-            data-testid="cohort_overview_graph"
-            type="line"
-            series={CHART_DATA.data}
-            options={chartOptions}
-            height={364}
-          />
+    <Page title="ScholarSite | Attendance">
+      <StyledContainer id="asd" key={String(CHART_DATA.data)}>
+        <Card>
+          <CardHeader title="Cohort Overview" data-testid="cohort_overview_header" />
+          <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
+            {displayData ? (
+              <ReactApexChart
+                data-testid="cohort_overview_graph"
+                type="line"
+                series={CHART_DATA.data}
+                options={chartOptions}
+                height={364}
+              />
+            ) : (
+              <EmptyAttendanceTab imageLink="/static/cohort-empty-states/empty-graph.svg" />
+            )}
+          </Box>
+        </Card>
+        <Box style={{ marginTop: '30px' }}>
+          <AttendanceTable displayData={displayData} attendance={cohortAttendanceRecord} />
         </Box>
-      </Card>
-      <Box style={{ marginTop: '30px' }}>
-        <AttendanceTable attendance={cohortAttendanceRecord} />
-      </Box>
-    </StyledContainer>
+      </StyledContainer>
+    </Page>
   );
 };
 

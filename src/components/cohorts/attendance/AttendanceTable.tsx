@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import EmptyAttendanceTab from 'components/cohorts/onboarding/empty-states/EmptyAttendanceTab';
 
 import {
   Card,
@@ -50,7 +51,13 @@ const getIcon = (status: any) => {
   return null;
 };
 
-const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord }) => {
+const AttendanceTable = ({
+  attendance,
+  displayData
+}: {
+  attendance: CohortAttendanceRecord;
+  displayData: boolean;
+}) => {
   const [rows, setRows] = useState<SessionAttendanceRecord[]>([]);
   const [search, setSearch] = useState('');
 
@@ -86,35 +93,39 @@ const AttendanceTable = ({ attendance }: { attendance: CohortAttendanceRecord })
         title="Participant Overview"
         sx={{ mb: 3 }}
       />
-      <TableContainer sx={{ minWidth: 720 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell colSpan={3}>Participant</TableCell>
-              {[...Array(attendance.totalSessions)].map((x, i) => (
-                <TableCell data-testid={`Session-${i + 1}`} align="center" key={i}>
-                  Session {i + 1}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row: SessionAttendanceRecord) => (
-              <TableRow hover key={row.user_id}>
-                <TableCell
-                  data-testid={`user-name-${row.name}`}
-                  colSpan={3}
-                >{`${row.name} ${row.position}`}</TableCell>
+      {displayData ? (
+        <TableContainer sx={{ minWidth: 720 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell colSpan={3}>Participant</TableCell>
                 {[...Array(attendance.totalSessions)].map((x, i) => (
-                  <TableCell data-testid={`Session-${i + 1}-attendance`} key={`data-${i + 1}`}>
-                    {getIcon(row.attendanceData[i])}
+                  <TableCell data-testid={`Session-${i + 1}`} align="center" key={i}>
+                    Session {i + 1}
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {rows.map((row: SessionAttendanceRecord) => (
+                <TableRow hover key={row.user_id}>
+                  <TableCell
+                    data-testid={`user-name-${row.name}`}
+                    colSpan={3}
+                  >{`${row.name} ${row.position}`}</TableCell>
+                  {[...Array(attendance.totalSessions)].map((x, i) => (
+                    <TableCell data-testid={`Session-${i + 1}-attendance`} key={`data-${i + 1}`}>
+                      {getIcon(row.attendanceData[i])}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <EmptyAttendanceTab imageLink="/static/cohort-empty-states/empty-list.svg" />
+      )}
     </StyledContainer>
   );
 };
