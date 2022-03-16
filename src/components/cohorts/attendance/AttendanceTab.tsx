@@ -2,6 +2,7 @@ import { merge } from 'lodash';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingScreen from 'components/LoadingScreen';
+import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -37,7 +38,10 @@ const AttendanceTab = () => {
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [loading, setLoading] = useState(true);
-
+  const [analyticsSent, setAnalyticsSent] = useState(false);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
   const cohortSessionAttendance = useSelector(
     (state: RootState) =>
       state.cohortSessionAttendance.list.find((e) => e.cohort_id === cohort_id)
@@ -48,6 +52,17 @@ const AttendanceTab = () => {
     totalSessions: cohortSessionAttendance?.totalSessions || 0,
     sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
   });
+
+  useEffect(() => {
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.attendance_tab,
+        [EVENT_TYPES.cohort_name]: cohort.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   useEffect(() => {
     if (!cohortSessionAttendance) {

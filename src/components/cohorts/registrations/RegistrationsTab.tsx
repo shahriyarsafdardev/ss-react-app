@@ -3,6 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
+import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
 import { getEnrollments, getReferralCodes } from 'redux/slices/cohort';
 import { RegistrationsHeader, RegistrationsFooter } from './Common';
 import Highlights from './Highlights';
@@ -38,6 +39,18 @@ export default function RegistrationsTab() {
   );
   const { enrollments, referral_codes } = cohort || [];
   const [loading, setLoading] = useState(!referral_codes);
+  const [analyticsSent, setAnalyticsSent] = useState(false);
+
+  useEffect(() => {
+    if (cohort && !analyticsSent) {
+      sendAmplitudeData(EVENT_TYPES.page_view, {
+        page_type: EVENT_TYPES.registrations_tab,
+        [EVENT_TYPES.cohort_name]: cohort.name,
+        [EVENT_TYPES.cohort_intake_number]: cohort.intake
+      });
+      setAnalyticsSent(true);
+    }
+  }, [cohort]);
 
   useEffect(() => {
     if (cohort && !enrollments) {

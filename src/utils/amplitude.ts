@@ -35,6 +35,8 @@ export const EVENT_TYPES = {
   peers_tab: 'Peers Tab',
   sessions_tab: 'Sessions Tab',
   home_tab: 'Home Tab',
+  attendance_tab: 'Attendance Tab',
+  registrations_tab: 'Registrations Tab',
   messaging_tab: 'Messaging Tab',
   account_settings_tab: 'Account Settings',
   cohort_name: 'cohort-name',
