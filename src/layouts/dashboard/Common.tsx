@@ -29,7 +29,12 @@ export const sortByIntake = (intakeCategories: string[]) =>
   intakeCategories.sort(comparatorFuntion);
 
 export const getCategories = (cohorts: Cohort[]) =>
-  uniq(cohorts.filter((cohort) => cohort.is_host).map((cohort) => cohort.name?.toLowerCase()));
+  uniq(
+    cohorts
+      .filter((cohort) => cohort.is_host)
+      .map((cohort) => cohort.name?.toLowerCase())
+      .sort()
+  );
 
 export const getInstructorCohorts = (cohorts: Cohort[], category: string) =>
   cohorts
@@ -40,4 +45,6 @@ export const groupByIntake = (cohorts: Cohort[]) =>
   sortByIntake(uniq(cohorts.map((c) => c.intake_name)));
 
 export const getLearnerCohorts = (cohorts: Cohort[], category: string) =>
-  cohorts.filter((item) => item.intake_name === category);
+  cohorts
+    .filter((item) => item.intake_name === category)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));

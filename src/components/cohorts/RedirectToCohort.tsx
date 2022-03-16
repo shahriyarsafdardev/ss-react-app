@@ -6,6 +6,8 @@ import { RootState, useSelector } from '../../redux/store';
 export default function RedirectToCohort() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { user } = useAuth();
+  // eslint-disable-next-line no-debugger
+  debugger;
   let navigationUrl = '/';
   if (user) {
     if (user.new_user) {
@@ -16,7 +18,9 @@ export default function RedirectToCohort() {
       if (user.type === 'learner') {
         navigationUrl = `/cohorts/${cohorts[0].id}/home`;
       } else {
-        const hostCohorts = cohorts.filter((cohort) => cohort.is_host);
+        const hostCohorts = cohorts
+          .filter((cohort) => cohort.is_host)
+          .sort((a, b) => (a.name > b.name ? 1 : -1));
         navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
       }
     } else {
