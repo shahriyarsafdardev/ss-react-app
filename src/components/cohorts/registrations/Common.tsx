@@ -141,6 +141,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const CompanyTooltipMessage = (enrollment: Enrollment) => {
+  let header = `${enrollment.first_name} enrolled`;
+  if (enrollment.first_name.includes('Unknown')) {
+    header = 'This user enrolled';
+  }
+  if (enrollment.first_name.includes('Employee')) {
+    header = 'Enrolled';
+  }
+  return `${header} using ${enrollment.credit_account}'s ScholarSite credits`;
+};
 export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
   const classes = useStyles();
 
@@ -643,13 +653,7 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
         </Tooltip>
       )}
       {enrollment.credit_account && (
-        <Tooltip
-          arrow
-          placement="top"
-          title={`${
-            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
-          } enrolled using ${enrollment.credit_account}'s ScholarSite credits`}
-        >
+        <Tooltip arrow placement="top" title={CompanyTooltipMessage(enrollment)}>
           <Typography variant="h4">🏢</Typography>
         </Tooltip>
       )}
