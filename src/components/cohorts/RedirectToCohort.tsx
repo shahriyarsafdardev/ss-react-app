@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
+import { comparatorFuntion } from '../../layouts/dashboard/Common';
 import { RootState, useSelector } from '../../redux/store';
 
 export default function RedirectToCohort() {
@@ -20,7 +21,10 @@ export default function RedirectToCohort() {
       } else {
         const hostCohorts = cohorts
           .filter((cohort) => cohort.is_host)
-          .sort((a, b) => (a.name > b.name ? 1 : -1));
+          .sort(
+            (a, b) =>
+              comparatorFuntion(a.intake_name, b.intake_name) || a.name.localeCompare(b.name)
+          );
         navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
       }
     } else {
