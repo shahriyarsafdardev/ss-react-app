@@ -21,7 +21,7 @@ export default function RedirectToCohort() {
           .filter((cohort) => cohort.is_host)
           .sort(
             (a, b) =>
-              comparatorFuntion(a.intake_name, b.intake_name) || a.name.localeCompare(b.name)
+              a.name.localeCompare(b.name) || comparatorFuntion(a.intake_name, b.intake_name)
           );
         navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
       }
