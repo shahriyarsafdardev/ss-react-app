@@ -82,7 +82,7 @@ describe('Registration Flow', () => {
       beforeEach(() => {
         cy.updateProfile(urlData, enrollment);
         cy.get('[data-testid=submit-application]').should('be.visible').click();
-        // cy.wait('@submitResponse');
+        cy.wait('@submitResponse');
       });
       it('Verify enter payment details page is opened', () => {
         //Assert text "💳 Thanks Test, just one last step!"
@@ -218,11 +218,11 @@ describe('Registration Flow', () => {
             //Assert pay later button
             cy.get('[data-testid=pay-later-btn]').should('be.visible');
             //Assert payment details
-            cy.addPaymentDetails(urlData, enrollment);
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
             cy.get('.PrivateSwitchBase-input').click();
+            cy.addPaymentDetails(urlData, enrollment);
             cy.get('[data-testid=submit-btn]').should('be.visible').click();
             cy.wait('@addPaymentDetails');
           });
@@ -243,7 +243,7 @@ describe('Registration Flow', () => {
         `${serverUrl}/cohorts/${urlData.cohort_id}/enrollments.json`,
         '@enrollmentData'
       ).as('enrollments');
-      // cy.wait('@enrollments');
+      cy.wait('@enrollments');
     });
     it('Verify enter details page for enrollment is opened', () => {
       //Assert text "👋 We just need a few more details to process your enrollment"
@@ -303,7 +303,7 @@ describe('Registration Flow', () => {
           .clear()
           .type(enrollmentChargeParticipant.user.linkedin_url);
         cy.get('[data-testid=submit-application]').should('be.visible').click();
-        // cy.wait('@submitResponse');
+        cy.wait('@submitResponse');
       });
       it('Verify enter payment details page is opened', () => {
         //Assert text "💳 Thanks Test, just one last step!"
@@ -450,11 +450,11 @@ describe('Registration Flow', () => {
             //Assert pay later button
             cy.get('[data-testid=pay-later-btn]').should('be.visible');
             //Assert payment details
-            cy.addPaymentDetails(urlData, enrollmentChargeParticipant);
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
             cy.get('.PrivateSwitchBase-input').click();
+            cy.addPaymentDetails(urlData, enrollmentChargeParticipant);
             cy.get('[data-testid=submit-btn]').should('be.visible').click();
             cy.wait('@addPaymentDetails');
           });
