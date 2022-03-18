@@ -162,7 +162,7 @@ export default function CardDetails({
         <Typography variant="h3" align="center" paragraph data-testid="thankyou-message">
           💳 Thanks {first_name}, just one last step!
         </Typography>
-        <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="refund-alert">
+        <Typography align="center" data-test-id="refund-policy" sx={{ color: 'text.secondary' }}>
           You can get a full refund up to 72 hours before the date of the first session, and will
           only be charged if you are accepted into the cohort.
         </Typography>
