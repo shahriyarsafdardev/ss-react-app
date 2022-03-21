@@ -231,18 +231,18 @@ describe('Registration Flow', () => {
     });
   });
 
-  context('When user registers with credit account and charge participants= true', () => {
+  context('When user registers with credit account and charge participants = true', () => {
     beforeEach(() => {
       cy.server();
       cy.fixture('registration/registration-enrollment-credit-charge.json').as('enrollmentData');
-      cy.visit(
-        `${baseUrl}/registration?cohort_id=${urlData.cohort_id}&email=${urlData.charge_participant_email}&credit_account=${urlData.charge_participant_Credit}`
-      );
       cy.route(
         'POST',
         `${serverUrl}/cohorts/${urlData.cohort_id}/enrollments.json`,
         '@enrollmentData'
       ).as('enrollments');
+      cy.visit(
+        `${baseUrl}/registration?cohort_id=${urlData.cohort_id}&email=${urlData.charge_participant_email}&credit_account=${urlData.charge_participant_Credit}`
+      );
       cy.wait('@enrollments');
     });
     it('Verify enter details page for enrollment is opened', () => {
@@ -467,14 +467,14 @@ describe('Registration Flow', () => {
     beforeEach(() => {
       cy.server();
       cy.fixture('registration/registration-enrollment-credit.json').as('enrollmentData');
-      cy.visit(
-        `${baseUrl}/registration?cohort_id=${urlData.cohort_id}&email=${urlData.email}&credit_account=${urlData.credit_account}`
-      );
       cy.route(
         'POST',
         `${serverUrl}/cohorts/${urlData.cohort_id}/enrollments.json`,
         '@enrollmentData'
       ).as('enrollments');
+      cy.visit(
+        `${baseUrl}/registration?cohort_id=${urlData.cohort_id}&email=${urlData.email}&credit_account=${urlData.credit_account}`
+      );
       cy.wait('@enrollments');
     });
     it('Verify enter details page for enrollment is opened', () => {
