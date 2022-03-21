@@ -9,6 +9,6 @@
   "viewportHeight": 920,
   "requestTimeout": 80000,
   "responseTimeout": 80000,
-  "defaultCommandTimeout": 300000,
+  "defaultCommandTimeout": 100000,
   "chromeWebSecurity": false
 }
