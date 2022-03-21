@@ -134,7 +134,13 @@ describe('Registration Flow', () => {
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
             //input CVV
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
+            cy.intercept(
+              'POST',
+              `${serverUrl}/cohorts/${urlData.cohort_id}/enrollments/${enrollment.user.enrollment_id}/add_payment_details.json`,
+              { statusCode: 200 }
+            ).as('addPaymentFixture');
             cy.get('[data-testid=submit-btn]').should('be.visible').click();
+            cy.wait('@addPaymentFixture');
           });
           it('Verify complete application page is opened', () => {
             cy.get('[data-testid=confirmation-message]')
@@ -362,7 +368,13 @@ describe('Registration Flow', () => {
             //input CVV
             cy.get('[data-testid=card-cvv]').should('be.visible').clear().type(urlData.cvv);
             cy.get('.PrivateSwitchBase-input').click();
+            cy.intercept(
+              'POST',
+              `${serverUrl}/cohorts/${urlData.cohort_id}/enrollments/${enrollmentChargeParticipant.user.enrollment_id}/add_payment_details.json`,
+              { statusCode: 200 }
+            ).as('addPaymentFixture');
             cy.get('[data-testid=submit-btn]').should('be.visible').click();
+            cy.wait('@addPaymentFixture');
           });
           it('Verify complete application page is opened', () => {
             cy.get('[data-testid=confirmation-message]')
