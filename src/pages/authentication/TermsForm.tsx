@@ -145,7 +145,6 @@ export default function TermsForm() {
                         variant="contained"
                         fullWidth
                         onClick={() => handleSubmit(true)}
-                        data-testid="accept-btn"
                       >
                         Accept and Continue
                       </StyledButton>
