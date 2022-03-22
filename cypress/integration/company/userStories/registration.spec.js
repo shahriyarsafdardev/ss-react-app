@@ -39,43 +39,33 @@ describe('Registration Flow', () => {
       cy.wait('@enrollments');
     });
     it('Verify enter details page for enrollment is opened', () => {
-      //Assert text "👋 We just need a few more details to process your enrollment"
       cy.get('[data-testid=registration-header]')
         .should('be.visible')
         .and('contain', '👋 We just need a few more details to process your application');
-      // Verify subtext
       cy.get('[data-testid=registration-subtext]')
         .should('be.visible')
         .and(
           'contain',
           'We review each application in order to ensure a diverse and experienced cohort!'
         );
-      //Assert First name input
       cy.get('[data-testid=first-name]').should('be.visible');
-      //Assert Last name input
       cy.get('[data-testid=last-name]').should('be.visible');
-      //Assert LinkedIn URL input
       cy.get('[data-testid=linkedin_url]').should('be.visible');
-      //Assert complete enrollment button
       cy.get('[data-testid=submit-application]').should('be.visible');
     });
     it('Verify complete enrollment button is clickable', () => {
-      //Type First name
       cy.get('[data-testid=first-name]')
         .should('be.visible')
         .clear()
         .type(enrollment.user.first_name);
-      //Type Last name
       cy.get('[data-testid=last-name]')
         .should('be.visible')
         .clear()
         .type(enrollment.user.last_name);
-      //Type LinkedIn URL
       cy.get('[data-testid=linkedin_url]')
         .should('be.visible')
         .clear()
         .type(enrollment.user.linkedin_url);
-      //Assert complete enrollment button
       cy.get('[data-testid=submit-application]').should('be.visible').and('not.be.disabled');
     });
     context('When submit application button is clicked', () => {
@@ -85,13 +75,9 @@ describe('Registration Flow', () => {
         cy.wait('@submitResponse');
       });
       it('Verify enter payment details page is opened', () => {
-        //Assert text "💳 Thanks Test, just one last step!"
         cy.get('[data-testid=thankyou-message]')
           .should('be.visible')
           .and('contain', `💳 Thanks ${enrollment.user.first_name}, just one last step!`);
-        //Assert text "You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort."
-        //You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.
-        //Assert Full name input
         cy.get('[data-testid=refund-alert]')
           .should('be.visible')
           .and(
@@ -99,40 +85,27 @@ describe('Registration Flow', () => {
             'You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.'
           );
         cy.get('[data-testid=card-name]').should('be.visible');
-        //Assert Card number input
         cy.get('[data-testid=card-number]').should('be.visible');
-        //Assert Exp date input
         cy.get('[data-testid=card-expiry]').should('be.visible');
-        //Assert CVV input
         cy.get('[data-testid=card-cvv]').should('be.visible');
-        //Terms and conditions message
         cy.get('[data-testid=terms-conditions]').should('be.visible');
-        //Assert submit button
         cy.get('[data-testid=submit-btn]').should('be.visible');
-        //Assert pay later button
         cy.get('[data-testid=pay-later-btn]').should('be.visible');
       });
       context('when terms and conditions checkbox is checked', () => {
         beforeEach(() => {
-          //Terms and conditions checkbox
           cy.get('.PrivateSwitchBase-input').click();
         });
         it('Verify submit button is not disabled', () => {
-          //input Card number
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
-          //input Exp date
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
-          //input CVV
           cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
           cy.get('[data-testid=submit-btn]').should('be.visible').and('not.be.disabled');
         });
         context('When submit button is clicked', () => {
           beforeEach(() => {
-            //input Card number
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
-            //input Exp date
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
-            //input CVV
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
             cy.intercept(
               'POST',
@@ -158,11 +131,8 @@ describe('Registration Flow', () => {
       });
       context('when terms and conditions checkbox is unchecked', () => {
         it('Verify submit button is disabled', () => {
-          //input Card number
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
-          //input Exp date
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
-          //input CVV
           cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
           cy.get('[data-testid=submit-btn]').should('be.visible').and('be.disabled');
         });
@@ -184,10 +154,8 @@ describe('Registration Flow', () => {
             cy.get('[data-testid=pay-later]').should('be.visible').click();
           });
           it('Verify 🎉 You have 72 hours to lock in your price and seat! page is opened', () => {
-            //Assert text "🎉 You have 72 hours to lock in your price and seat!"
             cy.get('[data-testid=remainingTime]').should('be.visible');
             cy.get('[data-testid=email-message]').should('be.visible');
-            //Assert button Any questions? Click here to contact ScholarSite
             cy.get('[data-testid=contact-btn]').should('be.visible');
           });
         });
@@ -197,13 +165,9 @@ describe('Registration Flow', () => {
             cy.wait(1000);
           });
           it('Verify enter payment details page is opened', () => {
-            //Assert text "💳 Thanks Test, just one last step!"
             cy.get('[data-testid=thankyou-message]')
               .should('be.visible')
               .and('contain', `💳 Thanks ${enrollment.user.first_name}, just one last step!`);
-            //Assert text "You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort."
-            //You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.
-            //Assert Full name input
             cy.get('[data-testid=refund-alert]')
               .should('be.visible')
               .and(
@@ -211,19 +175,12 @@ describe('Registration Flow', () => {
                 'You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.'
               );
             cy.get('[data-testid=card-name]').should('be.visible');
-            //Assert Card number input
             cy.get('[data-testid=card-number]').should('be.visible');
-            //Assert Exp date input
             cy.get('[data-testid=card-expiry]').should('be.visible');
-            //Assert CVV input
             cy.get('[data-testid=card-cvv]').should('be.visible');
-            //Terms and conditions message
             cy.get('[data-testid=terms-conditions]').should('be.visible');
-            //Assert submit button
             cy.get('[data-testid=submit-btn]').should('be.visible');
-            //Assert pay later button
             cy.get('[data-testid=pay-later-btn]').should('be.visible');
-            //Assert payment details
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
@@ -252,43 +209,33 @@ describe('Registration Flow', () => {
       cy.wait('@enrollments');
     });
     it('Verify enter details page for enrollment is opened', () => {
-      //Assert text "👋 We just need a few more details to process your enrollment"
       cy.get('[data-testid=registration-header]')
         .should('be.visible')
         .and('contain', '👋 We just need a few more details to process your application');
-      // Verify subtext
       cy.get('[data-testid=registration-subtext]')
         .should('be.visible')
         .and(
           'contain',
           'We review each application in order to ensure a diverse and experienced cohort!'
         );
-      //Assert First name input
       cy.get('[data-testid=first-name]').should('be.visible');
-      //Assert Last name input
       cy.get('[data-testid=last-name]').should('be.visible');
-      //Assert LinkedIn URL input
       cy.get('[data-testid=linkedin_url]').should('be.visible');
-      //Assert complete enrollment button
       cy.get('[data-testid=submit-application]').should('be.visible');
     });
     it('Verify complete enrollment button is clickable', () => {
-      //Type First name
       cy.get('[data-testid=first-name]')
         .should('be.visible')
         .clear()
         .type(enrollmentChargeParticipant.user.first_name);
-      //Type Last name
       cy.get('[data-testid=last-name]')
         .should('be.visible')
         .clear()
         .type(enrollmentChargeParticipant.user.last_name);
-      //Type LinkedIn URL
       cy.get('[data-testid=linkedin_url]')
         .should('be.visible')
         .clear()
         .type(enrollmentChargeParticipant.user.linkedin_url);
-      //Assert complete enrollment button
       cy.get('[data-testid=submit-application]').should('be.visible').and('not.be.disabled');
     });
     context('When submit application button is clicked', () => {
@@ -298,12 +245,10 @@ describe('Registration Flow', () => {
           .should('be.visible')
           .clear()
           .type(enrollmentChargeParticipant.user.first_name);
-        //Type Last name
         cy.get('[data-testid=last-name]')
           .should('be.visible')
           .clear()
           .type(enrollmentChargeParticipant.user.last_name);
-        //Type LinkedIn URL
         cy.get('[data-testid=linkedin_url]')
           .should('be.visible')
           .clear()
@@ -312,16 +257,12 @@ describe('Registration Flow', () => {
         cy.wait('@submitResponse');
       });
       it('Verify enter payment details page is opened', () => {
-        //Assert text "💳 Thanks Test, just one last step!"
         cy.get('[data-testid=thankyou-message]')
           .should('be.visible')
           .and(
             'contain',
             `💳 Thanks ${enrollmentChargeParticipant.user.first_name}, just one last step!`
           );
-        //Assert text "You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort."
-        //You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.
-        //Assert Full name input
         cy.get('[data-testid=refund-alert]')
           .should('be.visible')
           .and(
@@ -329,43 +270,31 @@ describe('Registration Flow', () => {
             'You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.'
           );
         cy.get('[data-testid=card-name]').should('be.visible');
-        //Assert Card number input
         cy.get('[data-testid=card-number]').should('be.visible');
-        //Assert Exp date input
         cy.get('[data-testid=card-expiry]').should('be.visible');
-        //Assert CVV input
         cy.get('[data-testid=card-cvv]').should('be.visible');
-        //Terms and conditions message
         cy.get('[data-testid=terms-conditions]').should('be.visible');
-        //Assert submit button
         cy.get('[data-testid=submit-btn]').should('be.visible');
-        //Assert pay later button
         cy.get('[data-testid=pay-later-btn]').should('be.visible');
       });
       context('when terms and conditions checkbox is checked', () => {
         it('Verify submit button is not disabled', () => {
-          //input Card number
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
-          //input Exp date
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
-          //input CVV
           cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
           cy.get('.PrivateSwitchBase-input').click();
           cy.get('[data-testid=submit-btn]').should('be.visible').and('not.be.disabled');
         });
         context('When submit button is clicked', () => {
           beforeEach(() => {
-            //input Card number
             cy.get('[data-testid=card-number]')
               .should('be.visible')
               .clear()
               .type(urlData.creditCard);
-            //input Exp date
             cy.get('[data-testid=card-expiry]')
               .should('be.visible')
               .clear()
               .type(urlData.expiryDate);
-            //input CVV
             cy.get('[data-testid=card-cvv]').should('be.visible').clear().type(urlData.cvv);
             cy.get('.PrivateSwitchBase-input').click();
             cy.intercept(
@@ -392,11 +321,8 @@ describe('Registration Flow', () => {
       });
       context('when terms and conditions checkbox is unchecked', () => {
         it('Verify submit button is disabled', () => {
-          //input Card number
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
-          //input Exp date
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
-          //input CVV
           cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
           cy.get('[data-testid=submit-btn]').should('be.visible').and('be.disabled');
         });
@@ -419,10 +345,8 @@ describe('Registration Flow', () => {
             cy.get('[data-testid=pay-later]').should('be.visible').click();
           });
           it('Verify 🎉 You have 72 hours to lock in your price and seat! page is opened', () => {
-            // Assert text "🎉 You have 72 hours to lock in your price and seat!"
             cy.get('[data-testid=remainingTime]').should('be.visible');
             cy.get('[data-testid=email-message]').should('be.visible');
-            //Assert button Any questions? Click here to contact ScholarSite
             cy.get('[data-testid=contact-btn]').should('be.visible');
           });
         });
@@ -432,16 +356,12 @@ describe('Registration Flow', () => {
             cy.wait(1000);
           });
           it('Verify enter payment details page is opened', () => {
-            //Assert text "💳 Thanks Test, just one last step!"
             cy.get('[data-testid=thankyou-message]')
               .should('be.visible')
               .and(
                 'contain',
                 `💳 Thanks ${enrollmentChargeParticipant.user.first_name}, just one last step!`
               );
-            //Assert text "You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort."
-            //You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.
-            //Assert Full name input
             cy.get('[data-testid=refund-alert]')
               .should('be.visible')
               .and(
@@ -449,19 +369,12 @@ describe('Registration Flow', () => {
                 'You can get a full refund up to 72 hours before the date of the first session, and will only be charged if you are accepted into the cohort.'
               );
             cy.get('[data-testid=card-name]').should('be.visible');
-            //Assert Card number input
             cy.get('[data-testid=card-number]').should('be.visible');
-            //Assert Exp date input
             cy.get('[data-testid=card-expiry]').should('be.visible');
-            //Assert CVV input
             cy.get('[data-testid=card-cvv]').should('be.visible');
-            //Terms and conditions message
             cy.get('[data-testid=terms-conditions]').should('be.visible');
-            //Assert submit button
             cy.get('[data-testid=submit-btn]').should('be.visible');
-            //Assert pay later button
             cy.get('[data-testid=pay-later-btn]').should('be.visible');
-            //Assert payment details
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
             cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
