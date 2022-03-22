@@ -6,7 +6,11 @@ describe('Top up credits flow', () => {
   beforeEach(() => {
     cy.server();
     cy.loginascompany({ creditpath: 'credit/empty_credits.json' });
+    cy.intercept('POST', `${serverUrl}/users/accept_terms.json`, { statusCode: 200 }).as(
+      'termsFixture'
+    );
     cy.get('[data-testid=accept-btn]').should('be.visible').click();
+    cy.wait('@termsFixture');
   });
 
   it('Verify Top up credit button is clickable', () => {
