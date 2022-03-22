@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
+import { useSnackbar } from 'notistack5';
 import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import UserForm from './UserForm';
@@ -33,6 +34,7 @@ export default function Registration() {
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
   const credit_account_id = url.get('credit_account') || '';
+  const { enqueueSnackbar } = useSnackbar();
 
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
@@ -68,6 +70,9 @@ export default function Registration() {
             });
           setAccount(res.data.account);
           setLoading(false);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
         });
     }
   }, []);
