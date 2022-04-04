@@ -212,7 +212,7 @@ export default function Router() {
             {
               path: 'calendar-instructions',
               element: (
-                <RoleBasedGuard accessibleRoles={learnerAdminRoles}>
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
                   <CalendarInstructions />
                 </RoleBasedGuard>
               )
