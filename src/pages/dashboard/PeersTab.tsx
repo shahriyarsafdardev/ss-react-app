@@ -66,7 +66,9 @@ export default function PeersTab() {
 
   useEffect(() => {
     // get all the companies to choose from peers.
-    let newCompanies = filteredPeers?.map((peer) => peer.current_company.name);
+    let newCompanies = filteredPeers
+      ?.map((peer) => peer.current_company.name)
+      ?.filter((name) => !!name);
     // make the companies array unique
     newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
     setCompanies(newCompanies);
