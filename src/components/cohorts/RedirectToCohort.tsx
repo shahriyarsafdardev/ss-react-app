@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
+import cohort from 'redux/slices/cohort';
 import { comparatorFuntion } from '../../layouts/dashboard/Common';
 import { RootState, useSelector } from '../../redux/store';
 
@@ -14,16 +15,25 @@ export default function RedirectToCohort() {
     } else if (user.type === 'company') {
       navigationUrl = `/business-dashboard`;
     } else if (cohorts.length > 0) {
+      const sortedCohorts = [...cohorts].sort((a, b) =>
+        new Date(a.start_date) < new Date(b.start_date) ? -1 : 1
+      );
+      const currentDate = new Date();
+
+      let upcomingCohort = sortedCohorts.find(
+        (cohort) => currentDate <= new Date(cohort.start_date)
+      );
+
+      if (typeof upcomingCohort == 'undefined') {
+        upcomingCohort = sortedCohorts[sortedCohorts.length - 1];
+      }
+
       if (user.type === 'learner') {
-        navigationUrl = `/cohorts/${cohorts[0].id}/home`;
+        navigationUrl = `/cohorts/${upcomingCohort.id}/home`;
+      } else if (user.type === 'expert') {
+        navigationUrl = `/cohorts/${upcomingCohort.id}/registrations`;
       } else {
-        const hostCohorts = cohorts
-          .filter((cohort) => cohort.is_host)
-          .sort(
-            (a, b) =>
-              a.name.localeCompare(b.name) || comparatorFuntion(a.intake_name, b.intake_name)
-          );
-        navigationUrl = `/cohorts/${hostCohorts[0].id}/registrations`;
+        navigationUrl = `/monthly-registrations`;
       }
     } else {
       return <LoadingScreen />;

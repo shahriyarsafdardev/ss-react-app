@@ -171,6 +171,7 @@ export type Cohort = {
   random_peers: StudentProfile[];
   calendar_invite_url: string;
   referral_codes: ReferralCode[];
+  start_date: string;
 };
 
 export type ReferralCode = {
