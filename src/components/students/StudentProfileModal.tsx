@@ -225,78 +225,76 @@ export default function StudentProfileModal({
           </StyledRow>
         )}
       </StyledContainer>
-      {(linkedin_url || discord_url) && (
-        <StyledContainer>
-          <Title>Socials</Title>
-          {discord_url && !dispalyChatLink && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/discord.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link href={discord_url} target="_blank" data-testid="discord-url">
-                <Text data-testid="discord-text">Message {first_name} on Discord</Text>
-              </Link>
-            </StyledRow>
-          )}
-          {linkedin_url && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/peers/linkedin.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link
-                href={linkedin_url}
-                onClick={() =>
-                  trackPeersPageEvent(
-                    cohortName,
-                    cohortIntake,
-                    PEERS_PAGE_EVENTS.member_details_modal,
-                    PEERS_PAGE_EVENTS.opened_linked_in
-                  )
-                }
-                target="_blank"
-                data-testid="linkedin-url"
-              >
-                {' '}
-                <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
-              </Link>
-            </StyledRow>
-          )}
+      <StyledContainer>
+        <Title>Socials</Title>
+        {discord_url && !dispalyChatLink && (
           <StyledRow>
             <img
               alt="sketch icon"
-              src="/static/peers/mail.svg"
+              src="/static/peers/discord.svg"
               width={20}
               height={20}
               style={{ marginRight: 15 }}
             />
-            <Text data-testid="user-email">{email}</Text>
+            <Link href={discord_url} target="_blank" data-testid="discord-url">
+              <Text data-testid="discord-text">Message {first_name} on Discord</Text>
+            </Link>
           </StyledRow>
+        )}
+        {linkedin_url && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/linkedin.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Link
+              href={linkedin_url}
+              onClick={() =>
+                trackPeersPageEvent(
+                  cohortName,
+                  cohortIntake,
+                  PEERS_PAGE_EVENTS.member_details_modal,
+                  PEERS_PAGE_EVENTS.opened_linked_in
+                )
+              }
+              target="_blank"
+              data-testid="linkedin-url"
+            >
+              {' '}
+              <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
+            </Link>
+          </StyledRow>
+        )}
+        <StyledRow>
+          <img
+            alt="sketch icon"
+            src="/static/peers/mail.svg"
+            width={20}
+            height={20}
+            style={{ marginRight: 15 }}
+          />
+          <Text data-testid="user-email">{email}</Text>
+        </StyledRow>
 
-          {dispalyChatLink && (
-            <StyledRow>
-              <img
-                alt="sketch icon"
-                src="/static/icons/navbar/ic_chat.svg"
-                width={20}
-                height={20}
-                style={{ marginRight: 15 }}
-              />
-              <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
-                {' '}
-                <Text data-testid="message-user">Message {first_name} through ScholarSite</Text>
-              </Link>
-            </StyledRow>
-          )}
-        </StyledContainer>
-      )}
+        {dispalyChatLink && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/icons/navbar/ic_chat.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
+              {' '}
+              <Text data-testid="message-user">Message {first_name} through ScholarSite</Text>
+            </Link>
+          </StyledRow>
+        )}
+      </StyledContainer>
     </Modal>
   );
 }
