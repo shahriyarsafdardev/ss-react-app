@@ -94,34 +94,30 @@ const AttendanceTable = ({
     <StyledContainer>
       <CardHeader
         action={
-          <TextField
-            InputProps={{
-              startAdornment: <img src="/static/icons/search-icon.svg" alt="icon" />
-            }}
-            placeholder="Search"
-            fullWidth
-            value={search}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <TextField
+              InputProps={{
+                startAdornment: <img src="/static/icons/search-icon.svg" alt="icon" />
+              }}
+              placeholder="Search"
+              fullWidth
+              value={search}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+            <Stack width="100%" paddingLeft="18px">
+              {user?.type === 'admin' && mode === 'Instructor' && (
+                <ExportAttendanceToExcel
+                  attendance={attendance}
+                  fileName={`${moment().format()}-${cohort?.name} Students Data`}
+                />
+              )}
+            </Stack>
+          </div>
         }
         title="Participant Overview"
         sx={{ mb: 3 }}
       />
-      <Stack
-        width="100%"
-        flexDirection={{ xs: 'column', md: 'row' }}
-        justifyContent="flex-end"
-        alignItems="center"
-        paddingRight="18px"
-        marginBottom="24px"
-      >
-        {user?.type === 'admin' && mode === 'Instructor' && (
-          <ExportAttendanceToExcel
-            attendance={attendance}
-            fileName={`${moment().format()}-${cohort?.name} Students Data`}
-          />
-        )}
-      </Stack>
+
       {displayData ? (
         <TableContainer sx={{ minWidth: 720 }}>
           <Table>

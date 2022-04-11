@@ -824,12 +824,10 @@ export const ExportAttendanceToExcel = ({
     return attendanceDataToExport.push(innerObj);
   });
 
-  console.log(attendanceDataToExport);
-
   const sessions = [...Array(attendance.totalSessions)].map((x, i) => ({
     column: `Session ${i + 1}`,
     value: (attendanceDataToExport: any) => attendanceDataToExport[`session_${i + 1}`],
-    width: 50
+    width: 15
   }));
 
   const exportExcel = async (objects: any, fileName: string) => {
@@ -837,7 +835,7 @@ export const ExportAttendanceToExcel = ({
       {
         column: 'Participant',
         value: (attendanceDataToExport: any) => attendanceDataToExport.name,
-        width: 50
+        width: 25
       },
       ...sessions
     ];
