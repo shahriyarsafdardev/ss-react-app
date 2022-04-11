@@ -11,10 +11,17 @@ import {
   CardHeader,
   TableContainer,
   TextField,
-  Tooltip
+  Tooltip,
+  Stack
 } from '@material-ui/core';
+
 import { styled } from '@material-ui/core/styles';
 
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/store';
+import useAuth from 'hooks/useAuth';
+import moment from 'moment';
+import { ExportAttendanceToExcel } from '../registrations/Common';
 import {
   CohortAttendanceRecord,
   AttendanceType,
@@ -60,6 +67,13 @@ const AttendanceTable = ({
 }) => {
   const [rows, setRows] = useState<SessionAttendanceRecord[]>([]);
   const [search, setSearch] = useState('');
+  const { user } = useAuth();
+  const { mode } = useSelector((state: RootState) => state.instructorView);
+  const cohort_id: any = window.location.pathname.split('/')[2] || '';
+
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   useEffect(() => {
     setRows(attendance.sessionAttendanceRecords);
@@ -93,6 +107,21 @@ const AttendanceTable = ({
         title="Participant Overview"
         sx={{ mb: 3 }}
       />
+      <Stack
+        width="100%"
+        flexDirection={{ xs: 'column', md: 'row' }}
+        justifyContent="flex-end"
+        alignItems="center"
+        paddingRight="18px"
+        marginBottom="24px"
+      >
+        {user?.type === 'admin' && mode === 'Instructor' && (
+          <ExportAttendanceToExcel
+            attendance={attendance}
+            fileName={`${moment().format()}-${cohort?.name} Students Data`}
+          />
+        )}
+      </Stack>
       {displayData ? (
         <TableContainer sx={{ minWidth: 720 }}>
           <Table>
