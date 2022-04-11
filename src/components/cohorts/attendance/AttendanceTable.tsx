@@ -95,6 +95,15 @@ const AttendanceTable = ({
       <CardHeader
         action={
           <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Stack width="100%" marginRight="24px">
+              {user?.type === 'admin' && mode === 'Instructor' && (
+                <ExportAttendanceToExcel
+                  attendance={attendance}
+                  fileName={`${moment().format()}-${cohort?.name} Students Data`}
+                />
+              )}
+            </Stack>
+
             <TextField
               InputProps={{
                 startAdornment: <img src="/static/icons/search-icon.svg" alt="icon" />
@@ -104,14 +113,6 @@ const AttendanceTable = ({
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
             />
-            <Stack width="100%" paddingLeft="18px">
-              {user?.type === 'admin' && mode === 'Instructor' && (
-                <ExportAttendanceToExcel
-                  attendance={attendance}
-                  fileName={`${moment().format()}-${cohort?.name} Students Data`}
-                />
-              )}
-            </Stack>
           </div>
         }
         title="Participant Overview"

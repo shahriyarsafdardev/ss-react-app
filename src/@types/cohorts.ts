@@ -232,6 +232,7 @@ export type Question = {
 export type SessionAttendanceRecord = {
   user_id: string;
   name: string;
+  email: string;
   position: string;
   attendanceData: string[]; // AttendanceType[]
 };
