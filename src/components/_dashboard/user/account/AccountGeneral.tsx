@@ -27,6 +27,7 @@ type ParticipantProfile = {
   networking_matching_preferences: string[] | any;
   company_image_url: string;
   number_of_employees: string;
+  email: string;
 };
 
 // ----------------------------------------------------------------------
@@ -36,6 +37,7 @@ export default function AccountGeneral() {
 
   const participantProfileConfig: ParticipantProfile | undefined = {
     linkedin_url: user?.linkedin_url || '',
+    email: user?.email || '',
     discord_url: user?.discord_url || '',
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
@@ -66,6 +68,7 @@ export default function AccountGeneral() {
     uploadData.append('current_company', values.current_company);
     uploadData.append('preferred_pronoun', values.preferred_pronoun);
     uploadData.append('current_position', values.current_position);
+    uploadData.append('email', values.email);
     uploadData.append('current_role_category_selections', values.current_role_category_selections);
     uploadData.append(
       'opted_in_for_matching_suggestions',

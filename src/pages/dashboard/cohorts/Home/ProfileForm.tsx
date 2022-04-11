@@ -54,6 +54,7 @@ const CompanyModalContainer = styled('div')(() => ({
 
 interface InitialState {
   linkedin_url: string;
+  email: string;
   discord_url?: string;
   first_name: string;
   last_name: string;
@@ -85,6 +86,7 @@ export default function ProfileForm({
     first_name: string;
     last_name: string;
     linkedin_url: string;
+    email: string;
     discord_url: string;
     profile_image_url: File | any;
     current_company: string;
@@ -116,13 +118,18 @@ export default function ProfileForm({
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('First name required'),
-    last_name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required')
+    last_name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Last name required'),
+    email: Yup.string().email().required('Email is required')
   });
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
     initialValues: userProfile || {
       linkedin_url: '',
+      email: '',
       discord_url: '',
       first_name: '',
       last_name: '',
@@ -290,6 +297,19 @@ export default function ProfileForm({
                         ))}
                       </MaterialSelect>
                     </FormControl>
+                    <TextField
+                      inputProps={{
+                        'data-testid': 'email'
+                      }}
+                      fullWidth
+                      label="Email"
+                      type="email"
+                      {...getFieldProps('email')}
+                      error={Boolean(touched.email && errors.email)}
+                      helperText={touched.email && errors.email}
+                    />
+                  </Stack>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <TextField
                       inputProps={{
                         'data-testid': 'linkedin_url'
