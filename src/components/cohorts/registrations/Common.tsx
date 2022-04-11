@@ -850,7 +850,7 @@ export const ExportAttendanceToExcel = ({
 
   const exportData = async () => {
     if (attendance.sessionAttendanceRecords.length > 0) {
-      exportExcel(attendance.sessionAttendanceRecords, fileName);
+      exportExcel(attendanceDataToExport, fileName);
     }
   };
 
