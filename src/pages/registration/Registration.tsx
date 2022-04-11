@@ -34,6 +34,7 @@ export default function Registration() {
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
   const credit_account_id = url.get('credit_account') || '';
+  const ref_source = url.get('source') || '';
   const { enqueueSnackbar } = useSnackbar();
 
   const [user, setUser] = useState<UserType>({
@@ -60,7 +61,8 @@ export default function Registration() {
         .post(`/cohorts/${cohort_id}/enrollments.json`, {
           email: user?.email,
           coupon_code: user?.referrer,
-          account_id: credit_account_id
+          account_id: credit_account_id,
+          source: ref_source
         })
         .then((res) => {
           res.data &&

@@ -652,6 +652,18 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
           <Typography variant="h4">🤝</Typography>
         </Tooltip>
       )}
+
+      {enrollment.source && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } used the source “${enrollment.source}”`}
+        >
+          <Typography variant="h4">👂</Typography>
+        </Tooltip>
+      )}
       {enrollment.credit_account && (
         <Tooltip arrow placement="top" title={CompanyTooltipMessage(enrollment)}>
           <Typography variant="h4">🏢</Typography>
