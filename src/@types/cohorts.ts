@@ -138,6 +138,7 @@ export type Enrollment = {
   cohort_id?: string;
   cohort_code?: string;
   cohort_name?: string;
+  source: string;
 };
 
 export type CohortSale = {
