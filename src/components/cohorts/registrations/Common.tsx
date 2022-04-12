@@ -659,7 +659,7 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
           placement="top"
           title={`${
             enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
-          } used the source “${enrollment.source}”`}
+          } registered through a custom link with source “${enrollment.source}”`}
         >
           <Typography variant="h4">👂</Typography>
         </Tooltip>
