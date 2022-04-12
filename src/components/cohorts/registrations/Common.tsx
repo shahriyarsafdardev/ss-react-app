@@ -821,10 +821,11 @@ export const ExportAttendanceToExcel = ({
     const innerObj: LooseObject = {};
     innerObj.name = item.name;
     innerObj.email = item.email;
+    innerObj.company = item.company;
     item.attendanceData.map((item: any, index: any) => (innerObj[`session_${index + 1}`] = item));
     return attendanceDataToExport.push(innerObj);
   });
-
+  console.log(attendanceDataToExport);
   const sessions = [...Array(attendance.totalSessions)].map((x, i) => ({
     column: `Session ${i + 1}`,
     value: (attendanceDataToExport: any) => attendanceDataToExport[`session_${i + 1}`],
@@ -841,6 +842,11 @@ export const ExportAttendanceToExcel = ({
       {
         column: 'Email',
         value: (attendanceDataToExport: any) => attendanceDataToExport.email,
+        width: 25
+      },
+      {
+        column: 'Company',
+        value: (attendanceDataToExport: any) => attendanceDataToExport.company,
         width: 25
       },
       ...sessions

@@ -233,6 +233,7 @@ export type SessionAttendanceRecord = {
   user_id: string;
   name: string;
   email: string;
+  company: string;
   position: string;
   attendanceData: string[]; // AttendanceType[]
 };
