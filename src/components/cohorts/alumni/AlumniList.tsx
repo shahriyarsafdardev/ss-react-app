@@ -14,7 +14,7 @@ const TABLE_HEAD = [
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
-export default function AlumniList({ aluminies }: { aluminies: Alumni[] }) {
+export default function AlumniList({ alumnies }: { alumnies: Alumni[] }) {
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <Scrollbar>
@@ -24,12 +24,12 @@ export default function AlumniList({ aluminies }: { aluminies: Alumni[] }) {
               order="asc"
               orderBy="time"
               headLabel={TABLE_HEAD}
-              rowCount={aluminies.length}
+              rowCount={alumnies.length}
               numSelected={0}
               onRequestSort={() => {}}
             />
             <TableBody id="alumni-list-container" data-testid="alumni-list">
-              {aluminies.map((alumni: any, index) => (
+              {alumnies.map((alumni: any, index) => (
                 <AlumniRow key={alumni.id} alumni={alumni} />
               ))}
             </TableBody>

@@ -52,6 +52,7 @@ const slice = createSlice({
         state.enrollments = updated;
       }
     },
+
     deleteApplicationSuccess(state, action) {
       const updated = state.enrollments;
 
@@ -59,9 +60,16 @@ const slice = createSlice({
         (enrollment) => enrollment.id !== action.payload.enrollmentID
       );
     },
+
     updateAlumniSuccess(state, action) {
-      let alumni = state.alumnies.find((alumni) => alumni.id == action.payload.id);
-      alumni = action.payload.alumni;
+      const { alumnies } = state;
+      const tragetAlumniIndex = alumnies.findIndex(
+        (alumni) => alumni.id === action.payload.alumni.id
+      );
+      if (tragetAlumniIndex !== -1) {
+        alumnies[tragetAlumniIndex] = action.payload.alumni;
+        state.alumnies = alumnies;
+      }
     }
   }
 });
@@ -233,7 +241,7 @@ export function updateAlumniByAdmin(alumni: Alumni) {
         alumni
       });
 
-      // dispatch(slice.actions.updateAlumniSuccess({ alumni: response.data }));
+      dispatch(slice.actions.updateAlumniSuccess({ alumni: response.data }));
     } catch (error) {
       console.log(error);
     }

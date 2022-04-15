@@ -908,37 +908,37 @@ export const ExportAttendanceToExcel = ({
 };
 
 export const ExportAlumniToExcel = ({
-  aluminies,
+  alumnies,
   fileName
 }: {
-  aluminies: any;
+  alumnies: any;
   fileName: string;
 }) => {
   const exportExcel = async (objects: any, fileName: string) => {
     const schema = [
       {
         column: 'Alumni Name',
-        value: (aluminies: any) => aluminies.full_name,
+        value: (alumnies: any) => alumnies.full_name,
         width: 50
       },
       {
         column: 'Company',
-        value: (aluminies: any) => aluminies.company_name,
+        value: (alumnies: any) => alumnies.company_name,
         width: 50
       },
       {
         column: 'Cohorts',
-        value: (aluminies: any) => aluminies.cohorts,
+        value: (alumnies: any) => alumnies.cohorts,
         width: 50
       },
       {
         column: 'Notes',
-        value: (aluminies: any) => aluminies.notes,
+        value: (alumnies: any) => alumnies.notes,
         width: 50
       },
       {
         column: 'Mailing List',
-        value: (aluminies: any) => aluminies.mailing_list,
+        value: (alumnies: any) => alumnies.mailing_list,
         width: 50
       }
     ];
@@ -949,8 +949,8 @@ export const ExportAlumniToExcel = ({
   };
 
   const exportData = async () => {
-    if (aluminies.length > 0) {
-      exportExcel(aluminies, fileName);
+    if (alumnies.length > 0) {
+      exportExcel(alumnies, fileName);
     }
   };
 

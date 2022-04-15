@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Alumni } from '../../@types/cohorts';
 import { AlumniFooter, ExportAlumniToExcel } from '../../components/cohorts/registrations/Common';
 import AlumniList from '../../components/cohorts/alumni/AlumniList';
+import AlumniHeader from './AlumniHeader';
 
 const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
@@ -31,28 +32,24 @@ const AlumniContainer = styled(Box)(() => ({
 export default function AlumniTab() {
   const [limit, setLimit] = useState(10);
   const dispatch = useDispatch();
-  const aluminies = useSelector((state: RootState) => state.adminRegistrations.alumnies);
+  const alumnies = useSelector((state: RootState) => state.adminRegistrations.alumnies);
   const [loading, setLoading] = useState(true);
   const fileName = `${moment().format()}-Alumni Data`;
-  const [rows, setRows] = useState<Alumni[]>(aluminies);
+  const [rows, setRows] = useState<Alumni[]>(alumnies);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (rows.length === 0) {
-      dispatch(initializeAlumnies()).then((res) => setLoading(false));
-      setRows(aluminies);
-    }
-  }, [aluminies]);
+    dispatch(initializeAlumnies()).then((res) => setLoading(false));
+  }, [dispatch]);
 
-  const handleSearch = (searchVal: string) => {
-    setSearch(searchVal);
-    const searchedRows = aluminies.filter(
+  const filteredRows = () => {
+    const searchedRows = alumnies.filter(
       (item: Alumni) =>
-        (item.full_name || '').toLowerCase().includes(searchVal.toLowerCase()) ||
-        (item.company_name || '').toLowerCase().includes(searchVal.toLowerCase()) ||
-        (item.notes || '').toLowerCase().includes(searchVal.toLowerCase())
+        (item.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
+        (item.company_name || '').toLowerCase().includes(search.toLowerCase()) ||
+        (item.notes || '').toLowerCase().includes(search.toLowerCase())
     );
-    setRows(searchedRows);
+    return searchedRows;
   };
 
   if (loading) {
@@ -65,34 +62,11 @@ export default function AlumniTab() {
   return (
     <Page title="ScholarSite | Alumni">
       <AlumniContainer>
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          justifyContent="space-between"
-          width="-webkit-fill-available"
-          sx={{ mx: 2, mb: 2 }}
-        >
-          <Typography variant="h5">Alumni List</Typography>
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={2}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <ExportAlumniToExcel aluminies={aluminies} fileName={fileName} />
-            <TextField
-              InputProps={{
-                startAdornment: <img src="/static/icons/search-icon.svg" alt="icon" />
-              }}
-              placeholder="Search"
-              value={search}
-              onChange={(e) => {
-                handleSearch(e.target.value);
-              }}
-            />
-          </Stack>
-        </Stack>
-        <AlumniList aluminies={rows.slice(0, limit)} />
-        {limit !== rows.length && <AlumniFooter handleClick={() => setLimit(rows.length)} />}
+        <AlumniHeader alumnies={alumnies} updateSearch={setSearch} search={search} />
+        <AlumniList alumnies={filteredRows().slice(0, limit)} />
+        {limit !== filteredRows().length && (
+          <AlumniFooter handleClick={() => setLimit(filteredRows().length)} />
+        )}
       </AlumniContainer>
     </Page>
   );
