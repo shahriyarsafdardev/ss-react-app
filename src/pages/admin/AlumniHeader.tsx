@@ -1,6 +1,6 @@
+import React from 'react';
 import { Stack, TextField, Typography } from '@material-ui/core';
 import { ExportAlumniToExcel } from 'components/cohorts/registrations/Common';
-import React, { useState } from 'react';
 import moment from 'moment';
 import { Alumni } from '../../@types/cohorts';
 

@@ -17,7 +17,7 @@ import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import { Alumni, Enrollment, ReferralCode } from '../../../@types/cohorts';
+import { Alumni } from '../../../@types/cohorts';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: 130,

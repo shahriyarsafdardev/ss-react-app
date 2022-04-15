@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Box, TextField, Stack, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import { useDispatch, RootState, useSelector } from 'redux/store';
 import { initializeAlumnies } from 'redux/slices/adminRegistrations';
-import moment from 'moment';
 import { Alumni } from '../../@types/cohorts';
-import { AlumniFooter, ExportAlumniToExcel } from '../../components/cohorts/registrations/Common';
+import { AlumniFooter } from '../../components/cohorts/registrations/Common';
 import AlumniList from '../../components/cohorts/alumni/AlumniList';
 import AlumniHeader from './AlumniHeader';
 
@@ -34,8 +33,6 @@ export default function AlumniTab() {
   const dispatch = useDispatch();
   const alumnies = useSelector((state: RootState) => state.adminRegistrations.alumnies);
   const [loading, setLoading] = useState(true);
-  const fileName = `${moment().format()}-Alumni Data`;
-  const [rows, setRows] = useState<Alumni[]>(alumnies);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
