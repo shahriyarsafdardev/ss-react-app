@@ -44,6 +44,11 @@ const adminToolsConfig = {
       title: 'Cohort Experience',
       path: PATH_DASHBOARD.adminTools.cohort_experiences,
       icon: ICONS.cohorts
+    },
+    {
+      title: 'alumni',
+      path: PATH_DASHBOARD.adminTools.alumni,
+      icon: ICONS.cohorts
     }
   ]
 };

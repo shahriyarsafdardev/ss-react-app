@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-import { Enrollment, CohortSale, CohortExperience } from '../../@types/cohorts';
+import { Enrollment, CohortSale, CohortExperience, Alumni } from '../../@types/cohorts';
 import axios from '../../utils/axios';
 import { setSession } from '../../utils/jwt';
 
@@ -8,10 +8,12 @@ const initialState: {
   enrollments: Enrollment[];
   cohort_sales: CohortSale[];
   cohort_experiences: CohortExperience[];
+  alumnies: Alumni[];
 } = {
   enrollments: [],
   cohort_sales: [],
-  cohort_experiences: []
+  cohort_experiences: [],
+  alumnies: []
 };
 
 const setAuthorizationToken = () => {
@@ -35,6 +37,10 @@ const slice = createSlice({
       state.cohort_experiences = action.payload.cohort_experiences;
     },
 
+    setAlumnies(state, action) {
+      state.alumnies = action.payload.alumnies;
+    },
+
     updateRegistrationSuccess(state, action) {
       const updated = state.enrollments;
       const targetEnrollmentIndex = updated.findIndex(
@@ -52,6 +58,10 @@ const slice = createSlice({
       state.enrollments = updated.filter(
         (enrollment) => enrollment.id !== action.payload.enrollmentID
       );
+    },
+    updateAlumniSuccess(state, action) {
+      let alumni = state.alumnies.find((alumni) => alumni.id == action.payload.id);
+      alumni = action.payload.alumni;
     }
   }
 });
@@ -105,6 +115,17 @@ export function updateApplicationByAdmin(cohortID: string, enrollment: Enrollmen
       dispatch(
         slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
       );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+export function initializeAlumnies() {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get('cohorts/alumnies.json');
+      dispatch(slice.actions.setAlumnies({ alumnies: response.data }));
     } catch (error) {
       console.log(error);
     }
@@ -199,6 +220,20 @@ export function deleteApplicationByAdmin(cohortID: string, enrollmentID: string)
       );
 
       dispatch(slice.actions.deleteApplicationSuccess({ cohortID, enrollmentID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateAlumniByAdmin(alumni: Alumni) {
+  return async () => {
+    try {
+      const response = await axios.put(`cohorts/update_alumni.json`, {
+        alumni
+      });
+
+      // dispatch(slice.actions.updateAlumniSuccess({ alumni: response.data }));
     } catch (error) {
       console.log(error);
     }
