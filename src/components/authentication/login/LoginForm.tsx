@@ -45,8 +45,6 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [color, setColor] = useState<any>('error');
   const redirectUri = 'http://localhost:3001';
-  const clientId = '86w0b57g9npjv5';
-  const clientSecret = '8CG3Q8X5dgJ2V3Kr';
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -58,41 +56,12 @@ export default function LoginForm() {
     const code = url.get('code');
     const getUserProfile = async (code: string) => {
       await axios
-        .post(
-          'https://www.linkedin.com/oauth/v2/accessToken',
-          {
-            grant_type: 'authorization_code',
-            code,
-            redirect_uri: redirectUri,
-            client_id: clientId,
-            client_secret: clientSecret
-          },
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Access-Control-Allow-Origin': window.location.origin
-            }
-          }
-        )
+        .post('/users/accessToken.json', {
+          code
+        })
         .then((res) => {
-          enqueueSnackbar('fetching profile data', { variant: 'success' });
-          axios
-            .get('https://api.linkedin.com/v2/me', {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization: `Bearer ${res.data.access_token}`,
-                'Access-Control-Allow-Origin': window.location.origin
-              }
-            })
-            .then((r) => {
-              enqueueSnackbar('profile data fetched', { variant: 'success' });
-              console.log(r.data);
-            })
-            .catch((e) => {
-              enqueueSnackbar(e, {
-                variant: 'error'
-              });
-            });
+          enqueueSnackbar('User data fetched', { variant: 'success' });
+          enqueueSnackbar(`${res.data.first_name} ${res.data.last_name}`, { variant: 'success' });
         })
         .catch((error) => {
           enqueueSnackbar(error, {
@@ -123,7 +92,7 @@ export default function LoginForm() {
         )
       });
     }
-  });
+  }, []);
 
   const formik = useFormik<InitialValues>({
     initialValues: {
@@ -228,7 +197,7 @@ export default function LoginForm() {
           Login
         </LoadingButton>
         <LinkedIn
-          clientId={clientId}
+          clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID || '86w0b57g9npjv5'}
           redirectUri={redirectUri}
           scope="r_liteprofile r_emailaddress"
         />
