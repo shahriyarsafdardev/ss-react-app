@@ -5,6 +5,7 @@ import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from 'redux/store';
+import LinkedIn from 'components/linkedin/LinkedIn';
 
 import {
   UserInfoForm,
@@ -129,7 +130,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [modal, setModal] = useState(true);
   const totalSteps = 5;
   const [profilePicture, setProfilePicture] = useState<any>();
@@ -285,6 +286,16 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   };
 
   const selectStep = () => {
+    if (activeStep === 0) {
+      return (
+        <LinkedIn
+          clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID || '86w0b57g9npjv5'}
+          redirectUri="http://localhost:3001/cohorts/8f787310-7b70-41ce-967c-0deace559a5c/home"
+          scope="r_liteprofile r_emailaddress"
+          onCancel={() => setActiveStep(1)}
+        />
+      );
+    }
     if (activeStep === 1) {
       return (
         <div data-testid="onboarding-form-modal">
@@ -366,6 +377,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   };
 
   const headContent = () => {
+    if (activeStep === 0) {
+      return 'Import Your Profile';
+    }
+
     if (activeStep === 1) {
       return 'Build Your Profile';
     }
@@ -390,6 +405,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   };
 
   const headContentDescription = () => {
+    if (activeStep === 0) {
+      return 'Your can import your profile data from your LinkedIn Profile';
+    }
+
     if ([1, 2, 3].includes(activeStep)) {
       return `Your profile will be visible to other members of the ${cohort?.code} cohort. You can edit all details again later in profile settings.`;
     }

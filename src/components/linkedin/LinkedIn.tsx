@@ -1,13 +1,15 @@
-import { Button } from '@material-ui/core';
+import { Button, Stack, Typography } from '@material-ui/core';
 
 const LinkedIn = ({
   redirectUri,
   clientId,
-  scope
+  scope,
+  onCancel
 }: {
   redirectUri: string;
   clientId: string;
   scope: string;
+  onCancel: any;
 }) => {
   const getUrl = () => {
     const scopeParam = scope ? `&scope=${encodeURI(scope)}` : '';
@@ -16,16 +18,38 @@ const LinkedIn = ({
   };
 
   return (
-    <Button
-      variant="text"
-      href={getUrl()}
-      sx={{
-        py: 1.5,
-        px: 2.5
-      }}
+    <Stack
+      sx={{ marginTop: '8rem' }}
+      spacing={{ xs: 4, md: 10 }}
+      alignItems="center"
+      justifyContent="center"
     >
-      Authenticate with LinkedIn
-    </Button>
+      <Typography variant="h5">Do you want to import your data from LinkedIn?</Typography>
+      <Stack direction="row" spacing={{ xs: 4, md: 10 }}>
+        <Button
+          size="large"
+          variant="outlined"
+          onClick={onCancel}
+          sx={{
+            py: 1.5,
+            px: 2.5
+          }}
+        >
+          No
+        </Button>
+        <Button
+          size="large"
+          variant="contained"
+          href={getUrl()}
+          sx={{
+            py: 1.5,
+            px: 2.5
+          }}
+        >
+          Yes
+        </Button>
+      </Stack>
+    </Stack>
   );
 };
 

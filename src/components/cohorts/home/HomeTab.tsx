@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Container, Box, Button } from '@material-ui/core';
+import { useSnackbar } from 'notistack5';
 import { styled } from '@material-ui/core/styles';
-import { NavLink as RouterLink } from 'react-router-dom';
+import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 import Page from 'components/Page';
 import axios from 'utils/axios';
 import moment from 'moment';
@@ -33,10 +34,12 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const Index = () => {
   const dispatch = useDispatch();
+  const url = new URLSearchParams(useLocation().search);
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
+  const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -44,6 +47,36 @@ const Index = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
+
+  useEffect(() => {
+    const error = url.get('error');
+    const code = url.get('code');
+    const getUserProfile = async (code: string) => {
+      await axios
+        .post('/users/accessToken.json', {
+          code,
+          cohort_id
+        })
+        .then((res) => {
+          enqueueSnackbar('User data fetched', { variant: 'success' });
+          enqueueSnackbar(`${res.data.first_name} ${res.data.last_name}`, { variant: 'success' });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error, { variant: 'error' });
+        });
+    };
+    if (error) {
+      const errorMessage =
+        url.get('error_description') || 'Authentication failed. Please try again.';
+      enqueueSnackbar(errorMessage, {
+        variant: 'error'
+      });
+    }
+    if (code) {
+      getUserProfile(code);
+      enqueueSnackbar(code, { variant: 'success' });
+    }
+  }, []);
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
