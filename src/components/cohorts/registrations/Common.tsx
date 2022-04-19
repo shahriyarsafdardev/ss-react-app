@@ -38,6 +38,7 @@ import {
 import {
   acceptApplicationByAdmin,
   rejectApplicationByAdmin,
+  updateApplicationByAdmin,
   markAsPaidByAdmin,
   resetApplicationStatusAdmin,
   notInterestedApplicationByAdmin,
@@ -377,7 +378,11 @@ export const Actions = ({
   };
 
   const handleUpdate = async (enrollment: Enrollment) => {
-    await dispatch(updateApplication(cohort_id, enrollment));
+    if (isAdminView) {
+      await dispatch(updateApplicationByAdmin(cohort_id, enrollment));
+    } else {
+      await dispatch(updateApplication(cohort_id, enrollment));
+    }
     setAction('');
     setModalState(false);
   };
