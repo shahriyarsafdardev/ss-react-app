@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography, Button } from '@material-ui/core';
 import Page from 'components/Page';
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -34,9 +34,14 @@ function FreeSessionMessage() {
           The ScholarSite team & Instructors look forward to meeting you and answering your
           questions!
         </Typography>
-        <StyledLoadingButton type="submit" variant="contained" className={classes.btnContactUs}>
+        <Button
+          href="https://www.scholarsite.io/pages/get-in-touch"
+          variant="contained"
+          color="primary"
+          className={classes.btnContactUs}
+        >
           Still have questions? Click here to contact us
-        </StyledLoadingButton>
+        </Button>
       </Container>
     </RootStyle>
   );
