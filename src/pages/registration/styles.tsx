@@ -16,14 +16,22 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '34px',
     lineHeight: '44px',
     letterSpacing: '1px',
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: '24px',
+      paddingRight: '24px'
+    }
   },
   subHeading: {
     fontSize: '21px',
     lineHeight: '37px',
     textAlign: 'center',
     color: '#919EAB',
-    marginTop: '15px'
+    marginTop: '15px',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: '24px',
+      paddingRight: '24px'
+    }
   },
   freeSessionForm: {
     marginTop: '48px',
@@ -38,6 +46,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '35%',
     paddingTop: '6px',
     paddingBottom: '6px',
-    marginTop: '35px'
+    marginTop: '35px',
+    [theme.breakpoints.down('md')]: {
+      width: '80%'
+    }
   }
 }));
