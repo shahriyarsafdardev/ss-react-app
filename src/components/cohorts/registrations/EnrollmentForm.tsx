@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
+import { RootState, useSelector } from 'redux/store';
 // material
 import {
   Box,
@@ -58,6 +59,7 @@ export default function EnrollmentForm({
     }
   });
   const codeOptions = [null, ...codes.map((code) => code.code)];
+  const { source_options } = useSelector((state: RootState) => state.profileOptions);
 
   const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values } = formik;
   const userCode = codes.filter((code) => code.code === values.coupon_code)[0];
@@ -177,6 +179,25 @@ export default function EnrollmentForm({
                         'data-testid': 'referral_notes'
                       }}
                     />
+                  </Stack>
+                  <Stack width="100%" spacing={2}>
+                    <FormControl fullWidth>
+                      <InputLabel>Source</InputLabel>
+                      <MaterialSelect
+                        fullWidth
+                        id="admin_labelled_source"
+                        label="Source"
+                        sx={{ zIndex: 1500 }}
+                        defaultValue={values.admin_labelled_source}
+                        {...getFieldProps('admin_labelled_source')}
+                      >
+                        {source_options?.map((source: any) => (
+                          <MenuItem key={source} value={source}>
+                            <ListItemText primary={source || 'None'} />
+                          </MenuItem>
+                        ))}
+                      </MaterialSelect>
+                    </FormControl>
                   </Stack>
                   <Stack width="100%" spacing={2}>
                     <TextField

@@ -30,7 +30,8 @@ export default function RegistrationRow({
     time,
     price,
     linkedin_url,
-    last_action_date
+    last_action_date,
+    admin_labelled_source
   } = enrollment;
 
   return (
@@ -93,6 +94,13 @@ export default function RegistrationRow({
         data-testid={`registration${id ? `-${id}` : ''}-price`}
       >
         ${price || 0}
+      </TableCell>
+      <TableCell
+        style={{ width: 170 }}
+        align="center"
+        data-testid={`registration${id ? `-${id}` : ''}-admin_labelled_source`}
+      >
+        {admin_labelled_source}
       </TableCell>
       <TableCell style={{ width: 300 }} align="center">
         <Label

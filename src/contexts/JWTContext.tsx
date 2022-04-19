@@ -121,10 +121,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
           setSession(accessToken);
 
           const response = await axios.get('/users/my_account');
-          const { user, role_options, industry_options, preferred_pronoun_options } = response.data;
+          const {
+            user,
+            role_options,
+            industry_options,
+            source_options,
+            preferred_pronoun_options
+          } = response.data;
           connectStream(user);
 
-          reduxDispatcher(setOptions(role_options, industry_options, preferred_pronoun_options));
+          reduxDispatcher(
+            setOptions(role_options, industry_options, source_options, preferred_pronoun_options)
+          );
 
           dispatch({
             type: Types.Initial,
@@ -177,8 +185,14 @@ function AuthProvider({ children }: { children: ReactNode }) {
       password
     });
 
-    const { accessToken, user, role_options, industry_options, preferred_pronoun_options } =
-      response.data;
+    const {
+      accessToken,
+      user,
+      role_options,
+      industry_options,
+      source_options,
+      preferred_pronoun_options
+    } = response.data;
 
     setAmplitudeUserId(user.id);
     connectStream(user);
@@ -189,7 +203,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
         user
       }
     });
-    reduxDispatcher(setOptions(role_options, industry_options, preferred_pronoun_options));
+    reduxDispatcher(
+      setOptions(role_options, industry_options, source_options, preferred_pronoun_options)
+    );
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
