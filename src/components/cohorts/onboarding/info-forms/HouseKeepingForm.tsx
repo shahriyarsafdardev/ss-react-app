@@ -33,6 +33,12 @@ const REFERRER_OPTIONS = [
 ];
 
 const PAYING_OPTIONS = ['I am', 'My employer', 'Other'];
+const COHORT_EXCITEMENT_OPTIONS = [
+  'To know more people that have the same interests that I have',
+  'To know more people that have the same interests that I have',
+  'To know more people that have the same interests that I have',
+  'Other'
+];
 
 export default function HouseKeepingForm({
   onSubmit,
@@ -84,12 +90,46 @@ export default function HouseKeepingForm({
                   />
                 </FormControl>
               </Stack> */}
+              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Phone"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel>Who is paying for this cohort ?</InputLabel>
+                  <MaterialSelect
+                    fullWidth
+                    label="Who is paying for this cohort ?"
+                    onChange={(e) => onUpdateAttribute('payed_by', e.target.value)}
+                    defaultValue={infoObject.payed_by}
+                    inputProps={{ 'data-testid': 'housekeeping-payment' }}
+                  >
+                    {PAYING_OPTIONS?.map((name: any) => (
+                      <MenuItem key={name} value={name}>
+                        <ListItemText primary={name} />
+                      </MenuItem>
+                    ))}
+                  </MaterialSelect>
+                </FormControl>
+              </Stack>
               <FormControl fullWidth>
-                <TextField
-                  label="Phone"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
+                <InputLabel>How did you hear about this cohort?</InputLabel>
+                <MaterialSelect
+                  fullWidth
+                  label="How did you hear about this cohort?"
+                  onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
+                  defaultValue={infoObject.referred_by}
+                  inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
+                >
+                  {REFERRER_OPTIONS?.map((name: any) => (
+                    <MenuItem key={name} value={name}>
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </MaterialSelect>
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel>Current understanding of cohort topic</InputLabel>
@@ -108,37 +148,21 @@ export default function HouseKeepingForm({
                 </MaterialSelect>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel>How did you hear about this cohort?</InputLabel>
+                <InputLabel>What part of the cohort are you most excited by?</InputLabel>
                 <MaterialSelect
                   fullWidth
-                  label="How did you hear about this cohort?"
-                  onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
-                  defaultValue={infoObject.referred_by}
-                  inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
+                  label="What part of the cohort are you most excited by?"
+                  onChange={(e) => onUpdateAttribute('excited_by', e.target.value)}
+                  defaultValue={infoObject.excited_by}
+                  inputProps={{ 'data-testid': 'housekeeping-payment' }}
                 >
-                  {REFERRER_OPTIONS?.map((name: any) => (
+                  {COHORT_EXCITEMENT_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
                       <ListItemText primary={name} />
                     </MenuItem>
                   ))}
                 </MaterialSelect>
               </FormControl>
-              <FormControl fullWidth>
-                <InputLabel>Who is paying for this cohort ?</InputLabel>
-                <MaterialSelect
-                  fullWidth
-                  label="Who is paying for this cohort ?"
-                  onChange={(e) => onUpdateAttribute('payed_by', e.target.value)}
-                  defaultValue={infoObject.payed_by}
-                  inputProps={{ 'data-testid': 'housekeeping-payment' }}
-                >
-                  {PAYING_OPTIONS?.map((name: any) => (
-                    <MenuItem key={name} value={name}>
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
-              </FormControl>{' '}
             </Stack>
           </Card>
         </Grid>

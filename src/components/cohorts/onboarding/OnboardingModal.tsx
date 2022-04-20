@@ -10,7 +10,7 @@ import {
   UserInfoForm,
   CompanyInfoForm,
   RoleInfoForm,
-  NetworkingForm,
+  // NetworkingForm,
   HouseKeepingForm
 } from './info-forms';
 
@@ -50,6 +50,7 @@ type HomeResponse = {
     new_user: boolean;
     date_of_birth: string;
     referred_by: string;
+    excited_by: string;
     payed_by: string;
     current_understanding: string;
   };
@@ -95,7 +96,7 @@ const FormTypes = {
   userInfo: 'userinfo',
   roleInfo: 'roleinfo',
   companyInfo: 'companyinfo',
-  networkingInfo: 'networkinginfo',
+  // networkingInfo: 'networkinginfo',
   housekeepingInfo: 'housekeepinginfo'
 };
 
@@ -113,12 +114,13 @@ type OnboardingDataType = {
   role_category: string[];
   do_manage_team: boolean;
   role_description: string;
-  networking_roles_categories: string[];
-  networking_industries_categories: string[];
-  interested_in_being_matched: boolean;
+  // networking_roles_categories: string[];
+  // networking_industries_categories: string[];
+  // interested_in_being_matched: boolean;
   date_of_birth: string;
   cohort_understanding: string;
   referred_by: string;
+  excited_by: string;
   payed_by: string;
   phone_number: string;
 };
@@ -131,7 +133,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
-  const totalSteps = 5;
+  const totalSteps = 4;
   const [profilePicture, setProfilePicture] = useState<any>();
   const [companyLogo, setCompanyLogo] = useState<any>();
   const cohort = useSelector(
@@ -152,12 +154,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     role_category: [],
     do_manage_team: false,
     role_description: '',
-    networking_roles_categories: [],
-    networking_industries_categories: [],
-    interested_in_being_matched: true,
+    // networking_roles_categories: [],
+    // networking_industries_categories: [],
+    // interested_in_being_matched: true,
     date_of_birth: '',
     cohort_understanding: '',
     referred_by: '',
+    excited_by: '',
     payed_by: '',
     phone_number: ''
   });
@@ -186,13 +189,14 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           role_category: payload.participant_profile.current_role_category_selections,
           do_manage_team: payload.participant_profile.do_manage_team,
           role_description: payload.participant_profile.bio_text,
-          networking_roles_categories: payload.participant_profile.networking_roles_categories,
-          networking_industries_categories:
-            payload.participant_profile.networking_industries_categories,
-          interested_in_being_matched: true,
+          // networking_roles_categories: payload.participant_profile.networking_roles_categories,
+          // networking_industries_categories:
+          //   payload.participant_profile.networking_industries_categories,
+          // interested_in_being_matched: true,
           date_of_birth: '',
           cohort_understanding: payload.participant_profile.current_understanding,
           referred_by: payload.participant_profile.referred_by,
+          excited_by: payload.participant_profile.excited_by,
           payed_by: payload.participant_profile.payed_by,
           phone_number: payload.participant_profile.phone_number
         });
@@ -233,21 +237,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       setCompanyLogo(data.logo_url);
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
-    } else if (type === FormTypes.networkingInfo) {
-      const tempData: OnboardingDataType = {
-        ...onboardingData,
-        networking_industries_categories: data.networking_industries_categories,
-        networking_roles_categories: data.networking_roles_categories,
-        interested_in_being_matched: data.interested_in_being_matched
-      };
-      setOnboardingData(tempData);
-      setActiveStep(activeStep + 1);
     } else if (type === FormTypes.housekeepingInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
         cohort_understanding: data.current_understanding,
         payed_by: data.payed_by,
         referred_by: data.referred_by,
+        excited_by: data.excited_by,
         date_of_birth: data.date_of_birth,
         phone_number: data.phone_number
       };
@@ -257,6 +253,16 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     } else {
       console.log('Unknown form type passed!');
     }
+    // else if (type === FormTypes.networkingInfo) {
+    //   const tempData: OnboardingDataType = {
+    //     ...onboardingData,
+    //     networking_industries_categories: data.networking_industries_categories,
+    //     networking_roles_categories: data.networking_roles_categories,
+    //     interested_in_being_matched: data.interested_in_being_matched
+    //   };
+    //   setOnboardingData(tempData);
+    //   setActiveStep(activeStep + 1);
+    // }
   };
 
   const submitData = async (data: any) => {
@@ -333,27 +339,16 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
     if (activeStep === 4) {
-      return (
-        <NetworkingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.networkingInfo, data)}
-          infoDetails={{
-            networking_industries_categories: onboardingData.networking_industries_categories || [],
-            networking_roles_categories: onboardingData.networking_roles_categories || [],
-            interested_in_being_matched: onboardingData.interested_in_being_matched || false
-          }}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
-        />
-      );
-    }
-    if (activeStep === 5) {
       return (
         <HouseKeepingForm
           onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
           infoDetails={{
             current_understanding: onboardingData.cohort_understanding,
             payed_by: onboardingData.payed_by,
-            referred_by: onboardingData.referred_by
+            referred_by: onboardingData.referred_by,
+            excited_by: onboardingData.excited_by
           }}
           phoneNumberValue={onboardingData.phone_number}
           isSubmitting={isSubmitting}
@@ -361,6 +356,20 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
+    // if (activeStep === 1111) {
+    //   return (
+    //     <NetworkingForm
+    //       onSubmit={(data: any) => updateOnboardingData(FormTypes.networkingInfo, data)}
+    //       infoDetails={{
+    //         networking_industries_categories: onboardingData.networking_industries_categories || [],
+    //         networking_roles_categories: onboardingData.networking_roles_categories || [],
+    //         interested_in_being_matched: onboardingData.interested_in_being_matched || false
+    //       }}
+    //       onPrevHandler={() => setActiveStep(activeStep - 1)}
+    //     />
+    //   );
+    // }
 
     return <div>All steps are completed!</div>;
   };
@@ -378,11 +387,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return 'Tell us about your current role?';
     }
 
-    if (activeStep === 4) {
-      return 'Networking Preferences';
-    }
+    // if (activeStep === 1111) {
+    //   return 'Networking Preferences';
+    // }
 
-    if (activeStep === 5) {
+    if (activeStep === 4) {
       return 'Housekeeping Questions';
     }
 
@@ -395,12 +404,12 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 4) {
-      return 'We’ll help you make meaningful connections with other professionals in the cohort.';
-    }
-
-    if (activeStep === 5) {
       return 'Your answers to these questions will not be shared with cohort members';
     }
+
+    // if (activeStep === 1111) {
+    //   return 'We’ll help you make meaningful connections with other professionals in the cohort.';
+    // }
 
     return '';
   };
