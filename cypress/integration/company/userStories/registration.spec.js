@@ -53,7 +53,7 @@ describe('Registration Flow', () => {
       cy.get('[data-testid=linkedin_url]').should('be.visible');
       cy.get('[data-testid=submit-application]').should('be.visible');
     });
-    it('Verify complete enrollment button is clickable', () => {
+    it('Verify the complete enrollment button is clickable', () => {
       cy.get('[data-testid=first-name]')
         .should('be.visible')
         .clear()
@@ -68,13 +68,13 @@ describe('Registration Flow', () => {
         .type(enrollment.user.linkedin_url);
       cy.get('[data-testid=submit-application]').should('be.visible').and('not.be.disabled');
     });
-    context('When submit application button is clicked', () => {
+    context('When the submit application button is clicked', () => {
       beforeEach(() => {
         cy.updateProfile(urlData, enrollment);
         cy.get('[data-testid=submit-application]').should('be.visible').click();
         cy.wait('@submitResponse');
       });
-      it('Verify enter payment details page is opened', () => {
+      it('Verify that enter payment details page is opened', () => {
         cy.get('[data-testid=thankyou-message]')
           .should('be.visible')
           .and('contain', `💳 Thanks ${enrollment.user.first_name}, just one last step!`);
@@ -92,17 +92,17 @@ describe('Registration Flow', () => {
         cy.get('[data-testid=submit-btn]').should('be.visible');
         cy.get('[data-testid=pay-later-btn]').should('be.visible');
       });
-      context('when terms and conditions checkbox is checked', () => {
+      context('when the terms and conditions checkbox is checked', () => {
         beforeEach(() => {
           cy.get('.PrivateSwitchBase-input').click();
         });
-        it('Verify submit button is not disabled', () => {
+        it('Verify the submit button is not disabled', () => {
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
           cy.get('[data-testid=card-cvv]').should('be.visible').type(urlData.cvv);
           cy.get('[data-testid=submit-btn]').should('be.visible').and('not.be.disabled');
         });
-        context('When submit button is clicked', () => {
+        context('When the submit button is clicked', () => {
           beforeEach(() => {
             cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
             cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
@@ -115,7 +115,7 @@ describe('Registration Flow', () => {
             cy.get('[data-testid=submit-btn]').should('be.visible').click();
             cy.wait('@addPaymentFixture');
           });
-          it('Verify complete application page is opened', () => {
+          it('Verify the complete application page is opened', () => {
             cy.get('[data-testid=confirmation-message]')
               .should('be.visible')
               .and('contain', `🎉 You’ve completed your application!`);
@@ -129,7 +129,7 @@ describe('Registration Flow', () => {
           });
         });
       });
-      context('when terms and conditions checkbox is unchecked', () => {
+      context('when the terms and conditions checkbox is unchecked', () => {
         it('Verify submit button is disabled', () => {
           cy.get('[data-testid=card-number]').should('be.visible').type(urlData.creditCard);
           cy.get('[data-testid=card-expiry]').should('be.visible').type(urlData.expiryDate);
@@ -137,7 +137,7 @@ describe('Registration Flow', () => {
           cy.get('[data-testid=submit-btn]').should('be.visible').and('be.disabled');
         });
       });
-      context('When pay later button is clicked', () => {
+      context('When the pay later button is clicked', () => {
         beforeEach(() => {
           cy.get('[data-testid=pay-later-btn]').should('be.visible').click();
         });
@@ -194,7 +194,7 @@ describe('Registration Flow', () => {
     });
   });
 
-  context('When user registers with credit account and charge participants = true', () => {
+  context('When the user registers with credit account and charge participants = true', () => {
     beforeEach(() => {
       cy.server();
       cy.fixture('registration/registration-enrollment-credit-charge.json').as('enrollmentData');
@@ -388,7 +388,7 @@ describe('Registration Flow', () => {
     });
   });
 
-  context('When user is with credit account & charge participants is = false', () => {
+  context('When the user is with credit account & charge participants is = false', () => {
     beforeEach(() => {
       cy.server();
       cy.fixture('registration/registration-enrollment-credit.json').as('enrollmentData');

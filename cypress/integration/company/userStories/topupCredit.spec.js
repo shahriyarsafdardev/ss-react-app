@@ -13,13 +13,13 @@ describe('Top up credits flow', () => {
     cy.wait('@termsFixture');
   });
 
-  it('Verify Top up credit button is clickable', () => {
+  it('Verify the Top up credit button is clickable', () => {
     //Assert Button is visible
     cy.get('[data-testid=top-up-button]').should('be.visible').click();
     //Assert Add Credits to Keep Saving heading is visible
     cy.get('[data-testid=add-credits-header]').should('be.visible');
   });
-  context('when Top up credit button is clicked', () => {
+  context('when the Top up credit button is clicked', () => {
     beforeEach(() => {
       cy.wait(500);
       cy.get('[data-testid=top-up-button]').should('be.visible').click();
@@ -32,13 +32,13 @@ describe('Top up credits flow', () => {
       //Assert Add credits button is visible
       cy.get('[data-testid=add-credits-button]').should('be.visible');
     });
-    it('Verify add credit button is clickable', () => {
+    it('Verify the add credit button is clickable', () => {
       //Assert Button is visible
       cy.get('[data-testid=add-credits-button]').should('be.visible').click({ force: true });
       //Assert redeem credits mondal is opened
       cy.get('[data-testid=charge-header]').should('be.visible');
     });
-    context('when add credit button is clicked', () => {
+    context('when the add credit button is clicked', () => {
       beforeEach(() => {
         cy.wait(1000);
         cy.get('[data-testid=add-credits-button]').should('be.visible').click();
@@ -94,7 +94,7 @@ describe('Top up credits flow', () => {
             });
         });
       });
-      context('when back button is clicked', () => {
+      context('when the back button is clicked', () => {
         beforeEach(() => {
           cy.get('[data-testid=back-button]').should('be.visible').click({ force: true });
         });
