@@ -20,53 +20,56 @@ describe('Sessions > List', () => {
   beforeEach(() => {
     cy.server();
     cy.login({});
-    cy.get(`[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`)
-    .should('be.visible')
-    .click({ force: true });
+    cy.get(
+      `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`
+    )
+      .should('be.visible')
+      .click({ force: true });
   });
 
-  it('Displays all sessions that are allowed to display in Session Tab', () => {
+  it('Displays all the sessions that are allowed to display in Session Tab', () => {
     const sessions = sessionFixture.sessions.filter((session) => {
       return session.display_in_sessions_tab === true;
     });
-    cy.get('#sessions-list-container')
-    .children()
-    .should('have.length', sessions?.length);
+    cy.get('#sessions-list-container').children().should('have.length', sessions?.length);
   });
 
   it('Displays the correct length of sessions', () => {
     const session = sessionFixture.sessions[0];
-    cy.get('[data-testid=session-list-number-0]')
-    .should('contain',`Session ${session.number} | ${session.length}`);
+    cy.get('[data-testid=session-list-number-0]').should(
+      'contain',
+      `Session ${session.number} | ${session.length}`
+    );
   });
 
-  it('Displays correct number of each session', () => {
-    cy.get('[data-testid=session-list-number-0]')
-    .should('contain',sessionFixture.sessions[0].number);
-    cy.get('[data-testid=session-list-number-1]')
-    .should('contain',sessionFixture.sessions[1].number);
-    cy.get('[data-testid=session-list-number-2]')
-    .should('contain',sessionFixture.sessions[2].number);
+  it('Displays the correct number of each session', () => {
+    cy.get('[data-testid=session-list-number-0]').should(
+      'contain',
+      sessionFixture.sessions[0].number
+    );
+    cy.get('[data-testid=session-list-number-1]').should(
+      'contain',
+      sessionFixture.sessions[1].number
+    );
+    cy.get('[data-testid=session-list-number-2]').should(
+      'contain',
+      sessionFixture.sessions[2].number
+    );
   });
 
-  it('Displays correct title of each session', () => {
-    cy.get('[data-testid=session-list-title-0]')
-    .should('contain', sessionFixture.sessions[0].name);
-    cy.get('[data-testid=session-list-title-1]')
-    .should('contain', sessionFixture.sessions[1].name);
-    cy.get('[data-testid=session-list-title-2]')
-    .should('contain', sessionFixture.sessions[2].name);
+  it('Displays the correct title of each session', () => {
+    cy.get('[data-testid=session-list-title-0]').should('contain', sessionFixture.sessions[0].name);
+    cy.get('[data-testid=session-list-title-1]').should('contain', sessionFixture.sessions[1].name);
+    cy.get('[data-testid=session-list-title-2]').should('contain', sessionFixture.sessions[2].name);
   });
 
   context('Before the session starts', () => {
     before(() => {
       cy.setClockToBeforeSession(sessionFixture.sessions[1].times, 12);
-      cy.get('#session-list-1')
-      .click({ force: true });
+      cy.get('#session-list-1').click({ force: true });
     });
     it('Shows the correct time and message', () => {
-      cy.get('[data-testid=session-list-time-container-1]')
-      .should('contain', 'Live in 12 hours');
+      cy.get('[data-testid=session-list-time-container-1]').should('contain', 'Live in 12 hours');
     });
   });
 
@@ -78,22 +81,24 @@ describe('Sessions > List', () => {
       cy.get('#session-list-0').click({ force: true });
     });
 
-    it('Displays a correct time and message', () => {
+    it('Displays the correct time and message', () => {
       const msg = `Live 30 minutes ago | ${moment(time).format('DD MMMM YYYY')}`;
-      cy.get('[data-testid=session-list-time-container-0]')
-      .contains(msg);
+      cy.get('[data-testid=session-list-time-container-0]').contains(msg);
     });
   });
 
   context('After the session finishes', () => {
     before(() => {
       cy.setClockToAfterSession(sessionFixture.sessions[0].times, 12);
-      cy.get('#session-list-2')
-      .click({ force: true });
+      cy.get('#session-list-2').click({ force: true });
     });
     it('Shows the correct time and message', () => {
-      cy.get('[data-testid=session-list-time-container-0]')
-      .should('contain',`Recorded on ${moment(firstUpcomingDate(sessionFixture.sessions[0].times)).format('DD MMMM YYYY')}`);
+      cy.get('[data-testid=session-list-time-container-0]').should(
+        'contain',
+        `Recorded on ${moment(firstUpcomingDate(sessionFixture.sessions[0].times)).format(
+          'DD MMMM YYYY'
+        )}`
+      );
     });
   });
 });
