@@ -141,7 +141,7 @@ export default function Registration() {
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }}>
               Look for an email with your payment link in the next few hours; if you haven’t
-              recieved any, make sure you check your spam folder.
+              received any, make sure you check your spam folder.
             </Typography>
           </Box>
           <Button

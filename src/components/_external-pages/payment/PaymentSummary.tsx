@@ -1,15 +1,5 @@
-import { Icon } from '@iconify/react';
-import shieldFill from '@iconify/icons-eva/shield-fill';
-// material
 import { styled } from '@material-ui/core/styles';
-import { Box, Switch, Divider, Typography, Stack } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
-// @types
-import { PaymentFormikProps } from '../../../@types/payment';
-//
-import Label from '../../Label';
-
-// ----------------------------------------------------------------------
+import { Divider, Typography, Stack } from '@material-ui/core';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
@@ -26,93 +16,51 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-// ----------------------------------------------------------------------
+const StyledLabel = styled('p')(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(12),
+  fontFamily: theme.typography.fontFamily,
+  color: theme.palette.text.secondary
+}));
 
-type PaymentSummaryProps = {
-  formik: PaymentFormikProps;
-};
-
-export default function PaymentSummary({ formik }: PaymentSummaryProps) {
-  const { getFieldProps, isSubmitting } = formik;
-
+export default function PaymentSummary({ payment }: { payment: any }) {
   return (
     <RootStyle>
-      <Typography variant="subtitle1" sx={{ mb: 5 }}>
-        Summary
+      <Typography variant="h6" sx={{ mb: 3 }}>
+        Payment Details
       </Typography>
 
-      <Stack spacing={2.5}>
-        <Stack direction="row" justifyContent="space-between">
+      <Stack spacing={2}>
+        <Stack direction="column" justifyContent="space-between">
           <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
-            Subscription
+            Cohort:
           </Typography>
-          <Label color="error" variant="filled">
-            PREMIUM
-          </Label>
+          <StyledLabel>{payment?.cohort}</StyledLabel>
         </Stack>
 
-        <Stack direction="row" justifyContent="space-between">
-          <Typography component="p" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-            Billed Monthly
+        <Stack direction="column" justifyContent="space-between">
+          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
+            Seat Price:
           </Typography>
-          <Switch {...getFieldProps('isMonthly')} />
+          <StyledLabel>${payment?.amount}</StyledLabel>
         </Stack>
 
-        <Stack direction="row" justifyContent="flex-end">
-          <Typography sx={{ color: 'text.secondary' }}>$</Typography>
-          <Typography variant="h2" sx={{ mx: 1 }}>
-            9.99
+        <Stack direction="column" justifyContent="space-between">
+          <Typography variant="subtitle2" component="p" sx={{ color: 'text.secondary' }}>
+            No. of Seats:
           </Typography>
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{ mb: 1, alignSelf: 'flex-end', color: 'text.secondary' }}
-          >
-            /mo
-          </Typography>
+          <StyledLabel>{payment?.count}</StyledLabel>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" component="p">
-            Total Billed
+            Total Amount
           </Typography>
           <Typography variant="h6" component="p">
-            $9.99*
+            ${payment.amount * payment.count}
           </Typography>
         </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
-      </Stack>
-
-      <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1 }}>
-        * Plus applicable taxes
-      </Typography>
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-        sx={{ mt: 5, mb: 3 }}
-      >
-        Upgrade My Plan
-      </LoadingButton>
-
-      <Stack alignItems="center" spacing={1}>
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Box
-            component={Icon}
-            icon={shieldFill}
-            sx={{ width: 20, height: 20, color: 'primary.main' }}
-          />
-          <Typography variant="subtitle2">Secure credit card payment</Typography>
-        </Stack>
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          This is a secure 128-bit SSL encrypted payment
-        </Typography>
       </Stack>
     </RootStyle>
   );
