@@ -22,7 +22,7 @@ function FreeSessionMessage() {
     <RootStyle title="ScholarSite Cohort Registration">
       <Container className={classes.sectionContainer}>
         <Typography variant="h3" align="center" paragraph>
-          🎉 Thanks {user_name} you’ll recieve an email with your calendar invite shortly
+          🎉 Thanks {user_name} you’ll receive an email with your calendar invite shortly
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
           The ScholarSite team & Instructors look forward to meeting you and answering your
