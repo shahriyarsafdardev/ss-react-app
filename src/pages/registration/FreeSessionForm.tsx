@@ -61,7 +61,7 @@ export default function FreeSessionForm({
         .post('/free-session-info', { values })
         .then((res) => {
           if (res.data.status === 'saved') {
-            document.location.href = '/free-session-message';
+            document.location.href = `/free-session-message?user_name=${values.first_name}`;
           }
         })
         .catch((error) => {
