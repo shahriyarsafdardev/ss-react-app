@@ -24,10 +24,10 @@ function FreeSessionInfo() {
   return (
     <RootStyle title="ScholarSite Cohort Registration">
       <Container className={classes.sectionContainer}>
-        <Typography className={classes.mainHeading} variant="h4">
+        <Typography variant="h3" align="center" paragraph>
           👋 Nearly there, we just need a few more details
         </Typography>
-        <Typography className={classes.subHeading} variant="subtitle2">
+        <Typography align="center" sx={{ color: 'text.secondary' }}>
           Don’t worry, there aren’y any more steps or obligations.
         </Typography>
         <FreeSessionForm email={email} cohort_id={cohort_id} />
