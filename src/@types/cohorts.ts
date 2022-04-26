@@ -59,6 +59,7 @@ export type SessionMaterial = {
   info_text: string;
   action_url: string;
   complete: boolean;
+  is_private: boolean;
   index?: number;
 };
 export type GroupedSessionMaterial = {
