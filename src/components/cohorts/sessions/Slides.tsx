@@ -38,7 +38,7 @@ const StyledButton = styled(Button)(() => ({
   }
 }));
 
-const ModalPage = styled(Page)(({ theme }) => ({
+export const ModalPage = styled(Page)(({ theme }) => ({
   '.react-pdf__Page': { height: 'fit-content' },
   '.react-pdf__Page__svg': { height: 'fit-content !important', width: '100% !important' },
   '.react-pdf__Page__svg > svg': { height: 'fit-content !important', width: '100% !important' },
@@ -78,7 +78,7 @@ const StyledPage = styled(Page)(({ theme }) => ({
   }
 }));
 
-const ModalDocument = styled(Document)(({ theme }) => ({
+export const ModalDocument = styled(Document)(({ theme }) => ({
   position: 'relative',
   display: 'flex',
   justifyContent: 'center',
@@ -187,7 +187,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const Navigation = ({
+export const Navigation = ({
   pdfUrl,
   pdfDownloadable,
   pageNumber,
@@ -362,6 +362,15 @@ export default function Slides({
           file={{
             url: pdfUrl
           }}
+          loading={
+            <Typography
+              variant="subtitle1"
+              color="primary"
+              style={{ backgroundColor: '#ffff', padding: '1rem 3rem', borderRadius: '10px' }}
+            >
+              Loading Pdf...
+            </Typography>
+          }
           externalLinkTarget="_blank"
           onLoadSuccess={onDocumentLoadSuccess}
           onLoadError={console.error}

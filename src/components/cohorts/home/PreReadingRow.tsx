@@ -1,8 +1,16 @@
-import React from 'react';
-import { Box } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Box, Theme, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { SessionMaterial } from '../../../@types/cohorts';
+import Modal from 'components/animate/Modal';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
+import { pdfjs } from 'react-pdf';
+import { makeStyles } from '@material-ui/styles';
 import MarkCheckbox from './MarkCheckbox';
+import { SessionMaterial } from '../../../@types/cohorts';
+import { Navigation, ModalDocument, ModalPage } from '../sessions/Slides';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 type PreReadingRowProps = {
   item: SessionMaterial;
@@ -16,6 +24,36 @@ const StyledLink = styled('a')(() => ({
   fontWeight: 'bold',
   marginLeft: '10px',
   color: '#4D4DCD'
+}));
+
+const StyledButton = styled('label')(() => ({
+  textDecoration: 'underline',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  marginLeft: '10px',
+  color: '#4D4DCD'
+}));
+
+const useStyles = makeStyles((theme: Theme) => ({
+  modalView: {
+    width: '90%',
+    maxWidth: '1200px',
+    height: 'fit-content',
+    margin: 'auto'
+  },
+  loading: {
+    backgroundColor: '#FFFFF',
+    padding: '1rem',
+    textAlign: 'center'
+  },
+  errorBox: {
+    backgroundColor: '#F6F7F8',
+    height: '90%',
+    width: '90%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -68,25 +106,95 @@ export default function PreReadingRow({
   onPreReadingClick,
   number
 }: PreReadingRowProps) {
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const classes = useStyles();
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+  }
   return (
-    <StyledBox className="main">
-      <StyledBox className="inner">
-        <p data-testid={`prereading-name-${number}`}>{item.name}</p>
-        <StyledBox className="secondary">
-          <span>{item.info_text}</span>
-          <StyledLink
-            data-testid={`prereading-link-${number}`}
-            href={item.action_url}
-            target="_blank"
-            onClick={() => onPreReadingClick()}
+    <>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <div data-testid="pre-reading-pdf-slides">
+          <ModalDocument
+            className={classes.modalView}
+            loading={
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                style={{ backgroundColor: '#ffff', padding: '1rem 3rem', borderRadius: '10px' }}
+              >
+                Loading Pdf...
+              </Typography>
+            }
+            file={{
+              url: item.action_url
+            }}
+            externalLinkTarget="_blank"
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={console.error}
           >
-            {item.action_text}
-          </StyledLink>
+            {error ? (
+              <div className={classes.errorBox}>
+                <Typography variant="h4">That slide does not exist</Typography>
+              </div>
+            ) : (
+              <ModalPage
+                renderMode="svg"
+                scale={1.15}
+                pageNumber={pageNumber}
+                renderAnnotationLayer={true}
+              />
+            )}
+          </ModalDocument>
+          {numPages !== null && (
+            <div style={{ marginTop: '35px' }}>
+              <Navigation
+                pdfUrl={item.action_url}
+                pdfDownloadable={false}
+                viewType="full"
+                pageNumber={pageNumber}
+                numPages={numPages}
+                setViewType={() => setOpen(false)}
+                pageHandler={setPageNumber}
+                setError={setError}
+                trackEventHandler={() => {}}
+              />
+            </div>
+          )}
+        </div>
+      </Modal>
+      <StyledBox className="main">
+        <StyledBox className="inner">
+          <p data-testid={`prereading-name-${number}`}>{item.name}</p>
+          <StyledBox className="secondary">
+            <span>{item.info_text}</span>
+            {item.is_private ? (
+              <StyledButton
+                data-testid={`prereading-button-${number}`}
+                onClick={() => setOpen(true)}
+              >
+                {item.action_text}
+              </StyledButton>
+            ) : (
+              <StyledLink
+                data-testid={`prereading-link-${number}`}
+                href={item.action_url}
+                target="_blank"
+                onClick={() => onPreReadingClick()}
+              >
+                {item.action_text}
+              </StyledLink>
+            )}
+          </StyledBox>
+        </StyledBox>
+        <StyledBox className="check-box">
+          <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} number={number} />
         </StyledBox>
       </StyledBox>
-      <StyledBox className="check-box">
-        <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} number={number} />
-      </StyledBox>
-    </StyledBox>
+    </>
   );
 }
