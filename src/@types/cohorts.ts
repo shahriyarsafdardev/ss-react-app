@@ -138,6 +138,8 @@ export type Enrollment = {
   cohort_id?: string;
   cohort_code?: string;
   cohort_name?: string;
+  source: string;
+  admin_labelled_source: string;
 };
 
 export type CohortSale = {
@@ -171,6 +173,7 @@ export type Cohort = {
   random_peers: StudentProfile[];
   calendar_invite_url: string;
   referral_codes: ReferralCode[];
+  start_date: string;
 };
 
 export type ReferralCode = {

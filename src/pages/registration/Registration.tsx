@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
+import { useSnackbar } from 'notistack5';
 import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import UserForm from './UserForm';
@@ -33,6 +34,8 @@ export default function Registration() {
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
   const credit_account_id = url.get('credit_account') || '';
+  const ref_source = url.get('source') || '';
+  const { enqueueSnackbar } = useSnackbar();
 
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
@@ -58,7 +61,8 @@ export default function Registration() {
         .post(`/cohorts/${cohort_id}/enrollments.json`, {
           email: user?.email,
           coupon_code: user?.referrer,
-          account_id: credit_account_id
+          account_id: credit_account_id,
+          source: ref_source
         })
         .then((res) => {
           res.data &&
@@ -68,6 +72,9 @@ export default function Registration() {
             });
           setAccount(res.data.account);
           setLoading(false);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
         });
     }
   }, []);
@@ -139,7 +146,7 @@ export default function Registration() {
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
               Look for an email with your payment link in the next few hours; if you haven’t
-              recieved any, make sure you check your spam folder.
+              received any, make sure you check your spam folder.
             </Typography>
           </Box>
           <Button

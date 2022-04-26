@@ -38,6 +38,7 @@ import {
 import {
   acceptApplicationByAdmin,
   rejectApplicationByAdmin,
+  updateApplicationByAdmin,
   markAsPaidByAdmin,
   resetApplicationStatusAdmin,
   notInterestedApplicationByAdmin,
@@ -377,7 +378,11 @@ export const Actions = ({
   };
 
   const handleUpdate = async (enrollment: Enrollment) => {
-    await dispatch(updateApplication(cohort_id, enrollment));
+    if (isAdminView) {
+      await dispatch(updateApplicationByAdmin(cohort_id, enrollment));
+    } else {
+      await dispatch(updateApplication(cohort_id, enrollment));
+    }
     setAction('');
     setModalState(false);
   };
@@ -650,6 +655,18 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
           } used the referral code “${enrollment.coupon_code}”`}
         >
           <Typography variant="h4">🤝</Typography>
+        </Tooltip>
+      )}
+
+      {enrollment.source && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`${
+            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
+          } registered through a custom link with source “${enrollment.source}”`}
+        >
+          <Typography variant="h4">👂</Typography>
         </Tooltip>
       )}
       {enrollment.credit_account && (

@@ -160,9 +160,10 @@ export const CreateChannel: React.FC<Props> = (props) => {
     try {
       const myuuid = uuidv4();
       let newName = channelName;
-      if (createType === 'team') {
-        newName = channelName + myuuid;
-      }
+      // if (createType === 'team') {
+      //   newName = channelName + myuuid;
+      // }
+      newName = channelName + myuuid;
       const newChannel = await client.channel(createType, newName, {
         name: channelName,
         members: selectedUsers,

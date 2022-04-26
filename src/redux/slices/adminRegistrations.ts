@@ -73,6 +73,21 @@ export function initializeSales() {
   };
 }
 
+export function updateApplicationByAdmin(cohortID: string, enrollment: Enrollment) {
+  return async () => {
+    try {
+      const response = await axios.put(`/cohorts/${cohortID}/enrollments/${enrollment.id}.json`, {
+        enrollment
+      });
+      dispatch(
+        slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function acceptApplicationByAdmin(cohortID: string, enrollmentID: string) {
   return async () => {
     try {
