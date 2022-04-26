@@ -1,7 +1,7 @@
 import cohorts_fixture from '../../../fixtures/cohorts/cohorts.json';
 import user_fixture from '../../../fixtures/login/admin-login.json'
 
-describe('Sidebar', () => {
+describe('Instructors Login', () => {
   before(() => {
     cy.server();
     cy.loginasadmin({});

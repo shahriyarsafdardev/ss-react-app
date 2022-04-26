@@ -9,7 +9,9 @@ const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
 
   return (
     <Card className={`${classes.sectionCard} ${classes.mt20}`}>
-      <Typography variant="h5">History</Typography>
+      <Typography data-testid="history-header" variant="h5">
+        History
+      </Typography>
       <Box className={classes.rowContainer}>
         {/* <Box className={classes.yearLine}>2021</Box> */}
         <Box marginTop="15px">

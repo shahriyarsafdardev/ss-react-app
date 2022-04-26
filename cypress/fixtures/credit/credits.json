@@ -1,0 +1,119 @@
+{
+  "id":"926bac37-f893-40e8-b855-1775e6a440f1",
+  "accountName":"Testing Account",
+  "credit_balance":"462.5",
+  "history":[
+     {
+        "id":"bac01f7f-face-464d-b414-f5f8af8c7dca",
+        "time":"20220212T163347Z",
+        "type":"cohort",
+        "approved":true,
+        "attendee_name":"Adrian 1 Sarstedt",
+        "cohort_name":"The Economics of Digital Platforms",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"637.5"
+     },
+     {
+        "id":"7c2a19dd-3bce-4668-99b7-19b4d05f9d25",
+        "time":"20220211T051727Z",
+        "type":"cohort",
+        "approved":true,
+        "attendee_name":"Waqas2 Nazir",
+        "cohort_name":"Building \u0026 Investing in Network Effects",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"900.0"
+     },
+     {
+        "id":"09edc3f0-e2a3-4f92-b5d1-b5da70030dbd",
+        "time":"20220211T051714Z",
+        "type":"cohort",
+        "approved":true,
+        "attendee_name":"Waqas2 Nazir",
+        "cohort_name":"The Business and Economics of Space",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"0.0"
+     },
+     {
+        "id":"92b588cf-5377-4362-83a7-1fc37ba5e3e1",
+        "time":"20220211T043531Z",
+        "type":"cohort",
+        "approved":true,
+        "attendee_name":"Waqas Nazir",
+        "cohort_name":"The Business and Economics of Space",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"0.0"
+     }
+  ],
+  "unapproved":[
+     {
+        "id":"3173d870-290e-499d-bdcd-005f64ee1330",
+        "time":"20220217T140044Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"test user",
+        "cohort_name":"Accelerating Innovation with A/B Testing",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"935.0"
+     },
+     {
+        "id":"36fe7be4-6e15-434e-8582-22ad4b089f43",
+        "time":"20220217T140029Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"Test User",
+        "cohort_name":"Accelerating Innovation with A/B Testing",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"935.0"
+     },
+     {
+        "id":"2534168f-c6ad-462c-96b4-325689b5bb3b",
+        "time":"20220217T135901Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"Waqas Nazir",
+        "cohort_name":"Accelerating Innovation with A/B Testing",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"935.0"
+     },
+     {
+        "id":"7d569fe3-352c-4ba2-865c-2b6390ab0735",
+        "time":"20220212T202831Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"Fred Best",
+        "cohort_name":"The Economics of Digital Platforms",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"750.0"
+     },
+     {
+        "id":"9df9dee0-efa1-4dbc-abb9-48e97c943daf",
+        "time":"20220212T201903Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"Depreciated III Sarstedt",
+        "cohort_name":"The Economics of Digital Platforms",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"637.5"
+     },
+     {
+        "id":"802998bb-5fdc-4852-beea-ad952534547c",
+        "time":"20220212T201124Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"The Lol",
+        "cohort_name":"The Economics of Digital Platforms",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"637.5"
+     },
+     {
+        "id":"c54f0c8e-c1a1-4f48-937d-c05808a54f0b",
+        "time":"20220208T132101Z",
+        "type":"cohort",
+        "approved":null,
+        "attendee_name":"Depreciated III Testing",
+        "cohort_name":"The Business and Economics of Space",
+        "cohort_link":"https://scholarsite.io",
+        "credit_amount":"0.0"
+     }
+  ]
+}

@@ -99,7 +99,11 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       <Box sx={{ flexGrow: 1 }}>
         {user?.type === 'company' && (
           <CompanyLogo>
-            <img src="/static/business-empty-states/scholarsite-logo.svg" alt="logo" />
+            <img
+              data-testid="company-logo"
+              src="/static/business-empty-states/scholarsite-logo.svg"
+              alt="logo"
+            />
           </CompanyLogo>
         )}
         <RootStyle

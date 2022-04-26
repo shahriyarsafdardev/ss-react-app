@@ -1,0 +1,7 @@
+{
+  "amount": 5000,
+  "cardCvv": "1234",
+  "cardExpiry": "11/22",
+  "cardName": "Testing Account",
+  "cardNumber": "378282246310005"
+}

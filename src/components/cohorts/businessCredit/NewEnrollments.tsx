@@ -24,10 +24,11 @@ const NewEnrollments = ({
   const classes = useStyles();
 
   const ApprovalRow = ({ row }: { row: CreditObject }) => (
-    <Box className={classes.boxTwo}>
+    <Box data-testid={`enrollment-${row.id}`} className={classes.boxTwo}>
       <HistoryRow row={row} />
       <Box className={classes.approveBtn}>
         <Button
+          data-testid={`enrollment-reject-btn-${row.id}`}
           variant="outlined"
           onClick={() => onRejectCredit(row.id)}
           color="error"
@@ -37,6 +38,7 @@ const NewEnrollments = ({
           Reject
         </Button>
         <Button
+          data-testid={`enrollment-approve-btn-${row.id}`}
           variant="outlined"
           color="primary"
           onClick={() => onApproveCredit(row.id)}
@@ -55,12 +57,17 @@ const NewEnrollments = ({
         style={{ padding: '0' }}
         action={
           newEnrollments.length > 0 ? (
-            <span className={classes.notificationText}>{newEnrollments.length} new</span>
+            <span
+              data-testid={`enrollment-count-${newEnrollments.length}`}
+              className={classes.notificationText}
+            >
+              {newEnrollments.length} new
+            </span>
           ) : null
         }
         title={
           <div>
-            <h3>New Enrollments</h3>
+            <h3 data-testid="new-enrollments-header">New Enrollments</h3>
             <p style={{ color: '#A6AAAF', fontWeight: 500 }}>Waiting for approval</p>
           </div>
         }
