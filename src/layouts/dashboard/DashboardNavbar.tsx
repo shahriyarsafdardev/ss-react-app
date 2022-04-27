@@ -65,7 +65,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'sessions',
     'peers',
     'Q&A',
-    'attendance'
+    'attendance',
+    'analytics'
   ];
 
   useEffect(() => {
@@ -80,6 +81,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Sales Overview');
         } else if (section === 'monthly-registrations') {
           setCurrentTab('Registrations Overview');
+        } else if (section === 'analytics') {
+          setCurrentTab('Analytics');
         } else {
           setCurrentTab(section);
         }

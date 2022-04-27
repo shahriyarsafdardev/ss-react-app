@@ -174,6 +174,7 @@ export type Cohort = {
   calendar_invite_url: string;
   referral_codes: ReferralCode[];
   start_date: string;
+  analytics: any;
 };
 
 export type ReferralCode = {
