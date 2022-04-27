@@ -822,6 +822,73 @@ export const ExportToExcel = ({
   );
 };
 
+export const ExportAttendanceToExcel = ({
+  attendance,
+  fileName
+}: {
+  attendance: any;
+  fileName: string;
+}) => {
+  interface LooseObject {
+    [key: string]: any;
+  }
+
+  const attendanceDataToExport: any = [];
+  attendance.sessionAttendanceRecords.map((item: any, i: any) => {
+    const innerObj: LooseObject = {};
+    innerObj.name = item.name;
+    innerObj.email = item.email;
+    innerObj.company = item.company;
+    item.attendanceData.map((item: any, index: any) => (innerObj[`session_${index + 1}`] = item));
+    return attendanceDataToExport.push(innerObj);
+  });
+  console.log(attendanceDataToExport);
+  const sessions = [...Array(attendance.totalSessions)].map((x, i) => ({
+    column: `Session ${i + 1}`,
+    value: (attendanceDataToExport: any) => attendanceDataToExport[`session_${i + 1}`],
+    width: 15
+  }));
+
+  const exportExcel = async (objects: any, fileName: string) => {
+    const schema = [
+      {
+        column: 'Participant',
+        value: (attendanceDataToExport: any) => attendanceDataToExport.name,
+        width: 25
+      },
+      {
+        column: 'Email',
+        value: (attendanceDataToExport: any) => attendanceDataToExport.email,
+        width: 25
+      },
+      {
+        column: 'Company',
+        value: (attendanceDataToExport: any) => attendanceDataToExport.company,
+        width: 25
+      },
+      ...sessions
+    ];
+
+    await writeXlsxFile(objects, {
+      schema,
+      fileName
+    });
+  };
+
+  const exportData = async () => {
+    if (attendance.sessionAttendanceRecords.length > 0) {
+      exportExcel(attendanceDataToExport, fileName);
+    }
+  };
+
+  return (
+    <Button variant="outlined" color="primary" onClick={() => exportData()}>
+      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+      Excel Export
+    </Button>
+  );
+};
+
 export const pickColor = (status: string) => {
   if (status === 'Application Accepted') {
     return 'warning';
