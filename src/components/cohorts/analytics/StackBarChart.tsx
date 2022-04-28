@@ -2,8 +2,17 @@ import { BaseOptionChart } from 'components/charts';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 import { Box, Card, CardHeader } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
+
+const ChartCard = styled(Card)(({ theme }) => ({
+  width: '50%',
+  marginRight: '10px',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
 
 export default function StackedBarChart({
   data_points,
@@ -33,11 +42,11 @@ export default function StackedBarChart({
     }
   });
   return (
-    <Card sx={{ width: '50%', marginRight: '10px' }}>
+    <ChartCard>
       <CardHeader title={title} data-testid="stack_bar_chart" />
       <Box sx={{ mt: 3, mx: 3 }} dir="ltr">
         <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={320} />
       </Box>
-    </Card>
+    </ChartCard>
   );
 }

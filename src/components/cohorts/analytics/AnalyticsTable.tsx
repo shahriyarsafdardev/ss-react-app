@@ -11,10 +11,13 @@ import {
 import { styled } from '@material-ui/core/styles';
 import EmptyAttendanceTab from '../onboarding/empty-states/EmptyAttendanceTab';
 
-const StyledContainer = styled(Card)(() => ({
+const StyledContainer = styled(Card)(({ theme }) => ({
   minHeight: '100%',
   width: '100%',
-  paddingTop: '20px'
+  paddingTop: '20px',
+  [theme.breakpoints.down('sm')]: {
+    overflow: 'scroll'
+  }
 }));
 
 function AnalyticsTable({ rows }: { rows: any }) {
