@@ -82,7 +82,15 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, enrollments: action.payload.enrollments };
       }
     },
-
+    getAnalyticsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, analytics: action.payload.analytics };
+      }
+    },
     updateOnboardingStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -356,6 +364,19 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getAnalytics(cohort_id: string, instructor_name: string) {
+  return async () => {
+    try {
+      const response = await axios.get(
+        `/analytics?page_name=${instructor_name}&cohort_id=${cohort_id}`
+      );
+      dispatch(slice.actions.getAnalyticsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }

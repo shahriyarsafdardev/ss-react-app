@@ -46,6 +46,11 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
           path: PATH_DASHBOARD.cohorts.attendance(cohort.id),
           notifications: false
         },
+        {
+          title: 'analytics',
+          path: PATH_DASHBOARD.cohorts.analytics(cohort.id, cohort.host_names),
+          notifications: false
+        },
         ...object.children
       ];
     } else {

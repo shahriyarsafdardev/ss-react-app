@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
@@ -107,7 +108,6 @@ export default function Router() {
             </RoleBasedGuard>
           )
         },
-
         {
           path: 'e-commerce',
           children: [
@@ -214,6 +214,14 @@ export default function Router() {
               element: (
                 <RoleBasedGuard accessibleRoles={learnerRoles}>
                   <CalendarInstructions />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: ':instructorName/analytics',
+              element: (
+                <RoleBasedGuard accessibleRoles={expertRoles}>
+                  <AnalyticsTab />
                 </RoleBasedGuard>
               )
             }
