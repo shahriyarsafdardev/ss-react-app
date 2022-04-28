@@ -35,14 +35,17 @@ function AnalyticsTab() {
   const [loading, setLoading] = useState(true);
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const instructor_name = window.location.pathname.split('/')[3] || '';
-  const { cohorts } = useSelector((state: RootState) => state.cohort);
-  const cohort = cohorts.find((cohort) => cohort.id === cohort_id);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { analytics } = cohort || [];
+
   useEffect(() => {
-    if (cohort_id) {
+    if (cohort_id && instructor_name && cohort && !analytics) {
       dispatch(getAnalytics(cohort_id, instructor_name));
       setLoading(false);
     }
-  }, [cohort_id]);
+  }, [cohort, cohort_id, instructor_name, analytics]);
 
   if (loading) {
     return (
