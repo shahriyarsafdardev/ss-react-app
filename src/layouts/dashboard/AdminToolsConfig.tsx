@@ -39,6 +39,11 @@ const adminToolsConfig = {
       title: 'sales overview',
       path: PATH_DASHBOARD.adminTools.cohort_sales,
       icon: ICONS.cohorts
+    },
+    {
+      title: 'cohort experiences',
+      path: PATH_DASHBOARD.adminTools.cohort_experiences,
+      icon: ICONS.cohorts
     }
   ]
 };

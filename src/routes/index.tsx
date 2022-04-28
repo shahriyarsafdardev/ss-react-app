@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
+import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
@@ -104,6 +105,14 @@ export default function Router() {
           element: (
             <RoleBasedGuard accessibleRoles={adminRoles}>
               <AdminSales />
+            </RoleBasedGuard>
+          )
+        },
+        {
+          path: '/cohort_experiences',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <AdminExperiences />
             </RoleBasedGuard>
           )
         },
@@ -214,6 +223,14 @@ export default function Router() {
               element: (
                 <RoleBasedGuard accessibleRoles={learnerRoles}>
                   <CalendarInstructions />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: ':instructorName/analytics',
+              element: (
+                <RoleBasedGuard accessibleRoles={expertRoles}>
+                  <AnalyticsTab />
                 </RoleBasedGuard>
               )
             }
@@ -410,6 +427,7 @@ const FreeSessionInfo = Loadable(lazy(() => import('../pages/registration/FreeSe
 const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/FreeSessionMessage')));
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
 const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
+const AdminExperiences = Loadable(lazy(() => import('../pages/admin/ExperiencesTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

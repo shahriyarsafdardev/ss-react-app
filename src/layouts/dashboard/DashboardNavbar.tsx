@@ -61,11 +61,13 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'home',
     'registrations',
     'cohort_sales',
+    'cohort_experiences',
     'monthly-registrations',
     'sessions',
     'peers',
     'Q&A',
-    'attendance'
+    'attendance',
+    'analytics'
   ];
 
   useEffect(() => {
@@ -80,6 +82,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Sales Overview');
         } else if (section === 'monthly-registrations') {
           setCurrentTab('Registrations Overview');
+        } else if (section === 'analytics') {
+          setCurrentTab('Analytics');
+        } else if (section === 'cohort_experiences') {
+          setCurrentTab('Experiences Overview');
         } else {
           setCurrentTab(section);
         }

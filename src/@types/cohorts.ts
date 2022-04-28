@@ -154,6 +154,18 @@ export type CohortSale = {
   revenue_week: number;
 };
 
+export type CohortExperience = {
+  id: string;
+  code: string;
+  intake: string;
+  name: string;
+  instructors: string[];
+  start_date: string;
+  participants: number;
+  live_attendance: number;
+  live_async_attendance: number;
+};
+
 export type Cohort = {
   id: string;
   name: string;
@@ -175,6 +187,7 @@ export type Cohort = {
   calendar_invite_url: string;
   referral_codes: ReferralCode[];
   start_date: string;
+  analytics: any;
 };
 
 export type ReferralCode = {
