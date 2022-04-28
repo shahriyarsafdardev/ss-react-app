@@ -81,14 +81,14 @@ Cypress.Commands.add(
     cy.fixture(enrollmentsMonthly).as('enrollmentMonthlyData');
     cy.route('GET', `${serverUrl}/cohorts.json`, '@cohortsData').as('cohorts');
     cy.route('POST', `${serverUrl}/users/login`, '@loginData').as('login');
+    // cy.route(
+    //   'GET',
+    //   `${serverUrl}/cohorts/${enrollmentspath.cohort_id}/enrollments.json`,
+    //   '@enrollmentData'
+    // ).as('enrollment'); // this is depreciated
     cy.route(
       'GET',
-      `${serverUrl}/cohorts/${enrollmentspath.cohort_id}/enrollments.json`,
-      '@enrollmentData'
-    ).as('enrollment');
-    cy.route(
-      'GET',
-      `${serverUrl}/cohorts/${enrollmentspath.cohort_id}/enrollments.json`,
+      `${serverUrl}/cohorts/enrollments_monthly_data.json`,
       '@enrollmentMonthlyData'
     ).as('enrollmentMD');
     cy.visit(`${baseUrl}`);
@@ -97,7 +97,7 @@ Cypress.Commands.add(
     cy.get('[data-testid=email]').type(email);
     cy.get('[data-testid=password]').type(password);
     cy.get('[data-testid=loginBtn]').click();
-    cy.wait(['@login', '@cohorts', '@enrollment']);
+    cy.wait(['@login', '@cohorts', '@enrollmentMD']);
   }
 );
 Cypress.Commands.add(
