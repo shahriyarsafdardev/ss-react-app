@@ -38,11 +38,11 @@ function AnalyticsTab() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const cohort = cohorts.find((cohort) => cohort.id === cohort_id);
   useEffect(() => {
-    if (cohort && loading) {
+    if (cohort_id) {
       dispatch(getAnalytics(cohort_id, instructor_name));
       setLoading(false);
     }
-  }, [cohort]);
+  }, [cohort_id]);
 
   if (loading) {
     return (
