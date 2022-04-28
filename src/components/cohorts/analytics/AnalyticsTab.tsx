@@ -66,7 +66,7 @@ function AnalyticsTab() {
             />
           </Row>
           <Row>
-            <AnalyticsTable />
+            <AnalyticsTable rows={cohort?.analytics.analytics_table_data} />
           </Row>
         </ChartsContainer>
       )}

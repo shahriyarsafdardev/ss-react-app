@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   Table,
@@ -6,25 +6,22 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  CardHeader,
-  TableContainer,
-  TextField
+  TableContainer
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import EmptyAttendanceTab from '../onboarding/empty-states/EmptyAttendanceTab';
 
 const StyledContainer = styled(Card)(() => ({
-  minHeight: '500px',
-  width: '100%'
+  minHeight: '100%',
+  width: '100%',
+  paddingTop: '20px'
 }));
 
-const displayData = true;
-
-function AnalyticsTable() {
+function AnalyticsTable({ rows }: { rows: any }) {
   return (
     <StyledContainer>
-      {displayData ? (
-        <TableContainer sx={{ minWidth: 720, paddingTop: '10px' }}>
+      {rows.length > 0 ? (
+        <TableContainer sx={{ minWidth: 720 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -35,7 +32,27 @@ function AnalyticsTable() {
                 <TableCell>No. paid</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody />
+            <TableBody>
+              {rows.map((row: any) => {
+                const {
+                  source,
+                  no_of_pages_views,
+                  avg_engagement,
+                  no_of_registerations,
+                  no_of_paid
+                } = row;
+
+                return (
+                  <TableRow hover key={source}>
+                    <TableCell align="left">{source}</TableCell>
+                    <TableCell align="left">{no_of_pages_views}</TableCell>
+                    <TableCell align="left">{avg_engagement}</TableCell>
+                    <TableCell align="left">{no_of_registerations}</TableCell>
+                    <TableCell align="left">{no_of_paid}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
           </Table>
         </TableContainer>
       ) : (
