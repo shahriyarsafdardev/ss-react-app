@@ -109,6 +109,15 @@ export default function Router() {
           )
         },
         {
+          path: '/cohort_experiences',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <AdminExperiences />
+            </RoleBasedGuard>
+          )
+        },
+
+        {
           path: 'e-commerce',
           children: [
             { path: '/', element: <Navigate to="/e-commerce/shop" replace /> },
@@ -418,6 +427,7 @@ const FreeSessionInfo = Loadable(lazy(() => import('../pages/registration/FreeSe
 const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/FreeSessionMessage')));
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
 const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
+const AdminExperiences = Loadable(lazy(() => import('../pages/admin/ExperiencesTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
