@@ -1,12 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-import { Enrollment, CohortSale } from '../../@types/cohorts';
+import { Enrollment, CohortSale, CohortExperience } from '../../@types/cohorts';
 import axios from '../../utils/axios';
 import { setSession } from '../../utils/jwt';
 
-const initialState: { enrollments: Enrollment[]; cohort_sales: CohortSale[] } = {
+const initialState: {
+  enrollments: Enrollment[];
+  cohort_sales: CohortSale[];
+  cohort_experiences: CohortExperience[];
+} = {
   enrollments: [],
-  cohort_sales: []
+  cohort_sales: [],
+  cohort_experiences: []
 };
 
 const setAuthorizationToken = () => {
@@ -24,6 +29,10 @@ const slice = createSlice({
 
     setCohortSales(state, action) {
       state.cohort_sales = action.payload.cohort_sales;
+    },
+
+    setCohortExperiences(state, action) {
+      state.cohort_experiences = action.payload.cohort_experiences;
     },
 
     updateRegistrationSuccess(state, action) {
@@ -67,6 +76,20 @@ export function initializeSales() {
       setAuthorizationToken();
       const response = await axios.get('cohorts/cohort_sales.json');
       dispatch(slice.actions.setCohortSales({ cohort_sales: response.data.cohort_sales }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function initializeExperiences() {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get('cohorts/cohort_experiences.json');
+      dispatch(
+        slice.actions.setCohortExperiences({ cohort_experiences: response.data.cohort_experiences })
+      );
     } catch (error) {
       console.log(error);
     }

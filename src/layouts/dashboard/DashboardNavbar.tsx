@@ -61,6 +61,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'home',
     'registrations',
     'cohort_sales',
+    'cohort_experiences',
     'monthly-registrations',
     'sessions',
     'peers',
@@ -83,6 +84,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Registrations Overview');
         } else if (section === 'analytics') {
           setCurrentTab('Analytics');
+        } else if (section === 'cohort_experiences') {
+          setCurrentTab('Experiences Overview');
         } else {
           setCurrentTab(section);
         }
