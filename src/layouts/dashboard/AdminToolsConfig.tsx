@@ -31,7 +31,7 @@ const adminToolsConfig = {
   subheader: 'admin tools',
   items: [
     {
-      title: 'Registerations',
+      title: 'Registrations',
       path: PATH_DASHBOARD.adminTools.root,
       icon: ICONS.cohorts
     },
@@ -41,7 +41,7 @@ const adminToolsConfig = {
       icon: ICONS.cohorts
     },
     {
-      title: 'cohort experiences',
+      title: 'Cohort Experience',
       path: PATH_DASHBOARD.adminTools.cohort_experiences,
       icon: ICONS.cohorts
     }

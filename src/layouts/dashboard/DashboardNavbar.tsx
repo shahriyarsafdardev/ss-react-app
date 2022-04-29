@@ -85,7 +85,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         } else if (section === 'analytics') {
           setCurrentTab('Analytics');
         } else if (section === 'cohort_experiences') {
-          setCurrentTab('Experiences Overview');
+          setCurrentTab('Cohort Experience Overview');
         } else {
           setCurrentTab(section);
         }

@@ -159,7 +159,6 @@ export type CohortExperience = {
   code: string;
   intake: string;
   name: string;
-  instructors: string[];
   start_date: string;
   participants: number;
   live_attendance: number;
