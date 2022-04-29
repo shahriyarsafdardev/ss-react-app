@@ -19,16 +19,20 @@ const ChartsContainer = styled(Box)(() => ({
   flexDirection: 'column',
   alignItems: 'center',
   margin: '0 1rem 1rem 1rem',
-  padding: '1rem 0'
+  padding: '1rem 0',
+  maxWidth: '1200px'
 }));
 
-const Row = styled(Box)(() => ({
+const Row = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   margin: '0 1rem 1rem 1rem',
-  padding: '1rem 0'
+  padding: '1rem 0',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column'
+  }
 }));
 
 function AnalyticsTab() {
