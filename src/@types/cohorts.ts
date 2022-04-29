@@ -154,6 +154,11 @@ export type CohortSale = {
   revenue_week: number;
 };
 
+export type CohortSaleChart = {
+  monthly_revenue_data: any[];
+  weekly_revenue_data: any[];
+};
+
 export type CohortExperience = {
   id: string;
   code: string;

@@ -16,10 +16,14 @@ const ChartCard = styled(Card)(({ theme }) => ({
 
 export default function StackedBarChart({
   data_points,
-  title
+  title,
+  label,
+  xaxisType
 }: {
   data_points: any;
   title: string;
+  label: string;
+  xaxisType: string;
 }) {
   const CHART_DATA = data_points.data;
 
@@ -32,12 +36,12 @@ export default function StackedBarChart({
     plotOptions: { bar: { columnWidth: '60%' } },
     stroke: { show: false },
     xaxis: {
-      type: 'datetime',
+      type: xaxisType,
       categories: data_points.dates
     },
     tooltip: {
       y: {
-        formatter: (val: number) => `${val} user(s)`
+        formatter: (val: number) => `${val} ${label}`
       }
     }
   });

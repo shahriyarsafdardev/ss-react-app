@@ -18,9 +18,9 @@ const ChartsContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  margin: '0 1rem 1rem 1rem',
   padding: '1rem 0',
-  maxWidth: '1200px'
+  maxWidth: '1200px',
+  margin: 'auto'
 }));
 
 const Row = styled(Box)(({ theme }) => ({
@@ -66,10 +66,14 @@ function AnalyticsTab() {
             <StackedBarChart
               data_points={cohort?.analytics.views_over_last_week}
               title="Views over the last 7 days"
+              label="user(s)"
+              xaxisType="datetime"
             />
             <StackedBarChart
               data_points={cohort?.analytics.reg_over_last_week}
               title="Registrations over the last 7 days"
+              label="user(s)"
+              xaxisType="datetime"
             />
           </Row>
           <Row>
