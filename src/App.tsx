@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 
 // event tracker
 import { initAmplitude, setAmplitudeUserProperties } from 'utils/amplitude';
+
+import Feedback from 'components/Feedback';
+
 // routes
 import Router from './routes';
 // theme
@@ -48,6 +51,7 @@ export default function App() {
               {/* <Settings /> */}
               <ScrollToTop />
               <GoogleAnalytics />
+              {isAuthenticated && <Feedback />}
               {isInitialized ? <Router /> : <LoadingScreen />}
             </NotistackProvider>
           </RtlLayout>
