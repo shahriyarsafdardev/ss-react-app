@@ -4,7 +4,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import { useDispatch, RootState, useSelector } from 'redux/store';
 import { initializeSales, initializeSalesCharts } from 'redux/slices/adminRegistrations';
 import { styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import StackedBarChart from 'components/cohorts/analytics/StackBarChart';
 import SalesList from '../../components/cohorts/sales/SalesList';
 import { AdminContainer, LoadingContainer } from './Common';
@@ -37,11 +37,15 @@ export default function SalesTab() {
     (state: RootState) => state.adminRegistrations.cohort_sales_charts
   );
   const [loading, setLoading] = useState(true);
-  console.log('cohort_sales_charts >>', cohort_sales_charts);
 
   useEffect(() => {
-    dispatch(initializeSales()).then((res) => {});
-    dispatch(initializeSalesCharts()).then((res) => setLoading(false));
+    dispatch(initializeSales()).then((res) => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (!cohort_sales_charts) {
+      dispatch(initializeSalesCharts()).then((res) => setLoading(false));
+    }
   }, []);
 
   if (loading) {
@@ -54,20 +58,33 @@ export default function SalesTab() {
   return (
     <Page title="ScholarSite | Sales">
       <ChartsContainer>
-        <Row>
-          <StackedBarChart
-            data_points={cohort_sales_charts?.monthly_revenue_data}
-            title="Revenue over the last year"
-            label="$ revenue"
-            xaxisType=""
-          />
-          <StackedBarChart
-            data_points={cohort_sales_charts?.weekly_revenue_data}
-            title="Revenue over the last 7 days"
-            label="$ revenue"
-            xaxisType=""
-          />
-        </Row>
+        {cohort_sales_charts ? (
+          <Row>
+            <StackedBarChart
+              data_points={cohort_sales_charts?.monthly_revenue_data}
+              title="Revenue over the last year"
+              label="$ revenue"
+              xaxisType=""
+            />
+            <StackedBarChart
+              data_points={cohort_sales_charts?.weekly_revenue_data}
+              title="Revenue over the last 7 days"
+              label="$ revenue"
+              xaxisType=""
+            />
+          </Row>
+        ) : (
+          <>
+            <LoadingScreen />
+            <Typography
+              gutterBottom
+              variant="subtitle2"
+              sx={{ color: 'text.secondary', paddingBottom: '50px' }}
+            >
+              Charts are Loading ...
+            </Typography>
+          </>
+        )}
       </ChartsContainer>
       <AdminContainer>
         <SalesList cohortSales={cohort_sales} />

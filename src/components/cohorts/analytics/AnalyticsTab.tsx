@@ -51,7 +51,7 @@ function AnalyticsTab() {
     }
   }, [cohort, cohort_id, instructor_name, analytics]);
 
-  if (loading) {
+  if (loading && !analytics) {
     return (
       <LoadingContainer>
         <LoadingScreen />
