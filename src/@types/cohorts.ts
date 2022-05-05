@@ -41,7 +41,8 @@ export type Alumni = {
   email: string;
   linkedin_url: string;
   company_name: string;
-  cohorts: string;
+  paid_cohorts: string;
+  unpaid_cohorts: string;
   notes: string;
   mailing_list: boolean;
 };

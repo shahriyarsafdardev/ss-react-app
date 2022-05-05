@@ -918,27 +918,37 @@ export const ExportAlumniToExcel = ({
     const schema = [
       {
         column: 'Alumni Name',
-        value: (alumnies: any) => alumnies.full_name,
+        value: (alumniObject: any) => alumniObject.full_name,
+        width: 50
+      },
+      {
+        column: 'Email',
+        value: (alumniObject: any) => alumniObject.email,
         width: 50
       },
       {
         column: 'Company',
-        value: (alumnies: any) => alumnies.company_name,
+        value: (alumniObject: any) => alumniObject.company_name,
         width: 50
       },
       {
-        column: 'Cohorts',
-        value: (alumnies: any) => alumnies.cohorts,
+        column: 'Cohorts(payed for)',
+        value: (alumniObject: any) => alumniObject.paid_cohorts,
+        width: 50
+      },
+      {
+        column: 'Cohorts(Registered Interest in)',
+        value: (alumniObject: any) => alumniObject.unpaid_cohorts,
         width: 50
       },
       {
         column: 'Notes',
-        value: (alumnies: any) => alumnies.notes,
+        value: (alumniObject: any) => alumniObject.notes,
         width: 50
       },
       {
         column: 'Mailing List',
-        value: (alumnies: any) => alumnies.mailing_list,
+        value: (alumniObject: any) => alumniObject.mailing_list,
         width: 50
       }
     ];

@@ -40,12 +40,14 @@ export default function AlumniTab() {
   }, [dispatch]);
 
   const filteredRows = () => {
-    const searchedRows = alumnies.filter(
-      (item: Alumni) =>
-        (item.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
-        (item.company_name || '').toLowerCase().includes(search.toLowerCase()) ||
-        (item.notes || '').toLowerCase().includes(search.toLowerCase())
-    );
+    const searchedRows = alumnies
+      .filter((item: Alumni) => item.paid_cohorts.length > 0)
+      .filter(
+        (item: Alumni) =>
+          (item.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
+          (item.company_name || '').toLowerCase().includes(search.toLowerCase()) ||
+          (item.notes || '').toLowerCase().includes(search.toLowerCase())
+      );
     return searchedRows;
   };
 
