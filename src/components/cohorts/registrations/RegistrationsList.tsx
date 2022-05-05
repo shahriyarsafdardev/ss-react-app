@@ -47,7 +47,7 @@ export default function RegistrationsList({
             <TableBody id="registration-list-container" data-testid="registration-list">
               {enrollments.map((enrollment: any, index) => (
                 <RegistrationRow
-                  codes={codes}
+                  codes={codes.filter((code) => code.cohort_id === enrollment.cohort_id)}
                   key={enrollment.id}
                   enrollment={enrollment}
                   index={index}

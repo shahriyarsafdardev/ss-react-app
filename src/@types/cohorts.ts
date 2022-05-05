@@ -32,6 +32,20 @@ export type StudentProfile = {
   is_onboarded?: boolean;
 };
 
+export type Alumni = {
+  id: string;
+  enrollment_id: string;
+  full_name: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  linkedin_url: string;
+  company_name: string;
+  cohorts: string;
+  notes: string;
+  mailing_list: boolean;
+};
+
 type Tag = {
   name: string;
   color: LabelColor;
@@ -191,6 +205,7 @@ export type Cohort = {
 
 export type ReferralCode = {
   id: string;
+  cohort_id: string;
   code: string;
   referral_message: string;
   referral_notes: string;

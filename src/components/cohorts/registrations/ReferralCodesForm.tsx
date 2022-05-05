@@ -37,6 +37,7 @@ export default function ReferralCodesForm({
   const addNewCode = () => {
     const newCode = {
       id: uuidv4().toString(),
+      cohort_id: '',
       code: '',
       referral_message: '',
       referral_notes: ''

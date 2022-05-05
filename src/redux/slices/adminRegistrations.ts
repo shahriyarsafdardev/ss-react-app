@@ -1,17 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '../store';
-import { Enrollment, CohortSale, CohortExperience } from '../../@types/cohorts';
+import {
+  Enrollment,
+  CohortSale,
+  CohortExperience,
+  Alumni,
+  ReferralCode
+} from '../../@types/cohorts';
 import axios from '../../utils/axios';
 import { setSession } from '../../utils/jwt';
 
 const initialState: {
   enrollments: Enrollment[];
   cohort_sales: CohortSale[];
+  cohort_codes: ReferralCode[];
   cohort_experiences: CohortExperience[];
+  alumnies: Alumni[];
 } = {
   enrollments: [],
   cohort_sales: [],
-  cohort_experiences: []
+  cohort_codes: [],
+  cohort_experiences: [],
+  alumnies: []
 };
 
 const setAuthorizationToken = () => {
@@ -25,6 +35,7 @@ const slice = createSlice({
   reducers: {
     setEnrollments(state, action) {
       state.enrollments = action.payload.enrollments;
+      state.cohort_codes = action.payload.codes;
     },
 
     setCohortSales(state, action) {
@@ -33,6 +44,10 @@ const slice = createSlice({
 
     setCohortExperiences(state, action) {
       state.cohort_experiences = action.payload.cohort_experiences;
+    },
+
+    setAlumnies(state, action) {
+      state.alumnies = action.payload.alumnies;
     },
 
     updateRegistrationSuccess(state, action) {
@@ -46,12 +61,24 @@ const slice = createSlice({
         state.enrollments = updated;
       }
     },
+
     deleteApplicationSuccess(state, action) {
       const updated = state.enrollments;
 
       state.enrollments = updated.filter(
         (enrollment) => enrollment.id !== action.payload.enrollmentID
       );
+    },
+
+    updateAlumniSuccess(state, action) {
+      const { alumnies } = state;
+      const tragetAlumniIndex = alumnies.findIndex(
+        (alumni) => alumni.id === action.payload.alumni.id
+      );
+      if (tragetAlumniIndex !== -1) {
+        alumnies[tragetAlumniIndex] = action.payload.alumni;
+        state.alumnies = alumnies;
+      }
     }
   }
 });
@@ -63,7 +90,12 @@ export function initializeEnrollments() {
     try {
       setAuthorizationToken();
       const response = await axios.get(`cohorts/enrollments_monthly_data.json`);
-      dispatch(slice.actions.setEnrollments({ enrollments: response.data.enrollments }));
+      dispatch(
+        slice.actions.setEnrollments({
+          enrollments: response.data.enrollments,
+          codes: response.data.codes
+        })
+      );
     } catch (error) {
       console.log(error);
     }
@@ -105,6 +137,17 @@ export function updateApplicationByAdmin(cohortID: string, enrollment: Enrollmen
       dispatch(
         slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
       );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+export function initializeAlumnies() {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get('cohorts/alumnies.json');
+      dispatch(slice.actions.setAlumnies({ alumnies: response.data }));
     } catch (error) {
       console.log(error);
     }
@@ -199,6 +242,20 @@ export function deleteApplicationByAdmin(cohortID: string, enrollmentID: string)
       );
 
       dispatch(slice.actions.deleteApplicationSuccess({ cohortID, enrollmentID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateAlumniByAdmin(alumni: Alumni) {
+  return async () => {
+    try {
+      const response = await axios.put(`cohorts/update_alumni.json`, {
+        alumni
+      });
+
+      dispatch(slice.actions.updateAlumniSuccess({ alumni: response.data }));
     } catch (error) {
       console.log(error);
     }

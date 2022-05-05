@@ -62,6 +62,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'registrations',
     'cohort_sales',
     'cohort_experiences',
+    'alumni',
     'monthly-registrations',
     'sessions',
     'peers',
@@ -86,6 +87,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Analytics');
         } else if (section === 'cohort_experiences') {
           setCurrentTab('Cohort Experience Overview');
+        } else if (section === 'alumni') {
+          setCurrentTab('Alumni Overview');
         } else {
           setCurrentTab(section);
         }
