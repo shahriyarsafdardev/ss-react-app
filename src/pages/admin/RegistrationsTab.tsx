@@ -17,6 +17,7 @@ export default function RegistrationsTab() {
   const [limit, setLimit] = useState(10);
   const dispatch = useDispatch();
   const enrollments = useSelector((state: RootState) => state.adminRegistrations.enrollments);
+  const cohortCodes = useSelector((state: RootState) => state.adminRegistrations.cohort_codes);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function RegistrationsTab() {
       <AdminContainer>
         <RegistrationsHeader enrollments={enrollments} isAdminView={true} />
         <RegistrationsList
-          codes={[]}
+          codes={cohortCodes}
           enrollments={enrollments.slice(0, limit)}
           isAdminView={true}
         />

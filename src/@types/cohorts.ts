@@ -205,6 +205,7 @@ export type Cohort = {
 
 export type ReferralCode = {
   id: string;
+  cohort_id: string;
   code: string;
   referral_message: string;
   referral_notes: string;
