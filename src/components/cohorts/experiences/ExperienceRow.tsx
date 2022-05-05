@@ -1,13 +1,13 @@
-import { Stack, TableRow, Tooltip, TableCell } from '@material-ui/core';
+import { Stack, Link, TableRow, Tooltip, TableCell } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import { CohortExperience } from '../../../@types/cohorts';
 import { ExcelDownload } from './ExcelDownload';
 
 type ExperienceRowProps = {
   cohortExperience: CohortExperience;
-  cohortExperiences: CohortExperience[];
 };
 
-export default function ExperienceRow({ cohortExperience, cohortExperiences }: ExperienceRowProps) {
+export default function ExperienceRow({ cohortExperience }: ExperienceRowProps) {
   const {
     id,
     code,
@@ -21,50 +21,58 @@ export default function ExperienceRow({ cohortExperience, cohortExperiences }: E
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`experience-row-${id}`}>
-      <TableCell style={{ width: 100 }} align="left">
+      <TableCell style={{ width: 150 }} align="left">
         <Stack direction="row" spacing={1}>
-          <b>
+          <Link
+            component={RouterLink}
+            to={`/cohorts/${id}/attendance`}
+            color="#071A33"
+            data-testid={`experience${id ? `-${id}` : ''}-name`}
+            sx={{ typography: 'subtitle2' }}
+          >
             {code} {intake}
-          </b>
+          </Link>
           <Tooltip arrow placement="top" title={<span className="ui-copy text-white">{name}</span>}>
             <img src="/static/registration/Info.svg" alt="Info Icon" />
           </Tooltip>
         </Stack>
       </TableCell>
       <TableCell
-        style={{ width: 100 }}
+        style={{ width: 70 }}
         align="center"
         data-testid={`experience-${id ? `-${id}` : ''}-date`}
       >
         {start_date}
       </TableCell>
       <TableCell
-        style={{ width: 100 }}
+        style={{ width: 70 }}
         align="center"
-        data-testid={`experience-${id ? `-${id}` : ''}-seats`}
+        data-testid={`experience-${id ? `-${id}` : ''}-participants`}
       >
         {participants}
       </TableCell>
       <TableCell
-        style={{ width: 100 }}
+        style={{ width: 80 }}
         align="center"
-        data-testid={`experience-${id ? `-${id}` : ''}-revenue`}
+        data-testid={`experience-${id ? `-${id}` : ''}-live`}
       >
         {live_attendance}%
       </TableCell>
       <TableCell
-        style={{ width: 120 }}
+        style={{ width: 150 }}
         align="center"
-        data-testid={`experience-${id ? `-${id}` : ''}-seats_sold_week`}
+        data-testid={`experience-${id ? `-${id}` : ''}-async`}
       >
         {live_async_attendance}%
       </TableCell>
       <TableCell
         style={{ width: 120 }}
         align="center"
-        data-testid={`experience-${id ? `-${id}` : ''}-revenue_week`}
+        data-testid={`experience-${id ? `-${id}` : ''}-feedback`}
       >
-        <ExcelDownload experiences={cohortExperiences} experience={cohortExperience} />
+        <Stack direction="row" justifyContent="center" alignItems="center">
+          <ExcelDownload experience={cohortExperience} />
+        </Stack>
       </TableCell>
     </TableRow>
   );

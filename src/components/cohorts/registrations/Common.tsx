@@ -796,6 +796,11 @@ export const ExportToExcel = ({
         width: 30
       },
       {
+        column: 'Source',
+        value: (registration: any) => registration.source,
+        width: 30
+      },
+      {
         column: 'Payment Link',
         value: (registration: any) =>
           `https://app.scholarsite.io/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,

@@ -35,13 +35,7 @@ export default function ExperiencesList({
             />
             <TableBody id="experience-list-container" data-testid="experience-list">
               {cohortExperiences.map((experience: any, index) => (
-                <ExperienceRow
-                  key={experience.id}
-                  cohortExperience={experience}
-                  cohortExperiences={cohortExperiences.filter(
-                    (ex) => _.intersection(ex.instructors, experience.instructors).length > 0
-                  )}
-                />
+                <ExperienceRow key={experience.id} cohortExperience={experience} />
               ))}
             </TableBody>
           </Table>
