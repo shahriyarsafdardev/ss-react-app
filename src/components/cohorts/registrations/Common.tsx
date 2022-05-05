@@ -248,6 +248,20 @@ export const RegistrationsFooter = ({ handleClick }: { handleClick: Function }) 
   </Stack>
 );
 
+export const AlumniFooter = ({ handleClick }: { handleClick: Function }) => (
+  <Stack
+    direction="row-reverse"
+    justifyContent="space-between"
+    width="-webkit-fill-available"
+    sx={{ pr: 6, pt: 2, mt: 2, color: '#212B36', borderTop: '1px solid rgba(224, 224, 224, 1)' }}
+  >
+    <StyledViewButton variant="subtitle2" onClick={() => handleClick()}>
+      View All
+      <Box component={Icon} icon={forwardArrow} sx={{ width: 16, height: 16, ml: 1 }} />
+    </StyledViewButton>
+  </Stack>
+);
+
 export const ReferralCodeRow = ({
   code,
   cohortName,
@@ -873,7 +887,6 @@ export const ExportAttendanceToExcel = ({
       },
       ...sessions
     ];
-
     await writeXlsxFile(objects, {
       schema,
       fileName
@@ -883,6 +896,61 @@ export const ExportAttendanceToExcel = ({
   const exportData = async () => {
     if (attendance.sessionAttendanceRecords.length > 0) {
       exportExcel(attendanceDataToExport, fileName);
+    }
+  };
+
+  return (
+    <Button variant="outlined" color="primary" onClick={() => exportData()}>
+      <img style={{ marginRight: 2 }} src="/static/registration/download.svg" alt="download" />
+      Excel Export
+    </Button>
+  );
+};
+
+export const ExportAlumniToExcel = ({
+  alumnies,
+  fileName
+}: {
+  alumnies: any;
+  fileName: string;
+}) => {
+  const exportExcel = async (objects: any, fileName: string) => {
+    const schema = [
+      {
+        column: 'Alumni Name',
+        value: (alumnies: any) => alumnies.full_name,
+        width: 50
+      },
+      {
+        column: 'Company',
+        value: (alumnies: any) => alumnies.company_name,
+        width: 50
+      },
+      {
+        column: 'Cohorts',
+        value: (alumnies: any) => alumnies.cohorts,
+        width: 50
+      },
+      {
+        column: 'Notes',
+        value: (alumnies: any) => alumnies.notes,
+        width: 50
+      },
+      {
+        column: 'Mailing List',
+        value: (alumnies: any) => alumnies.mailing_list,
+        width: 50
+      }
+    ];
+    await writeXlsxFile(objects, {
+      schema,
+      fileName
+    });
+  };
+
+  const exportData = async () => {
+    if (alumnies.length > 0) {
+      exportExcel(alumnies, fileName);
     }
   };
 

@@ -116,7 +116,14 @@ export default function Router() {
             </RoleBasedGuard>
           )
         },
-
+        {
+          path: '/alumni',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <AlumniTab />
+            </RoleBasedGuard>
+          )
+        },
         {
           path: 'e-commerce',
           children: [
@@ -428,6 +435,7 @@ const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/Fre
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
 const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
 const AdminExperiences = Loadable(lazy(() => import('../pages/admin/ExperiencesTab')));
+const AlumniTab = Loadable(lazy(() => import('../pages/admin/AlumniTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

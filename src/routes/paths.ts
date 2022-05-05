@@ -89,7 +89,8 @@ export const PATH_DASHBOARD = {
   adminTools: {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),
     cohort_sales: path(ROOTS_DASHBOARD, `/cohort_sales`),
-    cohort_experiences: path(ROOTS_DASHBOARD, `/cohort_experiences`)
+    cohort_experiences: path(ROOTS_DASHBOARD, `/cohort_experiences`),
+    alumni: path(ROOTS_DASHBOARD, `/alumni`)
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),
