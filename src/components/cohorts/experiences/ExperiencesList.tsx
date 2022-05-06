@@ -12,7 +12,7 @@ const TABLE_HEAD = [
   { id: 'participants', label: 'No. Participants', align: 'center' },
   { id: 'live_attendance', label: 'Avg. Live Attendance', align: 'center' },
   { id: 'live_async_attendance', label: 'Avg. Live + Async. Attendance', align: 'center' },
-  { id: 'feedback', label: 'Feedback', align: 'center' }
+  { id: 'more', label: 'More', align: 'center' }
 ];
 
 export default function ExperiencesList({

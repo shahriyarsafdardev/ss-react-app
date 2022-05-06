@@ -10,8 +10,8 @@ const TABLE_HEAD = [
   { id: 'start_DATE', label: 'Start Date', align: 'center' },
   { id: 'seats_sold', label: 'Seats Sold', align: 'center' },
   { id: 'revenue', label: 'Revenue', align: 'center' },
-  { id: 'seats_sold_week', label: 'Seats Sold (This week)', align: 'center' },
-  { id: 'revenue_week', label: 'Revenue (This Week)', align: 'center' }
+  { id: 'seats_sold_week', label: 'Seats Sold (Last week)', align: 'center' },
+  { id: 'revenue_week', label: 'Revenue (Last Week)', align: 'center' }
 ];
 
 export default function SalesList({ cohortSales }: { cohortSales: CohortSale[] }) {
