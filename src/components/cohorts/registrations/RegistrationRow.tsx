@@ -37,7 +37,7 @@ export default function RegistrationRow({
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`registration-row-${id}`}>
       {isAdminView && (
-        <TableCell style={{ width: 170 }} align="center">
+        <TableCell style={{ width: 250 }} align="center">
           <Stack direction="row" spacing={1}>
             <b>{cohort_code || 'No Cohort Code'}</b>
             <Tooltip
@@ -51,7 +51,7 @@ export default function RegistrationRow({
         </TableCell>
       )}
       <TableCell component="th" scope="row" style={{ width: 150 }} padding="none">
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={1}>
           {linkedin_url ? (
             <Link
               underline="always"
@@ -119,7 +119,7 @@ export default function RegistrationRow({
         <Tags enrollment={enrollment} />
       </TableCell>
       <TableCell
-        style={{ width: 250 }}
+        style={{ width: 200 }}
         align="center"
         data-testid={`registration${id ? `-${id}` : ''}-price`}
       >

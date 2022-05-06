@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import copyFill from '@iconify/icons-eva/copy-fill';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+// import { CopyToClipboard } from 'react-copy-to-clipboard';
 // material
 import { useTheme, hexToRgb, styled } from '@material-ui/core/styles';
 import { Box, Card, Tooltip, Container, Typography, IconButton } from '@material-ui/core';
@@ -53,7 +53,7 @@ function ColorCard({ hexColor, variation, onCopy }: ColorCardProps) {
         }
       }}
     >
-      <CopyToClipboard text={hexColor} onCopy={onCopy}>
+      {/* <CopyToClipboard text={hexColor} onCopy={onCopy}>
         <Tooltip title="Copy">
           <IconButton
             sx={{
@@ -66,7 +66,7 @@ function ColorCard({ hexColor, variation, onCopy }: ColorCardProps) {
             <Icon icon={copyFill} width={20} height={20} />
           </IconButton>
         </Tooltip>
-      </CopyToClipboard>
+      </CopyToClipboard> */}
 
       <Box sx={{ bgcolor: hexColor, paddingTop: '56%' }} />
 

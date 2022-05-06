@@ -156,6 +156,7 @@ export type Enrollment = {
   cohort_name?: string;
   source: string;
   admin_labelled_source: string;
+  payment_link: string;
 };
 
 export type CohortSale = {

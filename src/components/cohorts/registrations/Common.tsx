@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
 import writeXlsxFile from 'write-excel-file';
 import { Icon } from '@iconify/react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack5';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ResetIcon from '@material-ui/icons/RestartAlt';
+import copy from 'clipboard-copy';
 
 import {
   Box,
@@ -340,19 +340,15 @@ export const ReferralCodeRow = ({
                     'data-testid': 'referral_notes'
                   }}
                 />
-                <IconButton>
-                  <CopyToClipboard
-                    text={referralLink}
-                    onCopy={() => {
-                      if (referralLink) {
-                        enqueueSnackbar('Referral Link Copied', { variant: 'success' });
-                      }
-                    }}
-                  >
-                    <Tooltip title="Copy Referral Link" placement="top" arrow>
-                      <StyledIcon src="/static/registration/Copy.svg" />
-                    </Tooltip>
-                  </CopyToClipboard>
+                <IconButton
+                  onClick={() => {
+                    copy(referralLink);
+                    enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+                  }}
+                >
+                  <Tooltip title="Copy Referral Link" placement="top" arrow>
+                    <StyledIcon src="/static/registration/Copy.svg" />
+                  </Tooltip>
                 </IconButton>
                 <IconButton key={referralLink} component={Link} target="_blank" href={referralLink}>
                   <Tooltip title="Open Referral Link" placement="top" arrow>
@@ -386,6 +382,7 @@ export const Actions = ({
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || enrollment?.cohort_id || '';
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleOpen = () => {
     setOpen(!open);
@@ -477,7 +474,7 @@ export const Actions = ({
         alignItems="center"
         direction={{ xs: 'column', md: 'row' }}
       >
-        {enrollment.status == 'Application Received' && (
+        {enrollment.status === 'Application Received' && (
           <>
             <StyledIcon
               onClick={() => {
@@ -522,7 +519,7 @@ export const Actions = ({
             setOpen(false);
           }}
         >
-          {enrollment.status == 'Application Received' && (
+          {enrollment.status === 'Application Received' && (
             <>
               <MenuItem
                 onClick={() => {
@@ -578,21 +575,34 @@ export const Actions = ({
           )}
           {(enrollment.status === 'Application Accepted' ||
             enrollment.status === 'Payment link opened') && (
-            <MenuItem
-              onClick={() => {
-                setModalMessage(
-                  <p>
-                    Are you sure you want to mark {enrollment.name}’s application as not interested.
-                  </p>
-                );
-                setAction('set_not_interested');
-                setModalState(true);
-              }}
-              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
-            >
-              <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
-              Mark as Not Interested
-            </MenuItem>
+            <>
+              <MenuItem
+                onClick={() => {
+                  setModalMessage(
+                    <p>
+                      Are you sure you want to mark {enrollment.name}’s application as not
+                      interested.
+                    </p>
+                  );
+                  setAction('set_not_interested');
+                  setModalState(true);
+                }}
+                sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+              >
+                <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
+                Mark as Not Interested
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  copy(enrollment.payment_link);
+                  enqueueSnackbar('Payment Link Copied', { variant: 'success' });
+                }}
+                sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+              >
+                <StyledIcon src="/static/registration/Copy.svg" sx={{ mr: 1 }} />
+                <span>Copy Payment Link</span>
+              </MenuItem>
+            </>
           )}
           {!['Application Received', 'Partial Application Received'].includes(
             enrollment.status

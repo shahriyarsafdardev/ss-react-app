@@ -12,7 +12,7 @@ type StudentProfileListProps = {
 };
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
+  { id: 'name', label: 'Name', align: 'left' },
   { id: 'time', label: 'Sign Up Date', align: 'center' },
   { id: 'last_action_date', label: 'Last Action Date', align: 'center' },
   { id: 'price', label: 'Price', align: 'center' },
@@ -37,7 +37,7 @@ export default function RegistrationsList({
               orderBy="time"
               headLabel={
                 isAdminView
-                  ? [{ id: 'cohortCode', label: 'Cohort Code' }, ...TABLE_HEAD]
+                  ? [{ id: 'cohortCode', label: 'Cohort Code', align: 'left' }, ...TABLE_HEAD]
                   : TABLE_HEAD
               }
               rowCount={enrollments.length}
