@@ -7,7 +7,7 @@ type AlumniRowProps = {
 };
 
 export default function AlumniRow({ alumni }: AlumniRowProps) {
-  const { id, full_name, company_name, cohorts, notes, mailing_list } = alumni;
+  const { id, full_name, company_name, paid_cohorts, notes, mailing_list } = alumni;
 
   return (
     <TableRow hover key={id} tabIndex={-1} data-testid={`alumni-row-${id}`}>
@@ -20,7 +20,7 @@ export default function AlumniRow({ alumni }: AlumniRowProps) {
       </TableCell>
 
       <TableCell style={{ width: 200 }} data-testid={`alumni-${id ? `-${id}` : ''}-cohorts`}>
-        {cohorts}
+        {paid_cohorts}
       </TableCell>
 
       <TableCell style={{ width: 200 }} data-testid={`alumni-${id ? `-${id}` : ''}-notes`}>

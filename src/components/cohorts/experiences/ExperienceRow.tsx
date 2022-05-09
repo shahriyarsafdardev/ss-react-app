@@ -1,7 +1,7 @@
 import { Stack, Link, TableRow, Tooltip, TableCell } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { CohortExperience } from '../../../@types/cohorts';
-import { ExcelDownload } from './ExcelDownload';
+import { ExperienceActions } from './Common';
 
 type ExperienceRowProps = {
   cohortExperience: CohortExperience;
@@ -71,7 +71,7 @@ export default function ExperienceRow({ cohortExperience }: ExperienceRowProps) 
         data-testid={`experience-${id ? `-${id}` : ''}-feedback`}
       >
         <Stack direction="row" justifyContent="center" alignItems="center">
-          <ExcelDownload experience={cohortExperience} />
+          <ExperienceActions id={id} experience={cohortExperience} />
         </Stack>
       </TableCell>
     </TableRow>

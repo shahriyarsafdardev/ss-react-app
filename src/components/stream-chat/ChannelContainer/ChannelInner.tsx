@@ -146,7 +146,6 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
           <MessageInput grow overrideSubmitHandler={overrideSubmitHandler} />
         </Window>
         <Thread
-          key={`thread-messages-${thread?.reply_count}-${channel?.state?.messages.length}`}
           additionalMessageInputProps={{
             grow: true,
             Input: ThreadMessageInput
