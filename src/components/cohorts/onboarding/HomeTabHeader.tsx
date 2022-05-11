@@ -39,7 +39,7 @@ const SubTitle = styled(Typography)(() => ({
 
 const Description = styled(Typography)(() => ({
   fontWeight: 400,
-  fontSize: 12,
+  fontSize: 14,
   marginBottom: '1rem',
   color: '#6C7885'
 }));

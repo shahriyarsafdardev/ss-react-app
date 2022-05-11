@@ -64,7 +64,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       position: 'absolute',
       right: '50px',
       bottom: '30px',
-      width: '200px !important'
+      width: '300px !important'
     },
     '&:hover': {
       backgroundColor: '#4D4DCD',
@@ -75,9 +75,8 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   '&.previous': {
     [theme.breakpoints.up('sm')]: {
       position: 'absolute',
-      right: '280px',
       bottom: '30px',
-      width: '200px !important'
+      width: '300px !important'
     },
     '&:hover': {
       backgroundColor: 'white',
@@ -100,7 +99,9 @@ export const NavigationButtons = ({
   onPreviousHandler,
   onNextHandler,
   isSubmitBtn = false,
-  isSubmitting = false
+  isSubmitting = false,
+  previousButtonText = 'Previous',
+  nextButtonText = 'Next'
 }: {
   showPrevButton: boolean;
   disabled: boolean;
@@ -108,6 +109,8 @@ export const NavigationButtons = ({
   onNextHandler: Function;
   isSubmitBtn?: boolean;
   isSubmitting?: boolean;
+  previousButtonText?: string;
+  nextButtonText?: string;
 }) => (
   <MainContainer>
     <Typography className="txt" variant="caption">
@@ -122,7 +125,7 @@ export const NavigationButtons = ({
           variant="outlined"
           onClick={() => onPreviousHandler()}
         >
-          Previous
+          {previousButtonText}
         </StyledButton>
       )}
 
@@ -134,7 +137,7 @@ export const NavigationButtons = ({
         disabled={disabled}
         onClick={() => onNextHandler()}
       >
-        {isSubmitBtn ? 'Submit' : 'Next'}
+        {isSubmitBtn ? `${nextButtonText}` : 'Next'}
       </StyledButton>
     </ButtonsContainer>
   </MainContainer>

@@ -14,7 +14,8 @@ import {
   MenuItem,
   ListItemText,
   InputLabel,
-  Select as MaterialSelect
+  Select as MaterialSelect,
+  TextField
 } from '@material-ui/core';
 
 import { UploadAvatar } from 'components/upload';
@@ -113,78 +114,54 @@ export default function CompanyInfoForm({
     <>
       <br />
       <Grid container spacing={1}>
-        <Grid item xs={12} md={4}>
-          <Card data-testid="company-logo" sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            <UploadAvatar
-              accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
-              file={infoObject?.logo_url}
-              maxSize={3145728}
-              onDrop={handleDrop}
-              caption={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary'
-                  }}
-                >
-                  Company Logo
-                </Typography>
-              }
-            />
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
-            <Stack spacing={{ xs: 2, md: 3 }}>
-              <FormControl data-testid="company-name" fullWidth>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="company-name">Select or create company name</label>
-                <CreatableSelect
-                  defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
-                  options={companies?.map((company: CompanyData) => ({
-                    value: company.name,
-                    label: company.name
-                  }))}
-                  isClearable={false}
-                  backspaceRemovesValue={true}
-                  placeholder="Company Name"
-                  isSearchable
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  onChange={(e) => onCompanyChange(e)}
-                />
-              </FormControl>
-
-              <FormControl data-testid="company-industries-dropdown" fullWidth>
-                <label>Company Industries</label>
-                <MultiSelect
-                  values={infoObject.industries}
-                  options={industry_options}
-                  onChange={(value: string[]) => onUpdateAttribute('industries', value)}
-                />
-              </FormControl>
-
+        <Grid item xs={12} md={12}>
+          <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              spacing={2}
+              style={{ marginBottom: '20px' }}
+            >
               <FormControl fullWidth>
-                <InputLabel>Number of Employees</InputLabel>
-                <MaterialSelect
+                <TextField
+                  inputProps={{ 'data-testid': 'role-title' }}
                   fullWidth
-                  label="Number of Employees"
-                  onChange={(e) => onUpdateAttribute('number_of_employees', e.target.value)}
-                  value={infoObject.number_of_employees}
-                  inputProps={{ 'data-testid': 'company-employees' }}
-                >
-                  {numberOfEmployeesList.map((item: any) => (
-                    <MenuItem key={item} value={item}>
-                      <ListItemText primary={item} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
+                  label="Company"
+                  value={infoObject?.name}
+                  onChange={(e) => onUpdateAttribute('role_title', e.target.value)}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  inputProps={{ 'data-testid': 'role-title' }}
+                  fullWidth
+                  label="Title"
+                  value={infoObject?.name}
+                  onChange={(e) => onUpdateAttribute('role_title', e.target.value)}
+                />
               </FormControl>
             </Stack>
+            <FormControl fullWidth style={{ marginBottom: '20px' }}>
+              <TextField
+                inputProps={{ 'data-testid': 'company-name' }}
+                fullWidth
+                label="What are you looking to gain from this cohort?"
+                value={infoObject?.name}
+                onChange={(e) => onUpdateAttribute('company_name', e.target.value)}
+                multiline
+                rows={3}
+              />
+            </FormControl>
+            <FormControl fullWidth style={{ marginBottom: '20px' }}>
+              <TextField
+                inputProps={{ 'data-testid': 'company-name' }}
+                fullWidth
+                label="Are there any specific KPIs that your team is hoping to improve using the learning from this course?"
+                value={infoObject?.name}
+                onChange={(e) => onUpdateAttribute('company_name', e.target.value)}
+                multiline
+                rows={3}
+              />
+            </FormControl>
           </Card>
         </Grid>
       </Grid>

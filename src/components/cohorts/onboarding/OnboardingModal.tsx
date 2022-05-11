@@ -17,6 +17,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
+import AddToCalendarInfo from './info-forms/AddToCalenderInfo';
 
 type HomeResponse = {
   cohort_id: string;
@@ -121,6 +122,8 @@ type OnboardingDataType = {
   referred_by: string;
   payed_by: string;
   phone_number: string;
+  to_be_improve: string;
+  looking_for: string;
 };
 
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
@@ -131,7 +134,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
-  const totalSteps = 5;
+  const totalSteps = 4;
   const [profilePicture, setProfilePicture] = useState<any>();
   const [companyLogo, setCompanyLogo] = useState<any>();
   const cohort = useSelector(
@@ -159,7 +162,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     cohort_understanding: '',
     referred_by: '',
     payed_by: '',
-    phone_number: ''
+    phone_number: '',
+    to_be_improve: '',
+    looking_for: ''
   });
 
   useEffect(() => {
@@ -194,7 +199,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           cohort_understanding: payload.participant_profile.current_understanding,
           referred_by: payload.participant_profile.referred_by,
           payed_by: payload.participant_profile.payed_by,
-          phone_number: payload.participant_profile.phone_number
+          phone_number: payload.participant_profile.phone_number,
+          looking_for: payload.participant_profile.looking_for,
+          to_be_improve: payload.participant_profile.to_be_improve
         });
       });
   }, [cohort_id, user?.id]);
@@ -288,7 +295,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 1) {
       return (
         <div data-testid="onboarding-form-modal">
-          <UserInfoForm
+          <AddToCalendarInfo
             userProfile={{
               first_name: onboardingData.first_name || '',
               last_name: onboardingData.last_name || '',
@@ -298,7 +305,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               country: onboardingData.country || '',
               city: onboardingData.city || ''
             }}
-            onSubmit={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
+            onNextHandler={() => setActiveStep(activeStep + 1)}
           />
         </div>
       );
@@ -333,6 +340,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
     if (activeStep === 4) {
       return (
         <NetworkingForm
@@ -346,6 +354,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
     if (activeStep === 5) {
       return (
         <HouseKeepingForm
@@ -367,39 +376,39 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const headContent = () => {
     if (activeStep === 1) {
-      return 'Build Your Profile';
+      return 'Firstly, lets make sure we add the upcoming sessions to your calendar';
     }
 
     if (activeStep === 2) {
-      return 'Where do you work?';
+      return `Next, ${cohort.host_names} would love to understand your goals!`;
     }
 
     if (activeStep === 3) {
-      return 'Tell us about your current role?';
+      return 'Now for a few housekeeping questions!';
     }
 
     if (activeStep === 4) {
-      return 'Networking Preferences';
-    }
-
-    if (activeStep === 5) {
-      return 'Housekeeping Questions';
+      return 'Last step, your picture really helps in the live sessions!';
     }
 
     return '';
   };
 
   const headContentDescription = () => {
-    if ([1, 2, 3].includes(activeStep)) {
-      return `Your profile will be visible to other members of the ${cohort?.code} cohort. You can edit all details again later in profile settings.`;
+    if (activeStep === 1) {
+      return 'We’d love to see you in as many of as possible!';
+    }
+
+    if (activeStep === 2) {
+      return 'We’ll use this information to personalize your learning experience';
+    }
+
+    if (activeStep === 3) {
+      return 'We’re nearly there!';
     }
 
     if (activeStep === 4) {
-      return 'We’ll help you make meaningful connections with other professionals in the cohort.';
-    }
-
-    if (activeStep === 5) {
-      return 'Your answers to these questions will not be shared with cohort members';
+      return 'It makes it much easier for Steve and other participants recognize you in class!';
     }
 
     return '';
