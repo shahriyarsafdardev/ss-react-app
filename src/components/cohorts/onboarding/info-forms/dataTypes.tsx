@@ -31,7 +31,7 @@ export type NetworkInfoType = {
 };
 
 export type HouseKeepingInfoType = {
-  interested_in_being_matched: boolean;
+  interested_in_being_matched?: boolean;
   referred_by: string;
 };
 
@@ -106,6 +106,7 @@ export const NavigationButtons = ({
   onNextHandler,
   isSubmitBtn = false,
   isSubmitting = false,
+  displayMessage = true,
   previousButtonText = 'Previous',
   nextButtonText = 'Next'
 }: {
@@ -115,13 +116,16 @@ export const NavigationButtons = ({
   onNextHandler: Function;
   isSubmitBtn?: boolean;
   isSubmitting?: boolean;
+  displayMessage?: boolean;
   previousButtonText?: string;
   nextButtonText?: string;
 }) => (
   <MainContainer>
-    <Typography className="txt" variant="caption">
-      Please enter all of your details to {isSubmitBtn ? 'submit' : 'move to the next page'}
-    </Typography>
+    {displayMessage && (
+      <Typography className="txt" variant="caption">
+        Please enter all of your details to {isSubmitBtn ? 'submit' : 'move to the next page'}
+      </Typography>
+    )}
     <ButtonsContainer>
       {showPrevButton && (
         <StyledButton

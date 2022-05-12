@@ -24,7 +24,7 @@ type HomeResponse = {
     profile_image_url: string;
     current_position: string;
     current_company: string;
-    opted_in_for_matching_suggestions: boolean;
+    opted_in_for_matching_suggestions?: boolean;
   };
 };
 
@@ -57,7 +57,7 @@ const ContentContainer = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   borderTopRightRadius: '25px',
   borderBottomRightRadius: '25px',
-  maxWidth: '720px',
+  maxWidth: '-webkit-fill-available',
   [theme.breakpoints.down(1250)]: {
     borderRadius: '25px',
     height: '100%'
@@ -73,7 +73,7 @@ const FormTypes = {
 type OnboardingDataType = {
   company_name: string;
   role_title: string;
-  interested_in_being_matched: boolean;
+  interested_in_being_matched?: boolean;
   referred_by: string;
   goals: string;
   improvements: string;
@@ -96,7 +96,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
     company_name: '',
     role_title: '',
-    interested_in_being_matched: true,
     referred_by: '',
     goals: '',
     improvements: ''
@@ -143,27 +142,23 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
     } else if (type === FormTypes.userInfo) {
-      const tempData: OnboardingDataType = { ...onboardingData };
-      setProfilePicture(data.profile_image_url);
-      setIsSubmitting(true);
-      submitData(tempData);
-      setOnboardingData(tempData);
+      setProfilePicture(data);
     } else {
       console.log('Unknown form type passed!');
     }
   };
 
-  const submitData = async (data: any) => {
+  const submitData = async () => {
+    setIsSubmitting(true);
     const uploadData = new FormData();
-
     profilePicture?.image && uploadData.append('profile_image', profilePicture?.image);
     uploadData.append('participant_id', user?.id);
-    uploadData.append('onboarding_data', JSON.stringify(data));
+    uploadData.append('onboarding_data', JSON.stringify(onboardingData));
 
     await axios
       .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, uploadData)
       .then((res) => {
-        enqueueSnackbar('Onboarding complete successfully', { variant: 'success' });
+        enqueueSnackbar('Onboarding completed successfully', { variant: 'success' });
         if (res.data.user) {
           updateProfile({ ...res.data.user });
         }
@@ -181,7 +176,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 1) {
       return (
         <div data-testid="onboarding-form-modal">
-          <AddToCalendarInfo onNextHandler={() => setActiveStep(activeStep + 1)} />
+          <AddToCalendarInfo
+            onNextHandler={() => setActiveStep(activeStep + 1)}
+            inviteUrl={cohort?.calendar_invite_url}
+          />
         </div>
       );
     }
@@ -208,7 +206,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
           isSubmitting={isSubmitting}
           infoDetails={{
-            interested_in_being_matched: onboardingData.interested_in_being_matched || false,
+            interested_in_being_matched: onboardingData.interested_in_being_matched,
             referred_by: onboardingData.referred_by
           }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
@@ -219,7 +217,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 4) {
       return (
         <UserInfoForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
+          onUpload={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
+          onSubmit={submitData}
           profile_image_url={profilePicture}
           isSubmitting={isSubmitting}
           isSubmitable={true}
@@ -234,19 +233,38 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
   const headContent = () => {
     if (activeStep === 1) {
-      return 'Firstly, lets make sure we add the upcoming sessions to your calendar';
+      return (
+        <p>
+          Firstly, lets make sure we add the upcoming sessions to{' '}
+          <span style={{ color: '#4D4DCD' }}> your calendar</span>
+        </p>
+      );
     }
 
     if (activeStep === 2) {
-      return `Next, ${cohort.host_names} would love to understand your goals!`;
+      return (
+        <p>
+          Next, {cohort?.host_names} would love to{' '}
+          <span style={{ color: '#4D4DCD' }}> understand your goals!</span>
+        </p>
+      );
     }
 
     if (activeStep === 3) {
-      return 'Now for a few housekeeping questions!';
+      return (
+        <p>
+          Now for a few <span style={{ color: '#4D4DCD' }}> housekeeping</span> questions!
+        </p>
+      );
     }
 
     if (activeStep === 4) {
-      return 'Last step, your picture really helps in the live sessions!';
+      return (
+        <p>
+          Last step, <span style={{ color: '#4D4DCD' }}>your picture</span> really helps in the live
+          sessions!
+        </p>
+      );
     }
 
     return '';

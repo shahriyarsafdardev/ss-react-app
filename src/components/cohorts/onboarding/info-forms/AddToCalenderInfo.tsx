@@ -3,7 +3,7 @@
 import { Theme, styled } from '@material-ui/core/styles';
 import { Box, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { RootState, useSelector } from 'redux/store';
+import { useNavigate } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { NavigationButtons } from './dataTypes';
 
@@ -136,14 +136,15 @@ const Item = styled('div')(() => ({
   wordBreak: 'break-word'
 }));
 
-export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Function }) {
+export default function AddToCalendarInfo({
+  onNextHandler,
+  inviteUrl
+}: {
+  onNextHandler: Function;
+  inviteUrl: string;
+}) {
   const classes = useStyles();
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-
-  const calendarLink = cohort?.calendar_invite_url;
+  const navigate = useNavigate();
 
   const googleCalendar = () => (
     <Accordion className={classes.accordionDiv}>
@@ -152,7 +153,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Google Calendar</Head>
+        <Head>Google Calendar Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>
@@ -181,7 +182,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
           <Item>
             <div className={classes.itemNum}>4</div>
             <p>
-              Paste in <span className={classes.decorated}>“{calendarLink}”</span>
+              Paste in <span className={classes.decorated}>“{inviteUrl}”</span>
             </p>
           </Item>
           <Item>
@@ -240,7 +241,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Apple Calendar</Head>
+        <Head>Apple Calendar Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>
@@ -260,7 +261,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
           <Item>
             <div className={classes.itemNum}>3</div>
             <p>
-              Paste <span className={classes.decorated}>“{calendarLink}”</span>
+              Paste <span className={classes.decorated}>“{inviteUrl}”</span>
             </p>
           </Item>
           <Item>
@@ -306,8 +307,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
           <Item>
             <div className={classes.itemNum}>6</div>
             <p>
-              Paste{' '}
-              <span className={classes.decorated}>“{calendarLink}” into the Server field</span>
+              Paste <span className={classes.decorated}>“{inviteUrl}” into the Server field</span>
             </p>
           </Item>
           <Item>
@@ -334,7 +334,7 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Outlook</Head>
+        <Head>Outlook Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>
@@ -419,21 +419,18 @@ export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Fu
   return (
     <>
       <div className={classes.wrapper}>
-        {cohort ? (
-          <Box className={classes.outerContainer}>
-            <Box className={classes.section}>{accordion()}</Box>
-          </Box>
-        ) : (
-          <h5>Loading calendar instructions</h5>
-        )}
+        <Box className={classes.outerContainer}>
+          <Box className={classes.section}>{accordion()}</Box>
+        </Box>
       </div>
       <NavigationButtons
         showPrevButton={true}
         disabled={false}
-        onPreviousHandler={() => {}}
+        onPreviousHandler={() => navigate('/contact-us')}
         onNextHandler={() => onNextHandler()}
         previousButtonText="I need help"
         nextButtonText="I’ve added the sessions!"
+        displayMessage={false}
       />
     </>
   );

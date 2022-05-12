@@ -25,15 +25,9 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-const Title = styled(Typography)(() => ({
-  fontWeight: 'bold',
-  fontSize: 32,
-  marginBottom: '0.5rem'
-}));
-
 const SubTitle = styled(Typography)(() => ({
-  fontWeight: 'bold',
-  fontSize: 20,
+  fontWeight: 600,
+  fontSize: '20px',
   marginBottom: '1rem'
 }));
 
@@ -42,14 +36,6 @@ const Description = styled(Typography)(() => ({
   fontSize: 14,
   marginBottom: '1rem',
   color: '#6C7885'
-}));
-
-const StyledStepper = styled(Stepper)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    '.css-wb2j8e-MuiStepLabel-label.MuiStepLabel-alternativeLabel': {
-      display: 'none'
-    }
-  }
 }));
 
 export default function HomeTabHeader({
@@ -62,7 +48,7 @@ export default function HomeTabHeader({
 }: {
   children?: React.ReactNode;
   activeStep: number;
-  cohortTitle: string | undefined;
+  cohortTitle: any;
   showProgressBar?: boolean;
   totalSteps: number;
   cohortDescription: string | undefined;

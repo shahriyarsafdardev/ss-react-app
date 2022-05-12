@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
-import CreatableSelect from 'react-select/creatable';
-import { Grid, Card, Stack, FormControl, TextField } from '@material-ui/core';
+import { Grid, Chip, Stack, FormControl, TextField, Autocomplete } from '@material-ui/core';
 import axios from 'utils/axios';
 import { GoalsType, NavigationButtons, checkFormValidity } from './dataTypes';
 
@@ -58,30 +57,35 @@ export default function CompanyInfoForm({
       <br />
       <Grid container spacing={1}>
         <Grid item xs={12} md={12}>
-          <Card sx={{ height: 1, overflow: 'visible' }} style={{ padding: '20px' }}>
+          <Stack
+            direction="column"
+            sx={{ height: 1, overflow: 'visible' }}
+            spacing={2}
+            style={{ padding: '10px' }}
+          >
             <Stack
               direction={{ xs: 'column', md: 'row' }}
               spacing={2}
               style={{ marginBottom: '20px' }}
             >
-              <FormControl data-testid="company-name" fullWidth>
-                {/* eslint-disable-nex-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="company-name">Company</label>
-                <CreatableSelect
-                  defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
-                  options={companies?.map((company: string) => ({
-                    value: company,
-                    label: company
-                  }))}
-                  isClearable={false}
-                  backspaceRemovesValue={true}
-                  placeholder="Company Name"
-                  isSearchable
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  onChange={(e) => onCompanyChange(e)}
-                />
-              </FormControl>
+              <Autocomplete
+                fullWidth
+                freeSolo
+                value={infoObject?.name}
+                onChange={(event, newValue) => {
+                  onUpdateAttributeGroup({
+                    name: newValue
+                  });
+                }}
+                options={companies?.map((company) => company)}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <Chip size="small" label={option} {...getTagProps({ index })} />
+                  ))
+                }
+                renderInput={(params) => <TextField label="Company" {...params} />}
+              />
               <FormControl fullWidth>
                 <TextField
                   inputProps={{ 'data-testid': 'role-title' }}
@@ -115,7 +119,7 @@ export default function CompanyInfoForm({
                 rows={3}
               />
             </FormControl>
-          </Card>
+          </Stack>
         </Grid>
       </Grid>
       <NavigationButtons

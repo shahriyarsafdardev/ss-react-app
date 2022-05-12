@@ -42,13 +42,23 @@ export default function HouseKeepingForm({
     setInfoObject(tempInfo);
   };
 
+  const booleanValue = (value: any) => {
+    if (value === true) {
+      return 'Yes';
+    }
+    if (value === false) {
+      return 'No';
+    }
+    return '';
+  };
+
   return (
     <>
       <br />
       <Grid container spacing={1}>
         <Grid item xs={12} md={12}>
-          <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
-            <Stack spacing={{ xs: 2, md: 3 }}>
+          <Stack direction="column" sx={{ height: 1, padding: '10px 5px' }} spacing={2}>
+            <Stack spacing={{ xs: 3, md: 4 }}>
               <FormControl fullWidth>
                 <InputLabel>
                   Are you interested in networking with other cohort participants?
@@ -59,7 +69,7 @@ export default function HouseKeepingForm({
                   onChange={(e) =>
                     onUpdateAttribute('interested_in_being_matched', e.target.value === 'Yes')
                   }
-                  value={infoObject.interested_in_being_matched === true ? 'Yes' : 'No'}
+                  value={booleanValue(infoObject?.interested_in_being_matched)}
                   inputProps={{ 'data-testid': 'network-fellow-member' }}
                 >
                   {YES_NO_OPTIONS?.map((name: any) => (
@@ -86,7 +96,7 @@ export default function HouseKeepingForm({
                 </MaterialSelect>
               </FormControl>
             </Stack>
-          </Card>
+          </Stack>
         </Grid>
       </Grid>
       <NavigationButtons

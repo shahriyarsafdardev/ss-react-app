@@ -1,14 +1,10 @@
-import { useState } from 'react';
 import { Stack, Typography } from '@material-ui/core';
 import { UploadAvatar } from 'components/upload';
 import { NavigationButtons, checkFormValidity } from './dataTypes';
 
-type UserInfoType = {
-  profile_image_url: File | any;
-};
-
 export default function UserInfoForm({
   onSubmit,
+  onUpload,
   onPrevHandler,
   profile_image_url,
   showPrevButton = true,
@@ -16,29 +12,18 @@ export default function UserInfoForm({
   isSubmitting = false
 }: {
   onSubmit: Function;
+  onUpload: Function;
   onPrevHandler: Function;
   profile_image_url: File | any;
   showPrevButton?: boolean;
   isSubmitable?: boolean;
   isSubmitting?: boolean;
 }) {
-  const fillUserValues = () => ({
-    profile_image_url
-  });
-
-  const [infoObject, setInfoObject] = useState<UserInfoType>(fillUserValues());
-
   const handleDrop = (files: any) => {
-    onUpdateAttribute('profile_image_url', {
+    onUpload({
       image: files[0],
       preview: URL.createObjectURL(files[0])
     });
-  };
-
-  const onUpdateAttribute = async (attribute: string, value: any) => {
-    let tempInfo = { ...infoObject };
-    tempInfo = { ...tempInfo, [attribute]: value };
-    setInfoObject(tempInfo);
   };
 
   return (
@@ -53,7 +38,7 @@ export default function UserInfoForm({
         >
           <UploadAvatar
             accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
-            file={infoObject?.profile_image_url}
+            file={profile_image_url}
             maxSize={3145728}
             onDrop={handleDrop}
             caption={
@@ -77,9 +62,10 @@ export default function UserInfoForm({
         isSubmitting={isSubmitting}
         isSubmitBtn={isSubmitable}
         showPrevButton={showPrevButton}
-        disabled={checkFormValidity(infoObject)}
+        disabled={checkFormValidity({ profile_image_url })}
         onPreviousHandler={onPrevHandler}
-        onNextHandler={() => onSubmit(infoObject)}
+        onNextHandler={() => onSubmit()}
+        nextButtonText="Submit"
       />
     </>
   );
