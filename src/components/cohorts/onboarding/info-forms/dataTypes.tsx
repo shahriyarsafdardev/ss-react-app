@@ -10,6 +10,13 @@ export type CompanyProfileType = {
   number_of_employees: String;
 };
 
+export type GoalsType = {
+  name: string;
+  role_title: string;
+  goals: string;
+  improvements: string;
+};
+
 export type InfoType = {
   role_title: string;
   role_category: string[];
@@ -24,8 +31,7 @@ export type NetworkInfoType = {
 };
 
 export type HouseKeepingInfoType = {
-  current_understanding: string;
-  payed_by: string;
+  interested_in_being_matched: boolean;
   referred_by: string;
 };
 
@@ -137,7 +143,7 @@ export const NavigationButtons = ({
         disabled={disabled}
         onClick={() => onNextHandler()}
       >
-        {isSubmitBtn ? `${nextButtonText}` : 'Next'}
+        {nextButtonText ? `${nextButtonText}` : 'Next'}
       </StyledButton>
     </ButtonsContainer>
   </MainContainer>

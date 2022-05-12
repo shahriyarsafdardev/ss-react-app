@@ -41,8 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '20px',
     padding: '16px 24px',
     width: '98%',
-    boxShadow:
-      '0px 0px 2px rgba(145, 158, 171, 0.24), 0px 16px 32px -4px rgba(145, 158, 171, 0.24)',
+    boxShadow: '0px 0px 2px rgba(145, 158, 171, 0.24), 0px 8px 13px -4px rgba(145, 158, 171, 0.24)',
     borderRadius: '16px',
     [theme.breakpoints.down(1000)]: {
       width: '80%'
@@ -137,21 +136,7 @@ const Item = styled('div')(() => ({
   wordBreak: 'break-word'
 }));
 
-const AddToCalendarInfo = ({
-  userProfile,
-  onNextHandler
-}: {
-  userProfile: {
-    first_name: string;
-    last_name: string;
-    linkedin_url: string;
-    profile_image_url: File | any;
-    preferred_pronoun: string;
-    country: string;
-    city: string;
-  };
-  onNextHandler: Function;
-}) => {
+export default function AddToCalendarInfo({ onNextHandler }: { onNextHandler: Function }) {
   const classes = useStyles();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -431,16 +416,6 @@ const AddToCalendarInfo = ({
     </Box>
   );
 
-  const fillUserValues = () => ({
-    profile_image_url: userProfile?.profile_image_url,
-    first_name: userProfile?.first_name || '',
-    last_name: userProfile?.last_name || '',
-    country: userProfile?.country,
-    city: userProfile?.city,
-    preferred_pronoun: userProfile?.preferred_pronoun || '',
-    linkedin_url: userProfile?.linkedin_url || ''
-  });
-
   return (
     <>
       <div className={classes.wrapper}>
@@ -455,7 +430,6 @@ const AddToCalendarInfo = ({
       <NavigationButtons
         showPrevButton={true}
         disabled={false}
-        isSubmitBtn={true}
         onPreviousHandler={() => {}}
         onNextHandler={() => onNextHandler()}
         previousButtonText="I need help"
@@ -463,6 +437,4 @@ const AddToCalendarInfo = ({
       />
     </>
   );
-};
-
-export default AddToCalendarInfo;
+}

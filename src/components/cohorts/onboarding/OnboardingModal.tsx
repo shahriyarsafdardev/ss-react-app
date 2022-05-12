@@ -6,18 +6,10 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from 'redux/store';
 
-import {
-  UserInfoForm,
-  CompanyInfoForm,
-  RoleInfoForm,
-  NetworkingForm,
-  HouseKeepingForm
-} from './info-forms';
+import { GoalsForm, HouseKeepingForm, AddToCalendarInfo, UserInfoForm } from './info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
-import AddToCalendarInfo from './info-forms/AddToCalenderInfo';
 
 type HomeResponse = {
   cohort_id: string;
@@ -29,30 +21,10 @@ type HomeResponse = {
   onboarding_video_thumbnail_url: string | undefined;
   onboarding_header: string | undefined;
   participant_profile: {
-    first_name: string;
-    last_name: string;
-    linkedin_url: string;
     profile_image_url: string;
     current_position: string;
     current_company: string;
-    country: string;
-    city: string;
-    company_logo_url: string;
-    number_of_employees: string;
-    preferred_pronoun: string;
-    current_role_category_selections: string[];
     opted_in_for_matching_suggestions: boolean;
-    networking_matching_preferences: string[];
-    networking_roles_categories: string[];
-    networking_industries_categories: string[];
-    current_industry_category_selections: string[];
-    do_manage_team: boolean;
-    bio_text: string;
-    new_user: boolean;
-    date_of_birth: string;
-    referred_by: string;
-    payed_by: string;
-    current_understanding: string;
   };
 };
 
@@ -93,37 +65,18 @@ const ContentContainer = styled('div')(({ theme }) => ({
 }));
 
 const FormTypes = {
-  userInfo: 'userinfo',
-  roleInfo: 'roleinfo',
+  userInfo: 'userInfo',
   companyInfo: 'companyinfo',
-  networkingInfo: 'networkinginfo',
   housekeepingInfo: 'housekeepinginfo'
 };
 
 type OnboardingDataType = {
-  first_name: string;
-  last_name: string;
-  country: string;
-  city: string;
-  preferred_pronoun: string;
-  linkedin_url: string;
   company_name: string;
-  company_industries: string[];
-  number_of_employees: string;
   role_title: string;
-  role_category: string[];
-  do_manage_team: boolean;
-  role_description: string;
-  networking_roles_categories: string[];
-  networking_industries_categories: string[];
   interested_in_being_matched: boolean;
-  date_of_birth: string;
-  cohort_understanding: string;
   referred_by: string;
-  payed_by: string;
-  phone_number: string;
-  to_be_improve: string;
-  looking_for: string;
+  goals: string;
+  improvements: string;
 };
 
 export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
@@ -136,35 +89,17 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const [modal, setModal] = useState(true);
   const totalSteps = 4;
   const [profilePicture, setProfilePicture] = useState<any>();
-  const [companyLogo, setCompanyLogo] = useState<any>();
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
   const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
-    first_name: '',
-    last_name: '',
-    country: '',
-    city: '',
-    preferred_pronoun: '',
-    linkedin_url: '',
     company_name: '',
-    company_industries: [],
-    number_of_employees: '',
     role_title: '',
-    role_category: [],
-    do_manage_team: false,
-    role_description: '',
-    networking_roles_categories: [],
-    networking_industries_categories: [],
     interested_in_being_matched: true,
-    date_of_birth: '',
-    cohort_understanding: '',
     referred_by: '',
-    payed_by: '',
-    phone_number: '',
-    to_be_improve: '',
-    looking_for: ''
+    goals: '',
+    improvements: ''
   });
 
   useEffect(() => {
@@ -176,88 +111,40 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       .then((payload) => {
         setHomeConfig(payload);
         setProfilePicture(payload.participant_profile.profile_image_url);
-        setCompanyLogo(payload.participant_profile.company_logo_url);
         setOnboardingData({
-          first_name: payload.participant_profile.first_name,
-          last_name: payload.participant_profile.last_name,
-          country: payload.participant_profile.country,
-          city: payload.participant_profile.city,
-          preferred_pronoun: payload.participant_profile.preferred_pronoun,
-          linkedin_url: payload.participant_profile.linkedin_url,
           company_name: payload.participant_profile.current_company,
-          company_industries: payload.participant_profile.current_industry_category_selections,
-          number_of_employees: payload.participant_profile.number_of_employees,
-          role_title: payload.participant_profile.current_company,
-          role_category: payload.participant_profile.current_role_category_selections,
-          do_manage_team: payload.participant_profile.do_manage_team,
-          role_description: payload.participant_profile.bio_text,
-          networking_roles_categories: payload.participant_profile.networking_roles_categories,
-          networking_industries_categories:
-            payload.participant_profile.networking_industries_categories,
-          interested_in_being_matched: true,
-          date_of_birth: '',
-          cohort_understanding: payload.participant_profile.current_understanding,
-          referred_by: payload.participant_profile.referred_by,
-          payed_by: payload.participant_profile.payed_by,
-          phone_number: payload.participant_profile.phone_number,
-          looking_for: payload.participant_profile.looking_for,
-          to_be_improve: payload.participant_profile.to_be_improve
+          role_title: payload.participant_profile.current_position,
+          interested_in_being_matched:
+            payload.participant_profile.opted_in_for_matching_suggestions,
+          referred_by: '',
+          goals: '',
+          improvements: ''
         });
       });
   }, [cohort_id, user?.id]);
 
   const updateOnboardingData = (type: string, data: any) => {
-    if (type === FormTypes.userInfo) {
-      const tempData: OnboardingDataType = {
-        ...onboardingData,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        country: data.country,
-        city: data.city,
-        preferred_pronoun: data.preferred_pronoun,
-        linkedin_url: data.linkedin_url
-      };
-      setProfilePicture(data.profile_image_url);
-      setOnboardingData(tempData);
-      setActiveStep(activeStep + 1);
-    } else if (type === FormTypes.roleInfo) {
-      const tempData: OnboardingDataType = {
-        ...onboardingData,
-        role_title: data.role_title,
-        role_category: data.role_category,
-        role_description: data.role_description,
-        do_manage_team: data.do_manage_team
-      };
-      setOnboardingData(tempData);
-      setActiveStep(activeStep + 1);
-    } else if (type === FormTypes.companyInfo) {
+    if (type === FormTypes.companyInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
         company_name: data.name,
-        company_industries: data.industries,
-        number_of_employees: data.number_of_employees
-      };
-      setCompanyLogo(data.logo_url);
-      setOnboardingData(tempData);
-      setActiveStep(activeStep + 1);
-    } else if (type === FormTypes.networkingInfo) {
-      const tempData: OnboardingDataType = {
-        ...onboardingData,
-        networking_industries_categories: data.networking_industries_categories,
-        networking_roles_categories: data.networking_roles_categories,
-        interested_in_being_matched: data.interested_in_being_matched
+        role_title: data.role_title,
+        goals: data.goals,
+        improvements: data.improvements
       };
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
     } else if (type === FormTypes.housekeepingInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
-        cohort_understanding: data.current_understanding,
-        payed_by: data.payed_by,
-        referred_by: data.referred_by,
-        date_of_birth: data.date_of_birth,
-        phone_number: data.phone_number
+        interested_in_being_matched: data.interested_in_being_matched,
+        referred_by: data.referred_by
       };
+      setOnboardingData(tempData);
+      setActiveStep(activeStep + 1);
+    } else if (type === FormTypes.userInfo) {
+      const tempData: OnboardingDataType = { ...onboardingData };
+      setProfilePicture(data.profile_image_url);
       setIsSubmitting(true);
       submitData(tempData);
       setOnboardingData(tempData);
@@ -270,7 +157,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     const uploadData = new FormData();
 
     profilePicture?.image && uploadData.append('profile_image', profilePicture?.image);
-    companyLogo?.image && uploadData.append('company_logo', companyLogo?.image);
     uploadData.append('participant_id', user?.id);
     uploadData.append('onboarding_data', JSON.stringify(data));
 
@@ -295,31 +181,21 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 1) {
       return (
         <div data-testid="onboarding-form-modal">
-          <AddToCalendarInfo
-            userProfile={{
-              first_name: onboardingData.first_name || '',
-              last_name: onboardingData.last_name || '',
-              linkedin_url: onboardingData.linkedin_url || '',
-              profile_image_url: profilePicture,
-              preferred_pronoun: onboardingData.preferred_pronoun || '',
-              country: onboardingData.country || '',
-              city: onboardingData.city || ''
-            }}
-            onNextHandler={() => setActiveStep(activeStep + 1)}
-          />
+          <AddToCalendarInfo onNextHandler={() => setActiveStep(activeStep + 1)} />
         </div>
       );
     }
 
     if (activeStep === 2) {
       return (
-        <CompanyInfoForm
+        <GoalsForm
           companyProfile={{
             name: onboardingData.company_name || '',
-            logo_url: companyLogo,
-            industries: onboardingData.company_industries || [],
-            number_of_employees: onboardingData.number_of_employees || ''
+            role_title: onboardingData.role_title || '',
+            goals: onboardingData.goals || '',
+            improvements: onboardingData.improvements || ''
           }}
+          isSubmitting={isSubmitting}
           onSubmit={(data: any) => updateOnboardingData(FormTypes.companyInfo, data)}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
@@ -328,44 +204,26 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
     if (activeStep === 3) {
       return (
-        <RoleInfoForm
+        <HouseKeepingForm
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
+          isSubmitting={isSubmitting}
           infoDetails={{
-            role_title: onboardingData.role_title || '',
-            role_description: onboardingData.role_description || '',
-            role_category: onboardingData.role_category || [],
-            do_manage_team: onboardingData.do_manage_team || false
+            interested_in_being_matched: onboardingData.interested_in_being_matched || false,
+            referred_by: onboardingData.referred_by
           }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.roleInfo, data)}
         />
       );
     }
 
     if (activeStep === 4) {
       return (
-        <NetworkingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.networkingInfo, data)}
-          infoDetails={{
-            networking_industries_categories: onboardingData.networking_industries_categories || [],
-            networking_roles_categories: onboardingData.networking_roles_categories || [],
-            interested_in_being_matched: onboardingData.interested_in_being_matched || false
-          }}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
-        />
-      );
-    }
-
-    if (activeStep === 5) {
-      return (
-        <HouseKeepingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
-          infoDetails={{
-            current_understanding: onboardingData.cohort_understanding,
-            payed_by: onboardingData.payed_by,
-            referred_by: onboardingData.referred_by
-          }}
-          phoneNumberValue={onboardingData.phone_number}
+        <UserInfoForm
+          onSubmit={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
+          profile_image_url={profilePicture}
           isSubmitting={isSubmitting}
+          isSubmitable={true}
+          showPrevButton={true}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
