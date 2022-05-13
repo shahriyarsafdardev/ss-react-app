@@ -7,6 +7,8 @@ import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { ONBOARDING_EVENTS, sendAmplitudeData } from 'utils/amplitude';
+
 // material
 import {
   Link,
@@ -55,7 +57,12 @@ export default function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await login(values.email, values.password);
+        await login(values.email, values.password).then((res) => {
+          sendAmplitudeData(ONBOARDING_EVENTS.onbording_event, {
+            event: ONBOARDING_EVENTS.logged_in,
+            description: 'User has logged in on portal.'
+          });
+        });
         enqueueSnackbar('Login success', {
           variant: 'success',
           action: (key) => (

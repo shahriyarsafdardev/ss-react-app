@@ -43,6 +43,16 @@ export const EVENT_TYPES = {
   cohort_intake_number: 'cohort-intake-number'
 };
 
+export const ONBOARDING_EVENTS = {
+  onbording_event: 'Onboarding Event',
+  logged_in: 'Logged In',
+  payment_made: 'Payment made',
+  calendar_added: 'Calendar added',
+  goals_added: 'Goals added',
+  houskeeping_questions: 'Houskeeping questions',
+  upload_profile_picture: 'Uploaded profile picture'
+};
+
 export const SESSION_EVENTS = {
   session_page_action: 'Sessions Page Action',
   cohort_name: 'cohort-name',

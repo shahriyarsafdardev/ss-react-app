@@ -5,7 +5,7 @@ import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from 'redux/store';
-
+import { ONBOARDING_EVENTS, sendAmplitudeData } from 'utils/amplitude';
 import { GoalsForm, HouseKeepingForm, AddToCalendarInfo, UserInfoForm } from './info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -164,6 +164,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         }
         setIsSubmitting(false);
         setModal(false);
+        sendAmplitudeData(ONBOARDING_EVENTS.onbording_event, {
+          event: ONBOARDING_EVENTS.upload_profile_picture,
+          description: 'User has uploaded profile picture.'
+        });
       })
       .catch((err) => {
         setIsSubmitting(false);
@@ -177,7 +181,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return (
         <div data-testid="onboarding-form-modal">
           <AddToCalendarInfo
-            onNextHandler={() => setActiveStep(activeStep + 1)}
+            onNextHandler={() => {
+              setActiveStep(activeStep + 1);
+              sendAmplitudeData(ONBOARDING_EVENTS.onbording_event, {
+                event: ONBOARDING_EVENTS.calendar_added,
+                description: 'User has added the calender.'
+              });
+            }}
             inviteUrl={cohort?.calendar_invite_url}
           />
         </div>
@@ -194,7 +204,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             improvements: onboardingData.improvements || ''
           }}
           isSubmitting={isSubmitting}
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.companyInfo, data)}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.companyInfo, data);
+            sendAmplitudeData(ONBOARDING_EVENTS.onbording_event, {
+              event: ONBOARDING_EVENTS.goals_added,
+              description: 'User has added goals.'
+            });
+          }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
@@ -203,7 +219,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 3) {
       return (
         <HouseKeepingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.housekeepingInfo, data);
+            sendAmplitudeData(ONBOARDING_EVENTS.onbording_event, {
+              event: ONBOARDING_EVENTS.houskeeping_questions,
+              description: 'User has answered housekeeping questions.'
+            });
+          }}
           isSubmitting={isSubmitting}
           infoDetails={{
             interested_in_being_matched: onboardingData.interested_in_being_matched,
