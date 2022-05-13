@@ -153,11 +153,13 @@ export default function AddToCalendarInfo({
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Google Calendar Instructions</Head>
+        <Head data-testid="google-calendar-instructions">Google Calendar Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>
-          <p className={classes.texttwo}>On Web:</p>
+          <p className={classes.texttwo} data-testid="web-google-calendar-instructions">
+            On Web:
+          </p>
 
           <Item>
             <div className={classes.itemNum}>1</div>
@@ -241,7 +243,7 @@ export default function AddToCalendarInfo({
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Apple Calendar Instructions</Head>
+        <Head data-testid="apple-calendar-instructions">Apple Calendar Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>
@@ -334,7 +336,7 @@ export default function AddToCalendarInfo({
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Head>Outlook Instructions</Head>
+        <Head data-testid="outlook-instructions">Outlook Instructions</Head>
       </AccordionSummary>
       <AccordionDetails>
         <Box className={classes.mt5}>

@@ -77,6 +77,7 @@ export default function CompanyInfoForm({
                     name: newValue
                   });
                 }}
+                data-testid="company-name-dropdown"
                 options={companies?.map((company) => company)}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
@@ -84,7 +85,9 @@ export default function CompanyInfoForm({
                     <Chip size="small" label={option} {...getTagProps({ index })} />
                   ))
                 }
-                renderInput={(params) => <TextField label="Company" {...params} />}
+                renderInput={(params) => (
+                  <TextField data-testid="company-name-input" label="Company" {...params} />
+                )}
               />
               <FormControl fullWidth>
                 <TextField

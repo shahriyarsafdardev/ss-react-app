@@ -65,10 +65,12 @@ export default function HouseKeepingForm({
                 </InputLabel>
                 <MaterialSelect
                   fullWidth
+                  data-testid="fellow-member"
                   label="Are you interested in networking with other cohort participants?"
                   onChange={(e) =>
                     onUpdateAttribute('interested_in_being_matched', e.target.value === 'Yes')
                   }
+                  style={{ opacity: '1000' }}
                   value={booleanValue(infoObject?.interested_in_being_matched)}
                   inputProps={{ 'data-testid': 'network-fellow-member' }}
                 >
@@ -83,10 +85,12 @@ export default function HouseKeepingForm({
                 <InputLabel>How did you hear about this cohort?</InputLabel>
                 <MaterialSelect
                   fullWidth
+                  data-testid="about-cohort"
                   label="How did you hear about this cohort?"
                   onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
                   defaultValue={infoObject.referred_by}
                   inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
+                  style={{ opacity: '1000' }}
                 >
                   {REFERRER_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
