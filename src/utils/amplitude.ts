@@ -130,7 +130,9 @@ export const HOME_PAGE_EVENTS = {
   to_do_list: 'to-do-list',
   network_suggestion: 'network-suggestion',
   zoom_preview: 'Zoom Preview',
-  opened_zoom_link: 'Opened Zoom Link'
+  opened_zoom_link: 'Opened Zoom Link',
+  source: 'source',
+  joined_zoom_session: 'Join Zoom Session'
 };
 
 export const trackHomePageEvents = (
@@ -138,12 +140,14 @@ export const trackHomePageEvents = (
   intake: number | null,
   sessionNumber: number | undefined,
   eventType: string,
-  eventData?: string
+  eventData?: string,
+  source?: string
 ) => {
   const amplitudeData = {
     [HOME_PAGE_EVENTS.cohort_name]: cohortName,
     [HOME_PAGE_EVENTS.cohort_intake_number]: intake,
-    [HOME_PAGE_EVENTS.session_number]: sessionNumber
+    [HOME_PAGE_EVENTS.session_number]: sessionNumber,
+    [HOME_PAGE_EVENTS.source]: source || 'from_portal'
   };
 
   sendAmplitudeData(HOME_PAGE_EVENTS.home_page_action, {
