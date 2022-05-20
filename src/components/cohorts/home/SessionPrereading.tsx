@@ -4,6 +4,7 @@ import { styled } from '@material-ui/core/styles';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useLocation } from 'react-router-dom';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import { CircularLoader, firstUpcomingDate, SectionContainer, zoomTimesPreview } from './Common';
@@ -28,6 +29,8 @@ const SessionPrereading = ({
   sessions: Session[];
   activeSession: Session | undefined;
 }) => {
+  const url = new URLSearchParams(useLocation().search);
+  const url_source = url.get('source') || '';
   const [list, setList] = useState<SessionMaterial[]>([]);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
@@ -161,8 +164,9 @@ const SessionPrereading = ({
                     onClick={(sessionNumber: number) => {
                       sendAnalyticsData(
                         sessionNumber,
-                        HOME_PAGE_EVENTS.zoom_preview,
-                        HOME_PAGE_EVENTS.opened_zoom_link
+                        HOME_PAGE_EVENTS.joined_zoom_session,
+                        HOME_PAGE_EVENTS.opened_zoom_link,
+                        url_source
                       );
                       axios.post(`/cohorts/${cohort?.id}/cohort_session_attendance.json`, {
                         status: 'attended_live',
