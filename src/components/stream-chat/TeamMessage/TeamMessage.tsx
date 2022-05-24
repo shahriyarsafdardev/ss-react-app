@@ -59,6 +59,9 @@ export const TeamMessage: React.FC<Props> = (props) => {
     event.target.style.cursor = 'pointer';
   };
 
+  if (message.deleted_at) {
+    return <></>;
+  }
   return (
     <div ref={refContainer} className={message.pinned ? 'pinned-message' : 'unpinned-message'}>
       {navigate && <Navigate to={`/cohorts/${cohortID}/peers?user_id=${message.user?.id}`} />}

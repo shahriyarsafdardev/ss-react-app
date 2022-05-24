@@ -85,8 +85,20 @@ const Index = () => {
     }
   }, [sessions, activeSession]);
 
-  const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
-    trackHomePageEvents(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
+  const sendAnalyticsData = (
+    sessionNumber: number,
+    eventCategory: string,
+    eventData: string,
+    source?: string
+  ) => {
+    trackHomePageEvents(
+      cohort.name,
+      cohort.intake,
+      sessionNumber,
+      eventCategory,
+      eventData,
+      source
+    );
   };
 
   const onAddCalendar = () => {
