@@ -75,7 +75,11 @@ const Index = () => {
   useEffect(() => {
     let found = false;
     sessions?.forEach((session) => {
-      if (!found && moment(firstUpcomingDate(session.times)) > moment().subtract(3, 'hour')) {
+      if (
+        !found &&
+        session.times &&
+        moment(firstUpcomingDate(session.times)) > moment().subtract(3, 'hour')
+      ) {
         setActiveSession(session);
         found = true;
       }
@@ -107,10 +111,18 @@ const Index = () => {
 
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
+  let session_time_count = 0;
+  sessions?.forEach((session, index) => {
+    if (session.times) {
+      session_time_count++;
+    }
+  });
+
   return (
     <Page title="ScholarSite | Homepage">
       {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
-      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+      {(cohort?.released_for_learners === true || mode === 'Instructor') &&
+      session_time_count === sessions?.length ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Container style={{ marginBottom: '50px' }}>
             <CohortTimeLine cohort={cohort} sessions={sessions} />
@@ -141,6 +153,7 @@ const Index = () => {
           cohortID={cohort_id}
           cohortCode={cohort?.name}
           cohortHost={cohort?.host_names}
+          isActiveCohort={cohort?.released_for_learners}
         />
       )}
     </Page>

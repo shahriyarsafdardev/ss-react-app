@@ -76,12 +76,14 @@ const EmptyHomeTab = ({
   cohortCode,
   cohortHost,
   cohortID,
-  calendarLink
+  calendarLink,
+  isActiveCohort
 }: {
   cohortCode: string;
   cohortHost: string;
   cohortID: string;
   calendarLink: string;
+  isActiveCohort: boolean;
 }) => {
   const classes = useStyles();
   const { user } = useAuth();
@@ -92,6 +94,56 @@ const EmptyHomeTab = ({
     }
   };
 
+  const activeCohortMessage = () => (
+    <>
+      <Typography
+        data-testid="empty-home-cohort-information-text"
+        variant="caption"
+        className={classes.textone}
+      >
+        We can’t wait to get to know you and the rest of the cohort shortly before{' '}
+        {cohortHost && `${cohortHost}’s`} cohort begins. This includes access to Networking,
+        Messaging and the Session Materials. We’ll make sure to send you an email reminder once this
+        date arrives!
+      </Typography>
+      <Typography data-testid="empty-home-cohort-information-text-1" className={classes.texttwo}>
+        Right now, we highly recommend that you add the upcoming Session times to you’re calendar by
+        pressing the button below.
+      </Typography>
+      <Box className={classes.btnContainer}>
+        <LoadingButton
+          data-testid="empty-home-add-to-calendar-btn"
+          className={`${classes.btns} mr`}
+          component={RouterLink}
+          to={`/cohorts/${cohortID}/calendar-instructions`}
+          onClick={calendarAlert}
+          variant="contained"
+        >
+          Add sessions to my calendar
+        </LoadingButton>
+        <Button
+          data-testid="empty-home-ask-question-btn"
+          href={`/cohorts/${cohortID}/Q&A`}
+          className={classes.btns}
+          variant="outlined"
+        >
+          Ask {cohortHost} a question through Q&A
+        </Button>
+      </Box>
+    </>
+  );
+
+  const inactiveCohortMessage = () => (
+    <Typography
+      data-testid="empty-home-cohort-information-text"
+      variant="h4"
+      className={classes.textone}
+    >
+      The dates have not been confirm yet, please reach out to leah@scholarsite.io if you have any
+      questions.
+    </Typography>
+  );
+
   return (
     <Container className={classes.container}>
       <Box className={classes.inner}>
@@ -99,40 +151,7 @@ const EmptyHomeTab = ({
           👋 Hi {user?.first_name}
           {cohortCode && `, welcome to ${cohortCode}!`}
         </Typography>
-        <Typography
-          data-testid="empty-home-cohort-information-text"
-          variant="caption"
-          className={classes.textone}
-        >
-          We can’t wait to get to know you and the rest of the cohort shortly before{' '}
-          {cohortHost && `${cohortHost}’s`} cohort begins. This includes access to Networking,
-          Messaging and the Session Materials. We’ll make sure to send you an email reminder once
-          this date arrives!
-        </Typography>
-        <Typography data-testid="empty-home-cohort-information-text-1" className={classes.texttwo}>
-          Right now, we highly recommend that you add the upcoming Session times to you’re calendar
-          by pressing the button below.
-        </Typography>
-        <Box className={classes.btnContainer}>
-          <LoadingButton
-            data-testid="empty-home-add-to-calendar-btn"
-            className={`${classes.btns} mr`}
-            component={RouterLink}
-            to={`/cohorts/${cohortID}/calendar-instructions`}
-            onClick={calendarAlert}
-            variant="contained"
-          >
-            Add sessions to my calendar
-          </LoadingButton>
-          <Button
-            data-testid="empty-home-ask-question-btn"
-            href={`/cohorts/${cohortID}/Q&A`}
-            className={classes.btns}
-            variant="outlined"
-          >
-            Ask {cohortHost} a question through Q&A
-          </Button>
-        </Box>
+        {isActiveCohort ? activeCohortMessage() : inactiveCohortMessage()}
       </Box>
     </Container>
   );
