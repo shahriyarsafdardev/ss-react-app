@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack5';
 
 import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
+import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 
 type UserType = {
   first_name?: string;
@@ -47,6 +48,13 @@ export default function UserForm({
             .then((res) => {
               enqueueSnackbar('Application Submitted', { variant: 'success' });
               submitValues({ ...values });
+              trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+                [ONBOARDING_EVENTS.cohort_name]: cohortID,
+                [ONBOARDING_EVENTS.cohort_intake_number]: '',
+                [ONBOARDING_EVENTS.event]: 'Registered',
+                [ONBOARDING_EVENTS.category]: 'Registered',
+                [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
+              });
             });
         } catch (error) {
           enqueueSnackbar('Application Failed', { variant: 'error' });
