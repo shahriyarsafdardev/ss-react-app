@@ -13,7 +13,8 @@ import {
   ListItemText,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { NetworkInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
+import { NetworkInfoType, NavigationButtons } from './dataTypes';
+import { checkFormValidity } from '../Common';
 
 const YES_NO_OPTIONS = ['Yes', 'No'];
 

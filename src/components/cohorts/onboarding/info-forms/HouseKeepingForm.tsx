@@ -12,8 +12,8 @@ import {
   ListItemText,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { DesktopDatePicker } from '@material-ui/lab';
-import { HouseKeepingInfoType, NavigationButtons, checkFormValidity } from './dataTypes';
+import { HouseKeepingInfoType, NavigationButtons } from './dataTypes';
+import { checkFormValidity } from '../Common';
 
 const COHORT_UNDERSTADING_OPTIONS = [
   'No Experience',

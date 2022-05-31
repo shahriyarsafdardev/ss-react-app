@@ -20,7 +20,8 @@ import {
 import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 
-import { CompanyProfileType, NavigationButtons, checkFormValidity } from './dataTypes';
+import { CompanyProfileType, NavigationButtons } from './dataTypes';
+import { checkFormValidity } from '../Common';
 
 const numberOfEmployeesList = [
   '1-10',
