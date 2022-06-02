@@ -15,7 +15,8 @@ import {
   ListItemText,
   Select as MaterialSelect
 } from '@material-ui/core';
-import { InfoType, NavigationButtons, checkFormValidity } from './dataTypes';
+import { InfoType, NavigationButtons } from './dataTypes';
+import { checkFormValidity } from '../Common';
 
 const YES_NO_OPTIONS = ['Yes', 'No'];
 

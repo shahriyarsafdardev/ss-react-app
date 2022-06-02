@@ -17,6 +17,7 @@ import NetworkSuggestion from './NetworkSuggestion';
 import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
+import NewOnboardingModal from '../onboarding/NewOnboardingModal';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -30,6 +31,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
     }
   }
 }));
+
+const IBRAHIM_COHORT_ID = 'e0d1f216-104e-4018-aea2-86f00f0ce3dd';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -107,9 +110,16 @@ const Index = () => {
 
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
+  const renderOnboardingModal = () =>
+    cohort.id === IBRAHIM_COHORT_ID ? (
+      <NewOnboardingModal onSubmit={() => {}} />
+    ) : (
+      <OnboardingModal onSubmit={() => {}} />
+    );
+
   return (
     <Page title="ScholarSite | Homepage">
-      {shouldOpenModal() && <OnboardingModal onSubmit={() => {}} />}
+      {shouldOpenModal() && renderOnboardingModal()}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Container style={{ marginBottom: '50px' }}>
