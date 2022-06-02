@@ -156,7 +156,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
     uploadData.append('onboarding_data', JSON.stringify(onboardingData));
 
     await axios
-      .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_answers.json`, uploadData)
+      .post(`/cohorts/${cohort_id}/onboarding/submit_new_onboarding_answers.json`, uploadData)
       .then((res) => {
         enqueueSnackbar('Onboarding completed successfully', { variant: 'success' });
         if (res.data.user) {
