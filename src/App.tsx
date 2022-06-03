@@ -32,9 +32,9 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    initAmplitude();
     if (isAuthenticated) {
       dispatch(getCohorts());
-      initAmplitude();
       setAmplitudeUserProperties({
         full_name: user?.displayName,
         type: user?.type
