@@ -10,10 +10,12 @@ import axios from '../../utils/axios';
 
 type CohortState = {
   cohorts: Cohort[];
+  errors: any;
 };
 
 const initialState: CohortState = {
-  cohorts: []
+  cohorts: [],
+  errors: []
 };
 const setAuthorizationToken = () => {
   const accessToken = window.localStorage.getItem('accessToken');
@@ -191,11 +193,20 @@ const slice = createSlice({
           state.cohorts[targetCohortIndex].sessions = updated;
         }
       }
+    },
+    addErrors(state, action) {
+      state.errors = action.payload.error;
+    },
+    clearErrors(state) {
+      state.errors = [];
     }
   }
 });
 
 export default slice.reducer;
+
+// Actions
+export const { clearErrors } = slice.actions;
 
 export function getCohorts() {
   return async () => {
@@ -329,6 +340,7 @@ export function updateApplication(cohortID: string, enrollment: Enrollment) {
         slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
       );
     } catch (error) {
+      dispatch(slice.actions.addErrors({ error }));
       console.log(error);
     }
   };
