@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
 import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
+import { PATH_PAGE } from 'routes/paths';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
@@ -27,6 +28,7 @@ type UserType = {
   enrollment_id?: string;
   referrer?: string;
   acceptedTerms: boolean;
+  alumni_event: boolean;
 };
 
 export default function Registration() {
@@ -40,7 +42,8 @@ export default function Registration() {
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
     referrer: url.get('referrer') || '',
-    acceptedTerms: false
+    acceptedTerms: false,
+    alumni_event: false
   });
 
   const [account, setAccount] = useState<string>('');
@@ -70,8 +73,13 @@ export default function Registration() {
               ...user,
               ...res.data.user
             });
-          setAccount(res.data.account);
-          setLoading(false);
+          if (res.data.user.alumni_event) {
+            const base_url = window.location.origin;
+            window.location.href = base_url + PATH_PAGE.alumniRegistration;
+          } else {
+            setAccount(res.data.account);
+            setLoading(false);
+          }
         })
         .catch((error) => {
           enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
