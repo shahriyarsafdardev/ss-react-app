@@ -11,6 +11,7 @@ import { SessionMaterial } from '../../../@types/cohorts';
 import { Navigation, ModalDocument, ModalPage } from '../sessions/Slides';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+const url_prefix = 'https://';
 
 type PreReadingRowProps = {
   item: SessionMaterial;
@@ -182,7 +183,11 @@ export default function PreReadingRow({
             ) : (
               <StyledLink
                 data-testid={`prereading-link-${number}`}
-                href={item.action_url}
+                href={
+                  item.action_url.substr(0, 'http'.length) !== 'http'
+                    ? url_prefix + item.action_url
+                    : item.action_url
+                }
                 target="_blank"
                 onClick={() => onPreReadingClick()}
               >
