@@ -203,6 +203,7 @@ export type Cohort = {
   referral_codes: ReferralCode[];
   start_date: string;
   analytics: any;
+  alumni_event: boolean;
 };
 
 export type ReferralCode = {

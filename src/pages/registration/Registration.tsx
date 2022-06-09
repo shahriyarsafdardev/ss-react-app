@@ -8,6 +8,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
+import AlumniRegistration from './AlumniRegistration';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   minHeight: '100%',
@@ -27,6 +28,7 @@ type UserType = {
   enrollment_id?: string;
   referrer?: string;
   acceptedTerms: boolean;
+  alumni_event: boolean;
 };
 
 export default function Registration() {
@@ -40,11 +42,13 @@ export default function Registration() {
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
     referrer: url.get('referrer') || '',
-    acceptedTerms: false
+    acceptedTerms: false,
+    alumni_event: false
   });
 
   const [account, setAccount] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [alumniEvent, setAlumniEvent] = useState(false);
 
   const updateUserData = async (data: any) => {
     setUser({ ...user, ...data });
@@ -70,6 +74,9 @@ export default function Registration() {
               ...user,
               ...res.data.user
             });
+          if (res.data.user.alumni_event) {
+            setAlumniEvent(true);
+          }
           setAccount(res.data.account);
           setLoading(false);
         })
@@ -179,7 +186,13 @@ export default function Registration() {
           <LoadingScreen />
         </Box>
       ) : (
-        <Container maxWidth="lg">{selectStep()}</Container>
+        <>
+          {alumniEvent ? (
+            <AlumniRegistration />
+          ) : (
+            <Container maxWidth="lg">{selectStep()}</Container>
+          )}
+        </>
       )}
     </RootStyle>
   );

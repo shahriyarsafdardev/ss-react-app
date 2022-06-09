@@ -21,7 +21,6 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
-        { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
           title: instructor ? 'students' : 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
@@ -29,6 +28,13 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         }
       ]
     };
+    if (cohort.alumni_event && !instructor) {
+      return object;
+    }
+    object.children = [
+      { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+      ...object.children
+    ];
     if (instructor) {
       object.children = [
         {
