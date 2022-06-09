@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
 import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
-import { PATH_PAGE } from 'routes/paths';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
+import AlumniRegistration from './AlumniRegistration';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   minHeight: '100%',
@@ -48,6 +48,7 @@ export default function Registration() {
 
   const [account, setAccount] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [alumniEvent, setAlumniEvent] = useState(false);
 
   const updateUserData = async (data: any) => {
     setUser({ ...user, ...data });
@@ -74,12 +75,10 @@ export default function Registration() {
               ...res.data.user
             });
           if (res.data.user.alumni_event) {
-            const base_url = window.location.origin;
-            window.location.href = base_url + PATH_PAGE.alumniRegistration;
-          } else {
-            setAccount(res.data.account);
-            setLoading(false);
+            setAlumniEvent(true);
           }
+          setAccount(res.data.account);
+          setLoading(false);
         })
         .catch((error) => {
           enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
@@ -187,7 +186,13 @@ export default function Registration() {
           <LoadingScreen />
         </Box>
       ) : (
-        <Container maxWidth="lg">{selectStep()}</Container>
+        <>
+          {alumniEvent ? (
+            <AlumniRegistration />
+          ) : (
+            <Container maxWidth="lg">{selectStep()}</Container>
+          )}
+        </>
       )}
     </RootStyle>
   );

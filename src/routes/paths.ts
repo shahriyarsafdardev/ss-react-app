@@ -29,7 +29,6 @@ export const PATH_PAGE = {
   pricing: '/pricing',
   payment: '/payment',
   registration: '/registration',
-  alumniRegistration: '/alumni-registration',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
   businessDashboard: '/business-dashboard',
