@@ -24,7 +24,7 @@ const TABLE_HEAD = [
 
 export default function RegistrationsList({
   enrollments,
-  codes,
+  codes = [],
   isAdminView = false
 }: StudentProfileListProps) {
   return (
