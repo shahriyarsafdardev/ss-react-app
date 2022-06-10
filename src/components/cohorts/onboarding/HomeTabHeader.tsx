@@ -62,7 +62,7 @@ export default function HomeTabHeader({
 }: {
   children?: React.ReactNode;
   activeStep: number;
-  cohortTitle: string | undefined;
+  cohortTitle: any;
   showProgressBar?: boolean;
   totalSteps: number;
   cohortDescription: string | undefined;

@@ -17,7 +17,8 @@ import {
 } from '@material-ui/core';
 
 import { UploadAvatar } from 'components/upload';
-import { NavigationButtons, checkFormValidity } from './dataTypes';
+import { NavigationButtons } from './dataTypes';
+import { checkFormValidity } from '../Common';
 
 type UserInfoType = {
   profile_image_url: File | any;

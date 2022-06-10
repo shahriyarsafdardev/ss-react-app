@@ -4,7 +4,8 @@ import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
-import { getEnrollments, getReferralCodes } from 'redux/slices/cohort';
+import { getEnrollments, getReferralCodes, clearErrors } from 'redux/slices/cohort';
+import { useSnackbar } from 'notistack5';
 import { RegistrationsHeader, RegistrationsFooter } from './Common';
 import Highlights from './Highlights';
 import RegistrationsList from './RegistrationsList';
@@ -31,6 +32,18 @@ const RegistrationsContainer = styled(Box)(() => ({
 export default function RegistrationsTab() {
   const dispatch = useDispatch();
   const [limit, setLimit] = useState(10);
+
+  const cohortErrors = useSelector((state: RootState) => state.cohort.errors);
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (cohortErrors.length > 0) {
+      cohortErrors.forEach((error: string) => {
+        enqueueSnackbar(error, { variant: 'error' });
+      });
+      dispatch(clearErrors());
+    }
+  }, [cohortErrors]);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
 

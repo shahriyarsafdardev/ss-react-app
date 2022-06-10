@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
+import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 
 type CardType = {
   cardName?: string;
@@ -82,6 +83,13 @@ export default function CardDetails({
           })
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
+            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+              [ONBOARDING_EVENTS.cohort_name]: cohortID,
+              [ONBOARDING_EVENTS.cohort_intake_number]: '',
+              [ONBOARDING_EVENTS.event]: 'Payment Made',
+              [ONBOARDING_EVENTS.category]: 'Payment Made',
+              [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
+            });
             setStep(3);
           })
           .catch((error: any) => {

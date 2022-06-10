@@ -6,6 +6,7 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from 'redux/store';
 
+import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 import {
   UserInfoForm,
   CompanyInfoForm,
@@ -298,7 +299,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               country: onboardingData.country || '',
               city: onboardingData.city || ''
             }}
-            onSubmit={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
+            onSubmit={(data: any) => {
+              updateOnboardingData(FormTypes.userInfo, data);
+            }}
           />
         </div>
       );
@@ -349,7 +352,16 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     if (activeStep === 5) {
       return (
         <HouseKeepingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.housekeepingInfo, data)}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.housekeepingInfo, data);
+            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+              [ONBOARDING_EVENTS.cohort_name]: cohort.name,
+              [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
+              [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+              [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
+              [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
+            });
+          }}
           infoDetails={{
             current_understanding: onboardingData.cohort_understanding,
             payed_by: onboardingData.payed_by,

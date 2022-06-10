@@ -71,6 +71,19 @@ export const SLIDE_EVENTS = {
   navigated_right: 'Navigated Right'
 };
 
+export const ONBOARDING_EVENTS = {
+  event_type: 'Onboarding Event',
+  cohort_name: 'cohort-name',
+  cohort_intake_number: 'cohort-intake-number',
+  event: 'event',
+  category: 'category',
+  description: 'description'
+};
+
+export const trackOnboardingEvent = (eventType: string, eventData: any) => {
+  sendAmplitudeData(ONBOARDING_EVENTS.event_type, eventData);
+};
+
 export const trackSessionsPageEvent = (
   cohortName: string,
   intake: number | null,

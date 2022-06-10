@@ -149,7 +149,7 @@ export default function SurveyForm({
     setLoading(true);
 
     axios
-      .post(`/cohort_sessions/submit_survey_responses.json`, {
+      .post(`/cohort_sessions/${sessionId}/submit_survey_responses.json`, {
         response,
         current_user_id: user?.id
       })
