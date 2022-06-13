@@ -28,8 +28,10 @@ export default function RedirectToCohort() {
         upcomingCohort = sortedCohorts[sortedCohorts.length - 1];
       }
 
-      if (user.type === 'learner') {
+      if (user.type === 'learner' && !upcomingCohort.alumni_event) {
         navigationUrl = `/cohorts/${upcomingCohort.id}/home`;
+      } else if (user.type === 'learner' && upcomingCohort.alumni_event) {
+        navigationUrl = `/cohorts/${upcomingCohort.id}/peers`;
       } else if (user.type === 'expert') {
         navigationUrl = `/cohorts/${upcomingCohort.id}/registrations`;
       } else {

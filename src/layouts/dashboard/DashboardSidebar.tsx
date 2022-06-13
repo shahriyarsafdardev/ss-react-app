@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
@@ -6,7 +6,13 @@ import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
-import { getCategories, getInstructorCohorts, groupByIntake, getLearnerCohorts } from './Common';
+import {
+  getCategories,
+  getInstructorCohorts,
+  groupByIntake,
+  getLearnerCohorts,
+  ShareReferralLink
+} from './Common';
 import { RootState, useSelector } from '../../redux/store';
 
 // hooks
@@ -82,6 +88,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const { user } = useAuth();
+  const [referralEmailModal, setReferralEmailModal] = useState(false);
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -155,30 +162,37 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         ))}
 
       <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-      {user?.type !== 'learner' && (
-        <StyledBox>
-          <ViewSwitcherStyle>
-            <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
-              You are currently viewing the
-              <b> {mode} Dashboard,</b> to access your{' '}
-              {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
-              below:
-            </p>
-            <SwitcherButtonContainer>
-              <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
-              <Switch
-                data-testid="dashboard-switch"
-                size="small"
-                checked={mode === 'Instructor'}
-                onChange={() => switchView()}
-              />
-              <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
-                Instructor
-              </LabelStyled>
-            </SwitcherButtonContainer>
-          </ViewSwitcherStyle>
-        </StyledBox>
-      )}
+      <StyledBox>
+        <ViewSwitcherStyle>
+          {user?.type !== 'learner' ? (
+            <>
+              <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
+                You are currently viewing the
+                <b> {mode} Dashboard,</b> to access your{' '}
+                {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
+                below:
+              </p>
+              <SwitcherButtonContainer>
+                <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
+                <Switch
+                  data-testid="dashboard-switch"
+                  size="small"
+                  checked={mode === 'Instructor'}
+                  onChange={() => switchView()}
+                />
+                <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
+                  Instructor
+                </LabelStyled>
+              </SwitcherButtonContainer>
+            </>
+          ) : (
+            <ShareReferralLink
+              referralEmailModal={referralEmailModal}
+              setReferralEmailModal={setReferralEmailModal}
+            />
+          )}
+        </ViewSwitcherStyle>
+      </StyledBox>
     </Scrollbar>
   );
 

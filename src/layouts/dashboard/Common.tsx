@@ -1,6 +1,9 @@
 /* eslint-disable no-else-return */
+import { Box, Button, styled, Typography } from '@material-ui/core';
+import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
 import { Cohort } from '../../@types/cohorts';
+import InviteEmailForm from './InviteEmailForm';
 
 export const seasonOrder: { [index: string]: number } = {
   winter: 4,
@@ -48,3 +51,79 @@ export const getLearnerCohorts = (cohorts: Cohort[], category: string) =>
   cohorts
     .filter((item) => item.intake_name === category)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+const ContentContainer = styled('div')(({ theme }) => ({
+  position: 'relative',
+  display: 'flex',
+  backgroundColor: 'white',
+  padding: '54px 40px',
+  boxSizing: 'border-box',
+  borderRadius: '25px',
+  maxWidth: '100%',
+  [theme.breakpoints.down(1250)]: {
+    borderRadius: '25px',
+    height: '100%'
+  }
+}));
+
+const InviteYourTeamMates = () => (
+  <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480' }}>
+    <img alt="sketch icon" src="/static/peers/peers-group.png" />
+    <Typography sx={{ fontSize: '24px', marginTop: '32px', fontWeight: 'bolder' }}>
+      Invite Your Teammates!
+    </Typography>
+    <Typography sx={{ fontSize: '16px', marginTop: '16px', color: '#919EAB', lineHeight: '24px' }}>
+      Let your teammates help you evaluate our features by adding them to your trial
+    </Typography>
+  </Box>
+);
+
+export type EmailModalProps = {
+  referralEmailModal: boolean;
+  setReferralEmailModal: Function;
+};
+
+const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: EmailModalProps) => (
+  <Modal open={referralEmailModal} zIndex={1400} onClose={() => setReferralEmailModal(false)}>
+    <ContentContainer>
+      <InviteYourTeamMates />
+      <InviteEmailForm
+        referralEmailModal={referralEmailModal}
+        setReferralEmailModal={setReferralEmailModal}
+      />
+    </ContentContainer>
+  </Modal>
+);
+
+export const ShareReferralLink = ({
+  referralEmailModal,
+  setReferralEmailModal
+}: EmailModalProps) => (
+  <>
+    <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bolder' }}>
+      Love ScholarSite?
+    </Typography>
+    <Typography sx={{ textAlign: 'center', marginTop: '8px', fontSize: '16px' }}>
+      Refer and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span>!
+    </Typography>
+    <Box sx={{ marginTop: '24px' }}>
+      <Button
+        variant="contained"
+        style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
+        onClick={() => setReferralEmailModal(true)}
+      >
+        Share Via Email
+      </Button>
+      <Button
+        variant="outlined"
+        style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
+      >
+        Copy Referral Link
+      </Button>
+    </Box>
+    <ReferralEmailModal
+      referralEmailModal={referralEmailModal}
+      setReferralEmailModal={setReferralEmailModal}
+    />
+  </>
+);
