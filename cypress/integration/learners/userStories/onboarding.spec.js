@@ -165,8 +165,12 @@ describe('When a user visits the home page of a cohort for the first time', () =
 
   describe('Page 3', () => {
     beforeEach(() => {
-      cy.get('[data-testid="btn_next"]').should('be.visible').click();
-      cy.get('[data-testid="btn_next"]').should('be.visible').click();
+      cy.get('[data-testid="btn_next"]')
+        .should('be.visible')
+        .click({ multiple: true, force: true });
+      cy.get('[data-testid="btn_next"]')
+        .should('be.visible')
+        .click({ mutliple: true, force: true });
     });
     it('Displays a "Role Info" form', () => {
       cy.get('[data-testid="onboard-title"]')
