@@ -93,6 +93,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const [referralEmailModal, setReferralEmailModal] = useState(false);
   const referralLink = useSelector((state: RootState) => state.cohort.referralLink);
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -195,6 +198,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               referralEmailModal={referralEmailModal}
               setReferralEmailModal={setReferralEmailModal}
               referralLink={referralLink}
+              cohort={cohort}
             />
           )}
         </ViewSwitcherStyle>

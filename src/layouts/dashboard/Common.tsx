@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack5';
 import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
+import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
 
@@ -84,6 +85,7 @@ export type EmailModalProps = {
   referralEmailModal: boolean;
   setReferralEmailModal: Function;
   referralLink?: string;
+  cohort?: Cohort;
 };
 
 const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: EmailModalProps) => (
@@ -101,9 +103,11 @@ const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: Email
 export const ShareReferralLink = ({
   referralEmailModal,
   setReferralEmailModal,
-  referralLink = ''
+  referralLink = '',
+  cohort
 }: EmailModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
+  const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
 
   return (
     <>
@@ -125,7 +129,15 @@ export const ShareReferralLink = ({
           variant="outlined"
           style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
           onClick={() => {
-            copy(referralLink);
+            copy(`${referralLink}?alumni=true`);
+            trackReferralEvent(REFERRAL_EVENTS.event_type, {
+              [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+              [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+              [REFERRAL_EVENTS.event]: 'referral link copied',
+              [REFERRAL_EVENTS.category]: 'referral link copied',
+              [REFERRAL_EVENTS.description]: 'User has copied referral link.',
+              [REFERRAL_EVENTS.referrer_code]: referrer_code
+            });
             enqueueSnackbar('Referral Link Copied', { variant: 'success' });
           }}
         >
