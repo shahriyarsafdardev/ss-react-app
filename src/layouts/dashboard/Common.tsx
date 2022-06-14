@@ -1,5 +1,7 @@
 /* eslint-disable no-else-return */
 import { Box, Button, styled, Typography } from '@material-ui/core';
+import { useSnackbar } from 'notistack5';
+import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
 import { Cohort } from '../../@types/cohorts';
@@ -81,6 +83,7 @@ const InviteYourTeamMates = () => (
 export type EmailModalProps = {
   referralEmailModal: boolean;
   setReferralEmailModal: Function;
+  referralLink?: string;
 };
 
 const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: EmailModalProps) => (
@@ -97,33 +100,42 @@ const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: Email
 
 export const ShareReferralLink = ({
   referralEmailModal,
-  setReferralEmailModal
-}: EmailModalProps) => (
-  <>
-    <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bolder' }}>
-      Love ScholarSite?
-    </Typography>
-    <Typography sx={{ textAlign: 'center', marginTop: '8px', fontSize: '16px' }}>
-      Refer and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span>!
-    </Typography>
-    <Box sx={{ marginTop: '24px' }}>
-      <Button
-        variant="contained"
-        style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
-        onClick={() => setReferralEmailModal(true)}
-      >
-        Share Via Email
-      </Button>
-      <Button
-        variant="outlined"
-        style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
-      >
-        Copy Referral Link
-      </Button>
-    </Box>
-    <ReferralEmailModal
-      referralEmailModal={referralEmailModal}
-      setReferralEmailModal={setReferralEmailModal}
-    />
-  </>
-);
+  setReferralEmailModal,
+  referralLink = ''
+}: EmailModalProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  return (
+    <>
+      <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bolder' }}>
+        Love ScholarSite?
+      </Typography>
+      <Typography sx={{ textAlign: 'center', marginTop: '8px', fontSize: '16px' }}>
+        Refer and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span>!
+      </Typography>
+      <Box sx={{ marginTop: '24px' }}>
+        <Button
+          variant="contained"
+          style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
+          onClick={() => setReferralEmailModal(true)}
+        >
+          Share Via Email
+        </Button>
+        <Button
+          variant="outlined"
+          style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
+          onClick={() => {
+            copy(referralLink);
+            enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+          }}
+        >
+          Copy Referral Link
+        </Button>
+      </Box>
+      <ReferralEmailModal
+        referralEmailModal={referralEmailModal}
+        setReferralEmailModal={setReferralEmailModal}
+      />
+    </>
+  );
+};

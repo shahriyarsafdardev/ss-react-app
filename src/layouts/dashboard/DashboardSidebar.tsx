@@ -6,6 +6,8 @@ import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
+
+import { initializeReferralLink } from 'redux/slices/cohort';
 import {
   getCategories,
   getInstructorCohorts,
@@ -13,7 +15,7 @@ import {
   getLearnerCohorts,
   ShareReferralLink
 } from './Common';
-import { RootState, useSelector } from '../../redux/store';
+import { dispatch, RootState, useSelector } from '../../redux/store';
 
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -89,6 +91,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const { user } = useAuth();
   const [referralEmailModal, setReferralEmailModal] = useState(false);
+  const referralLink = useSelector((state: RootState) => state.cohort.referralLink);
+  const cohort_id = window.location.pathname.split('/')[2] || '';
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -116,6 +120,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     }
     if (user?.type === 'learner') {
       updateInstructorViewState('Member');
+      dispatch(initializeReferralLink(cohort_id));
     }
   }, [pathname]);
 
@@ -189,6 +194,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             <ShareReferralLink
               referralEmailModal={referralEmailModal}
               setReferralEmailModal={setReferralEmailModal}
+              referralLink={referralLink}
             />
           )}
         </ViewSwitcherStyle>
