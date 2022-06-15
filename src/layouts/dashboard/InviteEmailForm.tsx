@@ -4,14 +4,23 @@ import axios from 'utils/axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
+import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { EmailModalProps } from './Common';
+import { Cohort } from '../../@types/cohorts';
 
 type ReferralTypeUser = {
   email: string;
   fullName: string;
+  cohort?: Cohort;
+  referrer_code?: string;
 };
 
-function InviteEmailForm({ referralEmailModal, setReferralEmailModal }: EmailModalProps) {
+function InviteEmailForm({
+  referralEmailModal,
+  setReferralEmailModal,
+  cohort,
+  referrer_code
+}: EmailModalProps) {
   const { enqueueSnackbar } = useSnackbar();
   const cohortId = window.location.pathname.split('/')[2] || '';
 
@@ -27,7 +36,6 @@ function InviteEmailForm({ referralEmailModal, setReferralEmailModal }: EmailMod
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       await axios
         .post(`/cohorts/${cohortId}/send_referrals_email.json`, {
           referee_email: values.email,
@@ -35,7 +43,14 @@ function InviteEmailForm({ referralEmailModal, setReferralEmailModal }: EmailMod
           id: cohortId
         })
         .then((res) => {
-          console.log(res);
+          trackReferralEvent(REFERRAL_EVENTS.event_type, {
+            [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+            [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+            [REFERRAL_EVENTS.event]: 'click',
+            [REFERRAL_EVENTS.category]: 'referral link',
+            [REFERRAL_EVENTS.description]: 'Send referral link via email',
+            [REFERRAL_EVENTS.referrer_code]: referrer_code
+          });
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
           setReferralEmailModal(false);
         })

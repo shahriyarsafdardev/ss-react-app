@@ -6,7 +6,13 @@ import { useSnackbar } from 'notistack5';
 
 import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
-import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import {
+  ONBOARDING_EVENTS,
+  REFERRAL_EVENTS,
+  trackOnboardingEvent,
+  trackReferralEvent
+} from 'utils/amplitude';
+import { useLocation } from 'react-router';
 
 type UserType = {
   first_name?: string;
@@ -28,12 +34,35 @@ export default function UserForm({
   account: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
-
+  const url = new URLSearchParams(useLocation().search);
+  const alumni = url.get('alumni') || false;
+  const referrer_code = url.get('referrer') || '';
   const ValidationSchema = Yup.object().shape({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
     linkedin_url: Yup.string().required('LinkedIn url is required')
   });
+
+  const triggerOnboardingEvent = () => {
+    trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+      [ONBOARDING_EVENTS.cohort_name]: cohortID,
+      [ONBOARDING_EVENTS.cohort_intake_number]: '',
+      [ONBOARDING_EVENTS.event]: 'Registered',
+      [ONBOARDING_EVENTS.category]: 'Registered',
+      [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
+    });
+  };
+
+  const triggerReferralEvent = () => {
+    trackReferralEvent(REFERRAL_EVENTS.event_type, {
+      [REFERRAL_EVENTS.cohort_name]: cohortID,
+      [REFERRAL_EVENTS.cohort_intake_number]: '',
+      [REFERRAL_EVENTS.event]: 'Registered',
+      [REFERRAL_EVENTS.category]: 'referral link',
+      [REFERRAL_EVENTS.description]: 'Registered via referral link',
+      [REFERRAL_EVENTS.referrer_code]: referrer_code
+    });
+  };
 
   const formik = useFormik<UserType>({
     initialValues: { ...user, acceptedTerms: false },
@@ -48,13 +77,10 @@ export default function UserForm({
             .then((res) => {
               enqueueSnackbar('Application Submitted', { variant: 'success' });
               submitValues({ ...values });
-              trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-                [ONBOARDING_EVENTS.cohort_name]: cohortID,
-                [ONBOARDING_EVENTS.cohort_intake_number]: '',
-                [ONBOARDING_EVENTS.event]: 'Registered',
-                [ONBOARDING_EVENTS.category]: 'Registered',
-                [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
-              });
+              triggerOnboardingEvent();
+              if (alumni) {
+                triggerReferralEvent();
+              }
             });
         } catch (error) {
           enqueueSnackbar('Application Failed', { variant: 'error' });

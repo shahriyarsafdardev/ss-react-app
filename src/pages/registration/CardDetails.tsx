@@ -19,7 +19,13 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
-import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import {
+  ONBOARDING_EVENTS,
+  REFERRAL_EVENTS,
+  trackOnboardingEvent,
+  trackReferralEvent
+} from 'utils/amplitude';
+import { useLocation } from 'react-router';
 
 type CardType = {
   cardName?: string;
@@ -45,6 +51,30 @@ export default function CardDetails({
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
   const [open, setOpen] = useState(false);
+  const url = new URLSearchParams(useLocation().search);
+  const alumni = url.get('alumni') || false;
+  const referrer_code = url.get('referrer') || '';
+
+  const triggerOnboardingEvent = () => {
+    trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+      [ONBOARDING_EVENTS.cohort_name]: cohortID,
+      [ONBOARDING_EVENTS.cohort_intake_number]: '',
+      [ONBOARDING_EVENTS.event]: 'Payment Made',
+      [ONBOARDING_EVENTS.category]: 'Payment Made',
+      [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
+    });
+  };
+
+  const triggerReferralEvent = () => {
+    trackReferralEvent(REFERRAL_EVENTS.event_type, {
+      [REFERRAL_EVENTS.cohort_name]: cohortID,
+      [REFERRAL_EVENTS.cohort_intake_number]: '',
+      [REFERRAL_EVENTS.event]: 'Payment Made',
+      [REFERRAL_EVENTS.category]: 'referral link',
+      [REFERRAL_EVENTS.description]: 'Payment Made via referral link',
+      [REFERRAL_EVENTS.referrer_code]: referrer_code
+    });
+  };
 
   const ValidationSchema = Yup.object().shape({
     cardName: Yup.string().required('Full Name is required'),
@@ -83,13 +113,10 @@ export default function CardDetails({
           })
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
-            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-              [ONBOARDING_EVENTS.cohort_name]: cohortID,
-              [ONBOARDING_EVENTS.cohort_intake_number]: '',
-              [ONBOARDING_EVENTS.event]: 'Payment Made',
-              [ONBOARDING_EVENTS.category]: 'Payment Made',
-              [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
-            });
+            triggerOnboardingEvent();
+            if (alumni) {
+              triggerReferralEvent();
+            }
             setStep(3);
           })
           .catch((error: any) => {

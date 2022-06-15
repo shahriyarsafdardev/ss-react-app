@@ -95,9 +95,7 @@ export const REFERRAL_EVENTS = {
 };
 
 export const trackReferralEvent = (eventType: string, eventData: any) => {
-  // console.log(eventType);
-  // console.log(eventData);
-  // sendAmplitudeData(REFERRAL_EVENTS.event_type, eventData);
+  sendAmplitudeData(REFERRAL_EVENTS.event_type, eventData);
 };
 
 export const trackSessionsPageEvent = (

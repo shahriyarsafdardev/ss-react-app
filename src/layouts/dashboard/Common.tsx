@@ -86,6 +86,7 @@ export type EmailModalProps = {
   setReferralEmailModal: Function;
   referralLink?: string;
   cohort?: Cohort;
+  referrer_code?: string;
 };
 
 const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: EmailModalProps) => (
@@ -109,6 +110,35 @@ export const ShareReferralLink = ({
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
 
+  const handleCopyReferralLink = () => {
+    trackReferralEvent(REFERRAL_EVENTS.event_type, {
+      [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+      [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+      [REFERRAL_EVENTS.event]: 'click',
+      [REFERRAL_EVENTS.category]: 'referral link',
+      [REFERRAL_EVENTS.description]: 'Copied referral link',
+      [REFERRAL_EVENTS.referrer_code]: referrer_code
+    });
+    if (referralLink) {
+      copy(`${referralLink}&alumni=true`);
+      enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+    } else {
+      enqueueSnackbar('Referral Link Not Available', { variant: 'warning' });
+    }
+  };
+
+  const handleSendViaEmail = () => {
+    setReferralEmailModal(true);
+    trackReferralEvent(REFERRAL_EVENTS.event_type, {
+      [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+      [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+      [REFERRAL_EVENTS.event]: 'click',
+      [REFERRAL_EVENTS.category]: 'referral link',
+      [REFERRAL_EVENTS.description]: 'Send referral link via email',
+      [REFERRAL_EVENTS.referrer_code]: referrer_code
+    });
+  };
+
   return (
     <>
       <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bolder' }}>
@@ -121,7 +151,9 @@ export const ShareReferralLink = ({
         <Button
           variant="contained"
           style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
-          onClick={() => setReferralEmailModal(true)}
+          onClick={() => {
+            handleSendViaEmail();
+          }}
         >
           Share Via Email
         </Button>
@@ -129,16 +161,7 @@ export const ShareReferralLink = ({
           variant="outlined"
           style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
           onClick={() => {
-            copy(`${referralLink}?alumni=true`);
-            trackReferralEvent(REFERRAL_EVENTS.event_type, {
-              [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-              [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-              [REFERRAL_EVENTS.event]: 'referral link copied',
-              [REFERRAL_EVENTS.category]: 'referral link copied',
-              [REFERRAL_EVENTS.description]: 'User has copied referral link.',
-              [REFERRAL_EVENTS.referrer_code]: referrer_code
-            });
-            enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+            handleCopyReferralLink();
           }}
         >
           Copy Referral Link
@@ -147,6 +170,8 @@ export const ShareReferralLink = ({
       <ReferralEmailModal
         referralEmailModal={referralEmailModal}
         setReferralEmailModal={setReferralEmailModal}
+        cohort={cohort}
+        referrer_code={referrer_code}
       />
     </>
   );
