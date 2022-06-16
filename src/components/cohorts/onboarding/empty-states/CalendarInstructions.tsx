@@ -347,65 +347,58 @@ const CalendarInstructions = () => {
           <Item>
             <div className={classes.itemNum}>1</div>
             <p>
-              Click on <span className={classes.decorated}>“Other calendars”</span>heading.
+              Click on <span className={classes.decorated}>“Other calendars” </span> heading.
             </p>
           </Item>
           <Item>
             <div className={classes.itemNum}>2</div>
             <p>
-              Click on <span className={classes.decorated}>“Add calendar”.</span>
+              Click on <span className={classes.decorated}>“Add”.</span>
             </p>
           </Item>
           <Item>
             <div className={classes.itemNum}>3</div>
             <p>
-              Click on <span className={classes.decorated}>“From Internet”.</span>
-            </p>
-          </Item>
-        </Box>
-        <Box className={classes.mt5}>
-          <p className={classes.texttwo}>On mobile:</p>
-
-          <Item>
-            <div className={classes.itemNum}>1</div>
-            <p>
-              Open the <span className={classes.decorated}>mobile app.</span>
-            </p>
-          </Item>
-          <Item>
-            <div className={classes.itemNum}>2</div>
-            <p>
-              On the Home or Meetings tabs, tap{' '}
-              <span className={classes.decorated}> “Connect Calendar”.</span>
-            </p>
-          </Item>
-          <Item>
-            <div className={classes.itemNum}>3</div>
-            <p>
-              Tap on <span className={classes.decorated}>“Continue”</span>to continue to the
-              Microsoft login page.
+              Click on <span className={classes.decorated}>“From Internet”</span>
             </p>
           </Item>
           <Item>
             <div className={classes.itemNum}>4</div>
             <p>
-              Sign in to your Microsoft account by entering your email address, phone number, or
-              Skype handle, and then tap<span className={classes.decorated}> “Next”.</span>
+              Paste <span className={classes.decorated}>“{calendarLink}”</span>
             </p>
           </Item>
           <Item>
             <div className={classes.itemNum}>5</div>
             <p>
-              Enter your Microsoft password or enter your organization's account credentials, and
-              then tap <span className={classes.decorated}> “Sign in”.</span>
+              Press <span className={classes.decorated}>“Ok”.</span>
+            </p>
+          </Item>
+        </Box>
+        <Box className={classes.mt5}>
+          <p className={classes.texttwo}>On Web:</p>
+          <Item>
+            <div className={classes.itemNum}>1</div>
+            <p>
+              Click on <span className={classes.decorated}>“Add calendar”.</span>
             </p>
           </Item>
           <Item>
-            <div className={classes.itemNum}>6</div>
+            <div className={classes.itemNum}>2</div>
             <p>
-              Tap
-              <span className={classes.decorated}> “Accept”</span>to grant permission for the mobile
-              app to access your Outlook information
+              Click on <span className={classes.decorated}>“Subscribe from web”.</span>
+            </p>
+          </Item>
+          <Item>
+            <div className={classes.itemNum}>3</div>
+            <p>
+              Paste <span className={classes.decorated}>“{calendarLink}”</span>
+            </p>
+          </Item>
+          <Item>
+            <div className={classes.itemNum}>4</div>
+            <p>
+              Press <span className={classes.decorated}>“Import”.</span>
             </p>
           </Item>
         </Box>
