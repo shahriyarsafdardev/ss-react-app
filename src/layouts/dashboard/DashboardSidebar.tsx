@@ -44,7 +44,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  padding: '25px'
+  padding: '12px'
 }));
 
 const LabelStyled = styled('label')(({ theme }) => ({

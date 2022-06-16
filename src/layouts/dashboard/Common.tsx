@@ -69,6 +69,22 @@ const ContentContainer = styled('div')(({ theme }) => ({
   }
 }));
 
+const BoldText = styled(Typography)(() => ({
+  textAlign: 'center',
+  fontSize: '20px',
+  lineHeight: '24px',
+  fontWeight: 'bolder',
+  paddingTop: '40px'
+}));
+
+const LightText = styled(Typography)(() => ({
+  textAlign: 'center',
+  marginTop: '12px',
+  fontSize: '16px',
+  padding: '0px 26px',
+  color: '#212B36CC'
+}));
+
 const InviteYourTeamMates = () => (
   <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480' }}>
     <img alt="sketch icon" src="/static/peers/peers-group.png" />
@@ -141,13 +157,12 @@ export const ShareReferralLink = ({
 
   return (
     <>
-      <Typography sx={{ textAlign: 'center', fontSize: '20px', fontWeight: 'bolder' }}>
-        Love ScholarSite?
-      </Typography>
-      <Typography sx={{ textAlign: 'center', marginTop: '8px', fontSize: '16px' }}>
-        Refer and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span>!
-      </Typography>
-      <Box sx={{ marginTop: '24px' }}>
+      <BoldText>Invite your colleagues</BoldText>
+      <LightText>
+        and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span> when they signs
+        up
+      </LightText>
+      <Box sx={{ margin: '32px 0px' }}>
         <Button
           variant="contained"
           style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
@@ -155,7 +170,7 @@ export const ShareReferralLink = ({
             handleSendViaEmail();
           }}
         >
-          Share Via Email
+          Share My Link
         </Button>
         <Button
           variant="outlined"
@@ -164,7 +179,7 @@ export const ShareReferralLink = ({
             handleCopyReferralLink();
           }}
         >
-          Copy Referral Link
+          Copy My Link
         </Button>
       </Box>
       <ReferralEmailModal
