@@ -65,7 +65,7 @@ function InviteEmailForm({
     formik;
 
   return (
-    <Box sx={{ paddingLeft: '64px' }}>
+    <Box sx={{ paddingLeft: '64px', width: '50%' }}>
       <FormikProvider value={formik}>
         <Form
           style={{ width: '100%' }}
@@ -99,11 +99,11 @@ function InviteEmailForm({
         fullWidth
         variant="contained"
         color="primary"
-        sx={{ marginTop: '24px' }}
+        sx={{ marginTop: '24px', padding: '12px 0px' }}
         loading={isSubmitting}
         onClick={() => submitForm()}
       >
-        Send Invite
+        Invite them
       </LoadingButton>
     </Box>
   );

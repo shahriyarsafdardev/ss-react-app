@@ -86,13 +86,13 @@ const LightText = styled(Typography)(() => ({
 }));
 
 const InviteYourTeamMates = () => (
-  <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480' }}>
+  <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480', width: '50%' }}>
     <img alt="sketch icon" src="/static/peers/peers-group.png" />
     <Typography sx={{ fontSize: '24px', marginTop: '32px', fontWeight: 'bolder' }}>
-      Invite Your Teammates!
+      Invite a friend or colleague
     </Typography>
     <Typography sx={{ fontSize: '16px', marginTop: '16px', color: '#919EAB', lineHeight: '24px' }}>
-      Let your teammates help you evaluate our features by adding them to your trial
+      Once they pay for the course, you get $100!
     </Typography>
   </Box>
 );
