@@ -44,6 +44,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
+  padding: '25px'
+}));
+
+const ReferralStyledBox = styled(Box)(({ theme }) => ({
   height: '500px',
   [theme.breakpoints.down('md')]: {
     height: '700px'
@@ -75,9 +79,10 @@ const ViewSwitcherStyle = styled('div')(({ theme }) => ({
   fontWeight: 400,
   lineHeight: '24px',
   background: '#F1F1FB',
-  borderRadius: 8,
-  position: 'absolute',
-  bottom: '0px',
+  borderRadius: 8
+}));
+
+const ViewReferralLinks = styled(ViewSwitcherStyle)(({ theme }) => ({
   margin: '30px 20px'
 }));
 
@@ -177,11 +182,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           ))}
 
         <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-      </Scrollbar>
-      <StyledBox>
-        <ViewSwitcherStyle>
-          {user?.type !== 'learner' ? (
-            <>
+        {user?.type !== 'learner' && (
+          <StyledBox>
+            <ViewSwitcherStyle>
               <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
                 You are currently viewing the
                 <b> {mode} Dashboard,</b> to access your{' '}
@@ -200,17 +203,22 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
                   Instructor
                 </LabelStyled>
               </SwitcherButtonContainer>
-            </>
-          ) : (
+            </ViewSwitcherStyle>
+          </StyledBox>
+        )}
+      </Scrollbar>
+      {user?.type === 'learner' && (
+        <ReferralStyledBox>
+          <ViewReferralLinks>
             <ShareReferralLink
               referralEmailModal={referralEmailModal}
               setReferralEmailModal={setReferralEmailModal}
               referralLink={referralLink}
               cohort={cohort}
             />
-          )}
-        </ViewSwitcherStyle>
-      </StyledBox>
+          </ViewReferralLinks>
+        </ReferralStyledBox>
+      )}
     </>
   );
 
