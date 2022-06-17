@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Drawer, Switch } from '@material-ui/core';
+import { Box, Drawer, Switch, Typography } from '@material-ui/core';
 // redux
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
@@ -44,7 +44,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  padding: '12px'
+  height: '500px',
+  [theme.breakpoints.down('md')]: {
+    height: '700px'
+  }
 }));
 
 const LabelStyled = styled('label')(({ theme }) => ({
@@ -72,7 +75,10 @@ const ViewSwitcherStyle = styled('div')(({ theme }) => ({
   fontWeight: 400,
   lineHeight: '24px',
   background: '#F1F1FB',
-  borderRadius: 8
+  borderRadius: 8,
+  position: 'absolute',
+  bottom: '0px',
+  margin: '30px 20px'
 }));
 
 const LogoContainer = styled(Box)(({ theme }) => ({
@@ -128,48 +134,50 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   }, [pathname]);
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': {
+    <>
+      <Scrollbar
+        sx={{
           height: 1,
-          display: 'flex',
-          flexDirection: 'column'
-        }
-      }}
-    >
-      <LogoContainer>
-        <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
-      </LogoContainer>
+          '& .simplebar-content': {
+            height: 1,
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
+      >
+        <LogoContainer>
+          <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
+        </LogoContainer>
 
-      {user?.type === 'admin' && (
-        <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
-      )}
+        {user?.type === 'admin' && (
+          <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
+        )}
 
-      {mode === 'Member' &&
-        groupByIntake(cohorts).map((intakeCategory: string) => (
-          <NavSection
-            data-testid="member-sidebar"
-            key={intakeCategory || 'With no intake Name'}
-            navConfig={cohortsConfig(
-              getLearnerCohorts(cohorts, intakeCategory),
-              intakeCategory || 'With no intake Name',
-              false
-            )}
-            isShow={!isCollapse}
-          />
-        ))}
-      {mode === 'Instructor' &&
-        getCategories(cohorts).map((category) => (
-          <NavSection
-            data-testid="instructor-sidebar"
-            key={category}
-            navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
-            isShow={!isCollapse}
-          />
-        ))}
+        {mode === 'Member' &&
+          groupByIntake(cohorts).map((intakeCategory: string) => (
+            <NavSection
+              data-testid="member-sidebar"
+              key={intakeCategory || 'With no intake Name'}
+              navConfig={cohortsConfig(
+                getLearnerCohorts(cohorts, intakeCategory),
+                intakeCategory || 'With no intake Name',
+                false
+              )}
+              isShow={!isCollapse}
+            />
+          ))}
+        {mode === 'Instructor' &&
+          getCategories(cohorts).map((category) => (
+            <NavSection
+              data-testid="instructor-sidebar"
+              key={category}
+              navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
+              isShow={!isCollapse}
+            />
+          ))}
 
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+        <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+      </Scrollbar>
       <StyledBox>
         <ViewSwitcherStyle>
           {user?.type !== 'learner' ? (
@@ -203,7 +211,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           )}
         </ViewSwitcherStyle>
       </StyledBox>
-    </Scrollbar>
+    </>
   );
 
   return (

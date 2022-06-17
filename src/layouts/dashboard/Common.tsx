@@ -74,7 +74,7 @@ const BoldText = styled(Typography)(() => ({
   fontSize: '20px',
   lineHeight: '24px',
   fontWeight: 'bolder',
-  paddingTop: '40px'
+  paddingTop: '14px'
 }));
 
 const LightText = styled(Typography)(() => ({
@@ -87,7 +87,7 @@ const LightText = styled(Typography)(() => ({
 
 const InviteYourTeamMates = () => (
   <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480', width: '50%' }}>
-    <img alt="sketch icon" src="/static/peers/peers-group.png" />
+    <img alt="sketch icon" src="/static/peers/peers-group.png" width={160} />
     <Typography sx={{ fontSize: '24px', marginTop: '32px', fontWeight: 'bolder' }}>
       Invite a friend or colleague
     </Typography>
@@ -127,32 +127,36 @@ export const ShareReferralLink = ({
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
 
   const handleCopyReferralLink = () => {
-    trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-      [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-      [REFERRAL_EVENTS.event]: 'click',
-      [REFERRAL_EVENTS.category]: 'referral link',
-      [REFERRAL_EVENTS.description]: 'Copied referral link',
-      [REFERRAL_EVENTS.referrer_code]: referrer_code
-    });
     if (referralLink) {
       copy(`${referralLink}&alumni=true`);
+      trackReferralEvent(REFERRAL_EVENTS.event_type, {
+        [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+        [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+        [REFERRAL_EVENTS.event]: 'click',
+        [REFERRAL_EVENTS.category]: 'referral link',
+        [REFERRAL_EVENTS.description]: 'Copied referral link',
+        [REFERRAL_EVENTS.referrer_code]: referrer_code
+      });
       enqueueSnackbar('Referral Link Copied', { variant: 'success' });
     } else {
-      enqueueSnackbar('Referral Link Not Available', { variant: 'warning' });
+      enqueueSnackbar('Please select the cohort.', { variant: 'warning' });
     }
   };
 
   const handleSendViaEmail = () => {
-    setReferralEmailModal(true);
-    trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-      [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-      [REFERRAL_EVENTS.event]: 'click',
-      [REFERRAL_EVENTS.category]: 'referral link',
-      [REFERRAL_EVENTS.description]: 'Send referral link via email',
-      [REFERRAL_EVENTS.referrer_code]: referrer_code
-    });
+    if (referralLink) {
+      setReferralEmailModal(true);
+      trackReferralEvent(REFERRAL_EVENTS.event_type, {
+        [REFERRAL_EVENTS.cohort_name]: cohort?.name,
+        [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
+        [REFERRAL_EVENTS.event]: 'click',
+        [REFERRAL_EVENTS.category]: 'referral link',
+        [REFERRAL_EVENTS.description]: 'Send referral link via email',
+        [REFERRAL_EVENTS.referrer_code]: referrer_code
+      });
+    } else {
+      enqueueSnackbar('Please select the cohort.', { variant: 'warning' });
+    }
   };
 
   return (
@@ -162,7 +166,7 @@ export const ShareReferralLink = ({
         and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span> when they signs
         up
       </LightText>
-      <Box sx={{ margin: '32px 0px' }}>
+      <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
           variant="contained"
           style={{ width: '-webkit-fill-available', borderRadius: '4px' }}

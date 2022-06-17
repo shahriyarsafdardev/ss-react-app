@@ -61,8 +61,16 @@ function InviteEmailForm({
     }
   });
 
-  const { values, errors, touched, isSubmitting, getFieldProps, submitForm, setFieldValue } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    getFieldProps,
+    submitForm,
+    setFieldValue,
+    isValid
+  } = formik;
 
   return (
     <Box sx={{ paddingLeft: '64px', width: '50%' }}>
@@ -101,9 +109,10 @@ function InviteEmailForm({
         color="primary"
         sx={{ marginTop: '24px', padding: '12px 0px' }}
         loading={isSubmitting}
+        disabled={!isValid || !values.email || !values.fullName}
         onClick={() => submitForm()}
       >
-        Invite them
+        Invite
       </LoadingButton>
     </Box>
   );
