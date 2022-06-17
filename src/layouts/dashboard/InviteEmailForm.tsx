@@ -61,16 +61,7 @@ function InviteEmailForm({
     }
   });
 
-  const {
-    values,
-    errors,
-    touched,
-    isSubmitting,
-    getFieldProps,
-    submitForm,
-    setFieldValue,
-    isValid
-  } = formik;
+  const { values, errors, touched, isSubmitting, getFieldProps, submitForm, isValid } = formik;
 
   return (
     <Box sx={{ paddingLeft: '64px', width: '50%' }}>
@@ -85,7 +76,7 @@ function InviteEmailForm({
             <TextField
               inputProps={{ 'data-testid': 'role-title' }}
               fullWidth
-              label="Add Email Address"
+              label="Email Address"
               error={Boolean(touched.email && errors.email)}
               {...getFieldProps('email')}
             />

@@ -139,7 +139,7 @@ export const ShareReferralLink = ({
       });
       enqueueSnackbar('Referral Link Copied', { variant: 'success' });
     } else {
-      enqueueSnackbar('Please select the cohort.', { variant: 'warning' });
+      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
     }
   };
 
@@ -155,7 +155,7 @@ export const ShareReferralLink = ({
         [REFERRAL_EVENTS.referrer_code]: referrer_code
       });
     } else {
-      enqueueSnackbar('Please select the cohort.', { variant: 'warning' });
+      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
     }
   };
 
@@ -163,7 +163,7 @@ export const ShareReferralLink = ({
     <>
       <BoldText>Invite your colleagues</BoldText>
       <LightText>
-        and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span> when they signs
+        and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span> when they sign
         up
       </LightText>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
