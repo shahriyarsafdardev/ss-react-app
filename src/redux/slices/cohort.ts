@@ -11,11 +11,13 @@ import axios from '../../utils/axios';
 type CohortState = {
   cohorts: Cohort[];
   errors: any;
+  referralLink: string;
 };
 
 const initialState: CohortState = {
   cohorts: [],
-  errors: []
+  errors: [],
+  referralLink: ''
 };
 const setAuthorizationToken = () => {
   const accessToken = window.localStorage.getItem('accessToken');
@@ -199,6 +201,9 @@ const slice = createSlice({
     },
     clearErrors(state) {
       state.errors = [];
+    },
+    setReferralLink(state, action) {
+      state.referralLink = action.payload.link;
     }
   }
 });
@@ -484,6 +489,22 @@ export function matchUsers(peer_a_id: string, peer_b_id: string, cohortID: strin
           peer_b_id,
           peer_a_id,
           result
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function initializeReferralLink(cohort_id: string) {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get(`cohorts/${cohort_id}/get_referral_link.json`);
+      dispatch(
+        slice.actions.setReferralLink({
+          link: response.data.link
         })
       );
     } catch (error) {

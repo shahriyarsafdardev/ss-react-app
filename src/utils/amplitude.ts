@@ -84,6 +84,20 @@ export const trackOnboardingEvent = (eventType: string, eventData: any) => {
   sendAmplitudeData(ONBOARDING_EVENTS.event_type, eventData);
 };
 
+export const REFERRAL_EVENTS = {
+  event_type: 'Referral Event',
+  cohort_name: 'cohort-name',
+  cohort_intake_number: 'cohort-intake-number',
+  event: 'event',
+  category: 'category',
+  description: 'description',
+  referrer_code: 'referrer_code'
+};
+
+export const trackReferralEvent = (eventType: string, eventData: any) => {
+  sendAmplitudeData(REFERRAL_EVENTS.event_type, eventData);
+};
+
 export const trackSessionsPageEvent = (
   cohortName: string,
   intake: number | null,
