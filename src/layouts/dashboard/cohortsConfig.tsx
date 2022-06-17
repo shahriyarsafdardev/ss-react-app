@@ -29,12 +29,21 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       ]
     };
     if (cohort.alumni_event && !instructor) {
+      object.children = [
+        {
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
+        { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        ...object.children
+      ];
       return object;
     }
-    object.children = [
-      { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
-      ...object.children
-    ];
+    // object.children = [
+    //   { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+    //   ...object.children
+    // ];
     if (instructor) {
       object.children = [
         {
