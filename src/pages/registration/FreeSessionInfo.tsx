@@ -22,7 +22,7 @@ function FreeSessionInfo() {
   const cohort_id: string = urlParams.get('cohort_id') || '';
 
   return (
-    <RootStyle title="ScholarSite Cohort Registration">
+    <RootStyle title="Sphere Cohort Registration">
       <Container className={classes.sectionContainer}>
         <Typography variant="h3" align="center" paragraph>
           👋 Nearly there, we just need a few more details

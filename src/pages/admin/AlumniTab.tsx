@@ -59,7 +59,7 @@ export default function AlumniTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Alumni">
+    <Page title="Sphere | Alumni">
       <AlumniContainer>
         <AlumniHeader alumnies={alumnies} updateSearch={setSearch} search={search} />
         <AlumniList alumnies={filteredRows().slice(0, limit)} />

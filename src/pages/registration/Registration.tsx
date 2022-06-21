@@ -122,7 +122,7 @@ export default function Registration() {
               data-testid="confirmation-subtext"
             >
               {account
-                ? `ScholarSite has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
+                ? `Sphere has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
                 : 'You will shortly recieve an email documenting your application outcome and next steps!'}
             </Typography>
           </Box>
@@ -132,7 +132,7 @@ export default function Registration() {
             color="primary"
             data-testid="explore-btn"
           >
-            Explore more ScholarSite cohorts
+            Explore more Sphere cohorts
           </Button>
         </Stack>
       );
@@ -162,7 +162,7 @@ export default function Registration() {
             color="primary"
             data-testid="contact-btn"
           >
-            Any questions? Click here to contact ScholarSite
+            Any questions? Click here to contact Sphere
           </Button>
         </Stack>
       );
@@ -180,7 +180,7 @@ export default function Registration() {
     );
   };
   return (
-    <RootStyle title="ScholarSite Cohort Registration">
+    <RootStyle title="Sphere Cohort Registration">
       {loading ? (
         <Box padding="200px">
           <LoadingScreen />

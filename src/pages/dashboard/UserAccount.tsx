@@ -95,7 +95,7 @@ export default function UserAccount() {
   const ACCOUNT_TABS = getTabs();
 
   return (
-    <Page title="ScholarSite | Settings">
+    <Page title="Sphere | Settings">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <AccountDeleteModal open={open} onClose={() => setOpen(false)} />
         <HeaderBreadcrumbs

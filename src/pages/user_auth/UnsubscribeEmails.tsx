@@ -40,7 +40,7 @@ export default function UnsubscribeEmails() {
   }, []);
   return (
     <>
-      <RootStyle title="ScholarSite Unlock account">
+      <RootStyle title="Sphere Unlock account">
         {loading ? (
           <Box padding="200px">
             <LoadingScreen />
@@ -55,7 +55,7 @@ export default function UnsubscribeEmails() {
             }}
           >
             <Typography variant="h3" align="center" paragraph>
-              👋 You have successfully unsubscribed from ScholarSite emails
+              👋 You have successfully unsubscribed from Sphere emails
             </Typography>
             <Typography align="center" paragraph>
               Note that you will still receive any necessary transactional emails (for example if
@@ -68,7 +68,7 @@ export default function UnsubscribeEmails() {
               href="https://www.scholarsite.io/pages/get-in-touch"
               align="center"
             >
-              Any questions? Click here to contact ScholarSite
+              Any questions? Click here to contact Sphere
             </Button>
           </Container>
         )}

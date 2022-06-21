@@ -159,7 +159,7 @@ function QnATab() {
   }
 
   return (
-    <StyledPage title="ScholarSite | Q&A">
+    <StyledPage title="Sphere | Q&A">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <QuestionForm
           hosts={cohort?.host_names}

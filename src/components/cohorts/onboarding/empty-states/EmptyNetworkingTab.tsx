@@ -49,8 +49,8 @@ const EmptyNetworkingTab = ({ cohortHost }: { cohortHost: string }) => (
       </Box>
       <StyledPara data-testid="empty-networking-information-text">
         <b>
-          ScholarSite Networking includes a complete overview of your fellow cohort members
-          including their experience, interests and skills.
+          Sphere Networking includes a complete overview of your fellow cohort members including
+          their experience, interests and skills.
         </b>{' '}
         You will recieve complete access to Networking shortly before{' '}
         {cohortHost && `${cohortHost}’s`} cohort begins. We’ll make sure to send you an email

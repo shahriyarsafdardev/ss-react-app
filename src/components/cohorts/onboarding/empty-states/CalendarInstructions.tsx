@@ -427,7 +427,7 @@ const CalendarInstructions = () => {
               🗓️ Make sure to add the sessions to your calendar
             </Typography>
             <Typography variant="subtitle2" className={classes.calSubHeading}>
-              Feel free to reach out to the ScholarSite team if you have any questions!
+              Feel free to reach out to the Sphere team if you have any questions!
             </Typography>
           </Box>
           <Box className={classes.section}>{accordion()}</Box>

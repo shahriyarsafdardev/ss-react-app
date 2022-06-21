@@ -50,7 +50,7 @@ export default function ExperiencesTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Experiences">
+    <Page title="Sphere | Experiences">
       <InviteButtonBox>
         <LoadingButton
           type="submit"

@@ -23,7 +23,7 @@ export default function SalesTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Sales">
+    <Page title="Sphere | Sales">
       <AdminContainer>
         <SalesList cohortSales={cohort_sales} />
       </AdminContainer>

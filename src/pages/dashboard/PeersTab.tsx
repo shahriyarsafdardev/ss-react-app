@@ -199,7 +199,7 @@ export default function PeersTab() {
     );
 
   return (
-    <Page title="ScholarSite | Peers">
+    <Page title="Sphere | Peers">
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         renderPeers()
       ) : (

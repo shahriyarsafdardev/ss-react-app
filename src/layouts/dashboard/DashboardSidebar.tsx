@@ -87,7 +87,8 @@ const ViewReferralLinks = styled(ViewSwitcherStyle)(({ theme }) => ({
 }));
 
 const LogoContainer = styled(Box)(({ theme }) => ({
-  padding: '2.5rem'
+  padding: '2.5rem',
+  display: 'flex'
 }));
 
 type DashboardSidebarProps = {
@@ -151,6 +152,13 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         }}
       >
         <LogoContainer>
+          <img
+            src="/static/logo.svg"
+            alt="logo-img.svg"
+            width={35}
+            height={35}
+            style={{ marginRight: '8px' }}
+          />
           <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
         </LogoContainer>
 

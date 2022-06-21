@@ -41,7 +41,7 @@ export default function UnblockUser() {
   }, []);
   return (
     <>
-      <RootStyle title="ScholarSite Unlock account">
+      <RootStyle title="Sphere Unlock account">
         {lock ? (
           <Box padding="200px">
             <LoadingScreen />

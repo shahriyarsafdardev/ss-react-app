@@ -5,7 +5,7 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
     <Stack direction="row" alignItems="center" spacing={2}>
       <Checkbox onChange={(e) => onChange(e.target.checked)} value={value} />
       <Typography variant="body2" data-testid="terms-conditions">
-        I hereby accept ScholarSite's{' '}
+        I hereby accept Sphere's{' '}
         <Link
           noWrap
           target="_blank"

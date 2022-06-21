@@ -19,14 +19,13 @@ function FreeSessionMessage() {
   }));
 
   return (
-    <RootStyle title="ScholarSite Cohort Registration">
+    <RootStyle title="Sphere Cohort Registration">
       <Container className={classes.sectionContainer}>
         <Typography variant="h3" align="center" paragraph>
           🎉 Thanks {user_name} you’ll receive an email with your calendar invite shortly
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }}>
-          The ScholarSite team & Instructors look forward to meeting you and answering your
-          questions!
+          The Sphere team & Instructors look forward to meeting you and answering your questions!
         </Typography>
         <Button
           href="https://www.scholarsite.io/pages/get-in-touch"

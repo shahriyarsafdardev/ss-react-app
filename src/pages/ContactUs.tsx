@@ -36,7 +36,7 @@ const ContactNote = () => (
     </Box>
     <Box className="text-content">
       <Typography>
-        Please don’t hesitate to contact the ScholarSite support team - we’d love to hear from you!
+        Please don’t hesitate to contact the Sphere support team - we’d love to hear from you!
       </Typography>
     </Box>
   </ContactInfoNote>
@@ -75,7 +75,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       }
@@ -96,7 +96,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/nicholasrudder/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       },
@@ -118,7 +118,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/adrian-sarstedt-375623133/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       },
@@ -127,7 +127,7 @@ export default function ContactUs() {
   ];
 
   return (
-    <Page title="ScholarSite | Contact Us">
+    <Page title="Sphere | Contact Us">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <Typography variant="h3">Contact Us</Typography>
         <ContactNote />

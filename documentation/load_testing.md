@@ -1,6 +1,6 @@
-# ScholarSite Load Testing
+# Sphere Load Testing
 
-This document is about how we can start JMeter and can run load testing on ScholarSite
+This document is about how we can start JMeter and can run load testing on Sphere
 
 ## Starting JMeter
 
@@ -26,26 +26,31 @@ This document is about how we can start JMeter and can run load testing on Schol
 ![image (10)](https://user-images.githubusercontent.com/95229345/146619587-b05ab4cc-5a8d-43b2-8e75-b43c5221bd0e.png)
 
 > Thread Group
+>
 > > Login (HTTP Request)
+> >
 > > > Assertion on response of login HTTP Request
 > >
 > > View Results Tree
-> > 
+> >
 > > View Results in Table
 
 ![image (8)](https://user-images.githubusercontent.com/95229345/146619600-b912c013-0a95-4c32-b5b5-8960ad734108.png)
 
 ## How to run a test in JMeter
+
 - Press the play icon in the toolbar
 
 ### Thread Group
+
 In the thread group, we define the number of users that we are going to the user in the load test
 
 ![image (5)](https://user-images.githubusercontent.com/95229345/146619618-e70ca074-35fa-4ef7-9c46-59661930c9a5.png)
 
 ### Login (HTTP Request)
+
 - In the HTTP Request, we add the name of our request
-- In protocol, we added HTTPS 
+- In protocol, we added HTTPS
 - In Server Name, we have to add our APP ROOT URL
 - In HTTP Request, we add the type of Request and in the path, we add the endpoint we need to test
 - Here, we added the parameters which we need for the endpoint
@@ -53,16 +58,19 @@ In the thread group, we define the number of users that we are going to the user
 ![image (3)](https://user-images.githubusercontent.com/95229345/146619639-6784146f-d7c5-4946-b1df-b28cbde0f54c.png)
 
 ### Assertion on the response of login HTTP Request
+
 - Here we have selected a field to test which is response code and we have defined that it should be 200
 
 ![image (2)](https://user-images.githubusercontent.com/95229345/146619655-10a56e1c-ad2e-4d0f-802c-8f48207c1fcf.png)
 
 ### View Results Tree
+
 - Here, we can see the results of our load testing We can see a complete breakdown of each request made
 
 ![image (9)](https://user-images.githubusercontent.com/95229345/146619680-a2d59a3e-59ef-40e3-961e-f2199c4b2781.png)
 
 ### View Results in Table
+
 - Here we can see the collective result of all the requests made
 
 ![image (1)](https://user-images.githubusercontent.com/95229345/146619667-bcd28690-5a8a-4c1f-bf01-ce38f52d787e.png)

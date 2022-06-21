@@ -147,7 +147,7 @@ export default function Messaging() {
   };
 
   return (
-    <Page title="ScholarSite | Messaging" id="page">
+    <Page title="Sphere | Messaging" id="page">
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           <Box id="box">

@@ -150,7 +150,7 @@ const CompanyTooltipMessage = (enrollment: Enrollment) => {
   if (enrollment.first_name.includes('Employee')) {
     header = 'Enrolled';
   }
-  return `${header} using ${enrollment.credit_account}'s ScholarSite credits`;
+  return `${header} using ${enrollment.credit_account}'s Sphere credits`;
 };
 export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
   const classes = useStyles();
@@ -561,7 +561,7 @@ export const Actions = ({
                 setModalMessage(
                   <p>
                     Are you sure you want to mark {enrollment.name}’s application as Paid and send
-                    them an email welcoming them to the ScholarSite Portal?
+                    them an email welcoming them to the Sphere Portal?
                   </p>
                 );
                 setAction('mark_as_paid');

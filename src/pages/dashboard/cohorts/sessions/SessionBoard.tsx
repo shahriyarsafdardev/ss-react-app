@@ -401,7 +401,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             </Box>
             <Box className="text-content">
               <Typography>
-                Please help ScholarSite make their platform better by filling out{' '}
+                Please help Sphere make their platform better by filling out{' '}
                 <strong>the following feedback form</strong>
               </Typography>
             </Box>
