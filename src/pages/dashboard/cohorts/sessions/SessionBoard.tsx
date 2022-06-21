@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import {
   Container,
   Tabs,
@@ -186,10 +186,13 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   const params = new URLSearchParams(window.location.search);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const feedback = params.get('open_feedback');
+  const [localSessionNumber, setLocalSessionNumber] = useState(sessionNumber);
   const studentFeedback = params.get('student_feedback');
   const [modalState, setModal] = useState(
     !feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true')
   );
+  const playerRef = useRef<any>(null);
+  const [watchedVideoSeconds, setWatchedVideoSeconds] = useState(new Set());
 
   const SurveyModal = ({
     state,
@@ -225,10 +228,21 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     return session?.collect_feedback;
   };
 
+  const handleTimeUpdate = () => {
+    const currentTime = Math.ceil(playerRef.current?.currentTime);
+
+    const duration = playerRef.current?.duration;
+    const progress = (watchedVideoSeconds.size / duration) * 100;
+    setWatchedVideoSeconds(watchedVideoSeconds.add(currentTime));
+  };
+
   useEffect(() => {
+    sendVideoAnalytics();
     setRecording(session?.recording_urls[0]?.recording_url);
     setFeedbackSubmitted(false);
     setModal(!feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true'));
+    setWatchedVideoSeconds(new Set());
+    setLocalSessionNumber(sessionNumber);
   }, [session]);
 
   const markAttendance = (type: string) => {
@@ -236,6 +250,16 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       session_id: session?.id,
       status: type
     });
+  };
+
+  const sendVideoAnalytics = () => {
+    if (watchedVideoSeconds.size > 1) {
+      sendAnalyticsData(
+        localSessionNumber,
+        SESSION_EVENTS.recording_watched_time,
+        watchedVideoSeconds.size
+      );
+    }
   };
 
   const tabsContent = [
@@ -324,6 +348,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
               e.preventDefault();
               return false;
             }}
+            ref={playerRef}
             onPlay={(e) => {
               markAttendance('watched_recording');
               sendAnalyticsData(
@@ -339,6 +364,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
                 'Clicked Pause'
               );
             }}
+            onTimeUpdate={() => handleTimeUpdate()}
             onSeeked={(e) => {
               sendAnalyticsData(
                 sessionNumber,

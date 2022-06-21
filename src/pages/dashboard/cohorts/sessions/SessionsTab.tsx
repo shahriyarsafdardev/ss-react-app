@@ -107,7 +107,11 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
-  const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
+  const sendAnalyticsData = (
+    sessionNumber: number,
+    eventCategory: string,
+    eventData: string | number
+  ) => {
     trackSessionsPageEvent(cohort.name, cohort.intake, sessionNumber, eventCategory, eventData);
   };
 

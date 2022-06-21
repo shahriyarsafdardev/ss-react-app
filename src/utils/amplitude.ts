@@ -52,6 +52,7 @@ export const SESSION_EVENTS = {
   action: 'action',
   resources_tab: 'Resources Tab',
   recording_video_player: 'Recording Video Player',
+  recording_watched_time: 'Recording Watched Time',
   slides_tab: 'Slides Tab',
   summary_tab: 'Summary Tab',
   zoom_preview: 'Zoom Preview',
@@ -103,7 +104,7 @@ export const trackSessionsPageEvent = (
   intake: number | null,
   sessionNumber: number,
   eventType: string,
-  eventData?: string
+  eventData?: string | number
 ) => {
   const amplitudeData = {
     [SESSION_EVENTS.cohort_name]: cohortName,
