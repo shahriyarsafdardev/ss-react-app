@@ -29,6 +29,27 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         }
       ]
     };
+    if (cohort.name === 'Building & Investing in Network Effects') {
+      object.children = [
+        ...object.children,
+        {
+          title: 'discord',
+          path: cohort.discord_directory_url,
+          externalUrl: true,
+          notifications: false
+        }
+      ];
+    } else {
+      object.children = [
+        ...object.children,
+        {
+          title: 'messaging',
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+          notifications: true,
+          category: 'Messaging'
+        }
+      ];
+    }
     if (cohort.alumni_event && !instructor) {
       object.children = [
         {
@@ -87,27 +108,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         category: 'Question'
       }
     ];
-    if (cohort.name === 'Building & Investing in Network Effects') {
-      object.children = [
-        ...object.children,
-        {
-          title: 'discord',
-          path: cohort.discord_directory_url,
-          externalUrl: true,
-          notifications: false
-        }
-      ];
-    } else {
-      object.children = [
-        ...object.children,
-        {
-          title: 'messaging',
-          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
-          notifications: true,
-          category: 'Messaging'
-        }
-      ];
-    }
+
     object.children = [...object.children];
     return object;
   })
