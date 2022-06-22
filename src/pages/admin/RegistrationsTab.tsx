@@ -21,7 +21,11 @@ export default function RegistrationsTab() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(initializeEnrollments()).then((res) => setLoading(false));
+    if (!enrollments.length) {
+      dispatch(initializeEnrollments()).then((res) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {

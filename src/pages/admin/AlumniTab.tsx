@@ -36,7 +36,11 @@ export default function AlumniTab() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    dispatch(initializeAlumnies()).then((res) => setLoading(false));
+    if (!alumnies.length) {
+      dispatch(initializeAlumnies()).then((res) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, [dispatch]);
 
   const filteredRows = () => {
