@@ -159,7 +159,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             height={35}
             style={{ marginRight: '8px' }}
           />
-          <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
+          <img src="/static/sphere.svg" alt="logo.svg" width={150} />
         </LogoContainer>
 
         {user?.type === 'admin' && (

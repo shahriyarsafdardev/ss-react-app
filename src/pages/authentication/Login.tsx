@@ -75,14 +75,14 @@ export default function Login() {
     <RootStyle title="Sphere | Login">
       <MHidden width="mdDown">
         <SectionStyle>
-          <img src="/static/scholarsite_home.svg" alt="login" style={{ height: '80vh' }} />
+          <img src="/static/sphere_home.svg" alt="login" style={{ height: '80vh' }} />
         </SectionStyle>
       </MHidden>
 
       <StyledContainer maxWidth="sm">
         <ContentStyle>
           <MHidden width="mdUp">
-            <img src="/static/ScholarSite.svg" alt="login" width={140} />
+            <img src="/static/sphere_with_logo.svg" alt="login" width={140} />
           </MHidden>
           <StyledStack direction="row" alignItems="center">
             <Box sx={{ flexGrow: 1 }}>
