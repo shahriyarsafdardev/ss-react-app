@@ -156,6 +156,7 @@ export type ParticipantProfile = {
   channel_summary_email: string;
   upcoming_session_email: string;
   accepted_terms: boolean;
+  popup_viewed: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
 };
