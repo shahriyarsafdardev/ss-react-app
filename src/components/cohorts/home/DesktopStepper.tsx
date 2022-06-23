@@ -9,6 +9,7 @@ import { StepIconProps } from '@material-ui/core/StepIcon';
 import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
 import Circle from '@material-ui/icons/Circle';
 
+import { useSelector, RootState } from 'redux/store';
 import { Session } from '../../../@types/cohorts';
 import { displayMultipleDates, formatMultipleTimes } from './Common';
 
@@ -141,6 +142,9 @@ export default function DesktopStepper({
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
   const [isRendered, setIsRenderedstate] = useState(false);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
 
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
@@ -252,14 +256,16 @@ export default function DesktopStepper({
                 </StepLabel>
               </Step>
             ))}
-          <Step key={100} sx={{ minWidth: '180px' }}>
-            <StepLabel StepIconComponent={QontoStepIcon}>
-              <StyledSession data-testid="cohort-completion">Cohort Completion</StyledSession>
-              <StyledDate data-testid="alumni-community">
-                Welcome to the alumni community!
-              </StyledDate>
-            </StepLabel>
-          </Step>
+          {!cohort.alumni_event && (
+            <Step key={100} sx={{ minWidth: '180px' }}>
+              <StepLabel StepIconComponent={QontoStepIcon}>
+                <StyledSession data-testid="cohort-completion">Cohort Completion</StyledSession>
+                <StyledDate data-testid="alumni-community">
+                  Welcome to the alumni community!
+                </StyledDate>
+              </StepLabel>
+            </Step>
+          )}
         </Stepper>
       </StyledBox>
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}

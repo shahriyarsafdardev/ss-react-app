@@ -31,7 +31,12 @@ export default function AlumniRegistration() {
               you check your junk!
             </Typography>
           </Box>
-          <Button href="#" variant="contained" color="primary" data-testid="contact-btn">
+          <Button
+            href="https://www.linkedin.com/groups/14089598/"
+            variant="contained"
+            color="primary"
+            data-testid="contact-btn"
+          >
             Submit your questions ahead of time
           </Button>
         </Stack>

@@ -41,14 +41,22 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             metric={
               enrollments.filter(
                 (e: { status: string }) =>
-                  ['Application Accepted', 'Payment link opened', 'Paid'].includes(e.status) ||
+                  ['Application Accepted', 'Payment link opened', 'Paid', 'Attending'].includes(
+                    e.status
+                  ) ||
                   e.status.split(' ')[0] === 'Awaiting' ||
                   e.status.split(' ')[1] === 'Approval'
               ).length
             }
             difference={changeOccur(
               enrollments,
-              ['Application Accepted', 'Payment link opened', 'Paid', 'Application Rejected'],
+              [
+                'Application Accepted',
+                'Payment link opened',
+                'Paid',
+                'Application Rejected',
+                'Attending'
+              ],
               'application_accepted_time',
               true
             )}
@@ -75,12 +83,12 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
           <KeyMetricHighlight
             metric={
               enrollments.filter((e: { status: string }) =>
-                ['Payment link opened', 'Paid'].includes(e.status)
+                ['Payment link opened', 'Paid', 'Attending'].includes(e.status)
               ).length
             }
             difference={changeOccur(
               enrollments,
-              ['Payment link opened', 'Paid', 'Application Rejected'],
+              ['Payment link opened', 'Paid', 'Application Rejected', 'Attending'],
               'payment_link_opened_time',
               false
             )}
@@ -105,8 +113,12 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
 
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
-            metric={enrollments.filter((e: { status: string }) => e.status === 'Paid').length}
-            difference={changeOccur(enrollments, ['Paid'], 'paid_time', false)}
+            metric={
+              enrollments.filter((e: { status: string }) =>
+                ['Paid', 'Attending'].includes(e.status)
+              ).length
+            }
+            difference={changeOccur(enrollments, ['Paid', 'Attending'], 'paid_time', false)}
             currentTimePeriodLabel={<span>Paid</span>}
             infoTooltip={(difference: number) => (
               <InfoTooltip

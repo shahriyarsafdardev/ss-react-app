@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
@@ -6,8 +6,16 @@ import { Box, Drawer, Switch } from '@material-ui/core';
 // redux
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
-import { getCategories, getInstructorCohorts, groupByIntake, getLearnerCohorts } from './Common';
-import { RootState, useSelector } from '../../redux/store';
+
+import { initializeReferralLink } from 'redux/slices/cohort';
+import {
+  getCategories,
+  getInstructorCohorts,
+  groupByIntake,
+  getLearnerCohorts,
+  ShareReferralLink
+} from './Common';
+import { dispatch, RootState, useSelector } from '../../redux/store';
 
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -39,6 +47,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
   padding: '25px'
 }));
 
+const ReferralStyledBox = styled(Box)(({ theme }) => ({
+  height: '500px',
+  [theme.breakpoints.down('md')]: {
+    height: '700px'
+  }
+}));
+
 const LabelStyled = styled('label')(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 700,
@@ -67,6 +82,10 @@ const ViewSwitcherStyle = styled('div')(({ theme }) => ({
   borderRadius: 8
 }));
 
+const ViewReferralLinks = styled(ViewSwitcherStyle)(({ theme }) => ({
+  margin: '30px 20px'
+}));
+
 const LogoContainer = styled(Box)(({ theme }) => ({
   padding: '2.5rem'
 }));
@@ -82,6 +101,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const { user } = useAuth();
+  const [referralEmailModal, setReferralEmailModal] = useState(false);
+  const referralLink = useSelector((state: RootState) => state.cohort.referralLink);
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -109,77 +134,92 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     }
     if (user?.type === 'learner') {
       updateInstructorViewState('Member');
+      dispatch(initializeReferralLink(cohort_id));
     }
   }, [pathname]);
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': {
+    <>
+      <Scrollbar
+        sx={{
           height: 1,
-          display: 'flex',
-          flexDirection: 'column'
-        }
-      }}
-    >
-      <LogoContainer>
-        <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
-      </LogoContainer>
+          '& .simplebar-content': {
+            height: 1,
+            display: 'flex',
+            flexDirection: 'column'
+          }
+        }}
+      >
+        <LogoContainer>
+          <img src="/static/ScholarSite.svg" alt="logo.svg" width={150} />
+        </LogoContainer>
 
-      {user?.type === 'admin' && (
-        <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
+        {user?.type === 'admin' && (
+          <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
+        )}
+
+        {mode === 'Member' &&
+          groupByIntake(cohorts).map((intakeCategory: string) => (
+            <NavSection
+              data-testid="member-sidebar"
+              key={intakeCategory || 'With no intake Name'}
+              navConfig={cohortsConfig(
+                getLearnerCohorts(cohorts, intakeCategory),
+                intakeCategory || 'With no intake Name',
+                false
+              )}
+              isShow={!isCollapse}
+            />
+          ))}
+        {mode === 'Instructor' &&
+          getCategories(cohorts).map((category) => (
+            <NavSection
+              data-testid="instructor-sidebar"
+              key={category}
+              navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
+              isShow={!isCollapse}
+            />
+          ))}
+
+        <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+        {user?.type !== 'learner' && (
+          <StyledBox>
+            <ViewSwitcherStyle>
+              <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
+                You are currently viewing the
+                <b> {mode} Dashboard,</b> to access your{' '}
+                {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
+                below:
+              </p>
+              <SwitcherButtonContainer>
+                <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
+                <Switch
+                  data-testid="dashboard-switch"
+                  size="small"
+                  checked={mode === 'Instructor'}
+                  onChange={() => switchView()}
+                />
+                <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
+                  Instructor
+                </LabelStyled>
+              </SwitcherButtonContainer>
+            </ViewSwitcherStyle>
+          </StyledBox>
+        )}
+      </Scrollbar>
+      {user?.type === 'learner' && (
+        <ReferralStyledBox>
+          <ViewReferralLinks>
+            <ShareReferralLink
+              referralEmailModal={referralEmailModal}
+              setReferralEmailModal={setReferralEmailModal}
+              referralLink={referralLink}
+              cohort={cohort}
+            />
+          </ViewReferralLinks>
+        </ReferralStyledBox>
       )}
-
-      {mode === 'Member' &&
-        groupByIntake(cohorts).map((intakeCategory: string) => (
-          <NavSection
-            data-testid="member-sidebar"
-            key={intakeCategory || 'With no intake Name'}
-            navConfig={cohortsConfig(
-              getLearnerCohorts(cohorts, intakeCategory),
-              intakeCategory || 'With no intake Name',
-              false
-            )}
-            isShow={!isCollapse}
-          />
-        ))}
-      {mode === 'Instructor' &&
-        getCategories(cohorts).map((category) => (
-          <NavSection
-            data-testid="instructor-sidebar"
-            key={category}
-            navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
-            isShow={!isCollapse}
-          />
-        ))}
-
-      <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-      {user?.type !== 'learner' && (
-        <StyledBox>
-          <ViewSwitcherStyle>
-            <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
-              You are currently viewing the
-              <b> {mode} Dashboard,</b> to access your{' '}
-              {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
-              below:
-            </p>
-            <SwitcherButtonContainer>
-              <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
-              <Switch
-                data-testid="dashboard-switch"
-                size="small"
-                checked={mode === 'Instructor'}
-                onChange={() => switchView()}
-              />
-              <LabelStyled className={mode === 'Instructor' ? 'blue' : 'gray'}>
-                Instructor
-              </LabelStyled>
-            </SwitcherButtonContainer>
-          </ViewSwitcherStyle>
-        </StyledBox>
-      )}
-    </Scrollbar>
+    </>
   );
 
   return (

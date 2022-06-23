@@ -21,6 +21,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
+        { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         {
           title: instructor ? 'students' : 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
@@ -28,13 +29,42 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         }
       ]
     };
+    if (cohort.name === 'Building & Investing in Network Effects') {
+      object.children = [
+        ...object.children,
+        {
+          title: 'discord',
+          path: cohort.discord_directory_url,
+          externalUrl: true,
+          notifications: false
+        }
+      ];
+    } else {
+      object.children = [
+        ...object.children,
+        {
+          title: 'messaging',
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+          notifications: true,
+          category: 'Messaging'
+        }
+      ];
+    }
     if (cohort.alumni_event && !instructor) {
+      object.children = [
+        {
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
+        ...object.children
+      ];
       return object;
     }
-    object.children = [
-      { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
-      ...object.children
-    ];
+    // object.children = [
+    //   { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+    //   ...object.children
+    // ];
     if (instructor) {
       object.children = [
         {
@@ -78,27 +108,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         category: 'Question'
       }
     ];
-    if (cohort.name === 'Building & Investing in Network Effects') {
-      object.children = [
-        ...object.children,
-        {
-          title: 'discord',
-          path: cohort.discord_directory_url,
-          externalUrl: true,
-          notifications: false
-        }
-      ];
-    } else {
-      object.children = [
-        ...object.children,
-        {
-          title: 'messaging',
-          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
-          notifications: true,
-          category: 'Messaging'
-        }
-      ];
-    }
+
     object.children = [...object.children];
     return object;
   })
