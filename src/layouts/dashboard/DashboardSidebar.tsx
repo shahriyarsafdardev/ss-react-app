@@ -152,14 +152,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         }}
       >
         <LogoContainer>
-          <img
-            src="/static/logo.svg"
-            alt="logo-img.svg"
-            width={35}
-            height={35}
-            style={{ marginRight: '8px' }}
-          />
-          <img src="/static/sphere.svg" alt="logo.svg" width={150} />
+          <img src="/static/sphere_with_logo.svg" alt="logo.svg" width={150} />
         </LogoContainer>
 
         {user?.type === 'admin' && (

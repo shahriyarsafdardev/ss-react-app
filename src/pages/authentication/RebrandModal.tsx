@@ -15,7 +15,7 @@ const ICON_SIZE = {
 
 const useStyles = makeStyles((theme: Theme) => ({
   rebrandModal: {
-    width: '500px !important',
+    width: '450px !important',
     margin: 'auto',
     [theme.breakpoints.down('md')]: {
       width: '70% !important'
@@ -44,24 +44,35 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   coloredButton: {
     backgroundColor: '#240046',
-    color: 'white',
-    borderRadius: '8px'
+    color: 'white'
   }
 }));
 
 const StyledBox = styled(Stack)(() => ({
-  minHeight: '522px',
+  minHeight: '510px',
   padding: '25px',
   borderRadius: '5px',
   backgroundColor: 'white'
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  width: '188px',
-  height: '48px',
-  marginTop: '10px',
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
+const ColoredButton = styled(Button)(({ theme }) => ({
+  width: '100%',
+  height: '45px',
+  color: theme.palette.getContrastText('#240046'),
+  backgroundColor: '#240046',
+  '&:hover': {
+    backgroundColor: '#5A189A'
+  }
+}));
+
+const OutlinedButton = styled(Button)(({ theme }) => ({
+  width: '100%',
+  height: '45px',
+  color: '#240046',
+  borderColor: '#240046',
+  '&:hover': {
+    backgroundColor: '#5A189A',
+    color: 'white'
   }
 }));
 
@@ -112,44 +123,42 @@ export default function RebrandModal() {
               </>
             ) : (
               <>
-                <Stack
-                  direction="row"
-                  width="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                  sx={{ m: 3 }}
-                >
-                  <img src="/static/scholarsite.png" alt="scholarsite logo" />
+                <Stack direction="row" alignItems="center" justifyContent="center" sx={{ m: 3 }}>
+                  <img src="/static/scholarsite.png" alt="scholarsite logo" height="40" />
                   <ArrowRightAlt
                     fontSize="large"
                     {...ICON_SIZE}
                     sx={{ ml: 3, mr: 3, color: '#E2E8F0' }}
                   />
-                  <img src="/static/sphere.png" alt="sphere logo" />
+                  <img src="/static/logo.svg" alt="sphere logo" height="44" />
                 </Stack>
               </>
             )}
-            <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+            <Typography variant="h6" align="center" sx={{ mt: 2, mb: '16px' }}>
               ScholarSite now is Sphere
             </Typography>
-            <Typography className={classes.modalText}>
-              {step === 0
-                ? 'We’ve updated our brand to better reflect our vision and product'
-                : 'Description of the brand meaning'}
-            </Typography>
+            {step === 0 ? (
+              <Typography className={classes.modalText}>
+                We’ve updated our brand to better reflect our vision and product
+              </Typography>
+            ) : (
+              <>
+                <Typography className={classes.modalText}>
+                  A new brand identity is our next step toward becoming the largest decentralized
+                  corporate university.
+                </Typography>
+                <Typography className={classes.modalText}>
+                  Sphere is a modern iteration of the university for working professionals —
+                  virtual, accessible, and revolutionary.
+                </Typography>
+              </>
+            )}
           </Stack>
           <Stack width="100%">
-            {step === 0 ? (
-              <Stack justifyContent="center" direction={{ md: 'row' }}>
-                <Typography className={classes.blackDot} sx={{ marginRight: '12px' }} />
-                <Typography className={classes.whiteDot} />
-              </Stack>
-            ) : (
-              <Stack justifyContent="center" direction={{ md: 'row' }}>
-                <Typography className={classes.whiteDot} sx={{ marginRight: '12px' }} />
-                <Typography className={classes.blackDot} />
-              </Stack>
-            )}
+            <Stack justifyContent="center" direction="row" spacing={2}>
+              <Typography className={step === 0 ? classes.blackDot : classes.whiteDot} />
+              <Typography className={step === 0 ? classes.whiteDot : classes.blackDot} />
+            </Stack>
             {loading ? (
               <Stack width="100%" height="20%" alignItems="center">
                 <CircularProgress />
@@ -157,6 +166,7 @@ export default function RebrandModal() {
             ) : (
               <Stack
                 width="100%"
+                spacing={2}
                 alignItems="center"
                 justifyContent="space-between"
                 direction={{ xs: 'column', sm: 'row' }}
@@ -164,26 +174,26 @@ export default function RebrandModal() {
               >
                 {step === 0 ? (
                   <>
-                    <StyledButton variant="outlined" onClick={() => handleSubmit()}>
-                      Skip
-                    </StyledButton>
-                    <StyledButton
-                      variant="contained"
-                      className={classes.coloredButton}
-                      onClick={() => setStep(1)}
+                    <OutlinedButton
+                      variant="outlined"
+                      sx={{ color: '#240046' }}
+                      onClick={() => handleSubmit()}
                     >
+                      Skip
+                    </OutlinedButton>
+                    <ColoredButton variant="contained" onClick={() => setStep(1)}>
                       Learn More
-                    </StyledButton>
+                    </ColoredButton>
                   </>
                 ) : (
-                  <Button
+                  <ColoredButton
                     className={classes.coloredButton}
                     variant="contained"
                     sx={{ width: '100%' }}
                     onClick={() => handleSubmit()}
                   >
                     Finish
-                  </Button>
+                  </ColoredButton>
                 )}
               </Stack>
             )}

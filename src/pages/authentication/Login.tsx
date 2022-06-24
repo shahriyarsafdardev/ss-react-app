@@ -36,7 +36,7 @@ const SectionStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  margin: theme.spacing(20, 0, 2, 2)
+  alignItems: 'center'
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -69,13 +69,11 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method } = useAuth();
-
   return (
     <RootStyle title="Sphere | Login">
       <MHidden width="mdDown">
         <SectionStyle>
-          <img src="/static/sphere_home.svg" alt="login" style={{ height: '80vh' }} />
+          <img src="/static/sphere_home.png" alt="login" style={{ width: '700px' }} />
         </SectionStyle>
       </MHidden>
 

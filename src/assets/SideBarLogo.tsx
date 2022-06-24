@@ -1,1 +1,1 @@
-export const SideBarLogo = () => <img src="/static/favicon.png" alt="sphere" />;
+export const SideBarLogo = () => <img src="/static/logo.svg" alt="sphere" />;
