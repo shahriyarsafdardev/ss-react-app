@@ -23,7 +23,10 @@ export default function Button(theme: Theme) {
           }
         },
         containedPrimary: {
-          boxShadow: theme.customShadows.primary
+          boxShadow: theme.customShadows.primary,
+          '&:hover': {
+            backgroundColor: '#5A189A'
+          }
         },
         containedSecondary: {
           boxShadow: theme.customShadows.secondary

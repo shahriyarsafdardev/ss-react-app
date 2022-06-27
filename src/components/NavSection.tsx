@@ -28,7 +28,7 @@ const ListSubheaderStyle = styled((props) => (
   marginBottom: theme.spacing(2),
   paddingLeft: theme.spacing(5),
   paddingRight: theme.spacing(2),
-  color: '#4D4DCD',
+  color: theme.palette.primary.main,
   textTransform: 'uppercase'
 }));
 
@@ -59,7 +59,7 @@ const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => 
     backgroundColor: theme.palette.primary.main
   },
   '.count': {
-    background: '#4d4dcd',
+    background: '#12125C',
     color: 'white',
     borderRadius: '2px',
     padding: '0 5px',
@@ -81,7 +81,7 @@ const ListItemIconStyle = styled(ListItemIcon)({
 });
 
 const ListItemCount = styled(ListItemText)({
-  background: '#4d4dcd',
+  background: '#12125C',
   color: 'white',
   borderRadius: '2px',
   padding: '0 5px',
@@ -143,7 +143,7 @@ function NavItem({
     );
 
   const activeRootStyle = {
-    color: 'primary.main',
+    color: 'text.primary',
     fontWeight: 'fontWeightMedium',
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:before': { display: 'block' }

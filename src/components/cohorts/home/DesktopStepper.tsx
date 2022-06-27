@@ -13,15 +13,17 @@ import { useSelector, RootState } from 'redux/store';
 import { Session } from '../../../@types/cohorts';
 import { displayMultipleDates, formatMultipleTimes } from './Common';
 
-const StyledSession = styled(Typography)(() => ({
+const StyledSession = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 700,
-  lineHeight: '36px'
+  lineHeight: '36px',
+  color: theme.palette.text.primary
 }));
 
-const StyledDate = styled(Typography)(() => ({
+const StyledDate = styled(Typography)(({ theme }) => ({
   fontSize: '12px',
-  fontWeight: 400
+  fontWeight: 400,
+  color: theme.palette.text.secondary
 }));
 
 const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
@@ -31,15 +33,15 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
     height: 16,
     alignItems: 'center',
     ...(ownerState.active && {
-      color: '#784af4'
+      color: theme.palette.primary.main
     }),
     '& .QontoStepIcon-completedIcon': {
-      color: '#784af4',
+      color: theme.palette.primary.main,
       zIndex: 1,
       fontSize: 20
     },
     '& .QontoStepIcon-circle': {
-      color: '#784af4',
+      color: '#F1F5F9',
       zIndex: 1,
       fontSize: 20
     }
@@ -105,18 +107,18 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: ''
+      backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 119.74%)'
     }
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient(90deg, rgba(0, 171, 85, 0.2) 0%, #00AB55 119.74%)'
+      backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, ${theme.palette.primary.main} 119.74%)`
     }
   },
   [`& .${stepConnectorClasses.line}`]: {
     height: 6,
     border: 0,
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+    backgroundColor: '#F1F5F9',
     borderRadius: 1
   }
 }));

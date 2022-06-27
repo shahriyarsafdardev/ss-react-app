@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { styled } from '@material-ui/core/styles';
 import Slider from 'react-slick';
-import { Box, Button, Card, Divider } from '@material-ui/core';
+import { Box, Button, Card, Divider, Typography } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { CircularLoader, SectionContainer } from './Common';
 import { Cohort } from '../../../@types/cohorts';
@@ -97,13 +97,12 @@ const NetworkSuggestion = ({
             style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
           >
             <Box>
-              <p style={{ fontSize: '18px' }}>
-                👋 Say hi to some of your{' '}
-                <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>peers</span>
-              </p>
-              <p style={{ fontSize: '14px', color: '#212B36' }}>
+              <Typography style={{ fontSize: '18px' }}>
+                👋 Say hi to some of your <b style={{ fontWeight: 'bold' }}>peers</b>
+              </Typography>
+              <Typography style={{ fontSize: '14px', color: 'text.light' }}>
                 Here are a few who are interested in growing their network
-              </p>
+              </Typography>
             </Box>
           </Box>
           <StyledBoxContainer>
