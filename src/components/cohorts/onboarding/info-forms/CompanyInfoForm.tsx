@@ -109,6 +109,17 @@ export default function CompanyInfoForm({
     }
   };
 
+  const renderButtons = () => (
+    <NavigationButtons
+      isSubmitting={isSubmitting}
+      isSubmitBtn={isSubmitable}
+      showPrevButton={showPrevButton}
+      disabled={checkFormValidity(infoObject)}
+      onPreviousHandler={onPrevHandler}
+      onNextHandler={() => onSubmit(infoObject)}
+    />
+  );
+
   return (
     <>
       <br />
@@ -184,18 +195,12 @@ export default function CompanyInfoForm({
                   ))}
                 </MaterialSelect>
               </FormControl>
+              {!showPrevButton && renderButtons()}
             </Stack>
           </Card>
         </Grid>
       </Grid>
-      <NavigationButtons
-        isSubmitting={isSubmitting}
-        isSubmitBtn={isSubmitable}
-        showPrevButton={showPrevButton}
-        disabled={checkFormValidity(infoObject)}
-        onPreviousHandler={onPrevHandler}
-        onNextHandler={() => onSubmit(infoObject)}
-      />
+      {showPrevButton && renderButtons()}
     </>
   );
 }

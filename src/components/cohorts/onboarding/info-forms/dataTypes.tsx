@@ -52,7 +52,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       width: '200px !important'
     },
     '&:hover': {
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.action.hover,
       opacity: 0.8
     }
   },
@@ -81,7 +81,7 @@ export const NavigationButtons = ({
   isSubmitBtn?: boolean;
   isSubmitting?: boolean;
 }) => (
-  <MainContainer>
+  <MainContainer sx={{ minHeight: '80px' }}>
     <Typography className="txt" variant="caption">
       Please enter all of your details to {isSubmitBtn ? 'submit' : 'move to the next page'}
     </Typography>
