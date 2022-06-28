@@ -77,13 +77,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: '10px'
   },
   decorated: {
-    color: '#4d4dcd'
+    color: '#12125C'
   },
   backBtn: {
     maxWidth: 'fit-content',
     display: 'flex',
     fontWeight: 'bold',
-    color: '#4d4dcd',
+    color: '#12125c',
     fontSize: '18px',
     lineHeight: '27px',
     textDecoration: 'none',

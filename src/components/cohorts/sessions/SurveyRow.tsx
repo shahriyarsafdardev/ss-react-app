@@ -12,7 +12,7 @@ import {
   Box
 } from '@material-ui/core';
 import CreatableSelect from 'react-select/creatable';
-import MultiSelect from '../../MultiSelect';
+import MultiSelect, { customStyles } from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
 
@@ -48,22 +48,22 @@ const RowContainer = styled('div')(() => ({
   marginBottom: '1.5rem'
 }));
 
-const QuestionText = styled('p')(() => ({
+const QuestionText = styled('p')(({ theme }) => ({
   fontWeight: 500,
   fontSize: '17px',
   lineHeight: '22px',
   fontFamily: 'Public Sans',
   fontStyle: 'normal',
-  color: '#071A33'
+  color: theme.palette.text.primary
 }));
 
-const QuestionDescription = styled('label')(() => ({
+const QuestionDescription = styled('label')(({ theme }) => ({
   fontWeight: 400,
   fontSize: '14px',
   lineHeight: '42px',
   fontFamily: 'Public Sans',
   fontStyle: 'normal',
-  color: '#637381'
+  color: theme.palette.text.secondary
 }));
 
 const StarRatingStyled = styled(StarRatingComponent)(({ theme }) => ({
@@ -84,13 +84,6 @@ const ANSWER_TYPES = {
   SLIDER: 'slider',
   STAR_RATING: 'star-rating',
   MULTIPLE_SELECT: 'multiple-select'
-};
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
 };
 
 function TextInput({ submitted_answer, onChange, item }: TextInputProps) {

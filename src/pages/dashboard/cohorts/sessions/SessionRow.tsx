@@ -88,7 +88,7 @@ const InstructorOptions = ({ handleDelete }: { handleDelete: Function }) => {
         <MenuItem
           id="comment-settings"
           onClick={() => handleDelete()}
-          sx={{ typography: 'body2', py: 1, px: 2.5, color: '#4D4DCD' }}
+          sx={{ typography: 'body2', py: 1, px: 2.5, color: 'primary' }}
         >
           <StyledIcon src="/static/icons/edit-oval.svg" alt="bin" />
           Duplicate
@@ -98,7 +98,7 @@ const InstructorOptions = ({ handleDelete }: { handleDelete: Function }) => {
           disabled
           id="comment-settings"
           onClick={() => handleDelete()}
-          sx={{ typography: 'body2', py: 1, px: 2.5, color: '#4D4DCD' }}
+          sx={{ typography: 'body2', py: 1, px: 2.5, color: 'primary' }}
         >
           <StyledIcon src="/static/icons/edit-oval.svg" alt="bin" />
           Edit

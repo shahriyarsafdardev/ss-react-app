@@ -54,16 +54,23 @@ const CurrentStep = styled(Typography)(() => ({
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   flex: 1,
+  marginLeft: '30px !important',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '10px',
+    marginLeft: '0 !important'
+  },
   '&.right-btn': {
-    marginLeft: '30px !important',
-    [theme.breakpoints.down('md')]: {
-      marginTop: '10px',
-      marginLeft: '0 !important'
+    '&:hover': {
+      backgroundColor: '#5A189A',
+      opacity: 0.8,
+      color: 'white'
     }
   },
-  '&:hover': {
-    backgroundColor: '#4D4DCD',
-    opacity: 0.8
+  '&.left-btn': {
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+      opacity: 0.8
+    }
   },
   [theme.breakpoints.up('md')]: {
     width: '100%'
@@ -209,6 +216,7 @@ export default function SurveyForm({
           <ButtonsContainer>
             <StyledButton
               variant="outlined"
+              className="left-btn"
               disabled={currentQuestion === 0}
               onClick={() => setCurrentQuestion(currentQuestion - 1)}
               data-testid="btn-previous"

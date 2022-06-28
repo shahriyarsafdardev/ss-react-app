@@ -244,7 +244,7 @@ export default function DesktopStepper({
                         {displayMultipleDates(session.times)}
                       </StyledDate>
                     ) : (
-                      <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
+                      <Typography color="primary.main" sx={{ fontSize: '12px', fontWeight: 400 }}>
                         <Link
                           data-testid={`session-review-content-${session?.number}`}
                           to={`/cohorts/${cohortID}/sessions?session=${session.number}`}

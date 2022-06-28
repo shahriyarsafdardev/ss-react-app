@@ -6,7 +6,6 @@ import AudioRecorder from 'components/media-recorders/AudioRecorder';
 const StyledRecordingButton = styled(Button)(({ theme }) => ({
   height: '50px',
   margin: '10px',
-  color: '#4D4DCD',
   width: 200,
   fontSize: 16,
   border: '2px solid',
@@ -72,7 +71,9 @@ const MediaRecordingTab = ({
       )}
       {!isRecording && (
         <>
-          <Typography sx={{ fontWeight: 400, fontSize: 14, color: '#6C7885', textAlign: 'center' }}>
+          <Typography
+            sx={{ fontWeight: 400, fontSize: 14, color: 'text.secondary', textAlign: 'center' }}
+          >
             You can add a recording to provide context and a personal touch to your question!
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>

@@ -39,7 +39,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       width: '200px !important'
     },
     '&:hover': {
-      backgroundColor: '#4D4DCD',
+      backgroundColor: '#5A189A',
       opacity: 0.8,
       color: 'white'
     }

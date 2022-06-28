@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
-
 import CreatableSelect from 'react-select/creatable';
-import MultiSelect from 'components/MultiSelect';
+import MultiSelect, { customStyles } from 'components/MultiSelect';
 
 import {
   Grid,
@@ -151,11 +150,11 @@ export default function CompanyInfoForm({
                     label: company.name
                   }))}
                   isClearable={false}
+                  styles={{ ...customStyles, menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                   backspaceRemovesValue={true}
                   placeholder="Company Name"
                   isSearchable
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                   onChange={(e) => onCompanyChange(e)}
                 />
               </FormControl>

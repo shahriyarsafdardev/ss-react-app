@@ -131,12 +131,10 @@ const SessionPrereading = ({
                 ) : (
                   <>
                     <Box>
-                      <p style={{ fontSize: '18px' }}>
+                      <Typography color="text.primary" style={{ fontSize: '18px' }}>
                         Get Ready for{activeSession.custom_name ? ' our ' : ' '}
-                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          {activeSession.custom_name || `Session ${activeSession?.number}`}
-                        </span>
-                      </p>
+                        <b>{activeSession.custom_name || `Session ${activeSession?.number}`}</b>
+                      </Typography>
                       <p style={{ fontSize: '14px' }}>
                         The following tasks are recommended but not required
                       </p>

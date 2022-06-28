@@ -23,11 +23,11 @@ const StyledCheckBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StyledText = styled(Typography)(() => ({
+const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   lineHeight: '21px',
   fontWeight: 600,
-  color: '#4D4DCD'
+  color: theme.palette.primary.main
 }));
 
 export default function MarkCheckbox({

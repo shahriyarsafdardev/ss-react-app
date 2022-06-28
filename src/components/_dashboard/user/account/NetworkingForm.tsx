@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
@@ -21,29 +20,8 @@ import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 // axios
 import axios from '../../../../utils/axios';
-import MultiSelect from '../../../MultiSelect';
+import MultiSelect, { customStyles } from '../../../MultiSelect';
 
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block'
-    // color: 'rgb(128, 128, 128)'
-  }),
-  multiValue: (provided: any, state: any) => ({
-    backgroundColor: 'rgba(77, 77, 205, 0.16)',
-    padding: '1px 2px 1px 8px',
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    borderRadius: '6px',
-    color: 'rgba(77, 77, 205, 1)',
-    margin: '5px 5px 5px 0px',
-    fontWeight: 700,
-    fontSize: '14px'
-  }),
-  multiValueLabel: (provided: any, state: any) => ({
-    color: 'rgba(77, 77, 205, 1)'
-  })
-};
 interface InitialState {
   interests: string[];
   current_role_category_selections: string[];

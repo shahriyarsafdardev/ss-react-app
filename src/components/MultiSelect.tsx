@@ -1,9 +1,9 @@
 import Select from 'react-select';
 
-const customStyles = {
+export const customStyles = {
   placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block'
-    // color: 'rgb(128, 128, 128)'
+    display: state.isFocused ? 'none' : 'block',
+    color: 'rgb(128, 128, 128)'
   }),
   multiValue: (provided: any, state: any) => ({
     backgroundColor: 'rgba(77, 77, 205, 0.16)',
@@ -12,13 +12,21 @@ const customStyles = {
     display: 'flex',
     justifyContent: 'space-between',
     borderRadius: '6px',
-    color: 'rgba(77, 77, 205, 1)',
+    color: '#12125C',
     margin: '5px 5px 5px 0px',
     fontWeight: 700,
     fontSize: '14px'
   }),
   multiValueLabel: (provided: any, state: any) => ({
-    color: 'rgba(77, 77, 205, 1)'
+    color: '#12125C'
+  }),
+  control: (base: any, state: any) => ({
+    ...base,
+    borderColor: state.isFocused ? '#12125C' : '#CCCCCC',
+    boxShadow: state.isFocused ? '0 0 0 1px #12125c' : 0,
+    '&:hover': {
+      borderColor: '#12125C'
+    }
   })
 };
 

@@ -111,7 +111,7 @@ const Index = () => {
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   const renderOnboardingModal = () =>
-    cohort.id === IBRAHIM_COHORT_ID ? (
+    cohort?.id === IBRAHIM_COHORT_ID ? (
       <NewOnboardingModal onSubmit={() => {}} />
     ) : (
       <OnboardingModal onSubmit={() => {}} />

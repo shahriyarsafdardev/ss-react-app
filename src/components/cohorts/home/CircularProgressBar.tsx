@@ -41,7 +41,7 @@ const CircularProgressbar = ({
         strokeWidth={strokeWidth}
         fillOpacity={0}
         style={{
-          stroke: '#4D4DCD',
+          stroke: '#12125c',
           strokeDasharray: `${diameter}px ${diameter}px`,
           strokeDashoffset: `${((100 - percentage) / 100) * diameter}px`
         }}

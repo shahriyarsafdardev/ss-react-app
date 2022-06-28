@@ -25,7 +25,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       width: '300px !important'
     },
     '&:hover': {
-      backgroundColor: '#4D4DCD',
+      backgroundColor: '#5A189A',
       opacity: 0.8,
       color: 'white'
     }
@@ -37,7 +37,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       width: '300px !important'
     },
     '&:hover': {
-      backgroundColor: 'white',
+      backgroundColor: theme.palette.action.hover,
       opacity: 0.8
     }
   },

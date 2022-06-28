@@ -59,10 +59,10 @@ const LabelStyled = styled('label')(({ theme }) => ({
   fontWeight: 700,
   lineHeight: '20px',
   '&.blue': {
-    color: '#4D4DCD'
+    color: theme.palette.primary.main
   },
   '&.gray': {
-    color: '#637381'
+    color: theme.palette.text.primary
   }
 }));
 

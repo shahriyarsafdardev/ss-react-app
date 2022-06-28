@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   actionBtn: {
     textAlign: 'center',
-    backgroundColor: '#4D4DCD',
+    backgroundColor: theme.palette.primary.main,
     color: '#FFFFFF',
     fontSize: '14px',
     borderRadius: '8px',
@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textDecoration: 'none',
     fontWeight: 'bold',
     '&:hover': {
-      backgroundColor: '#4D4DCD',
+      backgroundColor: '#5A189A',
       opacity: 0.9
     }
   },

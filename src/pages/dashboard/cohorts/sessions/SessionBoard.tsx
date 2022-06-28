@@ -43,7 +43,7 @@ type SessionBoardProps = {
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
-  color: '#595853',
+  color: theme.palette.text.secondary,
   justifyContent: 'space-around',
   marginRight: 0,
   width: '20%',
@@ -106,9 +106,9 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
       paddingTop: '15px',
       marginRight: '0 !important'
     },
-    color: '#6C7885',
+    color: theme.palette.text.secondary,
     '&.Mui-selected': {
-      color: '#212B36'
+      color: theme.palette.primary.main
     }
   }
 }));

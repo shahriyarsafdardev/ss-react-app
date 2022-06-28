@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: '10px'
   },
   decorated: {
-    color: '#4d4dcd'
+    color: '#12125C'
   },
   backBtn: {
     maxWidth: 'fit-content',

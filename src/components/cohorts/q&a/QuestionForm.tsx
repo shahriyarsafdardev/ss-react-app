@@ -72,7 +72,7 @@ const AddQuestionButton = styled(Button)(({ theme }) => ({
 }));
 
 const QuestionFormContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#4D4DCD',
+  backgroundColor: theme.palette.primary.main,
   padding: '16px 24px 16px 24px',
   // zIndex: 1200,
   width: '100%',

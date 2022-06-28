@@ -15,7 +15,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  styled
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
@@ -34,6 +35,31 @@ type CardType = {
   cardCvv?: string;
   acceptedTerms: boolean;
 };
+
+const StyledButton = styled(LoadingButton)(({ theme }) => ({
+  padding: 11,
+  '&.next': {
+    '&:hover': {
+      backgroundColor: '#5A189A',
+      opacity: 0.8,
+      color: 'white'
+    }
+  },
+  '&.previous': {
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+      opacity: 0.8
+    }
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    position: null,
+    bottom: null,
+    right: null,
+    width: '100%',
+    marginTop: '10px'
+  }
+}));
 
 export default function CardDetails({
   cohortID,
@@ -170,27 +196,26 @@ export default function CardDetails({
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
+          <StyledButton
+            fullWidth
             variant="outlined"
             color="primary"
             onClick={() => setStep(4)}
             data-testid="pay-later"
-            fullWidth
-            sx={{
-              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
-            }}
+            className="previous"
           >
             Yes, I would like to pay later
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
+            fullWidth
             variant="contained"
             color="primary"
             data-testid="pay-now"
             onClick={() => setOpen(false)}
-            fullWidth
+            className="next"
           >
             No, I would like to pay now
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
       <Box sx={{ mb: 5 }}>
@@ -291,34 +316,42 @@ export default function CardDetails({
           sx={{ mt: 3 }}
           direction={{ xs: 'column', md: 'row' }}
         >
-          <LoadingButton
+          {/* <LoadingButton
             type="submit"
-            color="primary"
             variant="outlined"
             loading={isSubmitting}
             onClick={() => setOpen(true)}
             id="btn-submit"
             data-testid="pay-later-btn"
             fullWidth
-            sx={{
-              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
-            }}
           >
             Pay Later
-          </LoadingButton>
-          <LoadingButton
-            type="submit"
+          </LoadingButton> */}
+          <StyledButton
             fullWidth
-            variant="contained"
-            color="primary"
+            type="submit"
+            variant="outlined"
+            loading={isSubmitting}
+            onClick={() => setOpen(true)}
+            id="btn-submit"
+            data-testid="pay-later-btn"
+            className="previous"
+          >
+            Pay Later
+          </StyledButton>
+          <StyledButton
+            fullWidth
+            type="submit"
             data-testid="submit-btn"
             disabled={!values.acceptedTerms}
             loading={isSubmitting}
-            onClick={() => submitForm()}
+            variant="contained"
+            className="next"
             id="btn-submit"
+            onClick={() => submitForm()}
           >
             Submit
-          </LoadingButton>
+          </StyledButton>
         </Stack>
       </Stack>
     </>
