@@ -27,16 +27,6 @@ const StyledBox = styled(Stack)(() => ({
   backgroundColor: 'white'
 }));
 
-const ColoredButton = styled(Button)(({ theme }) => ({
-  width: '100%',
-  height: '45px',
-  color: theme.palette.getContrastText('#240046'),
-  backgroundColor: '#240046',
-  '&:hover': {
-    backgroundColor: '#5A189A'
-  }
-}));
-
 const StyledText = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
   fontsize: '16px',
@@ -99,9 +89,9 @@ export default function RebrandModal() {
             {loading ? (
               <CircularProgress />
             ) : (
-              <ColoredButton variant="contained" onClick={() => handleSubmit()}>
+              <Button fullWidth variant="contained" onClick={() => handleSubmit()}>
                 Start Exploring
-              </ColoredButton>
+              </Button>
             )}
           </Stack>
         </StyledBox>
