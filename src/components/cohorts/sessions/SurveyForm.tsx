@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import { Container, Button, Box, Typography } from '@material-ui/core';
+import { Container, Box, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
 
@@ -13,10 +13,6 @@ import useAuth from '../../../hooks/useAuth';
 // axios
 import axios from '../../../utils/axios';
 import SurveyRow from './SurveyRow';
-
-const SubmitButton = styled(Button)(() => ({
-  padding: '10px 90px'
-}));
 
 const StyledContainer = styled(Container)(() => ({
   backgroundColor: 'white',
@@ -58,19 +54,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     marginTop: '10px',
     marginLeft: '0 !important'
-  },
-  '&.right-btn': {
-    '&:hover': {
-      backgroundColor: '#5A189A',
-      opacity: 0.8,
-      color: 'white'
-    }
-  },
-  '&.left-btn': {
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      opacity: 0.8
-    }
   },
   [theme.breakpoints.up('md')]: {
     width: '100%'
@@ -216,7 +199,6 @@ export default function SurveyForm({
           <ButtonsContainer>
             <StyledButton
               variant="outlined"
-              className="left-btn"
               disabled={currentQuestion === 0}
               onClick={() => setCurrentQuestion(currentQuestion - 1)}
               data-testid="btn-previous"
@@ -225,7 +207,6 @@ export default function SurveyForm({
             </StyledButton>
             <StyledButton
               variant="contained"
-              className="right-btn"
               onClick={handleNext}
               disabled={
                 surveyData[currentQuestion].mandatory === true && response[questionID] === undefined

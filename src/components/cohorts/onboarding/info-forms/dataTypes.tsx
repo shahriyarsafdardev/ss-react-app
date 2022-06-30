@@ -37,11 +37,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       right: '50px',
       bottom: '30px',
       width: '200px !important'
-    },
-    '&:hover': {
-      backgroundColor: '#5A189A',
-      opacity: 0.8,
-      color: 'white'
     }
   },
   '&.previous': {
@@ -50,10 +45,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       right: '280px',
       bottom: '30px',
       width: '200px !important'
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      opacity: 0.8
     }
   },
 
@@ -90,6 +81,7 @@ export const NavigationButtons = ({
         <StyledButton
           data-testid="btn_previous"
           className="previous"
+          color="primary"
           disabled={isSubmitting}
           variant="outlined"
           onClick={() => onPreviousHandler()}

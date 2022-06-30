@@ -62,22 +62,10 @@ const useStyes = makeStyles((theme: Theme) => ({
     paddingLeft: '2px'
   },
   smallBtn: {
-    backgroundColor: theme.palette.primary.main,
-    padding: '12px 70px',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.9
-    }
+    padding: '12px 70px'
   },
   primaryBtn: {
-    backgroundColor: theme.palette.primary.main,
-    padding: '12px 120px',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.9
-    }
+    padding: '12px 120px'
   }
 }));
 
@@ -178,6 +166,8 @@ const TimerPreview = ({
         </Box>
         {zoomUrl && (
           <Button
+            variant="contained"
+            color="primary"
             onClick={() => clickEvent(sessionNumber)}
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             target="_blank"

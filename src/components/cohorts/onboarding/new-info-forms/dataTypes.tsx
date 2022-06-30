@@ -23,11 +23,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       right: '50px',
       bottom: '30px',
       width: '300px !important'
-    },
-    '&:hover': {
-      backgroundColor: '#5A189A',
-      opacity: 0.8,
-      color: 'white'
     }
   },
   '&.previous': {
@@ -35,13 +30,8 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       position: 'absolute',
       bottom: '30px',
       width: '300px !important'
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      opacity: 0.8
     }
   },
-
   [theme.breakpoints.down('sm')]: {
     position: null,
     bottom: null,

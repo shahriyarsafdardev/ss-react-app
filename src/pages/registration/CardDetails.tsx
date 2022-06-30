@@ -38,20 +38,6 @@ type CardType = {
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
-  '&.next': {
-    '&:hover': {
-      backgroundColor: '#5A189A',
-      opacity: 0.8,
-      color: 'white'
-    }
-  },
-  '&.previous': {
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-      opacity: 0.8
-    }
-  },
-
   [theme.breakpoints.down('sm')]: {
     position: null,
     bottom: null,
@@ -202,7 +188,6 @@ export default function CardDetails({
             color="primary"
             onClick={() => setStep(4)}
             data-testid="pay-later"
-            className="previous"
           >
             Yes, I would like to pay later
           </StyledButton>
@@ -212,7 +197,6 @@ export default function CardDetails({
             color="primary"
             data-testid="pay-now"
             onClick={() => setOpen(false)}
-            className="next"
           >
             No, I would like to pay now
           </StyledButton>
@@ -335,7 +319,6 @@ export default function CardDetails({
             onClick={() => setOpen(true)}
             id="btn-submit"
             data-testid="pay-later-btn"
-            className="previous"
           >
             Pay Later
           </StyledButton>
@@ -346,7 +329,6 @@ export default function CardDetails({
             disabled={!values.acceptedTerms}
             loading={isSubmitting}
             variant="contained"
-            className="next"
             id="btn-submit"
             onClick={() => submitForm()}
           >

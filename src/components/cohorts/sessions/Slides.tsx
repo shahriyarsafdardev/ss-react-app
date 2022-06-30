@@ -159,7 +159,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold',
     '&:hover': {
       backgroundColor: '#5A189A',
-      opacity: 0.9
+      opacity: 0.8
     }
   },
   fullScreen: {},
