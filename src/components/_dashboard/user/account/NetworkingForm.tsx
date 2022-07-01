@@ -171,9 +171,6 @@ export default function NetworkingForm({
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      I am most interested in connecting with cohort members who:
-                    </Typography>
                     <MultiSelect
                       options={[
                         'Work in the same role',
@@ -188,6 +185,7 @@ export default function NetworkingForm({
                       values={values.networking_matching_preferences}
                       onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
                       maxLimit={3}
+                      label="I am most interested in connecting with cohort members who:"
                     />
                   </Stack>
                 </Stack>

@@ -57,11 +57,12 @@ export default function RoleInfoForm({
               </FormControl>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <FormControl data-testid="role-categories-dropdown" fullWidth>
-                  <label>Role Categories</label>
                   <MultiSelect
                     values={infoObject.role_category}
                     options={role_options}
                     onChange={(value: string[]) => onUpdateAttribute('role_category', value)}
+                    label="Role Categories"
+                    maxLimit={2}
                   />
                 </FormControl>
                 <FormControl fullWidth>

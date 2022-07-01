@@ -115,7 +115,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const switchView = () => {
     let url = '/';
     if (mode === 'Instructor') {
-      updateInstructorViewState('Member');
+      updateInstructorViewState('Learner');
       if (cohorts.length > 0) {
         url = `/cohorts/${cohorts[0].id}/home`;
       }
@@ -134,7 +134,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
       onCloseSidebar();
     }
     if (user?.type === 'learner') {
-      updateInstructorViewState('Member');
+      updateInstructorViewState('Learner');
       dispatch(initializeReferralLink(cohort_id));
     }
   }, [pathname]);
@@ -159,7 +159,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
         )}
 
-        {mode === 'Member' &&
+        {mode === 'Learner' &&
           groupByIntake(cohorts).map((intakeCategory: string) => (
             <NavSection
               data-testid="member-sidebar"
@@ -189,11 +189,11 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               <p data-testid="dashboard-infotext" style={{ textAlign: 'center' }}>
                 You are currently viewing the
                 <b> {mode} Dashboard,</b> to access your{' '}
-                {mode === 'Member' ? 'instructor toggle' : 'cohorts as a member'}, use the toggle
-                below:
+                {mode === 'Learner' ? 'instructor dashboard' : 'cohorts as a learner'}, use the
+                toggle below:
               </p>
               <SwitcherButtonContainer>
-                <LabelStyled className={mode === 'Member' ? 'blue' : 'gray'}>Member</LabelStyled>
+                <LabelStyled className={mode === 'Learner' ? 'blue' : 'gray'}>Learner</LabelStyled>
                 <Switch
                   data-testid="dashboard-switch"
                   size="small"

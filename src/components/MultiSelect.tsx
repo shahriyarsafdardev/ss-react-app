@@ -1,4 +1,4 @@
-import Select from 'react-select';
+import { Autocomplete, Chip, TextField } from '@material-ui/core';
 
 export const customStyles = {
   placeholder: (provided: any, state: any) => ({
@@ -34,47 +34,48 @@ export default function MultiSelect({
   options,
   onChange,
   values,
-  maxLimit
+  maxLimit,
+  label
 }: {
   options: string[] | undefined;
   onChange: Function;
   values: string[];
   maxLimit?: number;
+  label?: string;
 }) {
-  const handleChange = (values: any) => {
-    onChange(values.map((item: any) => item.value));
-  };
-
   if (!options) return null;
 
   const selectedValues = values || [];
 
   return (
     <div>
-      <Select
-        value={selectedValues.map((option) => ({ value: option, label: option }))}
-        options={
-          // eslint-disable-next-line no-nested-ternary
-          maxLimit
-            ? selectedValues.length < maxLimit
-              ? options?.map((option) => ({ value: option, label: option }))
-              : []
-            : options?.map((option) => ({ value: option, label: option }))
-        }
-        noOptionsMessage={() =>
+      <Autocomplete
+        multiple
+        freeSolo={false}
+        value={values}
+        onChange={(event, newValue) => {
+          onChange(newValue);
+        }}
+        noOptionsText={
           selectedValues.length === maxLimit
             ? "You've reached the max options value"
             : 'No options available'
         }
-        isClearable={false}
-        backspaceRemovesValue={true}
-        placeholder={<></>}
-        isMulti
-        isSearchable
-        onChange={handleChange}
-        id="multi-select"
-        menuPortalTarget={document.body}
-        styles={{ ...customStyles, menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        options={
+          // eslint-disable-next-line no-nested-ternary
+          maxLimit
+            ? selectedValues.length < maxLimit
+              ? options?.map((option) => option)
+              : []
+            : options?.map((option) => option)
+        }
+        renderTags={(value, getTagProps) => [
+          ...value.map((option, index) => (
+            // eslint-disable-next-line react/jsx-key
+            <Chip size="small" label={option} {...getTagProps({ index })} />
+          ))
+        ]}
+        renderInput={(params) => <TextField {...params} label={label} />}
       />
     </div>
   );
