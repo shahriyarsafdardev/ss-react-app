@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { countries, getCitiesByCountryCode } from 'country-city-location';
-import Select from 'react-select';
+import MUICreatableSelect from 'components/MUICreatableSelect';
 
 import {
   Grid,
@@ -57,11 +57,15 @@ export default function UserInfoForm({
     const countryCode = countries.find(
       (countryItem: any) => countryItem.Name === country
     )?.Alpha2Code;
-    setCityList(
-      getCitiesByCountryCode(countryCode)
-        ?.map((city: any) => city.name)
-        .sort() || []
-    );
+    if (countryCode) {
+      setCityList(
+        getCitiesByCountryCode(countryCode)
+          ?.map((city: any) => city.name)
+          .sort() || []
+      );
+    } else {
+      setCityList([]);
+    }
   };
 
   const fillUserValues = () => ({
@@ -173,35 +177,25 @@ export default function UserInfoForm({
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <FormControl data-testid="user-country" fullWidth>
-                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                  <label htmlFor="country">Country</label>
-
-                  <Select
-                    value={{ value: infoObject?.country, label: infoObject?.country }}
-                    options={countries.map((country: any) => ({
-                      value: country.Name,
-                      label: country.Name
-                    }))}
-                    onChange={(e) => {
-                      onUpdateAttributeGroup({ country: e?.value, city: '' });
-                      setCities(e?.value || '');
+                  <MUICreatableSelect
+                    options={countries.map((countary: any) => countary.Name)}
+                    value={infoObject?.country || ''}
+                    onChange={(value: string) => {
+                      onUpdateAttributeGroup({ country: value, city: '' });
+                      setCities(value || '');
                     }}
-                    placeholder="Country"
-                    menuPortalTarget={document.body}
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                    label="Country"
+                    isCreatable={false}
                   />
                 </FormControl>
 
                 <FormControl data-testid="user-city" fullWidth>
-                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                  <label htmlFor="city">City</label>
-                  <Select
-                    value={{ value: infoObject?.city, label: infoObject?.city }}
-                    onChange={(e) => onUpdateAttribute('city', e?.value)}
-                    options={citiesList.map((city) => ({ value: city, label: city }))}
-                    placeholder="City"
-                    menuPortalTarget={document.body}
-                    styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                  <MUICreatableSelect
+                    options={citiesList}
+                    value={infoObject?.city || ''}
+                    onChange={(value: any) => onUpdateAttribute('city', value)}
+                    label="City"
+                    isCreatable={false}
                   />
                 </FormControl>
               </Stack>

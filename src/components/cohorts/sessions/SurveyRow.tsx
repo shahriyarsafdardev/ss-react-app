@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 // material
+import _ from 'lodash';
 import { styled } from '@material-ui/core/styles';
 import {
   Radio,
@@ -11,8 +12,7 @@ import {
   Slider,
   Box
 } from '@material-ui/core';
-import CreatableSelect from 'react-select/creatable';
-import MultiSelect, { customStyles } from '../../MultiSelect';
+import MultiSelect from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
 
@@ -170,41 +170,6 @@ function MultiCheck({
   );
 }
 
-function CreateMultiSelect({
-  options,
-  onChange,
-  values
-}: {
-  options: string[] | undefined;
-  onChange: Function;
-  values: string[];
-}) {
-  const handleChange = (values: any) => {
-    onChange(values.map((item: any) => item.value));
-  };
-
-  if (!options) return null;
-
-  const selectedValues = values || [];
-
-  return (
-    <div>
-      <CreatableSelect
-        defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
-        options={options?.map((option) => ({ value: option, label: option }))}
-        isClearable={false}
-        styles={customStyles}
-        backspaceRemovesValue={true}
-        placeholder={<div>Start typing whatever comes to mind!</div>}
-        isMulti
-        isSearchable
-        onChange={handleChange}
-        id="create-select"
-      />
-    </div>
-  );
-}
-
 function SliderQuestion({ onChange, item }: SliderProps) {
   const [value, setValue] = useState(item?.options?.max);
   const [isRendered, setIsRenderedstate] = useState(false);
@@ -300,10 +265,12 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
     }
     if (item.question_type === ANSWER_TYPES.CREATE_MULTI_SELECT) {
       return (
-        <CreateMultiSelect
+        <MultiSelect
           options={item.options}
-          values={submitted_answer}
-          onChange={(e: any) => onChange(e)}
+          values={submitted_answer ? submitted_answer.split(',') : []}
+          onChange={(e: any) => onChange(_.toString(e))}
+          maxLimit={item.maxLimit}
+          isCreatable={true}
         />
       );
     }
@@ -317,8 +284,8 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return (
         <MultiSelect
           options={item.options}
-          values={submitted_answer}
-          onChange={(e: any) => onChange(e)}
+          values={submitted_answer ? submitted_answer.split(',') : []}
+          onChange={(e: any) => onChange(_.toString(e))}
           maxLimit={item.maxLimit}
         />
       );

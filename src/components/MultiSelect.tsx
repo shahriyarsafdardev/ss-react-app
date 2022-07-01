@@ -1,47 +1,19 @@
 import { Autocomplete, Chip, TextField } from '@material-ui/core';
 
-export const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  }),
-  multiValue: (provided: any, state: any) => ({
-    backgroundColor: 'rgba(77, 77, 205, 0.16)',
-    padding: '1px 2px 1px 8px',
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    borderRadius: '6px',
-    color: '#12125C',
-    margin: '5px 5px 5px 0px',
-    fontWeight: 700,
-    fontSize: '14px'
-  }),
-  multiValueLabel: (provided: any, state: any) => ({
-    color: '#12125C'
-  }),
-  control: (base: any, state: any) => ({
-    ...base,
-    borderColor: state.isFocused ? '#12125C' : '#CCCCCC',
-    boxShadow: state.isFocused ? '0 0 0 1px #12125c' : 0,
-    '&:hover': {
-      borderColor: '#12125C'
-    }
-  })
-};
-
 export default function MultiSelect({
   options,
   onChange,
   values,
   maxLimit,
-  label
+  label,
+  isCreatable = false
 }: {
   options: string[] | undefined;
   onChange: Function;
   values: string[];
   maxLimit?: number;
   label?: string;
+  isCreatable?: boolean;
 }) {
   if (!options) return null;
 
@@ -51,7 +23,7 @@ export default function MultiSelect({
     <div>
       <Autocomplete
         multiple
-        freeSolo={false}
+        freeSolo={isCreatable}
         value={values}
         onChange={(event, newValue) => {
           onChange(newValue);

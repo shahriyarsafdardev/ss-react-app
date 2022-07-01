@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import CreatableSelect from 'react-select/creatable';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import {
@@ -7,7 +6,6 @@ import {
   Grid,
   Card,
   Stack,
-  Typography,
   MenuItem,
   FormControl,
   InputLabel,
@@ -20,7 +18,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 // axios
 import axios from '../../../../utils/axios';
-import MultiSelect, { customStyles } from '../../../MultiSelect';
+import MultiSelect from '../../../MultiSelect';
 
 interface InitialState {
   interests: string[];
@@ -37,12 +35,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-
-const getOptions = (options: any) =>
-  options.map((option: any) => ({
-    value: option,
-    label: option
-  }));
 
 export default function NetworkingForm({
   onSubmit,
@@ -62,9 +54,6 @@ export default function NetworkingForm({
 }) {
   const [strengths, setStrengths] = useState<string[]>();
   const [interests, setInterests] = useState<string[]>([]);
-
-  const interestOptions = interests?.map((interest) => ({ value: interest, label: interest }));
-  const strengthsOptions = strengths?.map((strength) => ({ value: strength, label: strength }));
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -149,25 +138,12 @@ export default function NetworkingForm({
                     </FormControl>
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      What topics can fellow cohort members ask you question on?
-                    </Typography>
-                    <CreatableSelect
-                      defaultValue={getOptions(values.strengths)}
-                      styles={customStyles}
-                      placeholder={<div>Start typing whatever comes to mind!</div>}
-                      options={strengthsOptions}
-                      isClearable={false}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      id="strength-multiselect"
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'strengths',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
+                    <MultiSelect
+                      options={strengths}
+                      values={values.strengths}
+                      onChange={(e: any) => setFieldValue('strengths', e)}
+                      label="What topics can fellow cohort members ask you question on?"
+                      isCreatable={true}
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
