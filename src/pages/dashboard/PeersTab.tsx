@@ -184,6 +184,7 @@ export default function PeersTab() {
           />
           {user?.type === 'admin' && mode === 'Instructor' && (
             <ExportToExcel
+              cohort={cohort}
               students={filteredPeers}
               fileName={`${moment().format()}-${cohort?.name} Students Data`}
             />
