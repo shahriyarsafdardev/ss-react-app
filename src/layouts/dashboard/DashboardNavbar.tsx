@@ -63,6 +63,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'cohort_sales',
     'cohort_experiences',
     'alumni',
+    'waitlist_form',
     'monthly-registrations',
     'sessions',
     'peers',
@@ -87,6 +88,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Analytics');
         } else if (section === 'cohort_experiences') {
           setCurrentTab('Cohort Experience Overview');
+        } else if (section === 'waitlist_form') {
+          setCurrentTab('Waitlist Form');
         } else if (section === 'alumni') {
           setCurrentTab('Alumni Overview');
         } else {

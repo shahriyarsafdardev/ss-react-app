@@ -117,6 +117,14 @@ export default function Router() {
           )
         },
         {
+          path: '/waitlist_form',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <WaitlistForm />
+            </RoleBasedGuard>
+          )
+        },
+        {
           path: '/alumni',
           element: (
             <RoleBasedGuard accessibleRoles={adminRoles}>
@@ -289,7 +297,9 @@ export default function Router() {
         { path: 'free-session-message', element: <FreeSessionMessage /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/404" replace /> }
+        { path: '*', element: <Navigate to="/404" replace /> },
+        { path: 'registration/unsubscribe', element: <UnsubscribeRegistration /> },
+        { path: 'registration/defer', element: <DeferRegistration /> }
       ]
     },
     // {
@@ -371,6 +381,10 @@ const UpdatePassword = Loadable(lazy(() => import('../pages/authentication/Updat
 const ResetUserPassword = Loadable(lazy(() => import('../pages/user_auth/ResetUserPassword')));
 const UnlockUser = Loadable(lazy(() => import('../pages/user_auth/UnlockUser')));
 const UnsubscribeEmails = Loadable(lazy(() => import('../pages/user_auth/UnsubscribeEmails')));
+const UnsubscribeRegistration = Loadable(
+  lazy(() => import('../pages/user_auth/UnsubscribeRegistration'))
+);
+const DeferRegistration = Loadable(lazy(() => import('../pages/user_auth/DeferRegistration')));
 const VerifyCode = Loadable(lazy(() => import('../pages/authentication/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
@@ -435,6 +449,7 @@ const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/Fre
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));
 const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
 const AdminExperiences = Loadable(lazy(() => import('../pages/admin/ExperiencesTab')));
+const WaitlistForm = Loadable(lazy(() => import('../pages/admin/WaitlistForm')));
 const AlumniTab = Loadable(lazy(() => import('../pages/admin/AlumniTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
