@@ -287,7 +287,7 @@ export const ReferralCodeRow = ({
 
   const { errors, touched, submitForm, setFieldValue, values } = formik;
   const cohortSlug = convertToSlug(cohortName);
-  const referralLink = `https://www.scholarsite.io/pages/${cohortSlug}?referrer=${values.code}`;
+  const referralLink = `https://www.getsphere.com/pages/${cohortSlug}?referrer=${values.code}`;
 
   return (
     <>
@@ -828,7 +828,7 @@ export const ExportToExcel = ({
       {
         column: 'Payment Link',
         value: (registration: any) =>
-          `https://app.scholarsite.io/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,
+          `https://app.getsphere.com/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,
         width: 120
       }
     ];

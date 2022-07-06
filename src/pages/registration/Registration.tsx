@@ -127,7 +127,7 @@ export default function Registration() {
             </Typography>
           </Box>
           <Button
-            href="https://www.scholarsite.io/#upcoming-cohorts-slider"
+            href="https://www.getsphere.com/#upcoming-cohorts-slider"
             variant="contained"
             color="primary"
             data-testid="explore-btn"
@@ -157,7 +157,7 @@ export default function Registration() {
             </Typography>
           </Box>
           <Button
-            href="https://www.scholarsite.io/pages/get-in-touch"
+            href="https://www.getsphere.com/pages/contact-us"
             variant="contained"
             color="primary"
             data-testid="contact-btn"

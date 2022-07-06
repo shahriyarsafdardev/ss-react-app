@@ -28,7 +28,7 @@ function FreeSessionMessage() {
           The Sphere team & Instructors look forward to meeting you and answering your questions!
         </Typography>
         <Button
-          href="https://www.scholarsite.io/pages/get-in-touch"
+          href="https://www.getsphere.com/pages/contact-us"
           variant="contained"
           color="primary"
           className={classes.btnContactUs}

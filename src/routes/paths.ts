@@ -6,7 +6,7 @@ function path(root: string, sublink: string) {
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '';
-export const ROOT_URL = process.env.REACT_APP_ROOT_URL || 'https://app.scholarsite.io/api/v1';
+export const ROOT_URL = process.env.REACT_APP_ROOT_URL || 'https://app.getsphere.com/api/v1';
 
 // ----------------------------------------------------------------------
 

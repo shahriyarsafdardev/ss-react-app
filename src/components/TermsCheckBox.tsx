@@ -11,7 +11,7 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
           target="_blank"
           data-testid="service-link"
           variant="body2"
-          href="https://www.scholarsite.io/pages/terms-conditions"
+          href="https://sphere-public.s3.eu-west-2.amazonaws.com/terms_and_conditions.html"
         >
           Terms of Service
         </Link>{' '}
@@ -21,7 +21,7 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
           target="_blank"
           data-testid="policy-link"
           variant="body2"
-          href="https://www.scholarsite.io/pages/privacy"
+          href="https://sphere-public.s3.eu-west-2.amazonaws.com/privacy_policy.html"
         >
           Privacy Policy
         </Link>

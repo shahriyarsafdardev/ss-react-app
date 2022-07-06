@@ -65,7 +65,7 @@ export default function UnsubscribeEmails() {
               variant="contained"
               color="primary"
               component={Link}
-              href="https://www.scholarsite.io/pages/get-in-touch"
+              href="https://www.getsphere.com/pages/contact-us"
               align="center"
             >
               Any questions? Click here to contact Sphere

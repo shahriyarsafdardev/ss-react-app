@@ -136,7 +136,7 @@ export default function TermsForm() {
                     <>
                       <StyledButton
                         fullWidth
-                        href="https://www.scholarsite.io/pages/get-in-touch"
+                        href="https://www.getsphere.com/pages/contact-us"
                         variant="outlined"
                       >
                         Contact Sphere
