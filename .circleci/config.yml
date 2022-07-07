@@ -30,6 +30,7 @@ jobs:
     resource_class: large
     steps:
       - checkout
+      - setup_remote_docker
       - run: docker volume prune -f
       - run:
           name: install dependecies
