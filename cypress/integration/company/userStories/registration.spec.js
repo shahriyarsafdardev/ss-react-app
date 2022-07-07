@@ -26,7 +26,7 @@ Cypress.Commands.add('updateProfile', (urlData, enrollment) => {
 });
 
 describe('Registration Flow', () => {
-  context('When user is without credit account', () => {
+  context('When user is without a credit account', () => {
     beforeEach(() => {
       cy.server();
       cy.fixture('registration/registration-enrollment.json').as('enrollmentData');
