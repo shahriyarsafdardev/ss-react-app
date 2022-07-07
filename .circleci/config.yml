@@ -27,7 +27,7 @@ jobs:
       - image: circleci/node:16-browsers
         environment:
           REACT_APP_ROOT_URL: https://scholarsite-staging.herokuapp.com/api/v1
-    resource_class: xlarge
+    resource_class: large
     steps:
       - checkout
       - run:
