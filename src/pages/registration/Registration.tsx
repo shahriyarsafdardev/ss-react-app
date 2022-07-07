@@ -239,6 +239,36 @@ export default function Registration() {
       );
     }
 
+    if (activeStep === 5) {
+      return (
+        <Stack
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
+              🎉 Congratulations, you’ve joined the waitlist
+            </Typography>
+            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
+              You will recieve an email shortly with more details on the course and how to secure
+              your seat
+            </Typography>
+          </Box>
+          <Button
+            href="https://www.getsphere.com/#upcoming-cohorts-slider"
+            variant="contained"
+            color="primary"
+            data-testid="explore-cohorts-btn"
+          >
+            Explore more Sphere cohorts
+          </Button>
+        </Stack>
+      );
+    }
+
     return (
       <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
         <UserForm
