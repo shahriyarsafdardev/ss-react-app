@@ -308,7 +308,7 @@ describe('Registration Flow', () => {
           it('Verify complete application page is opened', () => {
             cy.get('[data-testid=confirmation-message]')
               .should('be.visible')
-              .and('contain', `🎉 You've completed your application!`);
+              .and('contain', `🎉 You’ve completed your application!`);
             cy.get('[data-testid=confirmation-subtext]')
               .should('be.visible')
               .and(
