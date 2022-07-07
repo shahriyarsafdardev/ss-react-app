@@ -52,13 +52,15 @@ export default function CardDetails({
   enrollmentID,
   first_name,
   last_name,
-  setStep
+  setStep,
+  formHeading
 }: {
   cohortID?: string;
   first_name?: string;
   last_name?: string;
   enrollmentID?: string;
   setStep: Function;
+  formHeading: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -204,7 +206,7 @@ export default function CardDetails({
       </Dialog>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph data-testid="thankyou-message">
-          💳 Thanks {first_name}, just one last step!
+          {formHeading}
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="refund-alert">
           You can get a full refund up to 72 hours before the date of the first session, and will
