@@ -15,11 +15,11 @@ const Wallet = ({
   return (
     <Card className={classes.sectionCard}>
       <Typography data-testid="wallet-header" variant="h5">
-        {accountName && `${accountName}'s`} ScholarSite Wallet
+        {accountName && `${accountName}'s`} Sphere Wallet
       </Typography>
       <Box display="flex" justifyContent="space-between" marginTop="10px">
         <Box display="flex" alignItems="baseline">
-          <Typography data-testid="credit-amount" variant="h3" color="#4D4DCD">
+          <Typography data-testid="credit-amount" variant="h3" color="primary.main">
             {currentBalance}
           </Typography>
           <Typography data-testid="credit-label" variant="body1" style={{ marginLeft: '5px' }}>

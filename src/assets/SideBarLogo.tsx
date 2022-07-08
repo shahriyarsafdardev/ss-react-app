@@ -1,1 +1,1 @@
-export const SideBarLogo = () => <img src="/static/favicon.png" alt="scholarsite" />;
+export const SideBarLogo = () => <img src="/static/logo.svg" alt="sphere" />;

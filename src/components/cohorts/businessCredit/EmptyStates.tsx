@@ -2,7 +2,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
 const MainMessage = styled('p')(({ theme }) => ({
-  color: '#4D4DCD',
+  color: theme.palette.text.primary,
   fontWeight: 700,
   fontSize: '18px',
   [theme.breakpoints.down('md')]: {
@@ -11,7 +11,7 @@ const MainMessage = styled('p')(({ theme }) => ({
 }));
 
 const SecondaryMessage = styled('p')(({ theme }) => ({
-  color: '#A6AEB7',
+  color: 'theme.palette.text.secondary',
   fontWeight: 400,
   fontsize: '16px',
   [theme.breakpoints.down('md')]: {

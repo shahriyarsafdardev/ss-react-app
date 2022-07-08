@@ -36,7 +36,7 @@ const ContactNote = () => (
     </Box>
     <Box className="text-content">
       <Typography>
-        Please don’t hesitate to contact the ScholarSite support team - we’d love to hear from you!
+        Please don’t hesitate to contact the Sphere support team - we’d love to hear from you!
       </Typography>
     </Box>
   </ContactInfoNote>
@@ -64,7 +64,7 @@ export default function ContactUs() {
       first_name: 'Leah Nicolai',
       last_name: 'Higgins',
       current_position: 'Cohort Operations Manager',
-      email: 'leah@scholarsite.io',
+      email: 'leah@getsphere.com',
       phone: '+1 315 521 6341',
       profile_image_url: '/static/contact/Leah.jpeg',
       city: 'New York',
@@ -75,7 +75,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       }
@@ -84,7 +84,7 @@ export default function ContactUs() {
       id: 'eba5d109-04c1-480c-ae34-1021a6edf36e',
       first_name: 'Nick',
       last_name: 'Rudder',
-      email: 'nicholas@scholarsite.io',
+      email: 'nicholas@getsphere.com',
       current_position: 'Co-Founder & CEO',
       phone: '+1 415 994 7284',
       profile_image_url: '/static/contact/Nick.png',
@@ -96,7 +96,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/nicholasrudder/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       },
@@ -107,7 +107,7 @@ export default function ContactUs() {
       first_name: 'Adrian',
       last_name: 'Sarstedt',
       current_position: 'Co-Founder & CTO',
-      email: 'adrian@scholarsite.io',
+      email: 'adrian@getsphere.com',
       phone: '+1 415 818 4841',
       profile_image_url: '/static/contact/Adrian.png',
       city: 'New York',
@@ -118,7 +118,7 @@ export default function ContactUs() {
       linkedin_url: 'https://www.linkedin.com/in/adrian-sarstedt-375623133/',
       current_company: {
         id: '',
-        name: 'ScholarSite',
+        name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
       },
@@ -127,7 +127,7 @@ export default function ContactUs() {
   ];
 
   return (
-    <Page title="ScholarSite | Contact Us">
+    <Page title="Sphere | Contact Us">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <Typography variant="h3">Contact Us</Typography>
         <ContactNote />

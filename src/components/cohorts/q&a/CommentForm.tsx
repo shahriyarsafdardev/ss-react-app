@@ -35,7 +35,7 @@ const CrossIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const UserAvatar = styled(Avatar)(({ theme }) => ({
-  display: 'block',
+  display: 'flex',
   marginRight: '15px',
   [theme.breakpoints.down('sm')]: {
     display: 'none',

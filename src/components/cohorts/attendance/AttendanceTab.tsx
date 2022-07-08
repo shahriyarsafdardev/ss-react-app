@@ -129,7 +129,7 @@ const AttendanceTab = () => {
   );
 
   return (
-    <Page title="ScholarSite | Attendance">
+    <Page title="Sphere | Attendance">
       <StyledContainer id="asd" key={String(CHART_DATA.data)}>
         <Card>
           <CardHeader title="Cohort Overview" data-testid="cohort_overview_header" />

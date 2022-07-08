@@ -71,7 +71,7 @@ const StyledCount = styled(Typography)(() => ({
   fontSize: '13px',
   color: '#fff',
   textAlign: 'center',
-  background: '#4d4dcd',
+  background: '#12125C',
   marginLeft: '1rem',
   fontWeight: 600
 }));
@@ -252,7 +252,7 @@ export const Filters = ({ filters, setFilter }: { filters: any; setFilter: Funct
               key={index}
               sx={{
                 typography: 'subtitle2',
-                color: filter.applied ? '#4d4dcd' : '#CACED4',
+                color: filter.applied ? '#12125C' : '#CACED4',
                 display: 'flex',
                 justifyContent: 'space-between',
                 py: 1,

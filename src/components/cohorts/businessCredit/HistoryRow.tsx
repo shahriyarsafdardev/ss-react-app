@@ -24,7 +24,7 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
           <a
             style={{
               display: 'flex',
-              color: '#4D4DCD',
+              color: 'primary.main',
               textDecoration: 'underline',
               fontWeight: 600
             }}

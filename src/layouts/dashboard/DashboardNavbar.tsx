@@ -16,7 +16,6 @@ import NotificationsPopover from './NotificationsPopover';
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
-
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
 
@@ -111,11 +110,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
       <Box sx={{ flexGrow: 1 }}>
         {user?.type === 'company' && (
           <CompanyLogo>
-            <img
-              data-testid="company-logo"
-              src="/static/business-empty-states/scholarsite-logo.svg"
-              alt="logo"
-            />
+            <img data-testid="company-logo" src="/static/sphere_with_logo.svg" alt="logo" />
           </CompanyLogo>
         )}
         <RootStyle
@@ -134,9 +129,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
             {currentTab && (
               <Typography
+                color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
                 variant="h4"
-                style={{ color: '#071A33', textTransform: 'capitalize' }}
+                style={{ color: 'text.primary', textTransform: 'capitalize' }}
               >
                 {currentTab}
               </Typography>

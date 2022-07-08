@@ -57,7 +57,7 @@ export default function RegistrationRow({
               underline="always"
               href={linkedin_url}
               target="_blank"
-              color="#071A33"
+              color="primary.main"
               data-testid={`registration${id ? `-${id}` : ''}-name`}
               sx={{ typography: 'subtitle2' }}
             >

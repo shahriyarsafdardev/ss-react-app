@@ -62,7 +62,7 @@ export default function AccountDeleteModal({
               Are you sure you want to continue? In respect of your privacy, we will permanently
               destroy all data and records associated with your account. This means you will no
               longer have access to session materials, community discussions, and upcoming events.
-              To use ScholarSite’s services again, you will have to start with a fresh account.
+              To use Sphere's services again, you will have to start with a fresh account.
             </Typography>
           </DialogContent>
           <DialogActions>

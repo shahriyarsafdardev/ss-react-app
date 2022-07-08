@@ -1,4 +1,4 @@
-# ScholarSite Testing Standards
+# Sphere Testing Standards
 
 We would like to use consistent standards within our tests to ensure product transparency.
 

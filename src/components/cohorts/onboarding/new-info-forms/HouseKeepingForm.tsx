@@ -19,7 +19,7 @@ const REFERRER_OPTIONS = [
   'Email Marketing',
   'Social Media',
   'Recommended by a friend or colleague',
-  'Personally invited by someone in the Scholarsite team',
+  'Personally invited by someone in the Sphere team',
   'Other'
 ];
 const YES_NO_OPTIONS = ['Yes', 'No'];

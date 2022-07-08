@@ -124,7 +124,7 @@ export const PEERS_PAGE_EVENTS = {
   filters_applied: 'Filters applied',
   view_selection: 'View Selection',
   modal_open_event: 'Opened Member Details Modal',
-  member_details_modal: 'Member Details Modal',
+  member_details_modal: 'Learner Details Modal',
   opened_linked_in: 'Opened LinkedIn'
 };
 

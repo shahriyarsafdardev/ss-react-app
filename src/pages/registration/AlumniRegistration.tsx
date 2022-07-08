@@ -13,7 +13,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function AlumniRegistration() {
   return (
-    <RootStyle title="ScholarSite Cohort Registration">
+    <RootStyle title="Sphere Cohort Registration">
       <Container maxWidth="lg">
         <Stack
           width="100%"

@@ -504,7 +504,7 @@ describe('Registration Flow', () => {
             .should('be.visible')
             .and(
               'contain',
-              `ScholarSite has an enterprise package deal with ${creditEnrollment.account}, we’re just checking whether your team qualifies!`
+              `Sphere has an enterprise package deal with ${creditEnrollment.account}, we’re just checking whether your team qualifies!`
             );
           cy.get('[data-testid=explore-btn]').should('be.visible');
         });

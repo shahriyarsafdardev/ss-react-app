@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { styled } from '@material-ui/core/styles';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
@@ -112,12 +112,10 @@ const SessionPrereading = ({
                 {preReadingsCompleted() ? (
                   <>
                     <Box>
-                      <p style={{ fontSize: '18px' }}>
+                      <Typography color="text.primary" style={{ fontSize: '18px' }}>
                         🎉 You’re all ready to go for{activeSession.custom_name ? ' our ' : ' '}
-                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          {activeSession.custom_name || `Session ${activeSession?.number}`}
-                        </span>
-                      </p>
+                        <b>{activeSession.custom_name || `Session ${activeSession?.number}`}</b>
+                      </Typography>
                       <p style={{ fontSize: '14px' }}>We look forward to seeing you soon</p>
                     </Box>
                     <Box>
@@ -133,12 +131,10 @@ const SessionPrereading = ({
                 ) : (
                   <>
                     <Box>
-                      <p style={{ fontSize: '18px' }}>
+                      <Typography color="text.primary" style={{ fontSize: '18px' }}>
                         Get Ready for{activeSession.custom_name ? ' our ' : ' '}
-                        <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>
-                          {activeSession.custom_name || `Session ${activeSession?.number}`}
-                        </span>
-                      </p>
+                        <b>{activeSession.custom_name || `Session ${activeSession?.number}`}</b>
+                      </Typography>
                       <p style={{ fontSize: '14px' }}>
                         The following tasks are recommended but not required
                       </p>

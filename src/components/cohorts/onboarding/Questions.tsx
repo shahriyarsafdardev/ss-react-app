@@ -91,7 +91,7 @@ const questions = [
       'Email Marketing',
       'Social Media',
       'Recommended by a friend or colleague',
-      'Personally invited by someone in the Scholarsite team',
+      'Personally invited by someone in the Sphere team',
       'Other'
     ],
     submitted_answer: null,
@@ -107,7 +107,7 @@ const questions = [
   {
     question_type: 'multiple-choice',
     title:
-      'Would you like your participation in the Scholarsite cohort to count towards professional development accreditation (CPD, CPE or CE)?',
+      'Would you like your participation in the Sphere cohort to count towards professional development accreditation (CPD, CPE or CE)?',
     options: ['Yes', 'No', 'Maybe?'],
     submitted_answer: null,
     description: null

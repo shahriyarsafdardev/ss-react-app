@@ -26,7 +26,7 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
     margin: '6px'
   },
   'span.view-type': {
-    color: '#4D4DCD',
+    color: '#12125C',
     textDecoration: 'underline',
     cursor: 'pointer'
   }

@@ -75,15 +75,19 @@
 }
 
 .create-channel__button-wrapper p {
-  background: #4d4dcd;
+  background: #12125c;
   font-family: Helvetica Neue, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px 20px;
   color: #ffffff;
   margin-right: 30px;
-  border-radius: 8px;
+  border-radius: 8px; 
   cursor: pointer;
+}
+.create-channel__button-wrapper p:hover {
+  background: #5a189a;
+  color: #ffffff;
 }
 
 @media only screen and (max-width: 600px) {

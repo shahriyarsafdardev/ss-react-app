@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import { RootState, useSelector } from 'redux/store';
-
-import CreatableSelect from 'react-select/creatable';
 import MultiSelect from 'components/MultiSelect';
+import MUICreatableSelect from 'components/MUICreatableSelect';
 
 import {
   Grid,
@@ -90,25 +89,34 @@ export default function CompanyInfoForm({
   }, []);
 
   const onCompanyChange = async (e: any) => {
-    if (e.__isNew__) {
+    const companyObject = companies.find((company) => company.name === e);
+    if (!companyObject) {
       onUpdateAttributeGroup({
         logo_url: null,
-        name: e.value,
+        name: e,
         number_of_employees: null,
         industries: []
       });
     } else {
-      const companyObject = companies.find((company) => company.name === e.value);
-      if (companyObject) {
-        onUpdateAttributeGroup({
-          logo_url: companyObject.logo_url,
-          name: companyObject.name,
-          number_of_employees: companyObject.number_of_employees,
-          industries: companyObject.industries
-        });
-      }
+      onUpdateAttributeGroup({
+        logo_url: companyObject.logo_url,
+        name: companyObject.name,
+        number_of_employees: companyObject.number_of_employees,
+        industries: companyObject.industries
+      });
     }
   };
+
+  const renderButtons = () => (
+    <NavigationButtons
+      isSubmitting={isSubmitting}
+      isSubmitBtn={isSubmitable}
+      showPrevButton={showPrevButton}
+      disabled={checkFormValidity(infoObject)}
+      onPreviousHandler={onPrevHandler}
+      onNextHandler={() => onSubmit(infoObject)}
+    />
+  );
 
   return (
     <>
@@ -142,30 +150,20 @@ export default function CompanyInfoForm({
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl data-testid="company-name" fullWidth>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="company-name">Select or create company name</label>
-                <CreatableSelect
-                  defaultValue={{ value: infoObject?.name, label: infoObject?.name }}
-                  options={companies?.map((company: CompanyData) => ({
-                    value: company.name,
-                    label: company.name
-                  }))}
-                  isClearable={false}
-                  backspaceRemovesValue={true}
-                  placeholder="Company Name"
-                  isSearchable
-                  menuPortalTarget={document.body}
-                  styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                  onChange={(e) => onCompanyChange(e)}
+                <MUICreatableSelect
+                  options={companies?.map((company: CompanyData) => company.name)}
+                  value={infoObject?.name || ''}
+                  onChange={(value: any) => onCompanyChange(value)}
+                  label="Select or create company name"
                 />
               </FormControl>
 
               <FormControl data-testid="company-industries-dropdown" fullWidth>
-                <label>Company Industries</label>
                 <MultiSelect
                   values={infoObject.industries}
                   options={industry_options}
                   onChange={(value: string[]) => onUpdateAttribute('industries', value)}
+                  label="Company Industries"
                 />
               </FormControl>
 
@@ -185,18 +183,12 @@ export default function CompanyInfoForm({
                   ))}
                 </MaterialSelect>
               </FormControl>
+              {!showPrevButton && renderButtons()}
             </Stack>
           </Card>
         </Grid>
       </Grid>
-      <NavigationButtons
-        isSubmitting={isSubmitting}
-        isSubmitBtn={isSubmitable}
-        showPrevButton={showPrevButton}
-        disabled={checkFormValidity(infoObject)}
-        onPreviousHandler={onPrevHandler}
-        onNextHandler={() => onSubmit(infoObject)}
-      />
+      {showPrevButton && renderButtons()}
     </>
   );
 }

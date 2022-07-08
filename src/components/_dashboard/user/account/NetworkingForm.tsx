@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import {
@@ -8,7 +6,6 @@ import {
   Grid,
   Card,
   Stack,
-  Typography,
   MenuItem,
   FormControl,
   InputLabel,
@@ -23,27 +20,6 @@ import { styled } from '@material-ui/core/styles';
 import axios from '../../../../utils/axios';
 import MultiSelect from '../../../MultiSelect';
 
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block'
-    // color: 'rgb(128, 128, 128)'
-  }),
-  multiValue: (provided: any, state: any) => ({
-    backgroundColor: 'rgba(77, 77, 205, 0.16)',
-    padding: '1px 2px 1px 8px',
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    borderRadius: '6px',
-    color: 'rgba(77, 77, 205, 1)',
-    margin: '5px 5px 5px 0px',
-    fontWeight: 700,
-    fontSize: '14px'
-  }),
-  multiValueLabel: (provided: any, state: any) => ({
-    color: 'rgba(77, 77, 205, 1)'
-  })
-};
 interface InitialState {
   interests: string[];
   current_role_category_selections: string[];
@@ -59,12 +35,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-
-const getOptions = (options: any) =>
-  options.map((option: any) => ({
-    value: option,
-    label: option
-  }));
 
 export default function NetworkingForm({
   onSubmit,
@@ -84,9 +54,6 @@ export default function NetworkingForm({
 }) {
   const [strengths, setStrengths] = useState<string[]>();
   const [interests, setInterests] = useState<string[]>([]);
-
-  const interestOptions = interests?.map((interest) => ({ value: interest, label: interest }));
-  const strengthsOptions = strengths?.map((strength) => ({ value: strength, label: strength }));
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -171,31 +138,15 @@ export default function NetworkingForm({
                     </FormControl>
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      What topics can fellow cohort members ask you question on?
-                    </Typography>
-                    <CreatableSelect
-                      defaultValue={getOptions(values.strengths)}
-                      styles={customStyles}
-                      placeholder={<div>Start typing whatever comes to mind!</div>}
-                      options={strengthsOptions}
-                      isClearable={false}
-                      backspaceRemovesValue={true}
-                      isMulti
-                      isSearchable
-                      id="strength-multiselect"
-                      onChange={(selected) => {
-                        setFieldValue(
-                          'strengths',
-                          Array.isArray(selected) ? selected.map((s) => s.value) : []
-                        );
-                      }}
+                    <MultiSelect
+                      options={strengths}
+                      values={values.strengths}
+                      onChange={(e: any) => setFieldValue('strengths', e)}
+                      label="What topics can fellow cohort members ask you question on?"
+                      isCreatable={true}
                     />
                   </Stack>
                   <Stack direction={{ xs: 'column' }} spacing={1}>
-                    <Typography>
-                      I am most interested in connecting with cohort members who:
-                    </Typography>
                     <MultiSelect
                       options={[
                         'Work in the same role',
@@ -210,6 +161,7 @@ export default function NetworkingForm({
                       values={values.networking_matching_preferences}
                       onChange={(e: any) => setFieldValue('networking_matching_preferences', e)}
                       maxLimit={3}
+                      label="I am most interested in connecting with cohort members who:"
                     />
                   </Stack>
                 </Stack>

@@ -37,13 +37,13 @@
   font-weight: bold;
   font-size: 18px;
   line-height: 120%;
-  color: #2c2c30;
+  color: #475569;
   margin-bottom: 10px;
   margin-top: 10px;
 }
 
 .channel-empty__first .channel-empty__user-name {
-  color: var(--primary-color);
+  color: #12125c !important;
 }
 
 .channel-empty__second {
@@ -51,5 +51,5 @@
   font-size: 14px;
   line-height: 120%;
   margin: 0;
-  color: #858688;
+  color: #64748b;
 }

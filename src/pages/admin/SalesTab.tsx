@@ -8,11 +8,17 @@ import { AdminContainer, LoadingContainer } from './Common';
 
 export default function SalesTab() {
   const dispatch = useDispatch();
-  const cohort_sales = useSelector((state: RootState) => state.adminRegistrations.cohort_sales);
+  const cohort_sales: any = useSelector(
+    (state: RootState) => state.adminRegistrations.cohort_sales
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(initializeSales()).then((res) => setLoading(false));
+    if (!cohort_sales.length) {
+      dispatch(initializeSales()).then((res) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {
@@ -23,7 +29,7 @@ export default function SalesTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Sales">
+    <Page title="Sphere | Sales">
       <AdminContainer>
         <SalesList cohortSales={cohort_sales} />
       </AdminContainer>

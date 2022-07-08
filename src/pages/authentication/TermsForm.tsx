@@ -118,7 +118,7 @@ export default function TermsForm() {
                   Are you sure you want to continue? In respect of your privacy, we will permanently
                   destroy all data and records associated with your account. This means you will no
                   longer have access to session materials, community discussions, and upcoming
-                  events. To use ScholarSite’s services again, you will have to start with a fresh
+                  events. To use Sphere’s services again, you will have to start with a fresh
                   account.
                 </>
               )}
@@ -136,10 +136,10 @@ export default function TermsForm() {
                     <>
                       <StyledButton
                         fullWidth
-                        href="https://www.scholarsite.io/pages/get-in-touch"
+                        href="https://www.getsphere.com/pages/contact-us"
                         variant="outlined"
                       >
-                        Contact ScholarSite
+                        Contact Sphere
                       </StyledButton>
                       <StyledButton
                         variant="contained"
@@ -166,10 +166,9 @@ export default function TermsForm() {
                     </>
                   )}
                 </Stack>
-                {step == 0 && (
+                {step === 0 && (
                   <StyledParagraph onClick={() => setStep(1)}>
-                    If you are not comfortable with these updates you can delete your ScholarSite
-                    account
+                    If you are not comfortable with these updates you can delete your Sphere account
                   </StyledParagraph>
                 )}
               </Stack>

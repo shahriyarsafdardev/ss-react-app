@@ -7,7 +7,6 @@ import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import { isMobile } from 'react-device-detect';
 import { Modal } from 'components/animate';
-import useAuth from 'hooks/useAuth';
 import { Question } from '../../../@types/cohorts';
 import { SectionContainer, CircularLoader } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
@@ -72,7 +71,7 @@ const AddQuestionButton = styled(Button)(({ theme }) => ({
 }));
 
 const QuestionFormContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: '#4D4DCD',
+  backgroundColor: theme.palette.primary.main,
   padding: '16px 24px 16px 24px',
   // zIndex: 1200,
   width: '100%',
@@ -116,8 +115,7 @@ const QuestionForm = ({
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModal] = useState(false);
-  const { user } = useAuth();
-  const showAnswerForm = isHost || user?.type === 'admin';
+  const showAnswerForm = isHost;
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');

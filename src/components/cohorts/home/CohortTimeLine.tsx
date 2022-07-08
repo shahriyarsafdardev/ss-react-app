@@ -61,6 +61,7 @@ const CohortTimeLine = ({
     <Box>
       <Typography
         variant="h3"
+        color="primary.main"
         style={{ marginBottom: '20px', minHeight: '48px' }}
         data-testid="cohort-header"
       >

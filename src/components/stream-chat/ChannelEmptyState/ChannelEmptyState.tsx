@@ -95,7 +95,7 @@ export const ChannelEmptyState = () => {
           </p>
           <p className="channel-empty__second">
             You can use this channel at any time to engage with your peers, instructor and the
-            ScholarSite team
+            Sphere team
           </p>
         </div>
       ) : (

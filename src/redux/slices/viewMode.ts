@@ -10,10 +10,10 @@ const slice = createSlice({
   initialState,
   reducers: {
     updateViewState(state, action) {
-      if (['Member', 'Instructor'].includes(action.payload)) {
+      if (['Learner', 'Instructor'].includes(action.payload)) {
         state.mode = action.payload;
       } else {
-        state.mode = 'Member';
+        state.mode = 'Learner';
       }
     }
   }

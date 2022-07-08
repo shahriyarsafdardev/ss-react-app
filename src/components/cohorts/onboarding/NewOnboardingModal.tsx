@@ -270,7 +270,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
       return (
         <p>
           Firstly, lets make sure we add the upcoming sessions to{' '}
-          <span style={{ color: '#4D4DCD' }}> your calendar</span>
+          <span style={{ color: '#12125C' }}> your calendar</span>
         </p>
       );
     }
@@ -279,7 +279,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
       return (
         <p>
           Next, {cohort?.host_names} would love to{' '}
-          <span style={{ color: '#4D4DCD' }}> understand your goals!</span>
+          <span style={{ color: '#12125C' }}> understand your goals!</span>
         </p>
       );
     }
@@ -287,7 +287,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
     if (activeStep === 3) {
       return (
         <p>
-          Now for a few <span style={{ color: '#4D4DCD' }}> housekeeping</span> questions!
+          Now for a few <span style={{ color: '#12125C' }}> housekeeping</span> questions!
         </p>
       );
     }
@@ -295,7 +295,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
     if (activeStep === 4) {
       return (
         <p>
-          Last step, <span style={{ color: '#4D4DCD' }}>your picture</span> really helps in the live
+          Last step, <span style={{ color: '#12125C' }}>your picture</span> really helps in the live
           sessions!
         </p>
       );

@@ -37,11 +37,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       right: '50px',
       bottom: '30px',
       width: '200px !important'
-    },
-    '&:hover': {
-      backgroundColor: '#4D4DCD',
-      opacity: 0.8,
-      color: 'white'
     }
   },
   '&.previous': {
@@ -50,10 +45,6 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
       right: '280px',
       bottom: '30px',
       width: '200px !important'
-    },
-    '&:hover': {
-      backgroundColor: 'white',
-      opacity: 0.8
     }
   },
 
@@ -81,7 +72,7 @@ export const NavigationButtons = ({
   isSubmitBtn?: boolean;
   isSubmitting?: boolean;
 }) => (
-  <MainContainer>
+  <MainContainer sx={{ minHeight: '80px' }}>
     <Typography className="txt" variant="caption">
       Please enter all of your details to {isSubmitBtn ? 'submit' : 'move to the next page'}
     </Typography>
@@ -90,6 +81,7 @@ export const NavigationButtons = ({
         <StyledButton
           data-testid="btn_previous"
           className="previous"
+          color="primary"
           disabled={isSubmitting}
           variant="outlined"
           onClick={() => onPreviousHandler()}
