@@ -53,7 +53,8 @@ export default function CardDetails({
   first_name,
   last_name,
   setStep,
-  formHeading
+  formHeading,
+  payLaterMessage
 }: {
   cohortID?: string;
   first_name?: string;
@@ -61,6 +62,7 @@ export default function CardDetails({
   enrollmentID?: string;
   setStep: Function;
   formHeading: string;
+  payLaterMessage: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -172,9 +174,7 @@ export default function CardDetails({
             sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}
             data-testid="modal-subtext"
           >
-            If you choose to pay later, you will be emailed a payment link. You will have 72 hours
-            to lock in your price and seat. If you are unable to complete the payment within 72
-            hours:
+            {payLaterMessage}
           </Typography>
           <Typography sx={{ textAlign: 'left' }} data-testid="guarantee-one">
             ❌ We cannot guarantee the price you were quoted

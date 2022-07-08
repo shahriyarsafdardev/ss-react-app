@@ -72,6 +72,9 @@ export default function Registration() {
     let userFormSubHeading =
       'We review each application in order to ensure a diverse and experienced cohort!';
 
+    let payLaterMessage =
+      'If you choose to pay later, you will be emailed a payment link. You will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
+
     let cardFormHeading = `💳 Thanks ${user.first_name}, just one last step!`;
 
     if (wait_listed) {
@@ -82,12 +85,14 @@ export default function Registration() {
 
     if (pre_rlease) {
       cardFormHeading = `💳 Thanks ${user.first_name}, do you want to secure your seat?`;
+      payLaterMessage =
+        'If you choose to pay later, you will be emailed a payment link when we release more details on the course. At that point, you will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
     }
 
     if (account) {
       userFormSubHeading = `We have an enterprise package deal with ${account} that your team might be eligible for!`;
     }
-    return { userFormHeading, userFormSubHeading, cardFormHeading };
+    return { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage };
   };
 
   useEffect(() => {
@@ -124,7 +129,8 @@ export default function Registration() {
   }, []);
 
   const selectStep = () => {
-    const { userFormHeading, userFormSubHeading, cardFormHeading } = setFormHeadings();
+    const { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage } =
+      setFormHeadings();
     if (activeStep === 2) {
       return (
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
@@ -135,6 +141,7 @@ export default function Registration() {
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
             formHeading={cardFormHeading}
+            payLaterMessage={payLaterMessage}
           />
         </Stack>
       );
