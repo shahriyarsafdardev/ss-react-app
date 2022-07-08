@@ -86,7 +86,7 @@ export default function Registration() {
     if (pre_rlease) {
       cardFormHeading = `💳 Thanks ${user.first_name}, do you want to secure your seat?`;
       payLaterMessage =
-        'If you choose to pay later, you will be emailed a payment link when we release more details on the course. At that point, you will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
+        'If you choose to pay later, and are accepted into the cohort, you will be emailed a payment link. Note that as long as you have not processed your payment:';
     }
 
     if (account) {
