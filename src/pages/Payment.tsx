@@ -70,11 +70,11 @@ export default function Payment() {
   }
 
   return (
-    <RootStyle title="ScholarSite Cohort Payment">
+    <RootStyle title="Sphere Cohort Payment">
       <Container maxWidth="lg">
         <Box sx={{ mb: 5 }}>
           <Typography align="center" sx={{ color: 'text.secondary' }}>
-            Scholarsite Checkout.
+            Sphere Checkout.
           </Typography>
         </Box>
 

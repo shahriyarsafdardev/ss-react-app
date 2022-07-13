@@ -47,24 +47,23 @@ export default function NetworkingForm({
           <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
             <Stack spacing={{ xs: 2, md: 3 }}>
               <FormControl data-testid="network-roles" fullWidth>
-                <label>Which roles are you interested in connecting with?</label>
                 <MultiSelect
                   options={role_options}
                   values={infoObject.networking_roles_categories}
                   onChange={(value: string[]) =>
                     onUpdateAttribute('networking_roles_categories', value)
                   }
+                  label="Which roles are you interested in connecting with?"
                 />
               </FormControl>
               <FormControl data-testid="network-industeries" fullWidth>
-                <label>Which industries are you interested in connecting with?</label>
-
                 <MultiSelect
                   options={industry_options}
                   values={infoObject.networking_industries_categories}
                   onChange={(value: string[]) =>
                     onUpdateAttribute('networking_industries_categories', value)
                   }
+                  label="Which industries are you interested in connecting with?"
                 />
               </FormControl>
               <FormControl fullWidth>

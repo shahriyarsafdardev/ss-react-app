@@ -1,12 +1,14 @@
 import writeXlsxFile from 'write-excel-file';
 import { Button } from '@material-ui/core';
 import _ from 'lodash';
-import { StudentProfile } from '../../@types/cohorts';
+import { StudentProfile, Cohort } from '../../@types/cohorts';
 
 export const ExportToExcel = ({
+  cohort,
   students,
   fileName
 }: {
+  cohort: Cohort;
   students: StudentProfile[];
   fileName: string;
 }) => {
@@ -74,7 +76,10 @@ export const ExportToExcel = ({
       },
       {
         column: 'Certificate Name',
-        value: (student: any) => student.peer_id,
+        value: (student: any) =>
+          `${cohort?.code}-${cohort?.intake_name?.split(' ').join('-')}-${
+            student?.slug
+          }`.toLowerCase(),
         width: 50
       }
     ];

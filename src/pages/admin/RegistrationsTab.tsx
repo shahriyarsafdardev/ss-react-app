@@ -21,7 +21,11 @@ export default function RegistrationsTab() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(initializeEnrollments()).then((res) => setLoading(false));
+    if (!enrollments.length) {
+      dispatch(initializeEnrollments()).then((res) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {
@@ -32,7 +36,7 @@ export default function RegistrationsTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Homepage">
+    <Page title="Sphere | Homepage">
       <Highlights enrollments={enrollments} />
       <AdminContainer>
         <RegistrationsHeader enrollments={enrollments} isAdminView={true} />

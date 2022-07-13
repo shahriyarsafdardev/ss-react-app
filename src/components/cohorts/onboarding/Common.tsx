@@ -10,6 +10,7 @@ export const ButtonsContainer = styled(Box)(({ theme }) => ({
 
 export const MainContainer = styled(Box)(({ theme }) => ({
   textAlign: 'right',
+  minHeight: '80px',
   marginTop: '30px',
   [theme.breakpoints.down('sm')]: {
     textAlign: 'center'

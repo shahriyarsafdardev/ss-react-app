@@ -20,19 +20,19 @@ type PreReadingRowProps = {
   onPreReadingClick: Function;
 };
 
-const StyledLink = styled('a')(() => ({
+const StyledLink = styled('a')(({ theme }) => ({
   textDecoration: 'underline',
   fontWeight: 'bold',
   marginLeft: '10px',
-  color: '#4D4DCD'
+  color: theme.palette.primary.main
 }));
 
-const StyledButton = styled('label')(() => ({
+const StyledButton = styled('label')(({ theme }) => ({
   textDecoration: 'underline',
   fontWeight: 'bold',
   cursor: 'pointer',
   marginLeft: '10px',
-  color: '#4D4DCD'
+  color: theme.palette.primary.main
 }));
 
 const useStyles = makeStyles((theme: Theme) => ({

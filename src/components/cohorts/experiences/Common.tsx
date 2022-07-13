@@ -95,7 +95,7 @@ export const ExcelDownload = ({ experience }: { experience: CohortExperience }) 
   };
 
   return (
-    <StyledButton variant="text" color="inherit" onClick={() => exportData()} loading={loading}>
+    <StyledButton variant="text" color="primary" onClick={() => exportData()} loading={loading}>
       Download Feedback
     </StyledButton>
   );

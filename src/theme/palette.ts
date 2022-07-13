@@ -62,7 +62,7 @@ declare module '@material-ui/core' {
 const PRIMARY = {
   lighter: '#C8FACD',
   light: '#5BE584',
-  main: '#4D4DCD',
+  main: '#12125C',
   dark: '#000092',
   darker: '#005249'
 };
@@ -83,8 +83,8 @@ const SECONDARY = {
 const INFO = {
   lighter: '#D0F2FF',
   light: '#74CAFF',
-  main: '#4D4DCD',
-  dark: '#0C53B7',
+  main: '#12125C',
+  dark: '#5A189A',
   darker: '#04297A'
 };
 const SUCCESS = {
@@ -173,7 +173,13 @@ const COMMON = {
 const palette = {
   light: {
     ...COMMON,
-    text: { primary: '#071A33', secondary: GREY[600], disabled: GREY[500] },
+    text: {
+      dark: '#334155',
+      primary: '#475569',
+      secondary: '#64748b',
+      light: '#94a3b8',
+      disabled: GREY[500]
+    },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action }
   },

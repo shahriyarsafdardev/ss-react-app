@@ -1,72 +1,53 @@
-import Select from 'react-select';
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block'
-    // color: 'rgb(128, 128, 128)'
-  }),
-  multiValue: (provided: any, state: any) => ({
-    backgroundColor: 'rgba(77, 77, 205, 0.16)',
-    padding: '1px 2px 1px 8px',
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'space-between',
-    borderRadius: '6px',
-    color: 'rgba(77, 77, 205, 1)',
-    margin: '5px 5px 5px 0px',
-    fontWeight: 700,
-    fontSize: '14px'
-  }),
-  multiValueLabel: (provided: any, state: any) => ({
-    color: 'rgba(77, 77, 205, 1)'
-  })
-};
+import { Autocomplete, Chip, TextField } from '@material-ui/core';
 
 export default function MultiSelect({
   options,
   onChange,
   values,
-  maxLimit
+  maxLimit,
+  label,
+  isCreatable = false
 }: {
   options: string[] | undefined;
   onChange: Function;
   values: string[];
   maxLimit?: number;
+  label?: string;
+  isCreatable?: boolean;
 }) {
-  const handleChange = (values: any) => {
-    onChange(values.map((item: any) => item.value));
-  };
-
   if (!options) return null;
 
   const selectedValues = values || [];
 
   return (
     <div>
-      <Select
-        value={selectedValues.map((option) => ({ value: option, label: option }))}
-        options={
-          // eslint-disable-next-line no-nested-ternary
-          maxLimit
-            ? selectedValues.length < maxLimit
-              ? options?.map((option) => ({ value: option, label: option }))
-              : []
-            : options?.map((option) => ({ value: option, label: option }))
-        }
-        noOptionsMessage={() =>
+      <Autocomplete
+        multiple
+        freeSolo={isCreatable}
+        value={values}
+        onChange={(event, newValue) => {
+          onChange(newValue);
+        }}
+        noOptionsText={
           selectedValues.length === maxLimit
             ? "You've reached the max options value"
             : 'No options available'
         }
-        isClearable={false}
-        backspaceRemovesValue={true}
-        placeholder={<></>}
-        isMulti
-        isSearchable
-        onChange={handleChange}
-        id="multi-select"
-        menuPortalTarget={document.body}
-        styles={{ ...customStyles, menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+        options={
+          // eslint-disable-next-line no-nested-ternary
+          maxLimit
+            ? selectedValues.length < maxLimit
+              ? options?.map((option) => option)
+              : []
+            : options?.map((option) => option)
+        }
+        renderTags={(value, getTagProps) => [
+          ...value.map((option, index) => (
+            // eslint-disable-next-line react/jsx-key
+            <Chip size="small" label={option} {...getTagProps({ index })} />
+          ))
+        ]}
+        renderInput={(params) => <TextField {...params} label={label} />}
       />
     </div>
   );

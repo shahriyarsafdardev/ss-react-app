@@ -93,7 +93,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   notificationText: {
     height: '25px',
     backgroundColor: 'rgba(77, 77, 205, 0.05)',
-    color: '#4D4DCD',
+    color: theme.palette.primary.main,
     padding: '5px 10px',
     borderRadius: '4px',
     fontWeight: 600

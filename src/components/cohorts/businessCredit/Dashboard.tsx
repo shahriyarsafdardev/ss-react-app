@@ -77,11 +77,11 @@ const Dashboard = () => {
   );
 
   return (
-    <Page title="ScholarSite | Business Portal">
+    <Page title="Sphere | Business Portal">
       <Container>
         <TopupModal />
         <Typography data-testid="welcome-header" variant="h4">
-          👋 Hi {user?.first_name}, welcome to the {`${cohortCredit.accountName}'s`} ScholarSite
+          👋 Hi {user?.first_name}, welcome to the {`${cohortCredit.accountName}'s`} Sphere
           Dashboard
         </Typography>
         <Box className={classes.sectionContainer}>

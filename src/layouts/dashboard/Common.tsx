@@ -69,14 +69,6 @@ const ContentContainer = styled('div')(({ theme }) => ({
   }
 }));
 
-const BoldText = styled(Typography)(() => ({
-  textAlign: 'center',
-  fontSize: '20px',
-  lineHeight: '24px',
-  fontWeight: 'bolder',
-  paddingTop: '14px'
-}));
-
 const LightText = styled(Typography)(() => ({
   textAlign: 'center',
   marginTop: '12px',
@@ -91,7 +83,7 @@ const InviteYourTeamMates = () => (
     <Typography sx={{ fontSize: '24px', marginTop: '32px', fontWeight: 'bolder' }}>
       Invite a friend or colleague
     </Typography>
-    <Typography sx={{ fontSize: '16px', marginTop: '16px', color: '#919EAB', lineHeight: '24px' }}>
+    <Typography sx={{ fontSize: '16px', marginTop: '16px', color: 'primary', lineHeight: '24px' }}>
       Once they pay for the course, you get $100!
     </Typography>
   </Box>
@@ -161,11 +153,12 @@ export const ShareReferralLink = ({
 
   return (
     <>
-      <BoldText>Invite your colleagues</BoldText>
-      <LightText>
-        and earn <span style={{ color: '#4D4DCD', fontWeight: 'bold' }}>$100</span> when they sign
-        up
-      </LightText>
+      <Typography variant="h5" align="center" color="primary">
+        Invite your colleagues
+      </Typography>
+      <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
+        and earn <b>$100</b> when they sign up
+      </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
           variant="contained"

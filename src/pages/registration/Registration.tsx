@@ -29,6 +29,8 @@ type UserType = {
   referrer?: string;
   acceptedTerms: boolean;
   alumni_event: boolean;
+  wait_listed: boolean;
+  pre_release: boolean;
 };
 
 export default function Registration() {
@@ -43,20 +45,54 @@ export default function Registration() {
     email: url.get('email') || '',
     referrer: url.get('referrer') || '',
     acceptedTerms: false,
-    alumni_event: false
+    alumni_event: false,
+    wait_listed: false,
+    pre_release: false
   });
 
   const [account, setAccount] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [alumniEvent, setAlumniEvent] = useState(false);
+  const [wait_listed, setWaitListed] = useState(false);
+  const [pre_rlease, setPreRelease] = useState(false);
 
   const updateUserData = async (data: any) => {
     setUser({ ...user, ...data });
-    if (account) {
+    if (wait_listed) {
+      setActiveStep(5);
+    } else if (account) {
       setActiveStep(3);
     } else {
       setActiveStep(2);
     }
+  };
+
+  const setFormHeadings = () => {
+    let userFormHeading = '👋 We just need a few more details to process your application';
+    let userFormSubHeading =
+      'We review each application in order to ensure a diverse and experienced cohort!';
+
+    let payLaterMessage =
+      'If you choose to pay later, you will be emailed a payment link. You will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
+
+    let cardFormHeading = `💳 Thanks ${user.first_name}, just one last step!`;
+
+    if (wait_listed) {
+      userFormHeading = '👋 Hi there, to join our waitlist please fill in a few more details';
+      userFormSubHeading =
+        'We review each submission in order to ensure a diverse and experienced cohort!';
+    }
+
+    if (pre_rlease) {
+      cardFormHeading = `💳 Thanks ${user.first_name}, do you want to secure your seat?`;
+      payLaterMessage =
+        'If you choose to pay later, and are accepted into the cohort, you will be emailed a payment link. Note that as long as you have not processed your payment:';
+    }
+
+    if (account) {
+      userFormSubHeading = `We have an enterprise package deal with ${account} that your team might be eligible for!`;
+    }
+    return { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage };
   };
 
   useEffect(() => {
@@ -77,6 +113,12 @@ export default function Registration() {
           if (res.data.user.alumni_event) {
             setAlumniEvent(true);
           }
+          if (res.data.user.wait_listed) {
+            setWaitListed(true);
+          }
+          if (res.data.user.pre_release) {
+            setPreRelease(true);
+          }
           setAccount(res.data.account);
           setLoading(false);
         })
@@ -87,6 +129,8 @@ export default function Registration() {
   }, []);
 
   const selectStep = () => {
+    const { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage } =
+      setFormHeadings();
     if (activeStep === 2) {
       return (
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
@@ -96,6 +140,8 @@ export default function Registration() {
             last_name={user?.last_name}
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
+            formHeading={cardFormHeading}
+            payLaterMessage={payLaterMessage}
           />
         </Stack>
       );
@@ -122,17 +168,17 @@ export default function Registration() {
               data-testid="confirmation-subtext"
             >
               {account
-                ? `ScholarSite has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
+                ? `Sphere has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
                 : 'You will shortly recieve an email documenting your application outcome and next steps!'}
             </Typography>
           </Box>
           <Button
-            href="https://www.scholarsite.io/#upcoming-cohorts-slider"
+            href="https://www.getsphere.com/#upcoming-cohorts-slider"
             variant="contained"
             color="primary"
             data-testid="explore-btn"
           >
-            Explore more ScholarSite cohorts
+            Explore more Sphere cohorts
           </Button>
         </Stack>
       );
@@ -149,7 +195,9 @@ export default function Registration() {
         >
           <Box sx={{ mb: 5 }}>
             <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
-              🎉 You have 72 hours to lock in your price and seat!
+              {pre_rlease
+                ? '🎉 We’ll be in touch with more details soon!'
+                : '🎉 You have 72 hours to lock in your price and seat!'}
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
               Look for an email with your payment link in the next few hours; if you haven’t
@@ -157,12 +205,72 @@ export default function Registration() {
             </Typography>
           </Box>
           <Button
-            href="https://www.scholarsite.io/pages/get-in-touch"
+            href="https://www.getsphere.com/pages/contact-us"
             variant="contained"
             color="primary"
             data-testid="contact-btn"
           >
-            Any questions? Click here to contact ScholarSite
+            Any questions? Click here to contact Sphere
+          </Button>
+        </Stack>
+      );
+    }
+
+    if (activeStep === 5) {
+      return (
+        <Stack
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
+              🎉 Congratulations, you’ve joined the waitlist
+            </Typography>
+            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
+              You will recieve an email shortly with more details on the course and how to secure
+              your seat
+            </Typography>
+          </Box>
+          <Button
+            href="https://www.getsphere.com/#upcoming-cohorts-slider"
+            variant="contained"
+            color="primary"
+            data-testid="explore-cohorts-btn"
+          >
+            Explore more Sphere cohorts
+          </Button>
+        </Stack>
+      );
+    }
+
+    if (activeStep === 5) {
+      return (
+        <Stack
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Box sx={{ mb: 5 }}>
+            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
+              🎉 Congratulations, you’ve joined the waitlist
+            </Typography>
+            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
+              You will recieve an email shortly with more details on the course and how to secure
+              your seat
+            </Typography>
+          </Box>
+          <Button
+            href="https://www.getsphere.com/#upcoming-cohorts-slider"
+            variant="contained"
+            color="primary"
+            data-testid="explore-cohorts-btn"
+          >
+            Explore more Sphere cohorts
           </Button>
         </Stack>
       );
@@ -175,24 +283,28 @@ export default function Registration() {
           user={user}
           account={account}
           submitValues={(data: any) => updateUserData(data)}
+          formHeading={userFormHeading}
+          formSubHeading={userFormSubHeading}
         />
       </Stack>
     );
   };
+
+  const RegistrationFlow = () => {
+    if (alumniEvent) {
+      return <AlumniRegistration />;
+    }
+    return <Container maxWidth="lg">{selectStep()}</Container>;
+  };
+
   return (
-    <RootStyle title="ScholarSite Cohort Registration">
+    <RootStyle title="Sphere Cohort Registration">
       {loading ? (
         <Box padding="200px">
           <LoadingScreen />
         </Box>
       ) : (
-        <>
-          {alumniEvent ? (
-            <AlumniRegistration />
-          ) : (
-            <Container maxWidth="lg">{selectStep()}</Container>
-          )}
-        </>
+        <RegistrationFlow />
       )}
     </RootStyle>
   );

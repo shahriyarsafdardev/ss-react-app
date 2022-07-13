@@ -151,7 +151,7 @@ export default function SessionsTab() {
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="ScholarSite | Sessions">
+      <Page title="Sphere | Sessions">
         {cohort?.released_for_learners === true || mode === 'Instructor' ? (
           cohortSessions()
         ) : (

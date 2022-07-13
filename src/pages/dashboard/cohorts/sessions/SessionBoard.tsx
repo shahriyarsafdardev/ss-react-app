@@ -43,7 +43,7 @@ type SessionBoardProps = {
 };
 
 const SessionTab = styled(Tab)(({ theme }) => ({
-  color: '#595853',
+  color: theme.palette.text.secondary,
   justifyContent: 'space-around',
   marginRight: 0,
   width: '20%',
@@ -106,9 +106,9 @@ const SessionTabs = styled(Tabs)(({ theme }) => ({
       paddingTop: '15px',
       marginRight: '0 !important'
     },
-    color: '#6C7885',
+    color: theme.palette.text.secondary,
     '&.Mui-selected': {
-      color: '#212B36'
+      color: theme.palette.primary.main
     }
   }
 }));
@@ -401,7 +401,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             </Box>
             <Box className="text-content">
               <Typography>
-                Please help ScholarSite make their platform better by filling out{' '}
+                Please help Sphere make their platform better by filling out{' '}
                 <strong>the following feedback form</strong>
               </Typography>
             </Box>

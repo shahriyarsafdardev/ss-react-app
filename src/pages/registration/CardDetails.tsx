@@ -15,7 +15,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  styled
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
@@ -35,18 +36,33 @@ type CardType = {
   acceptedTerms: boolean;
 };
 
+const StyledButton = styled(LoadingButton)(({ theme }) => ({
+  padding: 11,
+  [theme.breakpoints.down('sm')]: {
+    position: null,
+    bottom: null,
+    right: null,
+    width: '100%',
+    marginTop: '10px'
+  }
+}));
+
 export default function CardDetails({
   cohortID,
   enrollmentID,
   first_name,
   last_name,
-  setStep
+  setStep,
+  formHeading,
+  payLaterMessage
 }: {
   cohortID?: string;
   first_name?: string;
   last_name?: string;
   enrollmentID?: string;
   setStep: Function;
+  formHeading: string;
+  payLaterMessage: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -158,9 +174,7 @@ export default function CardDetails({
             sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}
             data-testid="modal-subtext"
           >
-            If you choose to pay later, you will be emailed a payment link. You will have 72 hours
-            to lock in your price and seat. If you are unable to complete the payment within 72
-            hours:
+            {payLaterMessage}
           </Typography>
           <Typography sx={{ textAlign: 'left' }} data-testid="guarantee-one">
             ❌ We cannot guarantee the price you were quoted
@@ -170,32 +184,29 @@ export default function CardDetails({
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
+          <StyledButton
+            fullWidth
             variant="outlined"
             color="primary"
             onClick={() => setStep(4)}
             data-testid="pay-later"
-            fullWidth
-            sx={{
-              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
-            }}
           >
             Yes, I would like to pay later
-          </Button>
-          <Button
+          </StyledButton>
+          <StyledButton
+            fullWidth
             variant="contained"
             color="primary"
             data-testid="pay-now"
             onClick={() => setOpen(false)}
-            fullWidth
           >
             No, I would like to pay now
-          </Button>
+          </StyledButton>
         </DialogActions>
       </Dialog>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph data-testid="thankyou-message">
-          💳 Thanks {first_name}, just one last step!
+          {formHeading}
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="refund-alert">
           You can get a full refund up to 72 hours before the date of the first session, and will
@@ -291,34 +302,40 @@ export default function CardDetails({
           sx={{ mt: 3 }}
           direction={{ xs: 'column', md: 'row' }}
         >
-          <LoadingButton
+          {/* <LoadingButton
             type="submit"
-            color="primary"
             variant="outlined"
             loading={isSubmitting}
             onClick={() => setOpen(true)}
             id="btn-submit"
             data-testid="pay-later-btn"
             fullWidth
-            sx={{
-              '&:hover': { bgcolor: '#b3b3d7', opacity: 0.72 }
-            }}
           >
             Pay Later
-          </LoadingButton>
-          <LoadingButton
-            type="submit"
+          </LoadingButton> */}
+          <StyledButton
             fullWidth
-            variant="contained"
-            color="primary"
+            type="submit"
+            variant="outlined"
+            loading={isSubmitting}
+            onClick={() => setOpen(true)}
+            id="btn-submit"
+            data-testid="pay-later-btn"
+          >
+            Pay Later
+          </StyledButton>
+          <StyledButton
+            fullWidth
+            type="submit"
             data-testid="submit-btn"
             disabled={!values.acceptedTerms}
             loading={isSubmitting}
-            onClick={() => submitForm()}
+            variant="contained"
             id="btn-submit"
+            onClick={() => submitForm()}
           >
             Submit
-          </LoadingButton>
+          </StyledButton>
         </Stack>
       </Stack>
     </>

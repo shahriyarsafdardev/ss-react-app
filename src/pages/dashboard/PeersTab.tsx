@@ -184,6 +184,7 @@ export default function PeersTab() {
           />
           {user?.type === 'admin' && mode === 'Instructor' && (
             <ExportToExcel
+              cohort={cohort}
               students={filteredPeers}
               fileName={`${moment().format()}-${cohort?.name} Students Data`}
             />
@@ -198,7 +199,7 @@ export default function PeersTab() {
     );
 
   return (
-    <Page title="ScholarSite | Peers">
+    <Page title="Sphere | Peers">
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         renderPeers()
       ) : (

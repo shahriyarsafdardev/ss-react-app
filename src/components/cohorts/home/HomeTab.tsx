@@ -111,14 +111,14 @@ const Index = () => {
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   const renderOnboardingModal = () =>
-    cohort.id === IBRAHIM_COHORT_ID ? (
+    cohort?.id === IBRAHIM_COHORT_ID ? (
       <NewOnboardingModal onSubmit={() => {}} />
     ) : (
       <OnboardingModal onSubmit={() => {}} />
     );
 
   return (
-    <Page title="ScholarSite | Homepage">
+    <Page title="Sphere | Homepage">
       {shouldOpenModal() && renderOnboardingModal()}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>

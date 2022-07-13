@@ -83,7 +83,7 @@ export default function RegistrationsTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Homepage">
+    <Page title="Sphere | Homepage">
       <Highlights enrollments={enrollments} />
       <RegistrationsContainer>
         <RegistrationsHeader

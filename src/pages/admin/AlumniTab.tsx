@@ -36,7 +36,11 @@ export default function AlumniTab() {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    dispatch(initializeAlumnies()).then((res) => setLoading(false));
+    if (!alumnies.length) {
+      dispatch(initializeAlumnies()).then((res) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, [dispatch]);
 
   const filteredRows = () => {
@@ -59,7 +63,7 @@ export default function AlumniTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Alumni">
+    <Page title="Sphere | Alumni">
       <AlumniContainer>
         <AlumniHeader alumnies={alumnies} updateSearch={setSearch} search={search} />
         <AlumniList alumnies={filteredRows().slice(0, limit)} />

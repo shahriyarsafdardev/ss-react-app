@@ -74,13 +74,17 @@
 }
 
 .edit-channel__button-wrapper p {
-  background: #4d4dcd;
+  background: #12125c;
   font-family: Helvetica Neue, sans-serif;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px 20px;
   color: #ffffff;
   margin-right: 30px;
   border-radius: 8px;
   cursor: pointer;
+}
+.edit-channel__button-wrapper p:hover {
+  background-color: #5a189a;
+  color: #ffffff;
 }

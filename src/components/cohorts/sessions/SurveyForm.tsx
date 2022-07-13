@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import { Container, Button, Box, Typography } from '@material-ui/core';
+import { Container, Box, Typography } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
 
@@ -13,10 +13,6 @@ import useAuth from '../../../hooks/useAuth';
 // axios
 import axios from '../../../utils/axios';
 import SurveyRow from './SurveyRow';
-
-const SubmitButton = styled(Button)(() => ({
-  padding: '10px 90px'
-}));
 
 const StyledContainer = styled(Container)(() => ({
   backgroundColor: 'white',
@@ -54,16 +50,10 @@ const CurrentStep = styled(Typography)(() => ({
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   flex: 1,
-  '&.right-btn': {
-    marginLeft: '30px !important',
-    [theme.breakpoints.down('md')]: {
-      marginTop: '10px',
-      marginLeft: '0 !important'
-    }
-  },
-  '&:hover': {
-    backgroundColor: '#4D4DCD',
-    opacity: 0.8
+  marginLeft: '30px !important',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '10px',
+    marginLeft: '0 !important'
   },
   [theme.breakpoints.up('md')]: {
     width: '100%'
@@ -217,7 +207,6 @@ export default function SurveyForm({
             </StyledButton>
             <StyledButton
               variant="contained"
-              className="right-btn"
               onClick={handleNext}
               disabled={
                 surveyData[currentQuestion].mandatory === true && response[questionID] === undefined

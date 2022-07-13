@@ -40,8 +40,8 @@ const EmptySessionsTab = ({ cohortHost }: { cohortHost: string }) => (
       />
       <StyledPara data-testid="empty-session-information-text">
         <b>
-          ScholarSite Sessions allows you to seemlesly access recordings, slides and materials
-          during and outside of session times.
+          Sphere Sessions allows you to seemlesly access recordings, slides and materials during and
+          outside of session times.
         </b>{' '}
         You will recieve complete access to the Sessions page shortly before{' '}
         {cohortHost && `${cohortHost}’s`} cohort begins. We’ll make sure to send you an email

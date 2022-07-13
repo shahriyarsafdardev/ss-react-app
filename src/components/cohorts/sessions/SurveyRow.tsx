@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 // material
+import _ from 'lodash';
 import { styled } from '@material-ui/core/styles';
 import {
   Radio,
@@ -11,7 +12,6 @@ import {
   Slider,
   Box
 } from '@material-ui/core';
-import CreatableSelect from 'react-select/creatable';
 import MultiSelect from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
@@ -48,22 +48,22 @@ const RowContainer = styled('div')(() => ({
   marginBottom: '1.5rem'
 }));
 
-const QuestionText = styled('p')(() => ({
+const QuestionText = styled('p')(({ theme }) => ({
   fontWeight: 500,
   fontSize: '17px',
   lineHeight: '22px',
   fontFamily: 'Public Sans',
   fontStyle: 'normal',
-  color: '#071A33'
+  color: theme.palette.text.primary
 }));
 
-const QuestionDescription = styled('label')(() => ({
+const QuestionDescription = styled('label')(({ theme }) => ({
   fontWeight: 400,
   fontSize: '14px',
   lineHeight: '42px',
   fontFamily: 'Public Sans',
   fontStyle: 'normal',
-  color: '#637381'
+  color: theme.palette.text.secondary
 }));
 
 const StarRatingStyled = styled(StarRatingComponent)(({ theme }) => ({
@@ -84,13 +84,6 @@ const ANSWER_TYPES = {
   SLIDER: 'slider',
   STAR_RATING: 'star-rating',
   MULTIPLE_SELECT: 'multiple-select'
-};
-
-const customStyles = {
-  placeholder: (provided: any, state: any) => ({
-    display: state.isFocused ? 'none' : 'block',
-    color: 'rgb(128, 128, 128)'
-  })
 };
 
 function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
@@ -173,41 +166,6 @@ function MultiCheck({
           <label htmlFor={option}>{option}</label>
         </div>
       ))}
-    </div>
-  );
-}
-
-function CreateMultiSelect({
-  options,
-  onChange,
-  values
-}: {
-  options: string[] | undefined;
-  onChange: Function;
-  values: string[];
-}) {
-  const handleChange = (values: any) => {
-    onChange(values.map((item: any) => item.value));
-  };
-
-  if (!options) return null;
-
-  const selectedValues = values || [];
-
-  return (
-    <div>
-      <CreatableSelect
-        defaultValue={selectedValues.map((option) => ({ value: option, label: option }))}
-        options={options?.map((option) => ({ value: option, label: option }))}
-        isClearable={false}
-        styles={customStyles}
-        backspaceRemovesValue={true}
-        placeholder={<div>Start typing whatever comes to mind!</div>}
-        isMulti
-        isSearchable
-        onChange={handleChange}
-        id="create-select"
-      />
     </div>
   );
 }
@@ -307,10 +265,12 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
     }
     if (item.question_type === ANSWER_TYPES.CREATE_MULTI_SELECT) {
       return (
-        <CreateMultiSelect
+        <MultiSelect
           options={item.options}
-          values={submitted_answer}
-          onChange={(e: any) => onChange(e)}
+          values={submitted_answer ? submitted_answer.split(',') : []}
+          onChange={(e: any) => onChange(_.toString(e))}
+          maxLimit={item.maxLimit}
+          isCreatable={true}
         />
       );
     }
@@ -324,8 +284,8 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
       return (
         <MultiSelect
           options={item.options}
-          values={submitted_answer}
-          onChange={(e: any) => onChange(e)}
+          values={submitted_answer ? submitted_answer.split(',') : []}
+          onChange={(e: any) => onChange(_.toString(e))}
           maxLimit={item.maxLimit}
         />
       );

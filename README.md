@@ -1,10 +1,10 @@
-# ScholarSite React Application
+# Sphere React Application
 
-This project was created to house ScholarSite's Student Portal. We’re receiving more and more validation everyday that we’re building something very special at ScholarSite and are really excited for this next step in the journey.
+This project was created to house Sphere's Student Portal. We’re receiving more and more validation everyday that we’re building something very special at Sphere and are really excited for this next step in the journey.
 
 ## Product Description
 
-ScholarSite hosts live sessions with some of the world's leading experts. During these sessions, teachers engage with students and help them accelerate their career growth. Often these same students want to revisit materials they have covered in the live sessions, and to do so, they come to the Student Portal.
+Sphere hosts live sessions with some of the world's leading experts. During these sessions, teachers engage with students and help them accelerate their career growth. Often these same students want to revisit materials they have covered in the live sessions, and to do so, they come to the Student Portal.
 
 ## Designs
 

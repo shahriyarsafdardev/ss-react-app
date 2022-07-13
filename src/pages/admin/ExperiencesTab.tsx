@@ -39,7 +39,11 @@ export default function ExperiencesTab() {
   };
 
   useEffect(() => {
-    dispatch(initializeExperiences()).then(() => setLoading(false));
+    if (!cohort_experiences.length) {
+      dispatch(initializeExperiences()).then(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {
@@ -50,7 +54,7 @@ export default function ExperiencesTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Experiences">
+    <Page title="Sphere | Experiences">
       <InviteButtonBox>
         <LoadingButton
           type="submit"

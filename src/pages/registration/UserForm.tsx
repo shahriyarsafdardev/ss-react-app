@@ -26,12 +26,16 @@ export default function UserForm({
   submitValues,
   cohortID,
   user,
-  account
+  account,
+  formHeading,
+  formSubHeading
 }: {
   submitValues: Function;
   cohortID: string;
   user: UserType;
   account: string;
+  formHeading: string;
+  formSubHeading: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const url = new URLSearchParams(useLocation().search);
@@ -107,16 +111,14 @@ export default function UserForm({
     <>
       <Box sx={{ mb: 5 }}>
         <Typography variant="h3" align="center" paragraph data-testid="registration-header">
-          👋 We just need a few more details to process your application
+          {formHeading}
         </Typography>
         <Typography
           align="center"
           sx={{ color: 'text.secondary' }}
           data-testid="registration-subtext"
         >
-          {account
-            ? `We have an enterprise package deal with ${account} that your team might be eligible for!`
-            : 'We review each application in order to ensure a diverse and experienced cohort!'}
+          {formSubHeading}
         </Typography>
       </Box>
 

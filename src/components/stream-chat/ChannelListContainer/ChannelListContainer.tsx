@@ -43,7 +43,7 @@ const SideBar = () => (
 
 const CompanyHeader = () => (
   <div className="channel-list__header">
-    <p className="channel-list__header__text">Scholarsite</p>
+    <p className="channel-list__header__text">Sphere</p>
   </div>
 );
 

@@ -6,7 +6,7 @@ function path(root: string, sublink: string) {
 
 const ROOTS_AUTH = '/auth';
 const ROOTS_DASHBOARD = '';
-export const ROOT_URL = process.env.REACT_APP_ROOT_URL || 'https://app.scholarsite.io/api/v1';
+export const ROOT_URL = process.env.REACT_APP_ROOT_URL || 'https://app.getsphere.com/api/v1';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +19,8 @@ export const PATH_AUTH = {
   resetUserPassword: path(ROOTS_AUTH, '/first-login'),
   unlockUser: path(ROOTS_AUTH, '/unlock-user'),
   unsubscribeEmails: path(ROOTS_AUTH, '/unsubscribe-emails'),
+  unsubscribeRegistration: path(ROOTS_AUTH, 'registrations/unsubscribe'),
+  deferRegistration: path(ROOTS_AUTH, 'registrations/defer'),
   resetPassword: path(ROOTS_AUTH, '/reset-password'),
   verify: path(ROOTS_AUTH, '/verify')
 };
@@ -90,6 +92,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),
     cohort_sales: path(ROOTS_DASHBOARD, `/cohort_sales`),
     cohort_experiences: path(ROOTS_DASHBOARD, `/cohort_experiences`),
+    waitlist_form: path(ROOTS_DASHBOARD, `/waitlist_form`),
     alumni: path(ROOTS_DASHBOARD, `/alumni`)
   },
   eCommerce: {

@@ -346,7 +346,6 @@ export default function ProfileForm({
                         }}
                       />
                       <Stack direction={{ xs: 'column' }} spacing={1}>
-                        <Typography>Which categories best describe your current role?</Typography>
                         <MultiSelect
                           options={role_options}
                           values={values.current_role_category_selections}
@@ -354,6 +353,7 @@ export default function ProfileForm({
                             setFieldValue('current_role_category_selections', e)
                           }
                           maxLimit={2}
+                          label="Which categories best describe your current role?"
                         />
                       </Stack>
                     </>

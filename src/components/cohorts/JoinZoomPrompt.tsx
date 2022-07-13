@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
 import { useTimer } from 'react-timer-hook';
 import moment from 'moment';
 import { SessionContext } from 'contexts/CohortContext';
 
-const useStyes = makeStyles(() => ({
+const useStyes = makeStyles((theme: Theme) => ({
   container: {
     width: '100%',
     height: '400px',
@@ -39,9 +40,6 @@ const useStyes = makeStyles(() => ({
     display: 'flex',
     padding: '8px 0'
   },
-  content: {
-    color: '#6C7885'
-  },
   content2: {
     maxWidth: '250px',
     textAlign: 'center',
@@ -64,22 +62,10 @@ const useStyes = makeStyles(() => ({
     paddingLeft: '2px'
   },
   smallBtn: {
-    backgroundColor: '#4D4DCD',
-    padding: '12px 70px',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#4D4DCD',
-      opacity: 0.9
-    }
+    padding: '12px 70px'
   },
   primaryBtn: {
-    backgroundColor: '#4D4DCD',
-    padding: '12px 120px',
-    color: 'white',
-    '&:hover': {
-      backgroundColor: '#4D4DCD',
-      opacity: 0.9
-    }
+    padding: '12px 120px'
   }
 }));
 
@@ -96,11 +82,11 @@ const DatePreview = ({
     <div data-testid="upcoming-session-placeholder">
       <div className={classes.wrapper}>
         <img src="/static/cohorts-home/sessions/ic_date.svg" alt="date-icon" />
-        <Typography variant="body2" className={classes.content}>
+        <Typography variant="body2" color="text.secondary">
           This session starts on the
         </Typography>
         <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
-        <Typography variant="body2" className={classes.content}>
+        <Typography variant="body2" color="text.secondary">
           at {sessionTimesPreview}
         </Typography>
       </div>
@@ -126,7 +112,7 @@ const TimerField = ({
     <div style={{ display: 'flex' }}>
       {showSeparator && <Typography style={{ marginTop: 'auto' }} variant="h2">{` :`}</Typography>}
       <div className={classes.fieldBox}>
-        <Typography variant="subtitle2" className={classes.content}>
+        <Typography variant="subtitle2" color="text.secondary">
           {text}
         </Typography>
 
@@ -180,6 +166,8 @@ const TimerPreview = ({
         </Box>
         {zoomUrl && (
           <Button
+            variant="contained"
+            color="primary"
             onClick={() => clickEvent(sessionNumber)}
             className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
             target="_blank"

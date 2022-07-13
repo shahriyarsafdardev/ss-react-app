@@ -19,11 +19,16 @@ export default function Button(theme: Theme) {
           color: theme.palette.grey[800],
           boxShadow: theme.customShadows.z8,
           '&:hover': {
-            backgroundColor: theme.palette.grey[400]
+            backgroundColor: '#5A189A',
+            opacity: 0.8
           }
         },
         containedPrimary: {
-          boxShadow: theme.customShadows.primary
+          boxShadow: theme.customShadows.primary,
+          '&:hover': {
+            backgroundColor: '#5A189A',
+            opacity: 0.8
+          }
         },
         containedSecondary: {
           boxShadow: theme.customShadows.secondary
@@ -42,6 +47,12 @@ export default function Button(theme: Theme) {
         },
         // outlined
         outlinedInherit: {
+          border: `1px solid ${theme.palette.grey[500_32]}`,
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover
+          }
+        },
+        outlinedPrimary: {
           border: `1px solid ${theme.palette.grey[500_32]}`,
           '&:hover': {
             backgroundColor: theme.palette.action.hover

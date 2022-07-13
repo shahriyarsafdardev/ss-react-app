@@ -36,7 +36,7 @@ const SectionStyle = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  margin: theme.spacing(5, 0, 2, 2)
+  alignItems: 'center'
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -69,27 +69,25 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const { method } = useAuth();
-
   return (
-    <RootStyle title="ScholarSite | Login">
+    <RootStyle title="Sphere | Login">
       <MHidden width="mdDown">
         <SectionStyle>
-          <img src="/static/scholarsite_home.svg" alt="login" style={{ height: '90vh' }} />
+          <img src="/static/sphere_home.png" alt="login" style={{ width: '700px' }} />
         </SectionStyle>
       </MHidden>
 
       <StyledContainer maxWidth="sm">
         <ContentStyle>
           <MHidden width="mdUp">
-            <img src="/static/ScholarSite.svg" alt="login" width={140} />
+            <img src="/static/sphere_with_logo.svg" alt="login" width={140} />
           </MHidden>
           <StyledStack direction="row" alignItems="center">
             <Box sx={{ flexGrow: 1 }}>
-              <Title gutterBottom>Welcome to the ScholarSite Portal</Title>
+              <Title gutterBottom>Welcome to the Sphere Portal</Title>
               <Typography sx={{ color: 'text.secondary' }}>
-                ScholarSite’s portal can be used to access your cohort content, network and messages
-                at any time!
+                Sphere's portal can be used to access your cohort content, network and messages at
+                any time!
               </Typography>
             </Box>
           </StyledStack>

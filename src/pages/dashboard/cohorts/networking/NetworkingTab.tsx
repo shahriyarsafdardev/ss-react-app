@@ -66,7 +66,7 @@ const Index = () => {
   };
 
   return (
-    <Page title="ScholarSite | Networking">
+    <Page title="Sphere | Networking">
       {peers ? (
         <Container style={{ marginBottom: '50px' }}>
           <MatchProgress

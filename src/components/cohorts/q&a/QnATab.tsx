@@ -63,6 +63,7 @@ function QnATab() {
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   useEffect(() => {
     if (cohort) {
@@ -159,11 +160,11 @@ function QnATab() {
   }
 
   return (
-    <StyledPage title="ScholarSite | Q&A">
+    <StyledPage title="Sphere | Q&A">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <QuestionForm
           hosts={cohort?.host_names}
-          isHost={cohort?.is_host}
+          isHost={mode === 'Learner' ? false : cohort?.is_host}
           onSuccess={onCreateSuccess}
           unAnswered={list.filter((q) => !q.answered && !q.skipped)}
           addAnswer={addAnswer}

@@ -17,7 +17,8 @@ import {
   Stack,
   Link,
   Tooltip,
-  TextField
+  TextField,
+  Theme
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
@@ -78,7 +79,7 @@ const StyledViewButton = styled(Typography)(() => ({
   cursor: 'pointer'
 }));
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   center: {
     maxWidth: 300,
     textAlign: 'center'
@@ -129,8 +130,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   primary: {
-    color: '#2F80ED !important',
-    background: 'rgba(47, 128, 237, 0.12)'
+    color: theme.palette.primary.main,
+    background: 'rgba(18, 18, 92, 0.16)'
   },
   warning: {
     color: '#B78103',
@@ -150,7 +151,7 @@ const CompanyTooltipMessage = (enrollment: Enrollment) => {
   if (enrollment.first_name.includes('Employee')) {
     header = 'Enrolled';
   }
-  return `${header} using ${enrollment.credit_account}'s ScholarSite credits`;
+  return `${header} using ${enrollment.credit_account}'s Sphere credits`;
 };
 export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
   const classes = useStyles();
@@ -286,7 +287,7 @@ export const ReferralCodeRow = ({
 
   const { errors, touched, submitForm, setFieldValue, values } = formik;
   const cohortSlug = convertToSlug(cohortName);
-  const referralLink = `https://www.scholarsite.io/pages/${cohortSlug}?referrer=${values.code}`;
+  const referralLink = `https://www.getsphere.com/pages/${cohortSlug}?referrer=${values.code}`;
 
   return (
     <>
@@ -493,7 +494,7 @@ export const Actions = ({
                   <p>
                     Are you sure you want to accept {enrollment.name}’s application and
                     {enrollment.card_added ? ' charge him' : ' send a payment link'} for
-                    <p style={{ color: '#4D4DCD' }}> USD {enrollment.price}</p>
+                    <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
                   </p>
                 );
                 setAction('accept_application');
@@ -527,13 +528,13 @@ export const Actions = ({
                     <p>
                       Are you sure you want to accept {enrollment.name}’s application and
                       {enrollment.card_added ? ' charge him' : ' send a payment link'} for
-                      <p style={{ color: '#4D4DCD' }}> USD {enrollment.price}</p>
+                      <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
                     </p>
                   );
                   setAction('accept_application');
                   setModalState(true);
                 }}
-                sx={{ typography: 'subtitle2', color: '#4D4DCD', py: 1, px: 2.5 }}
+                sx={{ typography: 'subtitle2', color: 'primary.main', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Check.svg" sx={{ mr: 1 }} />
                 Accept Application
@@ -561,13 +562,13 @@ export const Actions = ({
                 setModalMessage(
                   <p>
                     Are you sure you want to mark {enrollment.name}’s application as Paid and send
-                    them an email welcoming them to the ScholarSite Portal?
+                    them an email welcoming them to the Sphere Portal?
                   </p>
                 );
                 setAction('mark_as_paid');
                 setModalState(true);
               }}
-              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+              sx={{ typography: 'subtitle2', color: 'text.secondary', py: 1, px: 2.5 }}
             >
               <StyledIcon src="/static/registration/Success.svg" sx={{ mr: 1 }} />
               Mark as Paid
@@ -827,7 +828,7 @@ export const ExportToExcel = ({
       {
         column: 'Payment Link',
         value: (registration: any) =>
-          `https://app.scholarsite.io/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,
+          `https://app.getsphere.com/cohorts/${registration.cohort_id}/course-payment/${registration.id}`,
         width: 120
       }
     ];

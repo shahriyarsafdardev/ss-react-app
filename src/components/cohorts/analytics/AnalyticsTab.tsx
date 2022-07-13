@@ -59,7 +59,7 @@ function AnalyticsTab() {
     );
   }
   return (
-    <Page title="ScholarSite | Analytics">
+    <Page title="Sphere | Analytics">
       {cohort?.analytics && (
         <ChartsContainer>
           <Row>

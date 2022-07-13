@@ -25,7 +25,7 @@ export default function LogoOnlyLayout() {
     <>
       <HeaderStyle>
         <RouterLink to="/">
-          <Logo />
+          <img src="/static/sphere_with_logo.svg" alt="logo" width="150" />
         </RouterLink>
       </HeaderStyle>
       <Outlet />

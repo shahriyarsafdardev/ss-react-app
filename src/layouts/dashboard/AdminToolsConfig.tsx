@@ -45,9 +45,14 @@ const adminToolsConfig = {
       path: PATH_DASHBOARD.adminTools.cohort_experiences,
       icon: ICONS.cohorts
     },
+    // {
+    //   title: 'alumni',
+    //   path: PATH_DASHBOARD.adminTools.alumni,
+    //   icon: ICONS.cohorts
+    // },
     {
-      title: 'alumni',
-      path: PATH_DASHBOARD.adminTools.alumni,
+      title: 'Waitlist Form',
+      path: PATH_DASHBOARD.adminTools.waitlist_form,
       icon: ICONS.cohorts
     }
   ]

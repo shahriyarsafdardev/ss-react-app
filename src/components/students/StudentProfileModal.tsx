@@ -25,11 +25,11 @@ const StyledContainer = styled(Box)(() => ({
   marginBottom: 16
 }));
 
-const Title = styled(Typography)(() => ({
+const Title = styled(Typography)(({ theme }) => ({
   fontFamily: 'Public Sans',
   fontWeight: 'bold',
   fontSize: 22,
-  color: '#212B36',
+  color: theme.palette.text.primary,
   marginBottom: 30
 }));
 
@@ -38,9 +38,9 @@ const StyledRow = styled(Box)(() => ({
   marginBottom: 20
 }));
 
-const Text = styled(Typography)(() => ({
+const Text = styled(Typography)(({ theme }) => ({
   fontFamily: 'Public Sans',
-  color: 'black',
+  color: theme.palette.text.secondary,
   fontSize: 14,
   whiteSpace: 'break-spaces',
   'span.company-name': {
@@ -90,15 +90,12 @@ export default function StudentProfileModal({
     first_name,
     last_name,
     current_company,
-    profile_image_url,
     current_position,
-    current_role_category_selections,
     current_industry_category_selections,
     bio_text,
     preferred_pronoun,
     phone,
     strengths,
-    interests,
     linkedin_url,
     discord_url,
     email
@@ -158,7 +155,7 @@ export default function StudentProfileModal({
               <Text style={{ marginRight: 10 }}>Industry</Text>
               <ColoredContainer className="gaped">
                 {current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                  <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
                     {capitalCase(industry)}
                   </Label>
                 ))}
@@ -167,7 +164,7 @@ export default function StudentProfileModal({
             <ColoredContainerMobile className="gaped">
               {current_industry_category_selections?.length > 0 &&
                 current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="info" testId={`industry-${index}`}>
+                  <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
                     {capitalCase(industry)}
                   </Label>
                 ))}
@@ -290,7 +287,7 @@ export default function StudentProfileModal({
             />
             <Link href={`/cohorts/${cohortID}/messaging?direct=true&receiver_id=${id}`}>
               {' '}
-              <Text data-testid="message-user">Message {first_name} through ScholarSite</Text>
+              <Text data-testid="message-user">Message {first_name} through Sphere</Text>
             </Link>
           </StyledRow>
         )}

@@ -62,7 +62,7 @@ export default function ResetUserPassword() {
 
   return (
     <>
-      <RootStyle title="ScholarSite Password Reset">
+      <RootStyle title="Sphere Password Reset">
         {navigate && <Navigate to="/" replace />}
         {loading ? (
           <Box padding="200px">

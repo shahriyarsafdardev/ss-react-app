@@ -10,9 +10,10 @@ import { useEffect, useState } from 'react';
 import { Session } from '../../../@types/cohorts';
 import { firstUpcomingDate } from './Common';
 
-const StyledSession = styled(Typography)(() => ({
+const StyledSession = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 700,
+  color: theme.palette.text.primary,
   lineHeight: '20px'
 }));
 
@@ -31,7 +32,7 @@ const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
       color: '#784af4'
     }),
     '& .QontoStepIcon-completedIcon': {
-      color: '#7A8086',
+      color: theme.palette.text.secondary,
       zIndex: 1,
       borderRadius: '4px',
       width: '46px',
@@ -184,7 +185,7 @@ export default function MobileStepper({
                       {displaySession(firstUpcomingDate(step.times), step.length, step.number)}
                     </StyledContent>
                   ) : (
-                    <Typography sx={{ fontSize: '12px', fontWeight: 400, color: '#4D4DCD' }}>
+                    <Typography sx={{ fontSize: '12px', fontWeight: 400 }}>
                       <Link to={`/cohorts/${cohortID}/sessions?session=${step.number}`}>
                         Review Content
                       </Link>

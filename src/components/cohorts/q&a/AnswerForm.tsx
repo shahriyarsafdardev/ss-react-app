@@ -40,9 +40,9 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-const CurrentStep = styled('span')(() => ({
+const CurrentStep = styled('span')(({ theme }) => ({
   fontSize: 18,
-  color: '#4D4DCD',
+  color: theme.palette.primary.main,
   fontWeight: 'bold',
   fontFamily: 'Public Sans'
 }));
