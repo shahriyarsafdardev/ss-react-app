@@ -9,8 +9,13 @@ describe('Top up credits flow', () => {
     cy.intercept('POST', `${serverUrl}/users/accept_terms.json`, { statusCode: 200 }).as(
       'termsFixture'
     );
-    cy.get('[data-testid=accept-btn]').should('be.visible').click();
-    cy.wait('@termsFixture');
+    cy.fixture('../fixtures/Popup/popup-viewed.json').as('popupViewed');
+    cy.route('POST', `${serverUrl}/api/v1/users/popup_viewed.json`, '@popupViewed').as(
+      'popupViewed'
+    );
+    cy.get('[data-testid=explore-btn]').should('be.visible').click();
+    // cy.get('[data-testid=accept-btn]').should('be.visible').click();
+    // cy.wait('@termsFixture');
   });
 
   it('Verify the Top up credit button is clickable', () => {

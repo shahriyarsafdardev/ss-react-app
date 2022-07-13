@@ -2,10 +2,17 @@ import sessionFixture from '../../../../fixtures/session/sessions.json';
 import cohorts_fixture from '../../../../fixtures/cohorts/cohorts.json';
 import user_fixture from '../../../../fixtures/login/login.json';
 
+const serverUrl = Cypress.env('serverUrl');
+
 describe('Sessions > Summary', () => {
   before(() => {
     cy.server();
     cy.login({});
+    cy.fixture('../fixtures/Popup/popup-viewed.json').as('popupViewed');
+    cy.route('POST', `${serverUrl}/api/v1/users/popup_viewed.json`, '@popupViewed').as(
+      'popupViewed'
+    );
+    cy.get('[data-testid=explore-btn]').should('be.visible').click();
     cy.get(
       `[data-testid="navbar-cohort-${user_fixture.user.type}-page-list-${cohorts_fixture.cohorts[0].intake_name}-${cohorts_fixture.cohorts[0].name}-sessions"]`
     )
