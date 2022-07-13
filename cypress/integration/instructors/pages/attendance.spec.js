@@ -5,10 +5,18 @@ import attendance_fixture from '../../../fixtures/session/cohort_session_attenda
 
 const serverUrl = Cypress.env('serverUrl');
 
+Cypress.Commands.add('viewPopup', () => {
+  cy.server();
+  cy.fixture('../fixtures/Popup/popup-viewed.json').as('popupViewed');
+  cy.route('POST', `${serverUrl}/api/v1/users/popup_viewed.json`, '@popupViewed').as('popupViewed');
+});
+
 describe('Attendance Tab', () => {
   before(() => {
     cy.server();
     cy.loginasadmin({});
+    cy.viewPopup();
+    cy.get('[data-testid=explore-btn]').should('be.visible').click();
     cy.get(
       `[data-testid="navbar-admin-cohort-the economics of digital platforms-Testing Intake Name"]`
     )

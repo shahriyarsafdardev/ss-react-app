@@ -89,7 +89,12 @@ export default function RebrandModal() {
             {loading ? (
               <CircularProgress />
             ) : (
-              <Button fullWidth variant="contained" onClick={() => handleSubmit()}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => handleSubmit()}
+                data-testid="explore-btn"
+              >
                 Start Exploring
               </Button>
             )}
