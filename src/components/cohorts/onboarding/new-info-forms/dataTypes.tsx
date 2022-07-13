@@ -15,6 +15,13 @@ export type HouseKeepingInfoType = {
   referred_by: string;
 };
 
+export type UserInfoType = {
+  name: string;
+  role_title: string;
+  goals: string;
+  improvements: string;
+};
+
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   '&.next': {

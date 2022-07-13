@@ -12,7 +12,8 @@ import {
   CompanyInfoForm,
   RoleInfoForm,
   NetworkingForm,
-  HouseKeepingForm
+  HouseKeepingForm,
+  InviteColleaguesForm
 } from './info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -97,7 +98,8 @@ const FormTypes = {
   roleInfo: 'roleinfo',
   companyInfo: 'companyinfo',
   networkingInfo: 'networkinginfo',
-  housekeepingInfo: 'housekeepinginfo'
+  housekeepingInfo: 'housekeepinginfo',
+  inviteColleagues: 'inviteColleagues'
 };
 
 type OnboardingDataType = {
@@ -132,7 +134,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
-  const totalSteps = 5;
+  const totalSteps = 6;
   const [profilePicture, setProfilePicture] = useState<any>();
   const [companyLogo, setCompanyLogo] = useState<any>();
   const cohort = useSelector(
@@ -252,9 +254,11 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         date_of_birth: data.date_of_birth,
         phone_number: data.phone_number
       };
-      setIsSubmitting(true);
-      submitData(tempData);
       setOnboardingData(tempData);
+      setActiveStep(activeStep + 1);
+    } else if (type == FormTypes.inviteColleagues) {
+      setIsSubmitting(true);
+      submitData(onboardingData);
     } else {
       console.log('Unknown form type passed!');
     }
@@ -336,6 +340,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
     if (activeStep === 4) {
       return (
         <NetworkingForm
@@ -349,6 +354,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         />
       );
     }
+
     if (activeStep === 5) {
       return (
         <HouseKeepingForm
@@ -369,6 +375,18 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           }}
           phoneNumberValue={onboardingData.phone_number}
           isSubmitting={isSubmitting}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
+        />
+      );
+    }
+
+    if (activeStep === 6) {
+      return (
+        <InviteColleaguesForm
+          isSubmittingButton={isSubmitting}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.inviteColleagues, data);
+          }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
@@ -398,6 +416,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return 'Housekeeping Questions';
     }
 
+    if (activeStep === 6) {
+      return 'Learn together with your colleagues';
+    }
+
     return '';
   };
 
@@ -412,6 +434,10 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
 
     if (activeStep === 5) {
       return 'Your answers to these questions will not be shared with cohort members';
+    }
+
+    if (activeStep === 6) {
+      return `Invite your colleagues to join ${cohort?.host_names}’s cohort so that you can network and grow together!`;
     }
 
     return '';

@@ -150,7 +150,7 @@ export default function HouseKeepingForm({
         onNextHandler={() => {
           onSubmit({ ...infoObject, phone_number: phoneNumber });
         }}
-        isSubmitBtn={true}
+        isSubmitBtn={false}
         isSubmitting={isSubmitting}
       />
     </>

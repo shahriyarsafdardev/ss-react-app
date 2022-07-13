@@ -98,7 +98,7 @@ export const NavigationButtons = ({
         disabled={disabled}
         onClick={() => onNextHandler()}
       >
-        {isSubmitBtn ? 'Submit' : 'Next'}
+        {isSubmitBtn ? 'Complete Onboarding' : 'Next'}
       </StyledButton>
     </ButtonsContainer>
   </MainContainer>

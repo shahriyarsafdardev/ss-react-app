@@ -6,7 +6,13 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from 'redux/store';
 import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
-import { GoalsForm, HouseKeepingForm, AddToCalendarInfo, UserInfoForm } from './new-info-forms';
+import {
+  GoalsForm,
+  HouseKeepingForm,
+  AddToCalendarInfo,
+  UserInfoForm,
+  InviteColleaguesForm
+} from './new-info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import HomeTabHeader from './HomeTabHeader';
@@ -67,7 +73,8 @@ const ContentContainer = styled('div')(({ theme }) => ({
 const FormTypes = {
   userInfo: 'userInfo',
   companyInfo: 'companyinfo',
-  housekeepingInfo: 'housekeepinginfo'
+  housekeepingInfo: 'housekeepinginfo',
+  inviteColleage: 'inviteColleage'
 };
 
 type OnboardingDataType = {
@@ -87,7 +94,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
   const [modal, setModal] = useState(true);
-  const totalSteps = 4;
+  const totalSteps = 5;
   const [profilePicture, setProfilePicture] = useState<any>();
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -143,6 +150,8 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
       setActiveStep(activeStep + 1);
     } else if (type === FormTypes.userInfo) {
       setProfilePicture(data);
+    } else if (type === FormTypes.inviteColleage) {
+      console.log('onboarding completed !');
     } else {
       console.log('Unknown form type passed!');
     }
@@ -252,11 +261,21 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
       return (
         <UserInfoForm
           onUpload={(data: any) => updateOnboardingData(FormTypes.userInfo, data)}
-          onSubmit={submitData}
+          onSubmit={() => setActiveStep(activeStep + 1)}
           profile_image_url={profilePicture}
           isSubmitting={isSubmitting}
           isSubmitable={true}
           showPrevButton={true}
+          onPrevHandler={() => setActiveStep(activeStep - 1)}
+        />
+      );
+    }
+
+    if (activeStep === 5) {
+      return (
+        <InviteColleaguesForm
+          isSubmittingButton={isSubmitting}
+          onSubmit={submitData}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
       );
@@ -301,6 +320,10 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
       );
     }
 
+    if (activeStep === 5) {
+      return <p>Learn together with your colleagues</p>;
+    }
+
     return '';
   };
 
@@ -319,6 +342,10 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
 
     if (activeStep === 4) {
       return 'It makes it much easier for Steve and other participants recognize you in class!';
+    }
+
+    if (activeStep === 5) {
+      return `Invite your colleagues to join ${cohort?.host_names}’s cohort so that you can network and grow together!`;
     }
 
     return '';

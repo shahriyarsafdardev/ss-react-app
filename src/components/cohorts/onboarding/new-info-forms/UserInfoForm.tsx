@@ -66,7 +66,6 @@ export default function UserInfoForm({
         disabled={checkFormValidity({ profile_image_url })}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => onSubmit()}
-        nextButtonText="Submit"
       />
     </>
   );
