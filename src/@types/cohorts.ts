@@ -204,6 +204,7 @@ export type Cohort = {
   start_date: string;
   analytics: any;
   alumni_event: boolean;
+  registration_page_url: string;
 };
 
 export type ReferralCode = {
