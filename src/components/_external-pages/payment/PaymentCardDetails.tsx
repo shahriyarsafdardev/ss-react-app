@@ -29,11 +29,13 @@ type CardType = {
 export default function PaymentCardDetails({
   linkID,
   onSuccess,
-  onFailure
+  onFailure,
+  isUserPayment
 }: {
   linkID: string | null;
   onSuccess: Function;
   onFailure: Function;
+  isUserPayment: boolean;
 }) {
   const pattern = /^[0-9\b]+$/;
 
@@ -71,21 +73,18 @@ export default function PaymentCardDetails({
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values, { resetForm }) => {
-      if (linkID) {
-        await axios
-          .post(`/payments/${linkID}/add_payment.json`, {
-            ...values
-          })
-          .then((res) => {
-            onSuccess();
-            resetForm();
-          })
-          .catch((error: any) => {
-            onFailure(error.message);
-          });
-      } else {
-        onFailure('Invalid payment Link');
-      }
+      const endpoint = isUserPayment ? 'add_user_payment' : 'add_payment';
+      await axios
+        .post(`/payments/${linkID}/${endpoint}.json`, {
+          ...values
+        })
+        .then((res) => {
+          onSuccess();
+          resetForm();
+        })
+        .catch((error: any) => {
+          onFailure(error.message);
+        });
     }
   });
 
