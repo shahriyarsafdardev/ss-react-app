@@ -65,36 +65,30 @@ describe('Home > Timeline', () => {
   });
 
   it('Displays a welcome text in timeline', () => {
-    cy.get('[data-testid=timeline-welcome]')
-    .should('be.visible');
+    cy.get('[data-testid=timeline-welcome]').should('be.visible');
   });
 
   it('Displays a left arrow icon', () => {
-    cy.get('[data-testid=left-arrow-icon]')
-    .should('have.class', 'disabled')
-    .and('be.visible');
+    cy.get('[data-testid=left-arrow-icon]').should('have.class', 'disabled').and('be.visible');
   });
 
   it('Displays a right arrow icon', () => {
-    cy.get('[data-testid=right-arrow-icon]')
-    .should('have.class', 'active')
-    .and('be.visible');
+    cy.get('[data-testid=right-arrow-icon]').should('have.class', 'active').and('be.visible');
   });
 
   it('Displays a cohort completion text', () => {
     cy.get('[data-testid=right-arrow-icon]')
-    .should('have.class', 'active')
-    .and('be.visible')
-    .click({ multiple: true, force: true });
-    cy.get('[data-testid=cohort-completion]')
-    .should('be.visible');
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
+    cy.get('[data-testid=cohort-completion]').should('be.visible');
   });
 
   it('Timeline scrolls to the right when right arrow icon is clicked', () => {
     cy.get('[data-testid=right-arrow-icon]')
-    .should('have.class', 'active')
-    .and('be.visible')
-    .click({ multiple: true, force: true });
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
     cy.wait(1000);
     cy.get('#timeline-div').then((elem) => {
       const leftOffset = elem.scrollLeft();
@@ -104,13 +98,13 @@ describe('Home > Timeline', () => {
 
   it('Timeline scrolls to the left when left arrow icon is clicked', () => {
     cy.get('[data-testid=right-arrow-icon]')
-    .should('have.class', 'active')
-    .and('be.visible')
-    .click({ multiple: true, force: true });
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
     cy.get('[data-testid=left-arrow-icon]')
-    .should('have.class', 'active')
-    .and('be.visible')
-    .click({ multiple: true, force: true });
+      .should('have.class', 'active')
+      .and('be.visible')
+      .click({ multiple: true, force: true });
     cy.wait(1000);
     cy.get('#timeline-div').then((elem) => {
       const leftOffset = elem.scrollLeft();
@@ -126,8 +120,8 @@ describe('Home > Timeline', () => {
 
     it('Displays a empty timeline between two sessions', () => {
       cy.connectorLineBetweenTwoSessions()
-      .should('have.css', 'background-color')
-      .and('eq', 'rgb(234, 234, 240)');
+        .should('have.css', 'background-color')
+        .and('eq', 'rgb(241, 245, 249)');
     });
 
     it('Displays a empty circle on a session', () => {
@@ -136,7 +130,7 @@ describe('Home > Timeline', () => {
 
     it('Displays time under the session', () => {
       cy.timeBelowIncompleteSession(sessionNumber).should('be.visible') &&
-      cy.dateBelowIncompleteSession(sessionNumber).should('be.visible');
+        cy.dateBelowIncompleteSession(sessionNumber).should('be.visible');
     });
   });
 
@@ -147,21 +141,21 @@ describe('Home > Timeline', () => {
     });
 
     it('Displays the upcoming session in active font', () => {
-      cy.timeBelowIncompleteSession(upcomingSessionNumber)
-      .should('have.css', 'color')
-      .and('eq', 'rgb(7, 26, 51)') &&
-      cy.timeBelowIncompleteSession(upcomingSessionNumber)
-      .should('be.visible') &&
-      cy.dateBelowIncompleteSession(upcomingSessionNumber)
-      .should('have.css', 'color')
-      .and('eq', 'rgb(7, 26, 51)') &&
-      cy.dateBelowIncompleteSession(upcomingSessionNumber)
-      .should('be.visible') &&
-      cy.sessionText(upcomingSessionNumber)
-      .should('be.visible') &&
-      cy.sessionText(upcomingSessionNumber)
-      .should('have.css', 'color')
-      .and('eq', 'rgb(7, 26, 51)');
+      cy
+        .timeBelowIncompleteSession(upcomingSessionNumber)
+        .should('have.css', 'color')
+        .and('eq', 'rgb(100, 116, 139)') &&
+        cy.timeBelowIncompleteSession(upcomingSessionNumber).should('be.visible') &&
+        cy
+          .dateBelowIncompleteSession(upcomingSessionNumber)
+          .should('have.css', 'color')
+          .and('eq', 'rgb(100, 116, 139)') &&
+        cy.dateBelowIncompleteSession(upcomingSessionNumber).should('be.visible') &&
+        cy.sessionText(upcomingSessionNumber).should('be.visible') &&
+        cy
+          .sessionText(upcomingSessionNumber)
+          .should('have.css', 'color')
+          .and('eq', 'rgb(71, 85, 105)');
     });
   });
 
@@ -187,27 +181,27 @@ describe('Home > Timeline', () => {
     });
   });
 
-    context('When a session is Completed', () => {
-      const completedSessionNumber = 0;
-      before(() => {
-        cy.setClockToAfterSession(getTimes(completedSessionNumber));
-      });
-
-      it('Displays the correct session details when clicked on review content', () => {
-        cy.reviewContent(completedSessionNumber).click({ multiple: true, force: true });;
-        cy.url().should('contain', `session=${completedSessionNumber + 1}`);
-      });
+  context('When a session is Completed', () => {
+    const completedSessionNumber = 0;
+    before(() => {
+      cy.setClockToAfterSession(getTimes(completedSessionNumber));
     });
 
-    context('When a session is Completed and timeline is filled', () => {
+    it('Displays the correct session details when clicked on review content', () => {
+      cy.reviewContent(completedSessionNumber).click({ multiple: true, force: true });
+      cy.url().should('contain', `session=${completedSessionNumber + 1}`);
+    });
+  });
+
+  context('When a session is Completed and timeline is filled', () => {
     const completedSessionNumber = 1;
     before(() => {
       cy.setClockToAfterSession(getTimes(completedSessionNumber));
     });
     it('Displays a filled timeline between two sessions', () => {
       cy.connectorLineBetweenTwoSessions()
-      .should('have.css', 'background-image')
-      .and('eq', 'linear-gradient(90deg, rgba(0, 171, 85, 0.2) 0%, rgb(0, 171, 85) 119.74%)');
+        .should('have.css', 'background-image')
+        .and('eq', 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(18, 18, 92) 119.74%)');
     });
   });
 
@@ -229,7 +223,8 @@ describe('Home > Timeline', () => {
 
     it('Displays the completion text in active font', () => {
       cy.get('[data-testid=cohort-completion]')
-      .should('have.css', 'color').and('eq', 'rgb(7, 26, 51)');
+        .should('have.css', 'color')
+        .and('eq', 'rgb(71, 85, 105)');
     });
   });
 

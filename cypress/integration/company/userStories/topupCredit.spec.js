@@ -14,8 +14,6 @@ describe('Top up credits flow', () => {
       'popupViewed'
     );
     cy.get('[data-testid=explore-btn]').should('be.visible').click();
-    // cy.get('[data-testid=accept-btn]').should('be.visible').click();
-    // cy.wait('@termsFixture');
   });
 
   it('Verify the Top up credit button is clickable', () => {
