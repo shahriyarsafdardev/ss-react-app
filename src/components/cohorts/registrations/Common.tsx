@@ -52,7 +52,7 @@ import ConfirmationAlert from 'components/ConfirmationAlert';
 // material
 import { makeStyles } from '@material-ui/styles';
 import ReferralCodesModal from './ReferralCodesModal';
-import { useDispatch } from '../../../redux/store';
+import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { Enrollment, ReferralCode } from '../../../@types/cohorts';
 import MenuPopover from '../../MenuPopover';
 import EnrollmentForm from './EnrollmentForm';
@@ -286,8 +286,11 @@ export const ReferralCodeRow = ({
   const { enqueueSnackbar } = useSnackbar();
 
   const { errors, touched, submitForm, setFieldValue, values } = formik;
-  const cohortSlug = convertToSlug(cohortName);
-  const referralLink = `https://www.getsphere.com/pages/${cohortSlug}?referrer=${values.code}`;
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const referralLink = `${cohort.registration_page_url}?referrer=${values.code}`;
 
   return (
     <>

@@ -31,25 +31,33 @@ export default function Payment() {
   const [loading, setLoading] = useState(true);
   const url = new URLSearchParams(useLocation().search);
   const linkID = url.get('link_id');
+  const cohort_code: string = url.get('cohort_code') || '';
+  const intake_name: string = url.get('intake_name') || '';
+  const email: string = url.get('email') || '';
+  const isUserPayment: boolean = !!(cohort_code && email && intake_name);
 
   useEffect(() => {
-    const fetchLinkDetails = async () => {
-      if (linkID) {
-        await axios
-          .get(`/payments/${linkID}.json`)
-          .then((res) => {
-            setLink(res.data);
-            setLoading(false);
-          })
-          .catch((error: any) => {
-            enqueueSnackbar(error.message, { variant: 'error' });
-            navigate('/');
-          });
-      } else {
-        navigate('/');
-      }
+    const fetchLinkDetails = async (endpoint: string) => {
+      await axios
+        .get(endpoint)
+        .then((res) => {
+          setLink(res.data);
+          setLoading(false);
+        })
+        .catch((error: any) => {
+          enqueueSnackbar(error.message, { variant: 'error' });
+          navigate('/');
+        });
     };
-    fetchLinkDetails();
+    if (isUserPayment) {
+      fetchLinkDetails(
+        `/payments/payment_details.json?cohort_code=${cohort_code}&intake_name=${intake_name}&email=${email}`
+      );
+    } else if (linkID) {
+      fetchLinkDetails(`/payments/${linkID}.json`);
+    } else {
+      navigate('/');
+    }
   }, []);
 
   const onSuccess = () => {
@@ -84,7 +92,12 @@ export default function Payment() {
               <PaymentSummary payment={link} />
             </Grid>
             <Grid item xs={12} md={8}>
-              <PaymentCardDetails linkID={linkID} onFailure={onFailure} onSuccess={onSuccess} />
+              <PaymentCardDetails
+                linkID={isUserPayment ? link?.enrollment_id : linkID}
+                onFailure={onFailure}
+                onSuccess={onSuccess}
+                isUserPayment={isUserPayment}
+              />
             </Grid>
           </Grid>
         </Card>
