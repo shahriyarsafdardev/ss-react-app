@@ -46,6 +46,7 @@ export default function ContactUs() {
   const [displayChatLink, setDisplayChatLink] = useState(false);
   const { user, updateProfile } = useAuth();
   const newUser: any = { ...user };
+  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohorts = useSelector((state: RootState) => state?.cohort?.cohorts);
   useEffect(() => {
@@ -139,9 +140,11 @@ export default function ContactUs() {
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <StyledBox>
           <Typography variant="h3">Contact Us</Typography>
-          <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
-            Walkthrough
-          </Button>
+          {mode === 'Instructor' && (
+            <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
+              Walkthrough
+            </Button>
+          )}
         </StyledBox>
         <ContactNote />
         <StudentProfileModal

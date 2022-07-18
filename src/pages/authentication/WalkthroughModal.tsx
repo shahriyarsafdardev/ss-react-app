@@ -68,11 +68,12 @@ export default function WalkthroughModal() {
           <CircularProgress />
         ) : (
           <StyledVideoPreview
-            src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_portal_walkthrough.mp4"
+            src="https://sphere-public.s3-accelerate.amazonaws.com/sphere_portal_walkthrough.mp4"
             controlsList="nodownload"
             autoPlay={false}
             width="100%"
             controls
+            poster="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_portal_walkthrough_thumbnail.png"
           />
         )}
       </Modal>
