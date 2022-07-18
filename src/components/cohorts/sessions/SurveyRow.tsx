@@ -133,20 +133,22 @@ function MultiCheck({
   onChange
 }: {
   options: string[] | undefined;
-  selectedValues: string[];
+  selectedValues: string;
   onChange: Function;
 }) {
-  const [values, setValues] = useState(new Set(Array.from(selectedValues)));
+  const [values, setValues] = useState(
+    new Set(Array.from(selectedValues ? selectedValues?.split(',') : []))
+  );
 
   function handleChange(e: any) {
     if (values.has(e.target.value)) {
       const arr = Array.from(values).filter((x) => x !== e.target.value);
-      onChange(arr);
+      onChange(_.toString(arr));
 
       setValues(new Set(arr));
     } else {
       const updatedValues = [...Array.from(values), e.target.value];
-      onChange(updatedValues);
+      onChange(_.toString(updatedValues));
 
       setValues(new Set(updatedValues));
     }

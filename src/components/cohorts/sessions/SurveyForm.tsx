@@ -209,7 +209,8 @@ export default function SurveyForm({
               variant="contained"
               onClick={handleNext}
               disabled={
-                surveyData[currentQuestion].mandatory === true && response[questionID] === undefined
+                surveyData[currentQuestion].mandatory === true &&
+                [undefined, ''].includes(response[questionID])
               }
               data-testid="btn-next"
             >
