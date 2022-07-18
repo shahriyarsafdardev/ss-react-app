@@ -7,6 +7,8 @@ describe('Networking Tab', () => {
   before(() => {
     cy.server();
     cy.login({});
+    cy.get('[data-testid=close-modal]').should('be.visible').click();
+
     cy.get(
       `[data-testid="navbar-cohort-${userFixture.user.type}-page-list-${cohortsFixture.cohorts[0].intake_name}-${cohortsFixture.cohorts[0].name}-networking"]`
     )
