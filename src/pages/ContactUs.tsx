@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Container, Grid, Box, Typography, Button } from '@material-ui/core';
+import { Container, Grid, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
-import useAuth from 'hooks/useAuth';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 import { RootState, useSelector } from '../redux/store';
+
+const ContactContainer = styled('div')((props) => ({
+  padding: '0 20px'
+}));
 
 const ContactInfoNote = styled('div')(({ theme }) => ({
   backgroundColor: '#D0F2FF',
@@ -44,8 +47,6 @@ export default function ContactUs() {
   const [modalState, modalHandler] = useState({});
   const [cohortID, setCohortID] = useState('testing');
   const [displayChatLink, setDisplayChatLink] = useState(false);
-  const { user, updateProfile } = useAuth();
-  const newUser: any = { ...user };
 
   const cohorts = useSelector((state: RootState) => state?.cohort?.cohorts);
   useEffect(() => {
@@ -56,15 +57,6 @@ export default function ContactUs() {
       }
     });
   }, []);
-
-  const displayWalkthrough = () => {
-    updateProfile({ ...newUser, new_instructor: true });
-  };
-
-  const StyledBox = styled(Box)(() => ({
-    display: 'flex',
-    justifyContent: 'space-between'
-  }));
 
   const contactInfoDetails = [
     {
@@ -137,12 +129,7 @@ export default function ContactUs() {
   return (
     <Page title="Sphere | Contact Us">
       <Container maxWidth={themeStretch ? false : 'lg'}>
-        <StyledBox>
-          <Typography variant="h3">Contact Us</Typography>
-          <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
-            Walkthrough
-          </Button>
-        </StyledBox>
+        <Typography variant="h3">Contact Us</Typography>
         <ContactNote />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
