@@ -157,6 +157,7 @@ export type ParticipantProfile = {
   upcoming_session_email: string;
   accepted_terms: boolean;
   popup_viewed: boolean;
+  new_instructor: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
 };

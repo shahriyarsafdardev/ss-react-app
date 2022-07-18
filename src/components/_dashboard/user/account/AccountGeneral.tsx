@@ -24,6 +24,7 @@ type ParticipantProfile = {
   new_user: boolean;
   accepted_terms: boolean;
   popup_viewed: boolean;
+  new_instructor: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[] | any;
   company_image_url: string;
@@ -54,6 +55,7 @@ export default function AccountGeneral() {
     new_user: user?.new_user || false,
     accepted_terms: user?.accepted_terms || true,
     popup_viewed: user?.popup_viewed || true,
+    new_instructor: user?.new_instructor || false,
     opted_in_for_matching_suggestions: user?.opted_in_for_matching_suggestions,
     networking_matching_preferences: user?.networking_matching_preferences || [],
     company_image_url: user?.company_image_url,
