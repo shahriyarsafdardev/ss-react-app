@@ -18,6 +18,7 @@ import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 import NewOnboardingModal from '../onboarding/NewOnboardingModal';
+import NewHomeTab from './NewHomeTab';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -43,6 +44,8 @@ const Index = () => {
   const { user } = useAuth();
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  // eslint-disable-next-line prefer-const
+  let HOME_TAB_TYPE = 'new';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -108,6 +111,33 @@ const Index = () => {
     sendAnalyticsData(1, 'Cohort Calendar', 'Add Calendar');
   };
 
+  const HomeTabSection = () => (
+    <Container style={{ marginBottom: '50px' }}>
+      <CohortTimeLine cohort={cohort} sessions={sessions} />
+      <Button
+        onClick={() => onAddCalendar()}
+        component={RouterLink}
+        to={`/cohorts/${cohort_id}/calendar-instructions`}
+        style={{ marginTop: '20px' }}
+        fullWidth
+        variant="outlined"
+      >
+        Add sessions to your calendar
+      </Button>
+      <StyledBox>
+        <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
+        <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
+      </StyledBox>
+    </Container>
+  );
+
+  const renderHomeTab = () =>
+    HOME_TAB_TYPE !== 'new' ? (
+      <HomeTabSection />
+    ) : (
+      <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
+    );
+
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
 
   const renderOnboardingModal = () =>
@@ -122,27 +152,7 @@ const Index = () => {
       {shouldOpenModal() && renderOnboardingModal()}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          <Container style={{ marginBottom: '50px' }}>
-            <CohortTimeLine cohort={cohort} sessions={sessions} />
-            <Button
-              onClick={() => onAddCalendar()}
-              component={RouterLink}
-              to={`/cohorts/${cohort_id}/calendar-instructions`}
-              style={{ marginTop: '20px' }}
-              fullWidth
-              variant="outlined"
-            >
-              Add sessions to your calendar
-            </Button>
-            <StyledBox>
-              <SessionPrereading
-                cohort={cohort}
-                sessions={sessions}
-                activeSession={activeSession}
-              />
-              <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-            </StyledBox>
-          </Container>
+          {renderHomeTab()}
         </AnalyticsContext.Provider>
       ) : (
         <EmptyHomeTab
