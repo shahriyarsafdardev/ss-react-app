@@ -45,7 +45,6 @@ const Index = () => {
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   // eslint-disable-next-line prefer-const
-  let HOME_TAB_TYPE = 'new';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -132,10 +131,10 @@ const Index = () => {
   );
 
   const renderHomeTab = () =>
-    HOME_TAB_TYPE !== 'new' ? (
-      <HomeTabSection />
-    ) : (
+    cohort.new_home_tab ? (
       <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
+    ) : (
+      <HomeTabSection />
     );
 
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';

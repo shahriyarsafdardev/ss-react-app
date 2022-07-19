@@ -76,7 +76,10 @@ export type SessionMaterial = {
   complete: boolean;
   is_private: boolean;
   index?: number;
+  thumbnail_image_url?: string;
+  description?: string;
 };
+
 export type GroupedSessionMaterial = {
   category: string;
   session_materials: SessionMaterial[];
@@ -188,6 +191,7 @@ export type Cohort = {
   intake_name: string;
   session_times: string;
   host_names: string;
+  host_image_url: string;
   is_host: boolean;
   is_free: boolean;
   isOnboarded: boolean;
@@ -205,6 +209,7 @@ export type Cohort = {
   analytics: any;
   alumni_event: boolean;
   registration_page_url: string;
+  new_home_tab: boolean;
 };
 
 export type ReferralCode = {
