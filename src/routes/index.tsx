@@ -292,6 +292,8 @@ export default function Router() {
         { path: 'maintenance', element: <Maintenance /> },
         { path: 'pricing', element: <Pricing /> },
         { path: 'payment', element: <Payment /> },
+        { path: 'linkedin-test', element: <LinkedinLogin /> },
+        { path: 'linkedin-profile', element: <LinkedinProfile /> },
         { path: 'registration', element: <Registration /> },
         { path: 'free-session-info', element: <FreeSessionInfo /> },
         { path: 'free-session-message', element: <FreeSessionMessage /> },
@@ -375,6 +377,8 @@ export default function Router() {
 
 // Authentication
 const Login = Loadable(lazy(() => import('../pages/authentication/Login')));
+const LinkedinLogin = Loadable(lazy(() => import('../pages/authentication/LinkedinLogin')));
+const LinkedinProfile = Loadable(lazy(() => import('../pages/authentication/LinkedinProfile')));
 const Register = Loadable(lazy(() => import('../pages/authentication/Register')));
 const ResetPassword = Loadable(lazy(() => import('../pages/authentication/ResetPassword')));
 const UpdatePassword = Loadable(lazy(() => import('../pages/authentication/UpdatePassword')));

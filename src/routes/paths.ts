@@ -30,6 +30,8 @@ export const PATH_PAGE = {
   maintenance: '/maintenance',
   pricing: '/pricing',
   payment: '/payment',
+  linkedinLogin: '/linkedin-test',
+  linkedinProfile: '/linkedin-profile',
   registration: '/registration',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
