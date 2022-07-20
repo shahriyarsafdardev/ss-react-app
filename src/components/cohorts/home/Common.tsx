@@ -3,6 +3,7 @@ import { Box, CircularProgress } from '@material-ui/core';
 import { uniq } from 'lodash';
 
 import moment from 'moment';
+import { Session } from '../../../@types/cohorts';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -121,3 +122,12 @@ export const CircularLoader = () => (
     <CircularProgress />
   </StyledCircularLoader>
 );
+
+export const isZoomLinkVisible = (activeSession: Session | undefined) => {
+  if (activeSession) {
+    const sessionTime = moment(firstUpcomingDate(activeSession.times));
+    // Show zoom link preview before 1 hour and till 2 hours after session time
+    return sessionTime < moment().add(1, 'hours') && moment().subtract(2, 'hours') < sessionTime;
+  }
+  return false;
+};
