@@ -8,7 +8,8 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   borderRadius: '16px',
   display: 'flex',
   gap: '32px',
-  marginTop: '32px',
+  margin: '32px 0px',
+  alignItems: 'strech',
   [theme.breakpoints.down('md')]: {
     flexWrap: 'wrap'
   }
@@ -78,12 +79,16 @@ export const PreReadingDetail = styled(Typography)(() => ({
   color: '#64748B'
 }));
 
-export const PreReadingDescription = styled(Typography)(() => ({
+export const PreReadingDescription = styled(Typography)(({ theme }) => ({
   fontWeight: 'normal',
   fontSize: 18,
   lineHeight: '27px',
   marginTop: '24px',
-  color: '#000000'
+  color: '#000000',
+  marginBottom: '100px',
+  [theme.breakpoints.down('md')]: {
+    marginBottom: '24px'
+  }
 }));
 
 export const SessionDescriptionBox = styled(Box)(() => ({
