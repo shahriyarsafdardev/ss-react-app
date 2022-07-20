@@ -48,9 +48,11 @@ function NewHomeTab({
           const response = await axios.get(
             `/cohort_sessions/${activeSession.id}/session_materials.json`
           );
-          setList(response.data);
+          setList(response.data.filter((obj: any) => obj.complete !== true));
           setIsLoading(false);
-          setTotalSteps(totalSteps + response.data.length);
+          setTotalSteps(
+            totalSteps + response.data.filter((obj: any) => obj.complete !== true).length
+          );
         } catch (error) {
           console.log(error);
         }
@@ -58,6 +60,24 @@ function NewHomeTab({
     };
     initMaterials();
   }, [activeSession]);
+
+  const markAsComplete = async (sessionMaterialId: string) => {
+    await axios
+      .post(
+        `/cohort_sessions/${activeSession?.id}/session_materials/${sessionMaterialId}/submit_checklist.json`,
+        {
+          complete: true
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          setCurrentStep(currentStep + 1);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const PreReadingData = ({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => (
     <StyledBox>
@@ -89,7 +109,7 @@ function NewHomeTab({
           <NavigationButton variant="contained" href={sessionMaterial.action_url}>
             Open
           </NavigationButton>
-          <NavigationButton variant="outlined" onClick={() => setCurrentStep(currentStep + 1)}>
+          <NavigationButton variant="outlined" onClick={() => markAsComplete(sessionMaterial.id)}>
             Mark as Complete
           </NavigationButton>
         </NavigationStack>
