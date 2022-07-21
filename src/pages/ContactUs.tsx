@@ -21,6 +21,7 @@ const ContactInfoNote = styled('div')(({ theme }) => ({
   }
 }));
 const StyledGrid = styled(Grid)(({ theme }) => ({
+  marginBottom: '15px',
   [theme.breakpoints.down('sm')]: {
     display: 'block'
   }
@@ -69,27 +70,6 @@ export default function ContactUs() {
 
   const contactInfoDetails = [
     {
-      id: 'd5781c7f-ff3b-4d5e-9e53-d4cb7e40b68f',
-      first_name: 'Leah Nicolai',
-      last_name: 'Higgins',
-      current_position: 'Cohort Operations Manager',
-      email: 'leah@getsphere.com',
-      phone: '+1 315 521 6341',
-      profile_image_url: '/static/contact/Leah.jpeg',
-      city: 'New York',
-      country: 'America',
-      is_managing_team: true,
-      matchings: [],
-      opted_in_for_matching_suggestions: false,
-      linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
-      current_company: {
-        id: '',
-        name: 'Sphere',
-        logo_url: '/static/contact/companyLogo.svg',
-        number_of_employees: '1000-2000'
-      }
-    },
-    {
       id: 'eba5d109-04c1-480c-ae34-1021a6edf36e',
       first_name: 'Nick',
       last_name: 'Rudder',
@@ -132,7 +112,91 @@ export default function ContactUs() {
         number_of_employees: '1000-2000'
       },
       discord_url: 'https://discordapp.com/users/811400748020662284'
+    },
+    {
+      id: 'd5781c7f-ff3b-4d5e-9e53-d4cb7e40b68f',
+      first_name: 'Leah Nicolai',
+      last_name: 'Higgins',
+      current_position: 'Cohort Operations Manager',
+      email: 'leah@getsphere.com',
+      phone: '+1 315 521 6341',
+      profile_image_url: '/static/contact/Leah.jpeg',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
+      linkedin_url: 'https://www.linkedin.com/in/leahnicolai/',
+      current_company: {
+        id: '',
+        name: 'Sphere',
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
+      }
+    },
+    {
+      id: 'efee9707-96c6-42c3-83e9-e941672a9e6a',
+      first_name: 'Kristy',
+      last_name: 'Rosado',
+      current_position: 'Cohort Operations Manager',
+      email: 'kristy@getsphere.com',
+      phone: '',
+      profile_image_url: '/static/contact/Kristy.jpeg',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
+      linkedin_url: 'https://www.linkedin.com/in/kristy-rosado-8b5ba5123',
+      current_company: {
+        id: '',
+        name: 'Sphere',
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
+      }
+    },
+    {
+      id: '0cb1b1b8-d661-495c-a1a6-31690b159995',
+      first_name: 'Alec',
+      last_name: 'Goldstein',
+      current_position: 'Growth Marketing Manager',
+      email: 'alec@getsphere.com',
+      phone: '',
+      profile_image_url: '/static/contact/Alec.jpeg',
+      city: 'New York',
+      country: 'America',
+      is_managing_team: true,
+      matchings: [],
+      opted_in_for_matching_suggestions: false,
+      linkedin_url: 'https://www.linkedin.com/in/alec-goldstein',
+      current_company: {
+        id: '',
+        name: 'Sphere',
+        logo_url: '/static/contact/companyLogo.svg',
+        number_of_employees: '1000-2000'
+      }
     }
+    // {
+    //   id: '549c6fb3-41dd-4c8d-854f-2a48c2a519bd',
+    //   first_name: 'Nathan',
+    //   last_name: 'Thompson',
+    //   current_position: 'Growth Marketing Manager',
+    //   email: 'nathan@getsphere.com',
+    //   phone: '',
+    //   profile_image_url: '/static/contact/Nathan.jpeg',
+    //   city: 'New York',
+    //   country: 'America',
+    //   is_managing_team: true,
+    //   matchings: [],
+    //   opted_in_for_matching_suggestions: false,
+    //   linkedin_url: 'https://www.linkedin.com/in/nathan-likes-writing',
+    //   current_company: {
+    //     id: '',
+    //     name: 'Sphere',
+    //     logo_url: '/static/contact/companyLogo.svg',
+    //     number_of_employees: '1000-2000'
+    //   }
+    // }
   ];
 
   return (
