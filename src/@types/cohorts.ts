@@ -191,6 +191,7 @@ export type Cohort = {
   intake_name: string;
   session_times: string;
   host_names: string;
+  host_full_name: string;
   host_image_url: string;
   is_host: boolean;
   is_free: boolean;

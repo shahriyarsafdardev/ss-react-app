@@ -6,11 +6,7 @@ import useAuth from 'hooks/useAuth';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
 
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
-import {
-  BorderLinearProgress,
-  CurrentStep,
-  ProgressBarContainer
-} from '../onboarding/HomeTabHeader';
+import { CurrentStep, ProgressBarContainer } from '../onboarding/HomeTabHeader';
 import axios from '../../../utils/axios';
 import {
   StyledBox,
@@ -23,7 +19,8 @@ import {
   PreReadingDetail,
   PreReadingDescription,
   SessionDescription,
-  NavigationButton
+  NavigationButton,
+  BorderLinearProgress
 } from './NewHomeTabStyles';
 
 function NewHomeTab({
@@ -40,6 +37,8 @@ function NewHomeTab({
   const [totalSteps, setTotalSteps] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const zoomTimes = zoomTimesPreview(activeSession?.times || []);
+  const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
   const progress = () => ((currentStep + 1) / totalSteps) * 100;
   useEffect(() => {
     const initMaterials = async () => {
@@ -150,8 +149,10 @@ function NewHomeTab({
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {cohort.host_names} {displayMultipleDates(activeSession?.times || [])}{' '}
-            {zoomTimesPreview(activeSession?.times || [])}
+            Live with {cohort.host_full_name}'s on{' '}
+            {displayMultipleDates(activeSession?.times || [])}
+            {', '}
+            {zoomTimes.replace(timeZone, '(local time)')}
           </PreReadingDetail>
         </Box>
         <SessionDescription innerContent={activeSession?.summary || ''} />

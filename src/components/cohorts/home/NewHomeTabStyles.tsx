@@ -1,5 +1,6 @@
 import { Box, Button, Stack, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 
 export const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: 'white',
@@ -112,5 +113,18 @@ export const NavigationButton = styled(Button)(({ theme }) => ({
   padding: '13px',
   [theme.breakpoints.down('md')]: {
     width: '100%'
+  }
+}));
+
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  width: '100%',
+  height: 4,
+  borderRadius: 5,
+  marginRight: 8,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: '#E2E8F0',
+    span: {
+      backgroundColor: '#147A16'
+    }
   }
 }));
