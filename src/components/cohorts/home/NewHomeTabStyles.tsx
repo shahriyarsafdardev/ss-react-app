@@ -111,6 +111,7 @@ export const NavigationButton = styled(Button)(({ theme }) => ({
   width: '50%',
   borderRadius: '1000px',
   padding: '13px',
+  textAlign: 'center',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }

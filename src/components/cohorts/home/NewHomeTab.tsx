@@ -172,7 +172,7 @@ function NewHomeTab({
       return `👋 Welcome ${user?.first_name}, make sure you get ready for Session ${activeSession?.number}!`;
     }
     if (isZoomLinkVisible(activeSession)) {
-      return `🔴 Great to see you ${user?.first_name}, Session ${activeSession?.number}! 1 is live!`;
+      return `🔴 Great to see you ${user?.first_name}, Session ${activeSession?.number} is live!`;
     }
     return `🎉 Great work ${user?.first_name}, you’re ready to go for Session ${activeSession?.number}!`;
   };
