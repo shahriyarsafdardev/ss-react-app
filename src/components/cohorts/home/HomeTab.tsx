@@ -3,7 +3,6 @@ import { Container, Box, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { NavLink as RouterLink } from 'react-router-dom';
 import Page from 'components/Page';
-import axios from 'utils/axios';
 import moment from 'moment';
 import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -19,6 +18,7 @@ import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 import NewOnboardingModal from '../onboarding/NewOnboardingModal';
 import NewHomeTab from './NewHomeTab';
+import SurveyQuestionsModal from '../onboarding/SurveyQuestionsModal';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -38,6 +38,7 @@ const IBRAHIM_COHORT_ID = 'e0d1f216-104e-4018-aea2-86f00f0ce3dd';
 const Index = () => {
   const dispatch = useDispatch();
   const [hasOnboarded, setHasOnboarded] = useState(true);
+  const [hasQuestionSubmitted, setQuestionSubmitted] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
@@ -64,12 +65,8 @@ const Index = () => {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
-      axios
-        .get(`/cohorts/${cohort.id}/onboarding/onboarding_complete.json`)
-        .then((res) => res.data)
-        .then((payload) => {
-          setHasOnboarded(payload);
-        });
+      setHasOnboarded(cohort?.is_onboarded);
+      setQuestionSubmitted(cohort?.is_feedback_submitted);
     }
   }, [cohort]);
 
@@ -138,6 +135,7 @@ const Index = () => {
     );
 
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
+  const questionSubmittedModal = () => !hasQuestionSubmitted && user?.type === 'learner';
 
   const renderOnboardingModal = () =>
     cohort?.id === IBRAHIM_COHORT_ID ? (
@@ -149,6 +147,9 @@ const Index = () => {
   return (
     <Page title="Sphere | Homepage">
       {shouldOpenModal() && renderOnboardingModal()}
+      {cohort?.is_onboarded === true && questionSubmittedModal() && (
+        <SurveyQuestionsModal state={questionSubmittedModal()} cohort_id={cohort_id} />
+      )}
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           {renderHomeTab()}
