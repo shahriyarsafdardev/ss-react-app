@@ -4,9 +4,10 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import { RootState, useSelector } from 'redux/store';
+import { dispatch, RootState, useSelector } from 'redux/store';
 
 import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import { updateOnboardingStatus } from 'redux/slices/cohort';
 import {
   UserInfoForm,
   CompanyInfoForm,
@@ -58,7 +59,7 @@ type HomeResponse = {
 
 const MODAL_HEIGHT = '650px';
 
-const OnboardingStepsContainer = styled('div')(() => ({
+export const OnboardingStepsContainer = styled('div')(() => ({
   display: 'flex',
   borderRadius: '25px'
 }));
@@ -277,6 +278,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         }
         setIsSubmitting(false);
         setModal(false);
+        dispatch(updateOnboardingStatus(cohort_id));
       })
       .catch((err) => {
         setIsSubmitting(false);

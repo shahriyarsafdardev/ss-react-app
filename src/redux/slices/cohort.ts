@@ -96,12 +96,17 @@ const slice = createSlice({
       }
     },
     updateOnboardingStatusSuccess(state, action) {
-      const targetCohortIndex = state.cohorts.findIndex(
-        (cohort) => cohort.id === action.payload.cohort_id
-      );
+      const targetCohortIndex = state.cohorts.findIndex((cohort) => cohort.id === action.payload);
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
-        state.cohorts[targetCohortIndex] = { ...updated, isOnboarded: true };
+        state.cohorts[targetCohortIndex] = { ...updated, is_onboarded: true };
+      }
+    },
+    updateFeedbackStatusSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex((cohort) => cohort.id === action.payload);
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = { ...updated, is_feedback_submitted: true };
       }
     },
     updatePeersMatch(state, action) {
@@ -430,6 +435,17 @@ export function updateOnboardingStatus(cohortID: string) {
     try {
       setAuthorizationToken();
       dispatch(slice.actions.updateOnboardingStatusSuccess(cohortID));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateFeedbackStatus(cohortID: string) {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      dispatch(slice.actions.updateFeedbackStatusSuccess(cohortID));
     } catch (error) {
       console.log(error);
     }

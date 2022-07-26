@@ -4,8 +4,9 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
-import { RootState, useSelector } from 'redux/store';
+import { dispatch, RootState, useSelector } from 'redux/store';
 import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { GoalsForm, HouseKeepingForm, AddToCalendarInfo, UserInfoForm } from './new-info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -164,6 +165,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
         }
         setIsSubmitting(false);
         setModal(false);
+        dispatch(updateOnboardingStatus(cohort_id));
         trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
           [ONBOARDING_EVENTS.cohort_name]: cohort.name,
           [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,

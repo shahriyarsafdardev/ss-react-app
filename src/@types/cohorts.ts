@@ -195,7 +195,8 @@ export type Cohort = {
   host_image_url: string;
   is_host: boolean;
   is_free: boolean;
-  isOnboarded: boolean;
+  is_onboarded: boolean;
+  is_feedback_submitted: boolean;
   released_for_learners: boolean;
   intake: number;
   questions_url: string;

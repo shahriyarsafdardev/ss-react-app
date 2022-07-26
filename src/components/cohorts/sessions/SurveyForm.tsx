@@ -14,24 +14,24 @@ import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import SurveyRow from './SurveyRow';
 
-const StyledContainer = styled(Container)(() => ({
+export const StyledContainer = styled(Container)(() => ({
   backgroundColor: 'white',
   borderRadius: '25px',
   padding: '20px 10px'
 }));
 
-const QuestionContainer = styled(Container)(({ theme }) => ({
+export const QuestionContainer = styled(Container)(({ theme }) => ({
   minHeight: '72vh',
   position: 'relative'
 }));
 
-const ProgressBarContainer = styled(Box)(() => ({
+export const ProgressBarContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   marginBottom: 30
 }));
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
   height: 4,
   borderRadius: 5,
@@ -41,13 +41,13 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-const CurrentStep = styled(Typography)(() => ({
+export const CurrentStep = styled(Typography)(() => ({
   fontSize: 12,
   color: '#6C7885',
   textAlign: 'right'
 }));
 
-const StyledButton = styled(LoadingButton)(({ theme }) => ({
+export const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   flex: 1,
   marginLeft: '30px !important',
@@ -60,7 +60,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-const ButtonsContainer = styled(Box)(({ theme }) => ({
+export const ButtonsContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   display: 'flex',
   justifyContent: 'center',
@@ -75,7 +75,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const SessionTitle = styled('span')(({ theme }) => ({
+export const SessionTitle = styled('span')(({ theme }) => ({
   fontWeight: 'bolder',
   minHeight: '50px',
   fontSize: '1.5rem',
@@ -84,7 +84,7 @@ const SessionTitle = styled('span')(({ theme }) => ({
   }
 }));
 
-const SessionNumber = styled('span')(({ theme }) => ({
+export const SessionNumber = styled('span')(({ theme }) => ({
   fontWeight: 400,
   minHeight: '50px',
   marginRight: 1,
@@ -157,7 +157,7 @@ export default function SurveyForm({
 
   const progress = () => {
     if (totalQuestions > 0) {
-      return (currentQuestion / totalQuestions) * 100;
+      return ((currentQuestion + 1) / totalQuestions) * 100;
     }
     return 0;
   };
