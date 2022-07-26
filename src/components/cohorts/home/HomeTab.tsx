@@ -128,7 +128,7 @@ const Index = () => {
   );
 
   const renderHomeTab = () =>
-    cohort.new_home_tab ? (
+    cohort?.new_home_tab ? (
       <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
     ) : (
       <HomeTabSection />
