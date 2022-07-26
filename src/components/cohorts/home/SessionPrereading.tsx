@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import moment from 'moment';
 import { styled } from '@material-ui/core/styles';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box, Typography } from '@material-ui/core';
@@ -7,7 +6,13 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
-import { CircularLoader, firstUpcomingDate, SectionContainer, zoomTimesPreview } from './Common';
+import {
+  CircularLoader,
+  firstUpcomingDate,
+  SectionContainer,
+  zoomTimesPreview,
+  isZoomLinkVisible
+} from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
 import JoinZoomPrompt from '../JoinZoomPrompt';
@@ -90,15 +95,6 @@ const SessionPrereading = ({
   );
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
 
-  const isZoomLinkVisible = () => {
-    if (activeSession) {
-      const sessionTime = moment(firstUpcomingDate(activeSession.times));
-      // Show zoom link preview before 1 hour and till 2 hours after session time
-      return sessionTime < moment().add(1, 'hours') && moment().subtract(2, 'hours') < sessionTime;
-    }
-    return false;
-  };
-
   return (
     <SectionContainer className="card-2" data-testid="to-do-card">
       {sessions && cohort ? (
@@ -150,7 +146,7 @@ const SessionPrereading = ({
                 )}
               </Box>
               <StyledSessionPrereadingContainer>
-                {isZoomLinkVisible() && (
+                {isZoomLinkVisible(activeSession) && (
                   <JoinZoomPrompt
                     displayType="small"
                     isFree={false}

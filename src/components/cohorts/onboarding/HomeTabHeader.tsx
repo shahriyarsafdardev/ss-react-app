@@ -4,18 +4,18 @@ import { Typography, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 
-const ProgressBarContainer = styled(Box)(() => ({
+export const ProgressBarContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center'
 }));
 
-const CurrentStep = styled(Typography)(() => ({
+export const CurrentStep = styled(Typography)(() => ({
   fontSize: 12,
   color: '#6C7885',
   textAlign: 'right'
 }));
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
   height: 4,
   borderRadius: 5,
