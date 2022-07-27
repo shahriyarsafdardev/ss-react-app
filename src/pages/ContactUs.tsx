@@ -76,7 +76,7 @@ export default function ContactUs() {
       email: 'nicholas@getsphere.com',
       current_position: 'Co-Founder & CEO',
       phone: '+1 415 994 7284',
-      profile_image_url: '/static/contact/Nick.png',
+      profile_image_url: '/static/contact/Nick.jpeg',
       city: 'New York',
       country: 'America',
       is_managing_team: true,
