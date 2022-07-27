@@ -40,7 +40,7 @@ export default function App() {
         type: user?.type,
         company: user?.current_company,
         position: user?.current_position,
-        industry: user?.current_industry_category_selections.join(),
+        industry: user?.current_industry_category_selections?.join(),
         live_attandance: `${user?.user_live_attendance_percentage}%`
       });
     }
