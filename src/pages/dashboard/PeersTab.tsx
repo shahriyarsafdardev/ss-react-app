@@ -16,7 +16,7 @@ import { styled } from '@material-ui/core/styles';
 // redux
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
-import { ExportToExcel } from 'components/students/Common';
+import { ExportToExcel, ExportOnboardingResponse } from 'components/students/Common';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -183,11 +183,17 @@ export default function PeersTab() {
             view={view}
           />
           {user?.type === 'admin' && mode === 'Instructor' && (
-            <ExportToExcel
-              cohort={cohort}
-              students={filteredPeers}
-              fileName={`${moment().format()}-${cohort?.name} Students Data`}
-            />
+            <Stack direction={{ xs: 'row', md: 'row' }} style={{ gap: '16px' }}>
+              <ExportToExcel
+                cohort={cohort}
+                students={filteredPeers}
+                fileName={`${moment().format()}-${cohort?.name} Students Data`}
+              />
+              <ExportOnboardingResponse
+                cohort={cohort}
+                fileName={`${moment().format()}-${cohort?.name} Onboarding Response`}
+              />
+            </Stack>
           )}
         </Stack>
         {view === 'grid' ? showCardView() : showTableView()}
