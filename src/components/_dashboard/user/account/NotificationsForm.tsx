@@ -127,14 +127,14 @@ export default function NetworkingForm({
                         setFieldValue('direct_message_notifications', value)
                       }
                     />
-                    <SelectFiled
+                    {/* <SelectFiled
                       label="Upcoming session reminder"
                       options={commonOptions}
                       value={values.upcoming_session_email}
                       onChange={(value: string) =>
                         setFieldValue('direct_message_notifications', value)
                       }
-                    />
+                    /> */}
                   </Stack>
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
