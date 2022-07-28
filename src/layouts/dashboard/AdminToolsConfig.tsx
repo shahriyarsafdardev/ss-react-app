@@ -54,6 +54,11 @@ const adminToolsConfig = {
       title: 'Waitlist Form',
       path: PATH_DASHBOARD.adminTools.waitlist_form,
       icon: ICONS.cohorts
+    },
+    {
+      title: 'Surveys',
+      path: PATH_DASHBOARD.adminTools.surveys,
+      icon: ICONS.cohorts
     }
   ]
 };
