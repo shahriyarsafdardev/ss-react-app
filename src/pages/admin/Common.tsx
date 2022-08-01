@@ -1,10 +1,12 @@
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { OnboardingStepsContainer } from 'components/cohorts/onboarding/OnboardingModal';
 import { StyledContainer } from 'components/cohorts/sessions/SurveyForm';
 import { useState } from 'react';
 import Highlight from 'react-highlight';
+import copy from 'clipboard-copy';
+import { useSnackbar } from 'notistack5';
 
 export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
@@ -31,8 +33,17 @@ export const InviteButtonBox = styled(Box)(() => ({
   padding: '20px'
 }));
 
+const CopyJsonButton = styled(Button)(({ theme }) => ({
+  width: '250px',
+  margin: '12px 0px',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
+
 export const ExampleQuestionModal = () => {
   const [JsonModalOpen, setJsonModalOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const JSON_FORMAT_EXAMPLE = `[
     {
@@ -129,6 +140,11 @@ export const ExampleQuestionModal = () => {
     }
   ]`;
 
+  const handleCopyToClipboard = () => {
+    copy(JSON_FORMAT_EXAMPLE);
+    enqueueSnackbar('Copied to clipboard !', { variant: 'success' });
+  };
+
   return (
     <>
       <Button variant="contained" onClick={() => setJsonModalOpen(true)}>
@@ -136,7 +152,19 @@ export const ExampleQuestionModal = () => {
       </Button>
       <Modal open={JsonModalOpen} onClose={() => setJsonModalOpen(false)} zIndex={1400}>
         <OnboardingStepsContainer>
-          <StyledContainer>
+          <StyledContainer
+            style={{
+              padding: '0px',
+              border: '20px solid white',
+              overflow: 'scroll',
+              height: '600px'
+            }}
+          >
+            <Stack alignItems={{ xs: 'center', md: 'end' }}>
+              <CopyJsonButton variant="contained" onClick={() => handleCopyToClipboard()}>
+                Copy example to clipboard
+              </CopyJsonButton>
+            </Stack>
             <Highlight>{JSON_FORMAT_EXAMPLE}</Highlight>
           </StyledContainer>
         </OnboardingStepsContainer>

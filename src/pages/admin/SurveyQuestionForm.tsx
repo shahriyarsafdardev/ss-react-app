@@ -19,9 +19,10 @@ import { LoadingButton } from '@material-ui/lab';
 import { uniq } from 'lodash';
 import { useEffect, useState } from 'react';
 import { getSessions } from 'redux/slices/cohort';
+import LoadingScreen from 'components/LoadingScreen';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
-import { ExampleQuestionModal } from './Common';
+import { ExampleQuestionModal, LoadingContainer } from './Common';
 
 interface Survey {
   cohortCode: string;
@@ -41,7 +42,7 @@ const StyledForm = styled(Form)(({ theme }) => ({
   }
 }));
 
-export default function SurveyForm() {
+export default function SurveyQuestionForm() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { enqueueSnackbar } = useSnackbar();
   const [currentCode, setCurrentCode] = useState('');
@@ -49,7 +50,18 @@ export default function SurveyForm() {
 
   const SurveySchema = Yup.object().shape({
     cohortCode: Yup.string().required('Cohort Code is required'),
-    cohortIntake: Yup.string().required('cohort Intake is required')
+    cohortIntake: Yup.string().required('cohort Intake is required'),
+    questionsJSON: Yup.string().required('Questions are required'),
+    sessionNumber: Yup.string().test(
+      'oneOfRequired',
+      'Select session or check is Onboarding question.',
+      (item, inputValue) => inputValue.parent.sessionNumber || inputValue.parent.isOnboardedQuestion
+    ),
+    isOnboardedQuestion: Yup.string().test(
+      'oneOfRequired',
+      'Select session or check is onboarding question.',
+      (item, inputValue) => inputValue.parent.sessionNumber || inputValue.parent.isOnboardedQuestion
+    )
   });
 
   const formik = useFormik<Survey>({
@@ -63,20 +75,24 @@ export default function SurveyForm() {
     },
     validationSchema: SurveySchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      try {
-        const uploadData = new FormData();
-        uploadData.append('cohort_code', values.cohortCode);
-        uploadData.append('cohort_intake', values.cohortIntake);
-        uploadData.append('session_number', values.sessionNumber);
-        uploadData.append('questions_json', values.questionsJSON);
-        await axios.post('/enrollments/add_waitlist.json', uploadData);
-        resetForm();
-        setSubmitting(false);
-        enqueueSnackbar('Question are added succefully!', { variant: 'success' });
-      } catch (error) {
-        setSubmitting(false);
-        enqueueSnackbar('Something went wrong', { variant: 'error' });
-      }
+      const uploadData = new FormData();
+      uploadData.append('cohort_code', values.cohortCode);
+      uploadData.append('cohort_intake', values.cohortIntake);
+      uploadData.append('session_number', values.sessionNumber);
+      uploadData.append('questions_json', values.questionsJSON);
+      uploadData.append('is_onboarded_question', values.isOnboardedQuestion.toString());
+      await axios
+        .post('/cohorts/add_survey_questions.json', uploadData)
+        .then((res) => {
+          enqueueSnackbar(res.data.message, { variant: 'success' });
+          resetForm();
+          setCurrentCode('');
+          setIntakeList([]);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message, { variant: 'error' });
+        });
+      setSubmitting(false);
     }
   });
 
@@ -120,6 +136,13 @@ export default function SurveyForm() {
       setIntakeList([]);
     }
   };
+  if (cohorts.length <= 0) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <>
@@ -132,11 +155,13 @@ export default function SurveyForm() {
                 <Stack spacing={{ xs: 2, md: 3 }}>
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <FormControl fullWidth>
-                      <InputLabel>Select Cohort Code</InputLabel>
+                      <InputLabel>Cohort Code</InputLabel>
                       <MaterialSelect
                         label="Cohort Code"
                         fullWidth
                         data-testid="cohortCode"
+                        defaultValue={values.cohortCode}
+                        value={values.cohortCode}
                         error={Boolean(touched.cohortCode && errors.cohortCode)}
                       >
                         {cohortCodes().map((code: any, index: any) => (
@@ -160,11 +185,13 @@ export default function SurveyForm() {
                   {currentCode && (
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                       <FormControl fullWidth>
-                        <InputLabel>Select Cohort Intake</InputLabel>
+                        <InputLabel>Cohort Intake</InputLabel>
                         <MaterialSelect
                           label="Cohort Intake"
                           fullWidth
                           data-testid="cohort-intake"
+                          defaultValue={values.cohortIntake}
+                          value={values.cohortIntake}
                           error={Boolean(touched.cohortIntake && errors.cohortIntake)}
                           disabled={intakeList.length <= 0}
                         >
@@ -191,6 +218,8 @@ export default function SurveyForm() {
                           control={
                             <Checkbox
                               disabled={!values.cohortIntake}
+                              defaultValue={values.isOnboardedQuestion ? 1 : 0}
+                              value={values.isOnboardedQuestion}
                               onChange={(e) => {
                                 setFieldValue('isOnboardedQuestion', e.target.checked);
                                 setFieldValue('sessionNumber', '');
@@ -206,10 +235,12 @@ export default function SurveyForm() {
                   {sessions && !values.isOnboardedQuestion && (
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                       <FormControl fullWidth>
-                        <InputLabel>Select Session Number</InputLabel>
+                        <InputLabel>Session Number</InputLabel>
                         <MaterialSelect
                           label="Session Number"
                           fullWidth
+                          defaultValue={values.sessionNumber}
+                          value={values.sessionNumber}
                           data-testid="session-number"
                           disabled={sessions?.length <= 0 || !cohort}
                           error={Boolean(touched.sessionNumber && errors.sessionNumber)}
