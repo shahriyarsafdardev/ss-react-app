@@ -6,6 +6,7 @@ import { initAmplitude, setAmplitudeUserProperties } from 'utils/amplitude';
 import Feedback from 'components/Feedback';
 
 // routes
+import GoogleTagManager from 'components/GoogleTagManager';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -54,6 +55,7 @@ export default function App() {
             <NotistackProvider>
               {/* <Settings /> */}
               <ScrollToTop />
+              <GoogleTagManager />
               <GoogleAnalytics />
               {isAuthenticated && <Feedback />}
               {isInitialized ? <Router /> : <LoadingScreen />}
