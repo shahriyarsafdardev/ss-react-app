@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
-
+import useAuth from 'hooks/useAuth';
 import { Grid, Card, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
 import {
@@ -38,6 +38,7 @@ export default function UserForm({
   wait_listed: boolean;
 }) {
   const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated } = useAuth();
   const url = new URLSearchParams(useLocation().search);
   const alumni = url.get('alumni') || false;
   const referrer_code = url.get('referrer') || '';
@@ -82,13 +83,15 @@ export default function UserForm({
               const { user } = res.data;
               enqueueSnackbar('Application Submitted', { variant: 'success' });
               submitValues({ ...values, slug: user.slug });
-              setAmplitudeUserId(user?.slug);
-              setAmplitudeUserProperties({
-                full_name: user?.full_name,
-                type: user?.type,
-                company: user?.company,
-                industry: user?.industry_category_selection?.join()
-              });
+              if (!isAuthenticated) {
+                setAmplitudeUserId(user?.slug);
+                setAmplitudeUserProperties({
+                  full_name: user?.full_name,
+                  type: user?.type,
+                  company: user?.company,
+                  industry: user?.industry_category_selection?.join()
+                });
+              }
               triggerOnboardingEvent();
               if (alumni) {
                 triggerReferralEvent();
