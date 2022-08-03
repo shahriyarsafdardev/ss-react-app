@@ -283,7 +283,7 @@ export default function SurveyQuestionForm() {
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
                   {(values.sessionNumber || values.isOnboardedQuestion) && <ExampleQuestionModal />}
-                  {cohort && (
+                  {cohort && values.sessionNumber && (
                     <Button
                       href={`/cohorts/${cohort?.id}/sessions?session=${values.sessionNumber}&student_feedback=true`}
                       variant="outlined"
