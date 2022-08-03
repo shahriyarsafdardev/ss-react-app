@@ -12,7 +12,8 @@ import {
   Select as MaterialSelect,
   FormControlLabel,
   Checkbox,
-  TextField
+  TextField,
+  Button
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
@@ -85,9 +86,9 @@ export default function SurveyQuestionForm() {
         .post('/cohorts/add_survey_questions.json', uploadData)
         .then((res) => {
           enqueueSnackbar(res.data.message, { variant: 'success' });
-          resetForm();
-          setCurrentCode('');
-          setIntakeList([]);
+          // resetForm();
+          // setCurrentCode('');
+          // setIntakeList([]);
         })
         .catch((err) => {
           enqueueSnackbar(err.message, { variant: 'error' });
@@ -282,6 +283,15 @@ export default function SurveyQuestionForm() {
                 </Stack>
                 <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
                   {(values.sessionNumber || values.isOnboardedQuestion) && <ExampleQuestionModal />}
+                  {cohort && (
+                    <Button
+                      href={`/cohorts/${cohort?.id}/sessions?session=${values.sessionNumber}&student_feedback=true`}
+                      variant="outlined"
+                      target="_blank"
+                    >
+                      Open Survey
+                    </Button>
+                  )}
                   <LoadingButton
                     size="large"
                     type="submit"
