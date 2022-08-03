@@ -2,21 +2,29 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
+import Confetti from 'react-confetti';
 import { useSnackbar } from 'notistack5';
-import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
+import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/core';
+import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
+import { LoadingButton } from '@material-ui/lab';
+import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
 import AlumniRegistration from './AlumniRegistration';
+import InviteChoice from './InviteChoice';
+import RegistrationNavbar from './RegistrationNavbar';
+import Header from './Header';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   minHeight: '100%',
   paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(15),
+  paddingBottom: theme.spacing(5),
   justifyContent: 'center',
   alignItems: 'center',
-  display: 'flex'
+  display: 'flex',
+  position: 'relative'
 }));
 
 type UserType = {
@@ -24,14 +32,55 @@ type UserType = {
   last_name?: string;
   linkedin_url?: string;
   email?: string;
-  host?: string;
   enrollment_id?: string;
   referrer?: string;
   acceptedTerms: boolean;
   alumni_event: boolean;
   wait_listed: boolean;
   pre_release: boolean;
+  slug: string;
 };
+
+export type CohortType = {
+  id: string;
+  name: string;
+  intake: string;
+  instructor: string;
+  dates: string;
+  price: string;
+};
+
+export type CompanyType = {
+  name: string;
+  image: string;
+  no_of_enrollments: number;
+  roles: string[];
+};
+
+const StyledBackButton = styled(Button)(({ theme }) => ({
+  position: 'absolute',
+  top: 110,
+  left: 40,
+  [theme.breakpoints.down('md')]: {
+    top: 150,
+    left: 10
+  }
+}));
+
+export const SubmitButton = styled(Button)(({ theme }) => ({
+  marginTop: 'auto',
+  marginBottom: 0,
+  borderRadius: '30px',
+  height: '40px',
+  width: '100%'
+}));
+
+export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  marginTop: '24px',
+  borderRadius: '30px',
+  height: '40px',
+  width: '100%'
+}));
 
 export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
@@ -39,6 +88,7 @@ export default function Registration() {
   const cohort_id = url.get('cohort_id') || '';
   const credit_account_id = url.get('credit_account') || '';
   const ref_source = url.get('source') || '';
+  const [windowSize, setWindowSize] = useState(getWindowSize());
   const { enqueueSnackbar } = useSnackbar();
 
   const [user, setUser] = useState<UserType>({
@@ -47,52 +97,77 @@ export default function Registration() {
     acceptedTerms: false,
     alumni_event: false,
     wait_listed: false,
-    pre_release: false
+    pre_release: false,
+    slug: ''
   });
+
+  const [company, setCompany] = useState<CompanyType | null>();
 
   const [account, setAccount] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [alumniEvent, setAlumniEvent] = useState(false);
   const [wait_listed, setWaitListed] = useState(false);
-  const [pre_rlease, setPreRelease] = useState(false);
+  const [pre_release, setPreRelease] = useState(false);
+  const [confetti, setConfetti] = useState(200);
+  const [displayConfetti, setDisplayConfetti] = useState(true);
 
-  const updateUserData = async (data: any) => {
-    setUser({ ...user, ...data });
-    if (wait_listed) {
-      setActiveStep(5);
-    } else if (account) {
-      setActiveStep(3);
-    } else {
+  const [cohort, setCohort] = useState<CohortType>({
+    id: '',
+    name: '',
+    intake: '',
+    instructor: '',
+    dates: '',
+    price: ''
+  });
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
+
+  const previousStep = () => {
+    if (activeStep === 4 || activeStep === 3) {
       setActiveStep(2);
+    } else {
+      setActiveStep(activeStep - 1);
     }
   };
 
-  const setFormHeadings = () => {
-    let userFormHeading = '👋 We just need a few more details to process your application';
-    let userFormSubHeading =
-      'We review each application in order to ensure a diverse and experienced cohort!';
+  const selectStep = () => {
+    if (account || wait_listed) {
+      setActiveStep(5);
+    } else {
+      setActiveStep(4);
+    }
+  };
 
+  const updateUserData = async (data: any) => {
+    setUser({ ...user, ...data });
+    setActiveStep(2);
+  };
+
+  const setFormHeadings = () => {
     let payLaterMessage =
       'If you choose to pay later, you will be emailed a payment link. You will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
 
-    let cardFormHeading = `💳 Thanks ${user.first_name}, just one last step!`;
-
-    if (wait_listed) {
-      userFormHeading = '👋 Hi there, to join our waitlist please fill in a few more details';
-      userFormSubHeading =
-        'We review each submission in order to ensure a diverse and experienced cohort!';
-    }
-
-    if (pre_rlease) {
-      cardFormHeading = `💳 Thanks ${user.first_name}, do you want to secure your seat?`;
+    if (pre_release) {
       payLaterMessage =
         'If you choose to pay later, and are accepted into the cohort, you will be emailed a payment link. Note that as long as you have not processed your payment:';
     }
 
-    if (account) {
-      userFormSubHeading = `We have an enterprise package deal with ${account} that your team might be eligible for!`;
-    }
-    return { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage };
+    return { payLaterMessage };
   };
 
   useEffect(() => {
@@ -110,6 +185,11 @@ export default function Registration() {
               ...user,
               ...res.data.user
             });
+          if (res.data.company) {
+            setCompany({
+              ...res.data.company
+            });
+          }
           if (res.data.user.alumni_event) {
             setAlumniEvent(true);
           }
@@ -119,8 +199,14 @@ export default function Registration() {
           if (res.data.user.pre_release) {
             setPreRelease(true);
           }
+          if (res.data.cohort) {
+            setCohort(res.data.cohort);
+          }
           setAccount(res.data.account);
           setLoading(false);
+          setTimeout(() => {
+            setConfetti(0);
+          }, 3000);
         })
         .catch((error) => {
           enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
@@ -128,26 +214,65 @@ export default function Registration() {
     }
   }, []);
 
-  const selectStep = () => {
-    const { userFormHeading, userFormSubHeading, cardFormHeading, payLaterMessage } =
-      setFormHeadings();
+  const subHeading = () => {
+    if (pre_release || wait_listed) {
+      return 'You will recieve an email shortly with more details on the course and how to secure your seat';
+    }
+    if (company && account) {
+      return `We’ve sent your application to a ${company?.name} representative for review and will be in touch with next steps!`;
+    }
+    return 'You will shortly recieve an email documenting your application outcome and next steps!';
+  };
+
+  const displayStep = () => {
+    const { payLaterMessage } = setFormHeadings();
+
     if (activeStep === 2) {
+      return (
+        <>
+          <InviteChoice
+            company={company}
+            account={account}
+            setStep={(step: number) => setActiveStep(step)}
+            selectStep={() => selectStep()}
+          />
+        </>
+      );
+    }
+
+    if (activeStep === 3) {
+      return (
+        <>
+          <InvitePeersForm
+            onContinue={() => selectStep()}
+            enrollmentId={user?.enrollment_id || ''}
+            cohort={cohort}
+            referrer_code={user.slug}
+            company={!!company}
+            account={!!account}
+            waitListed={wait_listed}
+            preRelease={pre_release}
+          />
+        </>
+      );
+    }
+
+    if (activeStep === 4) {
       return (
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
-            cohortID={cohort_id}
+            cohort={cohort}
             first_name={user?.first_name}
             last_name={user?.last_name}
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
-            formHeading={cardFormHeading}
             payLaterMessage={payLaterMessage}
           />
         </Stack>
       );
     }
 
-    if (activeStep === 3) {
+    if (activeStep === 5) {
       return (
         <Stack
           width="100%"
@@ -156,20 +281,23 @@ export default function Registration() {
           justifyContent="center"
           alignItems="center"
         >
+          {!!company && (
+            <Box style={{ marginBottom: '24px' }}>
+              <Avatar alt={company?.name} src={company?.image} sx={{ width: 95, height: 95 }} />
+            </Box>
+          )}
           <Box sx={{ mb: 5 }}>
             <Typography variant="h3" align="center" paragraph data-testid="confirmation-message">
-              {account
-                ? `🎉 Thanks ${user.first_name} you’ll hear back from us shortly`
-                : '🎉 You’ve completed your application!'}
+              {wait_listed || pre_release
+                ? '🎉 Congratulations, you’ve joined the waitlist'
+                : '🎉 Congratulations, you’ve completed your application!'}
             </Typography>
             <Typography
               align="center"
               sx={{ color: 'text.secondary' }}
               data-testid="confirmation-subtext"
             >
-              {account
-                ? `Sphere has an enterprise package deal with ${account}, we’re just checking whether your team qualifies!`
-                : 'You will shortly recieve an email documenting your application outcome and next steps!'}
+              {subHeading()}
             </Typography>
           </Box>
           <Button
@@ -177,98 +305,7 @@ export default function Registration() {
             variant="contained"
             color="primary"
             data-testid="explore-btn"
-          >
-            Explore more Sphere cohorts
-          </Button>
-        </Stack>
-      );
-    }
-
-    if (activeStep === 4) {
-      return (
-        <Stack
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
-              {pre_rlease
-                ? '🎉 We’ll be in touch with more details soon!'
-                : '🎉 You have 72 hours to lock in your price and seat!'}
-            </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
-              Look for an email with your payment link in the next few hours; if you haven’t
-              received any, make sure you check your spam folder.
-            </Typography>
-          </Box>
-          <Button
-            href="https://www.getsphere.com/pages/contact-us"
-            variant="contained"
-            color="primary"
-            data-testid="contact-btn"
-          >
-            Any questions? Click here to contact Sphere
-          </Button>
-        </Stack>
-      );
-    }
-
-    if (activeStep === 5) {
-      return (
-        <Stack
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
-              🎉 Congratulations, you’ve joined the waitlist
-            </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
-              You will recieve an email shortly with more details on the course and how to secure
-              your seat
-            </Typography>
-          </Box>
-          <Button
-            href="https://www.getsphere.com/#upcoming-cohorts-slider"
-            variant="contained"
-            color="primary"
-            data-testid="explore-cohorts-btn"
-          >
-            Explore more Sphere cohorts
-          </Button>
-        </Stack>
-      );
-    }
-
-    if (activeStep === 5) {
-      return (
-        <Stack
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h3" align="center" paragraph data-testid="remainingTime">
-              🎉 Congratulations, you’ve joined the waitlist
-            </Typography>
-            <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
-              You will recieve an email shortly with more details on the course and how to secure
-              your seat
-            </Typography>
-          </Box>
-          <Button
-            href="https://www.getsphere.com/#upcoming-cohorts-slider"
-            variant="contained"
-            color="primary"
-            data-testid="explore-cohorts-btn"
+            sx={{ borderRadius: '30px', height: '40px' }}
           >
             Explore more Sphere cohorts
           </Button>
@@ -277,16 +314,13 @@ export default function Registration() {
     }
 
     return (
-      <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
-        <UserForm
-          cohortID={cohort_id}
-          user={user}
-          account={account}
-          submitValues={(data: any) => updateUserData(data)}
-          formHeading={userFormHeading}
-          formSubHeading={userFormSubHeading}
-        />
-      </Stack>
+      <UserForm
+        cohortID={cohort_id}
+        user={user}
+        account={account}
+        wait_listed={wait_listed}
+        submitValues={(data: any) => updateUserData(data)}
+      />
     );
   };
 
@@ -294,18 +328,52 @@ export default function Registration() {
     if (alumniEvent) {
       return <AlumniRegistration />;
     }
-    return <Container maxWidth="lg">{selectStep()}</Container>;
+    return (
+      <Stack width="100%">
+        {![5, 6, 7].includes(activeStep) && (
+          <Header
+            company={company}
+            account={account}
+            activeStep={activeStep}
+            waitlist={wait_listed}
+            preRelease={pre_release}
+            userName={user?.first_name}
+          />
+        )}
+        <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center' }}>
+          {displayStep()}
+        </Container>
+      </Stack>
+    );
   };
 
   return (
-    <RootStyle title="Sphere Cohort Registration">
-      {loading ? (
-        <Box padding="200px">
-          <LoadingScreen />
-        </Box>
-      ) : (
-        <RegistrationFlow />
-      )}
-    </RootStyle>
+    <>
+      <RootStyle title="Sphere Cohort Registration">
+        {!alumniEvent && account && displayConfetti && (
+          <Confetti
+            width={windowSize?.innerWidth}
+            height={windowSize?.innerHeight}
+            numberOfPieces={confetti}
+            onConfettiComplete={(confetti: any) => {
+              setDisplayConfetti(false);
+            }}
+          />
+        )}
+        <RegistrationNavbar cohort={cohort} />
+        {[2, 3, 4].includes(activeStep) && (
+          <StyledBackButton variant="outlined" onClick={() => previousStep()}>
+            <KeyboardBackspace fontSize="large" />
+          </StyledBackButton>
+        )}
+        {loading ? (
+          <Box padding="200px">
+            <LoadingScreen />
+          </Box>
+        ) : (
+          <RegistrationFlow />
+        )}
+      </RootStyle>
+    </>
   );
 }

@@ -194,7 +194,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       preferred_pronoun_options
     } = response.data;
 
-    setAmplitudeUserId(user.id);
+    setAmplitudeUserId(user?.slug);
     connectStream(user);
     setSession(accessToken);
     dispatch({

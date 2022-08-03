@@ -1,18 +1,20 @@
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import axios from 'utils/axios';
-import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
 
-import { Grid, Card, Box, Stack, TextField, Typography } from '@material-ui/core';
+import { Grid, Card, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
 import {
   ONBOARDING_EVENTS,
   REFERRAL_EVENTS,
+  setAmplitudeUserId,
+  setAmplitudeUserProperties,
   trackOnboardingEvent,
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
+import { StyledLoadingButton } from './Registration';
 
 type UserType = {
   first_name?: string;
@@ -27,15 +29,13 @@ export default function UserForm({
   cohortID,
   user,
   account,
-  formHeading,
-  formSubHeading
+  wait_listed
 }: {
   submitValues: Function;
   cohortID: string;
   user: UserType;
   account: string;
-  formHeading: string;
-  formSubHeading: string;
+  wait_listed: boolean;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const url = new URLSearchParams(useLocation().search);
@@ -79,8 +79,16 @@ export default function UserForm({
               ...values
             })
             .then((res) => {
+              const { user } = res.data;
               enqueueSnackbar('Application Submitted', { variant: 'success' });
-              submitValues({ ...values });
+              submitValues({ ...values, slug: user.slug });
+              setAmplitudeUserId(user?.slug);
+              setAmplitudeUserProperties({
+                full_name: user?.full_name,
+                type: user?.type,
+                company: user?.company,
+                industry: user?.industry_category_selection?.join()
+              });
               triggerOnboardingEvent();
               if (alumni) {
                 triggerReferralEvent();
@@ -108,93 +116,82 @@ export default function UserForm({
   } = formik;
 
   return (
-    <>
-      <Box sx={{ mb: 5 }}>
-        <Typography variant="h3" align="center" paragraph data-testid="registration-header">
-          {formHeading}
-        </Typography>
-        <Typography
-          align="center"
-          sx={{ color: 'text.secondary' }}
-          data-testid="registration-subtext"
+    <Stack
+      alignContent="center"
+      width={{ xs: '100%', md: '50%' }}
+      display="flex"
+      direction="column"
+      alignItems="center"
+    >
+      <FormikProvider value={formik}>
+        <Form
+          style={{ width: '100%' }}
+          noValidate
+          autoComplete="off"
+          onSubmit={formik.handleSubmit}
         >
-          {formSubHeading}
-        </Typography>
-      </Box>
-
-      <Stack alignContent="center" width={{ xs: '100%', md: '70%' }} alignItems="center">
-        <FormikProvider value={formik}>
-          <Form
-            style={{ width: '100%' }}
-            noValidate
-            autoComplete="off"
-            onSubmit={formik.handleSubmit}
-          >
-            <Grid container spacing={1}>
-              <Grid item sx={{ m: 'auto', width: '100%' }}>
-                <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
-                  <Stack spacing={{ xs: 2, md: 3 }}>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <TextField
-                        fullWidth
-                        label="First Name"
-                        {...getFieldProps('first_name')}
-                        error={Boolean(touched.first_name && errors.first_name)}
-                        helperText={touched.first_name && errors.first_name}
-                        inputProps={{
-                          'data-testid': 'first-name'
-                        }}
-                      />
-                      <TextField
-                        fullWidth
-                        label="Last Name"
-                        {...getFieldProps('last_name')}
-                        error={Boolean(touched.last_name && errors.last_name)}
-                        helperText={touched.last_name && errors.last_name}
-                        inputProps={{
-                          'data-testid': 'last-name'
-                        }}
-                      />
-                    </Stack>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <TextField
-                        fullWidth
-                        label="LinkedIn URL"
-                        {...getFieldProps('linkedin_url')}
-                        error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                        helperText={touched.linkedin_url && errors.linkedin_url}
-                        inputProps={{
-                          'data-testid': 'linkedin_url'
-                        }}
-                      />
-                    </Stack>
-                    {account && (
-                      <TermsCheckBox
-                        data-testid="registration-checkbox"
-                        value={values.acceptedTerms}
-                        onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
-                      />
-                    )}
+          <Grid container spacing={1}>
+            <Grid item sx={{ m: 'auto', width: '100%' }}>
+              <Card sx={{ p: 3, height: 1, overflow: 'visible' }}>
+                <Stack spacing={{ xs: 2, md: 3 }}>
+                  <Typography variant="h6">Your Information</Typography>
+                  <Stack direction="column" spacing={4}>
+                    <TextField
+                      fullWidth
+                      label="First Name"
+                      {...getFieldProps('first_name')}
+                      error={Boolean(touched.first_name && errors.first_name)}
+                      helperText={touched.first_name && errors.first_name}
+                      inputProps={{
+                        'data-testid': 'first-name'
+                      }}
+                    />
+                    <TextField
+                      fullWidth
+                      label="Last Name"
+                      {...getFieldProps('last_name')}
+                      error={Boolean(touched.last_name && errors.last_name)}
+                      helperText={touched.last_name && errors.last_name}
+                      inputProps={{
+                        'data-testid': 'last-name'
+                      }}
+                    />
+                    <TextField
+                      fullWidth
+                      label="LinkedIn URL"
+                      {...getFieldProps('linkedin_url')}
+                      error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                      helperText={touched.linkedin_url && errors.linkedin_url}
+                      inputProps={{
+                        'data-testid': 'linkedin_url'
+                      }}
+                    />
                   </Stack>
-                </Card>
-              </Grid>
+
+                  {(account || wait_listed) && (
+                    <TermsCheckBox
+                      data-testid="registration-checkbox"
+                      value={values.acceptedTerms}
+                      onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
+                    />
+                  )}
+                  <StyledLoadingButton
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                    disabled={!isValid || ((!!account || wait_listed) && !values.acceptedTerms)}
+                    onClick={() => submitForm()}
+                    data-testid="submit-application"
+                    id="btn-submit"
+                  >
+                    Continue
+                  </StyledLoadingButton>
+                </Stack>
+              </Card>
             </Grid>
-          </Form>
-        </FormikProvider>
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-          disabled={!isValid || (!!account && !values.acceptedTerms)}
-          onClick={() => submitForm()}
-          data-testid="submit-application"
-          id="btn-submit"
-          fullWidth
-          sx={{ mt: 3 }}
-        >
-          Submit Application
-        </LoadingButton>
-      </Stack>
-    </>
+          </Grid>
+        </Form>
+      </FormikProvider>
+    </Stack>
   );
 }

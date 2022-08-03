@@ -49,7 +49,9 @@ function InviteEmailForm({
             [REFERRAL_EVENTS.event]: 'click',
             [REFERRAL_EVENTS.category]: 'referral link',
             [REFERRAL_EVENTS.description]: 'Send referral link via email',
-            [REFERRAL_EVENTS.referrer_code]: referrer_code
+            [REFERRAL_EVENTS.referrer_code]: referrer_code,
+            [REFERRAL_EVENTS.invite_email]: values.email,
+            [REFERRAL_EVENTS.invite_full_name]: values.fullName
           });
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
           setReferralEmailModal(false);

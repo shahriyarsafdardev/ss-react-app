@@ -7,8 +7,6 @@ import axios from 'utils/axios';
 import {
   Grid,
   Card,
-  Box,
-  Button,
   Stack,
   TextField,
   Typography,
@@ -27,6 +25,7 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
+import { CohortType } from './Registration';
 
 type CardType = {
   cardName?: string;
@@ -38,6 +37,7 @@ type CardType = {
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
+  borderRadius: '30px',
   [theme.breakpoints.down('sm')]: {
     position: null,
     bottom: null,
@@ -47,21 +47,25 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
+const CohortDetailsCard = styled(Card)(({ theme }) => ({
+  width: '100%',
+  padding: '24px',
+  marginBottom: '12px'
+}));
+
 export default function CardDetails({
-  cohortID,
+  cohort,
   enrollmentID,
   first_name,
   last_name,
   setStep,
-  formHeading,
   payLaterMessage
 }: {
-  cohortID?: string;
+  cohort?: CohortType;
   first_name?: string;
   last_name?: string;
   enrollmentID?: string;
   setStep: Function;
-  formHeading: string;
   payLaterMessage: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -73,7 +77,7 @@ export default function CardDetails({
 
   const triggerOnboardingEvent = () => {
     trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.cohort_name]: cohortID,
+      [ONBOARDING_EVENTS.cohort_name]: cohort?.id,
       [ONBOARDING_EVENTS.cohort_intake_number]: '',
       [ONBOARDING_EVENTS.event]: 'Payment Made',
       [ONBOARDING_EVENTS.category]: 'Payment Made',
@@ -83,7 +87,7 @@ export default function CardDetails({
 
   const triggerReferralEvent = () => {
     trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohortID,
+      [REFERRAL_EVENTS.cohort_name]: cohort?.id,
       [REFERRAL_EVENTS.cohort_intake_number]: '',
       [REFERRAL_EVENTS.event]: 'Payment Made',
       [REFERRAL_EVENTS.category]: 'referral link',
@@ -122,9 +126,9 @@ export default function CardDetails({
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
-      if (enrollmentID && cohortID) {
+      if (enrollmentID && cohort?.id) {
         await axios
-          .post(`/cohorts/${cohortID}/enrollments/${enrollmentID}/add_payment_details.json`, {
+          .post(`/cohorts/${cohort?.id}/enrollments/${enrollmentID}/add_payment_details.json`, {
             ...values
           })
           .then((res) => {
@@ -133,7 +137,7 @@ export default function CardDetails({
             if (alumni) {
               triggerReferralEvent();
             }
-            setStep(3);
+            setStep(5);
           })
           .catch((error: any) => {
             enqueueSnackbar(error.message, { variant: 'error' });
@@ -163,6 +167,21 @@ export default function CardDetails({
     return false;
   };
 
+  const InfoRow = ({ title, value }: { title: string; value: string }) => (
+    <Stack direction={{ xs: 'column', md: 'row' }} sx={{ mb: 1 }}>
+      <Typography sx={{ color: 'text.secondary', fontWeight: 'bolder' }}>{title}:&nbsp;</Typography>
+      <Typography>{value}</Typography>
+    </Stack>
+  );
+  const CohortInfo = () => (
+    <CohortDetailsCard>
+      <InfoRow title="Course" value={cohort?.name || ''} />
+      <InfoRow title="Instructor" value={cohort?.instructor || ''} />
+      <InfoRow title="Dates" value={cohort?.dates || 'TBD'} />
+      <InfoRow title="Price" value={cohort?.price ? `$${cohort?.price}` : 'TBD'} />
+    </CohortDetailsCard>
+  );
+
   return (
     <>
       <Dialog open={open} maxWidth="sm" fullWidth>
@@ -180,7 +199,7 @@ export default function CardDetails({
             ❌ We cannot guarantee the price you were quoted
           </Typography>
           <Typography sx={{ textAlign: 'left' }} data-testid="guarantee-two">
-            ❌ We cannot guarantee a seat in the cohort - Our seats sell out quickly!{' '}
+            ❌ We cannot guarantee a seat in the cohort - our seats sell out quickly!{' '}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -188,7 +207,7 @@ export default function CardDetails({
             fullWidth
             variant="outlined"
             color="primary"
-            onClick={() => setStep(4)}
+            onClick={() => setStep(5)}
             data-testid="pay-later"
           >
             Yes, I would like to pay later
@@ -204,17 +223,9 @@ export default function CardDetails({
           </StyledButton>
         </DialogActions>
       </Dialog>
-      <Box sx={{ mb: 5 }}>
-        <Typography variant="h3" align="center" paragraph data-testid="thankyou-message">
-          {formHeading}
-        </Typography>
-        <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="refund-alert">
-          You can get a full refund up to 72 hours before the date of the first session, and will
-          only be charged if you are accepted into the cohort.
-        </Typography>
-      </Box>
+      <Stack alignContent="center" width={{ xs: '100%', md: '50%' }} alignItems="center">
+        <CohortInfo />
 
-      <Stack alignContent="center" width={{ xs: '100%', md: '45%' }} alignItems="center">
         <FormikProvider value={formik}>
           <Form
             style={{ width: '100%' }}
@@ -302,17 +313,6 @@ export default function CardDetails({
           sx={{ mt: 3 }}
           direction={{ xs: 'column', md: 'row' }}
         >
-          {/* <LoadingButton
-            type="submit"
-            variant="outlined"
-            loading={isSubmitting}
-            onClick={() => setOpen(true)}
-            id="btn-submit"
-            data-testid="pay-later-btn"
-            fullWidth
-          >
-            Pay Later
-          </LoadingButton> */}
           <StyledButton
             fullWidth
             type="submit"
@@ -334,7 +334,7 @@ export default function CardDetails({
             id="btn-submit"
             onClick={() => submitForm()}
           >
-            Submit
+            Secure Your Seat
           </StyledButton>
         </Stack>
       </Stack>

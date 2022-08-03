@@ -292,7 +292,6 @@ export default function Router() {
         { path: 'maintenance', element: <Maintenance /> },
         { path: 'pricing', element: <Pricing /> },
         { path: 'payment', element: <Payment /> },
-        { path: 'registration', element: <Registration /> },
         { path: 'free-session-info', element: <FreeSessionInfo /> },
         { path: 'free-session-message', element: <FreeSessionMessage /> },
         { path: '500', element: <Page500 /> },
@@ -302,6 +301,7 @@ export default function Router() {
         { path: 'registration/defer', element: <DeferRegistration /> }
       ]
     },
+    { path: 'registration', element: <Registration /> },
     // {
     //   path: '/',
     // element: <MainLayout />,

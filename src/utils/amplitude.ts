@@ -12,8 +12,8 @@ export const setAmplitudeUserDevice = (installationToken: string) => {
   amplitudeInstance().setDeviceId(installationToken);
 };
 
-export const setAmplitudeUserId = (userId: string | null) => {
-  amplitudeInstance().setUserId(userId);
+export const setAmplitudeUserId = (userSlug: string | null) => {
+  amplitudeInstance().setUserId(userSlug);
 };
 
 export const setAmplitudeUserProperties = (properties: any) => {
@@ -91,7 +91,10 @@ export const REFERRAL_EVENTS = {
   event: 'event',
   category: 'category',
   description: 'description',
-  referrer_code: 'referrer_code'
+  referrer_code: 'referrer_code',
+  invite_full_name: 'invite_full_name',
+  invite_email: 'invite_email',
+  registration_flow: 'registration_flow'
 };
 
 export const trackReferralEvent = (eventType: string, eventData: any) => {
