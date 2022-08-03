@@ -152,7 +152,9 @@ export default function SessionsTab() {
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
       <Page title="Sphere | Sessions">
-        {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+        {cohort?.released_for_learners === true ||
+        cohort?.readings_released === true ||
+        mode === 'Instructor' ? (
           cohortSessions()
         ) : (
           <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />

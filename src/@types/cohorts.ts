@@ -212,6 +212,7 @@ export type Cohort = {
   alumni_event: boolean;
   registration_page_url: string;
   new_home_tab: boolean;
+  readings_released: boolean;
 };
 
 export type ReferralCode = {

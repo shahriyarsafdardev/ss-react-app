@@ -150,7 +150,9 @@ const Index = () => {
       {cohort?.is_onboarded === true && questionSubmittedModal() && (
         <SurveyQuestionsModal state={questionSubmittedModal()} cohort_id={cohort_id} />
       )}
-      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+      {cohort?.released_for_learners === true ||
+      cohort?.readings_released === true ||
+      mode === 'Instructor' ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
           {renderHomeTab()}
         </AnalyticsContext.Provider>
