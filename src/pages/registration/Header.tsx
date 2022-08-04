@@ -159,7 +159,11 @@ export default function Header({
     <StyledStack>
       {!!company && (
         <Box>
-          <Avatar alt={company?.name} src={company?.image} sx={{ width: 95, height: 95 }} />
+          <Avatar
+            alt={company?.name}
+            src={company?.image}
+            sx={{ width: 95, height: 95, border: '1px solid #64748B' }}
+          />
         </Box>
       )}
       <Stack

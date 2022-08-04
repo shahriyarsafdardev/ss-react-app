@@ -283,7 +283,11 @@ export default function Registration() {
         >
           {!!company && (
             <Box style={{ marginBottom: '24px' }}>
-              <Avatar alt={company?.name} src={company?.image} sx={{ width: 95, height: 95 }} />
+              <Avatar
+                alt={company?.name}
+                src={company?.image}
+                sx={{ width: 95, height: 95, border: '1px solid #64748B' }}
+              />
             </Box>
           )}
           <Box sx={{ mb: 5 }}>
