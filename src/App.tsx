@@ -7,6 +7,7 @@ import Feedback from 'components/Feedback';
 
 // routes
 import GoogleTagManager from 'components/GoogleTagManager';
+import FullStoryScript from 'components/FullStoryScript';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -57,6 +58,7 @@ export default function App() {
               <ScrollToTop />
               <GoogleTagManager />
               <GoogleAnalytics />
+              {isInitialized && <FullStoryScript />}
               {isAuthenticated && <Feedback />}
               {isInitialized ? <Router /> : <LoadingScreen />}
             </NotistackProvider>
