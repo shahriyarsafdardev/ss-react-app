@@ -133,6 +133,14 @@ export default function Router() {
           )
         },
         {
+          path: '/surveys',
+          element: (
+            <RoleBasedGuard accessibleRoles={adminRoles}>
+              <SurveyQuestionForm />
+            </RoleBasedGuard>
+          )
+        },
+        {
           path: 'e-commerce',
           children: [
             { path: '/', element: <Navigate to="/e-commerce/shop" replace /> },
@@ -450,6 +458,7 @@ const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/Registrati
 const AdminSales = Loadable(lazy(() => import('../pages/admin/SalesTab')));
 const AdminExperiences = Loadable(lazy(() => import('../pages/admin/ExperiencesTab')));
 const WaitlistForm = Loadable(lazy(() => import('../pages/admin/WaitlistForm')));
+const SurveyQuestionForm = Loadable(lazy(() => import('../pages/admin/SurveyQuestionForm')));
 const AlumniTab = Loadable(lazy(() => import('../pages/admin/AlumniTab')));
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));

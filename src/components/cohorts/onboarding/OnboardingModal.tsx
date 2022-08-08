@@ -77,7 +77,7 @@ const CohortAuthorPreview = styled('div')(({ theme }) => ({
   }
 }));
 
-const ContentContainer = styled('div')(({ theme }) => ({
+export const ContentContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   flex: '1',
   backgroundColor: 'white',
