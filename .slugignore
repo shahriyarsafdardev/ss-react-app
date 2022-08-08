@@ -15,3 +15,4 @@ src/components/_dashboard/mail/*
 /cypress/*
 /src/_test_
 /README.md
+node_modules/
