@@ -224,3 +224,17 @@ export const trackQnAEvents = (
     [QnA_EVENTS.action]: eventData
   });
 };
+
+export const REGISTRATION_EVENTS = {
+  registrant_email: 'Registrant Email',
+  cohort_name: 'Cohort Name',
+  cohort_code: 'Cohort Code',
+  cohort_intake_number: 'Cohort Intake Number',
+  cohort_intake: 'Cohort Intake',
+  source: 'Source',
+  price: 'Price'
+};
+
+export const trackRegistrationEvent = (eventType: string, eventData: any) => {
+  sendAmplitudeData(eventType, eventData);
+};

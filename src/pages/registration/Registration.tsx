@@ -8,6 +8,7 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
+import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -27,7 +28,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
   position: 'relative'
 }));
 
-type UserType = {
+export type UserType = {
   first_name?: string;
   last_name?: string;
   linkedin_url?: string;
@@ -45,9 +46,11 @@ export type CohortType = {
   id: string;
   name: string;
   intake: string;
+  intake_name: string;
   instructor: string;
   dates: string;
   price: string;
+  code: string;
 };
 
 export type CompanyType = {
@@ -55,6 +58,8 @@ export type CompanyType = {
   image: string;
   no_of_enrollments: number;
   roles: string[];
+  is_enterprise_customer: boolean;
+  has_sphere_alumni: boolean;
 };
 
 const StyledBackButton = styled(Button)(({ theme }) => ({
@@ -115,9 +120,11 @@ export default function Registration() {
     id: '',
     name: '',
     intake: '',
+    intake_name: '',
     instructor: '',
     dates: '',
-    price: ''
+    price: '',
+    code: ''
   });
 
   useEffect(() => {
@@ -204,6 +211,16 @@ export default function Registration() {
           }
           setAccount(res.data.account);
           setLoading(false);
+          trackReferralFlowEvents(
+            'Cohort Registration - Personal Info Page - Page Loaded',
+            res.data.user,
+            res.data.cohort,
+            url.get('source') || '',
+            {
+              is_enterprise_customer: true,
+              has_sphere_alumni: true
+            }
+          );
           setTimeout(() => {
             setConfetti(0);
           }, 3000);
@@ -231,10 +248,13 @@ export default function Registration() {
       return (
         <>
           <InviteChoice
+            user={user}
+            cohort={cohort}
             company={company}
             account={account}
             setStep={(step: number) => setActiveStep(step)}
             selectStep={() => selectStep()}
+            source={url.get('source') || ''}
           />
         </>
       );
@@ -247,11 +267,13 @@ export default function Registration() {
             onContinue={() => selectStep()}
             enrollmentId={user?.enrollment_id || ''}
             cohort={cohort}
+            user={user}
             referrer_code={user.slug}
             company={!!company}
             account={!!account}
             waitListed={wait_listed}
             preRelease={pre_release}
+            source={url.get('source') || ''}
           />
         </>
       );
@@ -262,17 +284,25 @@ export default function Registration() {
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
             cohort={cohort}
+            user={user}
             first_name={user?.first_name}
             last_name={user?.last_name}
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
             payLaterMessage={payLaterMessage}
+            source={url.get('source') || ''}
           />
         </Stack>
       );
     }
 
     if (activeStep === 5) {
+      trackReferralFlowEvents(
+        'Cohort Registration - Confirmation Page - Page Loaded',
+        user,
+        cohort,
+        url.get('source') || ''
+      );
       return (
         <Stack
           width="100%"
@@ -306,6 +336,14 @@ export default function Registration() {
           </Box>
           <Button
             href="https://www.getsphere.com/#upcoming-cohorts-slider"
+            onClick={() =>
+              trackReferralFlowEvents(
+                "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected",
+                user,
+                cohort,
+                url.get('source') || ''
+              )
+            }
             variant="contained"
             color="primary"
             data-testid="explore-btn"
@@ -319,11 +357,11 @@ export default function Registration() {
 
     return (
       <UserForm
-        cohortID={cohort_id}
+        submitValues={(data: any) => updateUserData(data)}
         user={user}
+        cohort={cohort}
         account={account}
         wait_listed={wait_listed}
-        submitValues={(data: any) => updateUserData(data)}
       />
     );
   };

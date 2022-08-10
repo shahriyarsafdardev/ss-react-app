@@ -5,9 +5,10 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import { Cohort } from '../../@types/cohorts';
-import { CohortType } from './Registration';
+import { CohortType, UserType } from './Registration';
 import InvitesList from './InvitesList';
 
 export type ReferralTypeUser = {
@@ -60,23 +61,47 @@ function InvitePeersForm({
   onContinue,
   enrollmentId,
   cohort,
+  user,
   referrer_code,
   company,
   account,
   waitListed,
-  preRelease
+  preRelease,
+  source
 }: {
   onContinue: Function;
   enrollmentId: string;
   cohort: CohortType;
+  user: UserType;
   referrer_code: string;
   company: boolean;
   account: boolean;
   waitListed: boolean;
   preRelease: boolean;
+  source: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const [invites, setInvites] = useState<ReferralTypeUser[]>([]);
+
+  useEffect(() => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Send Invitation Page - Page Loaded',
+      user,
+      cohort,
+      source
+    );
+  }, []);
+
+  const handleOnContinue = () => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Send Invitation Page - ‘Continue’ Selected',
+      user,
+      cohort,
+      source
+    );
+    onContinue();
+  };
+
   const getRegistrationFlow = () => {
     if (account) {
       return 'Enterprise contract';
@@ -126,6 +151,13 @@ function InvitePeersForm({
             [REFERRAL_EVENTS.invite_full_name]: values.fullName,
             [REFERRAL_EVENTS.registration_flow]: getRegistrationFlow()
           });
+          trackReferralFlowEvents(
+            'Cohort Registration - Send Invitation Page - Referral Invite Sent',
+            user,
+            cohort,
+            source,
+            { referree_email: values.email, referree_name: values.fullName }
+          );
         })
         .catch((error: any) => {
           setSubmitting(false);
@@ -180,7 +212,7 @@ function InvitePeersForm({
           )}
         </Form>
       </FormikProvider>
-      <StyledButton fullWidth variant="outlined" onClick={() => onContinue()}>
+      <StyledButton fullWidth variant="outlined" onClick={handleOnContinue}>
         Continue
       </StyledButton>
     </Box>
