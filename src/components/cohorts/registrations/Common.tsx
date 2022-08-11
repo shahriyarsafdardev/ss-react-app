@@ -577,36 +577,40 @@ export const Actions = ({
               Mark as Paid
             </MenuItem>
           )}
+          {[
+            'Application Received',
+            'Partial Application Received',
+            'Application Accepted',
+            'Payment link opened'
+          ].includes(enrollment.status) && (
+            <MenuItem
+              onClick={() => {
+                setModalMessage(
+                  <p>
+                    Are you sure you want to mark {enrollment.name}’s application as not interested.
+                  </p>
+                );
+                setAction('set_not_interested');
+                setModalState(true);
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
+              Mark as Not Interested
+            </MenuItem>
+          )}
           {(enrollment.status === 'Application Accepted' ||
             enrollment.status === 'Payment link opened') && (
-            <>
-              <MenuItem
-                onClick={() => {
-                  setModalMessage(
-                    <p>
-                      Are you sure you want to mark {enrollment.name}’s application as not
-                      interested.
-                    </p>
-                  );
-                  setAction('set_not_interested');
-                  setModalState(true);
-                }}
-                sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
-              >
-                <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
-                Mark as Not Interested
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  copy(enrollment.payment_link);
-                  enqueueSnackbar('Payment Link Copied', { variant: 'success' });
-                }}
-                sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
-              >
-                <StyledIcon src="/static/registration/Copy.svg" sx={{ mr: 1 }} />
-                <span>Copy Payment Link</span>
-              </MenuItem>
-            </>
+            <MenuItem
+              onClick={() => {
+                copy(enrollment.payment_link);
+                enqueueSnackbar('Payment Link Copied', { variant: 'success' });
+              }}
+              sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
+            >
+              <StyledIcon src="/static/registration/Copy.svg" sx={{ mr: 1 }} />
+              <span>Copy Payment Link</span>
+            </MenuItem>
           )}
           {!['Application Received', 'Partial Application Received'].includes(
             enrollment.status
