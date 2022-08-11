@@ -14,26 +14,19 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
-import { StyledLoadingButton } from './Registration';
-
-type UserType = {
-  first_name?: string;
-  last_name?: string;
-  linkedin_url?: string;
-  enrollment_id?: string;
-  acceptedTerms: boolean;
-};
+import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
+import { UserType, CohortType, StyledLoadingButton } from './Registration';
 
 export default function UserForm({
   submitValues,
-  cohortID,
+  cohort,
   user,
   account,
   wait_listed
 }: {
   submitValues: Function;
-  cohortID: string;
   user: UserType;
+  cohort: CohortType;
   account: string;
   wait_listed: boolean;
 }) {
@@ -50,7 +43,7 @@ export default function UserForm({
 
   const triggerOnboardingEvent = () => {
     trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.cohort_name]: cohortID,
+      [ONBOARDING_EVENTS.cohort_name]: cohort?.id,
       [ONBOARDING_EVENTS.cohort_intake_number]: '',
       [ONBOARDING_EVENTS.event]: 'Registered',
       [ONBOARDING_EVENTS.category]: 'Registered',
@@ -60,7 +53,7 @@ export default function UserForm({
 
   const triggerReferralEvent = () => {
     trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohortID,
+      [REFERRAL_EVENTS.cohort_name]: cohort?.id,
       [REFERRAL_EVENTS.cohort_intake_number]: '',
       [REFERRAL_EVENTS.event]: 'Registered',
       [REFERRAL_EVENTS.category]: 'referral link',
@@ -73,18 +66,32 @@ export default function UserForm({
     initialValues: { ...user, acceptedTerms: false },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
-      if (values.enrollment_id && cohortID) {
+      if (values.enrollment_id && cohort?.id) {
         try {
           await axios
-            .post(`/cohorts/${cohortID}/enrollments/${values.enrollment_id}/update_profile.json`, {
-              ...values
-            })
+            .post(
+              `/cohorts/${cohort?.id}/enrollments/${values.enrollment_id}/update_profile.json`,
+              {
+                ...values
+              }
+            )
             .then((res) => {
               const { user } = res.data;
               enqueueSnackbar('Application Submitted', { variant: 'success' });
               submitValues({ ...values, slug: user.slug });
               if (!isAuthenticated) {
                 setAmplitudeUserId(user?.slug);
+                trackReferralFlowEvents(
+                  'Cohort Registration - Personal Info Page - Details Submitted',
+                  user,
+                  cohort,
+                  url.get('source') || '',
+                  {
+                    first_name: values.first_name,
+                    last_name: values.last_name,
+                    linkedin_url: values.linkedin_url
+                  }
+                );
                 setAmplitudeUserProperties({
                   full_name: user?.full_name,
                   type: user?.type,

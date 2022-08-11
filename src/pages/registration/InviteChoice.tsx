@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import { SubmitButton, CompanyType } from './Registration';
+import { useEffect } from 'react';
+import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
+import { SubmitButton, CompanyType, UserType, CohortType } from './Registration';
 
 const StyledBox = styled(Stack)(({ theme }) => ({
   borderRadius: '16px',
@@ -51,17 +53,52 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 function InviteChoice({
+  user,
+  cohort,
   company,
   account,
   setStep,
-  selectStep
+  selectStep,
+  source
 }: {
+  user: UserType;
+  cohort: CohortType;
   company: CompanyType | null | undefined;
   account: string;
   setStep: Function;
   selectStep: Function;
+  source: string;
 }) {
   const classes = useStyles();
+
+  useEffect(() => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Refer Colleagues Page - Page Loaded',
+      user,
+      cohort,
+      source
+    );
+  }, []);
+
+  const submitLearnAlone = () => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected',
+      user,
+      cohort,
+      source
+    );
+    selectStep();
+  };
+
+  const submitInviteColleagues = () => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Refer Colleagues Page - ‘Invite Colleagues’ Selected',
+      user,
+      cohort,
+      source
+    );
+    setStep(3);
+  };
 
   return (
     <Stack
@@ -81,7 +118,7 @@ function InviteChoice({
         <Typography className={classes.text}>
           Many participants have enjoyed joining our cohorts as an individual.
         </Typography>
-        <SubmitButton variant="outlined" onClick={() => selectStep()}>
+        <SubmitButton variant="outlined" onClick={submitLearnAlone}>
           Continue
         </SubmitButton>
       </StyledBox>
@@ -99,7 +136,7 @@ function InviteChoice({
             ? `Additionally, your colleagues may be covered by ${company?.name}’s enterprise package.`
             : 'Additionally, inviting your colleagues makes you and your company eligible for enterprise discounts.'}
         </Typography>
-        <SubmitButton variant="contained" onClick={() => setStep(3)}>
+        <SubmitButton variant="contained" onClick={submitInviteColleagues}>
           Invite Colleagues
         </SubmitButton>
       </StyledBox>

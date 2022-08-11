@@ -17,7 +17,7 @@ import {
   styled
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ONBOARDING_EVENTS,
   REFERRAL_EVENTS,
@@ -25,7 +25,8 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
-import { CohortType } from './Registration';
+import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
+import { CohortType, UserType } from './Registration';
 
 type CardType = {
   cardName?: string;
@@ -55,18 +56,22 @@ const CohortDetailsCard = styled(Card)(({ theme }) => ({
 
 export default function CardDetails({
   cohort,
+  user,
   enrollmentID,
   first_name,
   last_name,
   setStep,
-  payLaterMessage
+  payLaterMessage,
+  source
 }: {
-  cohort?: CohortType;
+  cohort: CohortType;
+  user: UserType;
   first_name?: string;
   last_name?: string;
   enrollmentID?: string;
   setStep: Function;
   payLaterMessage: string;
+  source: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -74,6 +79,25 @@ export default function CardDetails({
   const url = new URLSearchParams(useLocation().search);
   const alumni = url.get('alumni') || false;
   const referrer_code = url.get('referrer') || '';
+
+  useEffect(() => {
+    trackReferralFlowEvents(
+      'Cohort Registration - Payment Info Page - Page Loaded',
+      user,
+      cohort,
+      source
+    );
+  }, []);
+
+  const handlePayLater = () => {
+    trackReferralFlowEvents(
+      "Cohort Registration - Payment Info Page - 'Pay Later' Selected",
+      user,
+      cohort,
+      source
+    );
+    setStep(5);
+  };
 
   const triggerOnboardingEvent = () => {
     trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
@@ -134,6 +158,13 @@ export default function CardDetails({
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
             triggerOnboardingEvent();
+            trackReferralFlowEvents(
+              'Cohort Registration - Payment Info Page - Submitted Card',
+              user,
+              cohort,
+              source,
+              { amount_paid: cohort?.price }
+            );
             if (alumni) {
               triggerReferralEvent();
             }
@@ -207,7 +238,7 @@ export default function CardDetails({
             fullWidth
             variant="outlined"
             color="primary"
-            onClick={() => setStep(5)}
+            onClick={handlePayLater}
             data-testid="pay-later"
           >
             Yes, I would like to pay later
