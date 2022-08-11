@@ -105,6 +105,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const [referralEmailModal, setReferralEmailModal] = useState(false);
   const referralLink = useSelector((state: RootState) => state.cohort.referralLink);
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const uuidRegexExp =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -135,7 +137,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     }
     if (user?.type === 'learner') {
       updateInstructorViewState('Learner');
-      dispatch(initializeReferralLink(cohort_id));
+      if (uuidRegexExp.test(cohort_id)) {
+        dispatch(initializeReferralLink(cohort_id));
+      }
     }
   }, [pathname]);
 
