@@ -1,14 +1,17 @@
-import { Box, Container, Divider } from '@material-ui/core';
+import { Box, Button, Container, Divider } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
+
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
 
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
 import { CurrentStep, ProgressBarContainer } from '../onboarding/HomeTabHeader';
 import axios from '../../../utils/axios';
 import {
+  useStyles,
   StyledBox,
   ImageBox,
   DescriptionBox,
@@ -19,7 +22,6 @@ import {
   PreReadingDetail,
   PreReadingDescription,
   SessionDescription,
-  NavigationButton,
   BorderLinearProgress
 } from './NewHomeTabStyles';
 
@@ -40,6 +42,7 @@ function NewHomeTab({
   const zoomTimes = zoomTimesPreview(activeSession?.times || []);
   const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
   const progress = () => ((currentStep + 1) / totalSteps) * 100;
+  const classes = useStyles();
   useEffect(() => {
     const initMaterials = async () => {
       if (activeSession) {
@@ -105,12 +108,16 @@ function NewHomeTab({
           </PreReadingDescription>
         </Box>
         <NavigationStack>
-          <NavigationButton variant="contained" href={sessionMaterial.action_url}>
+          <Button variant="contained" target="_blank" href={sessionMaterial.action_url}>
             Open
-          </NavigationButton>
-          <NavigationButton variant="outlined" onClick={() => markAsComplete(sessionMaterial.id)}>
+          </Button>
+          <Button
+            className={classes.navigation}
+            variant="outlined"
+            onClick={() => markAsComplete(sessionMaterial.id)}
+          >
             Mark as Complete
-          </NavigationButton>
+          </Button>
         </NavigationStack>
       </PreReadingStack>
     </StyledBox>
@@ -120,23 +127,38 @@ function NewHomeTab({
     if (isZoomLinkVisible(activeSession)) {
       return (
         <NavigationStack style={{ marginTop: '46px', position: 'inherit' }}>
-          <NavigationButton variant="contained" href={activeSession?.zoom_url}>
+          <Button className={classes.navigation} variant="contained" href={activeSession?.zoom_url}>
             Join Session
-          </NavigationButton>
-          <NavigationButton variant="outlined" href={`/cohorts/${cohort.id}/Q&A`}>
-            Ask Questions through Messaging
-          </NavigationButton>
+          </Button>
+          <Button
+            className={classes.navigation}
+            variant="outlined"
+            component={RouterLink}
+            to={`/cohorts/${cohort.id}/sessions`}
+          >
+            Review Resources
+          </Button>
         </NavigationStack>
       );
     }
     return (
       <NavigationStack style={{ marginTop: '46px', position: 'inherit' }}>
-        <NavigationButton variant="contained" href={`/cohorts/${cohort.id}/Q&A`}>
-          Ask Questions Through Messaging
-        </NavigationButton>
-        <NavigationButton variant="outlined" href={`/cohorts/${cohort.id}/calendar-instructions`}>
+        <Button
+          className={classes.navigation}
+          variant="contained"
+          component={RouterLink}
+          to={`/cohorts/${cohort.id}/sessions`}
+        >
+          Review Resources
+        </Button>
+        <Button
+          className={classes.navigation}
+          variant="outlined"
+          component={RouterLink}
+          to={`/cohorts/${cohort.id}/calendar-instructions`}
+        >
           Add Session to your Calendar
-        </NavigationButton>
+        </Button>
       </NavigationStack>
     );
   };
@@ -149,8 +171,7 @@ function NewHomeTab({
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {cohort.host_full_name}'s on{' '}
-            {displayMultipleDates(activeSession?.times || [])}
+            Live with {cohort.host_full_name} on {displayMultipleDates(activeSession?.times || [])}
             {', '}
             {zoomTimes.replace(timeZone, '(local time)')}
           </PreReadingDetail>

@@ -1,6 +1,19 @@
-import { Box, Button, Stack, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { Box, Stack, Typography } from '@material-ui/core';
+import { Theme, styled } from '@material-ui/core/styles';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
+import { makeStyles } from '@material-ui/styles';
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  navigation: {
+    width: '50%',
+    borderRadius: '1000px',
+    padding: '13px',
+    textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  }
+}));
 
 export const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: 'white',
@@ -106,16 +119,6 @@ export const SessionDescriptionBox = styled(Box)(() => ({
 export const SessionDescription = ({ innerContent }: { innerContent: string }) => (
   <SessionDescriptionBox dangerouslySetInnerHTML={{ __html: innerContent }} />
 );
-
-export const NavigationButton = styled(Button)(({ theme }) => ({
-  width: '50%',
-  borderRadius: '1000px',
-  padding: '13px',
-  textAlign: 'center',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
