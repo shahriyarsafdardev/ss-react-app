@@ -379,8 +379,10 @@ export const trackReferralFlowEvents = (
   params?: any
 ) => {
   sendAmplitudeData(eventType, {
-    company_is_enterprise_customer: params?.is_enterprise_customer || null,
-    company_has_sphere_alumni: params?.has_sphere_alumni || null,
+    company_is_enterprise_customer:
+      params?.is_enterprise_customer === undefined ? null : params?.is_enterprise_customer,
+    company_has_sphere_alumni:
+      params?.has_sphere_alumni === undefined ? null : params?.has_sphere_alumni,
     first_name: params?.first_name || null,
     last_name: params?.last_name || null,
     linkedIn_url: params?.linkedin_url || null,

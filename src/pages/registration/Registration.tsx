@@ -217,8 +217,8 @@ export default function Registration() {
             res.data.cohort,
             url.get('source') || '',
             {
-              is_enterprise_customer: true,
-              has_sphere_alumni: true
+              is_enterprise_customer: company?.is_enterprise_customer || false,
+              has_sphere_alumni: company?.has_sphere_alumni || false
             }
           );
           setTimeout(() => {
