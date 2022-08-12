@@ -182,7 +182,7 @@ export default function PeersTab() {
             setView={setView}
             view={view}
           />
-          {user?.type === 'admin' && mode === 'Instructor' && (
+          {((user?.type === 'admin' && mode === 'Instructor') || user?.type === 'expert') && (
             <Stack direction={{ xs: 'row', md: 'row' }} style={{ gap: '16px' }}>
               <ExportToExcel
                 cohort={cohort}
