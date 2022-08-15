@@ -1,6 +1,7 @@
 import { Box, Button, Container, Divider } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { NEW_HOME_TAB_EVENTS, sendAmplitudeData } from 'utils/amplitude';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
@@ -43,6 +44,19 @@ function NewHomeTab({
   const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
   const progress = () => ((currentStep + 1) / totalSteps) * 100;
   const classes = useStyles();
+
+  const trackHomeTabEvents = (eventType: string) => {
+    sendAmplitudeData(eventType, {
+      [NEW_HOME_TAB_EVENTS.cohort_name]: cohort.name,
+      [NEW_HOME_TAB_EVENTS.cohort_code]: cohort.code,
+      [NEW_HOME_TAB_EVENTS.cohort_intake_number]: cohort.intake,
+      [NEW_HOME_TAB_EVENTS.cohort_intake]: cohort.intake_name,
+      [NEW_HOME_TAB_EVENTS.reading_number]: list[currentStep]?.index,
+      [NEW_HOME_TAB_EVENTS.reading_name]: list[currentStep]?.name,
+      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number
+    });
+  };
+
   useEffect(() => {
     const initMaterials = async () => {
       if (activeSession) {
@@ -55,6 +69,9 @@ function NewHomeTab({
           setTotalSteps(
             totalSteps + response.data.filter((obj: any) => obj.complete !== true).length
           );
+          if (list?.length > 0) {
+            trackHomeTabEvents('Home Screen - Page Loaded');
+          }
         } catch (error) {
           console.log(error);
         }
@@ -74,6 +91,7 @@ function NewHomeTab({
       .then((res) => {
         if (res.data) {
           setCurrentStep(currentStep + 1);
+          trackHomeTabEvents('Home Screen - Mark Reading As Complete');
         }
       })
       .catch((err) => {
@@ -98,7 +116,7 @@ function NewHomeTab({
       <PreReadingStack>
         <Box>
           <PreReadingTitle data-testid="pre-reading-title">
-            Pre-Reading {currentStep + 1}
+            Pre-Reading {sessionMaterial?.index}
           </PreReadingTitle>
           <PreReadingDetail data-testid="pre-reading-description">
             {sessionMaterial.name}
@@ -108,7 +126,13 @@ function NewHomeTab({
           </PreReadingDescription>
         </Box>
         <NavigationStack>
-          <Button variant="contained" target="_blank" href={sessionMaterial.action_url}>
+          <Button
+            className={classes.navigation}
+            variant="contained"
+            target="_blank"
+            onClick={() => trackHomeTabEvents('Home Screen - Open Reading')}
+            href={sessionMaterial.action_url}
+          >
             Open
           </Button>
           <Button

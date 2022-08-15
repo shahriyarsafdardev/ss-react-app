@@ -238,3 +238,17 @@ export const REGISTRATION_EVENTS = {
 export const trackRegistrationEvent = (eventType: string, eventData: any) => {
   sendAmplitudeData(eventType, eventData);
 };
+
+export const NEW_HOME_TAB_EVENTS = {
+  cohort_name: 'Cohort Name',
+  cohort_code: 'Cohort Code',
+  cohort_intake_number: 'Cohort Intake Number',
+  cohort_intake: 'Cohort Intake',
+  reading_number: 'Reading Number',
+  reading_name: 'Reading Name',
+  session_number: 'Session Number'
+};
+
+export const trackNewHomeTabEvent = (eventType: string, eventData: any) => {
+  sendAmplitudeData(eventType, eventData);
+};
