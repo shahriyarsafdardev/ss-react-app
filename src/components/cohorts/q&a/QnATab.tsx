@@ -85,8 +85,9 @@ function QnATab() {
         const response = await axios.get(`/questions_feed.json?cohort_id=${cohort_id} `);
         setList(response.data.questions);
         setLoading(false);
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
+        enqueueSnackbar(error?.message, { variant: 'error' });
       }
     };
     initMaterials();

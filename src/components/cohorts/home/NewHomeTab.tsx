@@ -1,23 +1,22 @@
-import { Box, Button, Container, Divider } from '@material-ui/core';
+import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { NEW_HOME_TAB_EVENTS, sendAmplitudeData } from 'utils/amplitude';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
-
+import { useDispatch } from '../../../redux/store';
+import { updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
-
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
 import { CurrentStep, ProgressBarContainer } from '../onboarding/HomeTabHeader';
-import axios from '../../../utils/axios';
+
 import {
   useStyles,
   StyledBox,
   ImageBox,
   DescriptionBox,
   PreReadingStack,
-  NavigationStack,
   HomePageTitle,
   PreReadingTitle,
   PreReadingDetail,
@@ -38,12 +37,12 @@ function NewHomeTab({
   const [list, setList] = useState<SessionMaterial[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [totalSteps, setTotalSteps] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const dispatch = useDispatch();
+  const classes = useStyles();
   const zoomTimes = zoomTimesPreview(activeSession?.times || []);
   const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
   const progress = () => ((currentStep + 1) / totalSteps) * 100;
-  const classes = useStyles();
 
   const trackHomeTabEvents = (eventType: string) => {
     sendAmplitudeData(eventType, {
@@ -57,47 +56,59 @@ function NewHomeTab({
     });
   };
 
-  useEffect(() => {
-    const initMaterials = async () => {
-      if (activeSession) {
-        try {
-          const response = await axios.get(
-            `/cohort_sessions/${activeSession.id}/session_materials.json`
-          );
-          setList(response.data.filter((obj: any) => obj.complete !== true));
-          setIsLoading(false);
-          setTotalSteps(
-            totalSteps + response.data.filter((obj: any) => obj.complete !== true).length
-          );
-          if (list?.length > 0) {
-            trackHomeTabEvents('Home Screen - Page Loaded');
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-    initMaterials();
-  }, [activeSession]);
-
   const markAsComplete = async (sessionMaterialId: string) => {
-    await axios
-      .post(
-        `/cohort_sessions/${activeSession?.id}/session_materials/${sessionMaterialId}/submit_checklist.json`,
-        {
-          complete: true
-        }
-      )
-      .then((res) => {
-        if (res.data) {
-          setCurrentStep(currentStep + 1);
-          trackHomeTabEvents('Home Screen - Mark Reading As Complete');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, true));
+    trackHomeTabEvents('Home Screen - ‘Next Reading’ Selected');
+    setCurrentStep(currentStep + 1);
   };
+
+  const previousReading = () => {
+    setCurrentStep(currentStep - 1);
+    trackHomeTabEvents('Home Screen - ‘Previous Reading’ Selected');
+  };
+
+  const triggerSupplimentaryEvent = () => {
+    trackHomeTabEvents('Home Screen - ‘Review Supplementary Resources’ Selected');
+  };
+
+  useEffect(() => {
+    const list =
+      activeSession?.materials?.filter(
+        (obj: any) => !obj.complete && obj.included_in_get_ready_checklist
+      ) || [];
+    setTotalSteps(list.length + 1);
+    setList(list);
+  }, [activeSession?.materials.length]);
+
+  useEffect(() => {
+    if (list.length > 0) {
+      trackHomeTabEvents('Home Screen - Page Loaded');
+    }
+  }, [list.length]);
+
+  const SupplementaryButton = () => (
+    <Button
+      className={classes.homeNavigation}
+      variant="outlined"
+      component={RouterLink}
+      to={`/cohorts/${cohort.id}/sessions`}
+      fullWidth
+      onClick={() => triggerSupplimentaryEvent()}
+    >
+      Review Supplementary Resources
+    </Button>
+  );
+
+  const PreviousButton = () => (
+    <Button
+      fullWidth
+      className={classes.homeNavigation}
+      variant="outlined"
+      onClick={() => previousReading()}
+    >
+      Previous Reading
+    </Button>
+  );
 
   const PreReadingData = ({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => (
     <StyledBox>
@@ -125,24 +136,29 @@ function NewHomeTab({
             {sessionMaterial.description}
           </PreReadingDescription>
         </Box>
-        <NavigationStack>
+        <Stack spacing={1} className={classes.navigationButtons}>
           <Button
-            className={classes.navigation}
+            className={classes.homeNavigation}
             variant="contained"
             target="_blank"
-            onClick={() => trackHomeTabEvents('Home Screen - Open Reading')}
+            onClick={() => trackHomeTabEvents('Home Screen - Reading Opened')}
             href={sessionMaterial.action_url}
           >
             Open
           </Button>
-          <Button
-            className={classes.navigation}
-            variant="outlined"
-            onClick={() => markAsComplete(sessionMaterial.id)}
-          >
-            Mark as Complete
-          </Button>
-        </NavigationStack>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+            {currentStep > 0 && <PreviousButton />}
+
+            <Button
+              fullWidth
+              className={classes.homeNavigation}
+              variant="outlined"
+              onClick={() => markAsComplete(sessionMaterial.id)}
+            >
+              Next Reading
+            </Button>
+          </Stack>
+        </Stack>
       </PreReadingStack>
     </StyledBox>
   );
@@ -150,40 +166,49 @@ function NewHomeTab({
   const renderSessionDetailNavigation = () => {
     if (isZoomLinkVisible(activeSession)) {
       return (
-        <NavigationStack style={{ marginTop: '46px', position: 'inherit' }}>
-          <Button className={classes.navigation} variant="contained" href={activeSession?.zoom_url}>
+        <Stack spacing={1} style={{ marginTop: '30px' }}>
+          <Button
+            className={classes.homeNavigation}
+            variant="contained"
+            href={activeSession?.zoom_url}
+            onClick={() => trackHomeTabEvents('Home Screen - ‘Join Session’ Selected')}
+          >
             Join Session
           </Button>
-          <Button
-            className={classes.navigation}
-            variant="outlined"
-            component={RouterLink}
-            to={`/cohorts/${cohort.id}/sessions`}
-          >
-            Review Resources
-          </Button>
-        </NavigationStack>
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+            <SupplementaryButton />
+            <Button
+              className={classes.homeNavigation}
+              variant="outlined"
+              fullWidth
+              component={RouterLink}
+              to={`/cohorts/${cohort.id}/messaging`}
+            >
+              Open Messaging
+            </Button>
+          </Stack>
+        </Stack>
       );
     }
     return (
-      <NavigationStack style={{ marginTop: '46px', position: 'inherit' }}>
+      <Stack spacing={1} style={{ marginTop: '30px' }}>
         <Button
-          className={classes.navigation}
+          className={classes.homeNavigation}
           variant="contained"
-          component={RouterLink}
-          to={`/cohorts/${cohort.id}/sessions`}
-        >
-          Review Resources
-        </Button>
-        <Button
-          className={classes.navigation}
-          variant="outlined"
+          fullWidth
           component={RouterLink}
           to={`/cohorts/${cohort.id}/calendar-instructions`}
+          onClick={() =>
+            trackHomeTabEvents('Home Screen - ‘Add Sessions to your Calendar’ Selected')
+          }
         >
           Add Session to your Calendar
         </Button>
-      </NavigationStack>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+          {currentStep > 0 && <PreviousButton />}
+          <SupplementaryButton />
+        </Stack>
+      </Stack>
     );
   };
 
@@ -222,7 +247,7 @@ function NewHomeTab({
     return `🎉 Great work ${user?.first_name}, you’re ready to go for Session ${activeSession?.number}!`;
   };
 
-  return !isLoading ? (
+  return activeSession ? (
     <Container>
       <HomePageTitle data-testid="home-title">{selectHeading()}</HomePageTitle>
       <ProgressBarContainer>
@@ -239,5 +264,4 @@ function NewHomeTab({
     </LoadingContainer>
   );
 }
-
 export default NewHomeTab;

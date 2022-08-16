@@ -4,6 +4,8 @@ import { styled } from '@material-ui/core/styles';
 import { NavLink as RouterLink } from 'react-router-dom';
 import Page from 'components/Page';
 import moment from 'moment';
+import { LoadingContainer } from 'pages/admin/Common';
+import LoadingScreen from 'components/LoadingScreen';
 import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
@@ -113,7 +115,7 @@ const Index = () => {
       <Button
         onClick={() => onAddCalendar()}
         component={RouterLink}
-        to={`/cohorts/${cohort_id}/calendar-instructions`}
+        to={`/cohorts/${cohort?.id}/calendar-instructions`}
         style={{ marginTop: '20px' }}
         fullWidth
         variant="outlined"
@@ -127,22 +129,23 @@ const Index = () => {
     </Container>
   );
 
-  const renderHomeTab = () =>
-    cohort?.new_home_tab ? (
-      <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
-    ) : (
-      <HomeTabSection />
-    );
-
   const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
   const questionSubmittedModal = () => !hasQuestionSubmitted && user?.type === 'learner';
 
   const renderOnboardingModal = () =>
-    cohort?.id === IBRAHIM_COHORT_ID ? (
+    cohort.id === IBRAHIM_COHORT_ID ? (
       <NewOnboardingModal onSubmit={() => {}} />
     ) : (
       <OnboardingModal onSubmit={() => {}} />
     );
+
+  if (!cohort || typeof sessions === 'undefined') {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <Page title="Sphere | Homepage">
@@ -150,17 +153,22 @@ const Index = () => {
       {cohort?.is_onboarded === true && questionSubmittedModal() && (
         <SurveyQuestionsModal state={questionSubmittedModal()} cohort_id={cohort_id} />
       )}
-      {cohort?.released_for_learners === true ||
-      cohort?.readings_released === true ||
-      mode === 'Instructor' ? (
+      {sessions?.length > 0 &&
+      (cohort?.released_for_learners === true ||
+        cohort?.readings_released === true ||
+        mode === 'Instructor') ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          {renderHomeTab()}
+          {cohort?.new_home_tab ? (
+            <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
+          ) : (
+            <HomeTabSection />
+          )}
         </AnalyticsContext.Provider>
       ) : (
         <EmptyHomeTab
-          key={cohort_id}
+          key={cohort?.id}
           calendarLink={cohort?.calendar_invite_url}
-          cohortID={cohort_id}
+          cohortID={cohort?.id}
           cohortCode={cohort?.name}
           cohortHost={cohort?.host_names}
         />

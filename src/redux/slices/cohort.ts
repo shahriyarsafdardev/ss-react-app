@@ -136,22 +136,17 @@ const slice = createSlice({
         );
 
         if (targetSessionIndex !== -1) {
-          let targetGroupIndex = -1;
           let targetMaterialIndex = -1;
 
-          updated[targetSessionIndex].session_materials.map((group, i) =>
-            group.session_materials.map((material, j) => {
-              if (material.id === action.payload.materialId) {
-                targetGroupIndex = i;
-                targetMaterialIndex = j;
-              }
-            })
-          );
+          updated[targetSessionIndex].materials.map((material, j) => {
+            if (material.id === action.payload.materialId) {
+              targetMaterialIndex = j;
+            }
+          });
 
           if (targetMaterialIndex !== -1) {
-            updated[targetSessionIndex].session_materials[targetGroupIndex].session_materials[
-              targetMaterialIndex
-            ].complete = action.payload.result;
+            updated[targetSessionIndex].materials[targetMaterialIndex].complete =
+              action.payload.result;
             state.cohorts[targetCohortIndex].sessions = updated;
           }
         }

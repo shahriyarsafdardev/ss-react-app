@@ -1,6 +1,6 @@
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { GroupedSessionMaterial } from '../../../@types/cohorts';
+import { SessionMaterial } from '../../../@types/cohorts';
 import PreReadingRow from '../home/PreReadingRow';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
@@ -15,26 +15,33 @@ const ResourcesContainer = styled(Container)(({ theme }) => ({
 }));
 
 type SessionMaterialProps = {
-  groupedMaterials: GroupedSessionMaterial[];
+  materials: SessionMaterial[];
   sessionId: string | undefined;
   cohortId: string | undefined;
   onTrack: Function;
 };
 
 export default function SessionMaterials({
-  groupedMaterials,
+  materials,
   sessionId,
   cohortId,
   onTrack
 }: SessionMaterialProps) {
   const dispatch = useDispatch();
+  const groupBy = (xs: any, key: any) =>
+    xs.reduce((rv: any, x: any) => {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  const grouped = groupBy(materials, 'category');
+  const categories = Object.keys(grouped).sort();
 
   return (
     <ResourcesContainer id="session_materials">
-      {groupedMaterials.map((group, number) => (
+      {categories.map((category, number) => (
         <Box key={number}>
-          <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>{group.category}s:</p>
-          {group.session_materials.map((preReading, index) => (
+          <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>{category}s:</p>
+          {grouped[category].map((preReading: SessionMaterial, index: number) => (
             <PreReadingRow
               onPreReadingClick={() => onTrack('Opened Resource from Sessions Page')}
               key={index}

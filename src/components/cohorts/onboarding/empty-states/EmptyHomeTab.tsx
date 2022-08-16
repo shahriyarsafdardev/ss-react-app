@@ -98,7 +98,7 @@ const EmptyHomeTab = ({
       <Box className={classes.inner}>
         <Typography data-testid="empty-home-welcome-text" variant="h3" textAlign="center">
           👋 Hi {user?.first_name}
-          {cohortCode && `, welcome to ${cohortCode}!`}
+          {cohortCode && `, Welcome to ${cohortCode}!`}
         </Typography>
         <Typography
           data-testid="empty-home-cohort-information-text"

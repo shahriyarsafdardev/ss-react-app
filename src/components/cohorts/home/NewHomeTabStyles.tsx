@@ -8,9 +8,30 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '50%',
     borderRadius: '1000px',
     padding: '13px',
+    height: '40px',
     textAlign: 'center',
     [theme.breakpoints.down('md')]: {
       width: '100%'
+    }
+  },
+  homeNavigation: {
+    borderRadius: '1000px',
+    padding: '13px',
+    height: '40px',
+    textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  navigationButtons: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    flexDirection: 'column',
+    [theme.breakpoints.down('md')]: {
+      position: 'inherit',
+      paddingTop: '24px',
+      flexWrap: 'wrap'
     }
   }
 }));
@@ -41,6 +62,7 @@ export const ImageBox = styled(Box)(({ theme }) => ({
 
 export const DescriptionBox = styled(Box)(({ theme }) => ({
   width: '50%',
+  position: 'relative',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -51,20 +73,6 @@ export const PreReadingStack = styled(Stack)(({ theme }) => ({
   position: 'relative',
   [theme.breakpoints.down('md')]: {
     width: '100%'
-  }
-}));
-
-export const NavigationStack = styled(Stack)(({ theme }) => ({
-  flexDirection: 'row',
-  gap: '8px',
-  justifyContent: 'center',
-  position: 'absolute',
-  bottom: 0,
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
-    position: 'inherit',
-    paddingTop: '24px',
-    flexWrap: 'wrap'
   }
 }));
 

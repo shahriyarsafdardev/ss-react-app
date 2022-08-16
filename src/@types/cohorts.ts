@@ -73,16 +73,14 @@ export type SessionMaterial = {
   action_text: string;
   info_text: string;
   action_url: string;
+  category: string;
   complete: boolean;
   is_private: boolean;
   index?: number;
   thumbnail_image_url?: string;
   description?: string;
-};
-
-export type GroupedSessionMaterial = {
-  category: string;
-  session_materials: SessionMaterial[];
+  included_in_get_ready_checklist: boolean;
+  included_in_session_materials_tab: boolean;
 };
 
 export type RecordingUrl = {
@@ -108,7 +106,7 @@ export type Session = {
   summary_notes_included: boolean;
   survey: Survey;
   resources: string;
-  session_materials: GroupedSessionMaterial[];
+  materials: SessionMaterial[];
   display_in_sessions_tab: boolean;
   custom_name: string;
 };

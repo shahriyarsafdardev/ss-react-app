@@ -16,15 +16,13 @@ import { Modal } from 'components/animate';
 import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { surveyTime, firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
-import moment from 'moment';
+import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import {
   SessionMaterials,
   Description,
   Summary,
   SurveyForm,
-  Slides,
-  InstructorSessionMaterials
+  Slides
 } from '../../../../components/cohorts/sessions';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -246,7 +244,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
           sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
         }
         innerContent={session?.description || ''}
-        resourcesPresent={session?.session_materials && session?.session_materials?.length > 0}
+        resourcesPresent={session?.materials && session?.materials?.length > 0}
       />
       {/* {!isLearner ? (
         <InstructorSessionMaterials
@@ -261,7 +259,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         />
       ) : ( */}
       <SessionMaterials
-        groupedMaterials={session?.session_materials || []}
+        materials={session?.materials?.filter((m) => m.included_in_session_materials_tab) || []}
         sessionId={session?.id}
         cohortId={id}
         key="session_materials"

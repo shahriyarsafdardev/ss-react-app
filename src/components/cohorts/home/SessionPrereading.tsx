@@ -4,6 +4,8 @@ import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box, Typography } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from '../../../redux/store';
+import { updateMaterialStatus } from '../../../redux/slices/cohort';
 import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import {
@@ -34,48 +36,20 @@ const SessionPrereading = ({
   sessions: Session[];
   activeSession: Session | undefined;
 }) => {
+  const list =
+    activeSession?.materials?.filter((obj: any) => obj.included_in_get_ready_checklist) || [];
   const url = new URLSearchParams(useLocation().search);
   const url_source = url.get('source') || '';
-  const [list, setList] = useState<SessionMaterial[]>([]);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const initMaterials = async () => {
-      if (activeSession) {
-        try {
-          const response = await axios.get(
-            `/cohort_sessions/${activeSession.id}/session_materials.json`
-          );
-          setList(response.data);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-    initMaterials();
-  }, [activeSession]);
-
-  const onMark = async (index: number, value: boolean) => {
-    if (index >= 0 && index < list.length) {
-      const updated = list;
-      try {
-        const response = await axios.post(
-          `/cohort_sessions/${activeSession?.id}/session_materials/${updated[index].id}/submit_checklist.json`,
-          {
-            complete: value
-          }
-        );
-        sendAnalyticsData(
-          activeSession?.number,
-          HOME_PAGE_EVENTS.to_do_list,
-          `Marked Item as ${value ? 'true' : 'false'} from Home-Tab`
-        );
-        updated[index].complete = response.data;
-        setList([...updated]);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  const onMark = async (sessionMaterialId: string, value: boolean) => {
+    await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, value));
+    sendAnalyticsData(
+      activeSession?.number,
+      HOME_PAGE_EVENTS.to_do_list,
+      `Marked Item as ${value ? 'true' : 'false'} from Home-Tab`
+    );
   };
 
   const sessionDescription = (innerContent: string) => (
@@ -180,7 +154,7 @@ const SessionPrereading = ({
                         'Opened Resource from Home-Tab'
                       )
                     }
-                    checkboxHanlder={(value: boolean) => onMark(index, value)}
+                    checkboxHanlder={(value: boolean) => onMark(preReading.id, value)}
                   />
                 ))}
               </StyledSessionPrereadingContainer>
