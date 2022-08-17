@@ -26,7 +26,19 @@ export const addAmplitudeUserProperty = (key: string, value: string) => {
 };
 
 export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
-  amplitudeInstance().logEvent(eventType, eventProperties);
+  // amplitudeInstance().logEvent(eventType, eventProperties);
+  window.analytics?.track(eventType, eventProperties);
+};
+
+export const setSegmentUserProperties = (user: any) => {
+  window.analytics?.identify(user?.slug, {
+    full_name: user?.displayName,
+    type: user?.type,
+    company: user?.current_company,
+    position: user?.current_position,
+    industry: user?.current_industry_category_selections?.join(),
+    live_attandance: `${user?.user_live_attendance_percentage}%`
+  });
 };
 
 export const EVENT_TYPES = {
