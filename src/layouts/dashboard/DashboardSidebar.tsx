@@ -211,19 +211,19 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </ViewSwitcherStyle>
           </StyledBox>
         )}
+        {user?.type === 'learner' && (
+          <ReferralStyledBox>
+            <ViewReferralLinks>
+              <ShareReferralLink
+                referralEmailModal={referralEmailModal}
+                setReferralEmailModal={setReferralEmailModal}
+                referralLink={referralLink}
+                cohort={cohort}
+              />
+            </ViewReferralLinks>
+          </ReferralStyledBox>
+        )}
       </Scrollbar>
-      {user?.type === 'learner' && (
-        <ReferralStyledBox>
-          <ViewReferralLinks>
-            <ShareReferralLink
-              referralEmailModal={referralEmailModal}
-              setReferralEmailModal={setReferralEmailModal}
-              referralLink={referralLink}
-              cohort={cohort}
-            />
-          </ViewReferralLinks>
-        </ReferralStyledBox>
-      )}
     </>
   );
 
