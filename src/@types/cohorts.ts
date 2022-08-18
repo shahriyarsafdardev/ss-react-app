@@ -147,6 +147,7 @@ export type Enrollment = {
   stream: string;
   card_added: boolean;
   coupon_code: string;
+  referrer_domain?: string;
   time: string;
   last_action_date: string;
   application_accepted_time: string;

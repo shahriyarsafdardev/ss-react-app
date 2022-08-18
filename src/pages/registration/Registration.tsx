@@ -93,6 +93,7 @@ export default function Registration() {
   const cohort_id = url.get('cohort_id') || '';
   const credit_account_id = url.get('credit_account') || '';
   const ref_source = url.get('source') || '';
+  const referrer_domain = url.get('referrer_domain') || '';
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const { enqueueSnackbar } = useSnackbar();
 
@@ -206,7 +207,8 @@ export default function Registration() {
           email: user?.email,
           coupon_code: user?.referrer,
           account_id: credit_account_id,
-          source: ref_source
+          source: ref_source,
+          referrer_domain
         })
         .then((res) => {
           res.data &&

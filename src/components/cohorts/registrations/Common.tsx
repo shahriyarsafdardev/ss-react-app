@@ -685,9 +685,7 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
         <Tooltip
           arrow
           placement="top"
-          title={`${
-            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
-          } used the referral code “${enrollment.coupon_code}”`}
+          title={`referrer = ${JSON.stringify(enrollment.coupon_code.split(','))}`}
         >
           <Typography variant="h4">🤝</Typography>
         </Tooltip>
@@ -697,11 +695,18 @@ export const Tags = ({ enrollment }: { enrollment: Enrollment }) => (
         <Tooltip
           arrow
           placement="top"
-          title={`${
-            enrollment.first_name === 'Unknown' ? 'This user' : enrollment.first_name
-          } registered through a custom link with source “${enrollment.source}”`}
+          title={`source = ${JSON.stringify(enrollment.source.split(','))}`}
         >
           <Typography variant="h4">👂</Typography>
+        </Tooltip>
+      )}
+      {enrollment.referrer_domain && (
+        <Tooltip
+          arrow
+          placement="top"
+          title={`arrived from = ${JSON.stringify(enrollment?.referrer_domain?.split(','))}`}
+        >
+          <Typography variant="h4">🔗</Typography>
         </Tooltip>
       )}
       {enrollment.credit_account && (
