@@ -4,7 +4,6 @@ import { Theme } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import { useEffect } from 'react';
-import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import { SubmitButton, CompanyType, UserType, CohortType } from './Registration';
 
 const StyledBox = styled(Stack)(({ theme }) => ({
@@ -53,49 +52,32 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 function InviteChoice({
-  user,
-  cohort,
   company,
   account,
   setStep,
   selectStep,
-  source
+  trackReferralFlowEvents
 }: {
-  user: UserType;
-  cohort: CohortType;
   company: CompanyType | null | undefined;
   account: string;
   setStep: Function;
   selectStep: Function;
-  source: string;
+  trackReferralFlowEvents: Function;
 }) {
   const classes = useStyles();
 
   useEffect(() => {
-    trackReferralFlowEvents(
-      'Cohort Registration - Refer Colleagues Page - Page Loaded',
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents('Cohort Registration - Refer Colleagues Page - Page Loaded');
   }, []);
 
   const submitLearnAlone = () => {
-    trackReferralFlowEvents(
-      'Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected',
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents('Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected');
     selectStep();
   };
 
   const submitInviteColleagues = () => {
     trackReferralFlowEvents(
-      'Cohort Registration - Refer Colleagues Page - ‘Invite Colleagues’ Selected',
-      user,
-      cohort,
-      source
+      'Cohort Registration - Refer Colleagues Page - ‘Invite Colleagues’ Selected'
     );
     setStep(3);
   };

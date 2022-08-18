@@ -8,7 +8,7 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
-import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
+import { REGISTRATION_EVENTS, sendAmplitudeData } from 'utils/amplitude';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -127,6 +127,28 @@ export default function Registration() {
     code: ''
   });
 
+  const trackReferralFlowEvents = (eventType: string, params?: any) => {
+    sendAmplitudeData(eventType, {
+      [REGISTRATION_EVENTS.company_is_enterprise_customer]:
+        params?.is_enterprise_customer === undefined ? null : params?.is_enterprise_customer,
+      [REGISTRATION_EVENTS.company_has_sphere_alumni]:
+        params?.has_sphere_alumni === undefined ? null : params?.has_sphere_alumni,
+      [REGISTRATION_EVENTS.first_name]: params?.first_name || null,
+      [REGISTRATION_EVENTS.last_name]: params?.last_name || null,
+      [REGISTRATION_EVENTS.linkedIn_url]: params?.linkedin_url || null,
+      [REGISTRATION_EVENTS.referree_name]: params?.referree_name || null,
+      [REGISTRATION_EVENTS.referree_email]: params?.referree_email || null,
+      [REGISTRATION_EVENTS.amount_paid]: params?.amount_paid || null,
+      [REGISTRATION_EVENTS.registrant_email]: user.email,
+      [REGISTRATION_EVENTS.cohort_name]: cohort.name,
+      [REGISTRATION_EVENTS.cohort_code]: cohort.code,
+      [REGISTRATION_EVENTS.cohort_intake_number]: cohort.intake,
+      [REGISTRATION_EVENTS.cohort_intake]: cohort.intake_name,
+      [REGISTRATION_EVENTS.source]: url.get('source') || '',
+      [REGISTRATION_EVENTS.price]: cohort.price
+    });
+  };
+
   useEffect(() => {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
@@ -211,16 +233,6 @@ export default function Registration() {
           }
           setAccount(res.data.account);
           setLoading(false);
-          trackReferralFlowEvents(
-            'Cohort Registration - Personal Info Page - Page Loaded',
-            res.data.user,
-            res.data.cohort,
-            url.get('source') || '',
-            {
-              is_enterprise_customer: company?.is_enterprise_customer || false,
-              has_sphere_alumni: company?.has_sphere_alumni || false
-            }
-          );
           setTimeout(() => {
             setConfetti(0);
           }, 3000);
@@ -230,6 +242,14 @@ export default function Registration() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    !loading &&
+      trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
+        is_enterprise_customer: company?.is_enterprise_customer || false,
+        has_sphere_alumni: company?.has_sphere_alumni || false
+      });
+  }, [loading]);
 
   const subHeading = () => {
     if (pre_release || wait_listed) {
@@ -248,13 +268,11 @@ export default function Registration() {
       return (
         <>
           <InviteChoice
-            user={user}
-            cohort={cohort}
             company={company}
             account={account}
             setStep={(step: number) => setActiveStep(step)}
             selectStep={() => selectStep()}
-            source={url.get('source') || ''}
+            trackReferralFlowEvents={trackReferralFlowEvents}
           />
         </>
       );
@@ -267,13 +285,12 @@ export default function Registration() {
             onContinue={() => selectStep()}
             enrollmentId={user?.enrollment_id || ''}
             cohort={cohort}
-            user={user}
             referrer_code={user.slug}
             company={!!company}
             account={!!account}
             waitListed={wait_listed}
             preRelease={pre_release}
-            source={url.get('source') || ''}
+            trackReferralFlowEvents={trackReferralFlowEvents}
           />
         </>
       );
@@ -284,25 +301,19 @@ export default function Registration() {
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
             cohort={cohort}
-            user={user}
             first_name={user?.first_name}
             last_name={user?.last_name}
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
             payLaterMessage={payLaterMessage}
-            source={url.get('source') || ''}
+            trackReferralFlowEvents={trackReferralFlowEvents}
           />
         </Stack>
       );
     }
 
     if (activeStep === 5) {
-      trackReferralFlowEvents(
-        'Cohort Registration - Confirmation Page - Page Loaded',
-        user,
-        cohort,
-        url.get('source') || ''
-      );
+      trackReferralFlowEvents('Cohort Registration - Confirmation Page - Page Loaded');
       return (
         <Stack
           width="100%"
@@ -338,10 +349,7 @@ export default function Registration() {
             href="https://www.getsphere.com/#upcoming-cohorts-slider"
             onClick={() =>
               trackReferralFlowEvents(
-                "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected",
-                user,
-                cohort,
-                url.get('source') || ''
+                "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected"
               )
             }
             variant="contained"
@@ -362,6 +370,7 @@ export default function Registration() {
         cohort={cohort}
         account={account}
         wait_listed={wait_listed}
+        trackReferralFlowEvents={trackReferralFlowEvents}
       />
     );
   };

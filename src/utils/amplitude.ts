@@ -232,7 +232,15 @@ export const REGISTRATION_EVENTS = {
   cohort_intake_number: 'Cohort Intake Number',
   cohort_intake: 'Cohort Intake',
   source: 'Source',
-  price: 'Price'
+  price: 'Price',
+  amount_paid: 'Amount Paid',
+  referree_email: 'Referree Email',
+  referree_name: 'Referree Name',
+  linkedIn_url: 'LinkedIn URL',
+  first_name: 'First Name',
+  last_name: 'Last Name',
+  company_is_enterprise_customer: 'Company is Enterprise Customer',
+  company_has_sphere_alumni: 'Company has Sphere Alumni'
 };
 
 export const trackRegistrationEvent = (eventType: string, eventData: any) => {

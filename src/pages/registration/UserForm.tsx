@@ -14,7 +14,6 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
-import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import { UserType, CohortType, StyledLoadingButton } from './Registration';
 
 export default function UserForm({
@@ -22,13 +21,15 @@ export default function UserForm({
   cohort,
   user,
   account,
-  wait_listed
+  wait_listed,
+  trackReferralFlowEvents
 }: {
   submitValues: Function;
   user: UserType;
   cohort: CohortType;
   account: string;
   wait_listed: boolean;
+  trackReferralFlowEvents: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const { isAuthenticated } = useAuth();
@@ -81,17 +82,6 @@ export default function UserForm({
               submitValues({ ...values, slug: user.slug });
               if (!isAuthenticated) {
                 setAmplitudeUserId(user?.slug);
-                trackReferralFlowEvents(
-                  'Cohort Registration - Personal Info Page - Details Submitted',
-                  user,
-                  cohort,
-                  url.get('source') || '',
-                  {
-                    first_name: values.first_name,
-                    last_name: values.last_name,
-                    linkedin_url: values.linkedin_url
-                  }
-                );
                 setAmplitudeUserProperties({
                   full_name: user?.full_name,
                   type: user?.type,
@@ -99,6 +89,14 @@ export default function UserForm({
                   industry: user?.industry_category_selection?.join()
                 });
               }
+              trackReferralFlowEvents(
+                'Cohort Registration - Personal Info Page - Details Submitted',
+                {
+                  first_name: values.first_name,
+                  last_name: values.last_name,
+                  linkedin_url: values.linkedin_url
+                }
+              );
               triggerOnboardingEvent();
               if (alumni) {
                 triggerReferralEvent();

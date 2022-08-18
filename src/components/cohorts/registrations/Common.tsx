@@ -371,34 +371,6 @@ export const ReferralCodeRow = ({
   );
 };
 
-export const trackReferralFlowEvents = (
-  eventType: string,
-  user: UserType,
-  cohort: CohortType,
-  source: string,
-  params?: any
-) => {
-  sendAmplitudeData(eventType, {
-    company_is_enterprise_customer:
-      params?.is_enterprise_customer === undefined ? null : params?.is_enterprise_customer,
-    company_has_sphere_alumni:
-      params?.has_sphere_alumni === undefined ? null : params?.has_sphere_alumni,
-    first_name: params?.first_name || null,
-    last_name: params?.last_name || null,
-    linkedIn_url: params?.linkedin_url || null,
-    referree_name: params?.referree_name || null,
-    referree_email: params?.referree_email || null,
-    amount_paid: params?.amount_paid || null,
-    [REGISTRATION_EVENTS.registrant_email]: user.email,
-    [REGISTRATION_EVENTS.cohort_name]: cohort.name,
-    [REGISTRATION_EVENTS.cohort_code]: cohort.code,
-    [REGISTRATION_EVENTS.cohort_intake_number]: cohort.intake,
-    [REGISTRATION_EVENTS.cohort_intake]: cohort.intake_name,
-    [REGISTRATION_EVENTS.source]: source,
-    [REGISTRATION_EVENTS.price]: cohort.price
-  });
-};
-
 export const Actions = ({
   enrollment,
   codes,

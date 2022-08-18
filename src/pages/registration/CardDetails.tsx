@@ -25,7 +25,6 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
-import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import { CohortType, UserType } from './Registration';
 
 type CardType = {
@@ -56,22 +55,20 @@ const CohortDetailsCard = styled(Card)(({ theme }) => ({
 
 export default function CardDetails({
   cohort,
-  user,
   enrollmentID,
   first_name,
   last_name,
   setStep,
   payLaterMessage,
-  source
+  trackReferralFlowEvents
 }: {
   cohort: CohortType;
-  user: UserType;
   first_name?: string;
   last_name?: string;
   enrollmentID?: string;
   setStep: Function;
   payLaterMessage: string;
-  source: string;
+  trackReferralFlowEvents: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -81,21 +78,11 @@ export default function CardDetails({
   const referrer_code = url.get('referrer') || '';
 
   useEffect(() => {
-    trackReferralFlowEvents(
-      'Cohort Registration - Payment Info Page - Page Loaded',
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents('Cohort Registration - Payment Info Page - Page Loaded');
   }, []);
 
   const handlePayLater = () => {
-    trackReferralFlowEvents(
-      "Cohort Registration - Payment Info Page - 'Pay Later' Selected",
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
     setStep(5);
   };
 
@@ -158,13 +145,9 @@ export default function CardDetails({
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
             triggerOnboardingEvent();
-            trackReferralFlowEvents(
-              'Cohort Registration - Payment Info Page - Submitted Card',
-              user,
-              cohort,
-              source,
-              { amount_paid: cohort?.price }
-            );
+            trackReferralFlowEvents('Cohort Registration - Payment Info Page - Submitted Card', {
+              amount_paid: cohort?.price
+            });
             if (alumni) {
               triggerReferralEvent();
             }

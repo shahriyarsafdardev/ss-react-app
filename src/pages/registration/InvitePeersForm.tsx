@@ -6,7 +6,6 @@ import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
-import { trackReferralFlowEvents } from 'components/cohorts/registrations/Common';
 import { Cohort } from '../../@types/cohorts';
 import { CohortType, UserType } from './Registration';
 import InvitesList from './InvitesList';
@@ -61,44 +60,32 @@ function InvitePeersForm({
   onContinue,
   enrollmentId,
   cohort,
-  user,
   referrer_code,
   company,
   account,
   waitListed,
   preRelease,
-  source
+  trackReferralFlowEvents
 }: {
   onContinue: Function;
   enrollmentId: string;
   cohort: CohortType;
-  user: UserType;
   referrer_code: string;
   company: boolean;
   account: boolean;
   waitListed: boolean;
   preRelease: boolean;
-  source: string;
+  trackReferralFlowEvents: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const [invites, setInvites] = useState<ReferralTypeUser[]>([]);
 
   useEffect(() => {
-    trackReferralFlowEvents(
-      'Cohort Registration - Send Invitation Page - Page Loaded',
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - Page Loaded');
   }, []);
 
   const handleOnContinue = () => {
-    trackReferralFlowEvents(
-      'Cohort Registration - Send Invitation Page - ‘Continue’ Selected',
-      user,
-      cohort,
-      source
-    );
+    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - ‘Continue’ Selected');
     onContinue();
   };
 
@@ -153,9 +140,6 @@ function InvitePeersForm({
           });
           trackReferralFlowEvents(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
-            user,
-            cohort,
-            source,
             { referree_email: values.email, referree_name: values.fullName }
           );
         })
