@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 export default function SegmentScript() {
+  const segmentApiKey = process.env.REACT_APP_SEGMENT_API_KEY || '';
   return (
     <Helmet>
       <script>
@@ -55,9 +56,9 @@ export default function SegmentScript() {
                   n.parentNode.insertBefore(t, n);
                   analytics._loadOptions = e;
                 };
-                analytics._writeKey = 'z7sZMpoKS13lTgukEKbVtHJRo0tShwDT';
+                analytics._writeKey = '${segmentApiKey}';
                 analytics.SNIPPET_VERSION = '4.15.3';
-                analytics.load('z7sZMpoKS13lTgukEKbVtHJRo0tShwDT');
+                analytics.load('${segmentApiKey}');
               }
           })();
         `}

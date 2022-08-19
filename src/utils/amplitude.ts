@@ -27,7 +27,7 @@ export const addAmplitudeUserProperty = (key: string, value: string) => {
 
 export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
   // amplitudeInstance().logEvent(eventType, eventProperties);
-  // window.analytics?.track(eventType, eventProperties);
+  window.analytics?.track(eventType, eventProperties);
 };
 
 export const setSegmentUserProperties = (user: any) => {
