@@ -376,7 +376,7 @@ export default function Registration() {
     );
   };
 
-  const RegistrationFlow = () => {
+  const registrationFlow = () => {
     if (alumniEvent) {
       return <AlumniRegistration />;
     }
@@ -423,7 +423,7 @@ export default function Registration() {
             <LoadingScreen />
           </Box>
         ) : (
-          <RegistrationFlow />
+          <>{registrationFlow()}</>
         )}
       </RootStyle>
     </>
