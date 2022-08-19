@@ -166,13 +166,15 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
         setIsSubmitting(false);
         setModal(false);
         dispatch(updateOnboardingStatus(cohort_id));
-        trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-          [ONBOARDING_EVENTS.cohort_name]: cohort.name,
-          [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
-          [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-          [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
-          [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
-        });
+        trackOnboardingEvent(
+          ONBOARDING_EVENTS.event_type,
+          {
+            [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+            [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
+            [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
+          },
+          cohort
+        );
       })
       .catch((err) => {
         setIsSubmitting(false);
@@ -188,13 +190,15 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
           <AddToCalendarInfo
             onNextHandler={() => {
               setActiveStep(activeStep + 1);
-              trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-                [ONBOARDING_EVENTS.cohort_name]: cohort.name,
-                [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
-                [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-                [ONBOARDING_EVENTS.category]: 'Calendar Added',
-                [ONBOARDING_EVENTS.description]: 'User has added the calender.'
-              });
+              trackOnboardingEvent(
+                ONBOARDING_EVENTS.event_type,
+                {
+                  [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+                  [ONBOARDING_EVENTS.category]: 'Calendar Added',
+                  [ONBOARDING_EVENTS.description]: 'User has added the calender.'
+                },
+                cohort
+              );
             }}
             inviteUrl={cohort?.calendar_invite_url}
           />
@@ -214,13 +218,15 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
           isSubmitting={isSubmitting}
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.companyInfo, data);
-            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-              [ONBOARDING_EVENTS.cohort_name]: cohort.name,
-              [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
-              [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-              [ONBOARDING_EVENTS.category]: 'Goals Added',
-              [ONBOARDING_EVENTS.description]: 'User has added goals.'
-            });
+            trackOnboardingEvent(
+              ONBOARDING_EVENTS.event_type,
+              {
+                [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+                [ONBOARDING_EVENTS.category]: 'Goals Added',
+                [ONBOARDING_EVENTS.description]: 'User has added goals.'
+              },
+              cohort
+            );
           }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
@@ -232,13 +238,15 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
-            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-              [ONBOARDING_EVENTS.cohort_name]: cohort.name,
-              [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
-              [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-              [ONBOARDING_EVENTS.category]: 'House Keeping Questions',
-              [ONBOARDING_EVENTS.description]: 'User has answered housekeeping questions.'
-            });
+            trackOnboardingEvent(
+              ONBOARDING_EVENTS.event_type,
+              {
+                [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+                [ONBOARDING_EVENTS.category]: 'House Keeping Questions',
+                [ONBOARDING_EVENTS.description]: 'User has answered housekeeping questions.'
+              },
+              cohort
+            );
           }}
           isSubmitting={isSubmitting}
           infoDetails={{

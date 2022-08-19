@@ -43,16 +43,18 @@ function InviteEmailForm({
           id: cohortId
         })
         .then((res) => {
-          trackReferralEvent(REFERRAL_EVENTS.event_type, {
-            [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-            [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-            [REFERRAL_EVENTS.event]: 'click',
-            [REFERRAL_EVENTS.category]: 'referral link',
-            [REFERRAL_EVENTS.description]: 'Send referral link via email',
-            [REFERRAL_EVENTS.referrer_code]: referrer_code,
-            [REFERRAL_EVENTS.invite_email]: values.email,
-            [REFERRAL_EVENTS.invite_full_name]: values.fullName
-          });
+          trackReferralEvent(
+            REFERRAL_EVENTS.event_type,
+            {
+              [REFERRAL_EVENTS.event]: 'click',
+              [REFERRAL_EVENTS.category]: 'referral link',
+              [REFERRAL_EVENTS.description]: 'Send referral link via email',
+              [REFERRAL_EVENTS.referrer_code]: referrer_code,
+              [REFERRAL_EVENTS.invite_email]: values.email,
+              [REFERRAL_EVENTS.invite_full_name]: values.fullName
+            },
+            cohort
+          );
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
           setReferralEmailModal(false);
         })

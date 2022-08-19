@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
-import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
+import { EVENT_TYPES, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
 import { getEnrollments, getReferralCodes, clearErrors } from 'redux/slices/cohort';
 import { useSnackbar } from 'notistack5';
 import { RegistrationsHeader, RegistrationsFooter } from './Common';
@@ -58,8 +58,7 @@ export default function RegistrationsTab() {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.registrations_tab,
-        [EVENT_TYPES.cohort_name]: cohort.name,
-        [EVENT_TYPES.cohort_intake_number]: cohort.intake
+        ...setGenericEventProperties(cohort)
       });
       setAnalyticsSent(true);
     }

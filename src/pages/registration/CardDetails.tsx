@@ -87,24 +87,28 @@ export default function CardDetails({
   };
 
   const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.cohort_name]: cohort?.id,
-      [ONBOARDING_EVENTS.cohort_intake_number]: '',
-      [ONBOARDING_EVENTS.event]: 'Payment Made',
-      [ONBOARDING_EVENTS.category]: 'Payment Made',
-      [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
-    });
+    trackOnboardingEvent(
+      ONBOARDING_EVENTS.event_type,
+      {
+        [ONBOARDING_EVENTS.event]: 'Payment Made',
+        [ONBOARDING_EVENTS.category]: 'Payment Made',
+        [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
+      },
+      cohort
+    );
   };
 
   const triggerReferralEvent = () => {
-    trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohort?.id,
-      [REFERRAL_EVENTS.cohort_intake_number]: '',
-      [REFERRAL_EVENTS.event]: 'Payment Made',
-      [REFERRAL_EVENTS.category]: 'referral link',
-      [REFERRAL_EVENTS.description]: 'Payment Made via referral link',
-      [REFERRAL_EVENTS.referrer_code]: referrer_code
-    });
+    trackReferralEvent(
+      REFERRAL_EVENTS.event_type,
+      {
+        [REFERRAL_EVENTS.event]: 'Payment Made',
+        [REFERRAL_EVENTS.category]: 'referral link',
+        [REFERRAL_EVENTS.description]: 'Payment Made via referral link',
+        [REFERRAL_EVENTS.referrer_code]: referrer_code
+      },
+      cohort
+    );
   };
 
   const ValidationSchema = Yup.object().shape({

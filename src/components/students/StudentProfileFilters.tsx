@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   Select,
   InputLabel,
@@ -9,7 +8,6 @@ import {
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
-import { CohortContext } from 'contexts/CohortContext';
 
 const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
@@ -21,6 +19,7 @@ type StudentProfileFiltersProps = {
   handleCompanyChange: (e: any) => void;
   setView: (value: string) => void;
   view: string;
+  cohort: any;
 };
 
 const FilterFormControl = styled(FormControl)(({ theme }) => ({
@@ -36,20 +35,18 @@ export default function StudentProfileFilters({
   selectedCompanies,
   handleCompanyChange,
   setView,
-  view
+  view,
+  cohort
 }: StudentProfileFiltersProps) {
-  const { cohortName, cohortIntake } = useContext(CohortContext);
-
   const trackFilters = (type: string) => {
-    trackPeersPageEvent(cohortName, cohortIntake, `${view} view`.toUpperCase(), type);
+    trackPeersPageEvent(`${view} view`.toUpperCase(), type, cohort);
   };
 
   const onViewSwitch = (selectedView: string) => {
     trackPeersPageEvent(
-      cohortName,
-      cohortIntake,
       PEERS_PAGE_EVENTS.view_selection,
-      `Switched to ${selectedView.toUpperCase()} view`
+      `Switched to ${selectedView.toUpperCase()} view`,
+      cohort
     );
     setView(selectedView);
   };

@@ -4,7 +4,8 @@ import {
   sendAmplitudeData,
   EVENT_TYPES,
   trackPeersPageEvent,
-  PEERS_PAGE_EVENTS
+  PEERS_PAGE_EVENTS,
+  setGenericEventProperties
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
 import { useLocation } from 'react-router-dom';
@@ -87,8 +88,7 @@ export default function PeersTab() {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.peers_tab,
-        [EVENT_TYPES.cohort_name]: cohort?.name,
-        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+        ...setGenericEventProperties(cohort)
       });
       setAnalyticsSent(true);
     }
@@ -129,12 +129,7 @@ export default function PeersTab() {
   }, [selectedCompanies, selectedInterests, peers]);
 
   const trackModalEvent = () =>
-    trackPeersPageEvent(
-      cohort?.name,
-      cohort?.intake,
-      `${view} view`.toUpperCase(),
-      PEERS_PAGE_EVENTS.modal_open_event
-    );
+    trackPeersPageEvent(`${view} view`.toUpperCase(), PEERS_PAGE_EVENTS.modal_open_event, cohort);
 
   const showCardView = () => (
     <StudentProfileGrid
@@ -164,10 +159,10 @@ export default function PeersTab() {
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
           modalUser={modalState}
-          cohortID={cohort_id}
           dispalyChatLink={
             modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'
           }
+          cohort={cohort}
         />
         <Stack
           width="100%"
@@ -181,6 +176,7 @@ export default function PeersTab() {
             handleCompanyChange={handleChange}
             setView={setView}
             view={view}
+            cohort={cohort}
           />
           {((user?.type === 'admin' && mode === 'Instructor') || user?.type === 'expert') && (
             <Stack direction={{ xs: 'row', md: 'row' }} style={{ gap: '16px' }}>

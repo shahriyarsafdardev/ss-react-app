@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // routes
-import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import { GENERIC_EVENTS, ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
@@ -58,8 +58,8 @@ export default function LoginForm() {
       try {
         await login(values.email, values.password).then((res) => {
           trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-            [ONBOARDING_EVENTS.cohort_name]: '',
-            [ONBOARDING_EVENTS.cohort_intake_number]: '',
+            [GENERIC_EVENTS.cohort_name]: '',
+            [GENERIC_EVENTS.cohort_intake_number]: '',
             [ONBOARDING_EVENTS.event]: 'Onboarding Event',
             [ONBOARDING_EVENTS.category]: 'First Login',
             [ONBOARDING_EVENTS.description]: 'User has logged in on portal.'

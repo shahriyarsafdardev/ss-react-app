@@ -8,7 +8,7 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
-import { REGISTRATION_EVENTS, sendAmplitudeData } from 'utils/amplitude';
+import { REGISTRATION_EVENTS, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -51,6 +51,7 @@ export type CohortType = {
   dates: string;
   price: string;
   code: string;
+  amplitude_events_timeline: any;
 };
 
 export type CompanyType = {
@@ -125,7 +126,8 @@ export default function Registration() {
     instructor: '',
     dates: '',
     price: '',
-    code: ''
+    code: '',
+    amplitude_events_timeline: null
   });
 
   const trackReferralFlowEvents = (eventType: string, params?: any) => {
@@ -141,12 +143,9 @@ export default function Registration() {
       [REGISTRATION_EVENTS.referree_email]: params?.referree_email || null,
       [REGISTRATION_EVENTS.amount_paid]: params?.amount_paid || null,
       [REGISTRATION_EVENTS.registrant_email]: user.email,
-      [REGISTRATION_EVENTS.cohort_name]: cohort.name,
-      [REGISTRATION_EVENTS.cohort_code]: cohort.code,
-      [REGISTRATION_EVENTS.cohort_intake_number]: cohort.intake,
-      [REGISTRATION_EVENTS.cohort_intake]: cohort.intake_name,
       [REGISTRATION_EVENTS.source]: url.get('source') || '',
-      [REGISTRATION_EVENTS.price]: cohort.price
+      [REGISTRATION_EVENTS.price]: cohort.price,
+      ...setGenericEventProperties(cohort)
     });
   };
 

@@ -127,17 +127,19 @@ function InvitePeersForm({
           setInvites([...invites, { email: values.email, fullName: values.fullName }]);
           resetForm();
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
-          trackReferralEvent(REFERRAL_EVENTS.event_type, {
-            [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-            [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-            [REFERRAL_EVENTS.event]: 'email invitation sent',
-            [REFERRAL_EVENTS.category]: 'referral link',
-            [REFERRAL_EVENTS.description]: 'Send referral link via email',
-            [REFERRAL_EVENTS.referrer_code]: referrer_code,
-            [REFERRAL_EVENTS.invite_email]: values.email,
-            [REFERRAL_EVENTS.invite_full_name]: values.fullName,
-            [REFERRAL_EVENTS.registration_flow]: getRegistrationFlow()
-          });
+          trackReferralEvent(
+            REFERRAL_EVENTS.event_type,
+            {
+              [REFERRAL_EVENTS.event]: 'email invitation sent',
+              [REFERRAL_EVENTS.category]: 'referral link',
+              [REFERRAL_EVENTS.description]: 'Send referral link via email',
+              [REFERRAL_EVENTS.referrer_code]: referrer_code,
+              [REFERRAL_EVENTS.invite_email]: values.email,
+              [REFERRAL_EVENTS.invite_full_name]: values.fullName,
+              [REFERRAL_EVENTS.registration_flow]: getRegistrationFlow()
+            },
+            cohort
+          );
           trackReferralFlowEvents(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
             { referree_email: values.email, referree_name: values.fullName }

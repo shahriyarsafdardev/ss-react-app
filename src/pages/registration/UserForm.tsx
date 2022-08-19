@@ -43,24 +43,28 @@ export default function UserForm({
   });
 
   const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.cohort_name]: cohort?.id,
-      [ONBOARDING_EVENTS.cohort_intake_number]: '',
-      [ONBOARDING_EVENTS.event]: 'Registered',
-      [ONBOARDING_EVENTS.category]: 'Registered',
-      [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
-    });
+    trackOnboardingEvent(
+      ONBOARDING_EVENTS.event_type,
+      {
+        [ONBOARDING_EVENTS.event]: 'Registered',
+        [ONBOARDING_EVENTS.category]: 'Registered',
+        [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
+      },
+      cohort
+    );
   };
 
   const triggerReferralEvent = () => {
-    trackReferralEvent(REFERRAL_EVENTS.event_type, {
-      [REFERRAL_EVENTS.cohort_name]: cohort?.id,
-      [REFERRAL_EVENTS.cohort_intake_number]: '',
-      [REFERRAL_EVENTS.event]: 'Registered',
-      [REFERRAL_EVENTS.category]: 'referral link',
-      [REFERRAL_EVENTS.description]: 'Registered via referral link',
-      [REFERRAL_EVENTS.referrer_code]: referrer_code
-    });
+    trackReferralEvent(
+      REFERRAL_EVENTS.event_type,
+      {
+        [REFERRAL_EVENTS.event]: 'Registered',
+        [REFERRAL_EVENTS.category]: 'referral link',
+        [REFERRAL_EVENTS.description]: 'Registered via referral link',
+        [REFERRAL_EVENTS.referrer_code]: referrer_code
+      },
+      cohort
+    );
   };
 
   const formik = useFormik<UserType>({

@@ -43,7 +43,7 @@ const ContactNote = () => (
 export default function ContactUs() {
   const { themeStretch } = useSettings();
   const [modalState, modalHandler] = useState({});
-  const [cohortID, setCohortID] = useState('testing');
+  const [cohort, setCohort] = useState({});
   const [displayChatLink, setDisplayChatLink] = useState(false);
   const { user, updateProfile } = useAuth();
   const newUser: any = { ...user };
@@ -53,7 +53,7 @@ export default function ContactUs() {
   useEffect(() => {
     cohorts.forEach((cohort) => {
       if (cohort.id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61') {
-        setCohortID(cohort.id);
+        setCohort(cohort);
         setDisplayChatLink(true);
       }
     });
@@ -215,8 +215,8 @@ export default function ContactUs() {
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
           modalUser={modalState}
-          cohortID={cohortID}
           dispalyChatLink={displayChatLink}
+          cohort={cohort}
         />
         <StyledGrid container spacing={3}>
           {contactInfoDetails.map((info, index) => (

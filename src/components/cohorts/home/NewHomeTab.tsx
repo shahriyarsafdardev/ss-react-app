@@ -1,7 +1,7 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { NEW_HOME_TAB_EVENTS, sendAmplitudeData } from 'utils/amplitude';
+import { NEW_HOME_TAB_EVENTS, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
@@ -46,13 +46,10 @@ function NewHomeTab({
 
   const trackHomeTabEvents = (eventType: string) => {
     sendAmplitudeData(eventType, {
-      [NEW_HOME_TAB_EVENTS.cohort_name]: cohort.name,
-      [NEW_HOME_TAB_EVENTS.cohort_code]: cohort.code,
-      [NEW_HOME_TAB_EVENTS.cohort_intake_number]: cohort.intake,
-      [NEW_HOME_TAB_EVENTS.cohort_intake]: cohort.intake_name,
       [NEW_HOME_TAB_EVENTS.reading_number]: list[currentStep]?.index,
       [NEW_HOME_TAB_EVENTS.reading_name]: list[currentStep]?.name,
-      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number
+      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number,
+      ...setGenericEventProperties(cohort)
     });
   };
 

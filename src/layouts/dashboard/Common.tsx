@@ -121,14 +121,16 @@ export const ShareReferralLink = ({
   const handleCopyReferralLink = () => {
     if (referralLink) {
       copy(`${referralLink}&alumni=true`);
-      trackReferralEvent(REFERRAL_EVENTS.event_type, {
-        [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-        [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-        [REFERRAL_EVENTS.event]: 'click',
-        [REFERRAL_EVENTS.category]: 'referral link',
-        [REFERRAL_EVENTS.description]: 'Copied referral link',
-        [REFERRAL_EVENTS.referrer_code]: referrer_code
-      });
+      trackReferralEvent(
+        REFERRAL_EVENTS.event_type,
+        {
+          [REFERRAL_EVENTS.event]: 'click',
+          [REFERRAL_EVENTS.category]: 'referral link',
+          [REFERRAL_EVENTS.description]: 'Copied referral link',
+          [REFERRAL_EVENTS.referrer_code]: referrer_code
+        },
+        cohort
+      );
       enqueueSnackbar('Referral Link Copied', { variant: 'success' });
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
@@ -138,14 +140,16 @@ export const ShareReferralLink = ({
   const handleSendViaEmail = () => {
     if (referralLink) {
       setReferralEmailModal(true);
-      trackReferralEvent(REFERRAL_EVENTS.event_type, {
-        [REFERRAL_EVENTS.cohort_name]: cohort?.name,
-        [REFERRAL_EVENTS.cohort_intake_number]: cohort?.intake,
-        [REFERRAL_EVENTS.event]: 'click',
-        [REFERRAL_EVENTS.category]: 'referral link',
-        [REFERRAL_EVENTS.description]: 'Send referral link via email',
-        [REFERRAL_EVENTS.referrer_code]: referrer_code
-      });
+      trackReferralEvent(
+        REFERRAL_EVENTS.event_type,
+        {
+          [REFERRAL_EVENTS.event]: 'click',
+          [REFERRAL_EVENTS.category]: 'referral link',
+          [REFERRAL_EVENTS.description]: 'Send referral link via email',
+          [REFERRAL_EVENTS.referrer_code]: referrer_code
+        },
+        cohort
+      );
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
     }

@@ -27,7 +27,7 @@ export const addAmplitudeUserProperty = (key: string, value: string) => {
 
 export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
   // amplitudeInstance().logEvent(eventType, eventProperties);
-  window.analytics?.track(eventType, eventProperties);
+  // window.analytics?.track(eventType, eventProperties);
 };
 
 export const setSegmentUserProperties = (user: any) => {
@@ -50,15 +50,11 @@ export const EVENT_TYPES = {
   attendance_tab: 'Attendance Tab',
   registrations_tab: 'Registrations Tab',
   messaging_tab: 'Messaging Tab',
-  account_settings_tab: 'Account Settings',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number'
+  account_settings_tab: 'Account Settings'
 };
 
 export const SESSION_EVENTS = {
   session_page_action: 'Sessions Page Action',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number',
   session_number: 'session-number',
   category: 'category',
   action: 'action',
@@ -85,21 +81,21 @@ export const SLIDE_EVENTS = {
 
 export const ONBOARDING_EVENTS = {
   event_type: 'Onboarding Event',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number',
   event: 'event',
   category: 'category',
   description: 'description'
 };
 
-export const trackOnboardingEvent = (eventType: string, eventData: any) => {
-  sendAmplitudeData(ONBOARDING_EVENTS.event_type, eventData);
+export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?: any) => {
+  const newEventData = {
+    ...setGenericEventProperties(cohort),
+    ...eventData
+  };
+  sendAmplitudeData(ONBOARDING_EVENTS.event_type, newEventData);
 };
 
 export const REFERRAL_EVENTS = {
   event_type: 'Referral Event',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number',
   event: 'event',
   category: 'category',
   description: 'description',
@@ -109,20 +105,22 @@ export const REFERRAL_EVENTS = {
   registration_flow: 'registration_flow'
 };
 
-export const trackReferralEvent = (eventType: string, eventData: any) => {
-  sendAmplitudeData(REFERRAL_EVENTS.event_type, eventData);
+export const trackReferralEvent = (eventType: string, eventData: any, cohort?: any) => {
+  const newEventData = {
+    ...setGenericEventProperties(cohort),
+    ...eventData
+  };
+  sendAmplitudeData(REFERRAL_EVENTS.event_type, newEventData);
 };
 
 export const trackSessionsPageEvent = (
-  cohortName: string,
-  intake: number | null,
   sessionNumber: number,
   eventType: string,
-  eventData?: string
+  eventData?: string,
+  cohort?: any
 ) => {
   const amplitudeData = {
-    [SESSION_EVENTS.cohort_name]: cohortName,
-    [SESSION_EVENTS.cohort_intake_number]: intake,
+    ...setGenericEventProperties(cohort),
     [SESSION_EVENTS.session_number]: sessionNumber
   };
 
@@ -143,15 +141,9 @@ export const PEERS_PAGE_EVENTS = {
   opened_linked_in: 'Opened LinkedIn'
 };
 
-export const trackPeersPageEvent = (
-  cohortName: string,
-  intake: number | null,
-  eventType: string,
-  eventData?: string
-) => {
+export const trackPeersPageEvent = (eventType: string, eventData?: string, cohort?: any) => {
   const amplitudeData = {
-    [SESSION_EVENTS.cohort_name]: cohortName,
-    [SESSION_EVENTS.cohort_intake_number]: intake
+    ...setGenericEventProperties(cohort)
   };
 
   sendAmplitudeData(PEERS_PAGE_EVENTS.peers_page_action, {
@@ -163,8 +155,6 @@ export const trackPeersPageEvent = (
 
 export const HOME_PAGE_EVENTS = {
   home_page_action: 'Home Page Action',
-  cohort_name: 'cohort-name',
-  cohort_intake_number: 'cohort-intake-number',
   category: 'category',
   action: 'action',
   cohort_timeline: 'cohort-timeline',
@@ -178,16 +168,14 @@ export const HOME_PAGE_EVENTS = {
 };
 
 export const trackHomePageEvents = (
-  cohortName: string,
-  intake: number | null,
   sessionNumber: number | undefined,
   eventType: string,
   eventData?: string,
-  source?: string
+  source?: string,
+  cohort?: any
 ) => {
   const amplitudeData = {
-    [HOME_PAGE_EVENTS.cohort_name]: cohortName,
-    [HOME_PAGE_EVENTS.cohort_intake_number]: intake,
+    ...setGenericEventProperties(cohort),
     [HOME_PAGE_EVENTS.session_number]: sessionNumber,
     [HOME_PAGE_EVENTS.source]: source || 'from_portal'
   };
@@ -203,15 +191,9 @@ export const MESSAGING_EVENTS = {
   message_tab_action: 'Messaging Tab Action'
 };
 
-export const trackMessagingEvents = (
-  cohortName: string,
-  intake: number | null,
-  eventCategory: string,
-  eventData: string
-) => {
+export const trackMessagingEvents = (eventCategory: string, eventData: string, cohort?: any) => {
   sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
-    [EVENT_TYPES.cohort_name]: cohortName,
-    [EVENT_TYPES.cohort_intake_number]: intake,
+    ...setGenericEventProperties(cohort),
     category: eventCategory,
     action: eventData
   });
@@ -223,15 +205,9 @@ export const QnA_EVENTS = {
   action: 'action'
 };
 
-export const trackQnAEvents = (
-  cohortName: string,
-  intake: number | null,
-  eventCategory: string,
-  eventData: string
-) => {
+export const trackQnAEvents = (eventCategory: string, eventData: string, cohort?: any) => {
   sendAmplitudeData(QnA_EVENTS.qna_page_action, {
-    [EVENT_TYPES.cohort_name]: cohortName,
-    [EVENT_TYPES.cohort_intake_number]: intake,
+    ...setGenericEventProperties(cohort),
     category: eventCategory,
     [QnA_EVENTS.action]: eventData
   });
@@ -239,10 +215,6 @@ export const trackQnAEvents = (
 
 export const REGISTRATION_EVENTS = {
   registrant_email: 'Registrant Email',
-  cohort_name: 'Cohort Name',
-  cohort_code: 'Cohort Code',
-  cohort_intake_number: 'Cohort Intake Number',
-  cohort_intake: 'Cohort Intake',
   source: 'Source',
   price: 'Price',
   amount_paid: 'Amount Paid',
@@ -260,10 +232,6 @@ export const trackRegistrationEvent = (eventType: string, eventData: any) => {
 };
 
 export const NEW_HOME_TAB_EVENTS = {
-  cohort_name: 'Cohort Name',
-  cohort_code: 'Cohort Code',
-  cohort_intake_number: 'Cohort Intake Number',
-  cohort_intake: 'Cohort Intake',
   reading_number: 'Reading Number',
   reading_name: 'Reading Name',
   session_number: 'Session Number'
@@ -272,3 +240,29 @@ export const NEW_HOME_TAB_EVENTS = {
 export const trackNewHomeTabEvent = (eventType: string, eventData: any) => {
   sendAmplitudeData(eventType, eventData);
 };
+
+export const GENERIC_EVENTS = {
+  cohort_name: 'Cohort Name',
+  cohort_code: 'Cohort Code',
+  cohort_intake: 'Cohort Intake',
+  cohort_intake_number: 'Cohort Intake Number',
+  days_before_cohort_starts: 'Days Before Cohort Starts',
+  days_after_cohort_finished: 'Days After Cohort Starts',
+  hours_before_next_session: 'Hours Before Next Session',
+  hours_after_previous_session: 'Hours After Previous Session'
+};
+
+export const setGenericEventProperties = (cohort: any) => ({
+  [GENERIC_EVENTS.cohort_name]: cohort?.name,
+  [GENERIC_EVENTS.cohort_code]: cohort?.code,
+  [GENERIC_EVENTS.cohort_intake]: cohort?.intake_name,
+  [GENERIC_EVENTS.cohort_intake_number]: cohort?.intake,
+  [GENERIC_EVENTS.days_before_cohort_starts]:
+    cohort?.amplitude_events_timeline?.days_before_cohort_starts,
+  [GENERIC_EVENTS.days_after_cohort_finished]:
+    cohort?.amplitude_events_timeline?.days_after_cohort_finished,
+  [GENERIC_EVENTS.hours_before_next_session]:
+    cohort?.amplitude_events_timeline?.hours_before_next_session,
+  [GENERIC_EVENTS.hours_after_previous_session]:
+    cohort?.amplitude_events_timeline?.hours_after_previous_session
+});

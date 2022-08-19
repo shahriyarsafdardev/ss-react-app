@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
-import { EVENT_TYPES, trackQnAEvents, sendAmplitudeData } from 'utils/amplitude';
+import {
+  EVENT_TYPES,
+  trackQnAEvents,
+  sendAmplitudeData,
+  setGenericEventProperties
+} from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion, submitAnswer } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -13,8 +18,6 @@ import LoadingScreen from '../../LoadingScreen';
 import QuestionForm from './QuestionForm';
 import QnAFeed from './QnAFeed';
 import EmptyFeed from './EmptyFeed';
-import About from './About';
-import Filters from './Filters';
 
 const StyledPage = styled(Page)(({ theme }) => ({
   marginTop: '-15px',
@@ -69,14 +72,13 @@ function QnATab() {
     if (cohort) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.questions_tab,
-        [EVENT_TYPES.cohort_name]: cohort?.name,
-        [EVENT_TYPES.cohort_intake_number]: cohort?.intake
+        ...setGenericEventProperties(cohort)
       });
     }
   }, [cohort]);
 
   const sendAnalyticsData = (eventCategory: string, eventData: string) => {
-    trackQnAEvents(cohort?.name, cohort?.intake, eventCategory, eventData);
+    trackQnAEvents(eventCategory, eventData, cohort);
   };
 
   useEffect(() => {
