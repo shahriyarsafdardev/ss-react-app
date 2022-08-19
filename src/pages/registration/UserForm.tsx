@@ -8,8 +8,7 @@ import TermsCheckBox from 'components/TermsCheckBox';
 import {
   ONBOARDING_EVENTS,
   REFERRAL_EVENTS,
-  setAmplitudeUserId,
-  setAmplitudeUserProperties,
+  setSegmentUserProperties,
   trackOnboardingEvent,
   trackReferralEvent
 } from 'utils/amplitude';
@@ -85,12 +84,12 @@ export default function UserForm({
               enqueueSnackbar('Application Submitted', { variant: 'success' });
               submitValues({ ...values, slug: user.slug });
               if (!isAuthenticated) {
-                setAmplitudeUserId(user?.slug);
-                setAmplitudeUserProperties({
-                  full_name: user?.full_name,
+                setSegmentUserProperties({
+                  slug: user?.slug,
+                  displayName: user?.full_name,
                   type: user?.type,
-                  company: user?.company,
-                  industry: user?.industry_category_selection?.join()
+                  current_company: user?.company,
+                  current_industry_category_selections: user?.industry_category_selection
                 });
               }
               trackReferralFlowEvents(
