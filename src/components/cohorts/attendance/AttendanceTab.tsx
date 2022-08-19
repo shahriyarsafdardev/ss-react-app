@@ -2,7 +2,7 @@ import { merge } from 'lodash';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingScreen from 'components/LoadingScreen';
-import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
+import { EVENT_TYPES, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
 // material
 import { Card, CardHeader, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -57,8 +57,7 @@ const AttendanceTab = () => {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.attendance_tab,
-        [EVENT_TYPES.cohort_name]: cohort.name,
-        [EVENT_TYPES.cohort_intake_number]: cohort.intake
+        ...setGenericEventProperties(cohort)
       });
       setAnalyticsSent(true);
     }

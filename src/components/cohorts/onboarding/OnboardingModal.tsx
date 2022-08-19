@@ -356,13 +356,15 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
-            trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
-              [ONBOARDING_EVENTS.cohort_name]: cohort.name,
-              [ONBOARDING_EVENTS.cohort_intake_number]: cohort.intake,
-              [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-              [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
-              [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
-            });
+            trackOnboardingEvent(
+              ONBOARDING_EVENTS.event_type,
+              {
+                [ONBOARDING_EVENTS.event]: 'Onboarding Event',
+                [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
+                [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
+              },
+              cohort
+            );
           }}
           infoDetails={{
             current_understanding: onboardingData.cohort_understanding,

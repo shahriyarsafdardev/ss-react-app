@@ -6,7 +6,12 @@ import Page from 'components/Page';
 import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
-import { EVENT_TYPES, sendAmplitudeData, trackHomePageEvents } from 'utils/amplitude';
+import {
+  EVENT_TYPES,
+  sendAmplitudeData,
+  setGenericEventProperties,
+  trackHomePageEvents
+} from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
@@ -57,8 +62,7 @@ const Index = () => {
     if (cohort && !analyticsSent) {
       sendAmplitudeData(EVENT_TYPES.page_view, {
         page_type: EVENT_TYPES.home_tab,
-        [EVENT_TYPES.cohort_name]: cohort.name,
-        [EVENT_TYPES.cohort_intake_number]: cohort.intake
+        ...setGenericEventProperties(cohort)
       });
       setAnalyticsSent(true);
     }
@@ -95,14 +99,7 @@ const Index = () => {
     eventData: string,
     source?: string
   ) => {
-    trackHomePageEvents(
-      cohort.name,
-      cohort.intake,
-      sessionNumber,
-      eventCategory,
-      eventData,
-      source
-    );
+    trackHomePageEvents(sessionNumber, eventCategory, eventData, source, cohort);
   };
 
   const onAddCalendar = () => {

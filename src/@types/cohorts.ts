@@ -212,6 +212,14 @@ export type Cohort = {
   registration_page_url: string;
   new_home_tab: boolean;
   readings_released: boolean;
+  amplitude_events_timeline: AmplitudeEventsTimeline;
+};
+
+export type AmplitudeEventsTimeline = {
+  days_before_cohort_starts: number;
+  days_after_cohort_finished: number;
+  hours_before_next_session: number;
+  hours_after_previous_session: number;
 };
 
 export type ReferralCode = {

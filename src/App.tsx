@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 
 // event tracker
-import { initAmplitude, setAmplitudeUserProperties } from 'utils/amplitude';
+import { initAmplitude, setSegmentUserProperties } from 'utils/amplitude';
 
 import Feedback from 'components/Feedback';
 
 // routes
 import GoogleTagManager from 'components/GoogleTagManager';
 import FullStoryScript from 'components/FullStoryScript';
+import SegmentScript from 'components/SegmentScript';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -29,6 +30,12 @@ require('dotenv').config({ path: '../.env' });
 
 // ----------------------------------------------------------------------
 
+declare global {
+  interface Window {
+    analytics: any;
+  }
+}
+
 export default function App() {
   const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
@@ -37,14 +44,7 @@ export default function App() {
     initAmplitude();
     if (isAuthenticated) {
       dispatch(getCohorts());
-      setAmplitudeUserProperties({
-        full_name: user?.displayName,
-        type: user?.type,
-        company: user?.current_company,
-        position: user?.current_position,
-        industry: user?.current_industry_category_selections?.join(),
-        live_attandance: `${user?.user_live_attendance_percentage}%`
-      });
+      setSegmentUserProperties(user);
     }
   }, [dispatch, isAuthenticated]);
 
@@ -58,6 +58,7 @@ export default function App() {
               <ScrollToTop />
               <GoogleTagManager />
               <GoogleAnalytics />
+              <SegmentScript />
               {isInitialized && <FullStoryScript />}
               {isAuthenticated && <Feedback />}
               {isInitialized ? <Router /> : <LoadingScreen />}
