@@ -15,11 +15,14 @@ import { HouseKeepingInfoType, NavigationButtons } from './dataTypes';
 import { checkFormValidity } from '../Common';
 
 const REFERRER_OPTIONS = [
-  'Google Search',
-  'Email Marketing',
-  'Social Media',
-  'Recommended by a friend or colleague',
-  'Personally invited by someone in the Sphere team',
+  'Instructor',
+  'Promoter / Influencer',
+  'Sphere social media',
+  'Sphere emails',
+  'Google search',
+  'Recommended by manager',
+  'Recommended by colleague',
+  'Recommended by friend',
   'Other'
 ];
 const YES_NO_OPTIONS = ['Yes', 'No'];
