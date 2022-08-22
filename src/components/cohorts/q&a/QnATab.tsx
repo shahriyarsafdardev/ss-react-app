@@ -3,12 +3,7 @@ import { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
-import {
-  EVENT_TYPES,
-  trackQnAEvents,
-  sendAmplitudeData,
-  setGenericEventProperties
-} from 'utils/amplitude';
+import { EVENT_TYPES, trackQnAEvents, trackPageViewEvent } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion, submitAnswer } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -70,10 +65,7 @@ function QnATab() {
 
   useEffect(() => {
     if (cohort) {
-      sendAmplitudeData(EVENT_TYPES.page_view, {
-        page_type: EVENT_TYPES.questions_tab,
-        ...setGenericEventProperties(cohort)
-      });
+      trackPageViewEvent(cohort, EVENT_TYPES.questions_tab);
     }
   }, [cohort]);
 

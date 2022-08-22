@@ -41,7 +41,7 @@ export default function UserAccount() {
 
   useEffect(() => {
     sendAmplitudeData(EVENT_TYPES.page_view, {
-      page_type: EVENT_TYPES.account_settings_tab
+      [EVENT_TYPES.page_type]: EVENT_TYPES.account_settings_tab
     });
   }, []);
 

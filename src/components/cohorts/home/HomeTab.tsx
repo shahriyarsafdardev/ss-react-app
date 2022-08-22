@@ -6,12 +6,7 @@ import Page from 'components/Page';
 import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
-import {
-  EVENT_TYPES,
-  sendAmplitudeData,
-  setGenericEventProperties,
-  trackHomePageEvents
-} from 'utils/amplitude';
+import { EVENT_TYPES, trackHomePageEvents, trackPageViewEvent } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
@@ -60,10 +55,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      sendAmplitudeData(EVENT_TYPES.page_view, {
-        page_type: EVENT_TYPES.home_tab,
-        ...setGenericEventProperties(cohort)
-      });
+      trackPageViewEvent(cohort, EVENT_TYPES.home_tab);
       setAnalyticsSent(true);
     }
   }, [cohort]);

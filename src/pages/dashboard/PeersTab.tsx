@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 // utils
 import {
-  sendAmplitudeData,
   EVENT_TYPES,
   trackPeersPageEvent,
   PEERS_PAGE_EVENTS,
-  setGenericEventProperties
+  trackPageViewEvent
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
 import { useLocation } from 'react-router-dom';
@@ -86,10 +85,7 @@ export default function PeersTab() {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      sendAmplitudeData(EVENT_TYPES.page_view, {
-        page_type: EVENT_TYPES.peers_tab,
-        ...setGenericEventProperties(cohort)
-      });
+      trackPageViewEvent(cohort, EVENT_TYPES.peers_tab);
       setAnalyticsSent(true);
     }
   }, [cohort]);

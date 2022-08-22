@@ -42,6 +42,7 @@ export const setSegmentUserProperties = (user: any) => {
 };
 
 export const EVENT_TYPES = {
+  page_type: 'Page Type',
   questions_tab: 'Questions Tab',
   page_view: 'Page view',
   peers_tab: 'Peers Tab',
@@ -55,9 +56,9 @@ export const EVENT_TYPES = {
 
 export const SESSION_EVENTS = {
   session_page_action: 'Sessions Page Action',
-  session_number: 'session-number',
-  category: 'category',
-  action: 'action',
+  session_number: 'Session Number',
+  category: 'Category',
+  action: 'Action',
   resources_tab: 'Resources Tab',
   recording_video_player: 'Recording Video Player',
   slides_tab: 'Slides Tab',
@@ -81,9 +82,9 @@ export const SLIDE_EVENTS = {
 
 export const ONBOARDING_EVENTS = {
   event_type: 'Onboarding Event',
-  event: 'event',
-  category: 'category',
-  description: 'description'
+  event: 'Event',
+  category: 'Category',
+  description: 'Description'
 };
 
 export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?: any) => {
@@ -96,13 +97,13 @@ export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?:
 
 export const REFERRAL_EVENTS = {
   event_type: 'Referral Event',
-  event: 'event',
-  category: 'category',
-  description: 'description',
-  referrer_code: 'referrer_code',
-  invite_full_name: 'invite_full_name',
-  invite_email: 'invite_email',
-  registration_flow: 'registration_flow'
+  event: 'Event',
+  category: 'Category',
+  description: 'Description',
+  referrer_code: 'Referrer Code',
+  invite_full_name: 'Invite Full Name',
+  invite_email: 'Invite Email',
+  registration_flow: 'Registration Flow'
 };
 
 export const trackReferralEvent = (eventType: string, eventData: any, cohort?: any) => {
@@ -155,15 +156,15 @@ export const trackPeersPageEvent = (eventType: string, eventData?: string, cohor
 
 export const HOME_PAGE_EVENTS = {
   home_page_action: 'Home Page Action',
-  category: 'category',
-  action: 'action',
-  cohort_timeline: 'cohort-timeline',
-  session_number: 'session-number',
-  to_do_list: 'to-do-list',
-  network_suggestion: 'network-suggestion',
+  category: 'Category',
+  action: 'Action',
+  cohort_timeline: 'Cohort Timeline',
+  session_number: 'Session Number',
+  to_do_list: 'To-Do List',
+  network_suggestion: 'Network Suggestion',
   zoom_preview: 'Zoom Preview',
   opened_zoom_link: 'Opened Zoom Link',
-  source: 'source',
+  source: 'Source',
   joined_zoom_session: 'Join Zoom Session'
 };
 
@@ -202,7 +203,7 @@ export const trackMessagingEvents = (eventCategory: string, eventData: string, c
 export const QnA_EVENTS = {
   qna_page_action: 'QnA Page Action',
   page_type: 'QnA Page',
-  action: 'action'
+  action: 'Action'
 };
 
 export const trackQnAEvents = (eventCategory: string, eventData: string, cohort?: any) => {
@@ -227,8 +228,11 @@ export const REGISTRATION_EVENTS = {
   company_has_sphere_alumni: 'Company has Sphere Alumni'
 };
 
-export const trackRegistrationEvent = (eventType: string, eventData: any) => {
-  sendAmplitudeData(eventType, eventData);
+export const trackRegistrationEvent = (cohort: any, eventType: string, eventData: any) => {
+  sendAmplitudeData(eventType, {
+    ...eventData,
+    ...setGenericEventProperties(cohort)
+  });
 };
 
 export const NEW_HOME_TAB_EVENTS = {
@@ -237,8 +241,19 @@ export const NEW_HOME_TAB_EVENTS = {
   session_number: 'Session Number'
 };
 
-export const trackNewHomeTabEvent = (eventType: string, eventData: any) => {
-  sendAmplitudeData(eventType, eventData);
+export const trackNewHomeTabEvent = (cohort: any, eventType: string, eventData: any) => {
+  const newEventData = {
+    ...eventData,
+    ...setGenericEventProperties(cohort)
+  };
+  sendAmplitudeData(eventType, newEventData);
+};
+
+export const trackPageViewEvent = (cohort: any, pageType: string) => {
+  sendAmplitudeData(EVENT_TYPES.page_view, {
+    [EVENT_TYPES.page_type]: pageType,
+    ...setGenericEventProperties(cohort)
+  });
 };
 
 export const GENERIC_EVENTS = {
@@ -246,8 +261,9 @@ export const GENERIC_EVENTS = {
   cohort_code: 'Cohort Code',
   cohort_intake: 'Cohort Intake',
   cohort_intake_number: 'Cohort Intake Number',
-  days_before_cohort_starts: 'Days Before Cohort Starts',
-  days_after_cohort_finished: 'Days After Cohort Starts',
+  days_before_first_session: 'Days Before First Session',
+  days_after_first_session: 'Days After First Session',
+  days_after_last_session: 'Days After Last Session',
   hours_before_next_session: 'Hours Before Next Session',
   hours_after_previous_session: 'Hours After Previous Session'
 };
@@ -257,10 +273,12 @@ export const setGenericEventProperties = (cohort: any) => ({
   [GENERIC_EVENTS.cohort_code]: cohort?.code,
   [GENERIC_EVENTS.cohort_intake]: cohort?.intake_name,
   [GENERIC_EVENTS.cohort_intake_number]: cohort?.intake,
-  [GENERIC_EVENTS.days_before_cohort_starts]:
-    cohort?.amplitude_events_timeline?.days_before_cohort_starts,
-  [GENERIC_EVENTS.days_after_cohort_finished]:
-    cohort?.amplitude_events_timeline?.days_after_cohort_finished,
+  [GENERIC_EVENTS.days_before_first_session]:
+    cohort?.amplitude_events_timeline?.days_before_first_session,
+  [GENERIC_EVENTS.days_after_first_session]:
+    cohort?.amplitude_events_timeline?.days_after_first_session,
+  [GENERIC_EVENTS.days_after_last_session]:
+    cohort?.amplitude_events_timeline?.days_after_last_session,
   [GENERIC_EVENTS.hours_before_next_session]:
     cohort?.amplitude_events_timeline?.hours_before_next_session,
   [GENERIC_EVENTS.hours_after_previous_session]:

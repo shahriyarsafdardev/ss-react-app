@@ -3,12 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import {
-  EVENT_TYPES,
-  sendAmplitudeData,
-  setGenericEventProperties,
-  trackMessagingEvents
-} from 'utils/amplitude';
+import { EVENT_TYPES, trackMessagingEvents, trackPageViewEvent } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
@@ -91,10 +86,7 @@ export default function Messaging() {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      sendAmplitudeData(EVENT_TYPES.page_view, {
-        page_type: EVENT_TYPES.messaging_tab,
-        ...setGenericEventProperties(cohort)
-      });
+      trackPageViewEvent(cohort, EVENT_TYPES.messaging_tab);
       setAnalyticsSent(true);
     }
   }, [cohort]);

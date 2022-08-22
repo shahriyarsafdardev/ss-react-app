@@ -1,7 +1,7 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { NEW_HOME_TAB_EVENTS, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
+import { NEW_HOME_TAB_EVENTS, trackNewHomeTabEvent } from 'utils/amplitude';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
@@ -45,11 +45,10 @@ function NewHomeTab({
   const progress = () => ((currentStep + 1) / totalSteps) * 100;
 
   const trackHomeTabEvents = (eventType: string) => {
-    sendAmplitudeData(eventType, {
+    trackNewHomeTabEvent(cohort, eventType, {
       [NEW_HOME_TAB_EVENTS.reading_number]: list[currentStep]?.index,
       [NEW_HOME_TAB_EVENTS.reading_name]: list[currentStep]?.name,
-      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number,
-      ...setGenericEventProperties(cohort)
+      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number
     });
   };
 

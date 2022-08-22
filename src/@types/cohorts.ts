@@ -216,8 +216,9 @@ export type Cohort = {
 };
 
 export type AmplitudeEventsTimeline = {
-  days_before_cohort_starts: number;
-  days_after_cohort_finished: number;
+  days_before_first_session: number;
+  days_after_first_session: number;
+  days_after_last_session: number;
   hours_before_next_session: number;
   hours_after_previous_session: number;
 };

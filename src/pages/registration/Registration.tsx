@@ -8,7 +8,7 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
-import { REGISTRATION_EVENTS, sendAmplitudeData, setGenericEventProperties } from 'utils/amplitude';
+import { REGISTRATION_EVENTS, trackRegistrationEvent } from 'utils/amplitude';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -131,7 +131,7 @@ export default function Registration() {
   });
 
   const trackReferralFlowEvents = (eventType: string, params?: any) => {
-    sendAmplitudeData(eventType, {
+    const eventData = {
       [REGISTRATION_EVENTS.company_is_enterprise_customer]:
         params?.is_enterprise_customer === undefined ? null : params?.is_enterprise_customer,
       [REGISTRATION_EVENTS.company_has_sphere_alumni]:
@@ -144,9 +144,9 @@ export default function Registration() {
       [REGISTRATION_EVENTS.amount_paid]: params?.amount_paid || null,
       [REGISTRATION_EVENTS.registrant_email]: user.email,
       [REGISTRATION_EVENTS.source]: url.get('source') || '',
-      [REGISTRATION_EVENTS.price]: cohort.price,
-      ...setGenericEventProperties(cohort)
-    });
+      [REGISTRATION_EVENTS.price]: cohort.price
+    };
+    trackRegistrationEvent(cohort, eventType, eventData);
   };
 
   useEffect(() => {

@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
-import {
-  sendAmplitudeData,
-  EVENT_TYPES,
-  trackSessionsPageEvent,
-  setGenericEventProperties
-} from 'utils/amplitude';
+import { EVENT_TYPES, trackSessionsPageEvent, trackPageViewEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
@@ -83,10 +78,7 @@ export default function SessionsTab() {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      sendAmplitudeData(EVENT_TYPES.page_view, {
-        page_type: EVENT_TYPES.sessions_tab,
-        ...setGenericEventProperties(cohort)
-      });
+      trackPageViewEvent(cohort, EVENT_TYPES.sessions_tab);
       setAnalyticsSent(true);
     }
   }, [cohort]);
