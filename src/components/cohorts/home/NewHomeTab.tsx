@@ -5,6 +5,7 @@ import { NEW_HOME_TAB_EVENTS, trackNewHomeTabEvent } from 'utils/amplitude';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import useAuth from 'hooks/useAuth';
+import axios from 'utils/axios';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
@@ -65,6 +66,13 @@ function NewHomeTab({
 
   const triggerSupplimentaryEvent = () => {
     trackHomeTabEvents('Home Screen - ‘Review Supplementary Resources’ Selected');
+  };
+
+  const markAttendance = () => {
+    axios.post(`/cohorts/${cohort?.id}/cohort_session_attendance.json`, {
+      status: 'attended_live',
+      session_id: activeSession?.id
+    });
   };
 
   useEffect(() => {
@@ -167,7 +175,10 @@ function NewHomeTab({
             className={classes.homeNavigation}
             variant="contained"
             href={activeSession?.zoom_url}
-            onClick={() => trackHomeTabEvents('Home Screen - ‘Join Session’ Selected')}
+            onClick={() => {
+              trackHomeTabEvents('Home Screen - ‘Join Session’ Selected');
+              markAttendance();
+            }}
           >
             Join Session
           </Button>
