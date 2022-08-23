@@ -189,27 +189,30 @@ export const trackHomePageEvents = (
 };
 
 export const MESSAGING_EVENTS = {
-  message_tab_action: 'Messaging Tab Action'
+  message_tab_action: 'Messaging Tab Action',
+  category: 'Category',
+  action: 'Action'
 };
 
 export const trackMessagingEvents = (eventCategory: string, eventData: string, cohort?: any) => {
   sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
     ...setGenericEventProperties(cohort),
-    category: eventCategory,
-    action: eventData
+    [MESSAGING_EVENTS.category]: eventCategory,
+    [MESSAGING_EVENTS.action]: eventData
   });
 };
 
 export const QnA_EVENTS = {
   qna_page_action: 'QnA Page Action',
   page_type: 'QnA Page',
-  action: 'Action'
+  action: 'Action',
+  category: 'Category'
 };
 
 export const trackQnAEvents = (eventCategory: string, eventData: string, cohort?: any) => {
   sendAmplitudeData(QnA_EVENTS.qna_page_action, {
     ...setGenericEventProperties(cohort),
-    category: eventCategory,
+    [QnA_EVENTS.category]: eventCategory,
     [QnA_EVENTS.action]: eventData
   });
 };

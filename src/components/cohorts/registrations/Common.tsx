@@ -49,9 +49,6 @@ import {
 import forwardArrow from '@iconify/icons-eva/arrow-ios-forward-fill';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 
-import { CohortType, UserType } from 'pages/registration/Registration';
-import { REGISTRATION_EVENTS, sendAmplitudeData } from 'utils/amplitude';
-
 // material
 import { makeStyles } from '@material-ui/styles';
 import ReferralCodesModal from './ReferralCodesModal';
