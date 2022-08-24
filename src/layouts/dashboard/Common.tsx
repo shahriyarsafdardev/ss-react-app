@@ -16,19 +16,19 @@ export const seasonOrder: { [index: string]: number } = {
 };
 
 export const comparatorFuntion = (intake1: string, intake2: string) => {
-  const block1 = intake1?.split(' ');
-  const block2 = intake2?.split(' ');
-  if (block1?.length === 2 && block2?.length === 2) {
-    if (Number(block1[1]) && Number(block2[1])) {
-      if (Number(block1[1]) === Number(block2[1])) {
-        // if year is same, compare the season
-        return seasonOrder[block1[0].toLowerCase()] > seasonOrder[block2[0].toLowerCase()] ? 1 : -1;
-      } else {
-        return Number(block1[1]) < Number(block2[1]) ? 1 : -1;
-      }
-    }
+  if (intake1 === 'Waitlist') {
+    return -1;
   }
-  return -1;
+  if (intake2 === 'Waitlist') {
+    return 1;
+  }
+  if (intake1 === 'TBD') {
+    return -1;
+  }
+  if (intake2 === 'TBD') {
+    return 1;
+  }
+  return new Date(intake2) > new Date(intake1) ? 1 : -1;
 };
 
 export const sortByIntake = (intakeCategories: string[]) =>
