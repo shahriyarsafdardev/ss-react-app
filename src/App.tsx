@@ -24,7 +24,7 @@ import NotistackProvider from './components/NotistackProvider';
 import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
 import { useDispatch } from './redux/store';
-import { getCohorts } from './redux/slices/cohort';
+import { getCohorts, getCohortsTimeline } from './redux/slices/cohort';
 
 require('dotenv').config({ path: '../.env' });
 
@@ -36,16 +36,27 @@ declare global {
   }
 }
 
+// 10 minutes delay for fetching amplitude timeline events
+const FETCH_EVENT_DELAY = 10 * 60;
+
 export default function App() {
   const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
     initAmplitude();
+    let fetchCohortsTimeline: NodeJS.Timer;
     if (isAuthenticated) {
       dispatch(getCohorts());
+      fetchCohortsTimeline = setInterval(() => {
+        dispatch(getCohortsTimeline());
+      }, FETCH_EVENT_DELAY * 1000);
       setSegmentUserProperties(user);
     }
+
+    return () => {
+      clearInterval(fetchCohortsTimeline);
+    };
   }, [dispatch, isAuthenticated]);
 
   return (

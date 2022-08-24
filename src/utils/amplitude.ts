@@ -268,7 +268,8 @@ export const GENERIC_EVENTS = {
   days_after_first_session: 'Days After First Session',
   days_after_last_session: 'Days After Last Session',
   hours_before_next_session: 'Hours Before Next Session',
-  hours_after_previous_session: 'Hours After Previous Session'
+  hours_after_previous_session: 'Hours After Previous Session',
+  is_during_session: 'Is During Session'
 };
 
 export const setGenericEventProperties = (cohort: any) => ({
@@ -285,5 +286,6 @@ export const setGenericEventProperties = (cohort: any) => ({
   [GENERIC_EVENTS.hours_before_next_session]:
     cohort?.amplitude_events_timeline?.hours_before_next_session,
   [GENERIC_EVENTS.hours_after_previous_session]:
-    cohort?.amplitude_events_timeline?.hours_after_previous_session
+    cohort?.amplitude_events_timeline?.hours_after_previous_session,
+  [GENERIC_EVENTS.is_during_session]: cohort?.amplitude_events_timeline?.is_during_session
 });

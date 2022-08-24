@@ -221,6 +221,7 @@ export type AmplitudeEventsTimeline = {
   days_after_last_session: number;
   hours_before_next_session: number;
   hours_after_previous_session: number;
+  is_during_session: boolean;
 };
 
 export type ReferralCode = {

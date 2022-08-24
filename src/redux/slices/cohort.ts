@@ -39,6 +39,21 @@ const slice = createSlice({
       });
       state.cohorts = sortedCohorts;
     },
+    getCohortsTimelineSuccess(state, action) {
+      console.log('timeline data >>', action.payload.event_timeline.length);
+      action.payload.event_timeline.forEach((value: any, index: any) => {
+        const targetCohortIndex = state.cohorts.findIndex(
+          (cohort) => cohort.id === value.cohort_id
+        );
+        if (targetCohortIndex !== -1) {
+          const updated: Cohort = state.cohorts[targetCohortIndex];
+          state.cohorts[targetCohortIndex] = {
+            ...updated,
+            amplitude_events_timeline: value.amplitude_events_timeline
+          };
+        }
+      });
+    },
     getPeersSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -219,6 +234,18 @@ export function getCohorts() {
       setAuthorizationToken();
       const response = await axios.get('/cohorts.json');
       dispatch(slice.actions.getCohortsSuccess(response.data.cohorts));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getCohortsTimeline() {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      const response = await axios.get('/cohorts/events_timeline.json');
+      dispatch(slice.actions.getCohortsTimelineSuccess(response.data));
     } catch (error) {
       console.log(error);
     }
