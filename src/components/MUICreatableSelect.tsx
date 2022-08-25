@@ -21,8 +21,8 @@ export default function MultiSelect({
       <Autocomplete
         freeSolo={isCreatable}
         value={value}
-        onChange={(event, newValue) => {
-          onChange(newValue);
+        onBlur={(event: any) => {
+          onChange(event.target?.value ? event.target.value : value);
         }}
         noOptionsText="No options available"
         options={options?.map((option) => option)}
