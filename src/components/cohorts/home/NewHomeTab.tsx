@@ -219,6 +219,17 @@ function NewHomeTab({
     );
   };
 
+  const cohortHostName = () => {
+    let hostName = cohort.host_full_name;
+    if (cohort?.code === 'CS') {
+      hostName = 'Matt Dixon';
+      if ([3, 4].includes(activeSession?.number || -1)) {
+        hostName = 'Ramsey Jay';
+      }
+    }
+    return hostName;
+  };
+
   const SessionDetailStep = () => (
     <StyledBox style={{ padding: '50px' }}>
       <DescriptionBox style={{ width: '100%' }}>
@@ -227,7 +238,7 @@ function NewHomeTab({
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {cohort.host_full_name} on {displayMultipleDates(activeSession?.times || [])}
+            Live with {cohortHostName()} on {displayMultipleDates(activeSession?.times || [])}
             {', '}
             {zoomTimes.replace(timeZone, '(local time)')}
           </PreReadingDetail>
