@@ -25,8 +25,21 @@ export const addAmplitudeUserProperty = (key: string, value: string) => {
   amplitudeInstance().identify(identificationData);
 };
 
+export const isSessionStarted = () => {
+  const localStorageTime = localStorage.getItem('sphere-latest-action-time');
+  const oldTime = localStorageTime ? new Date(localStorageTime) : null;
+  const currentTime = new Date();
+  localStorage.setItem('sphere-latest-action-time', currentTime.toString());
+  let differenceInTime = 0;
+  differenceInTime = oldTime ? Math.floor(Math.abs(+oldTime - +currentTime) / (1000 * 60 * 60)) : 0;
+  return !oldTime || differenceInTime >= 2;
+};
+
 export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
   // amplitudeInstance().logEvent(eventType, eventProperties);
+  if (isSessionStarted()) {
+    window.analytics?.track('Sphere Portal - Session Started', eventProperties);
+  }
   window.analytics?.track(eventType, eventProperties);
 };
 
