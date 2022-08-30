@@ -17,6 +17,7 @@ import {
   ListItemButton,
   ListItemButtonProps
 } from '@material-ui/core';
+import { trackSidebarEvent } from 'utils/amplitude';
 import { RootState, useSelector } from '../redux/store';
 // ----------------------------------------------------------------------
 
@@ -123,9 +124,13 @@ function NavItem({
   const theme = useTheme();
   const location = useLocation();
   const { pathname } = location;
+  const cohort_id = pathname.split('/')[2] || '';
   const { id, title, path, icon, info, children } = item;
   const isActiveRoot = pathname.includes(path);
   const userNotifications = useSelector((state: RootState) => state.notification.notifications);
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
   const [open, setOpen] = useState(isActiveRoot);
   const { user } = useAuth();
 
@@ -203,6 +208,11 @@ function NavItem({
                       if (externalUrl) {
                         window.open(path, '_blank');
                       }
+                      cohort &&
+                        trackSidebarEvent(
+                          cohort,
+                          `Sidebar - '${title.charAt(0).toUpperCase() + title.slice(1)}' Selected`
+                        );
                     }}
                     to={externalUrl ? '' : path}
                     sx={{
