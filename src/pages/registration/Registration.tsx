@@ -88,6 +88,8 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
+const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+
 export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
   const url = new URLSearchParams(useLocation().search);
@@ -253,6 +255,10 @@ export default function Registration() {
   }, [loading]);
 
   const subHeading = () => {
+    if (cohort_id === RONNY_COHORT_ID) {
+      return 'You will recieve an email shortly documenting your next steps!';
+    }
+
     if (pre_release || wait_listed) {
       return 'You will recieve an email shortly with more details on the course and how to secure your seat';
     }
@@ -260,6 +266,17 @@ export default function Registration() {
       return `We’ve sent your application to a ${company?.name} representative for review and will be in touch with next steps!`;
     }
     return 'You will shortly recieve an email documenting your application outcome and next steps!';
+  };
+
+  const lastStepMainHeading = () => {
+    if (cohort_id === RONNY_COHORT_ID) {
+      return '🎉 Congratulations, your seat is secured!';
+    }
+
+    if (wait_listed || pre_release) {
+      return '🎉 Congratulations, you’ve joined the waitlist';
+    }
+    return '🎉 Congratulations, you’ve completed your application!';
   };
 
   const displayStep = () => {
@@ -334,9 +351,7 @@ export default function Registration() {
           )}
           <Box sx={{ mb: 5 }}>
             <Typography variant="h3" align="center" paragraph data-testid="confirmation-message">
-              {wait_listed || pre_release
-                ? '🎉 Congratulations, you’ve joined the waitlist'
-                : '🎉 Congratulations, you’ve completed your application!'}
+              {lastStepMainHeading()}
             </Typography>
             <Typography
               align="center"
@@ -390,6 +405,7 @@ export default function Registration() {
             waitlist={wait_listed}
             preRelease={pre_release}
             userName={user?.first_name}
+            cohort={cohort}
           />
         )}
         <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center' }}>

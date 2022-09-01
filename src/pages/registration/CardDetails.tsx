@@ -53,6 +53,8 @@ const CohortDetailsCard = styled(Card)(({ theme }) => ({
   marginBottom: '12px'
 }));
 
+const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+
 export default function CardDetails({
   cohort,
   enrollmentID,
@@ -331,17 +333,19 @@ export default function CardDetails({
           sx={{ mt: 3 }}
           direction={{ xs: 'column', md: 'row' }}
         >
-          <StyledButton
-            fullWidth
-            type="submit"
-            variant="outlined"
-            loading={isSubmitting}
-            onClick={() => setOpen(true)}
-            id="btn-submit"
-            data-testid="pay-later-btn"
-          >
-            Pay Later
-          </StyledButton>
+          {cohort?.id !== RONNY_COHORT_ID && (
+            <StyledButton
+              fullWidth
+              type="submit"
+              variant="outlined"
+              loading={isSubmitting}
+              onClick={() => setOpen(true)}
+              id="btn-submit"
+              data-testid="pay-later-btn"
+            >
+              Pay Later
+            </StyledButton>
+          )}
           <StyledButton
             fullWidth
             type="submit"

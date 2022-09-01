@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Stack, Typography, Avatar } from '@material-ui/core';
 import { styled, Theme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-import { CompanyType } from './Registration';
+import { CohortType, CompanyType } from './Registration';
 
 const useStyles = makeStyles((theme: Theme) => ({
   fullLength: {
@@ -39,13 +39,16 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
+const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+
 export default function Header({
   company,
   account,
   activeStep,
   waitlist,
   preRelease,
-  userName
+  userName,
+  cohort
 }: {
   company: CompanyType | null | undefined;
   account: string;
@@ -53,12 +56,19 @@ export default function Header({
   waitlist: boolean;
   preRelease: boolean;
   userName: string | undefined;
+  cohort: CohortType;
 }) {
   const classes = useStyles();
 
   const selectSubHeading = () => {
     if (company) {
       if (activeStep === 1) {
+        let accountSubHeading = '';
+        if (cohort?.id !== RONNY_COHORT_ID) {
+          accountSubHeading = account
+            ? `Please provide us with the information below so we can check with ${company.name} whether you qualify under their enterprise package.`
+            : 'Please provide us with the information below so we can get started on your application';
+        }
         return [
           `Welcome to ${company.name}’s Sphere`,
           account ? (
@@ -69,9 +79,7 @@ export default function Header({
           ) : (
             `${company.name} has approved Sphere’s live courses as a Learning & Development expense for other employees!`
           ),
-          account
-            ? `Please provide us with the information below so we can check with ${company.name} whether you qualify under their enterprise package.`
-            : 'Please provide us with the information below so we can get started on your application'
+          accountSubHeading
         ];
       }
 
@@ -103,6 +111,13 @@ export default function Header({
       }
 
       if (activeStep === 4) {
+        if (cohort?.id === RONNY_COHORT_ID) {
+          return [
+            '💳 Secure your seat',
+            'You can get a full refund up to 72 hours before the date of the first session.',
+            ''
+          ];
+        }
         return [
           preRelease
             ? `💳 Thanks ${userName}, do you want to secure your seat?`
@@ -113,6 +128,9 @@ export default function Header({
       }
     }
     if (activeStep === 1) {
+      if (cohort?.id === RONNY_COHORT_ID) {
+        return ['👋 Welcome!', '', 'We just need a few more details from you to secure your seat.'];
+      }
       return [
         waitlist || preRelease
           ? '👋 Hi there, to join our waitlist please fill in a few more details'
@@ -143,6 +161,13 @@ export default function Header({
     }
 
     if (activeStep === 4) {
+      if (cohort?.id === RONNY_COHORT_ID) {
+        return [
+          '💳 Secure your seat',
+          'You can get a full refund up to 72 hours before the date of the first session.',
+          ''
+        ];
+      }
       return [
         preRelease
           ? `💳 Thanks ${userName}, do you want to secure your seat?`
