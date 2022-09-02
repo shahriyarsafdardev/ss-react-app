@@ -1,4 +1,5 @@
 import amplitude from 'amplitude-js';
+import axios from 'utils/axios';
 
 const AMPLITUDE_API_KEY = process.env.REACT_APP_AMPLITUDE_API_KEY;
 
@@ -35,12 +36,24 @@ export const isSessionStarted = () => {
   return !oldTime || differenceInTime >= 2;
 };
 
-export const sendAmplitudeData = (eventType: string, eventProperties: any) => {
+export const sendAmplitudeData = async (eventType: string, eventProperties: any) => {
   // amplitudeInstance().logEvent(eventType, eventProperties);
   if (isSessionStarted()) {
     window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
   window.analytics?.track(eventType, eventProperties);
+
+  if (eventType === 'Cohort Registration - Personal Info Page - Page Loaded') {
+    try {
+      const data = new FormData();
+      data.append('user_id', window.analytics?.user().anonymousId());
+      data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export const setSegmentUserProperties = (user: any) => {
