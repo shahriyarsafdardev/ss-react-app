@@ -5,10 +5,12 @@ import Timestamp from './Timestamp';
 
 function SessionTimestamps({
   timestamps,
-  videoReference
+  videoReference,
+  sessionId
 }: {
   timestamps: SessionTimestamp[];
   videoReference: any;
+  sessionId: string;
 }) {
   const handlePlayTimeStamp = (seconds: string) => {
     videoReference.current.currentTime = Number(seconds);
@@ -17,7 +19,12 @@ function SessionTimestamps({
   return (
     <Box>
       {timestamps?.map((timestamp) => (
-        <Timestamp timestamp={timestamp} key={timestamp.id} handlePlay={handlePlayTimeStamp} />
+        <Timestamp
+          timestamp={timestamp}
+          key={timestamp.id}
+          handlePlay={handlePlayTimeStamp}
+          sessionId={sessionId}
+        />
       ))}
     </Box>
   );

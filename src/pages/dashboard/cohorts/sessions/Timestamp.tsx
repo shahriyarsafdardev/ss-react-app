@@ -1,20 +1,41 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box, Typography, Stack, Button, TextField } from '@material-ui/core';
-import axios from 'utils/axios';
+import { styled } from '@material-ui/core/styles';
+import { CohortContext } from 'contexts/CohortContext';
 import { SessionTimestamp } from '../../../../@types/cohorts';
+import { updateTimestamp } from '../../../../redux/slices/cohort';
+import { useDispatch } from '../../../../redux/store';
+
+const StyledStack = styled(Stack)(({ theme }) => ({
+  marginBottom: '30px',
+  justifyContent: 'space-between',
+  background: '#FAFAFC',
+  borderRadius: '8px',
+  padding: '25px 15px'
+}));
+
+const StyledImageContainer = styled(Box)(({ theme }) => ({
+  width: '30%',
+  margin: 'auto 0',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
 
 function Timestamp({
   timestamp,
-  updateTimestamps,
-  handlePlay
+  handlePlay,
+  sessionId
 }: {
-  timestamp?: SessionTimestamp;
-  updateTimestamps?: Function;
+  timestamp: SessionTimestamp;
   handlePlay: Function;
+  sessionId: string;
 }) {
   const [updateDescription, setUpdateDescription] = useState(false);
   const [description, setDescription] = useState<string>(timestamp?.description || '');
+  const dispatch = useDispatch();
+  const { id } = useContext(CohortContext);
 
   function secondsToHms(d: any) {
     d = Number(d);
@@ -24,40 +45,31 @@ function Timestamp({
 
     const hDisplay = h > 0 ? (m > 0 ? `${h}:` : `${h}`) : '';
     const mDisplay = m > 0 ? (s > 0 ? `${m}:` : `${m}`) : '';
-    const sDisplay = s > 0 ? `${s}` : ':00';
+    const sDisplay = s > 0 ? (h === 0 && m === 0 ? `00:${s}` : `${s}`) : ':00';
     return hDisplay + mDisplay + sDisplay;
   }
 
   const handleSubmit = () => {
     setUpdateDescription(!updateDescription);
     if (updateDescription) {
-      try {
-        axios
-          .post(`/session_timestamps/${timestamp?.id}/update_timestamp.json`, {
-            description
-          })
-          .then((res) => {
-            // updateTimestamps(res.data);
-          });
-      } catch (e) {
-        console.log(e);
-      }
+      dispatch(updateTimestamp(id, sessionId, timestamp.id, description));
     }
   };
 
   return (
-    <Box
-      style={{
-        padding: '24px',
-        margin: '16px',
-        border: '1px solid #C4CDD5',
-        background: '#F9FAFB',
-        borderRadius: '8px',
-        width: '100%'
-      }}
-    >
-      <img src={timestamp?.thumbnail_url} alt="timestamp" />
-      <Stack direction="column" spacing={1}>
+    <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+      <StyledImageContainer>
+        <img src="" alt="timestamp" width="100%" />
+      </StyledImageContainer>
+
+      <Box
+        style={{
+          borderLeft: '2px solid #E2E8F0',
+          width: '0px',
+          height: 'auto'
+        }}
+      />
+      <Stack direction="column" spacing={2} width={{ sm: '100%', md: '60%' }}>
         {updateDescription ? (
           <TextField
             id="outlined-multiline-static"
@@ -74,14 +86,16 @@ function Timestamp({
           </Typography>
         )}
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-          <Button
-            onClick={() => handlePlay(timestamp?.timestamp)}
-            variant="contained"
-            style={{ borderRadius: '20px' }}
-            fullWidth
-          >
-            Open Timestamp
-          </Button>
+          {!updateDescription && (
+            <Button
+              onClick={() => handlePlay(timestamp?.timestamp)}
+              variant="contained"
+              style={{ borderRadius: '20px' }}
+              fullWidth
+            >
+              Open Timestamp
+            </Button>
+          )}
           <Button
             onClick={handleSubmit}
             variant="outlined"
@@ -96,7 +110,7 @@ function Timestamp({
           </Button>
         </Stack>
       </Stack>
-    </Box>
+    </StyledStack>
   );
 }
 

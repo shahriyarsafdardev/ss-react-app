@@ -300,6 +300,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         timestamps={session?.timestamps || []}
         key="session_timestamps"
         videoReference={videoRef}
+        sessionId={session?.id}
       />
     );
   }
@@ -430,7 +431,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             <SessionTab label="Summary Notes" data-testid="session-notes" />
           )}
           {session?.timestamps && session?.timestamps.length > 0 && (
-            <SessionTab label="Session Timestamps" data-testid="session-timestamps" />
+            <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
           )}
         </SessionTabs>
 

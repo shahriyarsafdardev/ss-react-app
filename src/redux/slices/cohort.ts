@@ -92,6 +92,33 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, referral_codes: action.payload.codes };
       }
     },
+    updateTimestampSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetSessionIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
+
+        if (targetSessionIndex !== -1) {
+          let targetTimestampIndex = -1;
+
+          updated[targetSessionIndex].timestamps.map((timestamp, j) => {
+            if (timestamp.id === action.payload.timestampID) {
+              targetTimestampIndex = j;
+            }
+          });
+
+          if (targetTimestampIndex !== -1) {
+            updated[targetSessionIndex].timestamps[targetTimestampIndex].description =
+              action.payload.result.description;
+            state.cohorts[targetCohortIndex].sessions = updated;
+          }
+        }
+      }
+    },
     getEnrollmentsSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -408,6 +435,33 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateTimestamp(
+  cohortID: string,
+  sessionID: string,
+  timestampID: string,
+  description: string
+) {
+  return async () => {
+    try {
+      const response = await axios.post(
+        `/session_timestamps/${timestampID}/update_timestamp.json`,
+        { description }
+      );
+      const result = response.data;
+      dispatch(
+        slice.actions.updateTimestampSuccess({
+          cohortID,
+          sessionID,
+          timestampID,
+          result
+        })
+      );
     } catch (error) {
       console.log(error);
     }
