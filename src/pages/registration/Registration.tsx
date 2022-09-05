@@ -247,12 +247,13 @@ export default function Registration() {
   }, []);
 
   useEffect(() => {
-    !loading &&
+    if (!loading && window.analytics?.user) {
       trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
         is_enterprise_customer: company?.is_enterprise_customer || false,
         has_sphere_alumni: company?.has_sphere_alumni || false
       });
-  }, [loading]);
+    }
+  }, [loading, window.analytics?.user]);
 
   const subHeading = () => {
     if (cohort_id === RONNY_COHORT_ID) {
