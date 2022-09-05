@@ -10,13 +10,8 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6} md={3}>
           <KeyMetricHighlight
-            metric={
-              enrollments.filter(
-                (e: { status: string }) =>
-                  !['Not Interested', 'Partial Application Received'].includes(e.status)
-              ).length
-            }
-            currentTimePeriodLabel={<span>Applications Received</span>}
+            metric={enrollments.length}
+            currentTimePeriodLabel={<span>Partial Registrations</span>}
             difference={changeOccur(enrollments, [], 'time', false)}
             infoTooltip={(difference: number) => (
               <InfoTooltip
@@ -33,6 +28,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
+            description="All users who have submitted their email"
           />
         </Grid>
 
@@ -41,24 +37,44 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
             metric={
               enrollments.filter(
                 (e: { status: string }) =>
-                  ['Application Accepted', 'Payment link opened', 'Paid', 'Attending'].includes(
-                    e.status
-                  ) ||
-                  e.status.split(' ')[0] === 'Awaiting' ||
-                  e.status.split(' ')[1] === 'Approval'
+                  !['Partial Application Received', 'Not Interested'].includes(e.status)
+              ).length
+            }
+            difference={changeOccur(enrollments, ['Exclude Partial'], 'time', true)}
+            currentTimePeriodLabel={<span>Registrations</span>}
+            infoTooltip={(difference: number) => (
+              <InfoTooltip
+                title={
+                  <div>
+                    <strong>
+                      {`${difference} new application${
+                        difference > 1 ? 's were ' : ' was '
+                      } received with details`}
+                      <br />
+                      {`since Monday the ${startOfWeek}`}
+                    </strong>
+                  </div>
+                }
+              />
+            )}
+            description="All users who have submitted their personal details"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <KeyMetricHighlight
+            metric={
+              enrollments.filter((e: { status: string }) =>
+                ['Application Accepted', 'Payment link opened', 'Paid', 'Attending'].includes(
+                  e.status
+                )
               ).length
             }
             difference={changeOccur(
               enrollments,
-              [
-                'Application Accepted',
-                'Payment link opened',
-                'Paid',
-                'Application Rejected',
-                'Attending'
-              ],
+              ['Application Accepted', 'Payment link opened', 'Paid', 'Attending'],
               'application_accepted_time',
-              true
+              false
             )}
             currentTimePeriodLabel={<span>Applications Accepted</span>}
             infoTooltip={(difference: number) => (
@@ -76,38 +92,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3}>
-          <KeyMetricHighlight
-            metric={
-              enrollments.filter((e: { status: string }) =>
-                ['Payment link opened', 'Paid', 'Attending'].includes(e.status)
-              ).length
-            }
-            difference={changeOccur(
-              enrollments,
-              ['Payment link opened', 'Paid', 'Application Rejected', 'Attending'],
-              'payment_link_opened_time',
-              false
-            )}
-            currentTimePeriodLabel={<span>Payment Links Opened</span>}
-            infoTooltip={(difference: number) => (
-              <InfoTooltip
-                title={
-                  <div>
-                    <strong>
-                      {`${difference} new payment link${
-                        difference > 1 ? 's were ' : ' was '
-                      } opened`}
-                      <br />
-                      {`since Monday the ${startOfWeek}`}
-                    </strong>
-                  </div>
-                }
-              />
-            )}
+            description="All users who have been accepted"
           />
         </Grid>
 
@@ -135,6 +120,7 @@ export default function Summary({ enrollments }: { enrollments: Enrollment[] }) 
                 }
               />
             )}
+            description="All users who have paid"
           />
         </Grid>
       </Grid>

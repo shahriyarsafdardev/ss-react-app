@@ -140,6 +140,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   success: {
     color: '#00AB55',
     background: 'rgba(84, 214, 44, 0.16)'
+  },
+  descriptionText: {
+    fontSize: '12px'
   }
 }));
 
@@ -174,15 +177,24 @@ export const changeOccur = (
   type: string,
   account_status: boolean
 ) => {
-  const totalEnrollments =
-    statuses.length > 0
-      ? enrollments.filter(
-          (e: any) =>
-            statuses.includes(e.status) ||
-            (account_status &&
-              (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
-        )
-      : enrollments.filter((e: { status: string }) => e.status !== 'Partial Application Received');
+  let totalEnrollments = [];
+  if (statuses.length > 0) {
+    if (statuses[0] === 'Exclude Partial') {
+      totalEnrollments = enrollments.filter(
+        (e: { status: string }) => e.status !== 'Partial Application Received'
+      );
+    } else {
+      totalEnrollments = enrollments.filter(
+        (e: any) =>
+          statuses.includes(e.status) ||
+          (account_status &&
+            (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
+      );
+    }
+  } else {
+    totalEnrollments = enrollments;
+  }
+
   const startDate = moment().startOf('week').add(1, 'days');
   const newEnrollments = totalEnrollments.filter(
     (e: any) => !!e[type] && moment(e[type]) >= startDate
@@ -731,12 +743,14 @@ export const KeyMetricHighlight = ({
   metric,
   difference,
   currentTimePeriodLabel,
-  infoTooltip
+  infoTooltip,
+  description
 }: {
   metric?: any;
   difference?: any;
   currentTimePeriodLabel?: any;
   infoTooltip: any;
+  description: any;
 }) => {
   const classes = useStyles();
   return (
@@ -757,6 +771,7 @@ export const KeyMetricHighlight = ({
           </>
         )}
       </div>
+      <div className={classes.descriptionText}>{description}</div>
     </div>
   );
 };
