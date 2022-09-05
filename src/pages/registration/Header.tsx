@@ -154,8 +154,13 @@ export default function Header({
 
     if (activeStep === 3) {
       return [
-        'Invite friends and colleagues',
-        'Enter your colleagues email and name and we will send them an exclusive invite to the course.',
+        'Learn together as a team',
+        <p key="no-company">
+          Inviting your colleagues helps improve the whole teams accountability and motivation.{' '}
+          <BlueText>
+            Let us know if your whole team would like to join, we offer discounts for Large Teams!
+          </BlueText>
+        </p>,
         ''
       ];
     }

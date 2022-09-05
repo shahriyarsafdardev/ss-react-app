@@ -169,7 +169,9 @@ export default function Registration() {
   }
 
   const previousStep = () => {
-    if (activeStep === 4 || activeStep === 3) {
+    if (activeStep === 3 && !company) {
+      setActiveStep(1);
+    } else if (activeStep === 4 || activeStep === 3) {
       setActiveStep(2);
     } else {
       setActiveStep(activeStep - 1);
@@ -283,17 +285,21 @@ export default function Registration() {
     const { payLaterMessage } = setFormHeadings();
 
     if (activeStep === 2) {
-      return (
-        <>
-          <InviteChoice
-            company={company}
-            account={account}
-            setStep={(step: number) => setActiveStep(step)}
-            selectStep={() => selectStep()}
-            trackReferralFlowEvents={trackReferralFlowEvents}
-          />
-        </>
-      );
+      if (!company) {
+        setActiveStep(3);
+      } else {
+        return (
+          <>
+            <InviteChoice
+              company={company}
+              account={account}
+              setStep={(step: number) => setActiveStep(step)}
+              selectStep={() => selectStep()}
+              trackReferralFlowEvents={trackReferralFlowEvents}
+            />
+          </>
+        );
+      }
     }
 
     if (activeStep === 3) {
