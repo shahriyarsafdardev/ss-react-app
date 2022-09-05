@@ -37,7 +37,6 @@ export const isSessionStarted = () => {
 };
 
 export const sendAmplitudeData = async (eventType: string, eventProperties: any) => {
-  // amplitudeInstance().logEvent(eventType, eventProperties);
   if (isSessionStarted()) {
     window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
