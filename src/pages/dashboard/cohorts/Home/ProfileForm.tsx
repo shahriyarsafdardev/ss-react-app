@@ -141,8 +141,9 @@ export default function ProfileForm({
       bio_text: ''
     },
     validationSchema: UpdateUserSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       await onSubmit(values);
+      resetForm();
     }
   });
 
