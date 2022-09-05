@@ -86,6 +86,7 @@ export default function UserForm({
               if (!isAuthenticated) {
                 setSegmentUserProperties({
                   slug: user?.slug,
+                  email: user?.email,
                   displayName: user?.full_name,
                   type: user?.type,
                   current_company: user?.company,
