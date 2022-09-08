@@ -203,13 +203,12 @@ export default function Registration() {
 
   useEffect(() => {
     if (user?.email && cohort_id) {
-
       try {
         const data = new FormData();
-        data.append('user_id', window.analytics?.user().anonymousId());
+        data.append('user_id', "adriantesting");
         data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
         data.append('event_properties', JSON.stringify({
-          "Registrant Email": user?.email + "Triggered from frontend"
+          "Registrant Email": "Triggered from frontend"
         }));
         axios.post(`/segments/trigger_segment_event.json`, data);
       } catch (error) {
