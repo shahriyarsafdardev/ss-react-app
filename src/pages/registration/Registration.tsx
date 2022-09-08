@@ -210,7 +210,7 @@ export default function Registration() {
         data.append(
           'event_properties',
           JSON.stringify({
-            'Registrant Email': 'Triggered from frontend'
+            'Registrant Email': `${user?.email} frontend`
           })
         );
         axios.post(`/segments/trigger_segment_event.json`, data);
