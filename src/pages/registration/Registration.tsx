@@ -205,14 +205,17 @@ export default function Registration() {
     if (user?.email && cohort_id) {
       try {
         const data = new FormData();
-        data.append('user_id', "adriantesting");
+        data.append('user_id', 'adriantesting');
         data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
-        data.append('event_properties', JSON.stringify({
-          "Registrant Email": "Triggered from frontend"
-        }));
+        data.append(
+          'event_properties',
+          JSON.stringify({
+            'Registrant Email': 'Triggered from frontend'
+          })
+        );
         axios.post(`/segments/trigger_segment_event.json`, data);
       } catch (error) {
-        console.log("EVENT SYSTEM ERROR")
+        console.log('EVENT SYSTEM ERROR');
         console.error(error);
       }
 
