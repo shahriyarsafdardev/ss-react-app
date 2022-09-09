@@ -18,6 +18,7 @@ import {
   ListItemButtonProps
 } from '@material-ui/core';
 import { trackSidebarEvent } from 'utils/amplitude';
+import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from '../redux/store';
 // ----------------------------------------------------------------------
 
@@ -107,6 +108,7 @@ type NavItemProps = {
     externalUrl?: boolean;
     notifications?: boolean;
     category?: string;
+    disabled?: boolean;
   }[];
 };
 
@@ -133,6 +135,7 @@ function NavItem({
   );
   const [open, setOpen] = useState(isActiveRoot);
   const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setOpen(isActiveRoot);
@@ -194,7 +197,8 @@ function NavItem({
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {children.map((heading_item, index) => {
-                const { title, path, externalUrl, category, notifications } = heading_item;
+                const { title, path, externalUrl, category, notifications, disabled } =
+                  heading_item;
                 const isActiveSub = path ? !!matchPath({ path, end: false }, pathname) : false;
 
                 return (
@@ -204,19 +208,26 @@ function NavItem({
                     key={`${title}-${userNotifications.length}`}
                     id={`${title}-${index}`}
                     component={RouterLink}
-                    onClick={() => {
-                      if (externalUrl) {
-                        window.open(path, '_blank');
+                    onClick={(e) => {
+                      if (disabled) {
+                        enqueueSnackbar("You'll need to finish your onboarding first.", {
+                          variant: 'warning'
+                        });
+                        e.preventDefault();
+                      } else {
+                        if (externalUrl) {
+                          window.open(path, '_blank');
+                        }
+                        cohort &&
+                          trackSidebarEvent(
+                            cohort,
+                            `Sidebar - '${title.charAt(0).toUpperCase() + title.slice(1)}' Selected`
+                          );
                       }
-                      cohort &&
-                        trackSidebarEvent(
-                          cohort,
-                          `Sidebar - '${title.charAt(0).toUpperCase() + title.slice(1)}' Selected`
-                        );
                     }}
                     to={externalUrl ? '' : path}
                     sx={{
-                      ...(isActiveSub && activeSubStyle)
+                      ...(isActiveSub && !disabled && activeSubStyle)
                     }}
                   >
                     <ListItemIconStyle>
@@ -231,10 +242,11 @@ function NavItem({
                           justifyContent: 'center',
                           bgcolor: 'text.disabled',
                           transition: (theme) => theme.transitions.create('transform'),
-                          ...(isActiveSub && {
-                            transform: 'scale(2)',
-                            bgcolor: 'primary.main'
-                          })
+                          ...(isActiveSub &&
+                            !disabled && {
+                              transform: 'scale(2)',
+                              bgcolor: 'primary.main'
+                            })
                         }}
                       />
                     </ListItemIconStyle>

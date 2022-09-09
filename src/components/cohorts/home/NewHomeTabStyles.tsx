@@ -33,6 +33,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
       paddingTop: '24px',
       flexWrap: 'wrap'
     }
+  },
+  message: {
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px 10px'
+    }
   }
 }));
 
@@ -88,14 +94,14 @@ export const HomePageTitle = styled(Typography)(({ theme }) => ({
 
 export const PreReadingTitle = styled(Typography)(() => ({
   fontWeight: 'bold',
-  fontSize: '24px',
+  fontSize: '27px',
   lineHeight: '130%',
   color: '#475569'
 }));
 
 export const PreReadingDetail = styled(Typography)(() => ({
   fontWeight: 'normal',
-  fontSize: 16,
+  fontSize: 18,
   lineHeight: '24px',
   marginTop: '12px',
   color: '#64748B'
@@ -115,10 +121,10 @@ export const PreReadingDescription = styled(Typography)(({ theme }) => ({
 
 export const SessionDescriptionBox = styled(Box)(() => ({
   fontWeight: 'normal',
-  fontSize: 18,
+  fontSize: 15,
   lineHeight: '27px',
   marginTop: '24px',
-  color: '#000000',
+  color: '#ffffff !important',
   ul: {
     paddingLeft: '30px'
   }

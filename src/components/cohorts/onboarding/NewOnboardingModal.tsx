@@ -200,6 +200,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
                 cohort
               );
             }}
+            onNeedHandler={() => {}}
             inviteUrl={cohort?.calendar_invite_url}
           />
         </div>

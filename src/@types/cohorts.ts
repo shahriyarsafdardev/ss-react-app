@@ -109,6 +109,7 @@ export type Session = {
   materials: SessionMaterial[];
   display_in_sessions_tab: boolean;
   custom_name: string;
+  networking_session: string;
 };
 
 export type SessionListItem = {
@@ -183,6 +184,13 @@ export type CohortExperience = {
   live_async_attendance: number;
 };
 
+export type OnboardingDataType = {
+  is_onboarded: boolean;
+  sessions_added_to_calendar: boolean;
+  messaging_tab_opened: boolean;
+  resources_invoked: boolean;
+};
+
 export type Cohort = {
   id: string;
   name: string;
@@ -194,7 +202,6 @@ export type Cohort = {
   host_image_url: string;
   is_host: boolean;
   is_free: boolean;
-  is_onboarded: boolean;
   is_feedback_submitted: boolean;
   released_for_learners: boolean;
   intake: number;
@@ -211,8 +218,10 @@ export type Cohort = {
   alumni_event: boolean;
   registration_page_url: string;
   new_home_tab: boolean;
+  instructor_message: string;
   readings_released: boolean;
   amplitude_events_timeline: AmplitudeEventsTimeline;
+  onboarding_data: OnboardingDataType;
 };
 
 export type AmplitudeEventsTimeline = {

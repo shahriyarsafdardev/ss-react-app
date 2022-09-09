@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { groupByIntake } from 'layouts/dashboard/Common';
 import { dispatch } from '../store';
-import { Cohort, Enrollment, ReferralCode } from '../../@types/cohorts';
+import { Cohort, Enrollment, OnboardingDataType, ReferralCode } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
 
 // utils
@@ -114,7 +114,28 @@ const slice = createSlice({
       const targetCohortIndex = state.cohorts.findIndex((cohort) => cohort.id === action.payload);
       if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
-        state.cohorts[targetCohortIndex] = { ...updated, is_onboarded: true };
+        const updatedOnboarding = updated.onboarding_data;
+        const onboardedData = { ...updatedOnboarding, is_onboarded: true };
+        state.cohorts[targetCohortIndex] = { ...updated, onboarding_data: onboardedData };
+      }
+    },
+    updateOnboardingStep(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
+        const copyCohort: Cohort = state.cohorts[targetCohortIndex];
+        const copyOnboardingData: OnboardingDataType = copyCohort.onboarding_data;
+
+        if (action.payload.type === 'sessions_added_to_calendar') {
+          copyOnboardingData.sessions_added_to_calendar = true;
+        } else if (action.payload.type === 'messaging_tab_opened') {
+          copyOnboardingData.messaging_tab_opened = true;
+        } else if (action.payload.type === 'resources_invoked') {
+          copyOnboardingData.resources_invoked = true;
+        }
+        copyCohort.onboarding_data = copyOnboardingData;
+        state.cohorts[targetCohortIndex] = copyCohort;
       }
     },
     updateFeedbackStatusSuccess(state, action) {
@@ -294,6 +315,20 @@ export function markApplicationAsPaid(cohortID: string, enrollmentID: string) {
       dispatch(
         slice.actions.updateRegistrationSuccess({ cohort_id: cohortID, enrollment: response.data })
       );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function markOnboardingStep(cohortID: string, type: string) {
+  return async () => {
+    try {
+      await axios.post(`/cohorts/${cohortID}/mark_onboarding_step.json`, {
+        type
+      });
+
+      dispatch(slice.actions.updateOnboardingStep({ cohort_id: cohortID, type }));
     } catch (error) {
       console.log(error);
     }

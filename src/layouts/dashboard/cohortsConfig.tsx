@@ -1,4 +1,5 @@
 // routes
+import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from '../../routes/paths';
 import SvgIconStyle from '../../components/SvgIconStyle';
 
@@ -29,6 +30,8 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         }
       ]
     };
+    const { user } = useAuth();
+
     if (cohort.name === 'Building & Investing in Network Effects') {
       object.children = [
         ...object.children,
@@ -108,6 +111,30 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         category: 'Question'
       }
     ];
+
+    object.children = object.children.map((child: any) => {
+      const { is_onboarded, sessions_added_to_calendar, messaging_tab_opened, resources_invoked } =
+        cohort?.onboarding_data;
+      let data = { ...child, disabled: false };
+      if (user?.type === 'learner') {
+        if (
+          (child.title === 'messaging' &&
+            is_onboarded &&
+            sessions_added_to_calendar &&
+            messaging_tab_opened) ||
+          (['resources', 'Q&A', 'networking'].includes(child.title) &&
+            is_onboarded &&
+            sessions_added_to_calendar &&
+            messaging_tab_opened &&
+            resources_invoked)
+        ) {
+          data = { ...child, disabled: false };
+        } else if (['resources', 'Q&A', 'networking', 'messaging'].includes(child.title)) {
+          data = { ...child, disabled: true };
+        }
+      }
+      return data;
+    });
 
     object.children = [...object.children];
     return object;

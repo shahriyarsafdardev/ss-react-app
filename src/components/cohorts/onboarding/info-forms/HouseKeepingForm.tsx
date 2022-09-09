@@ -40,18 +40,18 @@ const PAYING_OPTIONS = ['I am', 'My employer', 'Other'];
 export default function HouseKeepingForm({
   onSubmit,
   infoDetails,
-  phoneNumberValue,
+  goalsValue,
   onPrevHandler,
   isSubmitting = false
 }: {
   onSubmit: Function;
   onPrevHandler: Function;
-  phoneNumberValue: string;
+  goalsValue: string;
   infoDetails: HouseKeepingInfoType;
   isSubmitting?: boolean;
 }) {
   const [infoObject, setInfoObject] = useState<HouseKeepingInfoType>(infoDetails);
-  const [phoneNumber, setPhoneNumber] = useState<any>(phoneNumberValue || '');
+  const [goals, seGoals] = useState<any>(goalsValue || '');
 
   const onUpdateAttribute = (attribute: string, value: any) => {
     let tempInfo = { ...infoObject };
@@ -89,9 +89,11 @@ export default function HouseKeepingForm({
               </Stack> */}
               <FormControl fullWidth>
                 <TextField
-                  label="Phone"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  label="What key result are you looking to achieve by attending this course?"
+                  value={goals}
+                  onChange={(e) => seGoals(e.target.value)}
+                  multiline
+                  rows={3}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -151,7 +153,7 @@ export default function HouseKeepingForm({
         disabled={checkFormValidity(infoObject)}
         onPreviousHandler={onPrevHandler}
         onNextHandler={() => {
-          onSubmit({ ...infoObject, phone_number: phoneNumber });
+          onSubmit({ ...infoObject, goals });
         }}
         isSubmitBtn={true}
         isSubmitting={isSubmitting}

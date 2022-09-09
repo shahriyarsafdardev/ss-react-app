@@ -28,12 +28,15 @@ type UserInfoType = {
   city: string;
   preferred_pronoun: string;
   linkedin_url: string;
+  github_username: string;
 };
 
 export default function UserInfoForm({
+  cohortCode,
   onSubmit,
   userProfile
 }: {
+  cohortCode: string;
   onSubmit: Function;
   userProfile: {
     first_name: string;
@@ -43,10 +46,12 @@ export default function UserInfoForm({
     preferred_pronoun: string;
     country: string;
     city: string;
+    github_username: string;
   };
 }) {
   const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
   const [citiesList, setCityList] = useState<string[]>([]);
+  const HUGGING_FACE_COHORT_CODE = 'HPT';
   useEffect(() => {
     if (userProfile.country) {
       setCities(userProfile.country);
@@ -75,7 +80,8 @@ export default function UserInfoForm({
     country: userProfile?.country,
     city: userProfile?.city,
     preferred_pronoun: userProfile?.preferred_pronoun || '',
-    linkedin_url: userProfile?.linkedin_url || ''
+    linkedin_url: userProfile?.linkedin_url || '',
+    github_username: userProfile?.github_username || ''
   });
 
   const [infoObject, setInfoObject] = useState<UserInfoType>(fillUserValues());
@@ -149,22 +155,34 @@ export default function UserInfoForm({
               </Stack>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <FormControl fullWidth>
-                  <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
-                  <MaterialSelect
-                    data-testid="user-pronoun-label"
-                    fullWidth
-                    label="Pronouns"
-                    labelId="pronoun-label"
-                    value={infoObject?.preferred_pronoun}
-                    onChange={(e) => onUpdateAttribute('preferred_pronoun', e.target.value)}
-                    sx={{ zIndex: 1500 }}
-                  >
-                    {preferred_pronoun_options?.map((pronoun: string) => (
-                      <MenuItem key={pronoun} value={pronoun}>
-                        <ListItemText primary={pronoun} />
-                      </MenuItem>
-                    ))}
-                  </MaterialSelect>
+                  {cohortCode === HUGGING_FACE_COHORT_CODE ? (
+                    <TextField
+                      inputProps={{ 'data-testid': 'github-username' }}
+                      fullWidth
+                      label="Github Username"
+                      value={infoObject?.github_username}
+                      onChange={(e) => onUpdateAttribute('github_username', e.target.value)}
+                    />
+                  ) : (
+                    <>
+                      <InputLabel id="multiple-checkbox-pronoun-label">Pronouns</InputLabel>
+                      <MaterialSelect
+                        data-testid="user-pronoun-label"
+                        fullWidth
+                        label="Pronouns"
+                        labelId="pronoun-label"
+                        value={infoObject?.preferred_pronoun}
+                        onChange={(e) => onUpdateAttribute('preferred_pronoun', e.target.value)}
+                        sx={{ zIndex: 1500 }}
+                      >
+                        {preferred_pronoun_options?.map((pronoun: string) => (
+                          <MenuItem key={pronoun} value={pronoun}>
+                            <ListItemText primary={pronoun} />
+                          </MenuItem>
+                        ))}
+                      </MaterialSelect>
+                    </>
+                  )}
                 </FormControl>
 
                 <TextField
@@ -205,7 +223,7 @@ export default function UserInfoForm({
       </Grid>
       <NavigationButtons
         showPrevButton={false}
-        disabled={checkFormValidity(infoObject)}
+        disabled={checkFormValidity(infoObject, cohortCode)}
         onPreviousHandler={() => {}}
         onNextHandler={() => onSubmit(infoObject)}
       />

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -92,6 +93,8 @@ function QontoStepIcon(props: ExtraStepIconProps) {
     <QontoStepIconRoot ownerState={{ active }} className={className}>
       {completed ? (
         <Circle className="QontoStepIcon-completedIcon" data-testid={testid} />
+      ) : active ? (
+        <Circle className="QontoStepIcon-completedIcon" data-testid={testid} />
       ) : (
         <CircleOutlinedIcon className="QontoStepIcon-circle" data-testid={testid} />
       )}
@@ -107,7 +110,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #F1F5F9 119.74%)'
+      backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, ${theme.palette.primary.main} 119.74%)`
     }
   },
   [`&.${stepConnectorClasses.completed}`]: {
@@ -134,12 +137,14 @@ export default function DesktopStepper({
   cohortID,
   activeSession,
   sessions,
-  onTrackEvent
+  onTrackEvent,
+  activeStepper
 }: {
   cohortID: string;
   activeSession: number;
   sessions: Session[];
   onTrackEvent: Function;
+  activeStepper: number;
 }) {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
@@ -176,7 +181,7 @@ export default function DesktopStepper({
   useEffect(() => {
     const elem = document.getElementById('timeline-div');
     if (activeSession > 2) {
-      scroll(activeStep);
+      scroll(activeStepper === 0 || activeStepper === 1 ? activeStepper : activeStep);
     }
     return () => {
       if (elem) {
@@ -204,7 +209,7 @@ export default function DesktopStepper({
       />
       <StyledBox data-testid="timeline-div" id="timeline-div" className="scrollbar-hidden">
         <Stepper
-          activeStep={activeSession}
+          activeStep={activeStepper === 0 || activeStepper === 1 ? activeStepper : activeSession}
           alternativeLabel
           connector={<ColorlibConnector data-testid="cohort-timeline-connector" />}
           style={{ marginTop: '10px' }}
@@ -218,6 +223,15 @@ export default function DesktopStepper({
               <StyledSession data-testid="timeline-welcome">Welcome</StyledSession>
             </StepLabel>
           </Step>
+          <Step key={98} sx={{ minWidth: '180px' }}>
+            <StepLabel
+              StepIconComponent={(props) => (
+                <QontoStepIcon {...props} testid="timeline-welcome-step-icon" />
+              )}
+            >
+              <StyledSession data-testid="timeline-welcome">Get Ready</StyledSession>
+            </StepLabel>
+          </Step>
           {sessions &&
             sessions?.map((session) => (
               <Step key={session.number} sx={{ minWidth: '180px' }}>
@@ -227,9 +241,11 @@ export default function DesktopStepper({
                   )}
                 >
                   <div>
-                    <StyledSession
-                      data-testid={`session-name-${session?.number}`}
-                    >{`Session ${session.number}`}</StyledSession>
+                    <StyledSession data-testid={`session-name-${session?.number}`}>
+                      {session.networking_session
+                        ? 'Networking Session'
+                        : `Session ${session.number}`}
+                    </StyledSession>
                     <StyledDate
                       className="session-time"
                       data-testid={`session-time-${session?.number}`}

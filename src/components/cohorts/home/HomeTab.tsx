@@ -1,50 +1,40 @@
 import { useEffect, useState } from 'react';
-import { Container, Box, Button } from '@material-ui/core';
+import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { NavLink as RouterLink } from 'react-router-dom';
 import Page from 'components/Page';
 import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import { EVENT_TYPES, trackHomePageEvents, trackPageViewEvent } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
-import NetworkSuggestion from './NetworkSuggestion';
-import SessionPrereading from './SessionPrereading';
 import { firstUpcomingDate } from './Common';
 import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
-import NewOnboardingModal from '../onboarding/NewOnboardingModal';
 import NewHomeTab from './NewHomeTab';
-import SurveyQuestionsModal from '../onboarding/SurveyQuestionsModal';
+// import SurveyQuestionsModal from '../onboarding/SurveyQuestionsModal';
+import GetReadyChecklist from './GetReadyChecklist';
+import WelcomePage from './WelcomePage';
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '20px',
+  marginTop: '2rem',
   [theme.breakpoints.down('md')]: {
-    flexDirection: 'column',
-    marginTop: 0,
-    '> div': {
-      marginTop: '20px'
-    }
+    width: '95%',
+    margin: '3rem auto'
   }
 }));
 
-const IBRAHIM_COHORT_ID = 'e0d1f216-104e-4018-aea2-86f00f0ce3dd';
-
 const Index = () => {
   const dispatch = useDispatch();
-  const [hasOnboarded, setHasOnboarded] = useState(true);
   const [hasQuestionSubmitted, setQuestionSubmitted] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const { user } = useAuth();
+  const [activeStepper, setActiveStepper] = useState(0);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
   // eslint-disable-next-line prefer-const
@@ -52,6 +42,7 @@ const Index = () => {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { sessions } = cohort || [];
+  const { onboarding_data } = cohort || {};
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -63,10 +54,28 @@ const Index = () => {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
-      setHasOnboarded(cohort?.is_onboarded);
       setQuestionSubmitted(cohort?.is_feedback_submitted);
     }
   }, [cohort]);
+
+  useEffect(() => {
+    if (cohort && onboarding_data) {
+      if (!onboarding_data.is_onboarded) {
+        setActiveStepper(0);
+        return;
+      }
+      if (
+        !onboarding_data?.is_onboarded ||
+        !onboarding_data?.sessions_added_to_calendar ||
+        !onboarding_data?.messaging_tab_opened ||
+        !onboarding_data?.resources_invoked
+      ) {
+        setActiveStepper(1);
+      } else {
+        setActiveStepper(2);
+      }
+    }
+  }, [cohort, onboarding_data]);
 
   useEffect(() => {
     setActiveSession(undefined);
@@ -94,39 +103,25 @@ const Index = () => {
     trackHomePageEvents(sessionNumber, eventCategory, eventData, source, cohort);
   };
 
-  const onAddCalendar = () => {
-    sendAnalyticsData(1, 'Cohort Calendar', 'Add Calendar');
+  const displayActiveStep = () => {
+    if (activeStepper === 0) {
+      return <WelcomePage setActiveStepper={setActiveStepper} cohort={cohort} />;
+    }
+    if (activeStepper === 1) {
+      return <GetReadyChecklist cohort={cohort} />;
+    }
+
+    return <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />;
   };
 
-  const HomeTabSection = () => (
+  const homeTabSection = () => (
     <Container style={{ marginBottom: '50px' }}>
-      <CohortTimeLine cohort={cohort} sessions={sessions} />
-      <Button
-        onClick={() => onAddCalendar()}
-        component={RouterLink}
-        to={`/cohorts/${cohort?.id}/calendar-instructions`}
-        style={{ marginTop: '20px' }}
-        fullWidth
-        variant="outlined"
-      >
-        Add sessions to your calendar
-      </Button>
-      <StyledBox>
-        <SessionPrereading cohort={cohort} sessions={sessions} activeSession={activeSession} />
-        <NetworkSuggestion cohort={cohort} activeSession={activeSession?.number} />
-      </StyledBox>
+      <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
+      <StyledBox>{displayActiveStep()}</StyledBox>
     </Container>
   );
 
-  const shouldOpenModal = () => !hasOnboarded && user?.type === 'learner';
   const questionSubmittedModal = () => !hasQuestionSubmitted && user?.type === 'learner';
-
-  const renderOnboardingModal = () =>
-    cohort.id === IBRAHIM_COHORT_ID ? (
-      <NewOnboardingModal onSubmit={() => {}} />
-    ) : (
-      <OnboardingModal onSubmit={() => {}} />
-    );
 
   if (!cohort || typeof sessions === 'undefined') {
     return (
@@ -138,20 +133,15 @@ const Index = () => {
 
   return (
     <Page title="Sphere | Homepage">
-      {shouldOpenModal() && renderOnboardingModal()}
-      {cohort?.is_onboarded === true && questionSubmittedModal() && (
+      {/* {cohort?.onboarding_data?.is_onboarded === true && questionSubmittedModal() && (
         <SurveyQuestionsModal state={questionSubmittedModal()} cohort_id={cohort_id} />
-      )}
+      )} */}
       {sessions?.length > 0 &&
       (cohort?.released_for_learners === true ||
         cohort?.readings_released === true ||
         mode === 'Instructor') ? (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          {cohort?.new_home_tab ? (
-            <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />
-          ) : (
-            <HomeTabSection />
-          )}
+          {homeTabSection()}
         </AnalyticsContext.Provider>
       ) : (
         <EmptyHomeTab

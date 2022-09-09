@@ -1,9 +1,13 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, Button, Card, CircularProgress, Stack, Theme, Typography } from '@material-ui/core';
 import { uniq } from 'lodash';
+import DoneIcon from '@material-ui/icons/Done';
 
 import moment from 'moment';
+import { Modal } from 'components/animate';
+import { makeStyles } from '@material-ui/styles';
 import { Session } from '../../../@types/cohorts';
+import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -13,7 +17,9 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   '&.timeline': {
     height: '150px',
     [theme.breakpoints.down('sm')]: {
-      height: '310px'
+      height: '310px',
+      width: '95%',
+      margin: 'auto'
     }
   },
   '&.card-2': {
@@ -33,6 +39,18 @@ export const SectionContainer = styled('div')(({ theme }) => ({
       height: '750px'
     }
   }
+}));
+
+const useStyles = makeStyles((theme: Theme) => ({
+  calendarInstructionsModal: {
+    width: '52%',
+    margin: 'auto',
+    [theme.breakpoints.down('md')]: {
+      width: '95%',
+      margin: 'auto'
+    }
+  },
+  heading: { fontSize: '20px', fontWeight: 600 }
 }));
 
 const StyledCircularLoader = styled(Box)(({ theme }) => ({
@@ -131,3 +149,98 @@ export const isZoomLinkVisible = (activeSession: Session | undefined) => {
   }
   return false;
 };
+
+export const CalendarInstructionsModal = ({
+  modalState,
+  setModalState,
+  handleSubmit,
+  onNeedHandler
+}: {
+  modalState: boolean;
+  setModalState: Function;
+  handleSubmit: Function;
+  onNeedHandler: Function;
+}) => {
+  const classes = useStyles();
+
+  return (
+    <Modal
+      open={modalState}
+      onClose={() => {
+        setModalState(false);
+      }}
+      zIndex={1400}
+      className={classes.calendarInstructionsModal}
+    >
+      <Card sx={{ padding: '2rem' }}>
+        <Typography className={classes.heading}>
+          Please follow the instructions below to add the sessions to you calendar
+        </Typography>
+        <AddToCalendarInfo
+          onNextHandler={() => {
+            setModalState(false);
+            handleSubmit();
+          }}
+          onNeedHandler={onNeedHandler}
+          inviteUrl="test"
+        />
+      </Card>
+    </Modal>
+  );
+};
+
+export const OnboardingSectionRow = ({
+  index,
+  heading,
+  subHeading,
+  status,
+  classes,
+  onSubmit
+}: {
+  index: number;
+  heading: string;
+  subHeading: string;
+  status: string;
+  classes: any;
+  onSubmit: Function;
+}) => (
+  <Box className={classes.row}>
+    <Typography
+      className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
+        status === 'NonActive' && classes.indexNonActive
+      } ${status === 'Completed' && classes.indexCompleted}`}
+    >
+      {status === 'Completed' ? <DoneIcon /> : index}
+    </Typography>
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection={{ xs: 'column', md: 'row' }}
+      justifyContent="space-between"
+    >
+      <Stack direction="column" marginLeft={3}>
+        <Typography
+          className={`${classes.headingActive} ${
+            status === 'NonActive' && classes.headingNonActive
+          } ${status === 'Completed' && classes.headingCompleted}`}
+        >
+          {heading}
+        </Typography>
+        <Typography
+          className={`${classes.subHeadingActive} ${
+            status === 'NonActive' && classes.headingNonActive
+          } ${status === 'Completed' && classes.headingCompleted}`}
+        >
+          {subHeading}
+        </Typography>
+      </Stack>
+      <Button
+        variant="contained"
+        className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
+        onClick={() => onSubmit()}
+      >
+        Start
+      </Button>
+    </Box>
+  </Box>
+);

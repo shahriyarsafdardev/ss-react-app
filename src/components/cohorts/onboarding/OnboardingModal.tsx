@@ -8,13 +8,7 @@ import { dispatch, RootState, useSelector } from 'redux/store';
 
 import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
-import {
-  UserInfoForm,
-  CompanyInfoForm,
-  RoleInfoForm,
-  NetworkingForm,
-  HouseKeepingForm
-} from './info-forms';
+import { UserInfoForm, CompanyInfoForm, RoleInfoForm, HouseKeepingForm } from './info-forms';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ParticipantProfile } from '../../../@types/user';
@@ -42,9 +36,6 @@ type HomeResponse = {
     number_of_employees: string;
     preferred_pronoun: string;
     current_role_category_selections: string[];
-    opted_in_for_matching_suggestions: boolean;
-    networking_matching_preferences: string[];
-    networking_roles_categories: string[];
     networking_industries_categories: string[];
     current_industry_category_selections: string[];
     do_manage_team: boolean;
@@ -86,7 +77,6 @@ export const ContentContainer = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   borderTopRightRadius: '25px',
   borderBottomRightRadius: '25px',
-  maxWidth: '720px',
   [theme.breakpoints.down(1250)]: {
     borderRadius: '25px',
     height: '100%'
@@ -115,25 +105,30 @@ type OnboardingDataType = {
   role_category: string[];
   do_manage_team: boolean;
   role_description: string;
-  networking_roles_categories: string[];
-  networking_industries_categories: string[];
-  interested_in_being_matched: boolean;
   date_of_birth: string;
   cohort_understanding: string;
   referred_by: string;
   payed_by: string;
-  phone_number: string;
+  goals: string;
+  github_username: string;
 };
 
-export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
+export default function OnboardingModal({
+  onboardingModalState,
+  setOnboardingModalState,
+  onSubmit
+}: {
+  onboardingModalState: boolean;
+  setOnboardingModalState: Function;
+  onSubmit: Function;
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [activeStep, setActiveStep] = useState(1);
-  const [modal, setModal] = useState(true);
-  const totalSteps = 5;
+  const totalSteps = 4;
   const [profilePicture, setProfilePicture] = useState<any>();
   const [companyLogo, setCompanyLogo] = useState<any>();
   const cohort = useSelector(
@@ -154,14 +149,12 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     role_category: [],
     do_manage_team: false,
     role_description: '',
-    networking_roles_categories: [],
-    networking_industries_categories: [],
-    interested_in_being_matched: true,
     date_of_birth: '',
     cohort_understanding: '',
     referred_by: '',
     payed_by: '',
-    phone_number: ''
+    goals: '',
+    github_username: ''
   });
 
   useEffect(() => {
@@ -188,15 +181,12 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           role_category: payload.participant_profile.current_role_category_selections,
           do_manage_team: payload.participant_profile.do_manage_team,
           role_description: payload.participant_profile.bio_text,
-          networking_roles_categories: payload.participant_profile.networking_roles_categories,
-          networking_industries_categories:
-            payload.participant_profile.networking_industries_categories,
-          interested_in_being_matched: true,
           date_of_birth: '',
           cohort_understanding: payload.participant_profile.current_understanding,
           referred_by: payload.participant_profile.referred_by,
           payed_by: payload.participant_profile.payed_by,
-          phone_number: payload.participant_profile.phone_number
+          goals: payload.participant_profile.goals,
+          github_username: payload.participant_profile.github_username
         });
       });
   }, [cohort_id, user?.id]);
@@ -210,7 +200,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         country: data.country,
         city: data.city,
         preferred_pronoun: data.preferred_pronoun,
-        linkedin_url: data.linkedin_url
+        linkedin_url: data.linkedin_url,
+        github_username: data.github_username
       };
       setProfilePicture(data.profile_image_url);
       setOnboardingData(tempData);
@@ -235,15 +226,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       setCompanyLogo(data.logo_url);
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
-    } else if (type === FormTypes.networkingInfo) {
-      const tempData: OnboardingDataType = {
-        ...onboardingData,
-        networking_industries_categories: data.networking_industries_categories,
-        networking_roles_categories: data.networking_roles_categories,
-        interested_in_being_matched: data.interested_in_being_matched
-      };
-      setOnboardingData(tempData);
-      setActiveStep(activeStep + 1);
     } else if (type === FormTypes.housekeepingInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
@@ -251,7 +233,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
         payed_by: data.payed_by,
         referred_by: data.referred_by,
         date_of_birth: data.date_of_birth,
-        phone_number: data.phone_number
+        goals: data.goals
       };
       setIsSubmitting(true);
       submitData(tempData);
@@ -277,7 +259,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
           updateProfile({ ...res.data.user });
         }
         setIsSubmitting(false);
-        setModal(false);
+        setOnboardingModalState(false);
         dispatch(updateOnboardingStatus(cohort_id));
       })
       .catch((err) => {
@@ -292,6 +274,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
       return (
         <div data-testid="onboarding-form-modal">
           <UserInfoForm
+            cohortCode={cohort?.code}
             userProfile={{
               first_name: onboardingData.first_name || '',
               last_name: onboardingData.last_name || '',
@@ -299,7 +282,8 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
               profile_image_url: profilePicture,
               preferred_pronoun: onboardingData.preferred_pronoun || '',
               country: onboardingData.country || '',
-              city: onboardingData.city || ''
+              city: onboardingData.city || '',
+              github_username: onboardingData.github_username || ''
             }}
             onSubmit={(data: any) => {
               updateOnboardingData(FormTypes.userInfo, data);
@@ -340,19 +324,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
     if (activeStep === 4) {
       return (
-        <NetworkingForm
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.networkingInfo, data)}
-          infoDetails={{
-            networking_industries_categories: onboardingData.networking_industries_categories || [],
-            networking_roles_categories: onboardingData.networking_roles_categories || [],
-            interested_in_being_matched: onboardingData.interested_in_being_matched || false
-          }}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
-        />
-      );
-    }
-    if (activeStep === 5) {
-      return (
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
@@ -371,7 +342,7 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
             payed_by: onboardingData.payed_by,
             referred_by: onboardingData.referred_by
           }}
-          phoneNumberValue={onboardingData.phone_number}
+          goalsValue={onboardingData.goals}
           isSubmitting={isSubmitting}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
@@ -395,10 +366,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 4) {
-      return 'Networking Preferences';
-    }
-
-    if (activeStep === 5) {
       return 'Housekeeping Questions';
     }
 
@@ -411,10 +378,6 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
     }
 
     if (activeStep === 4) {
-      return 'We’ll help you make meaningful connections with other professionals in the cohort.';
-    }
-
-    if (activeStep === 5) {
       return 'Your answers to these questions will not be shared with cohort members';
     }
 
@@ -424,7 +387,9 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
       <CohortAuthorPreview
-        style={{ backgroundImage: `url("${homeConfig?.onboarding_side_image_url}")` }}
+        style={{
+          backgroundImage: `url("https://cohort-videos.s3.eu-west-2.amazonaws.com/General+Onboard.jpg")`
+        }}
         data-testid="onboarding-image"
       />
       <ContentContainer>
@@ -441,7 +406,13 @@ export default function OnboardingModal({ onSubmit }: { onSubmit: Function }) {
   );
 
   return (
-    <Modal open={modal} zIndex={1400}>
+    <Modal
+      open={onboardingModalState}
+      onClose={() => {
+        setOnboardingModalState(false);
+      }}
+      zIndex={1400}
+    >
       <OnBoardingSteps />
     </Modal>
   );

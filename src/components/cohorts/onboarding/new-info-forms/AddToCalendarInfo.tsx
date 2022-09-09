@@ -1,11 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Theme, styled } from '@material-ui/core/styles';
-import { Box, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
+import {
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  Stack
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useNavigate } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { NavigationButtons } from './dataTypes';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -15,8 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '100px'
+    alignItems: 'center'
   },
   heading: {
     textAlign: 'left',
@@ -40,11 +45,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   col4: {
     marginTop: '20px',
     padding: '16px 24px',
-    width: '98%',
+    width: '99%',
     boxShadow: '0px 0px 2px rgba(145, 158, 171, 0.24), 0px 8px 13px -4px rgba(145, 158, 171, 0.24)',
     borderRadius: '16px',
-    [theme.breakpoints.down(1000)]: {
-      width: '80%'
+    [theme.breakpoints.down('sm')]: {
+      padding: 0
     }
   },
   section: {
@@ -98,10 +103,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    maxHeight: '350px',
+    maxHeight: '650px',
     overflowY: 'scroll',
     marginTop: '16px',
     paddingBottom: '16px',
+    [theme.breakpoints.down('md')]: {
+      maxHeight: '350px'
+    },
     '&::-webkit-scrollbar': {
       width: '0.4em'
     },
@@ -119,6 +127,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   font34: {
     fontSize: '34px'
+  },
+  navigationButtons: {
+    height: '40px',
+    borderRadius: '30px'
   }
 }));
 
@@ -138,9 +150,11 @@ const Item = styled('div')(() => ({
 
 export default function AddToCalendarInfo({
   onNextHandler,
+  onNeedHandler,
   inviteUrl
 }: {
   onNextHandler: Function;
+  onNeedHandler: Function;
   inviteUrl: string;
 }) {
   const classes = useStyles();
@@ -412,11 +426,16 @@ export default function AddToCalendarInfo({
 
   const accordion = () => (
     <Box className={classes.mainBox}>
-      <Box className={classes.col4}>{googleCalendar()}</Box>
       <Box className={classes.col4}>{outlookCalendar()}</Box>
+      <Box className={classes.col4}>{googleCalendar()}</Box>
       <Box className={classes.col4}>{ical()}</Box>
     </Box>
   );
+
+  const handleNeedHelp = () => {
+    onNeedHandler();
+    navigate('/contact-us');
+  };
 
   return (
     <>
@@ -425,15 +444,28 @@ export default function AddToCalendarInfo({
           <Box className={classes.section}>{accordion()}</Box>
         </Box>
       </div>
-      <NavigationButtons
-        showPrevButton={true}
-        disabled={false}
-        onPreviousHandler={() => navigate('/contact-us')}
-        onNextHandler={() => onNextHandler()}
-        previousButtonText="I need help"
-        nextButtonText="I’ve added the sessions!"
-        displayMessage={false}
-      />
+      <Stack
+        style={{ justifyContent: 'space-between', marginTop: '20px' }}
+        spacing={2}
+        direction={{ xs: 'column', md: 'row' }}
+      >
+        <Button
+          variant="outlined"
+          className={classes.navigationButtons}
+          onClick={() => handleNeedHelp()}
+          fullWidth
+        >
+          I need help
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.navigationButtons}
+          onClick={() => onNextHandler()}
+          fullWidth
+        >
+          I've added the sessions
+        </Button>
+      </Stack>
     </>
   );
 }

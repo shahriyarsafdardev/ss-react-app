@@ -291,6 +291,12 @@ export const trackSidebarEvent = (cohort: any, eventType: string) => {
   });
 };
 
+export const trackGenericEvent = (cohort: any, eventType: string) => {
+  sendAmplitudeData(eventType, {
+    ...setGenericEventProperties(cohort)
+  });
+};
+
 export const GENERIC_EVENTS = {
   cohort_name: 'Cohort Name',
   cohort_code: 'Cohort Code',

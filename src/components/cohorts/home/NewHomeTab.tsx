@@ -10,7 +10,6 @@ import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
-import { CurrentStep, ProgressBarContainer } from '../onboarding/HomeTabHeader';
 
 import {
   useStyles,
@@ -22,9 +21,9 @@ import {
   PreReadingTitle,
   PreReadingDetail,
   PreReadingDescription,
-  SessionDescription,
-  BorderLinearProgress
+  SessionDescription
 } from './NewHomeTabStyles';
+import GoodbyeSection from './GoodbyeSection';
 
 function NewHomeTab({
   activeSession,
@@ -37,13 +36,11 @@ function NewHomeTab({
 }) {
   const [list, setList] = useState<SessionMaterial[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
-  const [totalSteps, setTotalSteps] = useState(1);
   const { user } = useAuth();
   const dispatch = useDispatch();
   const classes = useStyles();
   const zoomTimes = zoomTimesPreview(activeSession?.times || []);
   const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
-  const progress = () => ((currentStep + 1) / totalSteps) * 100;
 
   const trackHomeTabEvents = (eventType: string) => {
     trackNewHomeTabEvent(cohort, eventType, {
@@ -80,7 +77,6 @@ function NewHomeTab({
       activeSession?.materials?.filter(
         (obj: any) => !obj.complete && obj.included_in_get_ready_checklist
       ) || [];
-    setTotalSteps(list.length + 1);
     setList(list);
   }, [activeSession?.materials.length]);
 
@@ -183,7 +179,7 @@ function NewHomeTab({
             Join Session
           </Button>
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-            <SupplementaryButton />
+            {!activeSession?.networking_session && <SupplementaryButton />}
             <Button
               className={classes.homeNavigation}
               variant="outlined"
@@ -197,6 +193,7 @@ function NewHomeTab({
         </Stack>
       );
     }
+
     return (
       <Stack spacing={1} style={{ marginTop: '30px' }}>
         <Button
@@ -204,16 +201,13 @@ function NewHomeTab({
           variant="contained"
           fullWidth
           component={RouterLink}
-          to={`/cohorts/${cohort.id}/calendar-instructions`}
-          onClick={() =>
-            trackHomeTabEvents('Home Screen - ‘Add Sessions to your Calendar’ Selected')
-          }
+          to={`/cohorts/${cohort.id}/messaging`}
         >
-          Add Session to your Calendar
+          Open Messaging
         </Button>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
           {currentStep > 0 && <PreviousButton />}
-          <SupplementaryButton />
+          {!activeSession?.networking_session && <SupplementaryButton />}
         </Stack>
       </Stack>
     );
@@ -231,16 +225,23 @@ function NewHomeTab({
   };
 
   const SessionDetailStep = () => (
-    <StyledBox style={{ padding: '50px' }}>
+    <StyledBox className={classes.message}>
       <DescriptionBox style={{ width: '100%' }}>
         <PreReadingTitle data-testid="pre-reading-title">
-          Session {activeSession?.number}: {activeSession?.name}
+          {activeSession?.networking_session
+            ? 'Networking Session'
+            : `Session ${activeSession?.number}: ${activeSession?.name}`}
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {cohortHostName()} on {displayMultipleDates(activeSession?.times || [])}
-            {', '}
-            {zoomTimes.replace(timeZone, '(local time)')}
+            Live with {cohortHostName()},{' '}
+            <span>
+              <strong>
+                {displayMultipleDates(activeSession?.times || [])}
+                {', '}
+                {zoomTimes.replace(timeZone, '(local time)')}
+              </strong>
+            </span>
           </PreReadingDetail>
         </Box>
         <SessionDescription innerContent={activeSession?.summary || ''} />
@@ -249,37 +250,44 @@ function NewHomeTab({
     </StyledBox>
   );
 
+  const sessionName = () => {
+    if (activeSession?.networking_session) {
+      return 'our networking session';
+    }
+    return `Session ${activeSession?.number}`;
+  };
+
   const selectStep = () => {
+    if (typeof activeSession === 'undefined') {
+      return <GoodbyeSection cohort={cohort} />;
+    }
     if (list.length && currentStep < list.length) {
       return <PreReadingData sessionMaterial={list[currentStep]} />;
     }
     return <SessionDetailStep />;
   };
+
   const selectHeading = () => {
     if (list.length && currentStep < list.length) {
-      return `👋 Welcome ${user?.first_name}, make sure you get ready for Session ${activeSession?.number}!`;
+      return `👋 Welcome ${user?.first_name}, make sure you get ready for ${sessionName()}!`;
     }
     if (isZoomLinkVisible(activeSession)) {
-      return `🔴 Great to see you ${user?.first_name}, Session ${activeSession?.number} is live!`;
+      return `🔴 Great to see you ${user?.first_name}, ${sessionName()} is live!`;
+    }
+    if (activeSession?.networking_session) {
+      return `👋 Hi ${user?.first_name}, you’re invited to our upcoming networking session`;
+    }
+    if (typeof activeSession == 'undefined') {
+      return '🎉 Welcome to the Alumni Community!';
     }
     return `🎉 Great work ${user?.first_name}, you’re ready to go for Session ${activeSession?.number}!`;
   };
 
-  return activeSession ? (
-    <Container>
+  return (
+    <Container style={{ padding: '0' }}>
       <HomePageTitle data-testid="home-title">{selectHeading()}</HomePageTitle>
-      <ProgressBarContainer>
-        <BorderLinearProgress style={{ height: 8 }} variant="determinate" value={progress()} />
-        <CurrentStep>
-          {currentStep + 1}/{totalSteps}
-        </CurrentStep>
-      </ProgressBarContainer>
       {selectStep()}
     </Container>
-  ) : (
-    <LoadingContainer>
-      <LoadingScreen />
-    </LoadingContainer>
   );
 }
 export default NewHomeTab;

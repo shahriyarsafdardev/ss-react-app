@@ -30,10 +30,18 @@ export const MainContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-export const checkFormValidity = (form: Object) => {
-  const invalidFields = Object.values(form).map((item) =>
-    item === false ? item : !item || item.length === 0
-  );
-
+export const checkFormValidity = (form: any, cohortCode?: string) => {
+  const invalidFields = Object.keys(form).map((key) => {
+    const value = form[key];
+    if (cohortCode) {
+      if (
+        (cohortCode === 'HPT' && key === 'preferred_pronoun') ||
+        (cohortCode !== 'HPT' && key === 'github_username')
+      ) {
+        return false;
+      }
+    }
+    return value === false ? value : !value || value.length === 0;
+  });
   return invalidFields.filter((field) => field === true).length > 0;
 };
