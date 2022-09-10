@@ -5,13 +5,14 @@ import { trackGenericEvent } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
 import ReactConfetti from 'react-confetti';
 import { Cohort } from '../../../@types/cohorts';
-import { SessionDescription } from './NewHomeTabStyles';
+import { WelcomeMessage } from './NewHomeTabStyles';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '500px',
   width: '100%',
-  backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome_background.svg')`,
+  backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome_background.png')`,
   backgroundRepeat: 'no-repeat',
+  backgroundSize: 'contain',
   borderRadius: '16px',
   border: '1px solid #E2E8F0',
   position: 'relative',
@@ -152,7 +153,7 @@ export default function WelcomePage({
         <StyledCard>
           <InstructorMessage spacing={2}>
             <StyledTypography>Hi {user?.first_name},</StyledTypography>
-            <SessionDescription innerContent={cohort?.instructor_message || ''} />
+            <WelcomeMessage innerContent={cohort?.instructor_message || ''} />
             <Stack>
               <Typography color="#ffffff" style={{ fontSize: '15px' }}>
                 Looking forward to seeing you soon,

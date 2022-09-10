@@ -123,8 +123,9 @@ export const SessionDescriptionBox = styled(Box)(() => ({
   fontWeight: 'normal',
   fontSize: 15,
   lineHeight: '27px',
-  marginTop: '24px',
-  color: '#ffffff !important',
+  overflowY: 'scroll',
+  marginBottom: '20px',
+  color: '#000000',
   ul: {
     paddingLeft: '30px'
   }
@@ -132,6 +133,21 @@ export const SessionDescriptionBox = styled(Box)(() => ({
 
 export const SessionDescription = ({ innerContent }: { innerContent: string }) => (
   <SessionDescriptionBox dangerouslySetInnerHTML={{ __html: innerContent }} />
+);
+
+export const WelcomeMessageBox = styled(Box)(() => ({
+  fontWeight: 'normal',
+  fontSize: 15,
+  lineHeight: '27px',
+  marginTop: '24px',
+  color: '#ffffff !important',
+  ul: {
+    paddingLeft: '30px'
+  }
+}));
+
+export const WelcomeMessage = ({ innerContent }: { innerContent: string }) => (
+  <WelcomeMessageBox dangerouslySetInnerHTML={{ __html: innerContent }} />
 );
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
