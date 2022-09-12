@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Container, Box, Stack } from '@material-ui/core';
+import { Container, Box, Stack, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import ResourceCard from 'components/cohorts/code/ResourceCard';
+import CodeList from 'components/cohorts/code/CodeList';
 import { CohortContext } from 'contexts/CohortContext';
 import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { RootState, useSelector } from '../../../../redux/store';
@@ -16,7 +17,7 @@ const LoadingContainer = styled(Box)(() => ({
   left: '50%'
 }));
 
-export const ResourceStack = styled(Stack)(({ theme }) => ({
+const ResourceStack = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   gap: '18px',
   [theme.breakpoints.down('md')]: {
@@ -35,7 +36,7 @@ export default function CodeTab() {
   const cohortCode = () =>
     codeData ? (
       <Container style={{ marginBottom: '50px' }}>
-        <h1>Resources</h1>
+        <Typography variant="h3">Resources</Typography>
         <ResourceStack>
           <ResourceCard
             heading="Hugging Face Hub"
@@ -50,6 +51,7 @@ export default function CodeTab() {
             onOpenUrl="https://www.google.com"
           />
         </ResourceStack>
+        <CodeList />
       </Container>
     ) : (
       <LoadingContainer>
