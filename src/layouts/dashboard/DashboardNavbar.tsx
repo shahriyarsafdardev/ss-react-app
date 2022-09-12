@@ -69,7 +69,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'Q&A',
     'attendance',
     'analytics',
-    'surveys'
+    'surveys',
+    'code'
   ];
 
   useEffect(() => {
@@ -94,6 +95,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Alumni Overview');
         } else if (section === 'surveys') {
           setCurrentTab('Surveys Questions Form');
+        } else if (section === 'code') {
+          setCurrentTab('Code');
         } else {
           setCurrentTab(section);
         }
