@@ -68,7 +68,7 @@ export default function Messaging() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
   const peers = cohort?.peers;
-  const sort: ChannelSort<TeamChannelType> = { last_message_at: -1, updated_at: -1 };
+  const sort: ChannelSort<TeamChannelType> = {};
 
   const enrollments = peers?.filter((peer) => peer.id !== loggedinUserID)?.map((peer) => peer.id);
 
