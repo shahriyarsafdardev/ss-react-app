@@ -73,11 +73,16 @@ function NewHomeTab({
   };
 
   useEffect(() => {
-    const list =
-      activeSession?.materials?.filter(
-        (obj: any) => !obj.complete && obj.included_in_get_ready_checklist
-      ) || [];
-    setList(list);
+    const materialsList =
+      activeSession?.materials?.filter((obj: any) => obj.included_in_get_ready_checklist) || [];
+    setList(materialsList);
+
+    const index = materialsList.findIndex((material) => !material?.complete);
+    if (index !== -1) {
+      setCurrentStep(index);
+    } else {
+      setCurrentStep(materialsList.length);
+    }
   }, [activeSession?.materials.length]);
 
   useEffect(() => {
