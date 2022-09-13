@@ -23,6 +23,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       icon: ICONS.cohorts,
       children: [
         { title: 'resources', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) },
         {
           title: instructor ? 'students' : 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
@@ -118,6 +119,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       let data = { ...child, disabled: false };
       if (user?.type === 'learner') {
         if (
+          (child.title === 'calendar invites' && is_onboarded) ||
           (child.title === 'messaging' &&
             is_onboarded &&
             sessions_added_to_calendar &&
@@ -129,7 +131,9 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
             resources_invoked)
         ) {
           data = { ...child, disabled: false };
-        } else if (['resources', 'Q&A', 'networking', 'messaging'].includes(child.title)) {
+        } else if (
+          ['resources', 'Q&A', 'networking', 'messaging', 'calendar invites'].includes(child.title)
+        ) {
           data = { ...child, disabled: true };
         }
       }
