@@ -152,6 +152,7 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
         />
       )}
       <CalendarInstructionsModal
+        cohort={cohort}
         modalState={modalState}
         setModalState={setModalState}
         handleSubmit={handleCalendarInstructions}

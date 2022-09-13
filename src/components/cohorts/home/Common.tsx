@@ -6,7 +6,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import moment from 'moment';
 import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
-import { Session } from '../../../@types/cohorts';
+import { Cohort, Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
@@ -151,11 +151,13 @@ export const isZoomLinkVisible = (activeSession: Session | undefined) => {
 };
 
 export const CalendarInstructionsModal = ({
+  cohort,
   modalState,
   setModalState,
   handleSubmit,
   onNeedHandler
 }: {
+  cohort: Cohort;
   modalState: boolean;
   setModalState: Function;
   handleSubmit: Function;
@@ -182,7 +184,7 @@ export const CalendarInstructionsModal = ({
             handleSubmit();
           }}
           onNeedHandler={onNeedHandler}
-          inviteUrl="test"
+          inviteUrl={cohort?.calendar_invite_url}
         />
       </Card>
     </Modal>
