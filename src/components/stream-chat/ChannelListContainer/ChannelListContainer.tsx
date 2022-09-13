@@ -98,8 +98,22 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
       } else if (url.get('channel_id')) {
         try {
           const channels = await client.queryChannels({ id: url.get('channel_id') }, {});
-          await channels[0].watch();
+          await channels[0]?.watch();
           setActiveChannel(channels[0]);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          const channels = await client.queryChannels({ name: 'introductions', ...filters[0] }, {});
+          if (channels.length > 0) {
+            await channels[0].watch();
+            setActiveChannel(channels[0]);
+          } else {
+            const channels = await client.queryChannels(filters[0], {});
+            await channels[0]?.watch();
+            setActiveChannel(channels[0]);
+          }
         } catch (err) {
           console.log(err);
         }
@@ -177,9 +191,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           options={options}
           sort={sort}
           lockChannelOrder={true}
-          setActiveChannelOnMount={
-            (url.get('channel_id') || url.get('message') || url.get('receiver_id')) == null
-          }
+          setActiveChannelOnMount={false}
           List={(listProps) => (
             <TeamChannelList
               {...listProps}
