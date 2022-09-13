@@ -3,9 +3,15 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import { EVENT_TYPES, trackMessagingEvents, trackPageViewEvent } from 'utils/amplitude';
+import {
+  EVENT_TYPES,
+  trackMessagingEvents,
+  trackPageViewEvent,
+  trackGenericEvent
+} from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
+import { useLocation } from 'react-router-dom';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
 import { getPeers } from '../../../../redux/slices/cohort';
 
@@ -69,7 +75,7 @@ export default function Messaging() {
   );
   const peers = cohort?.peers;
   const sort: ChannelSort<TeamChannelType> = {};
-
+  const url = new URLSearchParams(useLocation().search);
   const enrollments = peers?.filter((peer) => peer.id !== loggedinUserID)?.map((peer) => peer.id);
 
   const LoadingContainer = styled(Box)(() => ({
@@ -87,6 +93,9 @@ export default function Messaging() {
   useEffect(() => {
     if (cohort && !analyticsSent) {
       trackPageViewEvent(cohort, EVENT_TYPES.messaging_tab);
+      if (url.get('email')) {
+        trackGenericEvent(cohort, 'Email - "What you missed" Email - Messaging Opened');
+      }
       setAnalyticsSent(true);
     }
   }, [cohort]);
