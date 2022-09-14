@@ -1,5 +1,6 @@
-import { Theme } from '@material-ui/core';
+import { Box, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { styled } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   parentBox: {
@@ -35,5 +36,49 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: '5px',
     width: '24px',
     height: '24px'
+  },
+  openItemLink: {
+    position: 'absolute',
+    bottom: '24px',
+    borderRadius: '20px',
+    padding: '6px 60px',
+    [theme.breakpoints.down('md')]: {
+      position: 'inherit',
+      bottom: '0px',
+      marginTop: '20px'
+    }
+  }
+}));
+
+export const ResourceBox = styled(Box)(({ theme }) => ({
+  width: '50%',
+  overflow: 'hidden',
+  backgroundColor: 'white',
+  boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
+  borderRadius: '16px',
+  display: 'flex',
+  gap: '32px',
+  margin: '32px 0px',
+  alignItems: 'strech',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    flexWrap: 'wrap',
+    flexDirection: 'column-reverse'
+  }
+}));
+
+export const ImageBox = styled(Box)(({ theme }) => ({
+  width: '40%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
+export const DetailsBox = styled(Box)(({ theme }) => ({
+  width: '60%',
+  padding: '24px 0px 40px 24px',
+  position: 'relative',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
   }
 }));
