@@ -85,7 +85,7 @@ export default function CardDetails({
 
   const handlePayLater = () => {
     trackReferralFlowEvents("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
-    setStep(5);
+    setStep(4);
   };
 
   const triggerOnboardingEvent = () => {
@@ -157,7 +157,7 @@ export default function CardDetails({
             if (alumni) {
               triggerReferralEvent();
             }
-            setStep(5);
+            setStep(4);
           })
           .catch((error: any) => {
             enqueueSnackbar(error.message, { variant: 'error' });

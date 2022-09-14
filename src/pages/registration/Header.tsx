@@ -85,32 +85,13 @@ export default function Header({
 
       if (activeStep === 2) {
         return [
-          'Learn together as a team',
-          account ? (
-            <p>
-              Invite colleagues to get the most out of Sphere courses -
-              <BlueText> {company.name}'s Enterprise Package</BlueText> may cover their seats!
-            </p>
-          ) : (
-            <p>
-              Invite colleagues to get the most out of Sphere courses - referring peers makes{' '}
-              {company.name} eligible for an <BlueText>Enterprise Package</BlueText> which may cover
-              the cost of your seat!
-            </p>
-          ),
-          ''
-        ];
-      }
-
-      if (activeStep === 3) {
-        return [
           'Invite your colleagues',
           'Enter your colleagues email and name and we will send them an exclusive invite to the course.',
           ''
         ];
       }
 
-      if (activeStep === 4) {
+      if (activeStep === 3) {
         if (cohort?.id === RONNY_COHORT_ID) {
           return [
             '💳 Secure your seat',
@@ -142,25 +123,13 @@ export default function Header({
 
     if (activeStep === 2) {
       return [
-        'Learn together as a team',
-        <p key="no-enterprise">
-          Invite colleagues to get the most out of Sphere courses - referring peers makes your
-          company eligible for an <BlueText>Enterprise Package</BlueText> which may cover the cost
-          of your seat!
-        </p>,
-        ''
-      ];
-    }
-
-    if (activeStep === 3) {
-      return [
         'Invite friends and colleagues',
         'Enter your colleagues email and name and we will send them an exclusive invite to the course.',
         ''
       ];
     }
 
-    if (activeStep === 4) {
+    if (activeStep === 3) {
       if (cohort?.id === RONNY_COHORT_ID) {
         return [
           '💳 Secure your seat',

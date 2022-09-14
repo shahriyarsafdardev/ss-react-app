@@ -14,7 +14,6 @@ import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
 import AlumniRegistration from './AlumniRegistration';
-import InviteChoice from './InviteChoice';
 import RegistrationNavbar from './RegistrationNavbar';
 import Header from './Header';
 
@@ -169,18 +168,14 @@ export default function Registration() {
   }
 
   const previousStep = () => {
-    if (activeStep === 4 || activeStep === 3) {
-      setActiveStep(2);
-    } else {
-      setActiveStep(activeStep - 1);
-    }
+    setActiveStep(activeStep - 1);
   };
 
   const selectStep = () => {
     if (account || wait_listed) {
-      setActiveStep(5);
-    } else {
       setActiveStep(4);
+    } else {
+      setActiveStep(3);
     }
   };
 
@@ -302,20 +297,6 @@ export default function Registration() {
     if (activeStep === 2) {
       return (
         <>
-          <InviteChoice
-            company={company}
-            account={account}
-            setStep={(step: number) => setActiveStep(step)}
-            selectStep={() => selectStep()}
-            trackReferralFlowEvents={trackReferralFlowEvents}
-          />
-        </>
-      );
-    }
-
-    if (activeStep === 3) {
-      return (
-        <>
           <InvitePeersForm
             onContinue={() => selectStep()}
             enrollmentId={user?.enrollment_id || ''}
@@ -331,7 +312,7 @@ export default function Registration() {
       );
     }
 
-    if (activeStep === 4) {
+    if (activeStep === 3) {
       return (
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
@@ -347,7 +328,7 @@ export default function Registration() {
       );
     }
 
-    if (activeStep === 5) {
+    if (activeStep === 4) {
       trackReferralFlowEvents('Cohort Registration - Confirmation Page - Page Loaded');
       return (
         <Stack
@@ -414,7 +395,7 @@ export default function Registration() {
     }
     return (
       <Stack width="100%">
-        {![5, 6, 7].includes(activeStep) && (
+        {![4, 5, 6].includes(activeStep) && (
           <Header
             company={company}
             account={account}
@@ -446,7 +427,7 @@ export default function Registration() {
           />
         )}
         <RegistrationNavbar cohort={cohort} />
-        {[2, 3, 4].includes(activeStep) && (
+        {[2, 3].includes(activeStep) && (
           <StyledBackButton variant="outlined" onClick={() => previousStep()}>
             <KeyboardBackspace fontSize="large" />
           </StyledBackButton>
