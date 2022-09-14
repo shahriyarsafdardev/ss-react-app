@@ -49,14 +49,14 @@ export default function CodeTab() {
             heading="Hugging Face Hub"
             detail="An easy place to upload your models and demos."
             imageUrl="https://sphere-public.s3.eu-west-2.amazonaws.com/htp-logo.svg"
-            onOpenUrl="https://github.com/Hugging-Face-Sphere"
+            onOpenUrl="https://huggingface.co/Sphere-Fall2022"
           />
           <ResourceCard
             cohort={cohort}
             heading="Github Organization"
             detail="Access Google Colab notebooks to participate during in-session exercises"
             imageUrl="https://sphere-public.s3.eu-west-2.amazonaws.com/github.svg"
-            onOpenUrl="https://huggingface.co/Sphere-Fall2022"
+            onOpenUrl="https://github.com/Hugging-Face-Sphere"
           />
         </ResourceStack>
         <CodeList codeOnboardingItems={code_onboarding_items} />
