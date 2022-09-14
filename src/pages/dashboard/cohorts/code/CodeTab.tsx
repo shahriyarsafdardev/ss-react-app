@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Box, Stack, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import ResourceCard from 'components/cohorts/code/ResourceCard';
 import CodeList from 'components/cohorts/code/CodeList';
 import { CohortContext } from 'contexts/CohortContext';
-import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
-import { RootState, useSelector } from '../../../../redux/store';
+import { getCodeOnboardingCheckList } from 'redux/slices/cohort';
+import { dispatch, RootState, useSelector } from '../../../../redux/store';
 import Page from '../../../../components/Page';
 
 // ----------------------------------------------------------------------
 
-const LoadingContainer = styled(Box)(() => ({
+export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
   top: '50%',
   left: '50%'
@@ -26,15 +26,21 @@ const ResourceStack = styled(Stack)(({ theme }) => ({
 }));
 
 export default function CodeTab() {
-  const { mode } = useSelector((state: RootState) => state.instructorView);
-  const [codeData, setcodeData] = useState(true);
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
-  const cohortCode = () =>
-    codeData ? (
+  const { code_onboarding_items } = cohort || [];
+
+  useEffect(() => {
+    if (cohort && !code_onboarding_items) {
+      dispatch(getCodeOnboardingCheckList(cohort.id));
+    }
+  }, [cohort]);
+
+  const codeOnboardingContent = () =>
+    typeof code_onboarding_items !== 'undefined' ? (
       <Container style={{ marginBottom: '50px' }}>
         <Typography variant="h3">Resources</Typography>
         <ResourceStack>
@@ -51,7 +57,7 @@ export default function CodeTab() {
             onOpenUrl="https://www.google.com"
           />
         </ResourceStack>
-        <CodeList />
+        <CodeList codeOnboardingItems={code_onboarding_items} />
       </Container>
     ) : (
       <LoadingContainer>
@@ -63,15 +69,7 @@ export default function CodeTab() {
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="Sphere | Code">
-        {cohort?.released_for_learners === true ||
-        cohort?.readings_released === true ||
-        mode === 'Instructor' ? (
-          cohortCode()
-        ) : (
-          <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />
-        )}
-      </Page>
+      <Page title="Sphere | Code">{codeOnboardingContent()}</Page>
     </CohortContext.Provider>
   );
 }

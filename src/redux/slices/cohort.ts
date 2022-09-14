@@ -83,6 +83,32 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
     },
+    getCodeCheckListSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated: Cohort = state.cohorts[targetCohortIndex];
+        state.cohorts[targetCohortIndex] = {
+          ...updated,
+          code_onboarding_items: action.payload.code_onboarding_items
+        };
+      }
+    },
+    setCodeCheckListSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].code_onboarding_items;
+        const targetItemIndex = updated.findIndex((item) => item.id === action.payload.itemID);
+
+        if (targetItemIndex !== -1) {
+          updated[targetItemIndex].is_completed = action.payload.status;
+          state.cohorts[targetCohortIndex].code_onboarding_items = updated;
+        }
+      }
+    },
     getCodesSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -444,6 +470,32 @@ export function getSessions(cohortID: string) {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
     } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getCodeOnboardingCheckList(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/code_onboarding_check_list.json?cohort_id=${cohortID}`);
+      dispatch(slice.actions.getCodeCheckListSuccess({ ...response.data, cohortID }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function setCodeOnboardingCheckList(itemID: string, status: boolean, cohortID: string) {
+  return async () => {
+    try {
+      setAuthorizationToken();
+      await axios.post(`/code_onboarding_check_list.json`, {
+        item_id: itemID,
+        is_completed: status
+      });
+      dispatch(slice.actions.setCodeCheckListSuccess({ cohortID, itemID, status }));
+    } catch (error: any) {
       console.log(error);
     }
   };

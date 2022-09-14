@@ -1,60 +1,39 @@
-export const HTP_SETUP_QUESTIONS_FIRST = [
-  {
-    key: 'added_private_github',
-    title: 'Ensure that you have been added to the private GitHub organization',
-    link: 'https://www.google.com'
-  },
-  {
-    key: 'created_htp_account',
-    title: 'Create a Hugging Face account',
-    link: 'https://www.google.com'
-  },
-  {
-    key: 'joined_classroom',
-    title: 'Join the “Sphere Fall 2022” classroom',
-    link: 'https://www.google.com'
-  },
-  {
-    key: 'checked_classroom_joining',
-    title: 'Check Hugging Face to make sure that you’ve been added to the classroom organization',
-    link: 'https://www.google.com'
-  },
-  {
-    key: 'created_security_token',
-    title: 'Create a WRITE security token to use for the in-class exercises',
-    link: 'https://www.google.com'
-  },
-  {
-    key: 'learned_more_about_htp',
-    title: 'Learn more about the Hugging Face Hub’s Git repositories’ features',
-    link: 'https://www.google.com'
-  }
-];
+import { Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
-export const HTP_SETUP_OPTIONAL_QUESTIONS = [
-  {
-    key: 'intrested_in_codebase',
-    title:
-      'If you are interested in taking a look through the 🤗 Transformers codebase locally feel free to follow the installation instructions here (only up to and including step #4)',
-    link: 'https://www.google.com'
+export const useStyles = makeStyles((theme: Theme) => ({
+  parentBox: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    backgroundColor: '#E2E8F0',
+    width: '100%',
+    padding: '15px'
   },
-  {
-    key: 'liked_to_develop_locally',
-    title:
-      'If you’d like to develop locally with  transformers,  gradio,  and the other tools in this course, you may want to have a virtual Python environment set up with PyTorch.',
-    link: 'https://www.google.com'
-  }
-];
-
-export const HTP_SETUP_QUESTIONS_LAST = [
-  {
-    key: 'familiarize_with_gc',
-    title: 'Familiarize yourself with Google Colab:',
-    link: 'https://www.google.com'
+  openButton: {
+    padding: '0 30px',
+    borderRadius: '0px',
+    fontSize: '18px'
   },
-  {
-    key: 'get_excited',
-    title: 'Get excited! See you soon 🤖',
-    link: ''
+  checkedBox: {
+    backgroundColor: '#E2E8F0'
+  },
+  unCheckedBox: {
+    backgroundColor: 'white',
+    boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)'
+  },
+  font18: {
+    fontSize: '18px'
+  },
+  ml60: {
+    marginLeft: '60px'
+  },
+  checkbox: {
+    padding: '0px',
+    marginRight: '8px'
+  },
+  linkIcon: {
+    marginLeft: '5px',
+    width: '24px',
+    height: '24px'
   }
-];
+}));
