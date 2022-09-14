@@ -291,8 +291,14 @@ export const trackSidebarEvent = (cohort: any, eventType: string) => {
   });
 };
 
-export const trackGenericEvent = (cohort: any, eventType: string) => {
+export const CODE_PAGE_EVENTS = {
+  resource_name: 'Resource Name'
+};
+
+export const trackGenericEvent = (cohort: any, eventType: string, eventData?: any) => {
+  const eventProperties = eventData || null;
   sendAmplitudeData(eventType, {
+    ...eventProperties,
     ...setGenericEventProperties(cohort)
   });
 };
