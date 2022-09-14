@@ -8,7 +8,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Session } from '../../../@types/cohorts';
-import { firstUpcomingDate } from './Common';
+import { firstUpcomingDate, sessionName } from './Common';
 
 const StyledSession = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
@@ -163,6 +163,7 @@ export default function MobileStepper({
       setSessionSteps(sessions.slice(0, 3));
     }
   }, [sessions]);
+
   return (
     <StyledTimeline sx={{ display: 'flex', flexDirection: 'column' }}>
       <StyledBox>
@@ -179,7 +180,7 @@ export default function MobileStepper({
                 )}
               >
                 <div>
-                  <StyledSession>{step.name}</StyledSession>
+                  <StyledSession>{sessionName(step, step?.custom_name, step?.name)}</StyledSession>
                   {displaySession(firstUpcomingDate(step.times), step.length, step.number) ? (
                     <StyledContent>
                       {displaySession(firstUpcomingDate(step.times), step.length, step.number)}

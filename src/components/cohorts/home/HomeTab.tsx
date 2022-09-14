@@ -37,7 +37,6 @@ const Index = () => {
   const [activeStepper, setActiveStepper] = useState(0);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  // eslint-disable-next-line prefer-const
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );

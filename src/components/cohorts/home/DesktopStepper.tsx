@@ -12,7 +12,7 @@ import Circle from '@material-ui/icons/Circle';
 
 import { useSelector, RootState } from 'redux/store';
 import { Session } from '../../../@types/cohorts';
-import { displayMultipleDates, formatMultipleTimes } from './Common';
+import { displayMultipleDates, formatMultipleTimes, sessionName } from './Common';
 
 const StyledSession = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
@@ -242,9 +242,7 @@ export default function DesktopStepper({
                 >
                   <div>
                     <StyledSession data-testid={`session-name-${session?.number}`}>
-                      {session.networking_session
-                        ? 'Networking Session'
-                        : `Session ${session.number}`}
+                      {sessionName(session, session?.custom_name, `Session ${session.number}`)}
                     </StyledSession>
                     <StyledDate
                       className="session-time"
