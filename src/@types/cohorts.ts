@@ -209,6 +209,7 @@ export type Cohort = {
   goodbye_message: string;
   peers: StudentProfile[];
   sessions: Session[];
+  code_onboarding_items: CodeOnboardingItem[];
   enrollments: Enrollment[];
   random_peers: StudentProfile[];
   calendar_invite_url: string;
@@ -222,6 +223,15 @@ export type Cohort = {
   readings_released: boolean;
   amplitude_events_timeline: AmplitudeEventsTimeline;
   onboarding_data: OnboardingDataType;
+};
+
+export type CodeOnboardingItem = {
+  id: string;
+  step: number;
+  description: string;
+  external_link: string;
+  is_optional: boolean;
+  is_completed: boolean;
 };
 
 export type AmplitudeEventsTimeline = {

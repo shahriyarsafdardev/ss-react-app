@@ -33,6 +33,13 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
     };
     const { user } = useAuth();
 
+    if (cohort.code === 'HPT') {
+      object.children = [
+        ...object.children,
+        { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id) }
+      ];
+    }
+
     if (cohort.name === 'Building & Investing in Network Effects') {
       object.children = [
         ...object.children,
@@ -124,7 +131,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
             is_onboarded &&
             sessions_added_to_calendar &&
             messaging_tab_opened) ||
-          (['resources', 'Q&A', 'networking'].includes(child.title) &&
+          (['resources', 'Q&A', 'networking', 'code'].includes(child.title) &&
             is_onboarded &&
             sessions_added_to_calendar &&
             messaging_tab_opened &&
@@ -132,7 +139,9 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         ) {
           data = { ...child, disabled: false };
         } else if (
-          ['resources', 'Q&A', 'networking', 'messaging', 'calendar invites'].includes(child.title)
+          ['resources', 'Q&A', 'networking', 'messaging', 'calendar invites', 'code'].includes(
+            child.title
+          )
         ) {
           data = { ...child, disabled: true };
         }

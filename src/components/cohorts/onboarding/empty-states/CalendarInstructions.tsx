@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import { RootState, useSelector } from 'redux/store';
 import { Link as RouterLink } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Page from 'components/Page';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -415,27 +416,33 @@ const CalendarInstructions = () => {
   );
 
   return (
-    <div className={classes.wrapper}>
-      {cohort ? (
-        <Box className={classes.outerContainer}>
-          <Box className={classes.heading}>
-            <RouterLink className={classes.backBtn} to={`/cohorts/${cohort_id}/home`}>
-              <img src="/static/icons/return-arrow.svg" alt="back" style={{ marginRight: '5px' }} />
-              Return
-            </RouterLink>
-            <Typography variant="h4" className={classes.font34}>
-              🗓️ Make sure to add the sessions to your calendar
-            </Typography>
-            <Typography variant="subtitle2" className={classes.calSubHeading}>
-              Feel free to reach out to the Sphere team if you have any questions!
-            </Typography>
+    <Page title="Sphere | Calendar Instructions">
+      <div className={classes.wrapper}>
+        {cohort ? (
+          <Box className={classes.outerContainer}>
+            <Box className={classes.heading}>
+              <RouterLink className={classes.backBtn} to={`/cohorts/${cohort_id}/home`}>
+                <img
+                  src="/static/icons/return-arrow.svg"
+                  alt="back"
+                  style={{ marginRight: '5px' }}
+                />
+                Return
+              </RouterLink>
+              <Typography variant="h4" className={classes.font34}>
+                🗓️ Make sure to add the sessions to your calendar
+              </Typography>
+              <Typography variant="subtitle2" className={classes.calSubHeading}>
+                Feel free to reach out to the Sphere team if you have any questions!
+              </Typography>
+            </Box>
+            <Box className={classes.section}>{accordion()}</Box>
           </Box>
-          <Box className={classes.section}>{accordion()}</Box>
-        </Box>
-      ) : (
-        <h5>Loading calendar instructions</h5>
-      )}
-    </div>
+        ) : (
+          <h5>Loading calendar instructions</h5>
+        )}
+      </div>
+    </Page>
   );
 };
 

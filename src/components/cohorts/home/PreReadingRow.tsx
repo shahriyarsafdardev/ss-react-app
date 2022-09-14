@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const StyledBox = styled(Box)(({ theme }) => ({
+export const StyledBox = styled(Box)(({ theme }) => ({
   '&.main': {
     width: '100%',
     backgroundColor: 'rgba(229, 231, 235, 0.3)',

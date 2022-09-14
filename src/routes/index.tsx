@@ -42,7 +42,6 @@ const Loadable = (Component: React.ElementType) => (props: any) => {
 export default function Router() {
   const companyRoles = ['company'];
   const adminRoles = ['admin'];
-  const learnerAdminRoles = ['admin', 'learner'];
   const expertRoles = ['admin', 'expert'];
   const learnerRoles = ['learner', ...expertRoles];
   return useRoutes([
@@ -198,6 +197,14 @@ export default function Router() {
               element: (
                 <RoleBasedGuard accessibleRoles={learnerRoles}>
                   <SessionsTab />
+                </RoleBasedGuard>
+              )
+            },
+            {
+              path: '/code',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <CodeTab />
                 </RoleBasedGuard>
               )
             },
@@ -430,6 +437,7 @@ const RegistrationsTab = Loadable(
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
+const CodeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/code/CodeTab')));
 const NetworkingTab = Loadable(
   lazy(() => import('../pages/dashboard/cohorts/networking/NetworkingTab'))
 );
