@@ -59,7 +59,14 @@ function Timestamp({
   return (
     <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={1}>
       <StyledImageContainer>
-        <img src="" alt="timestamp" width="100%" />
+        <img
+          src={
+            timestamp?.thumbnail_url ||
+            'https://scholarsite-public.s3.eu-west-2.amazonaws.com/1455.jpg'
+          }
+          alt="timestamp"
+          width="100%"
+        />
       </StyledImageContainer>
 
       <Box
