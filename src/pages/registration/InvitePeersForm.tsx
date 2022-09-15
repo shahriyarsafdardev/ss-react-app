@@ -199,7 +199,7 @@ function InvitePeersForm({
         </Form>
       </FormikProvider>
       <StyledButton fullWidth variant="outlined" onClick={handleOnContinue}>
-        Continue
+        {invites.length > 0 ? 'Continue' : 'Skip For Now'}
       </StyledButton>
     </Box>
   );
