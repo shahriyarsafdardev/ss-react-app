@@ -242,7 +242,7 @@ export default function DesktopStepper({
                 >
                   <div>
                     <StyledSession data-testid={`session-name-${session?.number}`}>
-                      {sessionName(session, session?.custom_name, `Session ${session.number}`)}
+                      {sessionName(session, `Session ${session.number}`)}
                     </StyledSession>
                     <StyledDate
                       className="session-time"

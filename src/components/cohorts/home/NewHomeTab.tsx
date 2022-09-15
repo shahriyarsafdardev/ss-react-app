@@ -233,11 +233,7 @@ function NewHomeTab({
     <StyledBox className={classes.message}>
       <DescriptionBox style={{ width: '100%' }}>
         <PreReadingTitle data-testid="pre-reading-title">
-          {sessionName(
-            activeSession,
-            `${activeSession?.custom_name} | ${cohort?.name}`,
-            `Session ${activeSession?.number}: ${activeSession?.name}`
-          )}
+          {sessionName(activeSession, `Session ${activeSession?.number}: ${activeSession?.name}`)}
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
@@ -271,20 +267,18 @@ function NewHomeTab({
     if (list.length && currentStep < list.length) {
       return `👋 Welcome ${user?.first_name}, make sure you get ready for our ${sessionName(
         activeSession,
-        activeSession?.custom_name,
         `Session ${activeSession?.number}`
       )}!`;
     }
     if (isZoomLinkVisible(activeSession)) {
       return `🔴 Great to see you ${user?.first_name}, our ${sessionName(
         activeSession,
-        activeSession?.custom_name,
         `Session ${activeSession?.number}`
       )} is live!`;
     }
     if (activeSession?.networking_session) {
       return `👋 Hi ${user?.first_name}, you’re invited to our upcoming ${
-        activeSession?.custom_name || 'networking session'
+        activeSession?.custom_name || 'Networking Session'
       }`;
     }
     if (typeof activeSession == 'undefined') {

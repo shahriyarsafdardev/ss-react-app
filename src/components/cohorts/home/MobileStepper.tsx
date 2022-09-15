@@ -180,7 +180,7 @@ export default function MobileStepper({
                 )}
               >
                 <div>
-                  <StyledSession>{sessionName(step, step?.custom_name, step?.name)}</StyledSession>
+                  <StyledSession>{sessionName(step, step?.name)}</StyledSession>
                   {displaySession(firstUpcomingDate(step.times), step.length, step.number) ? (
                     <StyledContent>
                       {displaySession(firstUpcomingDate(step.times), step.length, step.number)}

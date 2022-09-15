@@ -150,15 +150,11 @@ export const isZoomLinkVisible = (activeSession: Session | undefined) => {
   return false;
 };
 
-export const sessionName = (
-  session: Session | undefined,
-  customName: string | undefined,
-  defaultName: string | undefined
-) => {
-  if (session?.networking_session) {
-    return session?.custom_name ? customName : 'Networking Session';
+export const sessionName = (session: Session | undefined, defaultName: string | undefined) => {
+  if (session?.custom_name !== null) {
+    return session?.custom_name;
   }
-  return defaultName;
+  return session?.networking_session ? 'Networking Session' : defaultName;
 };
 
 export const CalendarInstructionsModal = ({
