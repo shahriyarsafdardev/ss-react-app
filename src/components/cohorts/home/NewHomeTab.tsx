@@ -284,7 +284,10 @@ function NewHomeTab({
     if (typeof activeSession == 'undefined') {
       return '🎉 Welcome to the Alumni Community!';
     }
-    return `🎉 Great work ${user?.first_name}, you’re ready to go for Session ${activeSession?.number}!`;
+    return `🎉 Great work ${user?.first_name}, you’re ready to go for ${sessionName(
+      activeSession,
+      `Session ${activeSession?.number}`
+    )}!`;
   };
 
   return (
