@@ -8,7 +8,7 @@ import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
-import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible } from './Common';
+import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible, sessionName } from './Common';
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
 
 import {
@@ -233,13 +233,11 @@ function NewHomeTab({
     <StyledBox className={classes.message}>
       <DescriptionBox style={{ width: '100%' }}>
         <PreReadingTitle data-testid="pre-reading-title">
-          {activeSession?.networking_session
-            ? 'Networking Session'
-            : `Session ${activeSession?.number}: ${activeSession?.name}`}
+          {sessionName(activeSession, `Session ${activeSession?.number}: ${activeSession?.name}`)}
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {cohortHostName()},{' '}
+            Live with {activeSession?.networking_session ? 'your cohort' : cohortHostName()},{' '}
             <span>
               <strong>
                 {displayMultipleDates(activeSession?.times || [])}
@@ -255,13 +253,6 @@ function NewHomeTab({
     </StyledBox>
   );
 
-  const sessionName = () => {
-    if (activeSession?.networking_session) {
-      return 'our networking session';
-    }
-    return `Session ${activeSession?.number}`;
-  };
-
   const selectStep = () => {
     if (typeof activeSession === 'undefined') {
       return <GoodbyeSection cohort={cohort} />;
@@ -274,13 +265,21 @@ function NewHomeTab({
 
   const selectHeading = () => {
     if (list.length && currentStep < list.length) {
-      return `👋 Welcome ${user?.first_name}, make sure you get ready for ${sessionName()}!`;
+      return `👋 Welcome ${user?.first_name}, make sure you get ready for our ${sessionName(
+        activeSession,
+        `Session ${activeSession?.number}`
+      )}!`;
     }
     if (isZoomLinkVisible(activeSession)) {
-      return `🔴 Great to see you ${user?.first_name}, ${sessionName()} is live!`;
+      return `🔴 Great to see you ${user?.first_name}, our ${sessionName(
+        activeSession,
+        `Session ${activeSession?.number}`
+      )} is live!`;
     }
     if (activeSession?.networking_session) {
-      return `👋 Hi ${user?.first_name}, you’re invited to our upcoming networking session`;
+      return `👋 Hi ${user?.first_name}, you’re invited to our upcoming ${
+        activeSession?.custom_name || 'Networking Session'
+      }`;
     }
     if (typeof activeSession == 'undefined') {
       return '🎉 Welcome to the Alumni Community!';
