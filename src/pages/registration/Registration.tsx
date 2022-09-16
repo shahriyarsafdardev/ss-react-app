@@ -87,7 +87,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
-const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+const RONNY_COHORT_CODE = 'AAB';
 
 export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
@@ -267,7 +267,7 @@ export default function Registration() {
   }, [loading, window.analytics?.user]);
 
   const subHeading = () => {
-    if (cohort_id === RONNY_COHORT_ID) {
+    if (cohort?.code === RONNY_COHORT_CODE) {
       return 'You will recieve an email shortly documenting your next steps!';
     }
 
@@ -281,7 +281,7 @@ export default function Registration() {
   };
 
   const lastStepMainHeading = () => {
-    if (cohort_id === RONNY_COHORT_ID) {
+    if (cohort?.code === RONNY_COHORT_CODE) {
       return '🎉 Congratulations, your seat is secured!';
     }
 
