@@ -17,7 +17,8 @@ import { displayMultipleDates, formatMultipleTimes, sessionName } from './Common
 const StyledSession = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   fontWeight: 700,
-  lineHeight: '36px',
+  lineHeight: '130%',
+  paddingTop: '5px',
   color: theme.palette.text.primary
 }));
 

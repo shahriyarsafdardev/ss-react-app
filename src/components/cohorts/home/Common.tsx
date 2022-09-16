@@ -151,7 +151,7 @@ export const isZoomLinkVisible = (activeSession: Session | undefined) => {
 };
 
 export const sessionName = (session: Session | undefined, defaultName: string | undefined) => {
-  if (session?.custom_name !== null) {
+  if (session?.custom_name) {
     return session?.custom_name;
   }
   return session?.networking_session ? 'Networking Session' : defaultName;
