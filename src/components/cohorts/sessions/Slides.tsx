@@ -39,10 +39,16 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export const ModalPage = styled(Page)(({ theme }) => ({
-  '.react-pdf__Page': { height: 'fit-content' },
-  '.react-pdf__Page__svg': { height: 'fit-content !important', width: '100% !important' },
-  '.react-pdf__Page__svg > svg': { height: 'fit-content !important', width: '100% !important' },
-  '.react-pdf__Page__annotations': { height: 'fit-content !important', width: '100% !important' }
+  '.react-pdf__Page': { height: '100%' },
+  '.react-pdf__Page__svg': { height: '100% !important', width: '100% !important' },
+  '.react-pdf__Page__svg > svg': {
+    height: '100% !important',
+    width: '100% !important'
+  },
+  '.react-pdf__Page__annotations': {
+    height: '100% !important',
+    width: '100% !important'
+  }
 }));
 
 const StyledPage = styled(Page)(({ theme }) => ({
@@ -138,7 +144,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   modalView: {
     width: '90%',
     maxWidth: '1200px',
-    height: 'fit-content',
+    height: '100%',
     margin: 'auto'
   },
   standard: {
