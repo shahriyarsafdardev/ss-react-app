@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { capitalCase } from 'change-case';
 import { useState, useEffect } from 'react';
 import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
+import { useLocation } from 'react-router-dom';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 import roundPeople from '@iconify/icons-ic/baseline-people';
 import roundDelete from '@iconify/icons-ic/baseline-delete';
@@ -9,7 +10,7 @@ import bellFill from '@iconify/icons-eva/bell-fill';
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
-import { EVENT_TYPES, sendAmplitudeData } from 'utils/amplitude';
+import { EVENT_TYPES, sendAmplitudeData, trackGenericEvent } from 'utils/amplitude';
 
 // routes
 import useAuth from 'hooks/useAuth';
@@ -38,12 +39,36 @@ export default function UserAccount() {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState('general');
+  const url = new URLSearchParams(useLocation().search);
+  const emailType = url.get('email_type');
+
+  const EMAIL_EVENTS = {
+    summary: 'Email - "What you missed" Email - Messaging Opened',
+    direct: 'Email - "New Direct Message" Email - Notification Settings Opened',
+    everyone: 'Email - "@everyone Notification﻿" Email - Notification Settings Opened'
+  };
 
   useEffect(() => {
     sendAmplitudeData(EVENT_TYPES.page_view, {
       [EVENT_TYPES.page_type]: EVENT_TYPES.account_settings_tab
     });
+    if (emailType) {
+      setCurrentTab('email_notifications');
+      trackEvents(emailType);
+    }
   }, []);
+
+  const trackEvents = (type: string) => {
+    let eventType = '';
+    if (type === 'summary') {
+      eventType = EMAIL_EVENTS.summary;
+    } else if (type === 'direct') {
+      eventType = EMAIL_EVENTS.direct;
+    } else if (type === 'everyone') {
+      eventType = EMAIL_EVENTS.everyone;
+    }
+    trackGenericEvent({}, eventType);
+  };
 
   const getTabs = () =>
     user?.type === companyType

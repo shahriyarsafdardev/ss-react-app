@@ -80,18 +80,23 @@ export default function NetworkingForm({
       channel_summary_email: userProfile.channel_summary_email,
       upcoming_session_email: userProfile.upcoming_session_email ? 'Enabled' : 'Disabled'
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       await onSubmit({
         direct_message_notifications: values.direct_message_notifications === 'Enabled',
         everyone_tag_notifications: values.everyone_tag_notifications === 'Enabled',
         channel_summary_email: values.channel_summary_email,
         upcoming_session_email: values.upcoming_session_email === 'Enabled'
       });
+      resetForm();
     }
   });
   const { values, isSubmitting, handleSubmit, setFieldValue } = formik;
   const commonOptions = ['Enabled', 'Disabled'];
-  const routineOptions = ['Daily', 'Weekly', 'Disabled'];
+  const routineOptions = [
+    'Daily (if you have unread messages)',
+    'Monday, Wednesday & Friday (if you have unread messages)',
+    'Disabled'
+  ];
 
   return (
     <>
@@ -116,16 +121,14 @@ export default function NetworkingForm({
                       options={commonOptions}
                       value={values.everyone_tag_notifications}
                       onChange={(value: string) =>
-                        setFieldValue('direct_message_notifications', value)
+                        setFieldValue('everyone_tag_notifications', value)
                       }
                     />
                     <SelectFiled
-                      label="Channel summary email"
+                      label="What you missed email notification"
                       options={routineOptions}
                       value={values.channel_summary_email}
-                      onChange={(value: string) =>
-                        setFieldValue('direct_message_notifications', value)
-                      }
+                      onChange={(value: string) => setFieldValue('channel_summary_email', value)}
                     />
                     {/* <SelectFiled
                       label="Upcoming session reminder"
