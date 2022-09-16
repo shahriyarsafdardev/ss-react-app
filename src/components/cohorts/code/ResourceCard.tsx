@@ -28,7 +28,7 @@ function ResourceCard({
     <ResourceBox>
       <DetailsBox>
         <Typography variant="h4">{heading}</Typography>
-        <Typography style={{ marginTop: '20px' }}>{detail}</Typography>
+        <Typography style={{ paddingBottom: '35px', marginTop: '20px' }}>{detail}</Typography>
         <Button
           variant="contained"
           color="primary"
