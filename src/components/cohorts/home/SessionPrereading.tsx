@@ -144,9 +144,11 @@ const SessionPrereading = ({
                 {activeSession.description && sessionDescription(activeSession.description)}
                 {list.map((preReading, index) => (
                   <PreReadingRow
+                    sessionId={activeSession.id}
                     key={index}
                     number={index}
                     item={preReading}
+                    cohort={cohort}
                     onPreReadingClick={() =>
                       sendAnalyticsData(
                         activeSession.number,

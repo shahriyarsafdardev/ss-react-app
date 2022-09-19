@@ -188,6 +188,10 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   const [modalState, setModal] = useState(
     !feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true')
   );
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const SurveyModal = ({
     state,
@@ -263,6 +267,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         sessionId={session?.id}
         cohortId={id}
         key="session_materials"
+        cohort={cohort}
         onTrack={(eventData: string) =>
           sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
         }

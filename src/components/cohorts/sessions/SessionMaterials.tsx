@@ -1,6 +1,6 @@
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { SessionMaterial } from '../../../@types/cohorts';
+import { SessionMaterial, Cohort } from '../../../@types/cohorts';
 import PreReadingRow from '../home/PreReadingRow';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
@@ -19,13 +19,15 @@ type SessionMaterialProps = {
   sessionId: string | undefined;
   cohortId: string | undefined;
   onTrack: Function;
+  cohort: Cohort;
 };
 
 export default function SessionMaterials({
   materials,
   sessionId,
   cohortId,
-  onTrack
+  onTrack,
+  cohort
 }: SessionMaterialProps) {
   const dispatch = useDispatch();
   const groupBy = (xs: any, key: any) =>
@@ -47,6 +49,8 @@ export default function SessionMaterials({
               key={index}
               item={preReading}
               number={index}
+              cohort={cohort}
+              sessionId={sessionId || ''}
               checkboxHanlder={(value: boolean) => {
                 onTrack(`Marked Item as ${value ? 'true' : 'false'} from Sessions Page`);
                 dispatch(updateMaterialStatus(cohortId, sessionId, preReading.id, value));

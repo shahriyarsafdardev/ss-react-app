@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Checkbox, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
-const StyledCheckBox = styled(Box)(({ theme }) => ({
+export const StyledCheckBox = styled(Box)(({ theme }) => ({
   cursor: 'pointer',
   width: '92px',
   height: '100%',
@@ -23,7 +23,7 @@ const StyledCheckBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StyledText = styled(Typography)(({ theme }) => ({
+export const StyledText = styled(Typography)(({ theme }) => ({
   fontSize: '14px',
   lineHeight: '21px',
   fontWeight: 600,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Theme, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Modal from 'components/animate/Modal';
@@ -6,18 +6,23 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import { pdfjs } from 'react-pdf';
 import { makeStyles } from '@material-ui/styles';
+import { SLIDE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import MarkCheckbox from './MarkCheckbox';
-import { SessionMaterial } from '../../../@types/cohorts';
+import { Cohort, SessionMaterial } from '../../../@types/cohorts';
 import { Navigation, ModalDocument, ModalPage } from '../sessions/Slides';
+import ResourceShareModal from '../sessions/ResourceShareModal';
+import { ShareReading } from '../sessions/Common';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const url_prefix = 'https://';
 
 type PreReadingRowProps = {
   item: SessionMaterial;
+  sessionId: string;
   number: Number | undefined;
   checkboxHanlder: Function;
   onPreReadingClick: Function;
+  cohort: Cohort;
 };
 
 const StyledLink = styled('a')(({ theme }) => ({
@@ -93,6 +98,8 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     }
   },
   '&.check-box': {
+    display: 'flex',
+    alignItems: 'center',
     '&:hover': {
       span: {
         backgroundColor: 'rgba(77, 77, 205, 0.04)'
@@ -103,19 +110,27 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 
 export default function PreReadingRow({
   item,
+  sessionId,
   checkboxHanlder,
   onPreReadingClick,
-  number
+  number,
+  cohort
 }: PreReadingRowProps) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const [displayShareModal, setDisplayShareModal] = useState(false);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
+
+  const triggerShareEvent = () => {
+    trackGenericEvent(cohort, 'Sessions Page - "Share Resource" Selected');
+  };
+
   return (
     <>
       <Modal open={open} onClose={() => setOpen(false)}>
@@ -168,6 +183,12 @@ export default function PreReadingRow({
           )}
         </div>
       </Modal>
+      <ResourceShareModal
+        open={displayShareModal}
+        onClose={setDisplayShareModal}
+        item={item}
+        sessionId={sessionId}
+      />
       <StyledBox className="main">
         <StyledBox className="inner">
           <p data-testid={`prereading-name-${number}`}>{item.name}</p>
@@ -184,7 +205,7 @@ export default function PreReadingRow({
               <StyledLink
                 data-testid={`prereading-link-${number}`}
                 href={
-                  item.action_url.substr(0, 'http'.length) !== 'http'
+                  item.action_url?.substr(0, 'http'.length) !== 'http'
                     ? url_prefix + item.action_url
                     : item.action_url
                 }
@@ -197,7 +218,11 @@ export default function PreReadingRow({
           </StyledBox>
         </StyledBox>
         <StyledBox className="check-box">
-          <MarkCheckbox completed={item.complete} onChange={checkboxHanlder} number={number} />
+          <ShareReading
+            onShare={setDisplayShareModal}
+            ontriggerShareEvent={triggerShareEvent}
+            cohort={cohort}
+          />
         </StyledBox>
       </StyledBox>
     </>

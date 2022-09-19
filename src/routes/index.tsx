@@ -313,7 +313,8 @@ export default function Router() {
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
         { path: 'registration/unsubscribe', element: <UnsubscribeRegistration /> },
-        { path: 'registration/defer', element: <DeferRegistration /> }
+        { path: 'registration/defer', element: <DeferRegistration /> },
+        { path: 'resource', element: <SharedResource /> }
       ]
     },
     { path: 'registration', element: <Registration /> },
@@ -460,6 +461,7 @@ const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Registration = Loadable(lazy(() => import('../pages/registration/Registration')));
+const SharedResource = Loadable(lazy(() => import('../pages/SharedResource')));
 const FreeSessionInfo = Loadable(lazy(() => import('../pages/registration/FreeSessionInfo')));
 const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/FreeSessionMessage')));
 const AdminRegistrations = Loadable(lazy(() => import('../pages/admin/RegistrationsTab')));

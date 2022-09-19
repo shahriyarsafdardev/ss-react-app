@@ -316,6 +316,10 @@ export const GENERIC_EVENTS = {
   is_during_session: 'Is During Session'
 };
 
+export const RESOURCE_SHARE_EVENTS = {
+  shared_with: 'Shared With'
+};
+
 export const setGenericEventProperties = (cohort: any) => ({
   [GENERIC_EVENTS.cohort_name]: cohort?.name,
   [GENERIC_EVENTS.cohort_code]: cohort?.code,

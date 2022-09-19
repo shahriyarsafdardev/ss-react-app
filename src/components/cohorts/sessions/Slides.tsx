@@ -7,8 +7,10 @@ import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
-import { SLIDE_EVENTS } from 'utils/amplitude';
+import { SLIDE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import Message from '../../Message';
+import SlideShareModal from './SlideShareModal';
+import { RootState, useSelector } from '../../../redux/store';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -320,6 +322,11 @@ export default function Slides({
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [viewType, setViewType] = useState<string>(VIEW_TYPES.STANDARD_VIEW);
   const [error, setError] = useState(false);
+  const [shareModal, setShareModal] = useState(false);
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   useEffect(() => {
     if (pdfUrl) {
@@ -330,6 +337,11 @@ export default function Slides({
       setError(false);
     }
   }, [pdfUrl]);
+
+  const handleShareSlides = () => {
+    trackGenericEvent(cohort, 'Sessions Page - "Share Slide" Selected');
+    setShareModal(true);
+  };
 
   const classes = useStyles();
 
@@ -395,6 +407,24 @@ export default function Slides({
           )}
         </ModalDocument>
       )}
+      {type === VIEW_TYPES.STANDARD_VIEW && numPages !== null && (
+        <Button
+          variant="contained"
+          fullWidth
+          style={{ marginTop: '10px', borderRadius: '50px', padding: '9px' }}
+          onClick={() => handleShareSlides()}
+        >
+          <img
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/share_icon_white.svg"
+            alt="share"
+            style={{ marginRight: '15px', height: '21px' }}
+          />
+          Share this slide with a friend or colleague
+        </Button>
+      )}
+      <div>
+        <SlideShareModal open={shareModal} onClose={setShareModal} />
+      </div>
       {numPages !== null && (
         <div style={{ marginTop: '35px' }}>
           <Navigation
