@@ -39,6 +39,9 @@ declare global {
 // 10 minutes delay for fetching amplitude timeline events
 const FETCH_EVENT_DELAY = 10 * 60;
 
+// 20 minutes delay for fetching cohorts
+const FETCH_COHORTS_DELAY = 20 * 60;
+
 export default function App() {
   const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
@@ -46,8 +49,12 @@ export default function App() {
   useEffect(() => {
     initAmplitude();
     let fetchCohortsTimeline: NodeJS.Timer;
+    let fetchCohorts: NodeJS.Timer;
     if (isAuthenticated) {
       dispatch(getCohorts());
+      fetchCohorts = setInterval(() => {
+        dispatch(getCohorts());
+      }, FETCH_COHORTS_DELAY * 1000);
       fetchCohortsTimeline = setInterval(() => {
         dispatch(getCohortsTimeline());
       }, FETCH_EVENT_DELAY * 1000);
@@ -55,6 +62,7 @@ export default function App() {
     }
 
     return () => {
+      clearInterval(fetchCohorts);
       clearInterval(fetchCohortsTimeline);
     };
   }, [dispatch, isAuthenticated]);
