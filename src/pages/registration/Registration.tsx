@@ -14,7 +14,6 @@ import UserForm from './UserForm';
 import CardDetails from './CardDetails';
 import Page from '../../components/Page';
 import AlumniRegistration from './AlumniRegistration';
-import InviteChoice from './InviteChoice';
 import RegistrationNavbar from './RegistrationNavbar';
 import Header from './Header';
 
@@ -88,7 +87,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
-const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+const RONNY_COHORT_CODE = 'AAB';
 
 export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
@@ -169,18 +168,14 @@ export default function Registration() {
   }
 
   const previousStep = () => {
-    if (activeStep === 4 || activeStep === 3) {
-      setActiveStep(2);
-    } else {
-      setActiveStep(activeStep - 1);
-    }
+    setActiveStep(activeStep - 1);
   };
 
   const selectStep = () => {
     if (account || wait_listed) {
-      setActiveStep(5);
-    } else {
       setActiveStep(4);
+    } else {
+      setActiveStep(3);
     }
   };
 
@@ -272,7 +267,7 @@ export default function Registration() {
   }, [loading, window.analytics?.user]);
 
   const subHeading = () => {
-    if (cohort_id === RONNY_COHORT_ID) {
+    if (cohort?.code === RONNY_COHORT_CODE) {
       return 'You will recieve an email shortly documenting your next steps!';
     }
 
@@ -286,7 +281,7 @@ export default function Registration() {
   };
 
   const lastStepMainHeading = () => {
-    if (cohort_id === RONNY_COHORT_ID) {
+    if (cohort?.code === RONNY_COHORT_CODE) {
       return '🎉 Congratulations, your seat is secured!';
     }
 
@@ -300,20 +295,6 @@ export default function Registration() {
     const { payLaterMessage } = setFormHeadings();
 
     if (activeStep === 2) {
-      return (
-        <>
-          <InviteChoice
-            company={company}
-            account={account}
-            setStep={(step: number) => setActiveStep(step)}
-            selectStep={() => selectStep()}
-            trackReferralFlowEvents={trackReferralFlowEvents}
-          />
-        </>
-      );
-    }
-
-    if (activeStep === 3) {
       return (
         <>
           <InvitePeersForm
@@ -331,7 +312,7 @@ export default function Registration() {
       );
     }
 
-    if (activeStep === 4) {
+    if (activeStep === 3) {
       return (
         <Stack width="100%" display="flex" flexDirection="column" alignItems="center">
           <CardDetails
@@ -347,7 +328,7 @@ export default function Registration() {
       );
     }
 
-    if (activeStep === 5) {
+    if (activeStep === 4) {
       trackReferralFlowEvents('Cohort Registration - Confirmation Page - Page Loaded');
       return (
         <Stack
@@ -414,7 +395,7 @@ export default function Registration() {
     }
     return (
       <Stack width="100%">
-        {![5, 6, 7].includes(activeStep) && (
+        {![4, 5, 6].includes(activeStep) && (
           <Header
             company={company}
             account={account}
@@ -446,7 +427,7 @@ export default function Registration() {
           />
         )}
         <RegistrationNavbar cohort={cohort} />
-        {[2, 3, 4].includes(activeStep) && (
+        {[2, 3].includes(activeStep) && (
           <StyledBackButton variant="outlined" onClick={() => previousStep()}>
             <KeyboardBackspace fontSize="large" />
           </StyledBackButton>

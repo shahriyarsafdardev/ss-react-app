@@ -25,7 +25,7 @@ import {
   trackReferralEvent
 } from 'utils/amplitude';
 import { useLocation } from 'react-router';
-import { CohortType, UserType } from './Registration';
+import { CohortType } from './Registration';
 
 type CardType = {
   cardName?: string;
@@ -53,7 +53,7 @@ const CohortDetailsCard = styled(Card)(({ theme }) => ({
   marginBottom: '12px'
 }));
 
-const RONNY_COHORT_ID = '7a6133fe-7183-4f5b-a6ba-fc533a1bc457';
+const RONNY_COHORT_CODE = 'AAB';
 
 export default function CardDetails({
   cohort,
@@ -85,7 +85,7 @@ export default function CardDetails({
 
   const handlePayLater = () => {
     trackReferralFlowEvents("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
-    setStep(5);
+    setStep(4);
   };
 
   const triggerOnboardingEvent = () => {
@@ -157,7 +157,7 @@ export default function CardDetails({
             if (alumni) {
               triggerReferralEvent();
             }
-            setStep(5);
+            setStep(4);
           })
           .catch((error: any) => {
             enqueueSnackbar(error.message, { variant: 'error' });
@@ -333,7 +333,7 @@ export default function CardDetails({
           sx={{ mt: 3 }}
           direction={{ xs: 'column', md: 'row' }}
         >
-          {cohort?.id !== RONNY_COHORT_ID && (
+          {cohort?.code !== RONNY_COHORT_CODE && (
             <StyledButton
               fullWidth
               type="submit"
