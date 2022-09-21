@@ -26,20 +26,34 @@ export const addAmplitudeUserProperty = (key: string, value: string) => {
   amplitudeInstance().identify(identificationData);
 };
 
-export const isSessionStarted = () => {
-  const localStorageTime = localStorage.getItem('sphere-latest-action-time');
+export const isSessionStarted = (eventProperties: any) => {
+  const localStorageTime = localStorage.getItem(
+    `sphere-latest-action-time-${eventProperties[GENERIC_EVENTS.cohort_code]?.toLowerCase()}`
+  );
   const oldTime = localStorageTime ? new Date(localStorageTime) : null;
   const currentTime = new Date();
-  localStorage.setItem('sphere-latest-action-time', currentTime.toString());
+
+  localStorage.setItem(
+    `sphere-latest-action-time-${eventProperties[GENERIC_EVENTS.cohort_code]?.toLowerCase()}`,
+    currentTime.toString()
+  );
   let differenceInTime = 0;
   differenceInTime = oldTime ? Math.floor(Math.abs(+oldTime - +currentTime) / (1000 * 60 * 60)) : 0;
   return !oldTime || differenceInTime >= 2;
 };
 
 export const sendAmplitudeData = async (eventType: string, eventProperties: any) => {
-  if (isSessionStarted()) {
-    window.analytics?.track('Sphere Portal - Session Started', eventProperties);
+  let updatedEventProperties = eventProperties;
+  if (!eventProperties[GENERIC_EVENTS.cohort_code]) {
+    updatedEventProperties = {
+      ...eventProperties,
+      ...emptyCohortGenericProperties
+    };
   }
+  if (isSessionStarted(updatedEventProperties)) {
+    window.analytics?.track('Sphere Portal - Session Started', updatedEventProperties);
+  }
+
   window.analytics?.track(eventType, eventProperties);
 
   if (eventType === 'Cohort Registration - Personal Info Page - Page Loaded') {
@@ -337,3 +351,16 @@ export const setGenericEventProperties = (cohort: any) => ({
     cohort?.amplitude_events_timeline?.hours_after_previous_session,
   [GENERIC_EVENTS.is_during_session]: cohort?.amplitude_events_timeline?.is_during_session
 });
+
+const emptyCohortGenericProperties = {
+  [GENERIC_EVENTS.cohort_name]: 'none',
+  [GENERIC_EVENTS.cohort_code]: 'none',
+  [GENERIC_EVENTS.cohort_intake]: 'none',
+  [GENERIC_EVENTS.cohort_intake_number]: 'none',
+  [GENERIC_EVENTS.days_before_first_session]: 'none',
+  [GENERIC_EVENTS.days_after_first_session]: 'none',
+  [GENERIC_EVENTS.days_after_last_session]: 'none',
+  [GENERIC_EVENTS.hours_before_next_session]: 'none',
+  [GENERIC_EVENTS.hours_after_previous_session]: 'none',
+  [GENERIC_EVENTS.is_during_session]: 'none'
+};
