@@ -1,6 +1,4 @@
 import { Stack, Button, Box, Checkbox, Typography } from '@material-ui/core';
-import { Icon } from '@iconify/react';
-import linkExternal from '@iconify/icons-bx/link-external';
 import { setCodeOnboardingCheckList } from 'redux/slices/cohort';
 import { dispatch } from 'redux/store';
 import { useStyles } from './Common';
@@ -46,7 +44,11 @@ function ResourceCode({
           target="_blank"
         >
           Open
-          <Icon icon={linkExternal} className={classes.linkIcon} />
+          <img
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/external_link_icon.svg"
+            alt="link icon"
+            className={classes.linkIcon}
+          />
         </Button>
       )}
     </Stack>

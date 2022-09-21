@@ -34,8 +34,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   linkIcon: {
     marginLeft: '5px',
-    width: '24px',
-    height: '24px'
+    width: '20px',
+    height: '20px'
   },
   openItemLink: {
     position: 'absolute',
