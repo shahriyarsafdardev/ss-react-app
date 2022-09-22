@@ -40,7 +40,6 @@ const slice = createSlice({
       state.cohorts = sortedCohorts;
     },
     getCohortsTimelineSuccess(state, action) {
-      console.log('timeline data >>', action.payload.event_timeline.length);
       action.payload.event_timeline.forEach((value: any, index: any) => {
         const targetCohortIndex = state.cohorts.findIndex(
           (cohort) => cohort.id === value.cohort_id
