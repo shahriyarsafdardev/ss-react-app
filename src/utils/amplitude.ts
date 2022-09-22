@@ -66,6 +66,39 @@ export const sendAmplitudeData = async (eventType: string, eventProperties: any)
     } catch (error) {
       console.log(error);
     }
+
+    try {
+      const data = new FormData();
+      data.append('user_id', eventProperties['Registrant Email']);
+      data.append('event_type', 'Follow Up - Referree Registration');
+      data.append(
+        'event_properties',
+        JSON.stringify({
+          user_email: eventProperties['Registrant Email']
+        })
+      );
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (eventType === 'Cohort Registration - Send Invitation Page - Referral Invite Sent') {
+    try {
+      const data = new FormData();
+      data.append('user_id', eventProperties['Referree Email']);
+      data.append('event_type', 'Follow Up - Referral Invited');
+      data.append(
+        'event_properties',
+        JSON.stringify({
+          referree_email: eventProperties['Referree Email'],
+          referrer_email: eventProperties['Registrant Email']
+        })
+      );
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
