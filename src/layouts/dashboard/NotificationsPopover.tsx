@@ -179,7 +179,7 @@ export default function NotificationsPopover() {
         }
       });
       const result = await client.queryChannels(
-        { type: 'messaging', members: { $in: [user?.id] } },
+        { type: { $in: ['messaging', 'team'] }, members: { $in: [user?.id] } },
         { has_unread: -1, last_message_at: -1, updated_at: -1 }
       );
       const unreadChannels = result.filter((channel) => channel.state.unreadCount > 0).reverse();
