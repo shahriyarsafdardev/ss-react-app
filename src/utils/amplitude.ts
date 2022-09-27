@@ -67,6 +67,18 @@ export const sendAmplitudeData = async (eventType: string, eventProperties: any)
       console.log(error);
     }
   }
+
+  if (eventType === 'Cohort Registration - Send Invitation Page - Referral Invite Sent') {
+    try {
+      const data = new FormData();
+      data.append('user_id', eventProperties['Referree Email']);
+      data.append('event_type', 'Cohort Registration - Invited by Referral');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export const setSegmentUserProperties = (user: any) => {
