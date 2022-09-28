@@ -21,9 +21,9 @@ import {
   SessionMaterials,
   Description,
   Summary,
-  SurveyForm,
-  Slides
+  SurveyForm
 } from '../../../../components/cohorts/sessions';
+import NewSlides from '../../../../components/cohorts/sessions/NewSlides';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { updateSessionModalState } from '../../../../redux/slices/sessionFeedback';
@@ -274,7 +274,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       />
       {/* )} */}
     </>,
-    <Slides
+    <NewSlides
       key={session?.id}
       onTrack={(eventData: string) =>
         sendAnalyticsData(sessionNumber, SESSION_EVENTS.slides_tab, eventData)
