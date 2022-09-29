@@ -97,13 +97,18 @@ export type EmailModalProps = {
   referrer_code?: string;
 };
 
-const ReferralEmailModal = ({ referralEmailModal, setReferralEmailModal }: EmailModalProps) => (
+const ReferralEmailModal = ({
+  referralEmailModal,
+  setReferralEmailModal,
+  cohort
+}: EmailModalProps) => (
   <Modal open={referralEmailModal} zIndex={1400} onClose={() => setReferralEmailModal(false)}>
     <ContentContainer>
       <InviteYourTeamMates />
       <InviteEmailForm
         referralEmailModal={referralEmailModal}
         setReferralEmailModal={setReferralEmailModal}
+        cohort={cohort}
       />
     </ContentContainer>
   </Modal>
@@ -121,16 +126,7 @@ export const ShareReferralLink = ({
   const handleCopyReferralLink = () => {
     if (referralLink) {
       copy(`${referralLink}&alumni=true`);
-      trackReferralEvent(
-        REFERRAL_EVENTS.event_type,
-        {
-          [REFERRAL_EVENTS.event]: 'click',
-          [REFERRAL_EVENTS.category]: 'referral link',
-          [REFERRAL_EVENTS.description]: 'Copied referral link',
-          [REFERRAL_EVENTS.referrer_code]: referrer_code
-        },
-        cohort
-      );
+      trackReferralEvent(REFERRAL_EVENTS.copy_event_type, {}, cohort);
       enqueueSnackbar('Referral Link Copied', { variant: 'success' });
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
@@ -140,16 +136,7 @@ export const ShareReferralLink = ({
   const handleSendViaEmail = () => {
     if (referralLink) {
       setReferralEmailModal(true);
-      trackReferralEvent(
-        REFERRAL_EVENTS.event_type,
-        {
-          [REFERRAL_EVENTS.event]: 'click',
-          [REFERRAL_EVENTS.category]: 'referral link',
-          [REFERRAL_EVENTS.description]: 'Send referral link via email',
-          [REFERRAL_EVENTS.referrer_code]: referrer_code
-        },
-        cohort
-      );
+      trackReferralEvent(REFERRAL_EVENTS.open_modal_event_type, {}, cohort);
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
     }

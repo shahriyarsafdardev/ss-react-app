@@ -149,6 +149,12 @@ export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?:
 
 export const REFERRAL_EVENTS = {
   event_type: 'Referral Event',
+  copy_event_type: "Sidebar - Referral Preview - 'Copy Link' Selected",
+  open_modal_event_type: 'Sidebar - Referral Preview - Email Invite Modal Opened',
+  email_sent_event_type: 'Sidebar - Referral Preview - Email Invite Sent',
+  referee_first_name: 'Referee First Name',
+  referee_full_name: 'Referee Full Name',
+  referee_email: 'Referee Email',
   event: 'Event',
   category: 'Category',
   description: 'Description',
@@ -163,7 +169,7 @@ export const trackReferralEvent = (eventType: string, eventData: any, cohort?: a
     ...setGenericEventProperties(cohort),
     ...eventData
   };
-  sendAmplitudeData(REFERRAL_EVENTS.event_type, newEventData);
+  sendAmplitudeData(eventType, newEventData);
 };
 
 export const trackSessionsPageEvent = (

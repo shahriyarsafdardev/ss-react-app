@@ -120,7 +120,8 @@ function InvitePeersForm({
       await axios
         .post(`/enrollments/${enrollmentId}/send_referrals_email.json`, {
           referee_email: values.email,
-          referee_name: values.fullName
+          referee_name: values.fullName,
+          source: 'registration-referral'
         })
         .then((res) => {
           setSubmitting(false);

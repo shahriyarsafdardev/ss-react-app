@@ -40,18 +40,16 @@ function InviteEmailForm({
         .post(`/cohorts/${cohortId}/send_referrals_email.json`, {
           referee_email: values.email,
           referee_name: values.fullName,
-          id: cohortId
+          id: cohortId,
+          source: 'sidebar-referral'
         })
         .then((res) => {
           trackReferralEvent(
-            REFERRAL_EVENTS.event_type,
+            REFERRAL_EVENTS.email_sent_event_type,
             {
-              [REFERRAL_EVENTS.event]: 'click',
-              [REFERRAL_EVENTS.category]: 'referral link',
-              [REFERRAL_EVENTS.description]: 'Send referral link via email',
-              [REFERRAL_EVENTS.referrer_code]: referrer_code,
-              [REFERRAL_EVENTS.invite_email]: values.email,
-              [REFERRAL_EVENTS.invite_full_name]: values.fullName
+              [REFERRAL_EVENTS.referee_first_name]: values.fullName.split(' ')[0],
+              [REFERRAL_EVENTS.referee_full_name]: values.fullName,
+              [REFERRAL_EVENTS.referee_email]: values.email
             },
             cohort
           );
