@@ -61,6 +61,16 @@ export default function Header({
   const classes = useStyles();
 
   const selectSubHeading = () => {
+    if (activeStep === 1 && cohort?.code === 'ACI') {
+      return [
+        '👋 We need a few details to process your enrollment',
+        '',
+        'We review each application in order to ensure a diverse and experienced cohort!'
+      ];
+    }
+    if (activeStep === 1 && cohort?.code === 'TML') {
+      return ['👋 We’ll send you an email when the dates are released', '', ''];
+    }
     if (company) {
       if (activeStep === 1) {
         let accountSubHeading = '';

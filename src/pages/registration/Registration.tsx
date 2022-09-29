@@ -8,7 +8,16 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
-import { REGISTRATION_EVENTS, trackRegistrationEvent } from 'utils/amplitude';
+import {
+  ONBOARDING_EVENTS,
+  REFERRAL_EVENTS,
+  REGISTRATION_EVENTS,
+  setSegmentUserProperties,
+  trackOnboardingEvent,
+  trackReferralEvent,
+  trackRegistrationEvent
+} from 'utils/amplitude';
+import useAuth from 'hooks/useAuth';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -39,6 +48,7 @@ export type UserType = {
   wait_listed: boolean;
   pre_release: boolean;
   slug: string;
+  full_name?: string;
 };
 
 export type CohortType = {
@@ -87,6 +97,8 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
+export const REGISTRATION_FLOW_COHORT_CODES = ['TML', 'ACI'];
+
 const RONNY_COHORT_CODE = 'AAB';
 
 export default function Registration() {
@@ -98,6 +110,7 @@ export default function Registration() {
   const referrer_domain = url.get('referrer_domain') || '';
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated } = useAuth();
 
   const [user, setUser] = useState<UserType>({
     email: url.get('email') || '',
@@ -106,7 +119,8 @@ export default function Registration() {
     alumni_event: false,
     wait_listed: false,
     pre_release: false,
-    slug: ''
+    slug: '',
+    full_name: ''
   });
 
   const [company, setCompany] = useState<CompanyType | null>();
@@ -118,6 +132,8 @@ export default function Registration() {
   const [pre_release, setPreRelease] = useState(false);
   const [confetti, setConfetti] = useState(200);
   const [displayConfetti, setDisplayConfetti] = useState(true);
+  const referrer_code = url.get('referrer') || '';
+  const alumni = url.get('alumni') || false;
 
   const [cohort, setCohort] = useState<CohortType>({
     id: '',
@@ -148,6 +164,127 @@ export default function Registration() {
       [REGISTRATION_EVENTS.price]: cohort.price
     };
     trackRegistrationEvent(cohort, eventType, eventData);
+  };
+
+  const triggerOnboardingEvent = () => {
+    trackOnboardingEvent(
+      ONBOARDING_EVENTS.event_type,
+      {
+        [ONBOARDING_EVENTS.event]: 'Registered',
+        [ONBOARDING_EVENTS.category]: 'Registered',
+        [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
+      },
+      cohort
+    );
+  };
+
+  const triggerReferralEvent = () => {
+    trackReferralEvent(
+      REFERRAL_EVENTS.event_type,
+      {
+        [REFERRAL_EVENTS.event]: 'Registered',
+        [REFERRAL_EVENTS.category]: 'referral link',
+        [REFERRAL_EVENTS.description]: 'Registered via referral link',
+        [REFERRAL_EVENTS.referrer_code]: referrer_code
+      },
+      cohort
+    );
+  };
+
+  const createCompleteEnrollment = async (email: string, values?: any) => {
+    await axios
+      .post(`/cohorts/${cohort_id}/enrollments.json`, {
+        email,
+        coupon_code: user?.referrer,
+        account_id: credit_account_id,
+        source: ref_source,
+        referrer_domain
+      })
+      .then((res) => {
+        res.data &&
+          setUser({
+            ...user,
+            ...res.data.user
+          });
+        if (res.data.company) {
+          setCompany({
+            ...res.data.company
+          });
+        }
+        if (res.data.user.alumni_event) {
+          setAlumniEvent(true);
+        }
+        if (res.data.user.wait_listed) {
+          setWaitListed(true);
+        }
+        if (res.data.user.pre_release) {
+          setPreRelease(true);
+        }
+
+        REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+          values &&
+          createEnrollment(values, res.data?.user);
+
+        setAccount(res.data.account);
+        setLoading(false);
+        setTimeout(() => {
+          setConfetti(0);
+        }, 3000);
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
+      });
+  };
+
+  const createEnrollment = async (values: any, user: UserType) => {
+    values = values?.full_name
+      ? {
+          ...values,
+          first_name: values.full_name.split(' ')?.[0] || '',
+          last_name: values.full_name.split(' ')?.[1] || values.full_name.split(' ')?.[0]
+        }
+      : values;
+
+    if (user.enrollment_id && cohort?.id) {
+      try {
+        await axios
+          .post(`/cohorts/${cohort?.id}/enrollments/${user.enrollment_id}/update_profile.json`, {
+            ...values
+          })
+          .then((res) => {
+            const { user } = res.data;
+            enqueueSnackbar('Application Submitted', { variant: 'success' });
+            updateUserData({ ...values, slug: user.slug });
+            if (!isAuthenticated) {
+              setSegmentUserProperties({
+                slug: user?.slug,
+                email: user?.email,
+                displayName: user?.full_name,
+                type: user?.type,
+                current_company: user?.company,
+                current_industry_category_selections: user?.industry_category_selection
+              });
+            }
+            trackReferralFlowEvents(
+              'Cohort Registration - Personal Info Page - Details Submitted',
+              {
+                first_name: values.first_name,
+                last_name: values.last_name,
+                linkedin_url: values.linkedin_url
+              }
+            );
+            triggerOnboardingEvent();
+            if (alumni) {
+              triggerReferralEvent();
+            }
+          });
+      } catch (error) {
+        enqueueSnackbar('Application Failed', { variant: 'error' });
+        console.log(error);
+      }
+    } else {
+      enqueueSnackbar('Invalid page URL', { variant: 'error' });
+    }
   };
 
   useEffect(() => {
@@ -197,7 +334,36 @@ export default function Registration() {
   };
 
   useEffect(() => {
-    if (user?.email && cohort_id) {
+    if (cohort_id) {
+      axios
+        .get(`/cohorts/${cohort_id}`)
+        .then((res) => {
+          if (res?.data?.cohort) {
+            setCohort(res.data?.cohort);
+            if (REGISTRATION_FLOW_COHORT_CODES.includes(res.data?.cohort?.code)) {
+              setLoading(false);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      user?.email &&
+      cohort_id &&
+      cohort?.code &&
+      !REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code)
+    ) {
+      createCompleteEnrollment(user?.email);
+    }
+  }, [cohort]);
+
+  useEffect(() => {
+    if (!loading) {
       try {
         const data = new FormData();
         data.append('user_id', 'adriantesting');
@@ -213,56 +379,11 @@ export default function Registration() {
         console.log('EVENT SYSTEM ERROR');
         console.error(error);
       }
-
-      axios
-        .post(`/cohorts/${cohort_id}/enrollments.json`, {
-          email: user?.email,
-          coupon_code: user?.referrer,
-          account_id: credit_account_id,
-          source: ref_source,
-          referrer_domain
-        })
-        .then((res) => {
-          res.data &&
-            setUser({
-              ...user,
-              ...res.data.user
-            });
-          if (res.data.company) {
-            setCompany({
-              ...res.data.company
-            });
-          }
-          if (res.data.user.alumni_event) {
-            setAlumniEvent(true);
-          }
-          if (res.data.user.wait_listed) {
-            setWaitListed(true);
-          }
-          if (res.data.user.pre_release) {
-            setPreRelease(true);
-          }
-          if (res.data.cohort) {
-            setCohort(res.data.cohort);
-          }
-          setAccount(res.data.account);
-          setLoading(false);
-          setTimeout(() => {
-            setConfetti(0);
-          }, 3000);
-        })
-        .catch((error) => {
-          enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
+      window.analytics?.user &&
+        trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
+          is_enterprise_customer: company?.is_enterprise_customer || false,
+          has_sphere_alumni: company?.has_sphere_alumni || false
         });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!loading && window.analytics?.user) {
-      trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
-        is_enterprise_customer: company?.is_enterprise_customer || false,
-        has_sphere_alumni: company?.has_sphere_alumni || false
-      });
     }
   }, [loading, window.analytics?.user]);
 
@@ -379,12 +500,15 @@ export default function Registration() {
 
     return (
       <UserForm
-        submitValues={(data: any) => updateUserData(data)}
         user={user}
-        cohort={cohort}
+        cohortCode={cohort.code}
         account={account}
         wait_listed={wait_listed}
-        trackReferralFlowEvents={trackReferralFlowEvents}
+        createEnrollment={(values: any) =>
+          values?.full_name
+            ? createCompleteEnrollment(values?.email, values)
+            : createEnrollment(values, user)
+        }
       />
     );
   };
