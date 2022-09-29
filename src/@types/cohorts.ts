@@ -310,6 +310,7 @@ export type SessionAttendanceRecord = {
 
 export type CohortAttendanceRecord = {
   totalSessions: number;
+  sessionNames: string[];
   sessionAttendanceRecords: SessionAttendanceRecord[];
 };
 

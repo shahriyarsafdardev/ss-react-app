@@ -125,9 +125,9 @@ const AttendanceTable = ({
             <TableHead>
               <TableRow>
                 <TableCell colSpan={3}>Participant</TableCell>
-                {[...Array(attendance.totalSessions)].map((x, i) => (
+                {attendance.sessionNames?.map((name, i) => (
                   <TableCell data-testid={`Session-${i + 1}`} align="center" key={i}>
-                    Session {i + 1}
+                    {name}
                   </TableCell>
                 ))}
               </TableRow>

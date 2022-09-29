@@ -48,10 +48,11 @@ const AttendanceTab = () => {
         ?.cohortAttendanceRecord
   );
 
-  const [cohortAttendanceRecord, setRecord] = useState<CohortAttendanceRecord>({
+  const cohortAttendanceRecord = {
     totalSessions: cohortSessionAttendance?.totalSessions || 0,
+    sessionNames: cohortSessionAttendance?.sessionNames || [],
     sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
-  });
+  };
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -61,13 +62,15 @@ const AttendanceTab = () => {
   }, [cohort]);
 
   useEffect(() => {
-    if (!cohortSessionAttendance) {
-      dispatch(getAttendance(cohort_id));
-    } else {
-      setRecord(cohortSessionAttendance);
-    }
-    setLoading(false);
-  }, [cohortSessionAttendance, cohort_id]);
+    setLoading(true);
+    const getData = async () => {
+      if (!cohortSessionAttendance) {
+        await dispatch(getAttendance(cohort_id));
+      }
+      setLoading(false);
+    };
+    getData();
+  }, [cohort_id]);
 
   const getAttendanceFrequency = (types: string[]) => {
     const totalStudents = cohortAttendanceRecord.sessionAttendanceRecords.length;
@@ -76,7 +79,7 @@ const AttendanceTab = () => {
     }
     return [...Array(cohortAttendanceRecord.totalSessions)].map((x, i) =>
       (
-        (cohortAttendanceRecord.sessionAttendanceRecords.filter((datum: SessionAttendanceRecord) =>
+        (cohortAttendanceRecord.sessionAttendanceRecords?.filter((datum: SessionAttendanceRecord) =>
           types.includes(datum.attendanceData[i])
         ).length /
           totalStudents) *
@@ -98,9 +101,11 @@ const AttendanceTab = () => {
   const chartOptions = merge(BaseOptionChart(), {
     colors: ['#00AB55', '#FFC107'],
     xaxis: {
-      categories: [...Array(cohortAttendanceRecord.totalSessions)].map(
-        (item, index) => `Session ${index + 1}`
-      )
+      categories: cohortAttendanceRecord.sessionNames,
+      labels: {
+        hideOverlappingLabels: false,
+        trim: true
+      }
     },
     yaxis: {
       max: 100,
