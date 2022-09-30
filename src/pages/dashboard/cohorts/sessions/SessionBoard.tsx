@@ -17,6 +17,7 @@ import { SESSION_EVENTS } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
+import ReactPlayer from 'react-player';
 import {
   SessionMaterials,
   Description,
@@ -320,40 +321,46 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
           <SessionTitle data-testid="session-title">{session.name}</SessionTitle>
         </Box>
         {!isFree && session.recording_urls && session.recording_urls.length ? (
-          <StyledVideoPreview
-            src={recording}
-            poster={session.recording_thumbnail_url}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              return false;
-            }}
-            onPlay={(e) => {
-              markAttendance('watched_recording');
-              sendAnalyticsData(
-                sessionNumber,
-                SESSION_EVENTS.recording_video_player,
-                'Clicked Play'
-              );
-            }}
-            onPause={(e) => {
-              sendAnalyticsData(
-                sessionNumber,
-                SESSION_EVENTS.recording_video_player,
-                'Clicked Pause'
-              );
-            }}
-            onSeeked={(e) => {
-              sendAnalyticsData(
-                sessionNumber,
-                SESSION_EVENTS.recording_video_player,
-                'Selected New Timepoint'
-              );
-            }}
-            controls
-            controlsList="nodownload"
-            autoPlay={false}
-            data-testid="session-video-url"
-          />
+          <>
+            {recording?.includes('vimeo') ? (
+              <ReactPlayer controls={true} url={recording} />
+            ) : (
+              <StyledVideoPreview
+                src={recording}
+                poster={session.recording_thumbnail_url}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  return false;
+                }}
+                onPlay={(e) => {
+                  markAttendance('watched_recording');
+                  sendAnalyticsData(
+                    sessionNumber,
+                    SESSION_EVENTS.recording_video_player,
+                    'Clicked Play'
+                  );
+                }}
+                onPause={(e) => {
+                  sendAnalyticsData(
+                    sessionNumber,
+                    SESSION_EVENTS.recording_video_player,
+                    'Clicked Pause'
+                  );
+                }}
+                onSeeked={(e) => {
+                  sendAnalyticsData(
+                    sessionNumber,
+                    SESSION_EVENTS.recording_video_player,
+                    'Selected New Timepoint'
+                  );
+                }}
+                controls
+                controlsList="nodownload"
+                autoPlay={false}
+                data-testid="session-video-url"
+              />
+            )}
+          </>
         ) : (
           <JoinZoomPrompt
             displayType="large"
