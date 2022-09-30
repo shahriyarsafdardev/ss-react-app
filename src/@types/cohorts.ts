@@ -88,6 +88,14 @@ export type RecordingUrl = {
   recording_url: string;
 };
 
+export type SessionTimestamp = {
+  id: string;
+  description: string;
+  timestamp: string;
+  session_time: string;
+  thumbnail_url: string;
+};
+
 export type Session = {
   id: string;
   name: string;
@@ -107,6 +115,7 @@ export type Session = {
   survey: Survey;
   resources: string;
   materials: SessionMaterial[];
+  timestamps: SessionTimestamp[];
   display_in_sessions_tab: boolean;
   custom_name: string;
   networking_session: string;

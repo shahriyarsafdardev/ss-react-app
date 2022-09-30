@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import {
   Container,
   Tabs,
@@ -32,6 +32,7 @@ import { updateSessionFeedbackStatus } from '../../../../redux/slices/cohort';
 
 // Video Place Holder
 import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
+import SessionTimestamps from './SessionTimestamps';
 
 // ----------------------------------------------------------------------
 
@@ -193,6 +194,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const videoRef = useRef<any>();
 
   const SurveyModal = ({
     state,
@@ -283,15 +285,31 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       pdfUrl={session?.presentation_pdf_url}
       pdfDownloadable={session?.presentation_pdf_downloadable}
       isFree={isFree}
-    />,
-    <Summary
-      key="summary"
-      onTrack={(eventData: string) =>
-        sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
-      }
-      innerContent={session?.summary || ''}
     />
   ];
+
+  if (session?.summary_notes_included) {
+    tabsContent.push(
+      <Summary
+        key="summary"
+        onTrack={(eventData: string) =>
+          sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
+        }
+        innerContent={session?.summary || ''}
+      />
+    );
+  }
+
+  if (session?.timestamps) {
+    tabsContent.push(
+      <SessionTimestamps
+        timestamps={session?.timestamps || []}
+        key="session_timestamps"
+        videoReference={videoRef}
+        sessionId={session?.id}
+      />
+    );
+  }
 
   if (!session) return null;
 
@@ -422,6 +440,9 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
           <SessionTab label="Session Slides" data-testid="session-slides" />
           {session?.summary_notes_included && (
             <SessionTab label="Summary Notes" data-testid="session-notes" />
+          )}
+          {session?.timestamps && session?.timestamps.length > 0 && (
+            <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
           )}
         </SessionTabs>
 
