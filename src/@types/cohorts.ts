@@ -244,12 +244,12 @@ export type CodeOnboardingItem = {
 };
 
 export type AmplitudeEventsTimeline = {
-  days_before_first_session: number;
-  days_after_first_session: number;
-  days_after_last_session: number;
-  hours_before_next_session: number;
-  hours_after_previous_session: number;
-  is_during_session: boolean;
+  start_date: string;
+  end_date: string;
+  first_session_date: string;
+  next_session_date: string;
+  previous_session_date: string;
+  session_times: string[];
 };
 
 export type ReferralCode = {
