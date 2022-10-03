@@ -1,5 +1,6 @@
 import amplitude from 'amplitude-js';
 import axios from 'utils/axios';
+import { amplitudeEventsTimeline } from './amplitudeHelpers';
 
 const AMPLITUDE_API_KEY = process.env.REACT_APP_AMPLITUDE_API_KEY;
 
@@ -352,23 +353,29 @@ export const RESOURCE_SHARE_EVENTS = {
   shared_with: 'Shared With'
 };
 
-export const setGenericEventProperties = (cohort: any) => ({
-  [GENERIC_EVENTS.cohort_name]: cohort?.name,
-  [GENERIC_EVENTS.cohort_code]: cohort?.code,
-  [GENERIC_EVENTS.cohort_intake]: cohort?.intake_name,
-  [GENERIC_EVENTS.cohort_intake_number]: cohort?.intake,
-  [GENERIC_EVENTS.days_before_first_session]:
-    cohort?.amplitude_events_timeline?.days_before_first_session,
-  [GENERIC_EVENTS.days_after_first_session]:
-    cohort?.amplitude_events_timeline?.days_after_first_session,
-  [GENERIC_EVENTS.days_after_last_session]:
-    cohort?.amplitude_events_timeline?.days_after_last_session,
-  [GENERIC_EVENTS.hours_before_next_session]:
-    cohort?.amplitude_events_timeline?.hours_before_next_session,
-  [GENERIC_EVENTS.hours_after_previous_session]:
-    cohort?.amplitude_events_timeline?.hours_after_previous_session,
-  [GENERIC_EVENTS.is_during_session]: cohort?.amplitude_events_timeline?.is_during_session
-});
+export const setGenericEventProperties = (cohort: any) => {
+  const {
+    days_before_first_session,
+    days_after_first_session,
+    days_after_last_session,
+    hours_before_next_session,
+    hours_after_previous_session,
+    is_session_live
+  } = amplitudeEventsTimeline(cohort);
+
+  return {
+    [GENERIC_EVENTS.cohort_name]: cohort?.name,
+    [GENERIC_EVENTS.cohort_code]: cohort?.code,
+    [GENERIC_EVENTS.cohort_intake]: cohort?.intake_name,
+    [GENERIC_EVENTS.cohort_intake_number]: cohort?.intake,
+    [GENERIC_EVENTS.days_before_first_session]: days_before_first_session,
+    [GENERIC_EVENTS.days_after_first_session]: days_after_first_session,
+    [GENERIC_EVENTS.days_after_last_session]: days_after_last_session,
+    [GENERIC_EVENTS.hours_before_next_session]: hours_before_next_session,
+    [GENERIC_EVENTS.hours_after_previous_session]: hours_after_previous_session,
+    [GENERIC_EVENTS.is_during_session]: is_session_live
+  };
+};
 
 const emptyCohortGenericProperties = {
   [GENERIC_EVENTS.cohort_name]: 'none',
