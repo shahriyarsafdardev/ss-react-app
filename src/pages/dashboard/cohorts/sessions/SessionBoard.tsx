@@ -8,7 +8,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  FormControl
+  FormControl,
+  Theme,
+  CircularProgress
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
@@ -18,6 +20,7 @@ import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import ReactPlayer from 'react-player';
+import { makeStyles } from '@material-ui/styles';
 import {
   SessionMaterials,
   Description,
@@ -175,6 +178,20 @@ const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
   }
 }));
 
+const StyledCircularLoader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  padding: '25% 0'
+}));
+
+const CircularLoader = () => (
+  <StyledCircularLoader>
+    <CircularProgress />
+  </StyledCircularLoader>
+);
+
 export default function SessionBoard({ session, isLearner, isFree }: SessionBoardProps) {
   const [currentTab, setCurrentTab] = useState(0);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
@@ -195,6 +212,18 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const videoRef = useRef<any>();
+
+  const [loading, setLoading] = useState(true);
+
+  const useStyles = makeStyles((theme: Theme) => ({
+    hidden: {
+      display: 'none'
+    },
+    shown: {
+      display: 'block'
+    }
+  }));
+  const classes = useStyles();
 
   const SurveyModal = ({
     state,
@@ -341,7 +370,16 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         {!isFree && session.recording_urls && session.recording_urls.length ? (
           <>
             {recording?.includes('vimeo') ? (
-              <ReactPlayer controls={true} url={recording} />
+              <>
+                {loading && <CircularLoader />}
+                <ReactPlayer
+                  controls={true}
+                  url={recording}
+                  className={loading ? classes.hidden : classes.shown}
+                  onReady={() => setLoading(false)}
+                  style={{ maxWidth: '100%' }}
+                />
+              </>
             ) : (
               <StyledVideoPreview
                 src={recording}
@@ -406,6 +444,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
               value={recording}
               onChange={(e: any) => {
                 setRecording(e.target.value);
+                setLoading(true);
               }}
               label="Select Recording"
             >
