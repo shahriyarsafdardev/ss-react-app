@@ -363,27 +363,31 @@ export default function Registration() {
   }, [cohort]);
 
   useEffect(() => {
+    const triggerBackendEvent = async () => {
+      const data = new FormData();
+      data.append('user_id', 'adriantesting');
+      data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
+      data.append(
+        'event_properties',
+        JSON.stringify({
+          'Registrant Email': `${user?.email} frontend`
+        })
+      );
+      axios.post(`/segments/trigger_segment_event.json`, data);
+    };
     if (!loading) {
       try {
-        const data = new FormData();
-        data.append('user_id', 'adriantesting');
-        data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
-        data.append(
-          'event_properties',
-          JSON.stringify({
-            'Registrant Email': `${user?.email} frontend`
-          })
-        );
-        axios.post(`/segments/trigger_segment_event.json`, data);
+        if (window.analytics?.user) {
+          trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
+            is_enterprise_customer: company?.is_enterprise_customer || false,
+            has_sphere_alumni: company?.has_sphere_alumni || false
+          });
+          triggerBackendEvent();
+        }
       } catch (error) {
         console.log('EVENT SYSTEM ERROR');
         console.error(error);
       }
-      window.analytics?.user &&
-        trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
-          is_enterprise_customer: company?.is_enterprise_customer || false,
-          has_sphere_alumni: company?.has_sphere_alumni || false
-        });
     }
   }, [loading, window.analytics?.user]);
 
