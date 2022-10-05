@@ -89,15 +89,11 @@ export default function CardDetails({
   };
 
   const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(
-      ONBOARDING_EVENTS.event_type,
-      {
-        [ONBOARDING_EVENTS.event]: 'Payment Made',
-        [ONBOARDING_EVENTS.category]: 'Payment Made',
-        [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
-      },
-      cohort
-    );
+    trackOnboardingEvent(cohort, ONBOARDING_EVENTS.event_type, {
+      [ONBOARDING_EVENTS.event]: 'Payment Made',
+      [ONBOARDING_EVENTS.category]: 'Payment Made',
+      [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
+    });
   };
 
   const triggerReferralEvent = () => {

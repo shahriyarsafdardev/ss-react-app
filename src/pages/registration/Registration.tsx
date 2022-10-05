@@ -167,15 +167,11 @@ export default function Registration() {
   };
 
   const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(
-      ONBOARDING_EVENTS.event_type,
-      {
-        [ONBOARDING_EVENTS.event]: 'Registered',
-        [ONBOARDING_EVENTS.category]: 'Registered',
-        [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
-      },
-      cohort
-    );
+    trackOnboardingEvent(cohort, ONBOARDING_EVENTS.event_type, {
+      [ONBOARDING_EVENTS.event]: 'Registered',
+      [ONBOARDING_EVENTS.category]: 'Registered',
+      [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
+    });
   };
 
   const triggerReferralEvent = () => {

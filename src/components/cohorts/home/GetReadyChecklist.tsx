@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
-import { trackGenericEvent } from 'utils/amplitude';
+import { ONBOARDING_EVENTS, trackGenericEvent, trackOnboardingEvent } from 'utils/amplitude';
+import { OnboardingContext } from 'contexts/OnboardingContext';
 import { useDispatch } from '../../../redux/store';
 import { markOnboardingStep } from '../../../redux/slices/cohort';
 import { OnboardingSectionRow, SectionContainer, CalendarInstructionsModal } from './Common';
@@ -125,12 +126,30 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   };
 
   useEffect(() => {
+    trackGenericEvent(cohort, 'Cohort Onboarding - Get Ready Page - Page Loaded');
     stepStatus();
   }, [onboarding_data]);
 
+  const triggerOnboardingEvent = (eventName: string, eventData: any) => {
+    trackOnboardingEvent(cohort, eventName, eventData);
+  };
+
+  const triggerStepStartedEvent = (stepNumber: number, heading: string, subHeading: string) => {
+    trackOnboardingEvent(cohort, 'Cohort Onboarding - Get Ready Page - Step Started', {
+      [ONBOARDING_EVENTS.step]: stepNumber,
+      [ONBOARDING_EVENTS.step_main_description]: heading,
+      [ONBOARDING_EVENTS.step_secondary_description]: subHeading
+    });
+  };
+
   const handleCalendarInstructions = () => {
-    trackGenericEvent(cohort, 'Home Page - Calendar Modal - "I’ve Added the Sessions" Selected');
     dispatch(markOnboardingStep(cohort.id, 'sessions_added_to_calendar'));
+    triggerOnboardingEvent(
+      'Cohort Onboarding - Calendar Modal - "I have added the sessions" Selected',
+      {
+        [ONBOARDING_EVENTS.calendar_url]: cohort?.calendar_invite_url
+      }
+    );
   };
 
   const handleIntroductionCompleted = () => {
@@ -143,7 +162,7 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   };
 
   return (
-    <>
+    <OnboardingContext.Provider value={{ triggerOnboardingEvent }}>
       {!hasOnboarded && user?.type === 'learner' && (
         <OnboardingModal
           onboardingModalState={onboardingModalState}
@@ -156,9 +175,6 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
         modalState={modalState}
         setModalState={setModalState}
         handleSubmit={handleCalendarInstructions}
-        onNeedHandler={() =>
-          trackGenericEvent(cohort, 'Home Page - Calendar Modal - "I Need Help" Selected')
-        }
       />
       <Typography variant="h3" className={classes.header}>
         Get Ready
@@ -174,19 +190,27 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             onSubmit={() => {
               setHasOnboarded(false);
               setOnboardingModalState(true);
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Profile Step Started');
+              triggerStepStartedEvent(
+                1,
+                `Tell ${cohort?.host_names} about yourself`,
+                'We use the information you share to provide a personalized learning experience'
+              );
             }}
           />
           <StyledDivider />
           <OnboardingSectionRow
             index={2}
             heading="Add the sessions to your calendar"
-            subHeading="So you don't forget any live classes"
+            subHeading="Add the sessions to your calendar"
             status={getActiveStatus(2)}
             classes={classes}
             onSubmit={() => {
               setModalState(true);
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Calendar Step Started');
+              triggerStepStartedEvent(
+                2,
+                'Add the sessions to your calendar',
+                "So you don't forget any live classes"
+              );
             }}
           />
           <StyledDivider />
@@ -197,7 +221,11 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             status={getActiveStatus(3)}
             onSubmit={() => {
               handleIntroductionCompleted();
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Messaging Step Started');
+              triggerStepStartedEvent(
+                3,
+                'Introduce yourselves to your peers',
+                'To connect with the like minded data professionals also in this cohort'
+              );
             }}
             classes={classes}
           />
@@ -209,13 +237,13 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             status={getActiveStatus(4)}
             onSubmit={() => {
               handleDiveIntoResources();
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Resources Step Started');
+              triggerStepStartedEvent(4, 'Dive into the resources', 'Released in 15 days');
             }}
             classes={classes}
           />
           <StyledDivider />
         </Stack>
       </SectionContainer>
-    </>
+    </OnboardingContext.Provider>
   );
 }
