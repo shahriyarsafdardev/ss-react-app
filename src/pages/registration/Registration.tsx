@@ -252,17 +252,17 @@ export default function Registration() {
             ...values
           })
           .then((res) => {
-            const { user } = res.data;
+            const { updatedUser } = res.data;
             enqueueSnackbar('Application Submitted', { variant: 'success' });
-            updateUserData({ ...values, slug: user.slug });
+            updateUserData({ ...values, ...user, slug: updatedUser?.slug });
             if (!isAuthenticated) {
               setSegmentUserProperties({
-                slug: user?.slug,
-                email: user?.email,
-                displayName: user?.full_name,
-                type: user?.type,
-                current_company: user?.company,
-                current_industry_category_selections: user?.industry_category_selection
+                slug: updatedUser?.slug,
+                email: updatedUser?.email,
+                displayName: updatedUser?.full_name,
+                type: updatedUser?.type,
+                current_company: updatedUser?.company,
+                current_industry_category_selections: updatedUser?.industry_category_selection
               });
             }
             trackReferralFlowEvents(
@@ -317,7 +317,7 @@ export default function Registration() {
   };
 
   const updateUserData = async (data: any) => {
-    setUser({ ...user, ...data });
+    setUser({ ...data });
     setActiveStep(2);
   };
 
