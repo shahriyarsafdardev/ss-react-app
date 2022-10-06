@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Modal } from 'components/animate';
 import useAuth from 'hooks/useAuth';
 import axios from 'utils/axios';
@@ -6,12 +6,11 @@ import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { dispatch, RootState, useSelector } from 'redux/store';
 
-import { ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
+import { ONBOARDING_EVENTS } from 'utils/amplitude';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
+import { OnboardingContext } from 'contexts/OnboardingContext';
 import { UserInfoForm, CompanyInfoForm, RoleInfoForm, HouseKeepingForm } from './info-forms';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ParticipantProfile } from '../../../@types/user';
 import HomeTabHeader from './HomeTabHeader';
 
 type HomeResponse = {
@@ -122,6 +121,7 @@ export default function OnboardingModal({
   setOnboardingModalState: Function;
   onSubmit: Function;
 }) {
+  const { triggerOnboardingEvent } = useContext(OnboardingContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
@@ -156,6 +156,18 @@ export default function OnboardingModal({
     goals: '',
     github_username: ''
   });
+
+  useEffect(() => {
+    if (onboardingModalState) {
+      onboardingEvent('Cohort Onboarding - Profile Modal - Modal Opened');
+    }
+  }, [onboardingModalState]);
+
+  useEffect(() => {
+    if (onboardingModalState) {
+      onboardingEvent('Cohort Onboarding - Profile Modal - Page Opened');
+    }
+  }, [onboardingModalState, activeStep]);
 
   useEffect(() => {
     axios
@@ -261,12 +273,32 @@ export default function OnboardingModal({
         setIsSubmitting(false);
         setOnboardingModalState(false);
         dispatch(updateOnboardingStatus(cohort_id));
+        if (activeStep === 4) {
+          onboardingEvent('Cohort Onboarding - Profile Modal - Profile Completed');
+        }
       })
       .catch((err) => {
         setIsSubmitting(false);
         enqueueSnackbar(`Error occurred`, { variant: 'error' });
         enqueueSnackbar('Please try again', { variant: 'info' });
       });
+  };
+
+  const onboardingEvent = (eventName: string) => {
+    triggerOnboardingEvent(eventName, {
+      [ONBOARDING_EVENTS.current_page]: activeStep,
+      [ONBOARDING_EVENTS.current_page_title]: headContent(),
+      [ONBOARDING_EVENTS.current_page_description]: headContentDescription()
+    });
+  };
+
+  const handlePreviousButton = () => {
+    onboardingEvent('Cohort Onboarding - Profile Modal - "Previous" Selected');
+    setActiveStep(activeStep - 1);
+  };
+
+  const handleNextButton = () => {
+    onboardingEvent('Cohort Onboarding - Profile Modal - "Next" Selected');
   };
 
   const selectStep = () => {
@@ -287,6 +319,7 @@ export default function OnboardingModal({
             }}
             onSubmit={(data: any) => {
               updateOnboardingData(FormTypes.userInfo, data);
+              handleNextButton();
             }}
           />
         </div>
@@ -302,8 +335,11 @@ export default function OnboardingModal({
             industries: onboardingData.company_industries || [],
             number_of_employees: onboardingData.number_of_employees || ''
           }}
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.companyInfo, data)}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.companyInfo, data);
+            handleNextButton();
+          }}
+          onPrevHandler={handlePreviousButton}
         />
       );
     }
@@ -317,25 +353,21 @@ export default function OnboardingModal({
             role_category: onboardingData.role_category || [],
             do_manage_team: onboardingData.do_manage_team || false
           }}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
-          onSubmit={(data: any) => updateOnboardingData(FormTypes.roleInfo, data)}
+          onPrevHandler={handlePreviousButton}
+          onSubmit={(data: any) => {
+            updateOnboardingData(FormTypes.roleInfo, data);
+            handleNextButton();
+          }}
         />
       );
     }
+
     if (activeStep === 4) {
       return (
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
-            trackOnboardingEvent(
-              ONBOARDING_EVENTS.event_type,
-              {
-                [ONBOARDING_EVENTS.event]: 'Onboarding Event',
-                [ONBOARDING_EVENTS.category]: 'Onboarding Complete',
-                [ONBOARDING_EVENTS.description]: 'User has completed the onboarding in cohort.'
-              },
-              cohort
-            );
+            handleNextButton();
           }}
           infoDetails={{
             current_understanding: onboardingData.cohort_understanding,
@@ -344,7 +376,7 @@ export default function OnboardingModal({
           }}
           goalsValue={onboardingData.goals}
           isSubmitting={isSubmitting}
-          onPrevHandler={() => setActiveStep(activeStep - 1)}
+          onPrevHandler={handlePreviousButton}
         />
       );
     }
@@ -410,6 +442,7 @@ export default function OnboardingModal({
       open={onboardingModalState}
       onClose={() => {
         setOnboardingModalState(false);
+        onboardingEvent('Cohort Onboarding - Profile Modal - Modal Closed');
       }}
       zIndex={1400}
     >
