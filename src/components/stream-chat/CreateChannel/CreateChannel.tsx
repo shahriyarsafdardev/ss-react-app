@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Icon } from '@iconify/react';
@@ -8,6 +8,7 @@ import './CreateChannel.css';
 import { Box, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { UserList } from './UserList';
 import { CloseCreateChannel } from '../../../assets';
 
@@ -20,6 +21,8 @@ import type {
   TeamReactionType,
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
+
+import { getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
 
 type InputProps = {
   channelName: string;
@@ -86,6 +89,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const regexForChannelName = /^[a-zA-Z0-9_-]*$/;
   const [findUser, setFindUser] = useState<string>('');
   const enrolledUsers = cohortUsers.filter((user_id: string) => user_id !== client.userID);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const matchRegex = () => {
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
@@ -133,6 +137,10 @@ export const CreateChannel: React.FC<Props> = (props) => {
         setIsCreating(false);
         setSelectedUsers([client.userID || '']);
         setActiveChannel(newChannel);
+        sendAnalyticsData('Messaging Page - Channel Opened', {
+          'Channel Name': `#${channelName}`,
+          'Channel Type': 'public'
+        });
       } catch (err) {
         console.log(err);
       }
@@ -176,6 +184,17 @@ export const CreateChannel: React.FC<Props> = (props) => {
       setIsCreating(false);
       setSelectedUsers([client.userID || '']);
       setActiveChannel(newChannel);
+      sendAnalyticsData('Messaging Page - Channel Opened', {
+        'Channel Name':
+          createType === 'team'
+            ? `#${channelName}`
+            : getChannelName(
+                Object.values(newChannel.state.members).filter(
+                  ({ user }) => user?.id !== client.userID
+                )
+              ),
+        'Channel Type': createType === 'team' ? 'public' : 'private'
+      });
     } catch (err) {
       console.log(err);
     }

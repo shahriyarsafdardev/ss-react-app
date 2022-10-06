@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ChannelList, ChannelListProps, useChatContext } from 'stream-chat-react';
 import { useLocation } from 'react-router-dom';
-
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import './ChannelListContainer.css';
-
 import type { ChannelFilters } from 'stream-chat';
-
-import { ChannelSearch } from '../ChannelSearch/ChannelSearch';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
-import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
+import { TeamChannelPreview, getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
 
 import { SideBarLogo } from '../../../assets';
 import type {
@@ -80,6 +77,23 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     url.get('receiver_id') || ''
   ]);
 
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
+  const sendAnalytics = (channel: any) => {
+    if (channel && client) {
+      const members = Object.values(channel?.state?.members).filter(
+        (m: any) => m?.user?.id !== client?.userID
+      );
+      const type = channel.data?.type === 'team' ? 'public' : 'private';
+      const name = type === 'public' ? `#${channel.data?.name}` : getChannelName(members);
+
+      sendAnalyticsData('Messaging Page - Channel Opened', {
+        'Channel Name': name,
+        'Channel Type': type
+      });
+    }
+  };
+
   useEffect(() => {
     const initChannel = async () => {
       if (url.get('direct') && url.get('receiver_id')) {
@@ -92,6 +106,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           await newChannel.create();
           await newChannel.watch();
           setActiveChannel(newChannel);
+          sendAnalytics(newChannel);
         } catch (err) {
           console.log(err);
         }
@@ -100,6 +115,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           const channels = await client.queryChannels({ id: url.get('channel_id') }, {});
           await channels[0]?.watch();
           setActiveChannel(channels[0]);
+          channels[0] && sendAnalytics(channels[0]);
         } catch (err) {
           console.log(err);
         }
@@ -109,10 +125,12 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           if (channels.length > 0) {
             await channels[0].watch();
             setActiveChannel(channels[0]);
+            channels[0] && sendAnalytics(channels[0]);
           } else {
             const channels = await client.queryChannels(filters[0], {});
             await channels[0]?.watch();
             setActiveChannel(channels[0]);
+            channels[0] && sendAnalytics(channels[0]);
           }
         } catch (err) {
           console.log(err);

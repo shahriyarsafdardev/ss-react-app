@@ -269,12 +269,12 @@ export const MESSAGING_EVENTS = {
   action: 'Action'
 };
 
-export const trackMessagingEvents = (eventCategory: string, eventData: string, cohort?: any) => {
-  sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
-    ...setGenericEventProperties(cohort),
-    [MESSAGING_EVENTS.category]: eventCategory,
-    [MESSAGING_EVENTS.action]: eventData
+export const trackMessagingEvents = (eventName: string, eventData: any, cohort?: any) => {
+  sendAmplitudeData(eventName, {
+    ...eventData,
+    ...setGenericEventProperties(cohort)
   });
+  // console.log(eventName, eventData);
 };
 
 export const QnA_EVENTS = {

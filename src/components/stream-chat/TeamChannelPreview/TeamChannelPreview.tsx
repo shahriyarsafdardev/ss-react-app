@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
-import { trackMessagingEvents } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 
@@ -22,6 +21,12 @@ type Props = ChannelPreviewUIComponentProps & {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   type: string;
 };
+
+export const getChannelName = (members: any) =>
+  members
+    .slice(0, 2)
+    .map((m: any) => m?.user?.name || m?.user?.id)
+    .join(' ');
 
 export const TeamChannelPreview: React.FC<Props> = (props) => {
   const { channel, setActiveChannel, setIsCreating, setIsEditing, type } = props;
@@ -62,7 +67,6 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     const members = Object.values(channel.state.members).filter(
       ({ user }) => user?.id !== client.userID
     );
-    const defaultName = 'Johnny Blaze';
     if (!members.length) return null;
 
     if (members && members.length === 1) {
@@ -76,7 +80,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
               size={24}
             />
 
-            <span>{member?.user?.name || member?.user?.id || defaultName}</span>
+            <span>{getChannelName(members)}</span>
           </div>
 
           {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
@@ -102,10 +106,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
             size={18}
           />
           <p>
-            <span>
-              {members[0].user?.name || members[0].user?.id || defaultName},{' '}
-              {members[1].user?.name || members[1].user?.id || defaultName}
-            </span>
+            <span>{getChannelName(members)}</span>
           </p>
         </div>
         {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
@@ -126,11 +127,13 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
         setIsEditing(false);
         if (setActiveChannel) {
           setActiveChannel(channel);
-          if (type === 'team') {
-            sendAnalyticsData('Team Channel', 'Channel Opened');
-          } else {
-            sendAnalyticsData('Direct Chat', 'Chat Opened');
-          }
+          const members = Object.values(channel.state.members).filter(
+            ({ user }) => user?.id !== client.userID
+          );
+          sendAnalyticsData('Messaging Page - Channel Opened', {
+            'Channel Name': type === 'team' ? `#${channel?.data?.name}` : getChannelName(members),
+            'Channel Type': type === 'team' ? 'public' : 'private'
+          });
         }
       }}
       role="button"
