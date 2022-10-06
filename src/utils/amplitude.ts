@@ -138,15 +138,30 @@ export const ONBOARDING_EVENTS = {
   event_type: 'Onboarding Event',
   event: 'Event',
   category: 'Category',
-  description: 'Description'
+  description: 'Description',
+  step: 'Step',
+  step_main_description: 'Step Main Description',
+  step_secondary_description: 'Step Secondary Description',
+  current_page: 'Current Page',
+  current_page_title: 'Current Page Title',
+  current_page_description: 'Current Page Description',
+  calendar_url: 'Calendar URL'
 };
 
-export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?: any) => {
-  const newEventData = {
-    ...setGenericEventProperties(cohort),
-    ...eventData
-  };
-  sendAmplitudeData(ONBOARDING_EVENTS.event_type, newEventData);
+export const trackOnboardingEvent = (cohort: any, eventType: string, eventData?: any) => {
+  let updatedEventProperties = eventData;
+  if (cohort === null) {
+    updatedEventProperties = {
+      ...eventData,
+      ...emptyCohortGenericProperties
+    };
+  } else {
+    updatedEventProperties = {
+      ...setGenericEventProperties(cohort),
+      ...eventData
+    };
+  }
+  sendAmplitudeData(eventType, updatedEventProperties);
 };
 
 export const REFERRAL_EVENTS = {
