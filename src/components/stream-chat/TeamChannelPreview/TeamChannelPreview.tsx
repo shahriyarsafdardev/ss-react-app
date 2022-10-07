@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { RootState, useDispatch, useSelector } from '../../../redux/store';
+import { RootState, useSelector } from '../../../redux/store';
 
 import './TeamChannelPreview.css';
-import { markAsRead } from '../../../redux/slices/notification';
 
 import type {
   TeamAttachmentType,
@@ -31,7 +30,6 @@ export const getChannelName = (members: any) =>
 export const TeamChannelPreview: React.FC<Props> = (props) => {
   const { channel, setActiveChannel, setIsCreating, setIsEditing, type } = props;
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-  const dispatch = useDispatch();
 
   const unreadCount = useSelector(
     (state: RootState) =>

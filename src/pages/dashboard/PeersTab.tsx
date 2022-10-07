@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-// utils
-import {
-  EVENT_TYPES,
-  trackPeersPageEvent,
-  PEERS_PAGE_EVENTS,
-  trackPageViewEvent
-} from 'utils/amplitude';
+// utils;
+import { trackEvent } from 'utils/eventTracking';
 import useAuth from 'hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
@@ -41,7 +36,6 @@ const LoadingContainer = styled(Box)(() => ({
 
 export default function PeersTab() {
   const { themeStretch } = useSettings();
-  const [analyticsSent, setAnalyticsSent] = useState(false);
   const dispatch = useDispatch();
   const [modalState, modalHandler] = useState<StudentProfile | any>({});
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
@@ -84,11 +78,10 @@ export default function PeersTab() {
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (cohort && !analyticsSent) {
-      trackPageViewEvent(cohort, EVENT_TYPES.peers_tab);
-      setAnalyticsSent(true);
+    if (cohort && peers) {
+      trackEvent(cohort, 'Networking Page - Page Loaded', {});
     }
-  }, [cohort]);
+  }, [cohort, peers]);
 
   const handleChange = (event: any) => {
     const {
@@ -124,15 +117,27 @@ export default function PeersTab() {
     return filteredStudents;
   }, [selectedCompanies, selectedInterests, peers]);
 
-  const trackModalEvent = () =>
-    trackPeersPageEvent(`${view} view`.toUpperCase(), PEERS_PAGE_EVENTS.modal_open_event, cohort);
+  const trackModalEvent = (eventName: string, student: StudentProfile) => {
+    trackEvent(cohort, eventName, {
+      'Profile User ID': student.id,
+      'Profile User First Name': student.first_name,
+      'Profile User Last Name': student.last_name,
+      'Profile User Full Name': `${student.first_name} ${student.last_name}`,
+      'Profile User Company ID': student.current_company?.id,
+      'Profile User Company': student.current_company?.name,
+      'Profile User Role': student.current_position,
+      'Profile User LinkedIn': student.linkedin_url,
+      'Profile User Email': student.email,
+      'Profile User Sphere Messaging Link': `/cohorts/${cohort_id}/messaging?direct=true&receiver_id=${student.id}`
+    });
+  };
 
   const showCardView = () => (
     <StudentProfileGrid
       students={applyFilters()}
       modalHandler={(peer: any) => {
         modalHandler(peer);
-        trackModalEvent();
+        trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
       }}
     />
   );
@@ -142,7 +147,7 @@ export default function PeersTab() {
       students={applyFilters()}
       modalHandler={(peer: any) => {
         modalHandler(peer);
-        trackModalEvent();
+        trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
       }}
     />
   );
@@ -154,6 +159,7 @@ export default function PeersTab() {
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
+          trackModalEvent={trackModalEvent}
           modalUser={modalState}
           dispalyChatLink={
             modalState.id !== user?.id && cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61'

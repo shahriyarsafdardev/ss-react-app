@@ -7,7 +7,7 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 
 const ViewSelector = styled('div')(() => ({
   paddingBottom: '40px'
@@ -38,16 +38,7 @@ export default function StudentProfileFilters({
   view,
   cohort
 }: StudentProfileFiltersProps) {
-  const trackFilters = (type: string) => {
-    trackPeersPageEvent(`${view} view`.toUpperCase(), type, cohort);
-  };
-
   const onViewSwitch = (selectedView: string) => {
-    trackPeersPageEvent(
-      PEERS_PAGE_EVENTS.view_selection,
-      `Switched to ${selectedView.toUpperCase()} view`,
-      cohort
-    );
     setView(selectedView);
   };
 
@@ -62,13 +53,34 @@ export default function StudentProfileFilters({
           onChange={(e: any) => {
             onViewSwitch(e.target.value);
           }}
+          onOpen={() => trackEvent(cohort, 'Networking Page - View Toggle Opened', {})}
           label="View"
           value={view}
         >
-          <MenuItem key="grid" value="grid" id="grid-view" data-testid="peer-grid-view">
+          <MenuItem
+            key="grid"
+            value="grid"
+            id="grid-view"
+            data-testid="peer-grid-view"
+            onClick={() =>
+              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
+                'Selected View': 'Grid View'
+              })
+            }
+          >
             Grid View
           </MenuItem>
-          <MenuItem key="list" value="list" id="table-view" data-testid="peer-table-view">
+          <MenuItem
+            key="list"
+            value="list"
+            id="table-view"
+            data-testid="peer-table-view"
+            onClick={() =>
+              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
+                'Selected View': 'Table View'
+              })
+            }
+          >
             Table View
           </MenuItem>
         </Select>
@@ -82,14 +94,24 @@ export default function StudentProfileFilters({
           value={selectedCompanies}
           onChange={(e) => {
             handleCompanyChange(e);
-            trackFilters('Company Filter');
           }}
           label="Filter by Company"
           renderValue={(selected) => selected.join(', ')}
           MenuProps={{ sx: { maxHeight: 500 } }}
+          onOpen={() => trackEvent(cohort, 'Networking Page - Company Filter Opened', {})}
         >
           {companies?.map((name: any, index: number) => (
-            <MenuItem key={name} value={name} sx={{ paddingRight: 1 }}>
+            <MenuItem
+              key={name}
+              value={name}
+              sx={{ paddingRight: 1 }}
+              onClick={() =>
+                selectedCompanies.indexOf(name) === -1 &&
+                trackEvent(cohort, 'Networking Page - Company Filter Selected', {
+                  'Company Name': name
+                })
+              }
+            >
               <Checkbox
                 checked={selectedCompanies.indexOf(name) > -1}
                 data-testid={`company-${index + 1}`}

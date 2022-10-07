@@ -18,7 +18,7 @@ import {
   ListItemButton,
   ListItemButtonProps
 } from '@material-ui/core';
-import { trackSidebarEvent } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from '../redux/store';
 // ----------------------------------------------------------------------
@@ -146,7 +146,7 @@ function NavItem({
   const trackAnalyticsEvent = (title: string, path: string) => {
     const cohortId = path.split('/')[2] || '';
     const cohort = cohorts.filter((cohort) => cohort.id === cohortId)[0];
-    cohort && trackSidebarEvent(cohort, `Sidebar - "${_.startCase(_.toLower(title))}" Selected`);
+    cohort && trackEvent(cohort, `Sidebar - "${title.replace(/\w+/g, _.capitalize)}" Selected`);
   };
   const getUnreadNotifications = (category: string | undefined) =>
     userNotifications?.filter(

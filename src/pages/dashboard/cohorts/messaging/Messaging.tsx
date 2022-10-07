@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import { trackMessagingEvents, trackGenericEvent } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { useLocation } from 'react-router-dom';
@@ -80,9 +80,7 @@ export default function Messaging() {
   }));
 
   const sendAnalyticsData = (eventName: string, eventData: any) => {
-    if (cohort) {
-      trackMessagingEvents(eventName, eventData, cohort);
-    }
+    cohort && trackEvent(cohort, eventName, eventData);
   };
 
   useEffect(() => {
@@ -99,7 +97,7 @@ export default function Messaging() {
     if (cohort && !analyticsSent) {
       sendAnalyticsData('Messaging Page - Page Loaded', {});
       if (url.get('email')) {
-        trackGenericEvent(cohort, 'Email - "What you missed" Email - Messaging Opened');
+        sendAnalyticsData('Email - "What you missed" Email - Messaging Opened', {});
       }
       setAnalyticsSent(true);
     }
