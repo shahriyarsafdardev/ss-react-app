@@ -7,9 +7,7 @@ import { styled } from '@material-ui/core/styles';
 import Modal from 'components/animate/Modal';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
-import { RESOURCE_SHARE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import { StyledShareModal, StyledTypography } from './Common';
-import { RootState, useSelector } from '../../../redux/store';
 import { SessionMaterial } from '../../../@types/cohorts';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -32,12 +30,14 @@ export default function ResourceShareModal({
   open,
   onClose,
   item,
-  sessionId
+  sessionId,
+  ontriggerShareEvent
 }: {
   open: boolean;
   onClose: Function;
   item: SessionMaterial;
   sessionId: string;
+  ontriggerShareEvent: Function;
 }) {
   const emailValidation = Yup.object().shape({
     email: Yup.string().email('Email is invalid').required('Email is required')
@@ -50,8 +50,8 @@ export default function ResourceShareModal({
     },
     validationSchema: emailValidation,
     onSubmit: (values, { setSubmitting, resetForm }) => {
-      trackGenericEvent(cohort, 'Sessions Page - Share Resource Modal - "Share" Selected', {
-        [RESOURCE_SHARE_EVENTS.shared_with]: values.email
+      ontriggerShareEvent('Resources Page - Share Resource Modal - "Share" Selected', {
+        'Recipient Email Address': values.email
       });
       axios
         .post(`cohort_sessions/${sessionId}/session_materials/${item.id}/send_readings_email`, {
@@ -60,6 +60,9 @@ export default function ResourceShareModal({
         .then(() => {
           resetForm();
           setSubmitting(false);
+          ontriggerShareEvent('Resources Page - Share Resource Modal - Resource Shared', {
+            'Recipient Email Address': values.email
+          });
           enqueueSnackbar('This resource has been shared via email!', { variant: 'success' });
         });
     }
@@ -68,14 +71,9 @@ export default function ResourceShareModal({
   const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values, isValid, resetForm } =
     formik;
 
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-
   useEffect(() => {
     if (open) {
-      trackGenericEvent(cohort, 'Sessions Page - Share Resource Modal - Modal Opened');
+      ontriggerShareEvent('Resources Page - Share Resource Modal - Modal Opened');
     }
   }, [open]);
 
@@ -85,7 +83,7 @@ export default function ResourceShareModal({
       onClose={() => {
         onClose(false);
         resetForm();
-        trackGenericEvent(cohort, 'Sessions Page - Share Resource Modal - Modal Closed');
+        ontriggerShareEvent('Resources Page - Share Resource Modal - Modal Closed');
       }}
     >
       <StyledShareModal sx={{ padding: '5% 10%', height: '700px' }}>

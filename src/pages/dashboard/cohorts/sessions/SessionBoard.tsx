@@ -259,6 +259,12 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     return session?.collect_feedback;
   };
 
+  const commonProperties = {
+    'Session ID': session?.id,
+    'Session Number': session?.number,
+    'Session Name': session?.name
+  };
+
   useEffect(() => {
     setRecording(session?.recording_urls[0]?.recording_url);
     setFeedbackSubmitted(false);
@@ -276,8 +282,9 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     <>
       <Description
         key="description"
-        onTrack={(eventData: string) =>
-          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        onTrack={
+          (eventData: string) => {}
+          // sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
         }
         innerContent={session?.description || ''}
         resourcesPresent={session?.materials && session?.materials?.length > 0}
@@ -296,21 +303,24 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       ) : ( */}
       <SessionMaterials
         materials={session?.materials?.filter((m) => m.included_in_session_materials_tab) || []}
-        sessionId={session?.id}
-        cohortId={id}
+        session={session}
         key="session_materials"
-        cohort={cohort}
-        onTrack={(eventData: string) =>
-          sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-        }
       />
       {/* )} */}
     </>,
     <NewSlides
       key={session?.id}
-      onTrack={(eventData: string) =>
-        sendAnalyticsData(sessionNumber, SESSION_EVENTS.slides_tab, eventData)
+      onTrack={() =>
+        sendAnalyticsData('Resources Page - Slides - Tab Opened', {
+          ...commonProperties
+        })
       }
+      sliderEvents={(eventName: string, slideNumber: number) => {
+        sendAnalyticsData(eventName, {
+          ...commonProperties,
+          'Slide Number': slideNumber
+        });
+      }}
       pdfUrl={session?.presentation_pdf_url}
       pdfDownloadable={session?.presentation_pdf_downloadable}
       isFree={isFree}
@@ -322,7 +332,8 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       <Summary
         key="summary"
         onTrack={(eventData: string) =>
-          sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
+          // sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
+          {}
         }
         innerContent={session?.summary || ''}
       />
@@ -426,11 +437,9 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             sessionZoomUrl={session.zoom_url}
             onClick={(sessionNumber: number) => {
               markAttendance('attended_live');
-              sendAnalyticsData(
-                sessionNumber,
-                SESSION_EVENTS.zoom_preview,
-                SESSION_EVENTS.opened_zoom_link
-              );
+              sendAnalyticsData('Resources Page - Session Preview - "Join Session" Selected', {
+                ...commonProperties
+              });
             }}
           />
         )}

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useRef, useState } from 'react';
+import { useRef, useState, useContext } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuPopover from 'components/MenuPopover';
 import { Icon } from '@iconify/react';
 import cancel from '@iconify/icons-ic/cancel';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { SessionListItem } from '../../../../@types/cohorts';
 
 type SessionRowProps = {
@@ -126,6 +127,7 @@ export default function SessionRow({
 }: SessionRowProps) {
   const sessionDate = moment(firstUpcomingDate(session.times)).add(1, 'hours');
   const isPastSession = sessionDate < moment();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const sessionTime = (date: string) => {
     if (isPastSession) {
@@ -149,7 +151,17 @@ export default function SessionRow({
           style={{ maxWidth: 'unset' }}
         />
       </ListIcon>
-      <div onClick={() => onClick(index)} style={{ width: '100%' }}>
+      <div
+        onClick={() => {
+          onClick(index);
+          sendAnalyticsData('Resources Page - Session Sidebar - Session Selected', {
+            'Session ID': session?.id,
+            'Session Number': session?.number,
+            'Session Name': session?.name
+          });
+        }}
+        style={{ width: '100%' }}
+      >
         <SessionDetails
           data-testid={`session-list-number-${index}`}
         >{`Session ${session.number} | ${session.length}`}</SessionDetails>

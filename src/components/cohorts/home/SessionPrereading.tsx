@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Box, Typography } from '@material-ui/core';
@@ -6,7 +6,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
-import { Session, SessionMaterial, Cohort } from '../../../@types/cohorts';
+import { Session, Cohort } from '../../../@types/cohorts';
 import axios from '../../../utils/axios';
 import {
   CircularLoader,
@@ -148,7 +148,6 @@ const SessionPrereading = ({
                     key={index}
                     number={index}
                     item={preReading}
-                    cohort={cohort}
                     onPreReadingClick={() =>
                       sendAnalyticsData(
                         activeSession.number,
@@ -156,7 +155,7 @@ const SessionPrereading = ({
                         'Opened Resource from Home-Tab'
                       )
                     }
-                    checkboxHanlder={(value: boolean) => onMark(preReading.id, value)}
+                    onShareSelected={() => {}}
                   />
                 ))}
               </StyledSessionPrereadingContainer>

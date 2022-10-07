@@ -6,9 +6,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/umd/Page/AnnotationLayer.css';
 import { pdfjs } from 'react-pdf';
 import { makeStyles } from '@material-ui/styles';
-import { SLIDE_EVENTS, trackGenericEvent } from 'utils/amplitude';
-import MarkCheckbox from './MarkCheckbox';
-import { Cohort, SessionMaterial } from '../../../@types/cohorts';
+import { SessionMaterial } from '../../../@types/cohorts';
 import { Navigation, ModalDocument, ModalPage } from '../sessions/Slides';
 import ResourceShareModal from '../sessions/ResourceShareModal';
 import { ShareReading } from '../sessions/Common';
@@ -20,9 +18,8 @@ type PreReadingRowProps = {
   item: SessionMaterial;
   sessionId: string;
   number: Number | undefined;
-  checkboxHanlder: Function;
   onPreReadingClick: Function;
-  cohort: Cohort;
+  onShareSelected: Function;
 };
 
 const StyledLink = styled('a')(({ theme }) => ({
@@ -111,10 +108,9 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 export default function PreReadingRow({
   item,
   sessionId,
-  checkboxHanlder,
   onPreReadingClick,
   number,
-  cohort
+  onShareSelected
 }: PreReadingRowProps) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -126,10 +122,6 @@ export default function PreReadingRow({
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
-
-  const triggerShareEvent = () => {
-    trackGenericEvent(cohort, 'Sessions Page - "Share Resource" Selected');
-  };
 
   return (
     <>
@@ -188,6 +180,7 @@ export default function PreReadingRow({
         onClose={setDisplayShareModal}
         item={item}
         sessionId={sessionId}
+        ontriggerShareEvent={onShareSelected}
       />
       <StyledBox className="main">
         <StyledBox className="inner">
@@ -218,11 +211,7 @@ export default function PreReadingRow({
           </StyledBox>
         </StyledBox>
         <StyledBox className="check-box">
-          <ShareReading
-            onShare={setDisplayShareModal}
-            ontriggerShareEvent={triggerShareEvent}
-            cohort={cohort}
-          />
+          <ShareReading onShare={setDisplayShareModal} ontriggerShareEvent={onShareSelected} />
         </StyledBox>
       </StyledBox>
     </>
