@@ -1,44 +1,35 @@
 import axios from 'utils/axios';
+import {
+  cohortInstructorEventsTimeline,
+  currentSessionEventsTimeline,
+  emptyCohortGenericProperties,
+  isSessionStarted,
+  nextSessionEventsTimeline,
+  previousSessionEventsTimeline,
+  sessionEventsDaysTimeline
+} from './eventTrackingHelper';
 
 export const setSegmentUserProperties = (user: any) => {
-  window.analytics?.identify(user?.slug, {
-    email: user?.email,
-    full_name: user?.displayName,
-    type: user?.type,
-    company: user?.current_company,
-    position: user?.current_position,
-    industry: user?.current_industry_category_selections?.join(),
-    live_attendance: `${user?.user_live_attendance_percentage}%`
+  window.analytics?.identify(user?.id, {
+    ID: user?.id,
+    Slug: user?.slug,
+    Email: user?.email,
+    'First Name': user?.first_name,
+    'Last Name': user?.last_name,
+    Attended: user?.attended_cohorts,
+    Attendance: `${user?.user_live_attendance_percentage}%`,
+    'Company ID': user?.current_company_id,
+    'Company Name': user?.current_company
   });
 };
 
-export const isSessionStarted = (eventProperties: any) => {
-  const localStorageTime = localStorage.getItem(
-    `sphere-latest-action-time-${eventProperties['Cohort Code']?.toLowerCase()}`
-  );
-  const oldTime = localStorageTime ? new Date(localStorageTime) : null;
-  const currentTime = new Date();
-
-  localStorage.setItem(
-    `sphere-latest-action-time-${eventProperties['Cohort Code']?.toLowerCase()}`,
-    currentTime.toString()
-  );
-  let differenceInTime = 0;
-  differenceInTime = oldTime ? Math.floor(Math.abs(+oldTime - +currentTime) / (1000 * 60 * 60)) : 0;
-  return !oldTime || differenceInTime >= 2;
-};
-
-export const sendAmplitudeData = async (eventType: string, eventProperties: any) => {
-  let updatedEventProperties = eventProperties;
-  if (!eventProperties['Cohort Code']) {
-    updatedEventProperties = {
-      ...eventProperties
-    };
+export const sendSegmentData = async (eventType: string, eventProperties: any) => {
+  if (isSessionStarted(eventProperties)) {
+    window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
-  if (isSessionStarted(updatedEventProperties)) {
-    window.analytics?.track('Sphere Portal - Session Started', updatedEventProperties);
-  }
+
   window.analytics?.track(eventType, eventProperties);
+
   if (eventType === 'Cohort Registration - Personal Info Page - Page Loaded') {
     try {
       const data = new FormData();
@@ -50,6 +41,7 @@ export const sendAmplitudeData = async (eventType: string, eventProperties: any)
       console.log(error);
     }
   }
+
   if (eventType === 'Cohort Registration - Send Invitation Page - Referral Invite Sent') {
     try {
       const data = new FormData();
@@ -63,23 +55,23 @@ export const sendAmplitudeData = async (eventType: string, eventProperties: any)
   }
 };
 
-const emptyCohortGenericProperties = {
-  'Cohort Name': 'none',
-  'Cohort Code': 'none',
-  'Cohort Intake': 'none',
-  'Cohort Intake Number': 'none',
-  'Days Before First Session': 'none',
-  'Days After First Session': 'none',
-  'Days After Last Session': 'none',
-  'Hours Before Next Session': 'none',
-  'Hours After Previous Session': 'none',
-  'Is During Session': 'none'
-};
+export const genericEventProperties = (cohort: any) =>
+  cohort
+    ? {
+        'Cohort ID': cohort?.id,
+        'Cohort Code': cohort?.code,
+        'Cohort Intake': cohort?.intake_name,
+        'Cohort Intake Number': cohort?.intake,
+        'Cohort Name': cohort?.name,
+        ...cohortInstructorEventsTimeline(cohort),
+        ...sessionEventsDaysTimeline(cohort),
+        ...previousSessionEventsTimeline(cohort),
+        ...nextSessionEventsTimeline(cohort),
+        ...currentSessionEventsTimeline(cohort)
+      }
+    : emptyCohortGenericProperties;
 
 export const trackEvent = (cohort: any, eventType: string, eventData?: any) => {
-  let eventProperties = eventData || null;
-  eventProperties = cohort
-    ? eventProperties
-    : { ...eventProperties, ...emptyCohortGenericProperties };
-  sendAmplitudeData(eventType, eventProperties);
+  const eventProperties = eventData || null;
+  sendSegmentData(eventType, { ...eventProperties, ...genericEventProperties(cohort) });
 };
