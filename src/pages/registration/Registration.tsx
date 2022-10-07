@@ -12,12 +12,12 @@ import {
   ONBOARDING_EVENTS,
   REFERRAL_EVENTS,
   REGISTRATION_EVENTS,
-  setSegmentUserProperties,
   trackOnboardingEvent,
   trackReferralEvent,
   trackRegistrationEvent
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
+import { setSegmentUserProperties } from 'utils/eventTracking';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -252,14 +252,7 @@ export default function Registration() {
             enqueueSnackbar('Application Submitted', { variant: 'success' });
             updateUserData({ ...user, ...values, slug: updatedUser?.slug });
             if (!isAuthenticated) {
-              setSegmentUserProperties({
-                slug: updatedUser?.slug,
-                email: updatedUser?.email,
-                displayName: updatedUser?.full_name,
-                type: updatedUser?.type,
-                current_company: updatedUser?.company,
-                current_industry_category_selections: updatedUser?.industry_category_selection
-              });
+              setSegmentUserProperties(updatedUser);
             }
             trackReferralFlowEvents(
               'Cohort Registration - Personal Info Page - Details Submitted',
