@@ -247,9 +247,18 @@ export type AmplitudeEventsTimeline = {
   start_date: string;
   end_date: string;
   first_session_date: string;
-  next_session_date: string;
-  previous_session_date: string;
+  last_session_date: string;
+  next_session: SessionTimeline;
+  previous_session: SessionTimeline;
+  current_session: SessionTimeline;
   session_times: string[];
+};
+
+export type SessionTimeline = {
+  id?: string;
+  name?: string;
+  number?: string;
+  date?: string;
 };
 
 export type ReferralCode = {
