@@ -252,11 +252,12 @@ export default function Registration() {
             ...values
           })
           .then((res) => {
-            const { updatedUser } = res.data;
+            const updatedUser = res.data.user;
             enqueueSnackbar('Application Submitted', { variant: 'success' });
             updateUserData({ ...user, ...values, slug: updatedUser?.slug });
             if (!isAuthenticated) {
               setSegmentUserProperties({
+                id: updatedUser?.id,
                 slug: updatedUser?.slug,
                 email: updatedUser?.email,
                 displayName: updatedUser?.full_name,

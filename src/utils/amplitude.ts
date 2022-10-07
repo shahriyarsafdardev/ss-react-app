@@ -83,7 +83,8 @@ export const sendAmplitudeData = async (eventType: string, eventProperties: any)
 };
 
 export const setSegmentUserProperties = (user: any) => {
-  window.analytics?.identify(user?.slug, {
+  window.analytics?.identify(user?.id, {
+    slug: user?.slug,
     email: user?.email,
     full_name: user?.displayName,
     type: user?.type,

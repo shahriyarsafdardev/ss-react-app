@@ -137,6 +137,7 @@ export type AccountBillingFormikProps = FormikProps<{
 }>;
 
 export type ParticipantProfile = {
+  id: string;
   first_name: string;
   last_name: string;
   linkedin_url: string;
