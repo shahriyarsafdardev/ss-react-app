@@ -37,6 +37,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 export type UserType = {
+  id: string;
   first_name?: string;
   last_name?: string;
   linkedin_url?: string;
@@ -49,6 +50,10 @@ export type UserType = {
   pre_release: boolean;
   slug: string;
   full_name?: string;
+  current_company?: string;
+  current_company_id?: string;
+  attendance?: string;
+  attended_cohorts?: string[];
 };
 
 export type CohortType = {
@@ -113,6 +118,7 @@ export default function Registration() {
   const { isAuthenticated } = useAuth();
 
   const [user, setUser] = useState<UserType>({
+    id: '',
     email: url.get('email') || '',
     referrer: url.get('referrer') || '',
     acceptedTerms: false,
@@ -197,11 +203,14 @@ export default function Registration() {
         referrer_domain
       })
       .then((res) => {
-        res.data &&
+        if (res.data.user) {
           setUser({
             ...user,
             ...res.data.user
           });
+          !REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+            setSegmentUserProperties(res.data.user);
+        }
         if (res.data.company) {
           setCompany({
             ...res.data.company
