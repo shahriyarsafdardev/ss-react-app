@@ -78,7 +78,7 @@ export default function PeersTab() {
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (cohort && peers) {
+    if (cohort && peers?.length > 0) {
       trackEvent(cohort, 'Networking Page - Page Loaded', {});
     }
   }, [cohort, peers]);

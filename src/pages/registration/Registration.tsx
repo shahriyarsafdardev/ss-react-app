@@ -8,12 +8,6 @@ import { Box, Stack, Button, Container, Typography, Avatar } from '@material-ui/
 import { KeyboardBackspace } from '@material-ui/icons';
 import LoadingScreen from 'components/LoadingScreen';
 import { LoadingButton } from '@material-ui/lab';
-import {
-  ONBOARDING_EVENTS,
-  REFERRAL_EVENTS,
-  trackOnboardingEvent,
-  trackReferralEvent
-} from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import InvitePeersForm from './InvitePeersForm';
@@ -153,33 +147,12 @@ export default function Registration() {
 
   const trackRegistrationEvent = (eventType: string, params?: any) => {
     const eventData = {
-      'Referrer Code': referrer_code,
-      Source: url.get('source') || '',
+      Referrer: referrer_code,
+      Source: ref_source,
       'Cohort Price': cohort.price || 0,
       ...params
     };
     trackEvent(cohort, eventType, eventData);
-  };
-
-  const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(cohort, ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.event]: 'Registered',
-      [ONBOARDING_EVENTS.category]: 'Registered',
-      [ONBOARDING_EVENTS.description]: 'User has registered on portal.'
-    });
-  };
-
-  const triggerReferralEvent = () => {
-    trackReferralEvent(
-      REFERRAL_EVENTS.event_type,
-      {
-        [REFERRAL_EVENTS.event]: 'Registered',
-        [REFERRAL_EVENTS.category]: 'referral link',
-        [REFERRAL_EVENTS.description]: 'Registered via referral link',
-        [REFERRAL_EVENTS.referrer_code]: referrer_code
-      },
-      cohort
-    );
   };
 
   const createCompleteEnrollment = async (email: string, values?: any) => {
@@ -258,10 +231,6 @@ export default function Registration() {
               'Registrant LinkedIn URL': values.linkedin_url,
               'Registrant Email': user.email
             });
-            triggerOnboardingEvent();
-            if (alumni) {
-              triggerReferralEvent();
-            }
           });
       } catch (error) {
         enqueueSnackbar('Application Failed', { variant: 'error' });

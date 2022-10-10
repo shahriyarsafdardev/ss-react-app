@@ -18,13 +18,6 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
-import {
-  ONBOARDING_EVENTS,
-  REFERRAL_EVENTS,
-  trackOnboardingEvent,
-  trackReferralEvent
-} from 'utils/amplitude';
-import { useLocation } from 'react-router';
 import { CohortType } from './Registration';
 
 type CardType = {
@@ -75,9 +68,6 @@ export default function CardDetails({
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
   const [open, setOpen] = useState(false);
-  const url = new URLSearchParams(useLocation().search);
-  const alumni = url.get('alumni') || false;
-  const referrer_code = url.get('referrer') || '';
 
   useEffect(() => {
     trackRegistrationEvent('Cohort Registration - Payment Info Page - Page Loaded');
@@ -100,27 +90,6 @@ export default function CardDetails({
       "Cohort Registration - Payment Info Page - 'Yes, I would like to pay later' Selected"
     );
     setStep(4);
-  };
-
-  const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(cohort, ONBOARDING_EVENTS.event_type, {
-      [ONBOARDING_EVENTS.event]: 'Payment Made',
-      [ONBOARDING_EVENTS.category]: 'Payment Made',
-      [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
-    });
-  };
-
-  const triggerReferralEvent = () => {
-    trackReferralEvent(
-      REFERRAL_EVENTS.event_type,
-      {
-        [REFERRAL_EVENTS.event]: 'Payment Made',
-        [REFERRAL_EVENTS.category]: 'referral link',
-        [REFERRAL_EVENTS.description]: 'Payment Made via referral link',
-        [REFERRAL_EVENTS.referrer_code]: referrer_code
-      },
-      cohort
-    );
   };
 
   const ValidationSchema = Yup.object().shape({
@@ -160,11 +129,7 @@ export default function CardDetails({
           })
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
-            triggerOnboardingEvent();
             trackRegistrationEvent('Cohort Registration - Payment Info Page - Submitted Card');
-            if (alumni) {
-              triggerReferralEvent();
-            }
             setStep(4);
           })
           .catch((error: any) => {

@@ -2,12 +2,11 @@ import { FormControl, TextField, Button, Stack, styled, Box } from '@material-ui
 import { LoadingButton } from '@material-ui/lab';
 import axios from 'utils/axios';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { Cohort } from '../../@types/cohorts';
-import { CohortType, UserType } from './Registration';
+import { CohortType } from './Registration';
 import InvitesList from './InvitesList';
 
 export type ReferralTypeUser = {
@@ -89,22 +88,6 @@ function InvitePeersForm({
     onContinue();
   };
 
-  const getRegistrationFlow = () => {
-    if (account) {
-      return 'Enterprise contract';
-    }
-    if (company) {
-      return 'No enterprise contract BUT have sent employees to cohorts in the past';
-    }
-    if (waitListed) {
-      return 'Waitlist - No Price';
-    }
-    if (preRelease) {
-      return 'Waitlist with Price';
-    }
-    return "No enterprise contract and haven't sent anyone to cohorts in the past";
-  };
-
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     fullName: Yup.string().required('Full Name is required')
@@ -128,19 +111,6 @@ function InvitePeersForm({
           setInvites([...invites, { email: values.email, fullName: values.fullName }]);
           resetForm();
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
-          trackReferralEvent(
-            REFERRAL_EVENTS.event_type,
-            {
-              [REFERRAL_EVENTS.event]: 'email invitation sent',
-              [REFERRAL_EVENTS.category]: 'referral link',
-              [REFERRAL_EVENTS.description]: 'Send referral link via email',
-              [REFERRAL_EVENTS.referrer_code]: referrer_code,
-              [REFERRAL_EVENTS.invite_email]: values.email,
-              [REFERRAL_EVENTS.invite_full_name]: values.fullName,
-              [REFERRAL_EVENTS.registration_flow]: getRegistrationFlow()
-            },
-            cohort
-          );
           trackRegistrationEvent(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
             { 'Referee Email': values.email, 'Referee Name': values.fullName }
