@@ -62,7 +62,7 @@ export default function CardDetails({
   last_name,
   setStep,
   payLaterMessage,
-  trackReferralFlowEvents
+  trackRegistrationEvent
 }: {
   cohort: CohortType;
   first_name?: string;
@@ -70,7 +70,7 @@ export default function CardDetails({
   enrollmentID?: string;
   setStep: Function;
   payLaterMessage: string;
-  trackReferralFlowEvents: Function;
+  trackRegistrationEvent: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
@@ -80,11 +80,25 @@ export default function CardDetails({
   const referrer_code = url.get('referrer') || '';
 
   useEffect(() => {
-    trackReferralFlowEvents('Cohort Registration - Payment Info Page - Page Loaded');
+    trackRegistrationEvent('Cohort Registration - Payment Info Page - Page Loaded');
   }, []);
 
   const handlePayLater = () => {
-    trackReferralFlowEvents("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
+    trackRegistrationEvent("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
+    setOpen(true);
+  };
+
+  const handlePayNow = () => {
+    trackRegistrationEvent(
+      "Cohort Registration - Payment Info Page - 'No, I would like to pay now' Selected"
+    );
+    setOpen(false);
+  };
+
+  const handlePayLaterConfirmation = () => {
+    trackRegistrationEvent(
+      "Cohort Registration - Payment Info Page - 'Yes, I would like to pay later' Selected"
+    );
     setStep(4);
   };
 
@@ -147,9 +161,7 @@ export default function CardDetails({
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
             triggerOnboardingEvent();
-            trackReferralFlowEvents('Cohort Registration - Payment Info Page - Submitted Card', {
-              amount_paid: cohort?.price
-            });
+            trackRegistrationEvent('Cohort Registration - Payment Info Page - Submitted Card');
             if (alumni) {
               triggerReferralEvent();
             }
@@ -223,7 +235,7 @@ export default function CardDetails({
             fullWidth
             variant="outlined"
             color="primary"
-            onClick={handlePayLater}
+            onClick={handlePayLaterConfirmation}
             data-testid="pay-later"
           >
             Yes, I would like to pay later
@@ -233,7 +245,7 @@ export default function CardDetails({
             variant="contained"
             color="primary"
             data-testid="pay-now"
-            onClick={() => setOpen(false)}
+            onClick={handlePayNow}
           >
             No, I would like to pay now
           </StyledButton>
@@ -335,7 +347,7 @@ export default function CardDetails({
               type="submit"
               variant="outlined"
               loading={isSubmitting}
-              onClick={() => setOpen(true)}
+              onClick={handlePayLater}
               id="btn-submit"
               data-testid="pay-later-btn"
             >
