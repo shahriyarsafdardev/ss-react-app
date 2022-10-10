@@ -15,8 +15,7 @@ import {
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
 import { Modal } from 'components/animate';
-import { SESSION_EVENTS } from 'utils/amplitude';
-import { CohortContext, SessionContext } from 'contexts/CohortContext';
+import { CohortContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import ReactPlayer from 'react-player';
@@ -199,7 +198,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   const dispatch = useDispatch();
   const feedbacks = useSelector((state: RootState) => state.sessionFeedback);
   const { id } = useContext(CohortContext);
-  const { sessionNumber } = useContext(SessionContext);
+  const [playing, setPlaying] = useState(false);
   const params = new URLSearchParams(window.location.search);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const feedback = params.get('open_feedback');
@@ -207,13 +206,22 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   const [modalState, setModal] = useState(
     !feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true')
   );
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-  const videoRef = useRef<any>();
+  const videoRefVimeo = useRef<any>(null);
+  const videoRefS3 = useRef<any>(null);
 
   const [loading, setLoading] = useState(true);
+
+  const handlePlayTimeStamp = (seconds: string) => {
+    if (videoRefVimeo.current) {
+      videoRefVimeo.current.seekTo(Number(seconds));
+      setPlaying(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (videoRefS3.current) {
+      videoRefS3.current.currentTime = Number(seconds);
+      videoRefS3.current.play();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const useStyles = makeStyles((theme: Theme) => ({
     hidden: {
@@ -282,9 +290,11 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     <>
       <Description
         key="description"
-        onTrack={
-          (eventData: string) => {}
-          // sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
+        onTrack={(eventName: string, eventData: any) =>
+          sendAnalyticsData(eventName, {
+            ...commonProperties,
+            ...eventData
+          })
         }
         innerContent={session?.description || ''}
         resourcesPresent={session?.materials && session?.materials?.length > 0}
@@ -331,9 +341,10 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     tabsContent.push(
       <Summary
         key="summary"
-        onTrack={(eventData: string) =>
-          // sendAnalyticsData(sessionNumber, SESSION_EVENTS.summary_tab, eventData)
-          {}
+        onTrack={() =>
+          sendAnalyticsData('Resources Page - Summary - Tab Opened', {
+            ...commonProperties
+          })
         }
         innerContent={session?.summary || ''}
       />
@@ -345,8 +356,8 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       <SessionTimestamps
         timestamps={session?.timestamps || []}
         key="session_timestamps"
-        videoReference={videoRef}
         sessionId={session?.id}
+        handlePlayTimeStamp={(time: any) => handlePlayTimeStamp(time)}
       />
     );
   }
@@ -386,9 +397,30 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
                 <ReactPlayer
                   controls={true}
                   url={recording}
+                  ref={videoRefVimeo}
+                  playing={playing}
                   className={loading ? classes.hidden : classes.shown}
                   onReady={() => setLoading(false)}
                   style={{ maxWidth: '100%' }}
+                  onStart={() => markAttendance('watched_recording')}
+                  onPause={() => {
+                    sendAnalyticsData('Resources Page - Recording Player - Play Pause', {
+                      ...commonProperties,
+                      Timepoint: videoRefVimeo.current?.getCurrentTime()
+                    });
+                  }}
+                  onSeek={() =>
+                    sendAnalyticsData('Resources Page - Recording Player - Timepoint Selected', {
+                      ...commonProperties,
+                      Timepoint: videoRefVimeo.current?.getCurrentTime()
+                    })
+                  }
+                  onPlay={() =>
+                    sendAnalyticsData('Resources Page - Recording Player - Play Clicked', {
+                      ...commonProperties,
+                      Timepoint: videoRefVimeo.current?.getCurrentTime() || 0
+                    })
+                  }
                 />
               </>
             ) : (
@@ -399,27 +431,25 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
                   e.preventDefault();
                   return false;
                 }}
+                ref={videoRefS3}
                 onPlay={(e) => {
                   markAttendance('watched_recording');
-                  sendAnalyticsData(
-                    sessionNumber,
-                    SESSION_EVENTS.recording_video_player,
-                    'Clicked Play'
-                  );
+                  sendAnalyticsData('Resources Page - Recording Player - Play Clicked', {
+                    ...commonProperties,
+                    Timepoint: videoRefS3.current?.currentTime
+                  });
                 }}
                 onPause={(e) => {
-                  sendAnalyticsData(
-                    sessionNumber,
-                    SESSION_EVENTS.recording_video_player,
-                    'Clicked Pause'
-                  );
+                  sendAnalyticsData('Resources Page - Recording Player - Play Pause', {
+                    ...commonProperties,
+                    Timepoint: videoRefS3.current?.currentTime
+                  });
                 }}
                 onSeeked={(e) => {
-                  sendAnalyticsData(
-                    sessionNumber,
-                    SESSION_EVENTS.recording_video_player,
-                    'Selected New Timepoint'
-                  );
+                  sendAnalyticsData('Resources Page - Recording Player - Timepoint Selected', {
+                    ...commonProperties,
+                    Timepoint: videoRefS3.current?.currentTime
+                  });
                 }}
                 controls
                 controlsList="nodownload"

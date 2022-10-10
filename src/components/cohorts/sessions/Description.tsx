@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { RESOURCES_EVENTS } from 'utils/amplitude';
 import Message from '../../Message';
 
 type DescriptionProps = {
@@ -24,7 +23,7 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
 export default function Description({ innerContent, onTrack, resourcesPresent }: DescriptionProps) {
   useEffect(() => {
     if (innerContent) {
-      onTrack(RESOURCES_EVENTS.opened);
+      onTrack('Resources Page - Description - Tab Opened', {});
 
       const resources = document.getElementById('resources')?.getElementsByTagName('a');
 
@@ -32,7 +31,7 @@ export default function Description({ innerContent, onTrack, resourcesPresent }:
         const resourcesArray = Array.from(resources);
         resourcesArray.forEach((el) => {
           el.addEventListener('click', () => {
-            onTrack(RESOURCES_EVENTS.opened_link);
+            onTrack('Resources Page - Description - Link Opened', { Link: el?.href });
           });
         });
       }

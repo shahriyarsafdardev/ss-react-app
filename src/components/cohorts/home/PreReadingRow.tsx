@@ -18,8 +18,7 @@ type PreReadingRowProps = {
   item: SessionMaterial;
   sessionId: string;
   number: Number | undefined;
-  onPreReadingClick: Function;
-  onShareSelected: Function;
+  onPrereadingEvent: Function;
 };
 
 const StyledLink = styled('a')(({ theme }) => ({
@@ -108,24 +107,34 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 export default function PreReadingRow({
   item,
   sessionId,
-  onPreReadingClick,
-  number,
-  onShareSelected
+  onPrereadingEvent,
+  number
 }: PreReadingRowProps) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
+  const [eventTriggered, setEventTriggered] = useState(false);
   const classes = useStyles();
   const [displayShareModal, setDisplayShareModal] = useState(false);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    if (!eventTriggered) {
+      onPrereadingEvent('Resources Page - Resources - Resource Opened');
+      setEventTriggered(true);
+    }
   }
 
   return (
     <>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setEventTriggered(false);
+        }}
+      >
         <div data-testid="pre-reading-pdf-slides">
           <ModalDocument
             className={classes.modalView}
@@ -180,7 +189,7 @@ export default function PreReadingRow({
         onClose={setDisplayShareModal}
         item={item}
         sessionId={sessionId}
-        ontriggerShareEvent={onShareSelected}
+        ontriggerShareEvent={onPrereadingEvent}
       />
       <StyledBox className="main">
         <StyledBox className="inner">
@@ -190,7 +199,10 @@ export default function PreReadingRow({
             {item.is_private ? (
               <StyledButton
                 data-testid={`prereading-button-${number}`}
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setOpen(true);
+                  onPrereadingEvent('Resources Page - Resources - "Open" Selected');
+                }}
               >
                 {item.action_text}
               </StyledButton>
@@ -203,7 +215,7 @@ export default function PreReadingRow({
                     : item.action_url
                 }
                 target="_blank"
-                onClick={() => onPreReadingClick()}
+                onClick={() => onPrereadingEvent('Resources Page - Resources - "Open" Selected')}
               >
                 {item.action_text}
               </StyledLink>
@@ -211,7 +223,7 @@ export default function PreReadingRow({
           </StyledBox>
         </StyledBox>
         <StyledBox className="check-box">
-          <ShareReading onShare={setDisplayShareModal} ontriggerShareEvent={onShareSelected} />
+          <ShareReading onShare={setDisplayShareModal} ontriggerShareEvent={onPrereadingEvent} />
         </StyledBox>
       </StyledBox>
     </>

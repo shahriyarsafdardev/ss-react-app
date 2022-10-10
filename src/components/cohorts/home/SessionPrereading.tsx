@@ -148,14 +148,13 @@ const SessionPrereading = ({
                     key={index}
                     number={index}
                     item={preReading}
-                    onPreReadingClick={() =>
+                    onPrereadingEvent={() =>
                       sendAnalyticsData(
                         activeSession.number,
                         HOME_PAGE_EVENTS.to_do_list,
                         'Opened Resource from Home-Tab'
                       )
                     }
-                    onShareSelected={() => {}}
                   />
                 ))}
               </StyledSessionPrereadingContainer>

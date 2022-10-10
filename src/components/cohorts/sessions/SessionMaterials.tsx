@@ -49,17 +49,7 @@ export default function SessionMaterials({ materials, session }: SessionMaterial
           <p style={{ marginBottom: '15px', fontWeight: 'bold' }}>{category}s:</p>
           {grouped[category].map((preReading: SessionMaterial, index: number) => (
             <PreReadingRow
-              onPreReadingClick={() => {
-                sendAnalyticsData('Resources Page - Resources - "Open" Selected', {
-                  ...commonProperties,
-                  'Resource ID': preReading.id,
-                  'Resource Number': preReading.index,
-                  'Resource Name': preReading.name,
-                  'Resource Author': preReading.info_text,
-                  'Resource Link': preReading.action_url
-                });
-              }}
-              onShareSelected={(eventName: string, customEvent?: any) => {
+              onPrereadingEvent={(eventName: string, customEvent?: any) => {
                 sendAnalyticsData(eventName, {
                   ...customEvent,
                   ...commonProperties,

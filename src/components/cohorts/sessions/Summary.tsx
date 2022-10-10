@@ -17,7 +17,7 @@ const SummaryContainer = styled(Container)((props) => ({
 export default function Summary({ innerContent, onTrack }: SummaryProps) {
   useEffect(() => {
     if (innerContent) {
-      onTrack('Opened Tab');
+      onTrack();
     }
   }, [innerContent]);
 
