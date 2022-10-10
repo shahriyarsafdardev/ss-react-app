@@ -17,7 +17,7 @@ export const setSegmentUserProperties = (user: any) => {
     'First Name': user?.first_name,
     'Last Name': user?.last_name,
     Attended: user?.attended_cohorts,
-    Attendance: `${user?.user_live_attendance_percentage}%`,
+    Attendance: `${user?.attendance}%`,
     'Company ID': user?.current_company_id,
     'Company Name': user?.current_company
   });
