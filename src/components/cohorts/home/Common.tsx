@@ -6,9 +6,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import moment from 'moment';
 import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
-import { ONBOARDING_EVENTS } from 'utils/amplitude';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext, useEffect } from 'react';
-import { OnboardingContext } from 'contexts/OnboardingContext';
 import { Cohort, Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
@@ -172,18 +171,18 @@ export const CalendarInstructionsModal = ({
   handleSubmit: Function;
 }) => {
   const classes = useStyles();
-  const { triggerOnboardingEvent } = useContext(OnboardingContext);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
     modalState &&
-      triggerOnboardingEvent('Cohort Onboarding - Calendar Modal - Page Loaded', {
-        [ONBOARDING_EVENTS.calendar_url]: cohort?.calendar_invite_url
+      sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+        'Calendar URL': cohort?.calendar_invite_url
       });
   }, [modalState]);
 
   const onNeedHandler = () => {
-    triggerOnboardingEvent('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
-      [ONBOARDING_EVENTS.calendar_url]: cohort?.calendar_invite_url
+    sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
+      'Calendar URL': cohort?.calendar_invite_url
     });
   };
 

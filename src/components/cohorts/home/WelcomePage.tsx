@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { trackOnboardingEvent } from 'utils/amplitude';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
 import ReactConfetti from 'react-confetti';
 import { Cohort } from '../../../@types/cohorts';
@@ -115,10 +115,10 @@ export default function WelcomePage({
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const [windowSize] = useState(getWindowSize());
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
-    trackOnboardingEvent(cohort, 'Cohort Onboarding - Welcome Page - Page Loaded');
-
+    sendAnalyticsData('Cohort Onboarding - Welcome Page - Page Loaded', {});
     setTimeout(() => {
       setConfetti(0);
     }, 3000);
@@ -126,10 +126,7 @@ export default function WelcomePage({
 
   const handleGettingReadyButton = () => {
     setActiveStepper(1);
-    trackOnboardingEvent(
-      cohort,
-      'Cohort Onboarding - Welcome Page - "Get Ready To Learn" Selected'
-    );
+    sendAnalyticsData('Cohort Onboarding - Welcome Page - "Get Ready To Learn" Selected', {});
   };
 
   const ReadyToLearnButton = () => (

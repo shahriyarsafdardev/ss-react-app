@@ -5,8 +5,7 @@ import axios from 'utils/axios';
 import { styled } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { dispatch, RootState, useSelector } from 'redux/store';
-
-import { ONBOARDING_EVENTS } from 'utils/amplitude';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
 import { OnboardingContext } from 'contexts/OnboardingContext';
 import { UserInfoForm, CompanyInfoForm, RoleInfoForm, HouseKeepingForm } from './info-forms';
@@ -121,7 +120,6 @@ export default function OnboardingModal({
   setOnboardingModalState: Function;
   onSubmit: Function;
 }) {
-  const { triggerOnboardingEvent } = useContext(OnboardingContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [homeConfig, setHomeConfig] = useState<HomeResponse | undefined>(undefined);
   const { user, updateProfile } = useAuth();
@@ -134,6 +132,7 @@ export default function OnboardingModal({
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
     first_name: '',
@@ -274,7 +273,8 @@ export default function OnboardingModal({
         setOnboardingModalState(false);
         dispatch(updateOnboardingStatus(cohort_id));
         if (activeStep === 4) {
-          onboardingEvent('Cohort Onboarding - Profile Modal - Profile Completed');
+          sendAnalyticsData('Cohort Onboarding - Profile Modal - Profile Complete', {});
+          onSubmit();
         }
       })
       .catch((err) => {
@@ -285,10 +285,10 @@ export default function OnboardingModal({
   };
 
   const onboardingEvent = (eventName: string) => {
-    triggerOnboardingEvent(eventName, {
-      [ONBOARDING_EVENTS.current_page]: activeStep,
-      [ONBOARDING_EVENTS.current_page_title]: headContent(),
-      [ONBOARDING_EVENTS.current_page_description]: headContentDescription()
+    sendAnalyticsData(eventName, {
+      'Current Page': activeStep,
+      'Current Page Title': headContent(),
+      'Current Page Description': headContentDescription()
     });
   };
 
@@ -367,7 +367,6 @@ export default function OnboardingModal({
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
-            handleNextButton();
           }}
           infoDetails={{
             current_understanding: onboardingData.cohort_understanding,

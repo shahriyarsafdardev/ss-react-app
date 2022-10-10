@@ -1,11 +1,10 @@
 import { Divider, Stack, styled, Theme, Typography } from '@material-ui/core';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
-import { ONBOARDING_EVENTS, trackGenericEvent, trackOnboardingEvent } from 'utils/amplitude';
-import { OnboardingContext } from 'contexts/OnboardingContext';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useDispatch } from '../../../redux/store';
 import { markOnboardingStep } from '../../../redux/slices/cohort';
 import { OnboardingSectionRow, SectionContainer, CalendarInstructionsModal } from './Common';
@@ -84,8 +83,10 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   const [activeStep, setActiveStep] = useState(0);
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [onboardingModalState, setOnboardingModalState] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const { user } = useAuth();
   const [modalState, setModalState] = useState(false);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -126,48 +127,70 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   };
 
   useEffect(() => {
-    trackGenericEvent(cohort, 'Cohort Onboarding - Get Ready Page - Page Loaded');
+    if (!pageLoaded) {
+      sendAnalyticsData('Cohort Onboarding - Get Ready Page - Page Loaded', {});
+      setPageLoaded(true);
+    }
     stepStatus();
   }, [onboarding_data]);
 
-  const triggerOnboardingEvent = (eventName: string, eventData: any) => {
-    trackOnboardingEvent(cohort, eventName, eventData);
-  };
-
-  const triggerStepStartedEvent = (stepNumber: number, heading: string, subHeading: string) => {
-    trackOnboardingEvent(cohort, 'Cohort Onboarding - Get Ready Page - Step Started', {
-      [ONBOARDING_EVENTS.step]: stepNumber,
-      [ONBOARDING_EVENTS.step_main_description]: heading,
-      [ONBOARDING_EVENTS.step_secondary_description]: subHeading
+  const handleCalendarInstructions = () => {
+    dispatch(markOnboardingStep(cohort.id, 'sessions_added_to_calendar'));
+    sendAnalyticsData(`Cohort Onboarding - Calendar Modal - "I've added the sessions" Selected`, {
+      'Calendar URL': cohort.calendar_invite_url
+    });
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 2,
+      'Step Main Description': 'Add the sessions to your calendar',
+      'Step Secondary Description': "So you don't forget any live classes"
     });
   };
 
-  const handleCalendarInstructions = () => {
-    dispatch(markOnboardingStep(cohort.id, 'sessions_added_to_calendar'));
-    triggerOnboardingEvent(
-      'Cohort Onboarding - Calendar Modal - "I have added the sessions" Selected',
-      {
-        [ONBOARDING_EVENTS.calendar_url]: cohort?.calendar_invite_url
-      }
-    );
-  };
-
   const handleIntroductionCompleted = () => {
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+      'Step Number': 3,
+      'Step Main Description': 'Introduce yourselves to your peers',
+      'Step Secondary Description':
+        'To connect with the like minded data professionals also in this cohort'
+    });
     dispatch(markOnboardingStep(cohort.id, 'messaging_tab_opened'));
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 3,
+      'Step Main Description': 'Introduce yourselves to your peers',
+      'Step Secondary Description':
+        'To connect with the like minded data professionals also in this cohort'
+    });
     navigate(`${PATH_DASHBOARD.cohorts.messaging(cohort.id)}`);
   };
 
   const handleDiveIntoResources = () => {
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+      'Step Number': 4,
+      'Step Main Description': 'Dive into the resources',
+      'Step Secondary Description': 'Released in 15 days'
+    });
     dispatch(markOnboardingStep(cohort.id, 'resources_invoked'));
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 4,
+      'Step Main Description': 'Dive into the resources',
+      'Step Secondary Description': 'Released in 15 days'
+    });
   };
 
   return (
-    <OnboardingContext.Provider value={{ triggerOnboardingEvent }}>
+    <>
       {!hasOnboarded && user?.type === 'learner' && (
         <OnboardingModal
           onboardingModalState={onboardingModalState}
           setOnboardingModalState={setOnboardingModalState}
-          onSubmit={() => {}}
+          onSubmit={() =>
+            sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+              'Step Number': 1,
+              'Step Main Description': `Tell ${cohort?.host_names} about yourself`,
+              'Step Secondary Description':
+                'We use the information you share to provide a personalized learning experience'
+            })
+          }
         />
       )}
       <CalendarInstructionsModal
@@ -190,11 +213,12 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             onSubmit={() => {
               setHasOnboarded(false);
               setOnboardingModalState(true);
-              triggerStepStartedEvent(
-                1,
-                `Tell ${cohort?.host_names} about yourself`,
-                'We use the information you share to provide a personalized learning experience'
-              );
+              sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+                'Step Number': 1,
+                'Step Main Description': `Tell ${cohort?.host_names} about yourself`,
+                'Step Secondary Description':
+                  'We use the information you share to provide a personalized learning experience'
+              });
             }}
           />
           <StyledDivider />
@@ -206,11 +230,11 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             classes={classes}
             onSubmit={() => {
               setModalState(true);
-              triggerStepStartedEvent(
-                2,
-                'Add the sessions to your calendar',
-                "So you don't forget any live classes"
-              );
+              sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+                'Step Number': 2,
+                'Step Main Description': 'Add the sessions to your calendar',
+                'Step Secondary Description': "So you don't forget any live classes"
+              });
             }}
           />
           <StyledDivider />
@@ -219,14 +243,7 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             heading="Introduce yourselves to your peers"
             subHeading="To connect with the like minded data professionals also in this cohort"
             status={getActiveStatus(3)}
-            onSubmit={() => {
-              handleIntroductionCompleted();
-              triggerStepStartedEvent(
-                3,
-                'Introduce yourselves to your peers',
-                'To connect with the like minded data professionals also in this cohort'
-              );
-            }}
+            onSubmit={() => handleIntroductionCompleted()}
             classes={classes}
           />
           <StyledDivider />
@@ -235,15 +252,12 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             heading="Dive into the resources"
             subHeading="Released in 15 days"
             status={getActiveStatus(4)}
-            onSubmit={() => {
-              handleDiveIntoResources();
-              triggerStepStartedEvent(4, 'Dive into the resources', 'Released in 15 days');
-            }}
+            onSubmit={() => handleDiveIntoResources()}
             classes={classes}
           />
           <StyledDivider />
         </Stack>
       </SectionContainer>
-    </OnboardingContext.Provider>
+    </>
   );
 }
