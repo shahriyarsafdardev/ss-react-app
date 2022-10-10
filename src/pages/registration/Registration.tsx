@@ -11,13 +11,11 @@ import { LoadingButton } from '@material-ui/lab';
 import {
   ONBOARDING_EVENTS,
   REFERRAL_EVENTS,
-  REGISTRATION_EVENTS,
   trackOnboardingEvent,
-  trackReferralEvent,
-  trackRegistrationEvent
+  trackReferralEvent
 } from 'utils/amplitude';
 import useAuth from 'hooks/useAuth';
-import { setSegmentUserProperties } from 'utils/eventTracking';
+import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import InvitePeersForm from './InvitePeersForm';
 import UserForm from './UserForm';
 import CardDetails from './CardDetails';
@@ -147,23 +145,14 @@ export default function Registration() {
     amplitude_events_timeline: null
   });
 
-  const trackReferralFlowEvents = (eventType: string, params?: any) => {
+  const trackRegistrationEvent = (eventType: string, params?: any) => {
     const eventData = {
-      [REGISTRATION_EVENTS.company_is_enterprise_customer]:
-        params?.is_enterprise_customer === undefined ? null : params?.is_enterprise_customer,
-      [REGISTRATION_EVENTS.company_has_sphere_alumni]:
-        params?.has_sphere_alumni === undefined ? null : params?.has_sphere_alumni,
-      [REGISTRATION_EVENTS.first_name]: params?.first_name || null,
-      [REGISTRATION_EVENTS.last_name]: params?.last_name || null,
-      [REGISTRATION_EVENTS.linkedIn_url]: params?.linkedin_url || null,
-      [REGISTRATION_EVENTS.referree_name]: params?.referree_name || null,
-      [REGISTRATION_EVENTS.referree_email]: params?.referree_email || null,
-      [REGISTRATION_EVENTS.amount_paid]: params?.amount_paid || null,
-      [REGISTRATION_EVENTS.registrant_email]: user.email,
-      [REGISTRATION_EVENTS.source]: url.get('source') || '',
-      [REGISTRATION_EVENTS.price]: cohort.price
+      'Referrer Code': referrer_code,
+      Source: url.get('source') || '',
+      'Cohort Price': cohort.price || 0,
+      ...params
     };
-    trackRegistrationEvent(cohort, eventType, eventData);
+    trackEvent(cohort, eventType, eventData);
   };
 
   const triggerOnboardingEvent = () => {
@@ -254,14 +243,12 @@ export default function Registration() {
             if (!isAuthenticated) {
               setSegmentUserProperties(updatedUser);
             }
-            trackReferralFlowEvents(
-              'Cohort Registration - Personal Info Page - Details Submitted',
-              {
-                first_name: values.first_name,
-                last_name: values.last_name,
-                linkedin_url: values.linkedin_url
-              }
-            );
+            trackRegistrationEvent('Cohort Registration - Personal Info Page - Details Submitted', {
+              'Registrant First Name': values.first_name,
+              'Registrant Last Name': values.last_name,
+              'Registrant LinkedIn URL': values.linkedin_url,
+              'Registrant Email': user.email
+            });
             triggerOnboardingEvent();
             if (alumni) {
               triggerReferralEvent();
@@ -369,10 +356,7 @@ export default function Registration() {
         console.error(error);
       }
       window.analytics?.user &&
-        trackReferralFlowEvents('Cohort Registration - Personal Info Page - Page Loaded', {
-          is_enterprise_customer: company?.is_enterprise_customer || false,
-          has_sphere_alumni: company?.has_sphere_alumni || false
-        });
+        trackRegistrationEvent('Cohort Registration - Personal Info Page - Page Loaded');
     }
   }, [loading, window.analytics?.user]);
 
@@ -416,7 +400,7 @@ export default function Registration() {
             account={!!account}
             waitListed={wait_listed}
             preRelease={pre_release}
-            trackReferralFlowEvents={trackReferralFlowEvents}
+            trackRegistrationEvent={trackRegistrationEvent}
           />
         </>
       );
@@ -432,14 +416,14 @@ export default function Registration() {
             enrollmentID={user?.enrollment_id}
             setStep={(step: number) => setActiveStep(step)}
             payLaterMessage={payLaterMessage}
-            trackReferralFlowEvents={trackReferralFlowEvents}
+            trackRegistrationEvent={trackRegistrationEvent}
           />
         </Stack>
       );
     }
 
     if (activeStep === 4) {
-      trackReferralFlowEvents('Cohort Registration - Confirmation Page - Page Loaded');
+      trackRegistrationEvent('Cohort Registration - Confirmation Page - Page Loaded');
       return (
         <Stack
           width="100%"
@@ -472,7 +456,7 @@ export default function Registration() {
           <Button
             href="https://www.getsphere.com/#upcoming-cohorts-slider"
             onClick={() =>
-              trackReferralFlowEvents(
+              trackRegistrationEvent(
                 "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected"
               )
             }

@@ -65,7 +65,7 @@ function InvitePeersForm({
   account,
   waitListed,
   preRelease,
-  trackReferralFlowEvents
+  trackRegistrationEvent
 }: {
   onContinue: Function;
   enrollmentId: string;
@@ -75,17 +75,17 @@ function InvitePeersForm({
   account: boolean;
   waitListed: boolean;
   preRelease: boolean;
-  trackReferralFlowEvents: Function;
+  trackRegistrationEvent: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const [invites, setInvites] = useState<ReferralTypeUser[]>([]);
 
   useEffect(() => {
-    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - Page Loaded');
+    trackRegistrationEvent('Cohort Registration - Send Invitation Page - Page Loaded');
   }, []);
 
   const handleOnContinue = () => {
-    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - ‘Continue’ Selected');
+    trackRegistrationEvent('Cohort Registration - Send Invitation Page - ‘Continue’ Selected');
     onContinue();
   };
 
@@ -141,9 +141,9 @@ function InvitePeersForm({
             },
             cohort
           );
-          trackReferralFlowEvents(
+          trackRegistrationEvent(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
-            { referree_email: values.email, referree_name: values.fullName }
+            { 'Referee Email': values.email, 'Referee Name': values.fullName }
           );
         })
         .catch((error: any) => {
