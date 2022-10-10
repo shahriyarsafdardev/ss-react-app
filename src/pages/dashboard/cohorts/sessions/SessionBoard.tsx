@@ -290,12 +290,6 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     <>
       <Description
         key="description"
-        onTrack={(eventName: string, eventData: any) =>
-          sendAnalyticsData(eventName, {
-            ...commonProperties,
-            ...eventData
-          })
-        }
         innerContent={session?.description || ''}
         resourcesPresent={session?.materials && session?.materials?.length > 0}
       />
