@@ -318,6 +318,7 @@ export default function Router() {
       ]
     },
     { path: 'registration', element: <Registration /> },
+    { path: 'subscription', element: <Subscription /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -461,6 +462,7 @@ const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Registration = Loadable(lazy(() => import('../pages/registration/Registration')));
+const Subscription = Loadable(lazy(() => import('../pages/subscription/Subscription')));
 const SharedResource = Loadable(lazy(() => import('../pages/SharedResource')));
 const FreeSessionInfo = Loadable(lazy(() => import('../pages/registration/FreeSessionInfo')));
 const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/FreeSessionMessage')));

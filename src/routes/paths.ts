@@ -31,6 +31,7 @@ export const PATH_PAGE = {
   pricing: '/pricing',
   payment: '/payment',
   registration: '/registration',
+  subscription: '/subscription',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
