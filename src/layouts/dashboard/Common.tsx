@@ -84,7 +84,7 @@ const InviteYourTeamMates = () => (
       Invite a friend or colleague
     </Typography>
     <Typography sx={{ fontSize: '16px', marginTop: '16px', color: 'primary', lineHeight: '24px' }}>
-      Once they pay for the course, you get $100!
+      Learning is more enjoyable with friends
     </Typography>
   </Box>
 );
@@ -148,7 +148,7 @@ export const ShareReferralLink = ({
         Invite your colleagues
       </Typography>
       <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
-        and earn <b>$100</b> when they sign up
+        learning is more enjoyable with friends
       </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
