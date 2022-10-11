@@ -5,9 +5,9 @@ import Page from 'components/Page';
 import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
-import { EVENT_TYPES, trackHomePageEvents, trackPageViewEvent } from 'utils/amplitude';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
+import { trackEvent } from 'utils/eventTracking';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -45,7 +45,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      trackPageViewEvent(cohort, EVENT_TYPES.home_tab);
+      sendAnalyticsData('Home Page - Page Loaded', {});
       setAnalyticsSent(true);
     }
   }, [cohort]);
@@ -93,13 +93,8 @@ const Index = () => {
     }
   }, [sessions, activeSession]);
 
-  const sendAnalyticsData = (
-    sessionNumber: number,
-    eventCategory: string,
-    eventData: string,
-    source?: string
-  ) => {
-    trackHomePageEvents(sessionNumber, eventCategory, eventData, source, cohort);
+  const sendAnalyticsData = (eventName: string, eventData: any) => {
+    cohort && trackEvent(cohort, eventName, eventData);
   };
 
   const displayActiveStep = () => {
@@ -119,8 +114,6 @@ const Index = () => {
       <StyledBox>{displayActiveStep()}</StyledBox>
     </Container>
   );
-
-  const questionSubmittedModal = () => !hasQuestionSubmitted && user?.type === 'learner';
 
   if (!cohort || typeof sessions === 'undefined') {
     return (

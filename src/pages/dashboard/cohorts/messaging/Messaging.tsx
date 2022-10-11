@@ -3,12 +3,7 @@ import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
-import {
-  EVENT_TYPES,
-  trackMessagingEvents,
-  trackPageViewEvent,
-  trackGenericEvent
-} from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { useLocation } from 'react-router-dom';
@@ -84,6 +79,10 @@ export default function Messaging() {
     left: '50%'
   }));
 
+  const sendAnalyticsData = (eventName: string, eventData: any) => {
+    cohort && trackEvent(cohort, eventName, eventData);
+  };
+
   useEffect(() => {
     if (cohort && !peers) {
       dispatch(getPeers(cohortID.toString(), loggedinUserID));
@@ -91,14 +90,18 @@ export default function Messaging() {
   }, [dispatch, cohort]);
 
   useEffect(() => {
+    setAnalyticsSent(false);
+  }, [cohortID]);
+
+  useEffect(() => {
     if (cohort && !analyticsSent) {
-      trackPageViewEvent(cohort, EVENT_TYPES.messaging_tab);
+      sendAnalyticsData('Messaging Page - Page Loaded', {});
       if (url.get('email')) {
-        trackGenericEvent(cohort, 'Email - "What you missed" Email - Messaging Opened');
+        sendAnalyticsData('Email - "What you missed" Email - Messaging Opened', {});
       }
       setAnalyticsSent(true);
     }
-  }, [cohort]);
+  }, [cohort, analyticsSent]);
 
   useEffect(() => {
     const initChat = async () => {
@@ -139,17 +142,13 @@ export default function Messaging() {
     }
   }, [isMobileNavVisible]);
 
-  if (!client || !client.user) {
+  if (!client || !client.user || !cohort) {
     return (
       <LoadingContainer>
         <LoadingScreen />
       </LoadingContainer>
     );
   }
-
-  const sendAnalyticsData = (eventCategory: string, eventData: string) => {
-    trackMessagingEvents(eventCategory, eventData, cohort);
-  };
 
   return (
     <Page title="Sphere | Messaging" id="page">

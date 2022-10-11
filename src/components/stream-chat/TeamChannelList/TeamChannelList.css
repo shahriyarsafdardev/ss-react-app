@@ -21,12 +21,13 @@
 }
 
 .team-channel-list__message {
-  color: #ffffff;
+  color: black !important;
   padding: 0 16px;
 }
 
 .team-channel-list__message.loading {
   height: 115px;
+  color: black !important;
 }
 
 .team-channel-list__header {

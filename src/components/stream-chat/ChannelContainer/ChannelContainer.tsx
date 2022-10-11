@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
 import axios from 'utils/axios';
 import './ChannelContainer.css';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
 
 import { ChannelInner } from './ChannelInner';
 import { ChannelEmptyState } from '../ChannelEmptyState/ChannelEmptyState';
@@ -61,7 +63,7 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   const { createType, isCreating, isEditing, setIsCreating, setIsEditing, cohortID, cohortUsers } =
     props;
 
-  const { channel } = useChatContext<
+  const { channel, client } = useChatContext<
     TeamAttachmentType,
     TeamChannelType,
     TeamCommandType,
@@ -74,6 +76,47 @@ export const ChannelContainer: React.FC<Props> = (props) => {
   const [pinsOpen, setPinsOpen] = useState(false);
   const [navigate, setNavigate] = useState<boolean>(false);
   const [path, setPath] = useState<string>('');
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
+  const validEvent = (event: string, userID: string | undefined) =>
+    ['reaction.new', 'message.new'].includes(event) && userID === client.userID;
+
+  const sendAnalytics = (event: any) => {
+    if (validEvent(event.type, event?.user?.id) && channel && client) {
+      const name =
+        event.channel_type === 'team'
+          ? `#${channel.data?.name}`
+          : getChannelName(
+              Object.values(channel?.state?.members).filter(
+                ({ user }) => user?.id !== client?.userID
+              )
+            );
+      const eventData = {
+        'Channel Name': name,
+        'Message Content': event.message.text,
+        'Channel Type': event.channel_type === 'team' ? 'public' : 'private'
+      };
+      if (event.type === 'message.new') {
+        sendAnalyticsData('Messaging Page - Message Sent', eventData);
+      } else if (event.type === 'reaction.new') {
+        sendAnalyticsData('Messaging Page - Reaction Added', {
+          ...eventData,
+          'Message Sender': event.message.user.name
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (channel && client) {
+      channel.on('reaction.new', sendAnalytics);
+      channel.on('message.new', sendAnalytics);
+    }
+    return () => {
+      channel?.off('reaction.new', sendAnalytics);
+      channel?.off('message.new', sendAnalytics);
+    };
+  }, [channel]);
 
   if (isCreating) {
     return (

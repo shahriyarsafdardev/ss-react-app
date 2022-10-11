@@ -24,18 +24,16 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export function ShareReading({
   onShare,
-  cohort,
   ontriggerShareEvent
 }: {
   onShare: Function;
-  cohort: Cohort;
   ontriggerShareEvent: Function;
 }) {
   return (
     <StyledCheckBox
       onClick={() => {
         onShare(true);
-        ontriggerShareEvent();
+        ontriggerShareEvent('Resources Page - Resources - "Share" Selected');
       }}
       style={{ justifyContent: 'center' }}
     >

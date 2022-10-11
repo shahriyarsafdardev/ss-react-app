@@ -2,12 +2,12 @@ import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
-import { trackPeersPageEvent, PEERS_PAGE_EVENTS } from 'utils/amplitude';
 import Label from '../Label';
 
 type StudentProfileModalProps = {
   modalState: boolean;
   modalHandler: Function;
+  trackModalEvent: Function;
   modalUser: any;
   dispalyChatLink: boolean;
   cohort: any;
@@ -75,6 +75,7 @@ const ColoredContainerMobile = styled(Box)(({ theme }) => ({
 export default function StudentProfileModal({
   modalState,
   modalHandler,
+  trackModalEvent,
   modalUser,
   dispalyChatLink,
   cohort
@@ -97,7 +98,15 @@ export default function StudentProfileModal({
     email
   } = modalUser;
   return (
-    <Modal className="small" open={modalState} onClose={() => modalHandler({})} id="student-modal">
+    <Modal
+      className="small"
+      open={modalState}
+      onClose={() => {
+        trackModalEvent('Networking Page - Profile Modal - Modal Closed', modalUser);
+        modalHandler({});
+      }}
+      id="student-modal"
+    >
       <StyledContainer>
         <Title>
           {first_name} {last_name}
@@ -246,10 +255,9 @@ export default function StudentProfileModal({
             <Link
               href={linkedin_url}
               onClick={() =>
-                trackPeersPageEvent(
-                  PEERS_PAGE_EVENTS.member_details_modal,
-                  PEERS_PAGE_EVENTS.opened_linked_in,
-                  cohort
+                trackModalEvent(
+                  'Networking Page - Profile Modal - "Connect on LinkedIn" Selected',
+                  modalUser
                 )
               }
               target="_blank"
@@ -280,7 +288,15 @@ export default function StudentProfileModal({
               height={20}
               style={{ marginRight: 15 }}
             />
-            <Link href={`/cohorts/${cohort?.id}/messaging?direct=true&receiver_id=${id}`}>
+            <Link
+              href={`/cohorts/${cohort?.id}/messaging?direct=true&receiver_id=${id}`}
+              onClick={() =>
+                trackModalEvent(
+                  'Networking Page - Profile Modal - "Message through Sphere" Selected',
+                  modalUser
+                )
+              }
+            >
               {' '}
               <Text data-testid="message-user">Message {first_name} through Sphere</Text>
             </Link>

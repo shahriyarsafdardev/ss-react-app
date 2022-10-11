@@ -138,15 +138,30 @@ export const ONBOARDING_EVENTS = {
   event_type: 'Onboarding Event',
   event: 'Event',
   category: 'Category',
-  description: 'Description'
+  description: 'Description',
+  step: 'Step',
+  step_main_description: 'Step Main Description',
+  step_secondary_description: 'Step Secondary Description',
+  current_page: 'Current Page',
+  current_page_title: 'Current Page Title',
+  current_page_description: 'Current Page Description',
+  calendar_url: 'Calendar URL'
 };
 
-export const trackOnboardingEvent = (eventType: string, eventData: any, cohort?: any) => {
-  const newEventData = {
-    ...setGenericEventProperties(cohort),
-    ...eventData
-  };
-  sendAmplitudeData(ONBOARDING_EVENTS.event_type, newEventData);
+export const trackOnboardingEvent = (cohort: any, eventType: string, eventData?: any) => {
+  let updatedEventProperties = eventData;
+  if (cohort === null) {
+    updatedEventProperties = {
+      ...eventData,
+      ...emptyCohortGenericProperties
+    };
+  } else {
+    updatedEventProperties = {
+      ...setGenericEventProperties(cohort),
+      ...eventData
+    };
+  }
+  sendAmplitudeData(eventType, updatedEventProperties);
 };
 
 export const REFERRAL_EVENTS = {
@@ -254,12 +269,12 @@ export const MESSAGING_EVENTS = {
   action: 'Action'
 };
 
-export const trackMessagingEvents = (eventCategory: string, eventData: string, cohort?: any) => {
-  sendAmplitudeData(MESSAGING_EVENTS.message_tab_action, {
-    ...setGenericEventProperties(cohort),
-    [MESSAGING_EVENTS.category]: eventCategory,
-    [MESSAGING_EVENTS.action]: eventData
+export const trackMessagingEvents = (eventName: string, eventData: any, cohort?: any) => {
+  sendAmplitudeData(eventName, {
+    ...eventData,
+    ...setGenericEventProperties(cohort)
   });
+  // console.log(eventName, eventData);
 };
 
 export const QnA_EVENTS = {

@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
+import _ from 'lodash';
 import useAuth from 'hooks/useAuth';
 // material
 import { alpha, useTheme, styled } from '@material-ui/core/styles';
@@ -17,7 +18,7 @@ import {
   ListItemButton,
   ListItemButtonProps
 } from '@material-ui/core';
-import { trackSidebarEvent } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { useSnackbar } from 'notistack5';
 import { RootState, useSelector } from '../redux/store';
 // ----------------------------------------------------------------------
@@ -126,13 +127,10 @@ function NavItem({
   const theme = useTheme();
   const location = useLocation();
   const { pathname } = location;
-  const cohort_id = pathname.split('/')[2] || '';
   const { id, title, path, icon, info, children } = item;
   const isActiveRoot = pathname.includes(path);
   const userNotifications = useSelector((state: RootState) => state.notification.notifications);
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
+  const cohorts = useSelector((state: RootState) => state?.cohort?.cohorts);
   const [open, setOpen] = useState(isActiveRoot);
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -145,6 +143,11 @@ function NavItem({
     setOpen(!open);
   };
 
+  const trackAnalyticsEvent = (title: string, path: string) => {
+    const cohortId = path.split('/')[2] || '';
+    const cohort = cohorts.filter((cohort) => cohort.id === cohortId)[0];
+    cohort && trackEvent(cohort, `Sidebar - "${title.replace(/\w+/g, _.capitalize)}" Selected`);
+  };
   const getUnreadNotifications = (category: string | undefined) =>
     userNotifications?.filter(
       (notification) => id === notification.cohort_id && category === notification.category
@@ -214,16 +217,10 @@ function NavItem({
                           variant: 'warning'
                         });
                         e.preventDefault();
-                      } else {
-                        if (externalUrl) {
-                          window.open(path, '_blank');
-                        }
-                        cohort &&
-                          trackSidebarEvent(
-                            cohort,
-                            `Sidebar - '${title.charAt(0).toUpperCase() + title.slice(1)}' Selected`
-                          );
+                      } else if (externalUrl) {
+                        window.open(path, '_blank');
                       }
+                      trackAnalyticsEvent(title, path);
                     }}
                     to={externalUrl ? '' : path}
                     sx={{

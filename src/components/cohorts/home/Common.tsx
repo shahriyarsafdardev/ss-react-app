@@ -6,6 +6,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import moment from 'moment';
 import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext, useEffect } from 'react';
 import { Cohort, Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
@@ -161,16 +163,28 @@ export const CalendarInstructionsModal = ({
   cohort,
   modalState,
   setModalState,
-  handleSubmit,
-  onNeedHandler
+  handleSubmit
 }: {
   cohort: Cohort;
   modalState: boolean;
   setModalState: Function;
   handleSubmit: Function;
-  onNeedHandler: Function;
 }) => {
   const classes = useStyles();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
+  useEffect(() => {
+    modalState &&
+      sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+        'Calendar URL': cohort?.calendar_invite_url
+      });
+  }, [modalState]);
+
+  const onNeedHandler = () => {
+    sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
+      'Calendar URL': cohort?.calendar_invite_url
+    });
+  };
 
   return (
     <Modal

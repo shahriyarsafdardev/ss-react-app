@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import CircleOutlinedIcon from '@material-ui/icons/CircleOutlined';
 import Circle from '@material-ui/icons/Circle';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 
 import { useSelector, RootState } from 'redux/store';
 import { Session } from '../../../@types/cohorts';
@@ -138,13 +139,11 @@ export default function DesktopStepper({
   cohortID,
   activeSession,
   sessions,
-  onTrackEvent,
   activeStepper
 }: {
   cohortID: string;
   activeSession: number;
   sessions: Session[];
-  onTrackEvent: Function;
   activeStepper: number;
 }) {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
@@ -153,6 +152,7 @@ export default function DesktopStepper({
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
   );
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const scroll = async (val: number) => {
     const elem = document.getElementById('timeline-div');
@@ -191,6 +191,22 @@ export default function DesktopStepper({
     };
   }, [activeStep]);
 
+  const handleRightArrowClick = () => {
+    sendAnalyticsData('Home Page - Timeline - Right Arrow Selected', {});
+  };
+
+  const handleLeftArrowClick = () => {
+    sendAnalyticsData('Home Page - Timeline - Left Arrow Selected', {});
+  };
+
+  const sendReviewContentEvent = (session: Session) => {
+    sendAnalyticsData('Home Page - Timeline - Review Content Selected', {
+      'Session ID': session?.id,
+      'Session Number': session?.number,
+      'Session Name': session?.name
+    });
+  };
+
   return (
     <StyledTimeline>
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
@@ -199,11 +215,11 @@ export default function DesktopStepper({
         src="/static/cohorts-home/left-arrow.svg"
         onClick={() => {
           scroll(-4);
-          onTrackEvent('Navigate Left');
+          handleLeftArrowClick();
         }}
         onKeyDown={() => {
           scroll(-4);
-          onTrackEvent('Navigate Left');
+          handleLeftArrowClick();
         }}
         className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
@@ -263,7 +279,7 @@ export default function DesktopStepper({
                         <Link
                           data-testid={`session-review-content-${session?.number}`}
                           to={`/cohorts/${cohortID}/sessions?session=${session.number}`}
-                          onClick={() => onTrackEvent('Review Content')}
+                          onClick={() => sendReviewContentEvent(session)}
                         >
                           Review Content
                         </Link>
@@ -291,11 +307,11 @@ export default function DesktopStepper({
         src="/static/cohorts-home/right-arrow.svg"
         onClick={() => {
           scroll(4);
-          onTrackEvent('Navigate Right');
+          handleRightArrowClick();
         }}
         onKeyDown={() => {
           scroll(4);
-          onTrackEvent('Navigate Right');
+          handleRightArrowClick();
         }}
         className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 // event tracker
-import { initAmplitude, setSegmentUserProperties } from 'utils/amplitude';
+import { initAmplitude } from 'utils/amplitude';
 
 import Feedback from 'components/Feedback';
 
@@ -9,6 +9,7 @@ import Feedback from 'components/Feedback';
 import GoogleTagManager from 'components/GoogleTagManager';
 import FullStoryScript from 'components/FullStoryScript';
 import SegmentScript from 'components/SegmentScript';
+import { setSegmentUserProperties } from 'utils/eventTracking';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';

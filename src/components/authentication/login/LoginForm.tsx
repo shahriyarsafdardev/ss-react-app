@@ -57,7 +57,7 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
         await login(values.email, values.password).then((res) => {
-          trackOnboardingEvent(ONBOARDING_EVENTS.event_type, {
+          trackOnboardingEvent(null, ONBOARDING_EVENTS.event_type, {
             [GENERIC_EVENTS.cohort_name]: '',
             [GENERIC_EVENTS.cohort_intake_number]: '',
             [ONBOARDING_EVENTS.event]: 'Onboarding Event',

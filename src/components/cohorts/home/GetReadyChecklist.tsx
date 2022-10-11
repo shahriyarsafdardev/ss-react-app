@@ -1,10 +1,10 @@
 import { Divider, Stack, styled, Theme, Typography } from '@material-ui/core';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import OnboardingModal from 'components/cohorts/onboarding/OnboardingModal';
 import useAuth from 'hooks/useAuth';
-import { trackGenericEvent } from 'utils/amplitude';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useDispatch } from '../../../redux/store';
 import { markOnboardingStep } from '../../../redux/slices/cohort';
 import { OnboardingSectionRow, SectionContainer, CalendarInstructionsModal } from './Common';
@@ -83,8 +83,10 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   const [activeStep, setActiveStep] = useState(0);
   const [hasOnboarded, setHasOnboarded] = useState(true);
   const [onboardingModalState, setOnboardingModalState] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const { user } = useAuth();
   const [modalState, setModalState] = useState(false);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -125,21 +127,54 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
   };
 
   useEffect(() => {
+    if (!pageLoaded) {
+      sendAnalyticsData('Cohort Onboarding - Get Ready Page - Page Loaded', {});
+      setPageLoaded(true);
+    }
     stepStatus();
   }, [onboarding_data]);
 
   const handleCalendarInstructions = () => {
-    trackGenericEvent(cohort, 'Home Page - Calendar Modal - "I’ve Added the Sessions" Selected');
     dispatch(markOnboardingStep(cohort.id, 'sessions_added_to_calendar'));
+    sendAnalyticsData(`Cohort Onboarding - Calendar Modal - "I've added the sessions" Selected`, {
+      'Calendar URL': cohort.calendar_invite_url
+    });
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 2,
+      'Step Main Description': 'Add the sessions to your calendar',
+      'Step Secondary Description': "So you don't forget any live classes"
+    });
   };
 
   const handleIntroductionCompleted = () => {
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+      'Step Number': 3,
+      'Step Main Description': 'Introduce yourselves to your peers',
+      'Step Secondary Description':
+        'To connect with the like minded data professionals also in this cohort'
+    });
     dispatch(markOnboardingStep(cohort.id, 'messaging_tab_opened'));
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 3,
+      'Step Main Description': 'Introduce yourselves to your peers',
+      'Step Secondary Description':
+        'To connect with the like minded data professionals also in this cohort'
+    });
     navigate(`${PATH_DASHBOARD.cohorts.messaging(cohort.id)}`);
   };
 
   const handleDiveIntoResources = () => {
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+      'Step Number': 4,
+      'Step Main Description': 'Dive into the resources',
+      'Step Secondary Description': 'Released in 15 days'
+    });
     dispatch(markOnboardingStep(cohort.id, 'resources_invoked'));
+    sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+      'Step Number': 4,
+      'Step Main Description': 'Dive into the resources',
+      'Step Secondary Description': 'Released in 15 days'
+    });
   };
 
   return (
@@ -148,7 +183,14 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
         <OnboardingModal
           onboardingModalState={onboardingModalState}
           setOnboardingModalState={setOnboardingModalState}
-          onSubmit={() => {}}
+          onSubmit={() =>
+            sendAnalyticsData('Cohort Onboarding - Get Ready Page - Step Complete', {
+              'Step Number': 1,
+              'Step Main Description': `Tell ${cohort?.host_names} about yourself`,
+              'Step Secondary Description':
+                'We use the information you share to provide a personalized learning experience'
+            })
+          }
         />
       )}
       <CalendarInstructionsModal
@@ -156,9 +198,6 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
         modalState={modalState}
         setModalState={setModalState}
         handleSubmit={handleCalendarInstructions}
-        onNeedHandler={() =>
-          trackGenericEvent(cohort, 'Home Page - Calendar Modal - "I Need Help" Selected')
-        }
       />
       <Typography variant="h3" className={classes.header}>
         Get Ready
@@ -174,19 +213,28 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             onSubmit={() => {
               setHasOnboarded(false);
               setOnboardingModalState(true);
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Profile Step Started');
+              sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+                'Step Number': 1,
+                'Step Main Description': `Tell ${cohort?.host_names} about yourself`,
+                'Step Secondary Description':
+                  'We use the information you share to provide a personalized learning experience'
+              });
             }}
           />
           <StyledDivider />
           <OnboardingSectionRow
             index={2}
             heading="Add the sessions to your calendar"
-            subHeading="So you don't forget any live classes"
+            subHeading="Add the sessions to your calendar"
             status={getActiveStatus(2)}
             classes={classes}
             onSubmit={() => {
               setModalState(true);
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Calendar Step Started');
+              sendAnalyticsData('Cohort Onboarding - Get Ready Page - "Start" Selected', {
+                'Step Number': 2,
+                'Step Main Description': 'Add the sessions to your calendar',
+                'Step Secondary Description': "So you don't forget any live classes"
+              });
             }}
           />
           <StyledDivider />
@@ -195,10 +243,7 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             heading="Introduce yourselves to your peers"
             subHeading="To connect with the like minded data professionals also in this cohort"
             status={getActiveStatus(3)}
-            onSubmit={() => {
-              handleIntroductionCompleted();
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Messaging Step Started');
-            }}
+            onSubmit={() => handleIntroductionCompleted()}
             classes={classes}
           />
           <StyledDivider />
@@ -207,10 +252,7 @@ export default function GetReadyChecklist({ cohort }: { cohort: Cohort }) {
             heading="Dive into the resources"
             subHeading="Released in 15 days"
             status={getActiveStatus(4)}
-            onSubmit={() => {
-              handleDiveIntoResources();
-              trackGenericEvent(cohort, 'Home Page - Get Ready - Resources Step Started');
-            }}
+            onSubmit={() => handleDiveIntoResources()}
             classes={classes}
           />
           <StyledDivider />
