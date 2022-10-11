@@ -1,12 +1,9 @@
-import { useEffect } from 'react';
 import { Container } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { RESOURCES_EVENTS } from 'utils/amplitude';
 import Message from '../../Message';
 
 type DescriptionProps = {
   innerContent: string;
-  onTrack: Function;
   resourcesPresent: Boolean | undefined;
 };
 
@@ -21,24 +18,7 @@ const DescriptionContainer = styled(Container)(({ theme }) => ({
   marginBottom: '15px'
 }));
 
-export default function Description({ innerContent, onTrack, resourcesPresent }: DescriptionProps) {
-  useEffect(() => {
-    if (innerContent) {
-      onTrack(RESOURCES_EVENTS.opened);
-
-      const resources = document.getElementById('resources')?.getElementsByTagName('a');
-
-      if (resources) {
-        const resourcesArray = Array.from(resources);
-        resourcesArray.forEach((el) => {
-          el.addEventListener('click', () => {
-            onTrack(RESOURCES_EVENTS.opened_link);
-          });
-        });
-      }
-    }
-  }, [innerContent]);
-
+export default function Description({ innerContent, resourcesPresent }: DescriptionProps) {
   return (
     <DescriptionContainer id="resources">
       {!innerContent && !resourcesPresent ? (

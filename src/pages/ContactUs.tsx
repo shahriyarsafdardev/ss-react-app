@@ -217,6 +217,7 @@ export default function ContactUs() {
           modalUser={modalState}
           dispalyChatLink={displayChatLink}
           cohort={cohort}
+          trackModalEvent={() => {}}
         />
         <StyledGrid container spacing={3}>
           {contactInfoDetails.map((info, index) => (

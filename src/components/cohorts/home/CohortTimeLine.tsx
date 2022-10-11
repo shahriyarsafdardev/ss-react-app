@@ -1,8 +1,6 @@
 import { Box } from '@material-ui/core';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { HOME_PAGE_EVENTS } from 'utils/amplitude';
 import { Session, Cohort } from '../../../@types/cohorts';
 import { CircularLoader, firstUpcomingDate, SectionContainer } from './Common';
 import DesktopStepper from './DesktopStepper';
@@ -19,7 +17,6 @@ const CohortTimeLine = ({
   // eslint-disable-next-line arrow-body-style
 }) => {
   const [activeSession, setActiveSession] = useState(0);
-  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
     let currentSessionNumber = 0;
@@ -40,13 +37,6 @@ const CohortTimeLine = ({
         {sessions ? (
           <>
             <DesktopStepper
-              onTrackEvent={(eventData: string) =>
-                sendAnalyticsData(
-                  activeSession === 0 ? sessions.length : activeSession,
-                  HOME_PAGE_EVENTS.cohort_timeline,
-                  eventData
-                )
-              }
               cohortID={cohort.id}
               activeSession={activeSession === 0 ? sessions.length + 2 : activeSession + 1}
               sessions={sessions}

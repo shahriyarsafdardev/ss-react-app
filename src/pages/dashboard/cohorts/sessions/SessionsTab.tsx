@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
-import { EVENT_TYPES, trackSessionsPageEvent, trackPageViewEvent } from 'utils/amplitude';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
 import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
+import { trackEvent } from 'utils/eventTracking';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -78,7 +78,7 @@ export default function SessionsTab() {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      trackPageViewEvent(cohort, EVENT_TYPES.sessions_tab);
+      sendAnalyticsData('Resources Page - Page Loaded', {});
       setAnalyticsSent(true);
     }
   }, [cohort]);
@@ -103,8 +103,8 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
-  const sendAnalyticsData = (sessionNumber: number, eventCategory: string, eventData: string) => {
-    trackSessionsPageEvent(sessionNumber, eventCategory, eventData, cohort);
+  const sendAnalyticsData = (eventName: string, eventData: any) => {
+    trackEvent(cohort, eventName, eventData);
   };
 
   const cohortSessions = () =>

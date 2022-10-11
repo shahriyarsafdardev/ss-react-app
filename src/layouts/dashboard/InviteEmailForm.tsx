@@ -4,7 +4,7 @@ import axios from 'utils/axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
-import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { EmailModalProps } from './Common';
 import { Cohort } from '../../@types/cohorts';
 
@@ -44,15 +44,11 @@ function InviteEmailForm({
           source: 'sidebar-referral'
         })
         .then((res) => {
-          trackReferralEvent(
-            REFERRAL_EVENTS.email_sent_event_type,
-            {
-              [REFERRAL_EVENTS.referee_first_name]: values.fullName.split(' ')[0],
-              [REFERRAL_EVENTS.referee_full_name]: values.fullName,
-              [REFERRAL_EVENTS.referee_email]: values.email
-            },
-            cohort
-          );
+          trackEvent(cohort, 'Sidebar - Referral Preview - Email Invite Sent', {
+            'Referee First Name': values.fullName.split(' ')[0],
+            'Referee Full Name': values.fullName,
+            'Referee Email': values.email
+          });
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
           setReferralEmailModal(false);
         })

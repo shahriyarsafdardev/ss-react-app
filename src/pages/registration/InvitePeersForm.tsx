@@ -2,12 +2,11 @@ import { FormControl, TextField, Button, Stack, styled, Box } from '@material-ui
 import { LoadingButton } from '@material-ui/lab';
 import axios from 'utils/axios';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { Cohort } from '../../@types/cohorts';
-import { CohortType, UserType } from './Registration';
+import { CohortType } from './Registration';
 import InvitesList from './InvitesList';
 
 export type ReferralTypeUser = {
@@ -65,7 +64,7 @@ function InvitePeersForm({
   account,
   waitListed,
   preRelease,
-  trackReferralFlowEvents
+  trackRegistrationEvent
 }: {
   onContinue: Function;
   enrollmentId: string;
@@ -75,34 +74,18 @@ function InvitePeersForm({
   account: boolean;
   waitListed: boolean;
   preRelease: boolean;
-  trackReferralFlowEvents: Function;
+  trackRegistrationEvent: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const [invites, setInvites] = useState<ReferralTypeUser[]>([]);
 
   useEffect(() => {
-    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - Page Loaded');
+    trackRegistrationEvent('Cohort Registration - Send Invitation Page - Page Loaded');
   }, []);
 
   const handleOnContinue = () => {
-    trackReferralFlowEvents('Cohort Registration - Send Invitation Page - ‘Continue’ Selected');
+    trackRegistrationEvent('Cohort Registration - Send Invitation Page - ‘Continue’ Selected');
     onContinue();
-  };
-
-  const getRegistrationFlow = () => {
-    if (account) {
-      return 'Enterprise contract';
-    }
-    if (company) {
-      return 'No enterprise contract BUT have sent employees to cohorts in the past';
-    }
-    if (waitListed) {
-      return 'Waitlist - No Price';
-    }
-    if (preRelease) {
-      return 'Waitlist with Price';
-    }
-    return "No enterprise contract and haven't sent anyone to cohorts in the past";
   };
 
   const ValidationSchema = Yup.object().shape({
@@ -128,22 +111,9 @@ function InvitePeersForm({
           setInvites([...invites, { email: values.email, fullName: values.fullName }]);
           resetForm();
           enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
-          trackReferralEvent(
-            REFERRAL_EVENTS.event_type,
-            {
-              [REFERRAL_EVENTS.event]: 'email invitation sent',
-              [REFERRAL_EVENTS.category]: 'referral link',
-              [REFERRAL_EVENTS.description]: 'Send referral link via email',
-              [REFERRAL_EVENTS.referrer_code]: referrer_code,
-              [REFERRAL_EVENTS.invite_email]: values.email,
-              [REFERRAL_EVENTS.invite_full_name]: values.fullName,
-              [REFERRAL_EVENTS.registration_flow]: getRegistrationFlow()
-            },
-            cohort
-          );
-          trackReferralFlowEvents(
+          trackRegistrationEvent(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
-            { referree_email: values.email, referree_name: values.fullName }
+            { 'Referee Email': values.email, 'Referee Name': values.fullName }
           );
         })
         .catch((error: any) => {

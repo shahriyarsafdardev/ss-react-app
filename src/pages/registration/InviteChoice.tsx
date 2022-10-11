@@ -56,27 +56,27 @@ function InviteChoice({
   account,
   setStep,
   selectStep,
-  trackReferralFlowEvents
+  trackRegistrationEvent
 }: {
   company: CompanyType | null | undefined;
   account: string;
   setStep: Function;
   selectStep: Function;
-  trackReferralFlowEvents: Function;
+  trackRegistrationEvent: Function;
 }) {
   const classes = useStyles();
 
   useEffect(() => {
-    trackReferralFlowEvents('Cohort Registration - Refer Colleagues Page - Page Loaded');
+    trackRegistrationEvent('Cohort Registration - Refer Colleagues Page - Page Loaded');
   }, []);
 
   const submitLearnAlone = () => {
-    trackReferralFlowEvents('Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected');
+    trackRegistrationEvent('Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected');
     selectStep();
   };
 
   const submitInviteColleagues = () => {
-    trackReferralFlowEvents(
+    trackRegistrationEvent(
       'Cohort Registration - Refer Colleagues Page - ‘Invite Colleagues’ Selected'
     );
     setStep(3);

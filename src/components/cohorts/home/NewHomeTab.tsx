@@ -1,11 +1,9 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { NEW_HOME_TAB_EVENTS, trackNewHomeTabEvent } from 'utils/amplitude';
-import { LoadingContainer } from 'pages/admin/Common';
-import LoadingScreen from 'components/LoadingScreen';
-import useAuth from 'hooks/useAuth';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'utils/axios';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import useAuth from 'hooks/useAuth';
 import { useDispatch } from '../../../redux/store';
 import { updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible, sessionName } from './Common';
@@ -41,28 +39,47 @@ function NewHomeTab({
   const classes = useStyles();
   const zoomTimes = zoomTimesPreview(activeSession?.times || []);
   const timeZone = zoomTimes?.split(' ')?.pop() || 'PST';
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const trackHomeTabEvents = (eventType: string) => {
-    trackNewHomeTabEvent(cohort, eventType, {
-      [NEW_HOME_TAB_EVENTS.reading_number]: list[currentStep]?.index,
-      [NEW_HOME_TAB_EVENTS.reading_name]: list[currentStep]?.name,
-      [NEW_HOME_TAB_EVENTS.session_number]: activeSession?.number
+  const sendPreReadsEvent = (eventName: string) => {
+    const preReading = list[currentStep];
+    sendAnalyticsData(eventName, {
+      'Session ID': activeSession?.id,
+      'Session Number': activeSession?.number,
+      'Session Name': activeSession?.name,
+      'Reading ID': preReading?.id,
+      'Reading Number': preReading?.index,
+      'Reading Name': preReading?.name,
+      'Reading Description': preReading?.description,
+      'Reading URL': preReading?.action_url
+    });
+  };
+
+  const sendSessionPreviewEvent = (eventName: string) => {
+    sendAnalyticsData(eventName, {
+      'Session ID': activeSession?.id,
+      'Session Number': activeSession?.number,
+      'Session Name': activeSession?.name
     });
   };
 
   const markAsComplete = async (sessionMaterialId: string) => {
     await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, true));
-    trackHomeTabEvents('Home Screen - ‘Next Reading’ Selected');
+    sendPreReadsEvent('Home Page - Prereads - "Next Reading" Selected');
     setCurrentStep(currentStep + 1);
   };
 
   const previousReading = () => {
     setCurrentStep(currentStep - 1);
-    trackHomeTabEvents('Home Screen - ‘Previous Reading’ Selected');
+    currentStep < list.length
+      ? sendPreReadsEvent('Home Page - Prereads - "Previous Reading" Selected')
+      : sendSessionPreviewEvent('Home Page - Session Preview - "Previous Reading" Selected');
   };
 
-  const triggerSupplimentaryEvent = () => {
-    trackHomeTabEvents('Home Screen - ‘Review Supplementary Resources’ Selected');
+  const triggerSupplementaryEvent = () => {
+    sendSessionPreviewEvent(
+      'Home Page - Session Preview - "Review Supplementary Resources" Selected'
+    );
   };
 
   const markAttendance = () => {
@@ -85,12 +102,6 @@ function NewHomeTab({
     }
   }, [activeSession?.materials.length]);
 
-  useEffect(() => {
-    if (list.length > 0) {
-      trackHomeTabEvents('Home Screen - Page Loaded');
-    }
-  }, [list.length]);
-
   const SupplementaryButton = () => (
     <Button
       className={classes.homeNavigation}
@@ -98,7 +109,7 @@ function NewHomeTab({
       component={RouterLink}
       to={`/cohorts/${cohort.id}/sessions`}
       fullWidth
-      onClick={() => triggerSupplimentaryEvent()}
+      onClick={() => triggerSupplementaryEvent()}
     >
       Review Supplementary Resources
     </Button>
@@ -146,7 +157,7 @@ function NewHomeTab({
             className={classes.homeNavigation}
             variant="contained"
             target="_blank"
-            onClick={() => trackHomeTabEvents('Home Screen - Reading Opened')}
+            onClick={() => sendPreReadsEvent('Home Page - Prereads - "Open Reading" Selected')}
             href={sessionMaterial.action_url}
           >
             Open
@@ -169,6 +180,10 @@ function NewHomeTab({
   );
 
   const renderSessionDetailNavigation = () => {
+    const handleOpenMessaging = () => {
+      sendSessionPreviewEvent('Home Page - Session Preview - "Open Messaging" Selected');
+    };
+
     if (isZoomLinkVisible(activeSession)) {
       return (
         <Stack spacing={1} style={{ marginTop: '30px' }}>
@@ -177,7 +192,7 @@ function NewHomeTab({
             variant="contained"
             href={activeSession?.zoom_url}
             onClick={() => {
-              trackHomeTabEvents('Home Screen - ‘Join Session’ Selected');
+              sendSessionPreviewEvent('Home Page - Session Preview - "Join Session" Selected');
               markAttendance();
             }}
           >
@@ -191,6 +206,7 @@ function NewHomeTab({
               fullWidth
               component={RouterLink}
               to={`/cohorts/${cohort.id}/messaging`}
+              onClick={handleOpenMessaging}
             >
               Open Messaging
             </Button>
@@ -207,6 +223,7 @@ function NewHomeTab({
           fullWidth
           component={RouterLink}
           to={`/cohorts/${cohort.id}/messaging`}
+          onClick={handleOpenMessaging}
         >
           Open Messaging
         </Button>

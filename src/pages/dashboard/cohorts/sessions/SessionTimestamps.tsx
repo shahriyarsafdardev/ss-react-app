@@ -5,21 +5,13 @@ import Timestamp from './Timestamp';
 
 function SessionTimestamps({
   timestamps,
-  videoReference,
+  handlePlayTimeStamp,
   sessionId
 }: {
   timestamps: SessionTimestamp[];
-  videoReference: any;
+  handlePlayTimeStamp: any;
   sessionId: string;
 }) {
-  const handlePlayTimeStamp = (seconds: string) => {
-    if (videoReference.current) {
-      videoReference.current.currentTime = Number(seconds);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      videoReference.current.play();
-    }
-  };
-
   return (
     <Box>
       {timestamps?.map((timestamp) => (

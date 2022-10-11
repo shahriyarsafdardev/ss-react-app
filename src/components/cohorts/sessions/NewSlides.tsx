@@ -1,8 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Button, Container, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { SLIDE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import type { ToolbarSlot } from '@react-pdf-viewer/toolbar';
@@ -12,7 +11,8 @@ import {
   Worker,
   SpecialZoomLevel,
   DocumentLoadEvent,
-  LoadError
+  LoadError,
+  PageChangeEvent
 } from '@react-pdf-viewer/core';
 
 // Import styles
@@ -45,32 +45,31 @@ export default function NewSlides({
   pdfUrl,
   pdfDownloadable,
   onTrack,
-  isFree
+  isFree,
+  sliderEvents
 }: {
   pdfUrl: string | undefined;
   pdfDownloadable: boolean | undefined;
   onTrack: Function;
   isFree: boolean;
+  sliderEvents: Function;
 }) {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [shareModal, setShareModal] = useState(false);
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
 
   useEffect(() => {
     if (pdfUrl) {
-      onTrack(SLIDE_EVENTS.opened);
+      onTrack();
     }
   }, [pdfUrl]);
 
   const toolbarPluginInstance = toolbarPlugin();
 
   const { Toolbar } = toolbarPluginInstance;
+  const slideNumber = useRef(1);
 
   const handleShareSlides = () => {
-    trackGenericEvent(cohort, 'Sessions Page - "Share Slide" Selected');
+    sliderEvents('Resources Page - "Share Slide" Selected', slideNumber.current);
     setShareModal(true);
   };
 
@@ -176,8 +175,16 @@ export default function NewSlides({
                   <StyledOptions style={{ marginLeft: 'auto' }}>
                     <EnterFullScreen>
                       {(props) => (
-                        <Box onClick={props.onClick} style={{ cursor: 'pointer', display: 'flex' }}>
-                          <FullscreenIcon onClick={() => onTrack(SLIDE_EVENTS.full_screen_view)} />
+                        <Box
+                          onClick={() =>
+                            sliderEvents(
+                              'Resources Page - Slides - "Full Screen" Selected',
+                              slideNumber.current
+                            )
+                          }
+                          style={{ cursor: 'pointer', display: 'flex' }}
+                        >
+                          <FullscreenIcon onClick={props.onClick} />
                           <StyledTypography>Full Screen</StyledTypography>
                         </Box>
                       )}
@@ -201,6 +208,10 @@ export default function NewSlides({
               defaultScale={SpecialZoomLevel.PageFit}
               onDocumentLoad={(e: DocumentLoadEvent) => {
                 setNumPages(e.doc.numPages);
+              }}
+              onPageChange={(e: PageChangeEvent) => {
+                sliderEvents('Resources Page - Slides - Slide Opened', e.currentPage + 1);
+                slideNumber.current = e.currentPage + 1;
               }}
               renderError={renderError}
             />

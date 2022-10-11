@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack5';
 import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
-import { REFERRAL_EVENTS, trackReferralEvent } from 'utils/amplitude';
+import { trackEvent } from 'utils/eventTracking';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
 
@@ -126,7 +126,7 @@ export const ShareReferralLink = ({
   const handleCopyReferralLink = () => {
     if (referralLink) {
       copy(`${referralLink}&alumni=true`);
-      trackReferralEvent(REFERRAL_EVENTS.copy_event_type, {}, cohort);
+      trackEvent(cohort, "Sidebar - Referral Preview - 'Copy Link' Selected", {});
       enqueueSnackbar('Referral Link Copied', { variant: 'success' });
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
@@ -136,7 +136,7 @@ export const ShareReferralLink = ({
   const handleSendViaEmail = () => {
     if (referralLink) {
       setReferralEmailModal(true);
-      trackReferralEvent(REFERRAL_EVENTS.open_modal_event_type, {}, cohort);
+      trackEvent(cohort, 'Sidebar - Referral Preview - Email Invite Modal Opened', {});
     } else {
       enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
     }

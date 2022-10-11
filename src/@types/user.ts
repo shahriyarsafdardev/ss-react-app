@@ -144,6 +144,8 @@ export type ParticipantProfile = {
   discord_url: string;
   profile_image_url: File | any;
   current_company: string;
+  current_company_id: string;
+  attended_cohorts: string[];
   preferred_pronoun: string;
   current_position: string;
   strengths: string[] | any;

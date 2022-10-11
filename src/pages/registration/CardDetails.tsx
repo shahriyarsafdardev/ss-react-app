@@ -18,13 +18,6 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
-import {
-  ONBOARDING_EVENTS,
-  REFERRAL_EVENTS,
-  trackOnboardingEvent,
-  trackReferralEvent
-} from 'utils/amplitude';
-import { useLocation } from 'react-router';
 import { CohortType } from './Registration';
 
 type CardType = {
@@ -62,7 +55,7 @@ export default function CardDetails({
   last_name,
   setStep,
   payLaterMessage,
-  trackReferralFlowEvents
+  trackRegistrationEvent
 }: {
   cohort: CohortType;
   first_name?: string;
@@ -70,47 +63,33 @@ export default function CardDetails({
   enrollmentID?: string;
   setStep: Function;
   payLaterMessage: string;
-  trackReferralFlowEvents: Function;
+  trackRegistrationEvent: Function;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
   const [open, setOpen] = useState(false);
-  const url = new URLSearchParams(useLocation().search);
-  const alumni = url.get('alumni') || false;
-  const referrer_code = url.get('referrer') || '';
 
   useEffect(() => {
-    trackReferralFlowEvents('Cohort Registration - Payment Info Page - Page Loaded');
+    trackRegistrationEvent('Cohort Registration - Payment Info Page - Page Loaded');
   }, []);
 
   const handlePayLater = () => {
-    trackReferralFlowEvents("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
+    trackRegistrationEvent("Cohort Registration - Payment Info Page - 'Pay Later' Selected");
+    setOpen(true);
+  };
+
+  const handlePayNow = () => {
+    trackRegistrationEvent(
+      "Cohort Registration - Payment Info Page - 'No, I would like to pay now' Selected"
+    );
+    setOpen(false);
+  };
+
+  const handlePayLaterConfirmation = () => {
+    trackRegistrationEvent(
+      "Cohort Registration - Payment Info Page - 'Yes, I would like to pay later' Selected"
+    );
     setStep(4);
-  };
-
-  const triggerOnboardingEvent = () => {
-    trackOnboardingEvent(
-      ONBOARDING_EVENTS.event_type,
-      {
-        [ONBOARDING_EVENTS.event]: 'Payment Made',
-        [ONBOARDING_EVENTS.category]: 'Payment Made',
-        [ONBOARDING_EVENTS.description]: 'User has paid for enrollment.'
-      },
-      cohort
-    );
-  };
-
-  const triggerReferralEvent = () => {
-    trackReferralEvent(
-      REFERRAL_EVENTS.event_type,
-      {
-        [REFERRAL_EVENTS.event]: 'Payment Made',
-        [REFERRAL_EVENTS.category]: 'referral link',
-        [REFERRAL_EVENTS.description]: 'Payment Made via referral link',
-        [REFERRAL_EVENTS.referrer_code]: referrer_code
-      },
-      cohort
-    );
   };
 
   const ValidationSchema = Yup.object().shape({
@@ -150,13 +129,7 @@ export default function CardDetails({
           })
           .then((res) => {
             enqueueSnackbar('Card Details submitted', { variant: 'success' });
-            triggerOnboardingEvent();
-            trackReferralFlowEvents('Cohort Registration - Payment Info Page - Submitted Card', {
-              amount_paid: cohort?.price
-            });
-            if (alumni) {
-              triggerReferralEvent();
-            }
+            trackRegistrationEvent('Cohort Registration - Payment Info Page - Submitted Card');
             setStep(4);
           })
           .catch((error: any) => {
@@ -227,7 +200,7 @@ export default function CardDetails({
             fullWidth
             variant="outlined"
             color="primary"
-            onClick={handlePayLater}
+            onClick={handlePayLaterConfirmation}
             data-testid="pay-later"
           >
             Yes, I would like to pay later
@@ -237,7 +210,7 @@ export default function CardDetails({
             variant="contained"
             color="primary"
             data-testid="pay-now"
-            onClick={() => setOpen(false)}
+            onClick={handlePayNow}
           >
             No, I would like to pay now
           </StyledButton>
@@ -339,7 +312,7 @@ export default function CardDetails({
               type="submit"
               variant="outlined"
               loading={isSubmitting}
-              onClick={() => setOpen(true)}
+              onClick={handlePayLater}
               id="btn-submit"
               data-testid="pay-later-btn"
             >

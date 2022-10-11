@@ -15,10 +15,10 @@ import {
 } from 'stream-chat-react';
 
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import useAuth from 'hooks/useAuth';
 import { PinnedMessageList } from '../PinnedMessageList/PinnedMessageList';
 import { TeamChannelHeader } from '../TeamChannelHeader/TeamChannelHeader';
 import { ThreadMessageInput } from '../TeamMessageInput/ThreadMessageInput';
-
 import type {
   TeamAttachmentType,
   TeamChannelType,
@@ -28,6 +28,7 @@ import type {
   TeamReactionType,
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
+import { getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
 
 type InnerProps = {
   pinsOpen: boolean;
@@ -50,6 +51,8 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModalState] = useState(false);
   const [message, setMessage] = useState<MessageToSend>({});
+  const { user } = useAuth();
+  const currentUser = user;
 
   const giphyStateObj = {
     giphyState,
@@ -66,7 +69,7 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     TeamUserType
   >();
 
-  const { thread, channel } = useChannelStateContext<
+  const { channel } = useChannelStateContext<
     TeamAttachmentType,
     TeamChannelType,
     TeamCommandType,
@@ -103,13 +106,6 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
     if (sendMessage) {
       const sendMessagePromise = sendMessage(updatedMessage);
       logChatPromiseExecution(sendMessagePromise, 'send message');
-      if (type) {
-        if (type === 'team') {
-          sendAnalyticsData('Team Channel', 'Message Sent');
-        } else if (type === 'messaging') {
-          sendAnalyticsData('Direct Chat', 'Message Sent');
-        }
-      }
       setGiphyState(false);
     }
   };
