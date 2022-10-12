@@ -6,6 +6,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import Header from 'components/subscription/teams/Header';
 import { useLocation } from 'react-router-dom';
 import axios from 'utils/axios';
+import { useSnackbar } from 'notistack5';
 import OnboardChoice from './OnboardChoice';
 import InviteMembersForm, { TeamMember } from './InviteMembersForm';
 import PromptNote from './PromptNote';
@@ -30,20 +31,26 @@ export default function TeamRegistration() {
   const [amount, setAmount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`team_registrations/get_team_details.json`, {
-        params: { email, team }
-      })
-      .then((res) => {
-        setCohorts(res.data.cohorts);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if (team !== '' && email !== '') {
+      axios
+        .get(`team_registrations/get_team_details.json`, {
+          params: { email, team }
+        })
+        .then((res) => {
+          setCohorts(res.data.cohorts);
+          setLoading(false);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message || 'Some error occurred!', {
+            variant: 'error'
+          });
+        });
+    } else {
+      setLoading(true);
+    }
   }, []);
 
   const setStep = (decrease?: boolean) => {
