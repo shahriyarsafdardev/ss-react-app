@@ -17,10 +17,11 @@ export default function Header({
         ? ['Please add your team member', '']
         : ['Please invite your team members:', 'They will be asked to pay individually'];
     }
-    if (activeStep === 3) {
-      return isSinglePayee
-        ? ['Log in to the Business Portal to track your team’s onboarding', '']
-        : ['Log in to the Business Portal to track your team member’s status & onboarding', ''];
+    if (activeStep === 3 && !isSinglePayee) {
+      return ['Log in to the Business Portal to track your team member’s status & onboarding', ''];
+    }
+    if (activeStep === 4) {
+      return ['Log in to the Business Portal to track your team’s onboarding', ''];
     }
     return ['', ''];
   };

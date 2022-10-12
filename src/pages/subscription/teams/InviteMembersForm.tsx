@@ -1,6 +1,6 @@
 import { FormControl, TextField, Box } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useState } from 'react';
+import axios from 'utils/axios';
 import * as Yup from 'yup';
 import TeamMembersList from '../../../components/subscription/teams/TeamMembersList';
 import { StyledLoadingButton, StyledStack, StyledMembersList, StyledButton } from './Common';
@@ -13,14 +13,38 @@ export type TeamMember = {
 
 function InviteMembersForm({
   setStep,
-  isSinglePayee
+  isSinglePayee,
+  email,
+  team,
+  setClientSecret,
+  teamMembers,
+  setTeamMembers
 }: {
   setStep: Function;
   isSinglePayee: boolean;
+  email: string;
+  team: string;
+  setClientSecret: Function;
+  teamMembers: TeamMember[];
+  setTeamMembers: Function;
 }) {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-
   const buttonText = () => (isSinglePayee ? 'Add Team Member' : 'Send Invite');
+
+  const nextHandler = async () => {
+    if (isSinglePayee) {
+      const uploadData = new FormData();
+      uploadData.append('email', email);
+      uploadData.append('team', team);
+      uploadData.append('team_members', JSON.stringify(teamMembers));
+      await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
+        setClientSecret(res.data.clientSecret);
+        setStep();
+        console.log(res);
+      });
+    } else {
+      setStep();
+    }
+  };
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -35,7 +59,16 @@ function InviteMembersForm({
       courseName: ''
     },
     validationSchema: ValidationSchema,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
+      if (!isSinglePayee) {
+        const uploadData = new FormData();
+        uploadData.append('email', values.email);
+        uploadData.append('fullName', values.fullName);
+        uploadData.append('courseName', values.courseName);
+        await axios.post(`team_registrations/team_member_invite.json`, uploadData).then((res) => {
+          console.log(res);
+        });
+      }
       setTeamMembers([
         ...teamMembers,
         { email: values.email, fullName: values.fullName, courseName: values.courseName }
@@ -100,9 +133,8 @@ function InviteMembersForm({
       <StyledButton
         fullWidth
         variant="contained"
-        onClick={() => {
-          setStep();
-        }}
+        onClick={nextHandler}
+        disabled={teamMembers.length === 0}
       >
         Next
       </StyledButton>

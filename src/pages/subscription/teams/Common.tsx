@@ -65,3 +65,26 @@ export const RootStyle = styled(Page)(({ theme }) => ({
   display: 'flex',
   position: 'relative'
 }));
+
+export const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
+export const PaymentRootStyle = styled(Page)(({ theme }) => ({
+  minHeight: '90vh',
+  paddingTop: theme.spacing(15)
+}));
+
+export const HeadingStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[900],
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1)
+}));
+
+export const InfoStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[800],
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1)
+}));

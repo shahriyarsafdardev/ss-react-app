@@ -1,54 +1,27 @@
-import { useState, useEffect } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-// import {  } from '@stripe/react-stripe-js';
-import axios from 'utils/axios';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Grid, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import StripePayment from './StripePayment';
-import Page from '../../components/Page';
+import { HeadingStyle, InfoStyle, LoadingContainer, PaymentRootStyle } from './Common';
+import { TeamMember } from './InviteMembersForm';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
-const LoadingContainer = styled(Box)(() => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%'
-}));
-
-export const RootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '90vh',
-  paddingTop: theme.spacing(15)
-}));
-
-const HeadingStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.grey[900],
-  marginBottom: theme.spacing(1),
-  marginTop: theme.spacing(1)
-}));
-
-const InfoStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.grey[800],
-  marginBottom: theme.spacing(1),
-  marginTop: theme.spacing(1)
-}));
-
-export default function StripePaymentForm() {
-  const [clientSecret, setClientSecret] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getSecret = async () => {
-      await axios.post('/payments/stripe_secret.json').then((res) => {
-        setClientSecret(res.data.clientSecret);
-        setLoading(false);
-      });
-    };
-    getSecret();
-  }, []);
-
-  if (!clientSecret || loading) {
+export default function StripePaymentForm({
+  team,
+  teamMembers,
+  email,
+  clientSecret,
+  setStep
+}: {
+  team: string;
+  teamMembers: TeamMember[];
+  email: string;
+  clientSecret: string;
+  setStep: Function;
+}) {
+  if (!clientSecret) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -56,7 +29,7 @@ export default function StripePaymentForm() {
     );
   }
   return (
-    <RootStyle title="Sphere Cohort Payment">
+    <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>
         <Stack sx={{ padding: 15, backgroundColor: '#fffffa' }} width={{ md: '50%', sm: '100%' }}>
           <HeadingStyle variant="h3">Your Team Package</HeadingStyle>
@@ -100,10 +73,16 @@ export default function StripePaymentForm() {
               }
             }}
           >
-            <StripePayment />
+            <StripePayment
+              team={team}
+              teamMembers={teamMembers}
+              email={email}
+              clientSecret={clientSecret}
+              setStep={setStep}
+            />
           </Elements>
         </Stack>
       </Grid>
-    </RootStyle>
+    </PaymentRootStyle>
   );
 }
