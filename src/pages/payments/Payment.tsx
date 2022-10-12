@@ -1,0 +1,109 @@
+import { useState, useEffect } from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+// import {  } from '@stripe/react-stripe-js';
+import axios from 'utils/axios';
+import LoadingScreen from 'components/LoadingScreen';
+import { Stack, Grid, Typography } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
+import StripePayment from './StripePayment';
+import Page from '../../components/Page';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
+
+const LoadingContainer = styled(Box)(() => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%'
+}));
+
+export const RootStyle = styled(Page)(({ theme }) => ({
+  minHeight: '90vh',
+  paddingTop: theme.spacing(15)
+}));
+
+const HeadingStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[900],
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1)
+}));
+
+const InfoStyle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[800],
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1)
+}));
+
+export default function StripePaymentForm() {
+  const [clientSecret, setClientSecret] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getSecret = async () => {
+      await axios.post('/payments/stripe_secret.json').then((res) => {
+        setClientSecret(res.data.clientSecret);
+        setLoading(false);
+      });
+    };
+    getSecret();
+  }, []);
+
+  if (!clientSecret || loading) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+  return (
+    <RootStyle title="Sphere Cohort Payment">
+      <Grid container>
+        <Stack sx={{ padding: 15, backgroundColor: '#fffffa' }} width={{ md: '50%', sm: '100%' }}>
+          <HeadingStyle variant="h3">Your Team Package</HeadingStyle>
+          <InfoStyle>Based on the number of people you’ve invited, your team package is:</InfoStyle>
+          <Stack direction="row" alignItems="center">
+            <InfoStyle variant="h4">$7,000 USD = 7,000 credits</InfoStyle>&nbsp;
+            <InfoStyle variant="h6">which will recur annually</InfoStyle>
+          </Stack>
+          <InfoStyle> Sphere credits provide: </InfoStyle>
+          <ul style={{ marginLeft: '20px' }}>
+            <li>
+              <Typography>
+                A 15% discount on the price of all course in our library (our discounts are
+                volume-based)
+              </Typography>
+            </li>
+            <li>
+              <Typography>Immunity to price increases</Typography>
+            </li>
+            <li>
+              <Typography>
+                Ongoing access to the Sphere portal (including all recordings and resources)
+              </Typography>
+            </li>
+            <li>
+              <Typography>Access to Sphere alumni events</Typography>
+            </li>
+          </ul>
+          <InfoStyle>You can top up or cancel your subscription at any time.</InfoStyle>
+        </Stack>
+
+        <Stack sx={{ p: 15, backgroundColor: '#E2E8F0' }} width={{ md: '50%', sm: '100%' }}>
+          <Elements
+            key={clientSecret}
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+              appearance: {
+                theme: 'flat',
+                labels: 'floating'
+              }
+            }}
+          >
+            <StripePayment />
+          </Elements>
+        </Stack>
+      </Grid>
+    </RootStyle>
+  );
+}
