@@ -9,10 +9,17 @@ import axios from 'utils/axios';
 import OnboardChoice from './OnboardChoice';
 import InviteMembersForm, { TeamMember } from './InviteMembersForm';
 import PromptNote from './PromptNote';
-import { RootStyle, StyledBackButton } from './Common';
+import { RootStyle, StyledBackButton, useStyles } from './Common';
 import Payment from './Payment';
 
+export type Cohort = {
+  host_name: string;
+  id: string;
+  name: string;
+};
+
 export default function TeamRegistration() {
+  const classes = useStyles();
   const [activeStep, setActiveStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isSinglePayee, setIsSinglePayee] = useState(false);
@@ -20,26 +27,33 @@ export default function TeamRegistration() {
   const email = url.get('email') || '';
   const team = url.get('team') || '';
   const [clientSecret, setClientSecret] = useState('');
+  const [amount, setAmount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [cohorts, setCohorts] = useState<Cohort[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`team_registrations/get_team_details.json`, {
         params: { email, team }
       })
       .then((res) => {
-        console.log('Response:', res);
+        setCohorts(res.data.cohorts);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }, []);
 
-  const nextStep = () => {
-    setActiveStep(activeStep + 1);
+  const setStep = (decrease?: boolean) => {
+    decrease ? setActiveStep(activeStep - 1) : setActiveStep(activeStep + 1);
   };
 
   const previousStep = () => {
+    if (activeStep === 2) {
+      setTeamMembers([]);
+    }
     setActiveStep(activeStep - 1);
   };
 
@@ -47,13 +61,15 @@ export default function TeamRegistration() {
     if (activeStep === 2) {
       return (
         <InviteMembersForm
-          setStep={nextStep}
+          setStep={setStep}
           isSinglePayee={isSinglePayee}
           email={email}
           team={team}
           setClientSecret={setClientSecret}
+          setAmount={setAmount}
           teamMembers={teamMembers}
           setTeamMembers={setTeamMembers}
+          cohorts={cohorts}
         />
       );
     }
@@ -64,14 +80,15 @@ export default function TeamRegistration() {
           teamMembers={teamMembers}
           email={email}
           clientSecret={clientSecret}
-          setStep={nextStep}
+          amount={amount}
+          setStep={setStep}
         />
       );
     }
     if ((activeStep === 3 && !isSinglePayee) || activeStep === 4) {
       return <PromptNote username="dev.mahboob@gmail.com" password="sphere-2340" />;
     }
-    return <OnboardChoice setStep={nextStep} setIsSinglePayee={setIsSinglePayee} />;
+    return <OnboardChoice setStep={setStep} setIsSinglePayee={setIsSinglePayee} />;
   };
 
   const teamRegistrationFlow = () => (
@@ -79,14 +96,21 @@ export default function TeamRegistration() {
       {!(activeStep === 3 && isSinglePayee) && (
         <Header activeStep={activeStep} isSinglePayee={isSinglePayee} />
       )}
-      <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Container
+        maxWidth="lg"
+        className={activeStep === 3 && isSinglePayee ? classes.paymentContainer : ''}
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      >
         {selectComponent()}
       </Container>
     </Stack>
   );
 
   return (
-    <RootStyle title="Sphere Cohort Registration">
+    <RootStyle
+      title="Sphere Cohort Registration"
+      className={activeStep === 3 && isSinglePayee ? classes.noPadding : ''}
+    >
       <Navbar activeStep={activeStep} />
       {activeStep !== 1 && (
         <StyledBackButton variant="outlined" onClick={() => previousStep()}>

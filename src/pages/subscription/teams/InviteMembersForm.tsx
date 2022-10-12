@@ -1,14 +1,25 @@
-import { FormControl, TextField, Box } from '@material-ui/core';
+import {
+  FormControl,
+  TextField,
+  Box,
+  MenuItem,
+  ListItemText,
+  Select as MaterialSelect,
+  InputLabel
+} from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useSnackbar } from 'notistack5';
+import { useState } from 'react';
 import axios from 'utils/axios';
 import * as Yup from 'yup';
 import TeamMembersList from '../../../components/subscription/teams/TeamMembersList';
-import { StyledLoadingButton, StyledStack, StyledMembersList, StyledButton } from './Common';
+import { StyledLoadingButton, StyledStack, StyledMembersList, StyledNextButton } from './Common';
+import { Cohort } from './TeamRegistration';
 
 export type TeamMember = {
   email: string;
   fullName: string;
-  courseName: string;
+  courseID: string;
 };
 
 function InviteMembersForm({
@@ -17,30 +28,44 @@ function InviteMembersForm({
   email,
   team,
   setClientSecret,
+  setAmount,
   teamMembers,
-  setTeamMembers
+  setTeamMembers,
+  cohorts
 }: {
   setStep: Function;
   isSinglePayee: boolean;
   email: string;
   team: string;
   setClientSecret: Function;
+  setAmount: Function;
   teamMembers: TeamMember[];
   setTeamMembers: Function;
+  cohorts: Cohort[];
 }) {
+  const [isAdding, setIsAdding] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const buttonText = () => (isSinglePayee ? 'Add Team Member' : 'Send Invite');
 
   const nextHandler = async () => {
     if (isSinglePayee) {
+      setIsAdding(true);
       const uploadData = new FormData();
       uploadData.append('email', email);
       uploadData.append('team', team);
       uploadData.append('team_members', JSON.stringify(teamMembers));
-      await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
-        setClientSecret(res.data.clientSecret);
-        setStep();
-        console.log(res);
-      });
+      await axios
+        .post(`team_registrations/payment_intent.json`, uploadData)
+        .then((res) => {
+          setIsAdding(false);
+          setClientSecret(res.data.clientSecret);
+          setAmount(res.data.total_amount);
+          setStep();
+        })
+        .catch((err) => {
+          enqueueSnackbar(`Some error occurred!`, { variant: 'error' });
+        });
     } else {
       setStep();
     }
@@ -49,14 +74,14 @@ function InviteMembersForm({
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     fullName: Yup.string().required('Full Name is required'),
-    courseName: Yup.string().required('Course Name is required')
+    courseID: Yup.string().required('Course Name is required')
   });
 
   const formik = useFormik<TeamMember>({
     initialValues: {
       email: '',
       fullName: '',
-      courseName: ''
+      courseID: ''
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -64,14 +89,21 @@ function InviteMembersForm({
         const uploadData = new FormData();
         uploadData.append('email', values.email);
         uploadData.append('fullName', values.fullName);
-        uploadData.append('courseName', values.courseName);
-        await axios.post(`team_registrations/team_member_invite.json`, uploadData).then((res) => {
-          console.log(res);
-        });
+        uploadData.append('courseID', values.courseID);
+        await axios
+          .post('team_registrations/team_member_invite.json', uploadData)
+          .then((res) => {
+            enqueueSnackbar('Team Member Invited', { variant: 'success' });
+          })
+          .catch((err) => {
+            enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          });
+      } else {
+        enqueueSnackbar('Team Member Added', { variant: 'success' });
       }
       setTeamMembers([
         ...teamMembers,
-        { email: values.email, fullName: values.fullName, courseName: values.courseName }
+        { email: values.email, fullName: values.fullName, courseID: values.courseID }
       ]);
       resetForm();
     }
@@ -86,7 +118,7 @@ function InviteMembersForm({
           <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 3, md: 2 }}>
             <FormControl fullWidth>
               <TextField
-                inputProps={{ 'data-testid': 'role-title' }}
+                inputProps={{ 'data-testid': 'email' }}
                 fullWidth
                 label="Email"
                 error={Boolean(touched.email && errors.email)}
@@ -95,7 +127,7 @@ function InviteMembersForm({
             </FormControl>
             <FormControl fullWidth>
               <TextField
-                inputProps={{ 'data-testid': 'role-title' }}
+                inputProps={{ 'data-testid': 'full-name' }}
                 fullWidth
                 label="Full Name"
                 error={Boolean(touched.fullName && errors.fullName)}
@@ -103,13 +135,21 @@ function InviteMembersForm({
               />
             </FormControl>
             <FormControl fullWidth>
-              <TextField
-                inputProps={{ 'data-testid': 'role-title' }}
+              <InputLabel>Course Name</InputLabel>
+              <MaterialSelect
                 fullWidth
                 label="Course Name"
-                error={Boolean(touched.courseName && errors.courseName)}
-                {...getFieldProps('courseName')}
-              />
+                defaultValue={values.courseID}
+                inputProps={{ 'data-test-id': 'course-id' }}
+                {...getFieldProps('courseID')}
+                error={Boolean(touched.courseID && errors.courseID)}
+              >
+                {cohorts?.map((cohort: Cohort) => (
+                  <MenuItem key={cohort.id} value={`${cohort.id}`}>
+                    <ListItemText primary={`${cohort.name} with ${cohort.host_name}`} />
+                  </MenuItem>
+                ))}
+              </MaterialSelect>
             </FormControl>
             <StyledLoadingButton
               data-testid="purchase-button"
@@ -117,7 +157,7 @@ function InviteMembersForm({
               variant="contained"
               color="primary"
               loading={isSubmitting}
-              disabled={!isValid || !values.email || !values.fullName || !values.courseName}
+              disabled={!isValid || !values.email || !values.fullName || !values.courseID}
               onClick={() => submitForm()}
             >
               {buttonText()}
@@ -125,19 +165,24 @@ function InviteMembersForm({
           </StyledStack>
           {teamMembers && teamMembers.length > 0 && (
             <StyledMembersList>
-              <TeamMembersList teamMembers={teamMembers} isSinglePayee={isSinglePayee} />
+              <TeamMembersList
+                teamMembers={teamMembers}
+                isSinglePayee={isSinglePayee}
+                cohorts={cohorts}
+              />
             </StyledMembersList>
           )}
         </Form>
       </FormikProvider>
-      <StyledButton
+      <StyledNextButton
         fullWidth
         variant="contained"
         onClick={nextHandler}
         disabled={teamMembers.length === 0}
+        loading={isAdding}
       >
         Next
-      </StyledButton>
+      </StyledNextButton>
     </Box>
   );
 }

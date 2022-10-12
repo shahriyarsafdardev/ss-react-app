@@ -1,6 +1,7 @@
 import { Theme } from '@material-ui/core/styles';
 import { Stack, Typography, Button, Card, styled } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { LoadingButton } from '@material-ui/lab';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   width: '100%',
@@ -58,6 +59,17 @@ export const StyledHeading = styled(Typography)(({ theme }) => ({
     fontSize: '16px',
     marginTop: '0px !important',
     marginBottom: '15px !important'
+  }
+}));
+
+export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '100%',
+  [theme.breakpoints.down('sm')]: {
+    position: null,
+    bottom: null,
+    right: null,
+    marginTop: '10px'
   }
 }));
 

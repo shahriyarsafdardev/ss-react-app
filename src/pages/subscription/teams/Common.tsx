@@ -1,5 +1,8 @@
-import { FormControl, TextField, Button, Stack, styled, Box, Typography } from '@material-ui/core';
+import { Button, Stack, styled, Box, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
+
 import Page from 'components/Page';
 
 export const StyledBackButton = styled(Button)(({ theme }) => ({
@@ -42,7 +45,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: '100%'
   }
 }));
-export const StyledButton = styled(Button)(({ theme }) => ({
+export const StyledNextButton = styled(LoadingButton)(({ theme }) => ({
   width: '270px',
   height: '40px',
   borderRadius: '30px',
@@ -73,18 +76,69 @@ export const LoadingContainer = styled(Box)(() => ({
 }));
 
 export const PaymentRootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '90vh',
-  paddingTop: theme.spacing(15)
+  minHeight: '90vh'
 }));
 
 export const HeadingStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.grey[900],
+  color: '#475569',
   marginBottom: theme.spacing(1),
   marginTop: theme.spacing(1)
 }));
 
 export const InfoStyle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.grey[800],
+  color: '#475569',
   marginBottom: theme.spacing(1),
   marginTop: theme.spacing(1)
+}));
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  paymentContainer: {
+    width: '100%',
+    maxWidth: '100%',
+    display: 'block',
+    padding: '0px'
+  },
+  noPadding: {
+    paddingTop: '93px',
+    paddingBottom: '0px'
+  },
+  font20: {
+    fontSize: '20px !important',
+    lineHeight: '25.2px'
+  },
+  font26: {
+    fontSize: '26px !important',
+    lineHeight: '26px'
+  },
+  font18: {
+    fontSize: '18px !important',
+    lineHeight: '24px'
+  },
+  colorGrey: {
+    color: '#475569'
+  },
+  fontBolder: {
+    fontWeight: 'bolder'
+  },
+  fontBold: {
+    fontWeight: 'bold'
+  },
+  paymentInfo: {
+    padding: '120px',
+    backgroundColor: '#fffffa',
+    height: '90vh',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      padding: '120px 20px'
+    }
+  },
+  paymentForm: {
+    padding: '120px',
+    backgroundColor: '#E2E8F0',
+    height: '90vh',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      padding: '120px 20px'
+    }
+  }
 }));

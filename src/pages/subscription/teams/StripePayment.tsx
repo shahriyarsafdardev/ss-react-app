@@ -1,7 +1,8 @@
-import { useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { LoadingButton } from '@material-ui/lab';
 import axios from 'utils/axios';
+import PaymentOptions from 'components/subscription/teams/PaymentOptions';
+import PaymentDivider from 'components/subscription/teams/PaymentDivider';
+import PaymentForm from 'components/subscription/teams/PaymentForm';
 import { TeamMember } from './InviteMembersForm';
 
 export default function CheckoutForm({
@@ -19,10 +20,8 @@ export default function CheckoutForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
-  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event: any) => {
-    setSubmitting(true);
     event.preventDefault();
     const uploadData = new FormData();
     uploadData.append('email', email);
@@ -32,7 +31,6 @@ export default function CheckoutForm({
       .post(`team_registrations/team_members_registration .json`, uploadData)
       .then((res) => {
         setStep();
-        console.log(res);
       });
 
     if (!stripe || !elements) {
@@ -46,7 +44,6 @@ export default function CheckoutForm({
       },
       redirect: 'if_required'
     });
-    setSubmitting(false);
   };
 
   return (
@@ -59,17 +56,9 @@ export default function CheckoutForm({
           }
         }}
       />
-      <LoadingButton
-        fullWidth
-        sx={{ mt: 4 }}
-        onClick={(e: any) => handleSubmit(e)}
-        type="submit"
-        variant="contained"
-        size="large"
-        loading={submitting}
-      >
-        Submit
-      </LoadingButton>
+      <PaymentOptions />
+      <PaymentDivider />
+      <PaymentForm handleSubmit={handleSubmit} setStep={setStep} />
     </>
   );
 }
