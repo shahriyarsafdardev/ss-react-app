@@ -3,6 +3,7 @@ import axios from 'utils/axios';
 import PaymentOptions from 'components/subscription/teams/PaymentOptions';
 import PaymentDivider from 'components/subscription/teams/PaymentDivider';
 import PaymentForm from 'components/subscription/teams/PaymentForm';
+import { Button } from '@material-ui/core';
 import { TeamMember } from './InviteMembersForm';
 
 export default function CheckoutForm({
@@ -27,11 +28,6 @@ export default function CheckoutForm({
     uploadData.append('email', email);
     uploadData.append('team', team);
     uploadData.append('team_members', JSON.stringify(teamMembers));
-    await axios
-      .post(`team_registrations/team_members_registration .json`, uploadData)
-      .then((res) => {
-        setStep();
-      });
 
     if (!stripe || !elements) {
       return;
@@ -44,6 +40,14 @@ export default function CheckoutForm({
       },
       redirect: 'if_required'
     });
+
+    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      await axios
+        .post(`team_registrations/team_members_registration.json`, uploadData)
+        .then((res) => {
+          setStep();
+        });
+    }
   };
 
   return (
@@ -56,9 +60,19 @@ export default function CheckoutForm({
           }
         }}
       />
-      <PaymentOptions />
-      <PaymentDivider />
-      <PaymentForm handleSubmit={handleSubmit} setStep={setStep} />
+      {/* <PaymentOptions />
+      <PaymentDivider /> */}
+      <Button
+        fullWidth
+        sx={{ mt: 4 }}
+        onClick={(e: any) => handleSubmit(e)}
+        type="submit"
+        variant="contained"
+        size="large"
+      >
+        Submit
+      </Button>
+      {/* <PaymentForm handleSubmit={handleSubmit} setStep={setStep} /> */}
     </>
   );
 }

@@ -89,6 +89,7 @@ function InviteMembersForm({
         const uploadData = new FormData();
         uploadData.append('email', values.email);
         uploadData.append('fullName', values.fullName);
+        uploadData.append('team', team);
         uploadData.append('courseID', values.courseID);
         await axios
           .post('team_registrations/team_member_invite.json', uploadData)
