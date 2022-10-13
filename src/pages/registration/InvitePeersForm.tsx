@@ -169,8 +169,8 @@ function InvitePeersForm({
           )}
         </Form>
       </FormikProvider>
-      <StyledButton fullWidth variant="outlined" onClick={handleOnContinue}>
-        {invites.length > 0 ? 'Continue' : 'Skip For Now'}
+      <StyledButton fullWidth variant="contained" color="primary" onClick={handleOnContinue}>
+        {invites.length > 0 ? 'Continue to Payment' : 'Skip For Now'}
       </StyledButton>
     </Box>
   );
