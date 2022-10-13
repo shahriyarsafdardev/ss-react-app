@@ -3,6 +3,7 @@ import { Container, Box, Stack, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import ResourceCard from 'components/cohorts/code/ResourceCard';
+import MLSCodeList from 'components/cohorts/code/MLSCodeList';
 import CodeList from 'components/cohorts/code/CodeList';
 import { CohortContext } from 'contexts/CohortContext';
 import { getCodeOnboardingCheckList } from 'redux/slices/cohort';
@@ -34,15 +35,14 @@ export default function CodeTab() {
   const { code_onboarding_items } = cohort || [];
 
   useEffect(() => {
-    if (cohort && !code_onboarding_items) {
+    if (cohort && !code_onboarding_items && cohort?.code === 'HPT') {
       dispatch(getCodeOnboardingCheckList(cohort.id));
     }
   }, [cohort]);
 
   const codeOnboardingContent = () =>
     typeof code_onboarding_items !== 'undefined' ? (
-      <Container style={{ marginBottom: '50px' }}>
-        <Typography variant="h3">Resources</Typography>
+      <>
         <ResourceStack>
           <ResourceCard
             cohort={cohort}
@@ -60,7 +60,7 @@ export default function CodeTab() {
           />
         </ResourceStack>
         <CodeList codeOnboardingItems={code_onboarding_items} />
-      </Container>
+      </>
     ) : (
       <LoadingContainer>
         <LoadingScreen />
@@ -71,7 +71,12 @@ export default function CodeTab() {
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="Sphere | Code">{codeOnboardingContent()}</Page>
+      <Page title="Sphere | Code">
+        <Container style={{ marginBottom: '50px' }}>
+          <Typography variant="h3">Resources</Typography>
+          {cohort?.code === 'HPT' ? codeOnboardingContent() : <MLSCodeList />}
+        </Container>
+      </Page>
     </CohortContext.Provider>
   );
 }

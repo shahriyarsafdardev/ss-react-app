@@ -13,6 +13,8 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts')
 };
 
+const CODE_TAB_COHORTS = ['HPT', 'MLS'];
+
 const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => ({
   subheader: header,
   items: rawCohorts.map((cohort: any) => {
@@ -33,7 +35,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
     };
     const { user } = useAuth();
 
-    if (cohort.code === 'HPT') {
+    if (CODE_TAB_COHORTS.includes(cohort?.code)) {
       object.children = [
         ...object.children,
         { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id) }

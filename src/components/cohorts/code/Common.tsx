@@ -1,4 +1,4 @@
-import { Box, Theme } from '@material-ui/core';
+import { Box, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { styled } from '@material-ui/core/styles';
 
@@ -80,5 +80,46 @@ export const DetailsBox = styled(Box)(({ theme }) => ({
   position: 'relative',
   [theme.breakpoints.down('md')]: {
     width: '100%'
+  }
+}));
+
+// MLS Code Page styled components
+export const ContentRow = styled(Box)(({ theme }) => ({
+  overflow: 'hidden',
+  backgroundColor: 'white',
+  padding: '20px',
+  boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
+  borderRadius: '16px',
+  display: 'flex',
+  gap: '20px',
+  margin: '10px 0px',
+  alignItems: 'center',
+  position: 'relative',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    flexWrap: 'wrap',
+    flexDirection: 'column'
+  }
+}));
+
+export const SubHeading = styled(Typography)(({ theme }) => ({
+  fontSize: '12px',
+  color: '#101658',
+  lineHeight: '18px',
+  letterSpacing: '1px',
+  textTransform: 'capitalize',
+  [theme.breakpoints.down('md')]: {
+    textAlign: 'center'
+  }
+}));
+
+export const MainHeading = styled(Typography)(({ theme }) => ({
+  fontSize: '18px',
+  color: '#101658',
+  lineHeight: '21.15px',
+  fontWeight: 'bold',
+  paddingTop: '2px',
+  [theme.breakpoints.down('md')]: {
+    textAlign: 'center'
   }
 }));
