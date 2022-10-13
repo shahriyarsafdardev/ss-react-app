@@ -7,6 +7,8 @@ import roundAccountBox from '@iconify/icons-ic/round-account-box';
 import roundPeople from '@iconify/icons-ic/baseline-people';
 import roundDelete from '@iconify/icons-ic/baseline-delete';
 import bellFill from '@iconify/icons-eva/bell-fill';
+import roundLoop from '@iconify/icons-ic/round-loop';
+
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
@@ -14,6 +16,7 @@ import { EVENT_TYPES, sendAmplitudeData, trackGenericEvent } from 'utils/amplitu
 
 // routes
 import useAuth from 'hooks/useAuth';
+import AccountSubscription from 'components/subscription/settings/AccountSubscription';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
@@ -109,6 +112,11 @@ export default function UserAccount() {
             value: 'email_notifications',
             icon: <Icon icon={bellFill} width={20} height={20} />,
             component: <AccountNotifications />
+          },
+          {
+            value: 'my_subscription',
+            icon: <Icon icon={roundLoop} width={20} height={20} />,
+            component: <AccountSubscription />
           },
           {
             value: 'delete_account',
