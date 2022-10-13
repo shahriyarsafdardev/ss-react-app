@@ -93,7 +93,7 @@ export default function Header({
       if (activeStep === 2) {
         return [
           'Invite your colleagues',
-          'Enter your colleagues email and name and we will send them an exclusive invite to the course.',
+          'Learning and applying concepts with friends and peers keeps people motivated and accountable. Many of our alumni have joined our cohorts with their colleagues or entire team.',
           ''
         ];
       }
@@ -131,7 +131,7 @@ export default function Header({
     if (activeStep === 2) {
       return [
         'Invite friends and colleagues',
-        'Enter your colleagues email and name and we will send them an exclusive invite to the course.',
+        'Learning and applying concepts with friends and peers keeps people motivated and accountable. Many of our alumni have joined our cohorts with their colleagues or entire team.',
         ''
       ];
     }
