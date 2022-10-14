@@ -3,8 +3,11 @@ import axios from 'utils/axios';
 import PaymentOptions from 'components/subscription/teams/PaymentOptions';
 import PaymentDivider from 'components/subscription/teams/PaymentDivider';
 import PaymentForm from 'components/subscription/teams/PaymentForm';
-import { Button } from '@material-ui/core';
+import { Button, Stack } from '@material-ui/core';
+import { useSnackbar } from 'notistack5';
+import { useState } from 'react';
 import { TeamMember } from './InviteMembersForm';
+import { StyledLoadingButton } from './Common';
 
 export default function CheckoutForm({
   team,
@@ -21,8 +24,11 @@ export default function CheckoutForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (event: any) => {
+    setIsSubmitting(true);
     event.preventDefault();
     const uploadData = new FormData();
     uploadData.append('email', email);
@@ -45,9 +51,13 @@ export default function CheckoutForm({
       await axios
         .post(`team_registrations/team_members_registration.json`, uploadData)
         .then((res) => {
+          enqueueSnackbar('Payment made successfully!', { variant: 'success' });
           setStep();
         });
+    } else {
+      enqueueSnackbar('Some error occurred!', { variant: 'error' });
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -62,16 +72,27 @@ export default function CheckoutForm({
       />
       {/* <PaymentOptions />
       <PaymentDivider /> */}
-      <Button
-        fullWidth
-        sx={{ mt: 4 }}
-        onClick={(e: any) => handleSubmit(e)}
-        type="submit"
-        variant="contained"
-        size="large"
-      >
-        Submit
-      </Button>
+      <Stack spacing={2}>
+        <StyledLoadingButton
+          fullWidth
+          sx={{ mt: 4 }}
+          onClick={(e: any) => handleSubmit(e)}
+          type="submit"
+          variant="contained"
+          size="large"
+          loading={isSubmitting}
+        >
+          Subscribe
+        </StyledLoadingButton>
+        <StyledLoadingButton
+          fullWidth
+          onClick={() => setStep(true)}
+          variant="outlined"
+          size="large"
+        >
+          Back
+        </StyledLoadingButton>
+      </Stack>
       {/* <PaymentForm handleSubmit={handleSubmit} setStep={setStep} /> */}
     </>
   );

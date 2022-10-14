@@ -170,7 +170,7 @@ export default function PaymentForm({
             fullWidth
             type="submit"
             variant="outlined"
-            loading={isSubmitting}
+            loading={false}
             id="btn-submit"
             data-testid="pay-later-btn"
             onClick={() => setStep(true)}

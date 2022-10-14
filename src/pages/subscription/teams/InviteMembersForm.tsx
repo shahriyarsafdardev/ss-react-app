@@ -58,13 +58,14 @@ function InviteMembersForm({
       await axios
         .post(`team_registrations/payment_intent.json`, uploadData)
         .then((res) => {
-          setIsAdding(false);
           setClientSecret(res.data.clientSecret);
           setAmount(res.data.total_amount);
+          setIsAdding(false);
           setStep();
         })
         .catch((err) => {
           enqueueSnackbar(`Some error occurred!`, { variant: 'error' });
+          setIsAdding(false);
         });
     } else {
       setStep();

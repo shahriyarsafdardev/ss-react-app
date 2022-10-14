@@ -89,6 +89,7 @@ export default function TeamRegistration() {
           clientSecret={clientSecret}
           amount={amount}
           setStep={setStep}
+          isSinglePayee={isSinglePayee}
         />
       );
     }
@@ -119,7 +120,7 @@ export default function TeamRegistration() {
       className={activeStep === 3 && isSinglePayee ? classes.noPadding : ''}
     >
       <Navbar activeStep={activeStep} />
-      {activeStep !== 1 && (
+      {activeStep !== 1 && activeStep !== 3 && isSinglePayee && (
         <StyledBackButton variant="outlined" onClick={() => previousStep()}>
           <KeyboardBackspace fontSize="large" />
         </StyledBackButton>

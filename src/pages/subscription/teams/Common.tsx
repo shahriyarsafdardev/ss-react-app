@@ -37,10 +37,19 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
     width: '100%'
   }
 }));
+
+export const StyledDetailsStack = styled(Stack)(({ theme }) => ({
+  color: 'white',
+  minHeight: '38vh',
+  [theme.breakpoints.down('md')]: {
+    minHeight: '320px'
+  }
+}));
+
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: '30px',
-  height: '40px',
-  width: '50%',
+  height: '35px',
+  width: '100%',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -56,7 +65,8 @@ export const StyledNextButton = styled(LoadingButton)(({ theme }) => ({
 }));
 
 export const StyledTypography = styled(Typography)(({ theme }) => ({
-  textAlign: 'center'
+  textAlign: 'center',
+  fontSize: '15px'
 }));
 
 export const RootStyle = styled(Page)(({ theme }) => ({
@@ -76,16 +86,13 @@ export const LoadingContainer = styled(Box)(() => ({
 }));
 
 export const PaymentRootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '90vh'
+  minHeight: '90vh',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '45px'
+  }
 }));
 
-export const HeadingStyle = styled(Typography)(({ theme }) => ({
-  color: '#475569',
-  marginBottom: theme.spacing(1),
-  marginTop: theme.spacing(1)
-}));
-
-export const InfoStyle = styled(Typography)(({ theme }) => ({
+export const StyledHeading = styled(Typography)(({ theme }) => ({
   color: '#475569',
   marginBottom: theme.spacing(1),
   marginTop: theme.spacing(1)
@@ -124,17 +131,20 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold'
   },
   paymentInfo: {
-    padding: '120px',
-    backgroundColor: '#fffffa',
+    width: '50%',
+    padding: '100px',
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-detail-bg.svg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundColor: '#FAFAFC',
     height: '90vh',
     [theme.breakpoints.down('md')]: {
       width: '100%',
-      padding: '120px 20px'
+      padding: '100px 20px'
     }
   },
   paymentForm: {
-    padding: '120px',
-    backgroundColor: '#E2E8F0',
+    padding: '100px',
     height: '90vh',
     [theme.breakpoints.down('md')]: {
       width: '100%',
