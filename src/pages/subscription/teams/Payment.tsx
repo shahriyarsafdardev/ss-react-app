@@ -39,7 +39,7 @@ export default function StripePaymentForm({
       <Grid container>
         <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} />
         <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
-          <Box sx={{ maxWidth: '600px', marginRight: 'auto' }}>
+          <Box className={classes.fullWidthCenter}>
             <Elements
               key={clientSecret}
               stripe={stripePromise}

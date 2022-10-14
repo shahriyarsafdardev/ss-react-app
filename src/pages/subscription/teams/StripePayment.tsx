@@ -75,7 +75,6 @@ export default function CheckoutForm({
       <Stack spacing={2}>
         <StyledLoadingButton
           fullWidth
-          sx={{ mt: 4 }}
           onClick={(e: any) => handleSubmit(e)}
           type="submit"
           variant="contained"

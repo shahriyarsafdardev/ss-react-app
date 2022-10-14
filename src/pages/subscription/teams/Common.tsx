@@ -40,7 +40,7 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
 
 export const StyledDetailsStack = styled(Stack)(({ theme }) => ({
   color: 'white',
-  minHeight: '38vh',
+  padding: '100px 50px 200px 50px',
   [theme.breakpoints.down('md')]: {
     minHeight: '320px'
   }
@@ -50,8 +50,10 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: '30px',
   height: '35px',
   width: '100%',
+  marginTop: '32px',
   [theme.breakpoints.down('md')]: {
-    width: '100%'
+    width: '100%',
+    marginTop: '0px'
   }
 }));
 export const StyledNextButton = styled(LoadingButton)(({ theme }) => ({
@@ -87,6 +89,9 @@ export const LoadingContainer = styled(Box)(() => ({
 
 export const PaymentRootStyle = styled(Page)(({ theme }) => ({
   minHeight: '90vh',
+  maxWidth: '1430px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
   [theme.breakpoints.down('md')]: {
     marginTop: '45px'
   }
@@ -132,15 +137,19 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   paymentInfo: {
     width: '50%',
-    padding: '100px',
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-detail-bg.svg')`,
+    backgroundColor: '#FAFAFC',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  grainedBackground: {
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-bg-desktop.svg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundColor: '#FAFAFC',
-    height: '90vh',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
-      padding: '100px 20px'
+      backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-bg-mbl.svg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
     }
   },
   paymentForm: {
@@ -148,7 +157,27 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '90vh',
     [theme.breakpoints.down('md')]: {
       width: '100%',
-      padding: '120px 20px'
+      padding: '64px 20px',
+      height: '75vh'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '95vh'
+    }
+  },
+  fullWidthCenter: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '100%',
+    maxWidth: '600px'
+  },
+  mobilePosition: {
+    padding: '30px',
+    [theme.breakpoints.down('md')]: {
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
+      left: 0,
+      backgroundColor: '#FAFAFC'
     }
   }
 }));

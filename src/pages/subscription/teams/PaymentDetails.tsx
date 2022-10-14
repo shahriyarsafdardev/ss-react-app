@@ -12,7 +12,7 @@ export default function PaymentDetails({
 
   return (
     <Stack className={classes.paymentInfo}>
-      <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
+      <Box className={classes.grainedBackground}>
         <StyledDetailsStack spacing={3}>
           <StyledTypography variant="h4">Your Team Package</StyledTypography>
           <StyledTypography>
@@ -30,8 +30,8 @@ export default function PaymentDetails({
         </StyledDetailsStack>
       </Box>
       {isSinglePayee ? (
-        <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
-          <Stack spacing={3} sx={{ paddingTop: '20px' }}>
+        <Box sx={{ maxWidth: '600px', margin: '0px auto' }}>
+          <Stack spacing={3} className={classes.mobilePosition}>
             <StyledTypography className={`${classes.font18} ${classes.fontBold}`}>
               {' '}
               Sphere credits provide:{' '}
@@ -51,8 +51,8 @@ export default function PaymentDetails({
           </Stack>
         </Box>
       ) : (
-        <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
-          <Stack spacing={3} sx={{ paddingTop: '20px' }}>
+        <Box sx={{ maxWidth: '600px', margin: '0px auto' }}>
+          <Stack spacing={3} className={classes.mobilePosition}>
             <StyledTypography>
               Sphere credits can be used to attend our live interactive courses that are led by
               industry experts and joined by likeminded professionals.
