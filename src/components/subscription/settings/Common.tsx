@@ -1,15 +1,19 @@
 import { Stack, styled, Typography, Theme, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
-export const StyledStack = styled(Stack)(() => ({
+export const StyledStack = styled(Stack)(({ theme }) => ({
   backgroundColor: '#F6F7F8',
-  padding: '30px 10%',
-  borderRadius: '10px'
+  padding: '30px 0px',
+  borderRadius: '10px',
+  [theme.breakpoints.down('md')]: {
+    padding: '15px 10px'
+  }
 }));
 
 export const StyledHeading = styled(Typography)(() => ({
   fontSize: '18px',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  color: '#101658'
 }));
 
 export const BoldText = styled(Typography)(() => ({
@@ -25,7 +29,8 @@ export const StyledLink = styled(Typography)(() => ({
   fontSize: '14px',
   fontWeight: 'bold',
   textDecoration: 'underline',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  color: '#101658'
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
@@ -37,6 +42,17 @@ export const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 export const useStyles = makeStyles((theme: Theme) => ({
+  avatar: {
+    width: '50px',
+    height: '50px',
+    border: '3px solid white',
+    margin: '0px 32px',
+    textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      margin: '0px',
+      marginBottom: '5px'
+    }
+  },
   cardDetailsBox: {
     backgroundColor: '#F6F7F8',
     borderRadius: '10px',

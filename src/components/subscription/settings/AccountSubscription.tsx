@@ -4,6 +4,7 @@ import AddCreditsForm from './AddCreditsForm';
 import CancelSubscriptionForm from './CancelSubscriptionForm';
 import { useStyles } from './Common';
 import PaymentDetails from './PaymentDetails';
+import PaymentDetailsForm from './PaymentDetailsForm';
 import PaymentHistory from './PaymentHistory';
 import SubscriptionDetails from './SubscriptionDetails';
 
@@ -11,6 +12,7 @@ export default function AccountSubscription() {
   const [cancelSubscriptionModal, setCancelSubscriptionModal] = useState(false);
   const [addCreditModal, setAddCreditModal] = useState(false);
   const [modalType, setModalType] = useState('');
+  const [paymentMethodModal, setPaymentMethodModal] = useState(false);
 
   const classes = useStyles();
 
@@ -23,7 +25,11 @@ export default function AccountSubscription() {
       zIndex={1400}
       className={classes.subscriptionModal}
     >
-      <CancelSubscriptionForm setModal={setCancelSubscriptionModal} />
+      <CancelSubscriptionForm
+        setModal={setCancelSubscriptionModal}
+        setAddCreditModal={setAddCreditModal}
+        setModalType={setModalType}
+      />
     </Modal>
   );
 
@@ -40,16 +46,30 @@ export default function AccountSubscription() {
     </Modal>
   );
 
+  const UpdatePaymentMethodModal = () => (
+    <Modal
+      open={paymentMethodModal}
+      onClose={() => {
+        setPaymentMethodModal(false);
+      }}
+      zIndex={1400}
+      className={classes.subscriptionModal}
+    >
+      <PaymentDetailsForm setModal={setPaymentMethodModal} />
+    </Modal>
+  );
+
   return (
     <>
       <AddCreditsModal />
       <CancelSubscriptionModal />
+      <UpdatePaymentMethodModal />
       <SubscriptionDetails
         setModalType={setModalType}
         setAddCreditModal={setAddCreditModal}
         setCancelSubscriptionModal={setCancelSubscriptionModal}
       />
-      <PaymentDetails setModalType={setModalType} setAddCreditModal={setAddCreditModal} />
+      <PaymentDetails setPaymentMethodModal={setPaymentMethodModal} />
       <PaymentHistory />
     </>
   );

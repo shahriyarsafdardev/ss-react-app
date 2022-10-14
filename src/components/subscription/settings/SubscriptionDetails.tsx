@@ -1,5 +1,6 @@
-import { Stack } from '@material-ui/core';
-import { StyledHeading, StyledLink, StyledStack, StyledText, BoldText } from './Common';
+import { Avatar, Stack } from '@material-ui/core';
+import useAuth from 'hooks/useAuth';
+import { StyledHeading, StyledLink, StyledStack, StyledText, BoldText, useStyles } from './Common';
 
 export default function SubscriptionDetails({
   setModalType,
@@ -10,9 +11,16 @@ export default function SubscriptionDetails({
   setAddCreditModal: Function;
   setCancelSubscriptionModal: Function;
 }) {
+  const { user } = useAuth();
+  const classes = useStyles();
   return (
     <>
-      <StyledStack>
+      <StyledStack direction={{ xs: 'column', md: 'row' }}>
+        <Avatar
+          alt={`${user?.name} Company Logo`}
+          src={user?.company_image_url}
+          className={classes.avatar}
+        />
         <Stack spacing={3}>
           <Stack spacing={1}>
             <StyledHeading>Sphere Credit Subscription</StyledHeading>

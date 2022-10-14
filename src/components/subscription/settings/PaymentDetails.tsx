@@ -5,11 +5,9 @@ import CardDetails from './CardDetails';
 import { StyledHeading, useStyles } from './Common';
 
 export default function PaymentDetails({
-  setModalType,
-  setAddCreditModal
+  setPaymentMethodModal
 }: {
-  setModalType: Function;
-  setAddCreditModal: Function;
+  setPaymentMethodModal: Function;
 }) {
   const classes = useStyles();
 
@@ -23,12 +21,11 @@ export default function PaymentDetails({
             spacing={1}
             className={classes.updateCardBox}
             onClick={() => {
-              setAddCreditModal(true);
-              setModalType('update');
+              setPaymentMethodModal(true);
             }}
           >
             <Icon icon={iconEdit} width={30} height={30} />
-            <Typography>Update Subscription</Typography>
+            <Typography>Update Payment Method</Typography>
           </Stack>
         </Stack>
       </Stack>

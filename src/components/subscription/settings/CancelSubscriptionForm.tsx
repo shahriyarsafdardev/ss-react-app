@@ -1,8 +1,29 @@
 import { Card, Stack, Typography } from '@material-ui/core';
+import { useSnackbar } from 'notistack5';
 import { StyledButton, useStyles } from './Common';
 
-export default function CancelSubscriptionForm({ setModal }: { setModal: Function }) {
+export default function CancelSubscriptionForm({
+  setModal,
+  setAddCreditModal,
+  setModalType
+}: {
+  setModal: Function;
+  setAddCreditModal: Function;
+  setModalType: Function;
+}) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const handleEditSubscription = () => {
+    setModal(false);
+    setModalType('update');
+    setAddCreditModal(true);
+  };
+
+  const handleSubmit = () => {
+    enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
+    setModal(false);
+  };
+
   return (
     <Card>
       <Stack spacing={3} sx={{ padding: '50px 20px', textAlign: 'center' }}>
@@ -20,14 +41,10 @@ export default function CancelSubscriptionForm({ setModal }: { setModal: Functio
           justifyContent="center"
           alignItems="center"
         >
-          <StyledButton
-            variant="outlined"
-            className={classes.cancelButton}
-            onClick={() => setModal(false)}
-          >
+          <StyledButton variant="outlined" className={classes.cancelButton} onClick={handleSubmit}>
             Cancel Subscription
           </StyledButton>
-          <StyledButton variant="contained" onClick={() => setModal(false)}>
+          <StyledButton variant="contained" onClick={handleEditSubscription}>
             Edit Subscription
           </StyledButton>
         </Stack>
