@@ -21,35 +21,37 @@ export type Cohort = {
 
 export default function TeamRegistration() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [isSinglePayee, setIsSinglePayee] = useState(false);
   const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
   const email = url.get('email') || '';
   const team = url.get('team') || '';
-  const [clientSecret, setClientSecret] = useState('');
+  const [activeStep, setActiveStep] = useState(cohortID === '' ? 1 : 3);
+  const [loading, setLoading] = useState(false);
+  const [isSinglePayee, setIsSinglePayee] = useState(false);
   const [amount, setAmount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (team !== '' && email !== '') {
-      axios
-        .get(`team_registrations/get_team_details.json`, {
-          params: { email, team }
-        })
-        .then((res) => {
-          setCohorts(res.data.cohorts);
-          setLoading(false);
-        })
-        .catch((error) => {
-          enqueueSnackbar(error.message || 'Some error occurred!', {
-            variant: 'error'
+    if (cohortID === '') {
+      if (team !== '' && email !== '') {
+        axios
+          .get(`team_registrations/get_team_details.json`, {
+            params: { email, team }
+          })
+          .then((res) => {
+            setCohorts(res.data.cohorts);
+            setLoading(false);
+          })
+          .catch((error) => {
+            enqueueSnackbar(error.message || 'Some error occurred!', {
+              variant: 'error'
+            });
           });
-        });
-    } else {
-      setLoading(true);
+      } else {
+        setLoading(true);
+      }
     }
   }, []);
 
@@ -72,24 +74,23 @@ export default function TeamRegistration() {
           isSinglePayee={isSinglePayee}
           email={email}
           team={team}
-          setClientSecret={setClientSecret}
-          setAmount={setAmount}
           teamMembers={teamMembers}
           setTeamMembers={setTeamMembers}
           cohorts={cohorts}
         />
       );
     }
-    if (activeStep === 3 && isSinglePayee) {
+    if (activeStep === 3 && (isSinglePayee || cohortID !== '')) {
       return (
         <Payment
           team={team}
           teamMembers={teamMembers}
           email={email}
-          clientSecret={clientSecret}
           amount={amount}
+          setAmount={setAmount}
           setStep={setStep}
           isSinglePayee={isSinglePayee}
+          cohortID={cohortID}
         />
       );
     }
@@ -101,8 +102,8 @@ export default function TeamRegistration() {
 
   const teamRegistrationFlow = () => (
     <Stack width="100%">
-      {!(activeStep === 3 && isSinglePayee) && (
-        <Header activeStep={activeStep} isSinglePayee={isSinglePayee} />
+      {!(activeStep === 3 && (isSinglePayee || cohortID !== '')) && (
+        <Header activeStep={activeStep} isSinglePayee={isSinglePayee} cohortID={cohortID} />
       )}
       <Container
         maxWidth="lg"

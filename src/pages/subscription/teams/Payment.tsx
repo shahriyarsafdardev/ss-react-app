@@ -2,6 +2,9 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Grid, Box } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+import { useSnackbar } from 'notistack5';
+import axios from 'utils/axios';
 import StripePayment from './StripePayment';
 import { LoadingContainer, PaymentRootStyle, useStyles } from './Common';
 import { TeamMember } from './InviteMembersForm';
@@ -13,27 +16,54 @@ export default function StripePaymentForm({
   team,
   teamMembers,
   email,
-  clientSecret,
   amount,
+  setAmount,
   setStep,
-  isSinglePayee
+  isSinglePayee,
+  cohortID
 }: {
   team: string;
   teamMembers: TeamMember[];
   email: string;
-  clientSecret: string;
   amount: number;
+  setAmount: Function;
   setStep: Function;
   isSinglePayee: boolean;
+  cohortID: string;
 }) {
   const classes = useStyles();
-  if (!clientSecret) {
+  const { enqueueSnackbar } = useSnackbar();
+  const [clientSecret, setClientSecret] = useState('');
+
+  const getPaymentIntent = async () => {
+    const uploadData = new FormData();
+    uploadData.append('email', email);
+    uploadData.append('team', team);
+    uploadData.append('team_members', JSON.stringify(teamMembers));
+    uploadData.append('cohort_id', cohortID);
+    await axios
+      .post(`team_registrations/payment_intent.json`, uploadData)
+      .then((res) => {
+        setClientSecret(res.data.clientSecret);
+        setAmount(res.data.total_amount);
+      })
+      .catch((err) => {
+        enqueueSnackbar(`Some error occurred!`, { variant: 'error' });
+      });
+  };
+
+  useEffect(() => {
+    getPaymentIntent();
+  }, []);
+
+  if (clientSecret === '') {
     return (
       <LoadingContainer>
         <LoadingScreen />
       </LoadingContainer>
     );
   }
+
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>

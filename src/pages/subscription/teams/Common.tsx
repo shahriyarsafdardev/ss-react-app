@@ -56,7 +56,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     marginTop: '0px'
   }
 }));
-export const StyledNextButton = styled(LoadingButton)(({ theme }) => ({
+export const StyledNextButton = styled(Button)(({ theme }) => ({
   width: '270px',
   height: '40px',
   borderRadius: '30px',

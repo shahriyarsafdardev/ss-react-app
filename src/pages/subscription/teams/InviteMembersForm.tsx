@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
 import axios from 'utils/axios';
+import { trackEvent } from 'utils/eventTracking';
 import * as Yup from 'yup';
 import TeamMembersList from '../../../components/subscription/teams/TeamMembersList';
 import { StyledLoadingButton, StyledStack, StyledMembersList, StyledNextButton } from './Common';
@@ -27,8 +27,6 @@ function InviteMembersForm({
   isSinglePayee,
   email,
   team,
-  setClientSecret,
-  setAmount,
   teamMembers,
   setTeamMembers,
   cohorts
@@ -37,39 +35,17 @@ function InviteMembersForm({
   isSinglePayee: boolean;
   email: string;
   team: string;
-  setClientSecret: Function;
-  setAmount: Function;
   teamMembers: TeamMember[];
   setTeamMembers: Function;
   cohorts: Cohort[];
 }) {
-  const [isAdding, setIsAdding] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const buttonText = () => (isSinglePayee ? 'Add Team Member' : 'Send Invite');
 
-  const nextHandler = async () => {
-    if (isSinglePayee) {
-      setIsAdding(true);
-      const uploadData = new FormData();
-      uploadData.append('email', email);
-      uploadData.append('team', team);
-      uploadData.append('team_members', JSON.stringify(teamMembers));
-      await axios
-        .post(`team_registrations/payment_intent.json`, uploadData)
-        .then((res) => {
-          setClientSecret(res.data.clientSecret);
-          setAmount(res.data.total_amount);
-          setIsAdding(false);
-          setStep();
-        })
-        .catch((err) => {
-          enqueueSnackbar(`Some error occurred!`, { variant: 'error' });
-          setIsAdding(false);
-        });
-    } else {
-      setStep();
-    }
+  const getCohortName = (cohortID: string) => {
+    const cohort = cohorts.filter((c) => c.id === cohortID)[0];
+    return cohort?.name;
   };
 
   const ValidationSchema = Yup.object().shape({
@@ -96,6 +72,14 @@ function InviteMembersForm({
           .post('team_registrations/team_member_invite.json', uploadData)
           .then((res) => {
             enqueueSnackbar('Team Member Invited', { variant: 'success' });
+            trackEvent(null, 'Testing - Team Registration Invite Sent', {
+              'Team Lead Full Name': email.split('@')[0],
+              'Invited User First Name': values.fullName,
+              'Invited User Email': values.email,
+              'Team Name': team,
+              'Course ID': values.courseID,
+              'Course Name': getCohortName(values.courseID)
+            });
           })
           .catch((err) => {
             enqueueSnackbar('Some error occurred!', { variant: 'error' });
@@ -112,7 +96,6 @@ function InviteMembersForm({
   });
 
   const { values, errors, touched, isSubmitting, getFieldProps, submitForm, isValid } = formik;
-
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <FormikProvider value={formik}>
@@ -179,9 +162,8 @@ function InviteMembersForm({
       <StyledNextButton
         fullWidth
         variant="contained"
-        onClick={nextHandler}
+        onClick={() => setStep()}
         disabled={teamMembers.length === 0}
-        loading={isAdding}
       >
         Next
       </StyledNextButton>
