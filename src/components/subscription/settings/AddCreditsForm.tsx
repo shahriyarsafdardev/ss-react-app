@@ -1,15 +1,21 @@
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
+import axios from 'utils/axios';
 import { StyledButton } from './Common';
 import CreditCounter from './CreditCounter';
+import { SubscriptionDetail } from '../../../@types/cohorts';
 
 export default function AddCreditsForm({
   modalType,
-  setModal
+  setModal,
+  accountID,
+  accountDetails
 }: {
   modalType: string;
   setModal: Function;
+  accountID: string | undefined;
+  accountDetails: SubscriptionDetail | undefined;
 }) {
   const [credit, setCredit] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
@@ -25,11 +31,22 @@ export default function AddCreditsForm({
 
   const currentDate = () => `${new Date().toDateString()}`;
 
-  const handleSubmit = () => {
-    enqueueSnackbar(
-      modalType === 'add' ? 'Credits Added to your account!' : 'Subscription plan updated!',
-      { variant: 'success' }
-    );
+  const handleSubmit = async () => {
+    const api = modalType === 'add' ? 'add_credit' : 'update_subscription';
+    await axios
+      .post(`/account_subscriptions/${accountID}/${api}.json`, {
+        amount: credit
+      })
+      .then((response) => {
+        enqueueSnackbar(
+          modalType === 'add' ? 'Credits Added to your account!' : 'Subscription plan updated!',
+          { variant: 'success' }
+        );
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message, { variant: 'error' });
+      });
+
     setModal(false);
   };
 

@@ -1,18 +1,28 @@
 import { Avatar, Stack } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
+import moment from 'moment';
 import { StyledHeading, StyledLink, StyledStack, StyledText, BoldText, useStyles } from './Common';
 
 export default function SubscriptionDetails({
   setModalType,
   setAddCreditModal,
-  setCancelSubscriptionModal
+  setCancelSubscriptionModal,
+  accountDetails
 }: {
   setModalType: Function;
   setAddCreditModal: Function;
   setCancelSubscriptionModal: Function;
+  accountDetails: any;
 }) {
   const { user } = useAuth();
   const classes = useStyles();
+
+  const subscription = accountDetails?.subscription;
+  const account = accountDetails?.account;
+  const renewalDate = moment(new Date(subscription?.start_date))
+    ?.add(1, 'y')
+    .format('ll')
+    .toString();
   return (
     <>
       <StyledStack direction={{ xs: 'column', md: 'row' }}>
@@ -25,23 +35,24 @@ export default function SubscriptionDetails({
           <Stack spacing={1}>
             <StyledHeading>Sphere Credit Subscription</StyledHeading>
             <StyledText>
-              You are on a <b>Yearly Plan</b> for 2,000 Sphere credits. Your next charge will be on
-              Jan 14, 2024 for $1800
+              You are on a <b>{subscription?.name} Plan</b> for {subscription?.amount} Sphere
+              credits. Your next charge will be on {renewalDate} for ${subscription?.amount}
             </StyledText>
           </Stack>
           <Stack spacing={1}>
             <BoldText>Benefits</BoldText>
             <StyledText>
               <li>
-                2,000 Sphere Credits per year (credits can be used to register for live courses at a
-                15% discount)
+                {subscription?.amount} Sphere Credits per year (credits can be used to register for
+                live courses at a 15% discount)
               </li>
             </StyledText>
           </Stack>
           <Stack spacing={1}>
             <BoldText>Credits</BoldText>
             <StyledText>
-              You currently have <b>400 credits remaining for use.</b> (1 Sphere Credit = $1 USD).
+              You currently have <b>{account?.credit_balance || 0} credits remaining for use.</b> (1
+              Sphere Credit = $1 USD).
             </StyledText>
           </Stack>
           <Stack direction="row" spacing={2}>

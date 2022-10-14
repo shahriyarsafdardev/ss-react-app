@@ -3,6 +3,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import valid from 'card-validator';
 import { Card, Grid, Stack, TextField, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
+import axios from 'utils/axios';
 import { StyledButton } from './Common';
 
 type CardType = {
@@ -13,7 +14,13 @@ type CardType = {
   acceptedTerms: boolean;
 };
 
-export default function PaymentDetailsForm({ setModal }: { setModal: Function }) {
+export default function PaymentDetailsForm({
+  setModal,
+  accountID
+}: {
+  setModal: Function;
+  accountID: string | undefined;
+}) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
 
@@ -47,7 +54,17 @@ export default function PaymentDetailsForm({ setModal }: { setModal: Function })
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
-      enqueueSnackbar('Payment method updated!', { variant: 'success' });
+      await axios
+        .post(`/account_subscriptions/${accountID}/update_card_details.json`, {
+          ...values
+        })
+        .then((response) => {
+          enqueueSnackbar('Payment method updated!', { variant: 'success' });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, { variant: 'error' });
+        });
+
       setModal(false);
     }
   });

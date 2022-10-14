@@ -1,15 +1,18 @@
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
+import axios from 'utils/axios';
 import { StyledButton, useStyles } from './Common';
 
 export default function CancelSubscriptionForm({
   setModal,
   setAddCreditModal,
-  setModalType
+  setModalType,
+  accountID
 }: {
   setModal: Function;
   setAddCreditModal: Function;
   setModalType: Function;
+  accountID: string | undefined;
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -19,7 +22,8 @@ export default function CancelSubscriptionForm({
     setAddCreditModal(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await axios.post(`/account_subscriptions/${accountID}/cancel_subscription.json`);
     enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
     setModal(false);
   };
