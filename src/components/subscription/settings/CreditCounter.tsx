@@ -14,38 +14,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function CreditCounter({
-  modalType,
   credit,
-  setCredit,
-  currentPlan,
-  currentBalance
+  setCredit
 }: {
-  modalType: string;
   credit: number;
   setCredit: Function;
-  currentPlan: number;
-  currentBalance: number;
 }) {
   return (
     <>
-      <Stack spacing={1}>
-        {modalType === 'add' && <Typography>Add</Typography>}
-        <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-          <StyledButton
-            sx={{}}
-            onClick={() => setCredit(credit - 50)}
-            disabled={modalType === 'add' ? credit <= 0 : credit + currentPlan <= 0}
-          >
-            <Icon icon={minusFill} style={{ width: '100%', height: '100%' }} />
-          </StyledButton>
-          <Typography variant="h2">
-            {modalType === 'add' ? credit : credit + currentPlan}
-          </Typography>
-          <StyledButton onClick={() => setCredit(credit + 50)}>
-            <Icon icon={plusFill} style={{ width: '100%', height: '100%' }} />
-          </StyledButton>
-        </Stack>
-        <Typography>{modalType === 'add' ? 'credits today' : 'credits per year'}</Typography>
+      <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
+        <StyledButton onClick={() => setCredit(credit - 50)} disabled={credit <= 0}>
+          <Icon icon={minusFill} style={{ width: '100%', height: '100%' }} />
+        </StyledButton>
+        <Typography variant="h2">{credit}</Typography>
+        <StyledButton onClick={() => setCredit(credit + 50)}>
+          <Icon icon={plusFill} style={{ width: '100%', height: '100%' }} />
+        </StyledButton>
       </Stack>
     </>
   );

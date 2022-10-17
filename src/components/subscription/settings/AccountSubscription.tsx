@@ -10,13 +10,14 @@ import PaymentDetailsForm from './PaymentDetailsForm';
 import PaymentHistory from './PaymentHistory';
 import SubscriptionDetails from './SubscriptionDetails';
 import { SubscriptionDetail } from '../../../@types/cohorts';
+import UpdateSubscriptionForm from './UpdateSubscriptionForm';
 
 export default function AccountSubscription() {
   const [cancelSubscriptionModal, setCancelSubscriptionModal] = useState(false);
   const [addCreditModal, setAddCreditModal] = useState(false);
-  const [modalType, setModalType] = useState('');
   const [paymentMethodModal, setPaymentMethodModal] = useState(false);
   const [accountDetails, setAccountDetails] = useState<SubscriptionDetail>();
+  const [updateSubscriptionModal, setUpdateSubscriptionModal] = useState(false);
 
   const classes = useStyles();
 
@@ -40,8 +41,7 @@ export default function AccountSubscription() {
     >
       <CancelSubscriptionForm
         setModal={setCancelSubscriptionModal}
-        setAddCreditModal={setAddCreditModal}
-        setModalType={setModalType}
+        setUpdateSubscriptionModal={setUpdateSubscriptionModal}
         accountID={accountDetails?.account.id}
       />
     </Modal>
@@ -57,8 +57,24 @@ export default function AccountSubscription() {
       className={classes.subscriptionModal}
     >
       <AddCreditsForm
-        modalType={modalType}
         setModal={setAddCreditModal}
+        accountID={accountDetails?.account.id}
+        accountDetails={accountDetails}
+      />
+    </Modal>
+  );
+
+  const UpdateSubscriptionModal = () => (
+    <Modal
+      open={updateSubscriptionModal}
+      onClose={() => {
+        setUpdateSubscriptionModal(false);
+      }}
+      zIndex={1400}
+      className={classes.subscriptionModal}
+    >
+      <UpdateSubscriptionForm
+        setModal={setUpdateSubscriptionModal}
         accountID={accountDetails?.account.id}
         accountDetails={accountDetails}
       />
@@ -81,10 +97,10 @@ export default function AccountSubscription() {
   return (
     <>
       <AddCreditsModal />
+      <UpdateSubscriptionModal />
       <CancelSubscriptionModal />
       <UpdatePaymentMethodModal />
       <SubscriptionDetails
-        setModalType={setModalType}
         setAddCreditModal={setAddCreditModal}
         setCancelSubscriptionModal={setCancelSubscriptionModal}
         accountDetails={accountDetails}

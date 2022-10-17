@@ -5,21 +5,18 @@ import { StyledButton, useStyles } from './Common';
 
 export default function CancelSubscriptionForm({
   setModal,
-  setAddCreditModal,
-  setModalType,
+  setUpdateSubscriptionModal,
   accountID
 }: {
   setModal: Function;
-  setAddCreditModal: Function;
-  setModalType: Function;
+  setUpdateSubscriptionModal: Function;
   accountID: string | undefined;
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const handleEditSubscription = () => {
     setModal(false);
-    setModalType('update');
-    setAddCreditModal(true);
+    setUpdateSubscriptionModal(true);
   };
 
   const handleSubmit = async () => {

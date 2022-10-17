@@ -4,12 +4,10 @@ import moment from 'moment';
 import { StyledHeading, StyledLink, StyledStack, StyledText, BoldText, useStyles } from './Common';
 
 export default function SubscriptionDetails({
-  setModalType,
   setAddCreditModal,
   setCancelSubscriptionModal,
   accountDetails
 }: {
-  setModalType: Function;
   setAddCreditModal: Function;
   setCancelSubscriptionModal: Function;
   accountDetails: any;
@@ -59,7 +57,6 @@ export default function SubscriptionDetails({
             <StyledLink
               onClick={() => {
                 setAddCreditModal(true);
-                setModalType('add');
               }}
             >
               Add more Credits
