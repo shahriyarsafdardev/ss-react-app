@@ -3,7 +3,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Grid, Box } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import StripePayment from './StripePayment';
 import { LoadingContainer, PaymentRootStyle, useStyles } from './Common';
@@ -13,7 +12,7 @@ import { Registration } from './TeamRegistration';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
-export default function StripePaymentForm({
+export default function Payment({
   team,
   teamMembers,
   email,
@@ -37,8 +36,8 @@ export default function StripePaymentForm({
   setCredentials: Function;
 }) {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
   const [clientSecret, setClientSecret] = useState('');
+  const [stripeCustomerID, setStripeCustomerID] = useState('');
 
   const getPaymentIntent = async () => {
     const uploadData = new FormData();
@@ -49,6 +48,7 @@ export default function StripePaymentForm({
     await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
       setClientSecret(res.data.clientSecret);
       setAmount(res.data.total_amount);
+      setStripeCustomerID(res.data.customer_id);
     });
   };
 
@@ -88,6 +88,7 @@ export default function StripePaymentForm({
                 setStep={setStep}
                 registration={registration}
                 setCredentials={setCredentials}
+                stripeCustomerID={stripeCustomerID}
               />
             </Elements>
           </Box>

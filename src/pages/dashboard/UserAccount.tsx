@@ -113,11 +113,7 @@ export default function UserAccount() {
             icon: <Icon icon={bellFill} width={20} height={20} />,
             component: <AccountNotifications />
           },
-          {
-            value: 'my_subscription',
-            icon: <Icon icon={roundLoop} width={20} height={20} />,
-            component: <AccountSubscription />
-          },
+
           {
             value: 'delete_account',
             icon: <Icon icon={roundDelete} width={20} height={20} />,
@@ -126,6 +122,14 @@ export default function UserAccount() {
         ];
 
   const ACCOUNT_TABS = getTabs();
+
+  if (user?.is_subscribed) {
+    ACCOUNT_TABS.splice(-1, 0, {
+      value: 'my_subscription',
+      icon: <Icon icon={roundLoop} width={20} height={20} />,
+      component: <AccountSubscription />
+    });
+  }
 
   return (
     <Page title="Sphere | Settings">

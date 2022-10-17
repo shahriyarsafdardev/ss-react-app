@@ -1,22 +1,20 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'utils/axios';
-import PaymentOptions from 'components/subscription/teams/PaymentOptions';
-import PaymentDivider from 'components/subscription/teams/PaymentDivider';
-import PaymentForm from 'components/subscription/teams/PaymentForm';
-import { Button, Stack } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton } from './Common';
 import { Registration } from './TeamRegistration';
 
-export default function CheckoutForm({
+export default function StripePayment({
   team,
   teamMembers,
   email,
   setStep,
   registration,
-  setCredentials
+  setCredentials,
+  stripeCustomerID
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -24,6 +22,7 @@ export default function CheckoutForm({
   setStep: Function;
   registration: Registration;
   setCredentials: Function;
+  stripeCustomerID: string;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -58,6 +57,8 @@ export default function CheckoutForm({
     });
 
     if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      uploadData.append('stripe_customer_id', stripeCustomerID);
+      uploadData.append('payment_method', String(result.paymentIntent?.payment_method));
       await axios
         .post(url, uploadData)
         .then((res) => {
@@ -84,8 +85,6 @@ export default function CheckoutForm({
           }
         }}
       />
-      {/* <PaymentOptions />
-      <PaymentDivider /> */}
       <Stack spacing={2}>
         <StyledLoadingButton
           fullWidth
@@ -106,7 +105,6 @@ export default function CheckoutForm({
           Back
         </StyledLoadingButton>
       </Stack>
-      {/* <PaymentForm handleSubmit={handleSubmit} setStep={setStep} /> */}
     </>
   );
 }
