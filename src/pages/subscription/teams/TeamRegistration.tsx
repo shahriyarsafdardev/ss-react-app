@@ -7,16 +7,34 @@ import Header from 'components/subscription/teams/Header';
 import { useLocation } from 'react-router-dom';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
+import { setSegmentUserProperties } from 'utils/amplitude';
 import OnboardChoice from './OnboardChoice';
 import InviteMembersForm, { TeamMember } from './InviteMembersForm';
 import PromptNote from './PromptNote';
 import { RootStyle, StyledBackButton, useStyles } from './Common';
 import Payment from './Payment';
 
+export type Registration = {
+  cohort_id: string;
+  cohort_name: string;
+  cohort_host_name: string;
+  lead_user_name: string;
+};
+
 export type Cohort = {
   host_name: string;
   id: string;
   name: string;
+};
+
+export type User = {
+  id: string;
+  slug: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  linkedin_url: string;
+  industry_category_selection: string;
 };
 
 export default function TeamRegistration() {
@@ -31,17 +49,35 @@ export default function TeamRegistration() {
   const [amount, setAmount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
+  const [registration, setRegistration] = useState<Registration>({
+    cohort_id: '',
+    cohort_name: '',
+    cohort_host_name: '',
+    lead_user_name: ''
+  });
+  const [leadUser, setLeadUser] = useState<User>({
+    id: '',
+    slug: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    linkedin_url: '',
+    industry_category_selection: ''
+  });
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (cohortID === '') {
       if (team !== '' && email !== '') {
+        setLoading(true);
         axios
           .get(`team_registrations/get_team_details.json`, {
             params: { email, team }
           })
           .then((res) => {
+            setLeadUser(res.data.user);
             setCohorts(res.data.cohorts);
+            setSegmentUserProperties(res.data.user);
             setLoading(false);
           })
           .catch((error) => {
@@ -52,6 +88,21 @@ export default function TeamRegistration() {
       } else {
         setLoading(true);
       }
+    } else {
+      setLoading(true);
+      axios
+        .get(`team_registrations/get_registration_details.json`, {
+          params: { cohort_id: cohortID }
+        })
+        .then((res) => {
+          setRegistration(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', {
+            variant: 'error'
+          });
+        });
     }
   }, []);
 
@@ -77,6 +128,7 @@ export default function TeamRegistration() {
           teamMembers={teamMembers}
           setTeamMembers={setTeamMembers}
           cohorts={cohorts}
+          leadUser={leadUser}
         />
       );
     }
@@ -90,7 +142,7 @@ export default function TeamRegistration() {
           setAmount={setAmount}
           setStep={setStep}
           isSinglePayee={isSinglePayee}
-          cohortID={cohortID}
+          registration={registration}
         />
       );
     }

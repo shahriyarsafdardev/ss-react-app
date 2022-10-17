@@ -9,6 +9,7 @@ import StripePayment from './StripePayment';
 import { LoadingContainer, PaymentRootStyle, useStyles } from './Common';
 import { TeamMember } from './InviteMembersForm';
 import PaymentDetails from './PaymentDetails';
+import { Registration } from './TeamRegistration';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
@@ -20,7 +21,7 @@ export default function StripePaymentForm({
   setAmount,
   setStep,
   isSinglePayee,
-  cohortID
+  registration
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -29,7 +30,7 @@ export default function StripePaymentForm({
   setAmount: Function;
   setStep: Function;
   isSinglePayee: boolean;
-  cohortID: string;
+  registration: Registration;
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -40,16 +41,11 @@ export default function StripePaymentForm({
     uploadData.append('email', email);
     uploadData.append('team', team);
     uploadData.append('team_members', JSON.stringify(teamMembers));
-    uploadData.append('cohort_id', cohortID);
-    await axios
-      .post(`team_registrations/payment_intent.json`, uploadData)
-      .then((res) => {
-        setClientSecret(res.data.clientSecret);
-        setAmount(res.data.total_amount);
-      })
-      .catch((err) => {
-        enqueueSnackbar(`Some error occurred!`, { variant: 'error' });
-      });
+    uploadData.append('cohort_id', registration.cohort_id);
+    await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
+      setClientSecret(res.data.clientSecret);
+      setAmount(res.data.total_amount);
+    });
   };
 
   useEffect(() => {
@@ -67,7 +63,7 @@ export default function StripePaymentForm({
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>
-        <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} />
+        <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} registration={registration} />
         <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
           <Box className={classes.fullWidthCenter}>
             <Elements

@@ -1,12 +1,15 @@
 import { Box, Stack, Typography } from '@material-ui/core';
 import { StyledTypography, useStyles, StyledDetailsStack } from './Common';
+import { Registration } from './TeamRegistration';
 
 export default function PaymentDetails({
   amount,
-  isSinglePayee
+  isSinglePayee,
+  registration
 }: {
   amount: number;
   isSinglePayee: boolean;
+  registration: Registration;
 }) {
   const classes = useStyles();
 
@@ -18,7 +21,7 @@ export default function PaymentDetails({
           <StyledTypography>
             {isSinglePayee
               ? 'Based on the number of people you’ve invited, your team package is:'
-              : '{Team Lead Full Name} has invited you to attend Ronny Kohavi’s cohort ‘Accelerating Innovation with A/B Testing’. '}
+              : `${registration.lead_user_name} has invited you to attend ${registration.cohort_host_name}’s cohort ‘${registration.cohort_name}’.`}
           </StyledTypography>
           {!isSinglePayee && (
             <StyledTypography>To attend this course you will be charged:</StyledTypography>

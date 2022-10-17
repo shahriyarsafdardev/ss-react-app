@@ -14,7 +14,7 @@ import { trackEvent } from 'utils/eventTracking';
 import * as Yup from 'yup';
 import TeamMembersList from '../../../components/subscription/teams/TeamMembersList';
 import { StyledLoadingButton, StyledStack, StyledMembersList, StyledNextButton } from './Common';
-import { Cohort } from './TeamRegistration';
+import { Cohort, User } from './TeamRegistration';
 
 export type TeamMember = {
   email: string;
@@ -29,7 +29,8 @@ function InviteMembersForm({
   team,
   teamMembers,
   setTeamMembers,
-  cohorts
+  cohorts,
+  leadUser
 }: {
   setStep: Function;
   isSinglePayee: boolean;
@@ -38,14 +39,15 @@ function InviteMembersForm({
   teamMembers: TeamMember[];
   setTeamMembers: Function;
   cohorts: Cohort[];
+  leadUser: User;
 }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const buttonText = () => (isSinglePayee ? 'Add Team Member' : 'Send Invite');
 
-  const getCohortName = (cohortID: string) => {
+  const getCohortDetails = (cohortID: string) => {
     const cohort = cohorts.filter((c) => c.id === cohortID)[0];
-    return cohort?.name;
+    return { name: cohort?.name, hostName: cohort?.host_name };
   };
 
   const ValidationSchema = Yup.object().shape({
@@ -63,6 +65,7 @@ function InviteMembersForm({
     validationSchema: ValidationSchema,
     onSubmit: async (values, { resetForm }) => {
       if (!isSinglePayee) {
+        const cohortDetails = getCohortDetails(values.courseID);
         const uploadData = new FormData();
         uploadData.append('email', values.email);
         uploadData.append('fullName', values.fullName);
@@ -73,12 +76,13 @@ function InviteMembersForm({
           .then((res) => {
             enqueueSnackbar('Team Member Invited', { variant: 'success' });
             trackEvent(null, 'Testing - Team Registration Invite Sent', {
-              'Team Lead Full Name': email.split('@')[0],
+              'Team Lead Full Name': `${leadUser.first_name} ${leadUser.last_name}`,
               'Invited User First Name': values.fullName,
               'Invited User Email': values.email,
               'Team Name': team,
               'Course ID': values.courseID,
-              'Course Name': getCohortName(values.courseID)
+              'Course Name': cohortDetails.name,
+              'Instructor Name': cohortDetails.hostName
             });
           })
           .catch((err) => {
