@@ -37,6 +37,11 @@ export type User = {
   industry_category_selection: string;
 };
 
+export type Credentials = {
+  user_name: string;
+  password: string;
+};
+
 export default function TeamRegistration() {
   const classes = useStyles();
   const url = new URLSearchParams(useLocation().search);
@@ -64,11 +69,15 @@ export default function TeamRegistration() {
     linkedin_url: '',
     industry_category_selection: ''
   });
+  const [credentials, setCredentials] = useState<Credentials>({
+    user_name: '',
+    password: ''
+  });
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (cohortID === '') {
-      if (team !== '' && email !== '') {
+    if (team !== '' && email !== '') {
+      if (cohortID === '') {
         setLoading(true);
         axios
           .get(`team_registrations/get_team_details.json`, {
@@ -87,22 +96,22 @@ export default function TeamRegistration() {
           });
       } else {
         setLoading(true);
+        axios
+          .get(`team_registrations/get_registration_details.json`, {
+            params: { email, cohort_id: cohortID, team_name: team }
+          })
+          .then((res) => {
+            setRegistration(res.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            enqueueSnackbar(err.message || 'Some error occurred!', {
+              variant: 'error'
+            });
+          });
       }
     } else {
       setLoading(true);
-      axios
-        .get(`team_registrations/get_registration_details.json`, {
-          params: { cohort_id: cohortID }
-        })
-        .then((res) => {
-          setRegistration(res.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          enqueueSnackbar(err.message || 'Some error occurred!', {
-            variant: 'error'
-          });
-        });
     }
   }, []);
 
@@ -142,12 +151,19 @@ export default function TeamRegistration() {
           setAmount={setAmount}
           setStep={setStep}
           isSinglePayee={isSinglePayee}
+          cohortID={cohortID}
           registration={registration}
+          setCredentials={setCredentials}
         />
       );
     }
     if ((activeStep === 3 && !isSinglePayee) || activeStep === 4) {
-      return <PromptNote username="dev.mahboob@gmail.com" password="sphere-2340" />;
+      return (
+        <PromptNote
+          username={credentials.user_name || email}
+          password={credentials.password || 'sphere'}
+        />
+      );
     }
     return <OnboardChoice setStep={setStep} setIsSinglePayee={setIsSinglePayee} />;
   };

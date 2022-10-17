@@ -8,19 +8,22 @@ import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton } from './Common';
+import { Registration } from './TeamRegistration';
 
 export default function CheckoutForm({
   team,
   teamMembers,
   email,
-  clientSecret,
-  setStep
+  setStep,
+  registration,
+  setCredentials
 }: {
   team: string;
   teamMembers: TeamMember[];
   email: string;
-  clientSecret: string;
   setStep: Function;
+  registration: Registration;
+  setCredentials: Function;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -28,12 +31,19 @@ export default function CheckoutForm({
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (event: any) => {
+    let url = '';
     setIsSubmitting(true);
     event.preventDefault();
     const uploadData = new FormData();
     uploadData.append('email', email);
     uploadData.append('team', team);
-    uploadData.append('team_members', JSON.stringify(teamMembers));
+    if (registration.cohort_id === '') {
+      uploadData.append('team_members', JSON.stringify(teamMembers));
+      url = 'team_registrations/team_members_registration.json';
+    } else {
+      uploadData.append('cohort_id', registration.cohort_id);
+      url = 'team_registrations/member_payment.json';
+    }
 
     if (!stripe || !elements) {
       return;
@@ -49,10 +59,14 @@ export default function CheckoutForm({
 
     if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
       await axios
-        .post(`team_registrations/team_members_registration.json`, uploadData)
+        .post(url, uploadData)
         .then((res) => {
+          setCredentials(res.data.login_credentials);
           enqueueSnackbar('Payment made successfully!', { variant: 'success' });
           setStep();
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message, { variant: 'error' });
         });
     } else {
       enqueueSnackbar('Some error occurred!', { variant: 'error' });

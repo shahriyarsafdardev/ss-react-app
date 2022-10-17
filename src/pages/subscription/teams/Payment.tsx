@@ -21,7 +21,9 @@ export default function StripePaymentForm({
   setAmount,
   setStep,
   isSinglePayee,
-  registration
+  cohortID,
+  registration,
+  setCredentials
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -30,7 +32,9 @@ export default function StripePaymentForm({
   setAmount: Function;
   setStep: Function;
   isSinglePayee: boolean;
+  cohortID: string;
   registration: Registration;
+  setCredentials: Function;
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -41,7 +45,7 @@ export default function StripePaymentForm({
     uploadData.append('email', email);
     uploadData.append('team', team);
     uploadData.append('team_members', JSON.stringify(teamMembers));
-    uploadData.append('cohort_id', registration.cohort_id);
+    uploadData.append('cohort_id', cohortID);
     await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
       setClientSecret(res.data.clientSecret);
       setAmount(res.data.total_amount);
@@ -81,8 +85,9 @@ export default function StripePaymentForm({
                 team={team}
                 teamMembers={teamMembers}
                 email={email}
-                clientSecret={clientSecret}
                 setStep={setStep}
+                registration={registration}
+                setCredentials={setCredentials}
               />
             </Elements>
           </Box>
