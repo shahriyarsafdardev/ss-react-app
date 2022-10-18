@@ -89,6 +89,24 @@ function InviteMembersForm({
             enqueueSnackbar('Some error occurred!', { variant: 'error' });
           });
       } else {
+        const uploadData = new FormData();
+        uploadData.append('team', team);
+        uploadData.append(
+          'team_member',
+          JSON.stringify({
+            email: values.email,
+            fullName: values.fullName,
+            courseID: values.courseID
+          })
+        );
+        await axios
+          .post('team_registrations/team_member_invite.json', uploadData)
+          .then((res) => {
+            enqueueSnackbar('Team Member Invited', { variant: 'success' });
+          })
+          .catch((err) => {
+            enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          });
         enqueueSnackbar('Team Member Added', { variant: 'success' });
       }
       setTeamMembers([

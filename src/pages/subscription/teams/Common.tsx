@@ -142,12 +142,35 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '100%'
     }
   },
+  topUpContainer: {
+    height: '100%',
+    width: '50%',
+    backgroundColor: '#FAFAFC',
+    margin: 'auto',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  topUp: {
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/topup-purple-bg.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  topUpButton: {
+    width: '80%',
+    backgroundColor: '#864FBC',
+    marginTop: '56px !important'
+  },
   grainedBackground: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-bg-desktop.svg')`,
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-desktop.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     [theme.breakpoints.down('md')]: {
-      backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/payment-bg-mbl.svg')`,
+      backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-mbl.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }
