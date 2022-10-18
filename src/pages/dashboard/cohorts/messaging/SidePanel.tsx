@@ -20,6 +20,7 @@ type SidePanelProps = {
     cohortID: string;
     cohortUsers: String[];
     sort: any;
+    canTrack: boolean;
     loggedinUserID: string;
   };
 };

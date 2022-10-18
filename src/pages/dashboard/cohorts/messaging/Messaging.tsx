@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Box } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { Box, useMediaQuery } from '@material-ui/core';
+import { useTheme, styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { trackEvent } from 'utils/eventTracking';
@@ -60,6 +60,7 @@ export default function Messaging() {
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
+  const theme = useTheme();
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ export default function Messaging() {
   const sort: ChannelSort<TeamChannelType> = {};
   const url = new URLSearchParams(useLocation().search);
   const enrollments = peers?.filter((peer) => peer.id !== loggedinUserID)?.map((peer) => peer.id);
+  const desktopView = useMediaQuery(theme.breakpoints.up('md'));
 
   const LoadingContainer = styled(Box)(() => ({
     position: 'absolute',
@@ -168,7 +170,8 @@ export default function Messaging() {
                       cohortID,
                       cohortUsers: enrollments || [],
                       sort,
-                      loggedinUserID
+                      loggedinUserID,
+                      canTrack: desktopView
                     }}
                   />
                 </DesktopView>
@@ -195,7 +198,8 @@ export default function Messaging() {
                       cohortID,
                       cohortUsers: enrollments || [],
                       sort,
-                      loggedinUserID
+                      loggedinUserID,
+                      canTrack: !desktopView
                     }}
                   />
                 </MobileView>

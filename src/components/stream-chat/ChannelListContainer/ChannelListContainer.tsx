@@ -25,6 +25,7 @@ type Props = Omit<ChannelListProps, 'filters'> & {
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   cohortID: string;
   loggedinUserID: string;
+  canTrack: boolean;
   cohortUsers: any;
 };
 
@@ -53,7 +54,8 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     cohortID,
     cohortUsers,
     sort,
-    loggedinUserID
+    loggedinUserID,
+    canTrack
   } = props;
   const { user } = useAuth();
 
@@ -80,7 +82,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const sendAnalytics = (channel: any) => {
-    if (channel && client) {
+    if (channel && client && canTrack) {
       const members = Object.values(channel?.state?.members).filter(
         (m: any) => m?.user?.id !== client?.userID
       );
