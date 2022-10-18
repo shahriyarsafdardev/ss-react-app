@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal } from 'components/animate';
-import axios from 'utils/axios';
-
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { initializeSubscription } from 'redux/slices/accountSubscription';
 import AddCreditsForm from './AddCreditsForm';
 import CancelSubscriptionForm from './CancelSubscriptionForm';
 import { useStyles } from './Common';
@@ -9,25 +9,20 @@ import PaymentDetails from './PaymentDetails';
 import PaymentDetailsForm from './PaymentDetailsForm';
 import PaymentHistory from './PaymentHistory';
 import SubscriptionDetails from './SubscriptionDetails';
-import { SubscriptionDetail } from '../../../@types/cohorts';
 import UpdateSubscriptionForm from './UpdateSubscriptionForm';
 
 export default function AccountSubscription() {
   const [cancelSubscriptionModal, setCancelSubscriptionModal] = useState(false);
   const [addCreditModal, setAddCreditModal] = useState(false);
   const [paymentMethodModal, setPaymentMethodModal] = useState(false);
-  const [accountDetails, setAccountDetails] = useState<SubscriptionDetail>();
   const [updateSubscriptionModal, setUpdateSubscriptionModal] = useState(false);
+  const accountDetails = useSelector((state: RootState) => state.subscription.subscription_detail);
 
   const classes = useStyles();
-
-  const getSubscriptionDetails = async () => {
-    const response = await axios.get('/account_subscriptions.json');
-    setAccountDetails(response.data);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getSubscriptionDetails();
+    dispatch(initializeSubscription());
   }, []);
 
   const CancelSubscriptionModal = () => (

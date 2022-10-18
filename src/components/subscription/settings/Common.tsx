@@ -3,10 +3,10 @@ import { makeStyles } from '@material-ui/styles';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   backgroundColor: '#F6F7F8',
-  padding: '30px 0px',
-  borderRadius: '10px',
+  padding: '50px',
+  borderRadius: '8px',
   [theme.breakpoints.down('md')]: {
-    padding: '15px 10px'
+    padding: '24px'
   }
 }));
 
@@ -85,5 +85,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     '&:hover': {
       borderColor: '#FF4842'
     }
+  },
+  gradientBackground: {
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-credit.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: '30px',
+    borderRadius: '8px'
   }
 }));

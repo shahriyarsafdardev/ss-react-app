@@ -24,7 +24,10 @@ const BillRow = ({ key, billHistory }: { key: number; billHistory: BillHistory }
       ${billHistory.amount}
     </TableCell>
     <TableCell style={{ width: 100 }} align="center">
-      <Link href={billHistory.invoice} color="#4D4DCD">
+      <Link
+        href={billHistory.invoice}
+        style={{ color: '#101658 !importent', textDecoration: 'underline', cursor: 'pointer' }}
+      >
         Download
       </Link>
     </TableCell>

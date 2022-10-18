@@ -1,5 +1,7 @@
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
+import { updateSubscription } from 'redux/slices/accountSubscription';
+import { useDispatch } from 'redux/store';
 import axios from 'utils/axios';
 import { StyledButton, useStyles } from './Common';
 
@@ -14,15 +16,18 @@ export default function CancelSubscriptionForm({
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
   const handleEditSubscription = () => {
     setModal(false);
     setUpdateSubscriptionModal(true);
   };
 
   const handleSubmit = async () => {
-    await axios.post(`/account_subscriptions/${accountID}/cancel_subscription.json`);
-    enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
-    setModal(false);
+    await axios.post(`/account_subscriptions/${accountID}/cancel_subscription.json`).then((res) => {
+      dispatch(updateSubscription(res.data));
+      enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
+      setModal(false);
+    });
   };
 
   return (

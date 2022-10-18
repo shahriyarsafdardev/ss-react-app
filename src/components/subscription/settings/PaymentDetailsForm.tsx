@@ -4,6 +4,8 @@ import valid from 'card-validator';
 import { Card, Grid, Stack, TextField, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
+import { updateSubscription } from 'redux/slices/accountSubscription';
+import { useDispatch } from 'redux/store';
 import { StyledButton } from './Common';
 
 type CardType = {
@@ -23,6 +25,7 @@ export default function PaymentDetailsForm({
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
+  const dispatch = useDispatch();
 
   const ValidationSchema = Yup.object().shape({
     cardName: Yup.string().required('Full Name is required'),
@@ -59,10 +62,8 @@ export default function PaymentDetailsForm({
           ...values
         })
         .then((response) => {
+          dispatch(updateSubscription(response.data));
           enqueueSnackbar('Payment method updated!', { variant: 'success' });
-        })
-        .catch((error) => {
-          enqueueSnackbar(error.message, { variant: 'error' });
         });
 
       setModal(false);

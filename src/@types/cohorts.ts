@@ -355,12 +355,12 @@ export type BillHistory = {
 };
 
 export type Subscription = {
-  amount: number;
   id: string;
   name: string;
-  plan: number;
-  start_date: string;
-  status: string;
+  start_date: string | null;
+  next_billing_date: string | null;
+  active: boolean;
+  yearly_credit_amount: number;
 };
 
 export type CreditObject = {

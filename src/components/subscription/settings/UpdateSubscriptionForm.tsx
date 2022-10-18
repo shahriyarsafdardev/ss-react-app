@@ -2,6 +2,8 @@ import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import axios from 'utils/axios';
+import { updateSubscription } from 'redux/slices/accountSubscription';
+import { useDispatch } from 'redux/store';
 import { StyledButton } from './Common';
 import CreditCounter from './CreditCounter';
 import { SubscriptionDetail } from '../../../@types/cohorts';
@@ -18,8 +20,9 @@ export default function UpdateSubscriptionForm({
   const subscription = accountDetails?.subscription;
   const account = accountDetails?.account;
 
-  const [credit, setCredit] = useState(subscription ? subscription?.amount : 0);
+  const [credit, setCredit] = useState(subscription ? subscription?.yearly_credit_amount : 2000);
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const currentDate = () => `${new Date().toDateString()}`;
 
@@ -29,13 +32,10 @@ export default function UpdateSubscriptionForm({
         amount: credit
       })
       .then((response) => {
+        dispatch(updateSubscription(response.data));
         enqueueSnackbar('Subscription plan updated!', { variant: 'success' });
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message, { variant: 'error' });
+        setModal(false);
       });
-
-    setModal(false);
   };
 
   return (
@@ -44,7 +44,7 @@ export default function UpdateSubscriptionForm({
         <Typography variant="h5">How many credits would you like per year?</Typography>
         <Stack>
           <Typography>
-            You are on a Yearly Plan for {subscription?.amount} Sphere credits.
+            You are on a Yearly Plan for {subscription?.yearly_credit_amount} Sphere credits.
           </Typography>
           <Typography>You currently have {account?.credit_balance} credits remaining.</Typography>
         </Stack>

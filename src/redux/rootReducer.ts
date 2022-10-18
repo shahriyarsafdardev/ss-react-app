@@ -10,6 +10,7 @@ import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import cohortReducer from './slices/cohort';
+import accountSubscription from './slices/accountSubscription';
 import notificationReducer from './slices/notification';
 import profileOptionsReducer from './slices/profileOptions';
 import sessionFeedbackReducer from './slices/sessionFeedback';
@@ -41,6 +42,7 @@ const appReducer = combineReducers({
   user: userReducer,
   calendar: calendarReducer,
   cohort: cohortReducer,
+  subscription: accountSubscription,
   notification: notificationReducer,
   profileOptions: profileOptionsReducer,
   sessionFeedback: sessionFeedbackReducer,

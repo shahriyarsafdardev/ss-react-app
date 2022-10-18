@@ -1,5 +1,4 @@
-import { Avatar, Stack } from '@material-ui/core';
-import useAuth from 'hooks/useAuth';
+import { Stack } from '@material-ui/core';
 import moment from 'moment';
 import { StyledHeading, StyledLink, StyledStack, StyledText, BoldText, useStyles } from './Common';
 
@@ -12,7 +11,6 @@ export default function SubscriptionDetails({
   setCancelSubscriptionModal: Function;
   accountDetails: any;
 }) {
-  const { user } = useAuth();
   const classes = useStyles();
 
   const subscription = accountDetails?.subscription;
@@ -22,13 +20,8 @@ export default function SubscriptionDetails({
     .format('ll')
     .toString();
   return (
-    <>
-      <StyledStack direction={{ xs: 'column', md: 'row' }}>
-        <Avatar
-          alt={`${user?.name} Company Logo`}
-          src={user?.company_image_url}
-          className={classes.avatar}
-        />
+    <Stack className={classes.gradientBackground}>
+      <StyledStack direction={{ xs: 'column', md: 'row' }} style={{ width: '80%' }}>
         <Stack spacing={3}>
           <Stack spacing={1}>
             <StyledHeading>Sphere Credit Subscription</StyledHeading>
@@ -67,6 +60,6 @@ export default function SubscriptionDetails({
           </Stack>
         </Stack>
       </StyledStack>
-    </>
+    </Stack>
   );
 }

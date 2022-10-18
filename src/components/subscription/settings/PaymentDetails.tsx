@@ -13,7 +13,7 @@ export default function PaymentDetails({
 
   return (
     <>
-      <Stack spacing={1} padding="30px 0px">
+      <Stack spacing={1} padding="50px 0px">
         <StyledHeading>Payment Method</StyledHeading>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
           <CardDetails />

@@ -2,6 +2,8 @@ import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import axios from 'utils/axios';
+import { useDispatch } from 'redux/store';
+import { updateSubscription } from 'redux/slices/accountSubscription';
 import { StyledButton } from './Common';
 import CreditCounter from './CreditCounter';
 import { SubscriptionDetail } from '../../../@types/cohorts';
@@ -19,6 +21,7 @@ export default function AddCreditsForm({
   const { enqueueSnackbar } = useSnackbar();
   const subscription = accountDetails?.subscription;
   const account = accountDetails?.account;
+  const dispatch = useDispatch();
 
   const currentDate = () => `${new Date().toDateString()}`;
 
@@ -28,10 +31,8 @@ export default function AddCreditsForm({
         amount: credit
       })
       .then((response) => {
+        dispatch(updateSubscription(response.data));
         enqueueSnackbar('Credits Added to your account!', { variant: 'success' });
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message, { variant: 'error' });
       });
 
     setModal(false);
@@ -43,7 +44,7 @@ export default function AddCreditsForm({
         <Typography variant="h5">How many credits would you like to add?</Typography>
         <Stack>
           <Typography>
-            You are on a Yearly Plan for {subscription?.amount} Sphere credits.
+            You are on a Yearly Plan for {subscription?.yearly_credit_amount} Sphere credits.
           </Typography>
           <Typography>You currently have {account?.credit_balance} credits remaining.</Typography>
         </Stack>
@@ -60,8 +61,8 @@ export default function AddCreditsForm({
           <Typography>You will be charged ${credit} today.</Typography>
           <Typography>
             Starting {currentDate()} you will be billed $
-            {subscription && subscription?.amount + credit} for{' '}
-            {subscription && subscription?.amount + credit} credits per year.
+            {subscription && subscription?.yearly_credit_amount + credit} for{' '}
+            {subscription && subscription?.yearly_credit_amount + credit} credits per year.
           </Typography>
         </Stack>
         <StyledButton
