@@ -374,6 +374,7 @@ export default function Registration() {
             enrollmentId={user?.enrollment_id || ''}
             cohort={cohort}
             referrer_code={user.slug}
+            registrant_email={user.email || ''}
             company={!!company}
             account={!!account}
             waitListed={wait_listed}

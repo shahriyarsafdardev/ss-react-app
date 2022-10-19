@@ -60,6 +60,7 @@ function InvitePeersForm({
   enrollmentId,
   cohort,
   referrer_code,
+  registrant_email,
   company,
   account,
   waitListed,
@@ -70,6 +71,7 @@ function InvitePeersForm({
   enrollmentId: string;
   cohort: CohortType;
   referrer_code: string;
+  registrant_email: string;
   company: boolean;
   account: boolean;
   waitListed: boolean;
@@ -110,10 +112,14 @@ function InvitePeersForm({
           setSubmitting(false);
           setInvites([...invites, { email: values.email, fullName: values.fullName }]);
           resetForm();
-          enqueueSnackbar('Refferal Invite sent!', { variant: 'success' });
+          enqueueSnackbar('Referral Invite sent!', { variant: 'success' });
           trackRegistrationEvent(
             'Cohort Registration - Send Invitation Page - Referral Invite Sent',
-            { 'Referee Email': values.email, 'Referee Name': values.fullName }
+            {
+              'Referee Email': values.email,
+              'Referee Name': values.fullName,
+              'Registrant Email': registrant_email
+            }
           );
         })
         .catch((error: any) => {
