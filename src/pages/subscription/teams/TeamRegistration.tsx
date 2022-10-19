@@ -52,6 +52,7 @@ export default function TeamRegistration() {
   const [loading, setLoading] = useState(false);
   const [isSinglePayee, setIsSinglePayee] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [teamDiscount, setTeamDiscount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
   const [registration, setRegistration] = useState<Registration>({
@@ -87,6 +88,7 @@ export default function TeamRegistration() {
             setLeadUser(res.data.user);
             setCohorts(res.data.cohorts);
             setSegmentUserProperties(res.data.user);
+            setTeamDiscount(res.data.team.discount_percentage);
             setLoading(false);
           })
           .catch((error) => {
@@ -154,6 +156,7 @@ export default function TeamRegistration() {
           cohortID={cohortID}
           registration={registration}
           setCredentials={setCredentials}
+          teamDiscount={teamDiscount}
         />
       );
     }

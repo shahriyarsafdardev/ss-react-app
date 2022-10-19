@@ -20,7 +20,8 @@ const initialState: { subscription_detail: SubscriptionDetail } = {
       next_billing_date: '',
       active: false,
       yearly_credit_amount: 0
-    }
+    },
+    team_discount: 0
   }
 };
 

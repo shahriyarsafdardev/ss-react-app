@@ -378,4 +378,5 @@ export type SubscriptionDetail = {
   account: Account;
   history: BillHistory[];
   subscription: Subscription;
+  team_discount: number;
 };

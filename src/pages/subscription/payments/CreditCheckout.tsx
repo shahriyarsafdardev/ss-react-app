@@ -24,6 +24,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '')
 
 export type CheckoutDetails = {
   team_name: string;
+  team_discount: number;
   lead_user_email: string;
 };
 
@@ -45,6 +46,7 @@ export default function CreditCheckout() {
   const [accountID, setAccountID] = useState(false);
   const [checkoutDetails, setCheckoutDetails] = useState<CheckoutDetails>({
     team_name: '',
+    team_discount: 0,
     lead_user_email: ''
   });
   const [registration, setRegistration] = useState<Registration>({
@@ -69,6 +71,7 @@ export default function CreditCheckout() {
         setTeamMembers(res.data.teamMembers);
         setCheckoutDetails({
           team_name: res.data.team_name,
+          team_discount: res.data.team_discount,
           lead_user_email: res.data.lead_user_email
         });
         setClientSecret(res.data.payment_intent.clientSecret);
@@ -168,6 +171,7 @@ export default function CreditCheckout() {
         <PaymentDetails
           amount={creditAmount}
           isSinglePayee={email === '' && cohortID === ''}
+          teamDiscount={checkoutDetails?.team_discount}
           registration={registration}
         />
         <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>

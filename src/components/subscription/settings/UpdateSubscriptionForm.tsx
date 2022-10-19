@@ -44,9 +44,11 @@ export default function UpdateSubscriptionForm({
         <Typography variant="h5">How many credits would you like per year?</Typography>
         <Stack>
           <Typography>
-            You are on a Yearly Plan for {subscription?.yearly_credit_amount} Sphere credits.
+            You are on a Yearly Plan for {subscription?.yearly_credit_amount || 0} Sphere credits.
           </Typography>
-          <Typography>You currently have {account?.credit_balance} credits remaining.</Typography>
+          <Typography>
+            You currently have {account?.credit_balance || 0} credits remaining.
+          </Typography>
         </Stack>
         <Stack spacing={1}>
           <CreditCounter credit={credit} setCredit={setCredit} />

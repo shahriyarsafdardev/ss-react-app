@@ -92,5 +92,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundPosition: 'center',
     padding: '30px',
     borderRadius: '8px'
+  },
+  subscriptionDetail: {
+    width: '80%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
   }
 }));

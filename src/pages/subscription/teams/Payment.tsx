@@ -22,7 +22,8 @@ export default function Payment({
   isSinglePayee,
   cohortID,
   registration,
-  setCredentials
+  setCredentials,
+  teamDiscount
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -34,6 +35,7 @@ export default function Payment({
   cohortID: string;
   registration: Registration;
   setCredentials: Function;
+  teamDiscount: number;
 }) {
   const classes = useStyles();
   const [clientSecret, setClientSecret] = useState('');
@@ -67,7 +69,12 @@ export default function Payment({
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>
-        <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} registration={registration} />
+        <PaymentDetails
+          amount={amount}
+          isSinglePayee={isSinglePayee}
+          teamDiscount={teamDiscount}
+          registration={registration}
+        />
         <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
           <Box className={classes.fullWidthCenter}>
             <Elements

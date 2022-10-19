@@ -64,16 +64,20 @@ function InviteMembersForm({
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values, { resetForm }) => {
-      if (!isSinglePayee) {
-        const cohortDetails = getCohortDetails(values.courseID);
-        const uploadData = new FormData();
-        uploadData.append('email', values.email);
-        uploadData.append('fullName', values.fullName);
-        uploadData.append('team', team);
-        uploadData.append('courseID', values.courseID);
-        await axios
-          .post('team_registrations/team_member_invite.json', uploadData)
-          .then((res) => {
+      const cohortDetails = getCohortDetails(values.courseID);
+      const uploadData = new FormData();
+      uploadData.append('email', values.email);
+      uploadData.append('fullName', values.fullName);
+      uploadData.append('team', team);
+      uploadData.append('courseID', values.courseID);
+      await axios
+        .post('team_registrations/team_member_invite.json', uploadData)
+        .then((res) => {
+          setTeamMembers([
+            ...teamMembers,
+            { email: values.email, fullName: values.fullName, courseID: values.courseID }
+          ]);
+          if (!isSinglePayee) {
             enqueueSnackbar('Team Member Invited', { variant: 'success' });
             trackEvent(null, 'Testing - Team Registration Invite Sent', {
               'Team Lead Full Name': `${leadUser.first_name} ${leadUser.last_name}`,
@@ -84,35 +88,13 @@ function InviteMembersForm({
               'Course Name': cohortDetails.name,
               'Instructor Name': cohortDetails.hostName
             });
-          })
-          .catch((err) => {
-            enqueueSnackbar('Some error occurred!', { variant: 'error' });
-          });
-      } else {
-        const uploadData = new FormData();
-        uploadData.append('team', team);
-        uploadData.append(
-          'team_member',
-          JSON.stringify({
-            email: values.email,
-            fullName: values.fullName,
-            courseID: values.courseID
-          })
-        );
-        await axios
-          .post('team_registrations/team_member_invite.json', uploadData)
-          .then((res) => {
-            enqueueSnackbar('Team Member Invited', { variant: 'success' });
-          })
-          .catch((err) => {
-            enqueueSnackbar('Some error occurred!', { variant: 'error' });
-          });
-        enqueueSnackbar('Team Member Added', { variant: 'success' });
-      }
-      setTeamMembers([
-        ...teamMembers,
-        { email: values.email, fullName: values.fullName, courseID: values.courseID }
-      ]);
+          } else {
+            enqueueSnackbar('Team Member Added', { variant: 'success' });
+          }
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
       resetForm();
     }
   });

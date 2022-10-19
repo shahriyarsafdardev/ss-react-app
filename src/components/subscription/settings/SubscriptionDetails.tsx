@@ -15,27 +15,25 @@ export default function SubscriptionDetails({
 
   const subscription = accountDetails?.subscription;
   const account = accountDetails?.account;
-  const renewalDate = moment(new Date(subscription?.start_date))
-    ?.add(1, 'y')
-    .format('ll')
-    .toString();
+  const renewalDate = moment(new Date(subscription?.next_billing_date)).format('ll').toString();
   return (
     <Stack className={classes.gradientBackground}>
-      <StyledStack direction={{ xs: 'column', md: 'row' }} style={{ width: '80%' }}>
+      <StyledStack direction={{ xs: 'column', md: 'row' }} className={classes.subscriptionDetail}>
         <Stack spacing={3}>
           <Stack spacing={1}>
             <StyledHeading>Sphere Credit Subscription</StyledHeading>
             <StyledText>
-              You are on a <b>{subscription?.name} Plan</b> for {subscription?.amount} Sphere
-              credits. Your next charge will be on {renewalDate} for ${subscription?.amount}
+              You are on a <b>{subscription?.name} Plan</b> for {subscription?.yearly_credit_amount}{' '}
+              Sphere credits. Your next charge will be on {renewalDate} for $
+              {subscription?.yearly_credit_amount}
             </StyledText>
           </Stack>
           <Stack spacing={1}>
             <BoldText>Benefits</BoldText>
             <StyledText>
               <li>
-                {subscription?.amount} Sphere Credits per year (credits can be used to register for
-                live courses at a 15% discount)
+                {subscription?.yearly_credit_amount} Sphere Credits per year (credits can be used to
+                register for live courses at a {accountDetails?.team_discount * 100}% discount)
               </li>
             </StyledText>
           </Stack>

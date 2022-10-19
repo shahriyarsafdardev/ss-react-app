@@ -1,8 +1,12 @@
 import { Stack, Typography } from '@material-ui/core';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles } from './Common';
 
 export default function CardDetails() {
   const classes = useStyles();
+  const account = useSelector(
+    (state: RootState) => state.subscription.subscription_detail
+  )?.account;
 
   return (
     <>
@@ -13,11 +17,11 @@ export default function CardDetails() {
         <Stack direction="row" spacing={5}>
           <Stack spacing={1}>
             <Typography>Card Number:</Typography>
-            <Typography>**** **** **** 6827</Typography>
+            <Typography>**** **** **** {account?.cardNumber || '****'}</Typography>
           </Stack>
           <Stack spacing={1}>
             <Typography>Expiration Date:</Typography>
-            <Typography>07/24</Typography>
+            <Typography>{account?.cardExpiry || '**/**'}</Typography>
           </Stack>
         </Stack>
       </Stack>

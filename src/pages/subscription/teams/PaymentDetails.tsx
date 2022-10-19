@@ -5,10 +5,12 @@ import { Registration } from './TeamRegistration';
 export default function PaymentDetails({
   amount,
   isSinglePayee,
+  teamDiscount,
   registration
 }: {
   amount: number;
   isSinglePayee: boolean;
+  teamDiscount: number;
   registration: Registration;
 }) {
   const classes = useStyles();
@@ -41,8 +43,8 @@ export default function PaymentDetails({
             </StyledTypography>
             <Stack spacing={1}>
               <li>
-                A 15% discount on the price of all course in our library (our discounts are
-                volume-based)
+                A {teamDiscount * 100}% discount on the price of all course in our library (our
+                discounts are volume-based)
               </li>
               <li>Immunity to price increases</li>
               <li>Ongoing access to the Sphere portal (including all recordings and resources)</li>
