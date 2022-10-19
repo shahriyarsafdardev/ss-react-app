@@ -31,7 +31,7 @@ const slice = createSlice({
     populateSubscription(state, action) {
       state.subscription_detail = action.payload.data;
     },
-    updateSubscription(state, action) {
+    updateSubscriptionSuccess(state, action) {
       state.subscription_detail = action.payload.data;
     }
   }
@@ -47,5 +47,11 @@ export function initializeSubscription() {
 }
 
 export function updateSubscription(data: SubscriptionDetail) {
-  dispatch(slice.actions.updateSubscription({ data }));
+  return async () => {
+    try {
+      dispatch(slice.actions.updateSubscriptionSuccess({ data }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
