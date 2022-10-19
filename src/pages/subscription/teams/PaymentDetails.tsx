@@ -11,9 +11,10 @@ export default function PaymentDetails({
   amount: number;
   isSinglePayee: boolean;
   teamDiscount: number;
-  registration: Registration;
+  registration?: Registration;
 }) {
   const classes = useStyles();
+  const totalAmount = registration?.cohort_id ? registration?.cohort_price : amount;
 
   return (
     <Stack className={classes.paymentInfo}>
@@ -23,13 +24,13 @@ export default function PaymentDetails({
           <StyledTypography>
             {isSinglePayee
               ? 'Based on the number of people you’ve invited, your team package is:'
-              : `${registration.lead_user_name} has invited you to attend ${registration.cohort_host_name}’s cohort ‘${registration.cohort_name}’.`}
+              : `${registration?.lead_user_name} has invited you to attend ${registration?.cohort_host_name}’s cohort ‘${registration?.cohort_name}’.`}
           </StyledTypography>
           {!isSinglePayee && (
             <StyledTypography>To attend this course you will be charged:</StyledTypography>
           )}
           <Stack alignItems="center">
-            <Typography variant="h4">{`$${amount} USD = ${amount} credits`}</Typography>
+            <Typography variant="h4">{`$${totalAmount} USD = ${totalAmount} credits`}</Typography>
             <StyledTypography>which will recur annually</StyledTypography>
           </Stack>
         </StyledDetailsStack>

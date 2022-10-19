@@ -21,12 +21,14 @@ export default function UpdateSubscriptionForm({
   const account = accountDetails?.account;
 
   const [credit, setCredit] = useState(subscription ? subscription?.yearly_credit_amount : 2000);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const currentDate = () => `${new Date().toDateString()}`;
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     await axios
       .post(`/account_subscriptions/${accountID}/update_subscription.json`, {
         amount: credit
@@ -34,7 +36,11 @@ export default function UpdateSubscriptionForm({
       .then((response) => {
         dispatch(updateSubscription(response.data));
         enqueueSnackbar('Subscription plan updated!', { variant: 'success' });
+        setIsSubmitting(false);
         setModal(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message || 'Ops! Something went wrong', { variant: 'error' });
       });
   };
 
@@ -59,6 +65,7 @@ export default function UpdateSubscriptionForm({
         </Typography>
         <StyledButton
           variant="contained"
+          loading={isSubmitting}
           onClick={handleSubmit}
           sx={{ margin: 'auto !important', marginTop: '32px !important' }}
         >

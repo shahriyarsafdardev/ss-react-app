@@ -52,6 +52,7 @@ export default function CreditCheckout() {
   const [registration, setRegistration] = useState<Registration>({
     cohort_id: '',
     cohort_name: '',
+    cohort_price: 0,
     cohort_host_name: '',
     lead_user_name: ''
   });

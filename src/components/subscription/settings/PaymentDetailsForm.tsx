@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import { updateSubscription } from 'redux/slices/accountSubscription';
 import { useDispatch } from 'redux/store';
+import { useState } from 'react';
 import { StyledButton } from './Common';
 
 type CardType = {
@@ -26,6 +27,7 @@ export default function PaymentDetailsForm({
   const { enqueueSnackbar } = useSnackbar();
   const pattern = /^[0-9\b]+$/;
   const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const ValidationSchema = Yup.object().shape({
     cardName: Yup.string().required('Full Name is required'),
@@ -57,21 +59,25 @@ export default function PaymentDetailsForm({
     },
     validationSchema: ValidationSchema,
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       await axios
         .post(`/account_subscriptions/${accountID}/update_card_details.json`, {
           ...values
         })
         .then((response) => {
           dispatch(updateSubscription(response.data));
+          setIsSubmitting(false);
           enqueueSnackbar('Payment method updated!', { variant: 'success' });
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Ops! Something went wrong', { variant: 'error' });
         });
 
       setModal(false);
     }
   });
 
-  const { values, errors, touched, isSubmitting, getFieldProps, submitForm, setFieldValue } =
-    formik;
+  const { values, errors, touched, getFieldProps, submitForm, setFieldValue } = formik;
 
   const validateCardCvv = (value: any) => {
     const properties: any = valid.number(values.cardNumber)?.card;
@@ -176,6 +182,7 @@ export default function PaymentDetailsForm({
         <StyledButton
           fullWidth
           type="submit"
+          loading={isSubmitting}
           data-testid="submit-btn"
           variant="contained"
           id="btn-submit"

@@ -13,19 +13,19 @@ export default function StripePayment({
   teamMembers,
   email,
   setStep,
-  registration,
   setCredentials,
   stripeCustomerID,
-  setPaymentCompleted
+  setPaymentCompleted,
+  registration
 }: {
   team: string;
   teamMembers: TeamMember[];
   email: string;
   setStep?: Function;
-  registration: Registration;
   setCredentials?: Function;
   stripeCustomerID: string;
   setPaymentCompleted?: Function;
+  registration?: Registration;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -45,8 +45,8 @@ export default function StripePayment({
     if (teamID === '') {
       uploadData.append('team_members', JSON.stringify(teamMembers));
       url = 'team_registrations/team_members_registration.json';
-    } else if (registration.cohort_id !== '') {
-      uploadData.append('cohort_id', registration.cohort_id);
+    } else if (registration?.cohort_id !== '') {
+      uploadData.append('cohort_id', registration?.cohort_id || '');
       url = 'team_registrations/member_payment.json';
     } else if (teamID !== '' && creditAmount !== '') {
       uploadData.append('team_id', teamID);

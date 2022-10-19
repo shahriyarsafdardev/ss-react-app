@@ -3,12 +3,10 @@ import { StyledStack, StyledTypography } from './Common';
 
 export default function Header({
   activeStep,
-  isSinglePayee,
-  cohortID
+  isSinglePayee
 }: {
   activeStep: number;
   isSinglePayee: boolean;
-  cohortID: string;
 }) {
   const selectHeadings = () => {
     if (activeStep === 1) {
@@ -19,7 +17,7 @@ export default function Header({
         ? ['Please add your team member', '']
         : ['Please invite your team members:', 'They will be asked to pay individually'];
     }
-    if (activeStep === 3 && !isSinglePayee && cohortID === '') {
+    if (activeStep === 3 && !isSinglePayee) {
       return ['Log in to the Business Portal to track your team member’s status & onboarding', ''];
     }
     if (activeStep === 4) {

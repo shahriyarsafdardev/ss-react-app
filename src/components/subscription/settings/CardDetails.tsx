@@ -17,7 +17,7 @@ export default function CardDetails() {
         <Stack direction="row" spacing={5}>
           <Stack spacing={1}>
             <Typography>Card Number:</Typography>
-            <Typography>**** **** **** {account?.cardNumber || '****'}</Typography>
+            <Typography>{account?.cardNumber || '**** **** **** ****'}</Typography>
           </Stack>
           <Stack spacing={1}>
             <Typography>Expiration Date:</Typography>

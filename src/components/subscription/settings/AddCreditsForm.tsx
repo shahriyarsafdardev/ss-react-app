@@ -18,6 +18,7 @@ export default function AddCreditsForm({
   accountDetails: SubscriptionDetail | undefined;
 }) {
   const [credit, setCredit] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const subscription = accountDetails?.subscription;
   const account = accountDetails?.account;
@@ -26,6 +27,7 @@ export default function AddCreditsForm({
   const currentDate = () => `${new Date().toDateString()}`;
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
     await axios
       .post(`/account_subscriptions/${accountID}/add_credit.json`, {
         amount: credit
@@ -33,6 +35,10 @@ export default function AddCreditsForm({
       .then((response) => {
         dispatch(updateSubscription(response.data));
         enqueueSnackbar('Credits Added to your account!', { variant: 'success' });
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message || 'Ops! Something went wrong', { variant: 'error' });
       });
 
     setModal(false);
@@ -70,6 +76,7 @@ export default function AddCreditsForm({
         <StyledButton
           variant="contained"
           onClick={handleSubmit}
+          loading={isSubmitting}
           sx={{ margin: 'auto !important', marginTop: '32px !important' }}
         >
           Add Credits

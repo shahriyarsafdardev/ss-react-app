@@ -17,6 +17,7 @@ import Payment from './Payment';
 export type Registration = {
   cohort_id: string;
   cohort_name: string;
+  cohort_price: number;
   cohort_host_name: string;
   lead_user_name: string;
 };
@@ -45,22 +46,15 @@ export type Credentials = {
 export default function TeamRegistration() {
   const classes = useStyles();
   const url = new URLSearchParams(useLocation().search);
-  const cohortID = url.get('cohort_id') || '';
   const email = url.get('email') || '';
   const team = url.get('team') || '';
-  const [activeStep, setActiveStep] = useState(cohortID === '' ? 1 : 3);
+  const [activeStep, setActiveStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [isSinglePayee, setIsSinglePayee] = useState(false);
   const [amount, setAmount] = useState(0);
   const [teamDiscount, setTeamDiscount] = useState(0);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
-  const [registration, setRegistration] = useState<Registration>({
-    cohort_id: '',
-    cohort_name: '',
-    cohort_host_name: '',
-    lead_user_name: ''
-  });
   const [leadUser, setLeadUser] = useState<User>({
     id: '',
     slug: '',
@@ -78,40 +72,23 @@ export default function TeamRegistration() {
 
   useEffect(() => {
     if (team !== '' && email !== '') {
-      if (cohortID === '') {
-        setLoading(true);
-        axios
-          .get(`team_registrations/get_team_details.json`, {
-            params: { email, team }
-          })
-          .then((res) => {
-            setLeadUser(res.data.user);
-            setCohorts(res.data.cohorts);
-            setSegmentUserProperties(res.data.user);
-            setTeamDiscount(res.data.team.discount_percentage);
-            setLoading(false);
-          })
-          .catch((error) => {
-            enqueueSnackbar(error.message || 'Some error occurred!', {
-              variant: 'error'
-            });
+      setLoading(true);
+      axios
+        .get(`team_registrations/get_team_details.json`, {
+          params: { email, team }
+        })
+        .then((res) => {
+          setLeadUser(res.data.user);
+          setCohorts(res.data.cohorts);
+          setSegmentUserProperties(res.data.user);
+          setTeamDiscount(res.data.team.discount_percentage);
+          setLoading(false);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message || 'Some error occurred!', {
+            variant: 'error'
           });
-      } else {
-        setLoading(true);
-        axios
-          .get(`team_registrations/get_registration_details.json`, {
-            params: { email, cohort_id: cohortID, team_name: team }
-          })
-          .then((res) => {
-            setRegistration(res.data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            enqueueSnackbar(err.message || 'Some error occurred!', {
-              variant: 'error'
-            });
-          });
-      }
+        });
     } else {
       setLoading(true);
     }
@@ -143,7 +120,7 @@ export default function TeamRegistration() {
         />
       );
     }
-    if (activeStep === 3 && (isSinglePayee || cohortID !== '')) {
+    if (activeStep === 3 && isSinglePayee) {
       return (
         <Payment
           team={team}
@@ -153,8 +130,6 @@ export default function TeamRegistration() {
           setAmount={setAmount}
           setStep={setStep}
           isSinglePayee={isSinglePayee}
-          cohortID={cohortID}
-          registration={registration}
           setCredentials={setCredentials}
           teamDiscount={teamDiscount}
         />
@@ -173,8 +148,8 @@ export default function TeamRegistration() {
 
   const teamRegistrationFlow = () => (
     <Stack width="100%">
-      {!(activeStep === 3 && (isSinglePayee || cohortID !== '')) && (
-        <Header activeStep={activeStep} isSinglePayee={isSinglePayee} cohortID={cohortID} />
+      {!(activeStep === 3 && isSinglePayee) && (
+        <Header activeStep={activeStep} isSinglePayee={isSinglePayee} />
       )}
       <Container
         maxWidth="lg"

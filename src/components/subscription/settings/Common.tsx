@@ -1,4 +1,5 @@
 import { Stack, styled, Typography, Theme, Button } from '@material-ui/core';
+import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
@@ -33,7 +34,7 @@ export const StyledLink = styled(Typography)(() => ({
   color: '#101658'
 }));
 
-export const StyledButton = styled(Button)(({ theme }) => ({
+export const StyledButton = styled(LoadingButton)(({ theme }) => ({
   width: '220px',
   borderRadius: '30px',
   [theme.breakpoints.down('md')]: {

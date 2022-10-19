@@ -23,11 +23,16 @@ export default function CancelSubscriptionForm({
   };
 
   const handleSubmit = async () => {
-    await axios.post(`/account_subscriptions/${accountID}/cancel_subscription.json`).then((res) => {
-      dispatch(updateSubscription(res.data));
-      enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
-      setModal(false);
-    });
+    await axios
+      .post(`/account_subscriptions/${accountID}/cancel_subscription.json`)
+      .then((res) => {
+        dispatch(updateSubscription(res.data));
+        enqueueSnackbar('Subscription plan canceled!', { variant: 'success' });
+        setModal(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message || 'Ops! Something went wrong', { variant: 'error' });
+      });
   };
 
   return (

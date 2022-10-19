@@ -8,7 +8,6 @@ import StripePayment from './StripePayment';
 import { LoadingContainer, PaymentRootStyle, useStyles } from './Common';
 import { TeamMember } from './InviteMembersForm';
 import PaymentDetails from './PaymentDetails';
-import { Registration } from './TeamRegistration';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
@@ -20,8 +19,6 @@ export default function Payment({
   setAmount,
   setStep,
   isSinglePayee,
-  cohortID,
-  registration,
   setCredentials,
   teamDiscount
 }: {
@@ -32,8 +29,6 @@ export default function Payment({
   setAmount: Function;
   setStep: Function;
   isSinglePayee: boolean;
-  cohortID: string;
-  registration: Registration;
   setCredentials: Function;
   teamDiscount: number;
 }) {
@@ -46,7 +41,6 @@ export default function Payment({
     uploadData.append('email', email);
     uploadData.append('team', team);
     uploadData.append('team_members', JSON.stringify(teamMembers));
-    uploadData.append('cohort_id', cohortID);
     await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
       setClientSecret(res.data.clientSecret);
       setAmount(res.data.total_amount);
@@ -69,12 +63,7 @@ export default function Payment({
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>
-        <PaymentDetails
-          amount={amount}
-          isSinglePayee={isSinglePayee}
-          teamDiscount={teamDiscount}
-          registration={registration}
-        />
+        <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />
         <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
           <Box className={classes.fullWidthCenter}>
             <Elements
@@ -93,7 +82,6 @@ export default function Payment({
                 teamMembers={teamMembers}
                 email={email}
                 setStep={setStep}
-                registration={registration}
                 setCredentials={setCredentials}
                 stripeCustomerID={stripeCustomerID}
               />
