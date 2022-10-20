@@ -104,11 +104,11 @@ export default function NetworkingForm({
                   <Stack spacing={1}>
                     <FormControl fullWidth>
                       <InputLabel>
-                        Are you interested in recieving networking suggestions based on
+                        Are you interested in receiving networking suggestions based on
                         commonalities and interests?
                       </InputLabel>
                       <MaterialSelect
-                        label="Are you interested in recieving networking suggestions based on commonalities
+                        label="Are you interested in receiving networking suggestions based on commonalities
                         and interests?"
                         fullWidth
                         data-testid="opt-for-networking"

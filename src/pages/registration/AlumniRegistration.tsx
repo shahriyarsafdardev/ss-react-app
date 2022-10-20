@@ -27,7 +27,7 @@ export default function AlumniRegistration() {
               👋 We look forward to seeing you soon
             </Typography>
             <Typography align="center" sx={{ color: 'text.secondary' }} data-testid="email-message">
-              We just sent over a calendar invite over email, if you haven’t recieved it, make sure
+              We just sent over a calendar invite over email, if you haven’t received it, make sure
               you check your junk!
             </Typography>
           </Box>

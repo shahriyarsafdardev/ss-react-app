@@ -57,7 +57,7 @@ export default function DeferRegistration() {
               👋 We’ll make sure to keep you in the loop!
             </Typography>
             <Typography align="center" color="text.secondary">
-              You will recieve email reminders about future cohorts
+              You will receive email reminders about future cohorts
             </Typography>
           </Container>
         )}

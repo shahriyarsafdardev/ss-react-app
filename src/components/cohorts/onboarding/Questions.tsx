@@ -78,7 +78,7 @@ const questions = [
   {
     question_type: 'multiple-choice',
     title:
-      'Are you interested in recieving networking suggestions based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)',
+      'Are you interested in receiving networking suggestions based on commonalities and interests? (This is one of our students’ favorite part of the cohort!)',
     options: ['Yes', 'No'],
     submitted_answer: null,
     description: null

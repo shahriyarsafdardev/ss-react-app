@@ -123,7 +123,7 @@ describe('Registration Flow', () => {
               .should('be.visible')
               .and(
                 'contain',
-                'You will shortly recieve an email documenting your application outcome and next steps!'
+                'You will shortly receive an email documenting your application outcome and next steps!'
               );
             cy.get('[data-testid=explore-btn]').should('be.visible');
           });
@@ -313,7 +313,7 @@ describe('Registration Flow', () => {
               .should('be.visible')
               .and(
                 'contain',
-                'You will shortly recieve an email documenting your application outcome and next steps!'
+                'You will shortly receive an email documenting your application outcome and next steps!'
               );
             cy.get('[data-testid=explore-btn]').should('be.visible');
           });

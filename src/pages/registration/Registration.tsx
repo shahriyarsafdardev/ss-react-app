@@ -340,16 +340,16 @@ export default function Registration() {
 
   const subHeading = () => {
     if (cohort?.code === RONNY_COHORT_CODE) {
-      return 'You will recieve an email shortly documenting your next steps!';
+      return 'You will receive an email shortly documenting your next steps!';
     }
 
     if (pre_release || wait_listed) {
-      return 'You will recieve an email shortly with more details on the course and how to secure your seat';
+      return 'You will receive an email shortly with more details on the course and how to secure your seat';
     }
     if (company && account) {
       return `We’ve sent your application to a ${company?.name} representative for review and will be in touch with next steps!`;
     }
-    return 'You will shortly recieve an email documenting your application outcome and next steps!';
+    return 'You will shortly receive an email documenting your application outcome and next steps!';
   };
 
   const lastStepMainHeading = () => {

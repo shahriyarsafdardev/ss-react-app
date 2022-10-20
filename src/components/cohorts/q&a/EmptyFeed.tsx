@@ -53,7 +53,7 @@ const EmptyFeed = ({ hosts }: { hosts: string }) => (
   <StyledFeedContainer>
     <StyledPreview data-testid="empty-Q&A-img" src="/static/empty_tabs.png" alt="empty feed" />
     <StyledPara data-testid="empty-Q&A-information-text">
-      <b>{hosts} hasn’t recieved any questions yet but you could be the first to ask!</b> Potential
+      <b>{hosts} hasn’t received any questions yet but you could be the first to ask!</b> Potential
       topics are not restricted, your question can refer to a Session or a problem you’re facing at
       work, and will be answered by {hosts} in video format!
     </StyledPara>
