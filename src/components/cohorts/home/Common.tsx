@@ -8,6 +8,8 @@ import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext, useEffect } from 'react';
+import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+import Icon from '@iconify/react';
 import { Cohort, Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
@@ -43,6 +45,10 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   }
 }));
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '15px'
+}));
+
 const useStyles = makeStyles((theme: Theme) => ({
   calendarInstructionsModal: {
     width: '52%',
@@ -52,7 +58,51 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: 'auto'
     }
   },
-  heading: { fontSize: '20px', fontWeight: 600 }
+  heading: { fontSize: '20px', fontWeight: 600 },
+  header: {
+    marginBottom: '15px',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '10px'
+    }
+  },
+  index: {
+    width: '30px',
+    height: '30px',
+    textAlign: 'center',
+    padding: '5px',
+    borderRadius: '50%',
+    fontWeight: 700,
+    fontSize: '15px'
+  },
+  indexActive: {
+    backgroundColor: '#F1F5F9'
+  },
+  indexCompleted: {
+    backgroundColor: '#C7D0D0',
+    color: '#FFFFFF',
+    fontWeight: 700
+  },
+  indexNonActive: {
+    backgroundColor: '#F1F5F9',
+    color: '#C7D0D0'
+  },
+  headingActive: {
+    margin: '0 10px'
+  },
+  headingNonActive: {
+    color: '#C7D0D0'
+  },
+  headingCompleted: {
+    textDecoration: 'line-through',
+    color: '#C7D0D0'
+  },
+  buttonActive: {
+    width: '30px',
+    height: '30px'
+  },
+  buttonNonActive: {
+    display: 'none'
+  }
 }));
 
 const StyledCircularLoader = styled(Box)(({ theme }) => ({
@@ -212,58 +262,47 @@ export const CalendarInstructionsModal = ({
   );
 };
 
-export const OnboardingSectionRow = ({
+export const ChecklistItem = ({
   index,
   heading,
-  subHeading,
   status,
-  classes,
   onSubmit
 }: {
   index: number;
   heading: string;
-  subHeading: string;
   status: string;
-  classes: any;
   onSubmit: Function;
-}) => (
-  <Box className={classes.row}>
-    <Typography
-      className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
-        status === 'NonActive' && classes.indexNonActive
-      } ${status === 'Completed' && classes.indexCompleted}`}
+}) => {
+  const classes = useStyles();
+  return (
+    <Stack
+      direction="row"
+      sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
     >
-      {status === 'Completed' ? <DoneIcon /> : index}
-    </Typography>
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection={{ xs: 'column', md: 'row' }}
-      justifyContent="space-between"
-    >
-      <Stack direction="column" marginLeft={3}>
-        <Typography
+      <StyledTypography
+        className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
+          status === 'NonActive' && classes.indexNonActive
+        } ${status === 'Completed' && classes.indexCompleted}`}
+      >
+        {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
+      </StyledTypography>
+      <Stack
+        width="100%"
+        direction={{ xs: 'column', md: 'row' }}
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => onSubmit()}
+      >
+        <StyledTypography
           className={`${classes.headingActive} ${
             status === 'NonActive' && classes.headingNonActive
           } ${status === 'Completed' && classes.headingCompleted}`}
         >
           {heading}
-        </Typography>
-        <Typography
-          className={`${classes.subHeadingActive} ${
-            status === 'NonActive' && classes.headingNonActive
-          } ${status === 'Completed' && classes.headingCompleted}`}
-        >
-          {subHeading}
-        </Typography>
+        </StyledTypography>
+        <Icon icon={arrowForwardFill} width="16px" height="16px" />
       </Stack>
-      <Button
-        variant="contained"
-        className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
-        onClick={() => onSubmit()}
-      >
-        Start
-      </Button>
-    </Box>
-  </Box>
-);
+    </Stack>
+  );
+};

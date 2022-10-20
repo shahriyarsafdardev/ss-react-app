@@ -193,11 +193,12 @@ export type CohortExperience = {
   live_async_attendance: number;
 };
 
-export type OnboardingDataType = {
-  is_onboarded: boolean;
-  sessions_added_to_calendar: boolean;
-  messaging_tab_opened: boolean;
-  resources_invoked: boolean;
+export type OnboardingData = {
+  onboarding_messaging_step_completed: boolean;
+  onboarding_networking_step_completed: boolean;
+  onboarding_referral_step_completed: boolean;
+  onboarding_questionnaire_step_completed: boolean;
+  onboarding_calendar_sync_step_completed: boolean;
 };
 
 export type Cohort = {
@@ -231,7 +232,7 @@ export type Cohort = {
   instructor_message: string;
   readings_released: boolean;
   amplitude_events_timeline: AmplitudeEventsTimeline;
-  onboarding_data: OnboardingDataType;
+  onboarding_data: OnboardingData;
 };
 
 export type CodeOnboardingItem = {

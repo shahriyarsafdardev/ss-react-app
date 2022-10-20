@@ -57,24 +57,24 @@ const Index = () => {
     }
   }, [cohort]);
 
-  useEffect(() => {
-    if (cohort && onboarding_data) {
-      if (!onboarding_data.is_onboarded) {
-        setActiveStepper(0);
-        return;
-      }
-      if (
-        !onboarding_data?.is_onboarded ||
-        !onboarding_data?.sessions_added_to_calendar ||
-        !onboarding_data?.messaging_tab_opened ||
-        !onboarding_data?.resources_invoked
-      ) {
-        setActiveStepper(1);
-      } else {
-        setActiveStepper(2);
-      }
-    }
-  }, [cohort, onboarding_data]);
+  // useEffect(() => {
+  //   if (cohort && onboarding_data) {
+  //     if (!onboarding_data.is_onboarded) {
+  //       setActiveStepper(0);
+  //       return;
+  //     }
+  //     if (
+  //       !onboarding_data?.is_onboarded ||
+  //       !onboarding_data?.sessions_added_to_calendar ||
+  //       !onboarding_data?.messaging_tab_opened ||
+  //       !onboarding_data?.resources_invoked
+  //     ) {
+  //       setActiveStepper(1);
+  //     } else {
+  //       setActiveStepper(2);
+  //     }
+  //   }
+  // }, [cohort, onboarding_data]);
 
   useEffect(() => {
     setActiveSession(undefined);
@@ -102,7 +102,7 @@ const Index = () => {
       return <WelcomePage setActiveStepper={setActiveStepper} cohort={cohort} />;
     }
     if (activeStepper === 1) {
-      return <GetReadyChecklist cohort={cohort} />;
+      // return <GetReadyChecklist cohort={cohort} />;
     }
 
     return <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />;

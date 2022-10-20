@@ -163,4 +163,6 @@ export type ParticipantProfile = {
   new_instructor: boolean;
   opted_in_for_matching_suggestions: boolean;
   networking_matching_preferences: string[];
+  profile_completed: boolean;
+  networking_profile_completed: boolean;
 };
