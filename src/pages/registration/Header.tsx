@@ -61,7 +61,7 @@ export default function Header({
   const classes = useStyles();
 
   const selectSubHeading = () => {
-    if (activeStep === 1 && ['TML', 'ACI', 'DEM', 'MPP', 'DRS', 'FDE'].includes(cohort?.code)) {
+    if (activeStep === 1 && ['TML', 'ACI', 'TSF', 'DEM', 'MPP', 'DRS', 'FDE'].includes(cohort?.code)) {
       return [
         '👋 We need a few details to process your enrollment',
         '',
