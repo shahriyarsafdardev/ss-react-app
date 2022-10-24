@@ -60,11 +60,19 @@ export default function Header({
 }) {
   const classes = useStyles();
 
+  const NEW_REGISTRATION_FLOW_COHORT_CODES = [
+    'TML',
+    'ACI',
+    'TSF',
+    'DEM',
+    'MPP',
+    'DRS',
+    'FDE',
+    'MLS'
+  ];
+
   const selectSubHeading = () => {
-    if (
-      activeStep === 1 &&
-      ['TML', 'ACI', 'TSF', 'DEM', 'MPP', 'DRS', 'FDE', 'MLS'].includes(cohort?.code)
-    ) {
+    if (activeStep === 1 && NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code)) {
       return [
         '👋 We need a few details to process your enrollment',
         '',

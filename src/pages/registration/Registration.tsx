@@ -94,7 +94,16 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
-export const REGISTRATION_FLOW_COHORT_CODES = ['TML', 'ACI', 'TSF', 'DEM', 'MPP', 'DRS', 'FDE', 'MLS'];
+export const NEW_REGISTRATION_FLOW_COHORT_CODES = [
+  'TML',
+  'ACI',
+  'TSF',
+  'DEM',
+  'MPP',
+  'DRS',
+  'FDE',
+  'MLS'
+];
 
 const RONNY_COHORT_CODE = 'AAB';
 
@@ -170,7 +179,7 @@ export default function Registration() {
             ...user,
             ...res.data.user
           });
-          !REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+          !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
             setSegmentUserProperties(res.data.user);
         }
         if (res.data.company) {
@@ -188,7 +197,7 @@ export default function Registration() {
           setPreRelease(true);
         }
 
-        REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+        NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
           values &&
           createEnrollment(values, res.data?.user);
 
@@ -294,7 +303,7 @@ export default function Registration() {
         .then((res) => {
           if (res?.data?.cohort) {
             setCohort(res.data?.cohort);
-            if (REGISTRATION_FLOW_COHORT_CODES.includes(res.data?.cohort?.code)) {
+            if (NEW_REGISTRATION_FLOW_COHORT_CODES.includes(res.data?.cohort?.code)) {
               setLoading(false);
             }
           }
@@ -310,7 +319,7 @@ export default function Registration() {
       user?.email &&
       cohort_id &&
       cohort?.code &&
-      !REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code)
+      !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code)
     ) {
       createCompleteEnrollment(user?.email);
     }
