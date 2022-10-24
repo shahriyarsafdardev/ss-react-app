@@ -94,7 +94,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   width: '100%'
 }));
 
-export const REGISTRATION_FLOW_COHORT_CODES = ['TML', 'ACI', 'TSF', 'DEM', 'MPP', 'DRS', 'FDE'];
+export const REGISTRATION_FLOW_COHORT_CODES = ['TML', 'ACI', 'TSF', 'DEM', 'MPP', 'DRS', 'FDE', 'MLS'];
 
 const RONNY_COHORT_CODE = 'AAB';
 
