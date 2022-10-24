@@ -194,16 +194,16 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = copyCohort;
       }
     },
-    updateOnboardingStepPlus(state, action) {
-      const targetCohortIndex = state.cohorts.findIndex(
-        (cohort) => cohort.id === action.payload.cohort_id
-      );
-      if (targetCohortIndex !== -1) {
-        const copyCohort: Cohort = state.cohorts[targetCohortIndex];
-        copyCohort.onboarding_data = action.payload.onboarding_data;
-        state.cohorts[targetCohortIndex] = copyCohort;
-      }
-    },
+    // updateOnboardingStep(state, action) {
+    //   const targetCohortIndex = state.cohorts.findIndex(
+    //     (cohort) => cohort.id === action.payload.cohort_id
+    //   );
+    //   if (targetCohortIndex !== -1) {
+    //     const copyCohort: Cohort = state.cohorts[targetCohortIndex];
+    //     copyCohort.onboarding_data = action.payload.onboarding_data;
+    //     state.cohorts[targetCohortIndex] = copyCohort;
+    //   }
+    // },
     updateFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex((cohort) => cohort.id === action.payload);
       if (targetCohortIndex !== -1) {
@@ -404,26 +404,26 @@ export function markOnboardingStep(cohortID: string, type: string) {
   // };
 }
 
-export function markOnboardingStepPlus(cohortID: string, type: string) {
-  return async () => {
-    try {
-      await axios
-        .post(`/cohorts/${cohortID}/mark_onboarding_step.json`, {
-          type
-        })
-        .then((res) => {
-          dispatch(
-            slice.actions.updateOnboardingStepPlus({
-              cohort_id: cohortID,
-              onboarding_data: res.data.onboarding_data
-            })
-          );
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
+// export function markOnboardingStep(cohortID: string, type: string) {
+//   return async () => {
+//     try {
+//       await axios
+//         .post(`/cohorts/${cohortID}/mark_completed_onboarding_step.json`, {
+//           type
+//         })
+//         .then((res) => {
+//           dispatch(
+//             slice.actions.updateOnboardingStep({
+//               cohort_id: cohortID,
+//               onboarding_data: res.data.onboarding_data
+//             })
+//           );
+//         });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// }
 
 export function resetApplicationStatus(cohortID: string, enrollmentID: string) {
   return async () => {

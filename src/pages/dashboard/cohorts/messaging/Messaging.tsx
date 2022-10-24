@@ -7,6 +7,7 @@ import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { useLocation } from 'react-router-dom';
+import BasicProfileForm from 'components/cohorts/onboarding/new-info-forms/BasicProfileForm';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
 import { getPeers } from '../../../../redux/slices/cohort';
 
@@ -155,58 +156,64 @@ export default function Messaging() {
   return (
     <Page title="Sphere | Messaging" id="page">
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
-        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          <Box id="box">
-            <div key={cohortID} className="chat_wrapper">
-              <Chat {...{ client, i18nInstance }} theme="team light">
-                <DesktopView>
-                  <ChannelListContainer
-                    {...{
-                      isCreating,
-                      options,
-                      setCreateType,
-                      setIsCreating,
-                      setIsEditing,
-                      cohortID,
-                      cohortUsers: enrollments || [],
-                      sort,
-                      loggedinUserID,
-                      canTrack: desktopView
-                    }}
-                  />
-                </DesktopView>
+        <>
+          {user?.profile_completed ? (
+            <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+              <Box id="box">
+                <div key={cohortID} className="chat_wrapper">
+                  <Chat {...{ client, i18nInstance }} theme="team light">
+                    <DesktopView>
+                      <ChannelListContainer
+                        {...{
+                          isCreating,
+                          options,
+                          setCreateType,
+                          setIsCreating,
+                          setIsEditing,
+                          cohortID,
+                          cohortUsers: enrollments || [],
+                          sort,
+                          loggedinUserID,
+                          canTrack: desktopView
+                        }}
+                      />
+                    </DesktopView>
 
-                <ChannelContainer
-                  {...{
-                    createType,
-                    isCreating,
-                    isEditing,
-                    setIsCreating,
-                    setIsEditing,
-                    cohortID,
-                    cohortUsers: enrollments || []
-                  }}
-                />
-                <MobileView>
-                  <SidePanel
-                    props={{
-                      isCreating,
-                      options,
-                      setCreateType,
-                      setIsCreating,
-                      setIsEditing,
-                      cohortID,
-                      cohortUsers: enrollments || [],
-                      sort,
-                      loggedinUserID,
-                      canTrack: !desktopView
-                    }}
-                  />
-                </MobileView>
-              </Chat>
-            </div>
-          </Box>
-        </AnalyticsContext.Provider>
+                    <ChannelContainer
+                      {...{
+                        createType,
+                        isCreating,
+                        isEditing,
+                        setIsCreating,
+                        setIsEditing,
+                        cohortID,
+                        cohortUsers: enrollments || []
+                      }}
+                    />
+                    <MobileView>
+                      <SidePanel
+                        props={{
+                          isCreating,
+                          options,
+                          setCreateType,
+                          setIsCreating,
+                          setIsEditing,
+                          cohortID,
+                          cohortUsers: enrollments || [],
+                          sort,
+                          loggedinUserID,
+                          canTrack: !desktopView
+                        }}
+                      />
+                    </MobileView>
+                  </Chat>
+                </div>
+              </Box>
+            </AnalyticsContext.Provider>
+          ) : (
+            <BasicProfileForm />
+          )}
+        </>
       ) : (
         <EmptyMessagingTab cohortHost={cohort?.host_names} />
       )}

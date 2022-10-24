@@ -12,6 +12,8 @@ import { styled } from '@material-ui/core/styles';
 import StudentProfileFilters from 'components/students/StudentProfileFilters';
 import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/EmptyNetworkingTab';
 import { ExportToExcel, ExportOnboardingResponse } from 'components/students/Common';
+import StudentProfilePrompt from 'components/students/StudentProfilePrompt';
+import NetworkProfileModal from 'components/cohorts/home/NetworkProfileModal';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -38,6 +40,7 @@ export default function PeersTab() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const [modalState, modalHandler] = useState<StudentProfile | any>({});
+  const [networkingModalState, setNetworkingModalState] = useState(false);
   const cohort_id: any = window.location.pathname.split('/')[2] || '';
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
   const [companies, setCompanies] = useState<string[]>([]);
@@ -155,6 +158,11 @@ export default function PeersTab() {
   const renderPeers = () =>
     peers ? (
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
+        <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} />
+        <NetworkProfileModal
+          networkingModalState={networkingModalState}
+          setNetworkingModalState={setNetworkingModalState}
+        />
         <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}

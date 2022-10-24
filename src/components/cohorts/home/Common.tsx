@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, Card, CircularProgress, Stack, Theme, Typography } from '@material-ui/core';
+import { Box, Card, CircularProgress, Stack, Theme, Typography, Button } from '@material-ui/core';
 import { uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
@@ -8,7 +8,7 @@ import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext, useEffect } from 'react';
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
+import arrowForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import Icon from '@iconify/react';
 import { Cohort, Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
@@ -49,7 +49,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: '15px'
 }));
 
-const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = makeStyles((theme: Theme) => ({
   calendarInstructionsModal: {
     width: '52%',
     margin: 'auto',
@@ -97,11 +97,48 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: '#C7D0D0'
   },
   buttonActive: {
-    width: '30px',
-    height: '30px'
+    cursor: 'pointer',
+    display: 'flex'
   },
   buttonNonActive: {
     display: 'none'
+  },
+  peersModalCard: {
+    padding: '60px',
+    [theme.breakpoints.down('md')]: {
+      padding: '15px'
+    }
+  },
+  peerModalAvatar: {
+    width: '72px',
+    height: '72px',
+    margin: 'auto'
+  },
+  mainCard: {
+    overflow: 'visible',
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px'
+    }
+  },
+  userInfo: {
+    border: '1px solid #E2E8F0',
+    borderRadius: '8px',
+    padding: '10px'
+  },
+  userAvatar: {
+    width: 64,
+    height: 64,
+    zIndex: 11
+  },
+  modalSubmitButton: {
+    width: '200px',
+    borderRadius: '30px',
+    margin: 'auto !important',
+    marginTop: '32px !important',
+    [theme.breakpoints.down('md')]: {
+      width: '90%'
+    }
   }
 }));
 
@@ -210,37 +247,37 @@ export const sessionName = (session: Session | undefined, defaultName: string | 
 };
 
 export const CalendarInstructionsModal = ({
-  cohort,
-  modalState,
-  setModalState,
+  calendarURL,
+  calendarInstructionsModalState,
+  setCalendarInstructionsModalState,
   handleSubmit
 }: {
-  cohort: Cohort;
-  modalState: boolean;
-  setModalState: Function;
+  calendarURL: string;
+  calendarInstructionsModalState: boolean;
+  setCalendarInstructionsModalState: Function;
   handleSubmit: Function;
 }) => {
   const classes = useStyles();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
-    modalState &&
+    calendarInstructionsModalState &&
       sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
-        'Calendar URL': cohort?.calendar_invite_url
+        'Calendar URL': calendarURL
       });
-  }, [modalState]);
+  }, [calendarInstructionsModalState]);
 
   const onNeedHandler = () => {
     sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
-      'Calendar URL': cohort?.calendar_invite_url
+      'Calendar URL': calendarURL
     });
   };
 
   return (
     <Modal
-      open={modalState}
+      open={calendarInstructionsModalState}
       onClose={() => {
-        setModalState(false);
+        setCalendarInstructionsModalState(false);
       }}
       zIndex={1400}
       className={classes.calendarInstructionsModal}
@@ -251,11 +288,11 @@ export const CalendarInstructionsModal = ({
         </Typography>
         <AddToCalendarInfo
           onNextHandler={() => {
-            setModalState(false);
+            setCalendarInstructionsModalState(false);
             handleSubmit();
           }}
           onNeedHandler={onNeedHandler}
-          inviteUrl={cohort?.calendar_invite_url}
+          inviteUrl={calendarURL}
         />
       </Card>
     </Modal>
@@ -291,8 +328,6 @@ export const ChecklistItem = ({
         direction={{ xs: 'column', md: 'row' }}
         justifyContent="space-between"
         alignItems="center"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => onSubmit()}
       >
         <StyledTypography
           className={`${classes.headingActive} ${
@@ -301,8 +336,37 @@ export const ChecklistItem = ({
         >
           {heading}
         </StyledTypography>
-        <Icon icon={arrowForwardFill} width="16px" height="16px" />
+        <Box
+          onClick={() => onSubmit()}
+          className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
+        >
+          <Icon icon={arrowForwardFill} width="20px" height="20px" />
+        </Box>
       </Stack>
     </Stack>
   );
 };
+
+export function ChecklistCompletionPrompt() {
+  return (
+    <Stack sx={{ alignItems: 'center', padding: '20px 30px' }} spacing={2}>
+      <Box
+        sx={{
+          width: 'fit-content',
+          padding: '5px',
+          borderRadius: '50%',
+          backgroundColor: '#696DC8',
+          color: 'white'
+        }}
+      >
+        <DoneIcon style={{ fontSize: '1.5rem' }} />
+      </Box>
+      <Typography textAlign="center">
+        Congratulations, you have completed the Pre-Cohort Checklist!
+      </Typography>
+      <Button variant="outlined" sx={{ width: '90%', borderRadius: '30px' }}>
+        Go to Home
+      </Button>
+    </Stack>
+  );
+}
