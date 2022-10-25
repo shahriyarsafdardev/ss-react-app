@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Grid, Card, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
-import { UserType, StyledLoadingButton, REGISTRATION_FLOW_COHORT_CODES } from './Registration';
+import { UserType, StyledLoadingButton, NEW_REGISTRATION_FLOW_COHORT_CODES } from './Registration';
 
 export default function UserForm({
   user,
@@ -31,7 +31,7 @@ export default function UserForm({
   const formik = useFormik<UserType>({
     initialValues: { ...user, acceptedTerms: false },
     validationSchema:
-      user?.email && !REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode)
+      user?.email && !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode)
         ? ValidationSchema
         : NonEmailValidationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -58,7 +58,7 @@ export default function UserForm({
   } = formik;
 
   const submitButtonText = () =>
-    REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode) ? 'Complete Enrollment' : 'Continue';
+    NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode) ? 'Complete Enrollment' : 'Continue';
 
   return (
     <Stack
@@ -81,7 +81,7 @@ export default function UserForm({
                 <Stack spacing={{ xs: 2, md: 3 }}>
                   <Typography variant="h6">Your Information</Typography>
                   <Stack direction="column" spacing={4}>
-                    {user?.email && !REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode) ? (
+                    {user?.email && !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohortCode) ? (
                       <>
                         <TextField
                           fullWidth
