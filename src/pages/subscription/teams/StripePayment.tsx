@@ -1,6 +1,6 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'utils/axios';
-import { Stack, TextField } from '@material-ui/core';
+import { InputLabel, Stack, TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -96,12 +96,14 @@ export default function StripePayment({
 
   return (
     <>
+      <InputLabel style={{ fontSize: '14.5px', color: '#30313D' }}>Name on Card</InputLabel>
       <TextField
         fullWidth
-        label="Card Holder Name"
+        placeholder="Name on Card"
         value={name}
         onChange={(e) => setName(e.target.value)}
         sx={{ marginBottom: '10px' }}
+        size="small"
       />
       <PaymentElement
         options={{

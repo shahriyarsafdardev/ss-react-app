@@ -198,8 +198,13 @@ export default function CreditCheckout() {
               options={{
                 clientSecret,
                 appearance: {
-                  theme: 'flat',
-                  labels: 'floating'
+                  theme: 'stripe',
+                  variables: {
+                    colorPrimary: '#475569',
+                    colorBackground: '#ffffff',
+                    colorText: '#475569',
+                    borderRadius: '8px'
+                  }
                 }
               }}
             >
