@@ -84,6 +84,7 @@ export default function Payment({
                 setStep={setStep}
                 setCredentials={setCredentials}
                 stripeCustomerID={stripeCustomerID}
+                shouldDisplayBackButton={!isSinglePayee}
               />
             </Elements>
           </Box>

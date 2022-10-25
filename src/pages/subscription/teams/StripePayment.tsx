@@ -1,6 +1,6 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'utils/axios';
-import { Stack } from '@material-ui/core';
+import { Stack, TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +16,8 @@ export default function StripePayment({
   setCredentials,
   stripeCustomerID,
   setPaymentCompleted,
-  registration
+  registration,
+  shouldDisplayBackButton
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -26,6 +27,7 @@ export default function StripePayment({
   stripeCustomerID: string;
   setPaymentCompleted?: Function;
   registration?: Registration;
+  shouldDisplayBackButton: boolean;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -34,6 +36,7 @@ export default function StripePayment({
   const teamID = url.get('team_id') || '';
   const creditAmount = url.get('credit_amount') || '';
   const { enqueueSnackbar } = useSnackbar();
+  const [name, setName] = useState('');
 
   const handleSubmit = async (event: any) => {
     let url = '';
@@ -61,7 +64,12 @@ export default function StripePayment({
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: ''
+        return_url: '',
+        payment_method_data: {
+          billing_details: {
+            name
+          }
+        }
       },
       redirect: 'if_required'
     });
@@ -88,6 +96,13 @@ export default function StripePayment({
 
   return (
     <>
+      <TextField
+        fullWidth
+        label="Card Holder Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        sx={{ marginBottom: '10px' }}
+      />
       <PaymentElement
         options={{
           wallets: {
@@ -104,17 +119,20 @@ export default function StripePayment({
           variant="contained"
           size="large"
           loading={isSubmitting}
+          disabled={!name}
         >
           Subscribe
         </StyledLoadingButton>
-        <StyledLoadingButton
-          fullWidth
-          onClick={() => setStep && setStep(true)}
-          variant="outlined"
-          size="large"
-        >
-          Back
-        </StyledLoadingButton>
+        {(shouldDisplayBackButton || creditAmount === '') && (
+          <StyledLoadingButton
+            fullWidth
+            onClick={() => setStep && setStep(true)}
+            variant="outlined"
+            size="large"
+          >
+            Back
+          </StyledLoadingButton>
+        )}
       </Stack>
     </>
   );

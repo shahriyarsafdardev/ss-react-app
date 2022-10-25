@@ -210,6 +210,7 @@ export default function CreditCheckout() {
                 registration={registration}
                 stripeCustomerID={stripeCustomerID}
                 setPaymentCompleted={setPaymentCompleted}
+                shouldDisplayBackButton={false}
               />
             </Elements>
           </Box>
