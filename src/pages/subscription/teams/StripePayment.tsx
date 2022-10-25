@@ -4,9 +4,18 @@ import { InputLabel, Stack, TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/styles';
 import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton } from './Common';
 import { Registration } from './TeamRegistration';
+
+const useStyles = makeStyles({
+  input: {
+    '&::placeholder': {
+      color: '#475569'
+    }
+  }
+});
 
 export default function StripePayment({
   team,
@@ -37,6 +46,7 @@ export default function StripePayment({
   const creditAmount = url.get('credit_amount') || '';
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState('');
+  const classes = useStyles();
 
   const handleSubmit = async (event: any) => {
     let url = '';
@@ -96,7 +106,7 @@ export default function StripePayment({
 
   return (
     <>
-      <InputLabel style={{ fontSize: '14.5px', color: '#30313D' }}>Name on Card</InputLabel>
+      <InputLabel style={{ fontSize: '14.88px', color: '#475569' }}>Name on Card</InputLabel>
       <TextField
         fullWidth
         placeholder="Name on Card"
@@ -104,6 +114,9 @@ export default function StripePayment({
         onChange={(e) => setName(e.target.value)}
         sx={{ marginBottom: '10px' }}
         size="small"
+        InputProps={{
+          classes: { input: classes.input }
+        }}
       />
       <PaymentElement
         options={{

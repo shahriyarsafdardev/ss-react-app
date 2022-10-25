@@ -203,7 +203,9 @@ export default function CreditCheckout() {
                     colorPrimary: '#475569',
                     colorBackground: '#ffffff',
                     colorText: '#475569',
-                    borderRadius: '8px'
+                    borderRadius: '8px',
+                    fontFamily: 'Public Sans,sans-serif',
+                    fontSizeBase: '1rem'
                   }
                 }
               }}
