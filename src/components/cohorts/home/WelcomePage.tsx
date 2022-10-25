@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Typography, Stack, Button } from '@material-ui/core';
+import { Typography, Stack, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
@@ -7,6 +7,7 @@ import ReactConfetti from 'react-confetti';
 import { Cohort } from '../../../@types/cohorts';
 import { WelcomeMessage } from './NewHomeTabStyles';
 import PreCohortChecklist from './PreCohortChecklist';
+import ContentReleaseDetails from './ContentReleaseDetails';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '500px',
@@ -27,9 +28,10 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'right',
   padding: '60px 80px 60px 60px',
+  borderRadius: '16px',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
-    padding: '40px',
+    padding: '30px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
     backgroundSize: '100%',
@@ -62,6 +64,7 @@ export default function WelcomePage({
   const [confetti, setConfetti] = useState(200);
   const [windowSize] = useState(getWindowSize());
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const [hasOnboarded, setHasOnboarded] = useState(false);
 
   useEffect(() => {
     sendAnalyticsData('Cohort Onboarding - Welcome Page - Page Loaded', {});
@@ -69,11 +72,6 @@ export default function WelcomePage({
       setConfetti(0);
     }, 3000);
   }, []);
-
-  const handleGettingReadyButton = () => {
-    setActiveStepper(1);
-    sendAnalyticsData('Cohort Onboarding - Welcome Page - "Get Ready To Learn" Selected', {});
-  };
 
   return (
     <>
@@ -90,7 +88,7 @@ export default function WelcomePage({
       )}
       <Stack direction="column" spacing={2} width="100%">
         <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
-          Welcome, {user?.first_name}!
+          {hasOnboarded ? `Get ready for ${cohort?.name}` : `Welcome, ${user?.first_name}`}
         </Typography>
         <StyledCard>
           <InstructorMessage spacing={2}>
@@ -103,7 +101,13 @@ export default function WelcomePage({
               <StyledTypography>{cohort?.host_full_name}</StyledTypography>
             </Stack>
           </InstructorMessage>
-          <PreCohortChecklist />
+          {hasOnboarded ? (
+            <ContentReleaseDetails />
+          ) : (
+            <Box width={{ xs: '80%', sm: '40%', md: '25%' }} sx={{ margin: 'auto' }}>
+              <PreCohortChecklist setHasOnboarded={setHasOnboarded} />
+            </Box>
+          )}
         </StyledCard>
       </Stack>
     </>

@@ -10,7 +10,10 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext, useEffect } from 'react';
 import arrowForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import Icon from '@iconify/react';
-import { Cohort, Session } from '../../../@types/cohorts';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'redux/store';
+import { markOnboardingStep } from 'redux/slices/cohort';
+import { Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
@@ -139,6 +142,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       width: '90%'
     }
+  },
+  completionPrompt: {
+    alignItems: 'center',
+    padding: '20px 30px'
+  },
+  completionPromptBox: {
+    borderRadius: '50%',
+    width: '32px',
+    height: '32px',
+    backgroundColor: '#696DC8',
+    color: 'white'
   }
 }));
 
@@ -323,12 +337,7 @@ export const ChecklistItem = ({
       >
         {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
       </StyledTypography>
-      <Stack
-        width="100%"
-        direction={{ xs: 'column', md: 'row' }}
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
         <StyledTypography
           className={`${classes.headingActive} ${
             status === 'NonActive' && classes.headingNonActive
@@ -347,24 +356,25 @@ export const ChecklistItem = ({
   );
 };
 
-export function ChecklistCompletionPrompt() {
+export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) {
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    dispatch(markOnboardingStep(cohort_id, 'checklist_completed'));
+    navigate(`/cohorts/${cohort_id}/home`);
+  };
+
   return (
-    <Stack sx={{ alignItems: 'center', padding: '20px 30px' }} spacing={2}>
-      <Box
-        sx={{
-          width: 'fit-content',
-          padding: '5px',
-          borderRadius: '50%',
-          backgroundColor: '#696DC8',
-          color: 'white'
-        }}
-      >
-        <DoneIcon style={{ fontSize: '1.5rem' }} />
+    <Stack className={classes.completionPrompt} spacing={4}>
+      <Box className={classes.completionPromptBox}>
+        <DoneIcon style={{ fontSize: '2rem', padding: '5px' }} />
       </Box>
       <Typography textAlign="center">
         Congratulations, you have completed the Pre-Cohort Checklist!
       </Typography>
-      <Button variant="outlined" sx={{ width: '90%', borderRadius: '30px' }}>
+      <Button variant="outlined" sx={{ width: '90%', borderRadius: '30px' }} onClick={handleSubmit}>
         Go to Home
       </Button>
     </Stack>

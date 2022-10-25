@@ -199,6 +199,7 @@ export type OnboardingData = {
   onboarding_referral_step_completed: boolean;
   onboarding_questionnaire_step_completed: boolean;
   onboarding_calendar_sync_step_completed: boolean;
+  checklist_completed: boolean;
 };
 
 export type Cohort = {

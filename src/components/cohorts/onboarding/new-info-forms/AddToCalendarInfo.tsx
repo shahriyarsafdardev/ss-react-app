@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Theme, styled } from '@material-ui/core/styles';
 import {
   Box,
@@ -15,13 +13,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
-    margin: 'auto',
     width: '100%',
     maxWidth: '1200px',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    margin: 0
   },
   heading: {
     textAlign: 'left',
@@ -445,7 +443,7 @@ export default function AddToCalendarInfo({
         </Box>
       </div>
       <Stack
-        style={{ justifyContent: 'space-between', marginTop: '20px' }}
+        style={{ justifyContent: 'space-between', marginTop: '20px', width: '100%' }}
         spacing={2}
         direction={{ xs: 'column', md: 'row' }}
       >

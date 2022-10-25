@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Stack, TextField, FormControl, Typography, Button, styled } from '@material-ui/core';
+import { Stack, TextField, FormControl, Typography, styled } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 import MUICreatableSelect from 'components/MUICreatableSelect';
+import { useDispatch } from 'redux/store';
+import { markOnboardingStep } from 'redux/slices/cohort';
+import { LoadingButton } from '@material-ui/lab';
 
 type BasicProfile = {
   first_name: string;
@@ -22,11 +25,15 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: '30px'
 }));
 
-export default function ProfileForm() {
+export default function ProfileForm({
+  setProfileFormSubmitted
+}: {
+  setProfileFormSubmitted: Function;
+}) {
   const { user } = useAuth();
 
   const fillUserValues = () => ({
@@ -39,6 +46,9 @@ export default function ProfileForm() {
 
   const [infoObject, setInfoObject] = useState<BasicProfile>(fillUserValues());
   const [companies, setCompanies] = useState<any[]>([]);
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onUpdateAttribute = async (attribute: string, value: any) => {
     let tempInfo = { ...infoObject };
@@ -55,7 +65,12 @@ export default function ProfileForm() {
       });
   }, []);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
+    setProfileFormSubmitted(true);
+    setIsSubmitting(false);
+  };
 
   const handleDrop = (files: any) => {
     onUpdateAttribute('profile_image_url', {
@@ -116,9 +131,10 @@ export default function ProfileForm() {
           />
         </FormControl>
       </Stack>
-      <StyledButton
+      <StyledLoadingButton
         variant="contained"
-        onSubmit={handleSubmit}
+        onClick={() => handleSubmit()}
+        loading={isSubmitting}
         disabled={
           !(
             infoObject?.first_name &&
@@ -130,7 +146,7 @@ export default function ProfileForm() {
         }
       >
         Save Details
-      </StyledButton>
+      </StyledLoadingButton>
     </StyledStack>
   );
 }

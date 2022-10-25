@@ -1,5 +1,6 @@
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { RootState, useSelector } from 'redux/store';
 import ProfileForm from './ProfileForm';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
@@ -47,16 +48,26 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({}));
+const StyledImage = styled('img')(({ theme }) => ({
+  width: '200px',
+  height: '200px'
+}));
 
-export default function BasicProfileForm() {
+export default function BasicProfileForm({
+  setProfileFormSubmitted
+}: {
+  setProfileFormSubmitted: Function;
+}) {
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+
   return (
     <>
       <StyledCard>
         <InstructorMessage spacing={2}>
           <StyledImage
-            width="200px"
-            height="200px"
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/channels-box.svg"
             alt="channels image"
           />
@@ -65,12 +76,12 @@ export default function BasicProfileForm() {
               We use Messaging in the Sphere portal for all cohort communications.{' '}
             </BoldText>
             <StyledTypography>
-              Please fill in a few details so [Instructor] and your peers will know who you are. You
-              can always edit these later under your profile.
+              Please fill in a few details so {cohort?.host_full_name} and your peers will know who
+              you are. You can always edit these later under your profile.
             </StyledTypography>
           </Stack>
         </InstructorMessage>
-        <ProfileForm />
+        <ProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
       </StyledCard>
     </>
   );

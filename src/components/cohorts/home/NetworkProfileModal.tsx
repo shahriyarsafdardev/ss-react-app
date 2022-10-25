@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
 
@@ -17,6 +17,7 @@ import {
 } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import MultiSelect from 'components/MultiSelect';
+import { Cohort } from '../../../@types/cohorts';
 import { useStyles } from './Common';
 
 type UserNetworkingProfile = {
@@ -28,10 +29,12 @@ type UserNetworkingProfile = {
 
 export default function NetworkProfileModal({
   networkingModalState,
-  setNetworkingModalState
+  setNetworkingModalState,
+  cohort
 }: {
   networkingModalState: boolean;
   setNetworkingModalState: Function;
+  cohort: Cohort;
 }) {
   const { user } = useAuth();
   const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
@@ -70,8 +73,9 @@ export default function NetworkProfileModal({
           <Stack>
             <Typography variant="h4">Complete Your profile</Typography>
             <Typography>
-              Your profile will be visible to other members of the EODP F21 cohort. You can edit all
-              details again later in profile settings.
+              Your profile will be visible to other members of the {cohort?.code}{' '}
+              {cohort?.intake_name} cohort. You can edit all details again later in profile
+              settings.
             </Typography>
           </Stack>
           <Stack direction="row" spacing={{ xs: 2, md: 4 }} className={classes.userInfo}>

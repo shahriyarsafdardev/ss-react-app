@@ -123,21 +123,27 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
     ];
 
     object.children = object.children.map((child: any) => {
-      const { is_onboarded, sessions_added_to_calendar, messaging_tab_opened, resources_invoked } =
-        cohort?.onboarding_data;
+      const {
+        onboarding_messaging_step_completed,
+        onboarding_questionnaire_step_completed,
+        onboarding_referral_step_completed,
+        onboarding_calendar_sync_step_completed,
+        onboarding_networking_step_completed
+      } = cohort?.onboarding_data;
       let data = { ...child, disabled: false };
       if (user?.type === 'learner') {
         if (
-          (child.title === 'calendar invites' && is_onboarded) ||
-          (child.title === 'messaging' &&
-            is_onboarded &&
-            sessions_added_to_calendar &&
-            messaging_tab_opened) ||
+          (child.title === 'calendar invites' &&
+            onboarding_messaging_step_completed &&
+            onboarding_questionnaire_step_completed &&
+            onboarding_referral_step_completed) ||
+          (child.title === 'messaging' && onboarding_messaging_step_completed) ||
           (['resources', 'Q&A', 'networking', 'code'].includes(child.title) &&
-            is_onboarded &&
-            sessions_added_to_calendar &&
-            messaging_tab_opened &&
-            resources_invoked)
+            onboarding_messaging_step_completed &&
+            onboarding_questionnaire_step_completed &&
+            onboarding_referral_step_completed &&
+            onboarding_calendar_sync_step_completed &&
+            onboarding_networking_step_completed)
         ) {
           data = { ...child, disabled: false };
         } else if (

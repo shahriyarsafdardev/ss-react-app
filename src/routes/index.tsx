@@ -257,6 +257,14 @@ export default function Router() {
               )
             },
             {
+              path: 'onboarding-calendar-instructions',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <OnboardingCalendarInstructions />
+                </RoleBasedGuard>
+              )
+            },
+            {
               path: ':instructorName/analytics',
               element: (
                 <RoleBasedGuard accessibleRoles={expertRoles}>
@@ -435,6 +443,9 @@ const Dashboard = Loadable(lazy(() => import('components/cohorts/businessCredit/
 const HomePage = Loadable(lazy(() => import('components/cohorts/home/HomeTab')));
 const CalendarInstructions = Loadable(
   lazy(() => import('components/cohorts/onboarding/empty-states/CalendarInstructions'))
+);
+const OnboardingCalendarInstructions = Loadable(
+  lazy(() => import('components/cohorts/home/OnboardingCalendarInstructions'))
 );
 const RegistrationsTab = Loadable(
   lazy(() => import('components/cohorts/registrations/RegistrationsTab'))

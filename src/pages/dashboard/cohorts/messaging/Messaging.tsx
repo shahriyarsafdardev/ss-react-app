@@ -75,6 +75,7 @@ export default function Messaging() {
   const url = new URLSearchParams(useLocation().search);
   const enrollments = peers?.filter((peer) => peer.id !== loggedinUserID)?.map((peer) => peer.id);
   const desktopView = useMediaQuery(theme.breakpoints.up('md'));
+  const [profileFormSubmitted, setProfileFormSubmitted] = useState(user?.basic_profile_completed);
 
   const LoadingContainer = styled(Box)(() => ({
     position: 'absolute',
@@ -157,7 +158,7 @@ export default function Messaging() {
     <Page title="Sphere | Messaging" id="page">
       {cohort?.released_for_learners === true || mode === 'Instructor' ? (
         <>
-          {user?.profile_completed ? (
+          {profileFormSubmitted ? (
             <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
               <Box id="box">
                 <div key={cohortID} className="chat_wrapper">
@@ -211,7 +212,7 @@ export default function Messaging() {
               </Box>
             </AnalyticsContext.Provider>
           ) : (
-            <BasicProfileForm />
+            <BasicProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
           )}
         </>
       ) : (

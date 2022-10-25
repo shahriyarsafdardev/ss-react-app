@@ -1,11 +1,11 @@
-import { Stack, styled, Typography } from '@material-ui/core';
+import { Box, Stack, styled, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import BasicProfileModal from './BasicProfileModal';
-import { CalendarInstructionsModal, ChecklistItem, ChecklistCompletionPrompt } from './Common';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import { ChecklistItem, ChecklistCompletionPrompt } from './Common';
 import InvitePeersModal from './InvitePeersModal';
 import ShareGoalsModal from './ShareGoalsModal';
 
@@ -15,16 +15,24 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: 'white',
   fontSize: '20px',
   fontWeight: 'bold',
-  borderRadius: '16px 16px 0px 0px'
+  borderRadius: '16px 16px 0px 0px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  cursor: 'pointer'
 }));
 
 const StyledStack = styled(Stack)(({ theme }) => ({
-  margin: 'auto',
   borderRadius: '16px',
-  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
+  backgroundColor: 'white',
+  width: '100%',
+  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+  [theme.breakpoints.down('md')]: {
+    margin: '15px auto !important'
+  }
 }));
 
-export default function PreCohortChecklist() {
+export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarded?: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -33,10 +41,29 @@ export default function PreCohortChecklist() {
   const [activeStep, setActiveStep] = useState(1);
   const [invitePeersModalState, setInvitePeersModalState] = useState(false);
   const [shareGoalsModalState, setShareGoalsModalState] = useState(false);
-  const [calendarInstructionsModalState, setCalendarInstructionsModalState] = useState(false);
-  const [hasOnboarded, setHasOnboarded] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const content: HTMLElement | null = document.getElementById('checklist-content');
+  const icon: HTMLElement | null = document.getElementById('expand-more-icon');
+  const current_url = window.location.pathname.split('/');
+  const current_tab = current_url[current_url.length - 1];
+
+  const toggleCheckList = (event: any) => {
+    event.target.classList.toggle('active');
+    if (content && icon) {
+      icon.style.transitionDuration = '0.3s';
+      icon.style.transitionProperty = 'transform';
+      content.style.animation = 'in 1000ms ease both';
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+  };
 
   useEffect(() => {
     stepStatus();
@@ -48,33 +75,34 @@ export default function PreCohortChecklist() {
     }
     if (
       onboarding_data?.onboarding_messaging_step_completed &&
-      onboarding_data?.onboarding_networking_step_completed
+      onboarding_data?.onboarding_questionnaire_step_completed
     ) {
       setActiveStep(3);
     }
     if (
       onboarding_data?.onboarding_messaging_step_completed &&
-      onboarding_data?.onboarding_networking_step_completed &&
+      onboarding_data?.onboarding_questionnaire_step_completed &&
       onboarding_data?.onboarding_referral_step_completed
     ) {
       setActiveStep(4);
     }
     if (
       onboarding_data?.onboarding_messaging_step_completed &&
-      onboarding_data?.onboarding_networking_step_completed &&
+      onboarding_data?.onboarding_questionnaire_step_completed &&
       onboarding_data?.onboarding_referral_step_completed &&
-      onboarding_data?.onboarding_questionnaire_step_completed
+      onboarding_data?.onboarding_calendar_sync_step_completed
     ) {
       setActiveStep(5);
     }
     if (
       onboarding_data?.onboarding_messaging_step_completed &&
-      onboarding_data?.onboarding_networking_step_completed &&
-      onboarding_data?.onboarding_referral_step_completed &&
       onboarding_data?.onboarding_questionnaire_step_completed &&
-      onboarding_data?.onboarding_calendar_sync_step_completed
+      onboarding_data?.onboarding_referral_step_completed &&
+      onboarding_data?.onboarding_calendar_sync_step_completed &&
+      onboarding_data?.onboarding_networking_step_completed
     ) {
-      setHasOnboarded(true);
+      setHasOnboarded && setHasOnboarded(true);
+      setActiveStep(6);
     }
   };
 
@@ -92,21 +120,8 @@ export default function PreCohortChecklist() {
 
   const handleCompletedMessageStep = () => {
     navigate(`/cohorts/${cohort_id}/messaging`);
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
-  };
-
-  const handleCompletedNetworkingStep = () => {
-    navigate(`/cohorts/${cohort_id}/peers`);
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
-  };
-
-  const handleInviteTeamStep = () => {
-    setInvitePeersModalState(true);
-  };
-
-  const handleCompletedInviteTeamStep = () => {
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
-    setInvitePeersModalState(false);
+    user?.basic_profile_completed &&
+      dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
   };
 
   const handleShareGoalsStep = () => {
@@ -118,13 +133,22 @@ export default function PreCohortChecklist() {
     setShareGoalsModalState(false);
   };
 
-  const handleCalendarSyncStep = () => {
-    setCalendarInstructionsModalState(true);
+  const handleInviteTeamStep = () => {
+    setInvitePeersModalState(true);
   };
 
-  const handleCompletedCalendarSyncStep = () => {
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_calendar_sync_step_completed'));
-    setCalendarInstructionsModalState(false);
+  const handleCompletedInviteTeamStep = () => {
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+    setInvitePeersModalState(false);
+  };
+
+  const handleCalendarSyncStep = () => {
+    navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
+  };
+
+  const handleCompletedNetworkingStep = () => {
+    navigate(`/cohorts/${cohort_id}/peers`);
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
   };
 
   return (
@@ -140,32 +164,34 @@ export default function PreCohortChecklist() {
         cohort_id={cohort_id}
         onFinish={handleCompletedShareGoalsStep}
       />
-      <CalendarInstructionsModal
-        calendarURL={cohort?.calendar_invite_url}
-        calendarInstructionsModalState={calendarInstructionsModalState}
-        setCalendarInstructionsModalState={setCalendarInstructionsModalState}
-        handleSubmit={handleCompletedCalendarSyncStep}
-      />
-      {hasOnboarded ? (
-        <StyledStack sx={{ width: '25%' }}>
-          <StyledTypography>Pre-Cohort Checklist</StyledTypography>
-          <ChecklistCompletionPrompt />
+      {activeStep >= 6 ? (
+        <StyledStack sx={{ display: onboarding_data?.checklist_completed ? 'none' : 'block' }}>
+          <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
+            Pre-Cohort Checklist
+            {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
+          </StyledTypography>
+          <Box id="checklist-content" style={{ display: 'block' }}>
+            <ChecklistCompletionPrompt cohort_id={cohort_id} />
+          </Box>
         </StyledStack>
       ) : (
-        <StyledStack>
-          <StyledTypography>Pre-Cohort Checklist</StyledTypography>
-          <Stack sx={{ padding: '0px 30px' }}>
+        <StyledStack sx={{ display: onboarding_data?.checklist_completed ? 'none' : 'block' }}>
+          <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
+            Pre-Cohort Checklist
+            {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
+          </StyledTypography>
+          <Stack sx={{ padding: '0px 30px', display: 'block' }} id="checklist-content">
             <ChecklistItem
               index={1}
-              heading="Message your instructor"
+              heading="Introduce yourself"
               status={getActiveStatus(1)}
               onSubmit={handleCompletedMessageStep}
             />
             <ChecklistItem
               index={2}
-              heading="Explore networking"
+              heading="Share your goals"
               status={getActiveStatus(2)}
-              onSubmit={handleCompletedNetworkingStep}
+              onSubmit={handleShareGoalsStep}
             />
             <ChecklistItem
               index={3}
@@ -175,20 +201,19 @@ export default function PreCohortChecklist() {
             />
             <ChecklistItem
               index={4}
-              heading="Share your goals"
+              heading="Sync your calendar"
               status={getActiveStatus(4)}
-              onSubmit={handleShareGoalsStep}
+              onSubmit={handleCalendarSyncStep}
             />
             <ChecklistItem
               index={5}
-              heading="Sync calendar"
+              heading="Explore networking"
               status={getActiveStatus(5)}
-              onSubmit={handleCalendarSyncStep}
+              onSubmit={handleCompletedNetworkingStep}
             />
           </Stack>
         </StyledStack>
       )}
-      )
     </>
   );
 }

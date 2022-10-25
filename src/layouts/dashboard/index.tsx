@@ -4,6 +4,8 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@material-ui/core/styles';
 // hooks
 import useAuth from 'hooks/useAuth';
+import { Box } from '@material-ui/core';
+import PreCohortChecklist from 'components/cohorts/home/PreCohortChecklist';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
 import DashboardNavbar from './DashboardNavbar';
@@ -40,6 +42,8 @@ export default function DashboardLayout() {
   const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const current_url = window.location.pathname.split('/');
+  const current_tab = current_url[current_url.length - 1];
 
   return (
     <RootStyle>
@@ -57,6 +61,19 @@ export default function DashboardLayout() {
           })
         }}
       >
+        {current_tab !== 'home' && (
+          <Box
+            sx={{
+              width: '20%',
+              position: 'fixed',
+              bottom: '30px',
+              left: '40px',
+              zIndex: '1200'
+            }}
+          >
+            <PreCohortChecklist />
+          </Box>
+        )}
         <Outlet />
       </MainStyle>
     </RootStyle>

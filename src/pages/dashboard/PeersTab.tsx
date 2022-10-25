@@ -158,10 +158,11 @@ export default function PeersTab() {
   const renderPeers = () =>
     peers ? (
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
-        <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} />
+        <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} cohort={cohort} />
         <NetworkProfileModal
           networkingModalState={networkingModalState}
           setNetworkingModalState={setNetworkingModalState}
+          cohort={cohort}
         />
         <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
         <StudentProfileModal
