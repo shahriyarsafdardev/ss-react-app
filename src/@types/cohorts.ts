@@ -338,6 +338,30 @@ export const AttendanceType = {
   none: 'none'
 };
 
+export type Account = {
+  accountName: string;
+  cardExpiry: string;
+  cardNumber: string;
+  credit_balance: number;
+  id: string;
+};
+
+export type BillHistory = {
+  date: string;
+  description: string;
+  amount: number;
+  id: string;
+  invoice: string;
+};
+
+export type Subscription = {
+  id: string;
+  start_date: string | null;
+  next_billing_date: string | null;
+  active: boolean;
+  yearly_credit_amount: number;
+};
+
 export type CreditObject = {
   id: string;
   time: string;
@@ -347,4 +371,11 @@ export type CreditObject = {
   cohort_name: string | null;
   cohort_link: string | null;
   credit_amount: number;
+};
+
+export type SubscriptionDetail = {
+  account: Account;
+  history: BillHistory[];
+  subscription: Subscription;
+  team_discount: number;
 };

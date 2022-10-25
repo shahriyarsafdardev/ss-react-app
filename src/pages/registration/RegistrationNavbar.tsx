@@ -73,7 +73,7 @@ const StyledSpan = styled(StyledInstructorName)(({ theme }) => ({
   }
 }));
 
-export default function RegistrationNavbar({ cohort }: { cohort: CohortType }) {
+export default function RegistrationNavbar({ cohort }: { cohort?: CohortType }) {
   return (
     <HeaderStyle>
       <StyledLogo

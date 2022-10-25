@@ -7,6 +7,8 @@ import roundAccountBox from '@iconify/icons-ic/round-account-box';
 import roundPeople from '@iconify/icons-ic/baseline-people';
 import roundDelete from '@iconify/icons-ic/baseline-delete';
 import bellFill from '@iconify/icons-eva/bell-fill';
+import roundLoop from '@iconify/icons-ic/round-loop';
+
 // material
 import { Container, Tab, Box, Tabs } from '@material-ui/core';
 // redux
@@ -14,6 +16,7 @@ import { EVENT_TYPES, sendAmplitudeData, trackGenericEvent } from 'utils/amplitu
 
 // routes
 import useAuth from 'hooks/useAuth';
+import AccountSubscription from 'components/subscription/settings/AccountSubscription';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useSettings from '../../hooks/useSettings';
@@ -110,6 +113,7 @@ export default function UserAccount() {
             icon: <Icon icon={bellFill} width={20} height={20} />,
             component: <AccountNotifications />
           },
+
           {
             value: 'delete_account',
             icon: <Icon icon={roundDelete} width={20} height={20} />,
@@ -118,6 +122,14 @@ export default function UserAccount() {
         ];
 
   const ACCOUNT_TABS = getTabs();
+
+  if (user?.is_subscribed) {
+    ACCOUNT_TABS.splice(-1, 0, {
+      value: 'my_subscription',
+      icon: <Icon icon={roundLoop} width={20} height={20} />,
+      component: <AccountSubscription />
+    });
+  }
 
   return (
     <Page title="Sphere | Settings">
