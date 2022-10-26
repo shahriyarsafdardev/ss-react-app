@@ -9,28 +9,6 @@ import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton, SubscriptionDetails } from './Common';
 import { Registration } from './TeamRegistration';
 
-const useStyles = makeStyles({
-  root: {
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        border: '1px solid #E6E6E6'
-      },
-      '&:hover fieldset': {
-        borderColor: '#E6E6E6'
-      },
-      '&.Mui-focused fieldset': {
-        border: '1px solid #475569',
-        boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), #475569'
-      }
-    }
-  },
-  input: {
-    '&::placeholder': {
-      color: '#475569'
-    }
-  }
-});
-
 export default function StripePayment({
   team,
   teamMembers,
@@ -64,9 +42,42 @@ export default function StripePayment({
   const creditAmount = url.get('credit_amount') || '';
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState('');
-  const classes = useStyles();
   const theme = useTheme();
   const desktopView = useMediaQuery(theme.breakpoints.up('md'));
+  const [valid, setValid] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const useStyles = makeStyles({
+    root: {
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          border: '1px solid #E6E6E6',
+          borderWidth: `${touched && name === '' ? '2px' : '1px'}`
+        },
+        '&:hover fieldset': {
+          borderColor: `${touched && name === '' ? '#DF1B41' : '#475569'}`
+        },
+        '&.Mui-focused fieldset': {
+          border: `1px solid ${touched && name === '' ? '#DF1B41' : '#475569'}`,
+          boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), #475569',
+          borderWidth: `${touched && name === '' ? '2px' : '1px'}`
+        }
+      }
+    },
+    input: {
+      '&::placeholder': {
+        color: '#475569'
+      }
+    },
+    helperText: {
+      fontSize: '14.88px',
+      margin: '0',
+      '&.MuiFormHelperText-root.Mui-error': {
+        color: '#DF1B41'
+      }
+    }
+  });
+
+  const classes = useStyles();
 
   const handleSubmit = async (event: any) => {
     let url = '';
@@ -134,8 +145,14 @@ export default function StripePayment({
         sx={{ marginBottom: '20px' }}
         size="small"
         className={classes.root}
+        onBlur={(e) => setTouched(true)}
+        error={touched && name === ''}
+        helperText={touched && name === '' ? 'Name is required' : ''}
         InputProps={{
           classes: { input: classes.input }
+        }}
+        FormHelperTextProps={{
+          className: classes.helperText
         }}
       />
       <PaymentElement
@@ -144,6 +161,9 @@ export default function StripePayment({
             applePay: 'auto',
             googlePay: 'auto'
           }
+        }}
+        onChange={(e) => {
+          setValid(e.complete);
         }}
       />
       <Stack spacing={{ xs: 3, md: 2 }}>
@@ -157,7 +177,7 @@ export default function StripePayment({
           variant="contained"
           size="large"
           loading={isSubmitting}
-          disabled={!name}
+          disabled={!name || !valid}
         >
           Subscribe
         </StyledLoadingButton>
