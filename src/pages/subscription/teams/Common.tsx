@@ -227,13 +227,10 @@ export function SubscriptionDetails({
           {isSinglePayee ? (
             <>
               <Typography textAlign={{ xs: 'left', md: 'center' }}>
-                Sphere current subscription provides:
+                Your Sphere subscription provides:
               </Typography>
               <Stack spacing={2}>
-                <li>
-                  A {Math.floor(teamDiscount * 100)}% discount on the price of all course in our
-                  library
-                </li>
+                <li>A {Math.floor(teamDiscount * 100)}% discount on all courses in our library</li>
                 <li>
                   Ongoing access to the Sphere portal (including all recordings and resources)
                 </li>
