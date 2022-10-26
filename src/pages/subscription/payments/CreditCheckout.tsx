@@ -145,6 +145,14 @@ export default function CreditCheckout() {
     );
   }
 
+  if (accountID) {
+    return (
+      <>
+        <PaymentPrompt topup={false} />
+      </>
+    );
+  }
+
   if (email === '' && subscriptionAmount > 0) {
     return (
       <>
