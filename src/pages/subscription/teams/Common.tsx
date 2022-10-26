@@ -132,12 +132,22 @@ export const useStyles = makeStyles((theme: Theme) => ({
   fontBold: {
     fontWeight: 'bold'
   },
-  paymentInfo: {
-    width: '100%',
-    height: '100%',
+  purpleBackground: {
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center'
+    backgroundPosition: 'center',
+    color: 'white'
+  },
+  paymentData: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px',
+      height: 'fit-content'
+    }
   },
   topUpContainer: {
     height: '100%',
@@ -173,28 +183,79 @@ export const useStyles = makeStyles((theme: Theme) => ({
   //     backgroundPosition: 'center'
   //   }
   // },
-  paymentForm: {
-    padding: '0 100px',
-    width: '100%',
-    height: '100%',
-    [theme.breakpoints.down('md')]: {
-      padding: '0 20px'
-    }
-  },
   fullWidthCenter: {
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '100%',
     maxWidth: '600px'
   },
-  mobilePosition: {
-    padding: '30px',
+  mobileDisplay: {
+    display: 'none',
     [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      bottom: 0,
-      width: '100%',
-      left: 0,
-      backgroundColor: '#FAFAFC'
+      display: 'block'
+    }
+  },
+  webDisplay: {
+    display: 'block',
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
     }
   }
 }));
+
+export const Logo = styled('img')(({ theme }) => ({
+  width: '9%',
+  position: 'absolute',
+  top: '4%',
+  left: '2%',
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}));
+
+export function SubscriptionDetails({
+  isSinglePayee,
+  teamDiscount
+}: {
+  isSinglePayee: boolean;
+  teamDiscount: number;
+}) {
+  return (
+    <Box sx={{ mt: 4, maxWidth: '650px' }}>
+      <Stack spacing={3}>
+        <>
+          {isSinglePayee ? (
+            <>
+              <Typography textAlign={{ xs: 'left', md: 'center' }}>
+                Sphere current subscription provides:
+              </Typography>
+              <Stack spacing={2}>
+                <li>
+                  A {Math.floor(teamDiscount * 100)}% discount on the price of all course in our
+                  library
+                </li>
+                <li>
+                  Ongoing access to the Sphere portal (including all recordings and resources)
+                </li>
+                <li>Access to Sphere alumni events</li>
+                <li>You can adjust or cancel your subscription at any time.</li>
+              </Stack>
+            </>
+          ) : (
+            <>
+              <StyledTypography style={{ fontWeight: 'bold' }}>
+                Your team at Stripe has approved Sphere as a Learning & Development expense meaning
+                they will reimburse the full cost! You can top up or cancel your subscription at any
+                time.
+              </StyledTypography>
+              <StyledTypography>
+                Your balance can be used to attend our live interactive courses that are led by
+                industry experts and joined by likeminded professionals.
+              </StyledTypography>
+            </>
+          )}
+        </>
+      </Stack>
+    </Box>
+  );
+}

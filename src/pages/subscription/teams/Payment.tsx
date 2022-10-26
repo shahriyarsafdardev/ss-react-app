@@ -64,7 +64,7 @@ export default function Payment({
     <PaymentRootStyle title="Sphere Cohort Payment">
       <Grid container>
         <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />
-        <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
+        <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentData}>
           <Box className={classes.fullWidthCenter}>
             <Elements
               key={clientSecret}
@@ -92,6 +92,8 @@ export default function Payment({
                 setCredentials={setCredentials}
                 stripeCustomerID={stripeCustomerID}
                 shouldDisplayBackButton={!isSinglePayee}
+                teamDiscount={teamDiscount}
+                isSinglePayee={isSinglePayee}
               />
             </Elements>
           </Box>

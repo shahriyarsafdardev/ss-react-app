@@ -1,16 +1,16 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
-import { Stack, Grid, Box, Typography } from '@material-ui/core';
+import { Stack, Box, Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
-import RegistrationNavbar from 'pages/registration/RegistrationNavbar';
 import moment from 'moment';
 import StripePayment from '../teams/StripePayment';
 import {
   LoadingContainer,
+  Logo,
   PaymentRootStyle,
   StyledDetailsStack,
   StyledLoadingButton,
@@ -180,50 +180,49 @@ export default function CreditCheckout() {
 
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
-      <Grid container sx={{ height: '100%' }}>
-        <Grid item xs={12} md={6} sx={{ height: '100%' }}>
-          <PaymentDetails
-            amount={creditAmount}
-            isSinglePayee={email === '' && cohortID === ''}
-            teamDiscount={checkoutDetails?.team_discount}
-            registration={registration}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} sx={{ height: '100%' }}>
-          <Stack justifyContent="center" alignItems="center" className={classes.paymentForm}>
-            <Box className={classes.fullWidthCenter}>
-              <Elements
-                key={clientSecret}
-                stripe={stripePromise}
-                options={{
-                  clientSecret,
-                  appearance: {
-                    theme: 'stripe',
-                    variables: {
-                      colorPrimary: '#475569',
-                      colorBackground: '#ffffff',
-                      colorText: '#475569',
-                      borderRadius: '8px',
-                      fontFamily: 'Public Sans,sans-serif',
-                      fontSizeBase: '1rem'
-                    }
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
+      <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
+        <PaymentDetails
+          amount={creditAmount}
+          isSinglePayee={!email && !cohortID}
+          teamDiscount={checkoutDetails?.team_discount}
+          registration={registration}
+        />
+        <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>
+          <Box className={classes.fullWidthCenter}>
+            <Elements
+              key={clientSecret}
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                appearance: {
+                  theme: 'stripe',
+                  variables: {
+                    colorPrimary: '#475569',
+                    colorBackground: '#ffffff',
+                    colorText: '#475569',
+                    borderRadius: '8px',
+                    fontFamily: 'Public Sans,sans-serif',
+                    fontSizeBase: '1rem'
                   }
-                }}
-              >
-                <StripePayment
-                  team={checkoutDetails.team_name}
-                  teamMembers={teamMembers}
-                  email={email || checkoutDetails.lead_user_email}
-                  registration={registration}
-                  stripeCustomerID={stripeCustomerID}
-                  setPaymentCompleted={setPaymentCompleted}
-                  shouldDisplayBackButton={false}
-                />
-              </Elements>
-            </Box>
-          </Stack>
-        </Grid>
-      </Grid>
+                }
+              }}
+            >
+              <StripePayment
+                team={checkoutDetails.team_name}
+                teamMembers={teamMembers}
+                email={email || checkoutDetails.lead_user_email}
+                registration={registration}
+                stripeCustomerID={stripeCustomerID}
+                setPaymentCompleted={setPaymentCompleted}
+                shouldDisplayBackButton={false}
+                isSinglePayee={!email && !cohortID}
+                teamDiscount={checkoutDetails?.team_discount}
+              />
+            </Elements>
+          </Box>
+        </Stack>
+      </Stack>
     </PaymentRootStyle>
   );
 }

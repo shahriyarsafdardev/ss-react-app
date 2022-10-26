@@ -1,12 +1,12 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import axios from 'utils/axios';
-import { InputLabel, Stack, TextField } from '@material-ui/core';
+import { InputLabel, Stack, TextField, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { TeamMember } from './InviteMembersForm';
-import { StyledLoadingButton } from './Common';
+import { StyledLoadingButton, SubscriptionDetails } from './Common';
 import { Registration } from './TeamRegistration';
 
 const useStyles = makeStyles({
@@ -26,7 +26,9 @@ export default function StripePayment({
   stripeCustomerID,
   setPaymentCompleted,
   registration,
-  shouldDisplayBackButton
+  shouldDisplayBackButton,
+  teamDiscount,
+  isSinglePayee
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -37,6 +39,8 @@ export default function StripePayment({
   setPaymentCompleted?: Function;
   registration?: Registration;
   shouldDisplayBackButton: boolean;
+  teamDiscount: number;
+  isSinglePayee: boolean;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -47,6 +51,8 @@ export default function StripePayment({
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState('');
   const classes = useStyles();
+  const theme = useTheme();
+  const desktopView = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleSubmit = async (event: any) => {
     let url = '';
@@ -90,7 +96,6 @@ export default function StripePayment({
       await axios
         .post(url, uploadData)
         .then((res) => {
-          enqueueSnackbar('Payment made successfully!', { variant: 'success' });
           setPaymentCompleted && setPaymentCompleted(true);
           setCredentials && setCredentials(res.data.login_credentials);
           setStep && setStep();
@@ -126,7 +131,10 @@ export default function StripePayment({
           }
         }}
       />
-      <Stack spacing={2}>
+      <Stack spacing={{ xs: 3, md: 2 }}>
+        {!desktopView && (
+          <SubscriptionDetails isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />
+        )}
         <StyledLoadingButton
           fullWidth
           onClick={(e: any) => handleSubmit(e)}
