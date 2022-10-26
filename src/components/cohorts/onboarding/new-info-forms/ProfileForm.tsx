@@ -5,15 +5,16 @@ import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 import MUICreatableSelect from 'components/MUICreatableSelect';
 import { useDispatch } from 'redux/store';
-import { markOnboardingStep } from 'redux/slices/cohort';
+import { updateOnboardingData } from 'redux/slices/cohort';
 import { LoadingButton } from '@material-ui/lab';
+import { useSnackbar } from 'notistack5';
 
 type BasicProfile = {
   first_name: string;
   last_name: string;
   role: string;
   company: string;
-  profile_image_url: string;
+  profile_image: any;
 };
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -30,18 +31,21 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 }));
 
 export default function ProfileForm({
-  setProfileFormSubmitted
+  setProfileFormSubmitted,
+  cohortID
 }: {
   setProfileFormSubmitted: Function;
+  cohortID: string;
 }) {
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const fillUserValues = () => ({
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
     role: user?.current_position || '',
     company: user?.current_company || '',
-    profile_image_url: user?.profile_image_url || ''
+    profile_image: { preview: user?.profile_image_url || '' }
   });
 
   const [infoObject, setInfoObject] = useState<BasicProfile>(fillUserValues());
@@ -65,15 +69,33 @@ export default function ProfileForm({
       });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
-    setProfileFormSubmitted(true);
-    setIsSubmitting(false);
+    const uploadData = new FormData();
+    uploadData.append('first_name', infoObject.first_name);
+    uploadData.append('last_name', infoObject.last_name);
+    uploadData.append('current_company', infoObject.company);
+    uploadData.append('current_position', infoObject.role);
+    uploadData.append('cohort_id', cohortID);
+    infoObject?.profile_image?.image &&
+      uploadData.append('image', infoObject?.profile_image?.image);
+
+    await axios
+      .post('/users/update_profile.json', uploadData)
+      .then((res) => {
+        dispatch(updateOnboardingData(cohort_id, res.data.onboarding_data));
+        updateProfile({ ...user, ...res.data.user });
+        setProfileFormSubmitted(true);
+        setIsSubmitting(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        setIsSubmitting(false);
+      });
   };
 
   const handleDrop = (files: any) => {
-    onUpdateAttribute('profile_image_url', {
+    onUpdateAttribute('profile_image', {
       image: files[0],
       preview: URL.createObjectURL(files[0])
     });
@@ -83,7 +105,7 @@ export default function ProfileForm({
     <StyledStack spacing={{ xs: 2, md: 4 }}>
       <UploadAvatar
         accept={['.jpg', '.jpeg', '.png', '.gif', '.jfif']}
-        file={infoObject?.profile_image_url}
+        file={infoObject?.profile_image}
         maxSize={3145728}
         onDrop={handleDrop}
         caption={
@@ -141,7 +163,7 @@ export default function ProfileForm({
             infoObject?.last_name &&
             infoObject?.role &&
             infoObject?.company &&
-            infoObject?.profile_image_url
+            infoObject?.profile_image
           )
         }
       >

@@ -11,12 +11,14 @@ import {
   InputLabel,
   FormControl,
   Select as MaterialSelect,
-  Button,
   Typography,
   Avatar
 } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import MultiSelect from 'components/MultiSelect';
+import axios from 'utils/axios';
+import { LoadingButton } from '@material-ui/lab';
+import { useSnackbar } from 'notistack5';
 import { Cohort } from '../../../@types/cohorts';
 import { useStyles } from './Common';
 
@@ -36,7 +38,9 @@ export default function NetworkProfileModal({
   setNetworkingModalState: Function;
   cohort: Cohort;
 }) {
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { preferred_pronoun_options } = useSelector((state: RootState) => state.profileOptions);
   const { industry_options } = useSelector((state: RootState) => state.profileOptions);
   const classes = useStyles();
@@ -56,8 +60,25 @@ export default function NetworkProfileModal({
     setInfoObject(tempInfo);
   };
 
-  const handleSubmit = () => {
-    setNetworkingModalState(false);
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    const uploadData = new FormData();
+    uploadData.append('preferred_pronoun', infoObject.preferred_pronoun);
+    uploadData.append('linkedin_url', infoObject.linkedin_url);
+    uploadData.append('bio_text', infoObject.role_description);
+    uploadData.append('current_role_category_selections', infoObject.industries?.join(', '));
+
+    await axios
+      .post('/users/update_networking_selections.json', uploadData)
+      .then((res) => {
+        updateProfile({ ...user, ...res.data.user });
+        setNetworkingModalState(false);
+        setIsSubmitting(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -139,9 +160,10 @@ export default function NetworkProfileModal({
               rows={3}
             />
           </FormControl>
-          <Button
+          <LoadingButton
             variant="contained"
-            onSubmit={handleSubmit}
+            loading={isSubmitting}
+            onClick={handleSubmit}
             className={classes.modalSubmitButton}
             disabled={
               !(
@@ -153,7 +175,7 @@ export default function NetworkProfileModal({
             }
           >
             Save
-          </Button>
+          </LoadingButton>
         </Stack>
       </Card>
     </Modal>

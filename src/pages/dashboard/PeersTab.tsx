@@ -158,7 +158,9 @@ export default function PeersTab() {
   const renderPeers = () =>
     peers ? (
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
-        <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} cohort={cohort} />
+        {mode === 'Learner' && (
+          <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} cohort={cohort} />
+        )}
         <NetworkProfileModal
           networkingModalState={networkingModalState}
           setNetworkingModalState={setNetworkingModalState}

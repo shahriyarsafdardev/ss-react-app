@@ -145,14 +145,24 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   completionPrompt: {
     alignItems: 'center',
-    padding: '20px 30px'
+    padding: '20px 30px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '10px 15px'
+    }
   },
-  completionPromptBox: {
+  completionPromptIcon: {
     borderRadius: '50%',
     width: '32px',
     height: '32px',
     backgroundColor: '#696DC8',
     color: 'white'
+  },
+  completionPromptButton: {
+    padding: '5px 20px',
+    borderRadius: '30px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '5px 10px'
+    }
   }
 }));
 
@@ -362,21 +372,34 @@ export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) 
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(markOnboardingStep(cohort_id, 'checklist_completed'));
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
     navigate(`/cohorts/${cohort_id}/home`);
   };
 
   return (
     <Stack className={classes.completionPrompt} spacing={4}>
-      <Box className={classes.completionPromptBox}>
+      <Box className={classes.completionPromptIcon}>
         <DoneIcon style={{ fontSize: '2rem', padding: '5px' }} />
       </Box>
       <Typography textAlign="center">
-        Congratulations, you have completed the Pre-Cohort Checklist!
+        Congratulations, you have completed the Pre-Cohort Checklist! 🎉
       </Typography>
-      <Button variant="outlined" sx={{ width: '90%', borderRadius: '30px' }} onClick={handleSubmit}>
-        Go to Home
-      </Button>
+      <Stack spacing={2}>
+        <Button
+          className={classes.completionPromptButton}
+          variant="contained"
+          onClick={handleSubmit}
+        >
+          Go to Home
+        </Button>
+        <Button
+          className={classes.completionPromptButton}
+          variant="outlined"
+          onClick={handleSubmit}
+        >
+          Continue Networking
+        </Button>
+      </Stack>
     </Stack>
   );
 }

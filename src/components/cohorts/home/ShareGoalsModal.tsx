@@ -43,7 +43,7 @@ export default function ShareGoalsModal({
   const [questionID, setQuestionID] = useState('');
 
   useEffect(() => {
-    axios.get(`/cohorts/${cohort_id}/survey_questions.json`).then((res) => {
+    axios.get(`/cohorts/${cohort_id}/onboarding/get_onboarding_questionnaire.json`).then((res) => {
       setSurveyData(res.data);
       setLoading(false);
     });
@@ -73,7 +73,7 @@ export default function ShareGoalsModal({
     setLoading(true);
 
     axios
-      .post(`/cohorts/${cohort_id}/submit_survey_responses.json`, {
+      .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_questionnaire.json`, {
         response,
         current_user_id: user?.id
       })

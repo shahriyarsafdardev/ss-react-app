@@ -177,33 +177,10 @@ const slice = createSlice({
       );
       if (targetCohortIndex !== -1) {
         const copyCohort: Cohort = state.cohorts[targetCohortIndex];
-        const copyOnboardingData: OnboardingData = copyCohort.onboarding_data;
-
-        if (action.payload.type === 'onboarding_messaging_step_completed') {
-          copyOnboardingData.onboarding_messaging_step_completed = true;
-        } else if (action.payload.type === 'onboarding_networking_step_completed') {
-          copyOnboardingData.onboarding_networking_step_completed = true;
-        } else if (action.payload.type === 'onboarding_referral_step_completed') {
-          copyOnboardingData.onboarding_referral_step_completed = true;
-        } else if (action.payload.type === 'onboarding_questionnaire_step_completed') {
-          copyOnboardingData.onboarding_questionnaire_step_completed = true;
-        } else if (action.payload.type === 'onboarding_calendar_sync_step_completed') {
-          copyOnboardingData.onboarding_calendar_sync_step_completed = true;
-        }
-        copyCohort.onboarding_data = copyOnboardingData;
+        copyCohort.onboarding_data = action.payload.onboarding_data;
         state.cohorts[targetCohortIndex] = copyCohort;
       }
     },
-    // updateOnboardingStep(state, action) {
-    //   const targetCohortIndex = state.cohorts.findIndex(
-    //     (cohort) => cohort.id === action.payload.cohort_id
-    //   );
-    //   if (targetCohortIndex !== -1) {
-    //     const copyCohort: Cohort = state.cohorts[targetCohortIndex];
-    //     copyCohort.onboarding_data = action.payload.onboarding_data;
-    //     state.cohorts[targetCohortIndex] = copyCohort;
-    //   }
-    // },
     updateFeedbackStatusSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex((cohort) => cohort.id === action.payload);
       if (targetCohortIndex !== -1) {
@@ -389,41 +366,39 @@ export function markApplicationAsPaid(cohortID: string, enrollmentID: string) {
 
 export function markOnboardingStep(cohortID: string, type: string) {
   return async () => {
-    dispatch(slice.actions.updateOnboardingStep({ cohort_id: cohortID, type }));
+    try {
+      await axios
+        .post(`/cohorts/${cohortID}/onboarding/mark_completed_onboarding_step.json`, {
+          type
+        })
+        .then((res) => {
+          dispatch(
+            slice.actions.updateOnboardingStep({
+              cohort_id: cohortID,
+              onboarding_data: res.data
+            })
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // return async () => {
-  //   try {
-  //     await axios.post(`/cohorts/${cohortID}/mark_onboarding_step.json`, {
-  //       type
-  //     });
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 }
 
-// export function markOnboardingStep(cohortID: string, type: string) {
-//   return async () => {
-//     try {
-//       await axios
-//         .post(`/cohorts/${cohortID}/mark_completed_onboarding_step.json`, {
-//           type
-//         })
-//         .then((res) => {
-//           dispatch(
-//             slice.actions.updateOnboardingStep({
-//               cohort_id: cohortID,
-//               onboarding_data: res.data.onboarding_data
-//             })
-//           );
-//         });
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// }
+export function updateOnboardingData(cohortID: string, data: any) {
+  return async () => {
+    try {
+      dispatch(
+        slice.actions.updateOnboardingStep({
+          cohort_id: cohortID,
+          onboarding_data: data
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
 
 export function resetApplicationStatus(cohortID: string, enrollmentID: string) {
   return async () => {

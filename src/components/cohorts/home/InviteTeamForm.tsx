@@ -42,6 +42,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function InviteTeamForm({ handleSubmit }: { handleSubmit: Function }) {
   const { enqueueSnackbar } = useSnackbar();
+  const cohortID = window.location.pathname.split('/')[2] || '';
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -56,15 +57,16 @@ export default function InviteTeamForm({ handleSubmit }: { handleSubmit: Functio
     validationSchema: ValidationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       await axios
-        .post(`/send_referrals_email.json`, {
+        .post(`/cohorts/${cohortID}/send_referrals_email.json`, {
           referee_email: values.email,
           referee_name: values.fullName,
-          source: 'registration-referral'
+          id: cohortID,
+          source: 'onboarding-referral'
         })
         .then((res) => {
           setSubmitting(false);
+          enqueueSnackbar(`Invitation sent to ${values.email} 🎉`, { variant: 'success' });
           resetForm();
-          enqueueSnackbar('Referral Invite sent!', { variant: 'success' });
         })
         .catch((error: any) => {
           setSubmitting(false);

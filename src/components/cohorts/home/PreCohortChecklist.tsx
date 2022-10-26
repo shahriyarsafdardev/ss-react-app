@@ -165,7 +165,9 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         onFinish={handleCompletedShareGoalsStep}
       />
       {activeStep >= 6 ? (
-        <StyledStack sx={{ display: onboarding_data?.checklist_completed ? 'none' : 'block' }}>
+        <StyledStack
+          sx={{ display: onboarding_data?.onboarding_checklist_completed ? 'none' : 'block' }}
+        >
           <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
             Pre-Cohort Checklist
             {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
@@ -175,7 +177,9 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
           </Box>
         </StyledStack>
       ) : (
-        <StyledStack sx={{ display: onboarding_data?.checklist_completed ? 'none' : 'block' }}>
+        <StyledStack
+          sx={{ display: onboarding_data?.onboarding_checklist_completed ? 'none' : 'block' }}
+        >
           <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
             Pre-Cohort Checklist
             {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
