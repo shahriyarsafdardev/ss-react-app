@@ -7,6 +7,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
 import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { trackEvent } from 'utils/eventTracking';
+import CohortQuestionnair from 'components/cohorts/onboarding/new-info-forms/CohortQuestionnair';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -14,7 +15,6 @@ import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
-
 // ----------------------------------------------------------------------
 
 const SessionsContainer = styled(Container)(({ theme }) => ({
@@ -107,41 +107,48 @@ export default function SessionsTab() {
     trackEvent(cohort, eventName, eventData);
   };
 
-  const cohortSessions = () =>
-    filteredSessions && filteredSessions.length > 0 ? (
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <SessionsContainer>
-          <SessionsInnerContainer container>
-            <Grid item md={8} sm={12}>
-              <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                <SessionBoard
-                  session={filteredSessions && filteredSessions[selectedSession]}
+  const cohortSessions = () => {
+    if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed) {
+      return <CohortQuestionnair />;
+    }
+    if (filteredSessions && filteredSessions.length > 0) {
+      return (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <SessionsContainer>
+            <SessionsInnerContainer container>
+              <Grid item md={8} sm={12}>
+                <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
+                  <SessionBoard
+                    session={filteredSessions && filteredSessions[selectedSession]}
+                    isLearner={isLearner}
+                    isFree={cohort.is_free}
+                  />
+                </SessionContext.Provider>
+              </Grid>
+              <SessionListDesktopContainer item md={4}>
+                <SessionList
                   isLearner={isLearner}
-                  isFree={cohort.is_free}
+                  onClick={setSelectedSession}
+                  selectedSession={selectedSession}
+                  sessionsList={trimmedSessionData}
                 />
-              </SessionContext.Provider>
-            </Grid>
-            <SessionListDesktopContainer item md={4}>
-              <SessionList
-                isLearner={isLearner}
-                onClick={setSelectedSession}
-                selectedSession={selectedSession}
-                sessionsList={trimmedSessionData}
-              />
-            </SessionListDesktopContainer>
-          </SessionsInnerContainer>
-          <SessionListSidebar
-            setSelectedSession={setSelectedSession}
-            selectedSession={selectedSession}
-            sessionsList={trimmedSessionData}
-          />
-        </SessionsContainer>
-      </AnalyticsContext.Provider>
-    ) : (
+              </SessionListDesktopContainer>
+            </SessionsInnerContainer>
+            <SessionListSidebar
+              setSelectedSession={setSelectedSession}
+              selectedSession={selectedSession}
+              sessionsList={trimmedSessionData}
+            />
+          </SessionsContainer>
+        </AnalyticsContext.Provider>
+      );
+    }
+    return (
       <LoadingContainer>
         <LoadingScreen />
       </LoadingContainer>
     );
+  };
 
   return (
     <CohortContext.Provider
