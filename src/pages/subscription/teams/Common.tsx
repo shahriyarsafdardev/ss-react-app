@@ -180,21 +180,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#864FBC',
     marginTop: '56px !important'
   },
-  // grainedBackground: {
-  //   backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-desktop.png')`,
-  //   backgroundSize: 'cover',
-  //   backgroundPosition: 'center',
-  //   [theme.breakpoints.down('md')]: {
-  //     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-mbl.png')`,
-  //     backgroundSize: 'cover',
-  //     backgroundPosition: 'center'
-  //   }
-  // },
   fullWidthCenter: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    width: '100%',
-    maxWidth: '600px'
+    width: '80%',
+    maxWidth: '600px',
+    [theme.breakpoints.down('md')]: {
+      width: '95%'
+    }
   },
   mobileDisplay: {
     display: 'none',

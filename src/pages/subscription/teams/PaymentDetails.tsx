@@ -31,7 +31,7 @@ export default function PaymentDetails({
           {!isSinglePayee && (
             <StyledTypography>To attend this course you will be charged:</StyledTypography>
           )}
-          <Stack alignItems="center">
+          <Stack alignItems="center" sx={{ marginBottom: '30px' }}>
             <Typography variant="h4">{`$${totalAmount} USD`}</Typography>
             <StyledTypography>which will recur annually</StyledTypography>
           </Stack>
