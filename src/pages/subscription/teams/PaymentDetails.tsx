@@ -1,6 +1,15 @@
-import { Box, Stack, Typography } from '@material-ui/core';
-import { StyledTypography, useStyles, StyledDetailsStack } from './Common';
+import { Box, Stack, styled, Typography } from '@material-ui/core';
+import { StyledTypography, useStyles } from './Common';
 import { Registration } from './TeamRegistration';
+
+const Logo = styled('img')(({ theme }) => ({
+  width: '150px',
+  paddingTop: '20px',
+  paddingLeft: '20px',
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}));
 
 export default function PaymentDetails({
   amount,
@@ -17,9 +26,16 @@ export default function PaymentDetails({
   const totalAmount = registration?.cohort_id ? registration?.cohort_price : amount;
 
   return (
-    <Stack className={classes.paymentInfo}>
-      <Box className={classes.grainedBackground}>
-        <StyledDetailsStack spacing={3}>
+    <Box className={classes.paymentInfo}>
+      {/* <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" /> */}
+      <Stack
+        width="100%"
+        height="100%"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ color: 'white' }}
+      >
+        <Stack alignItems="center" spacing={3}>
           <StyledTypography variant="h4">Your Team Package</StyledTypography>
           <StyledTypography style={{ fontWeight: 500 }}>
             {isSinglePayee
@@ -33,43 +49,42 @@ export default function PaymentDetails({
             <Typography variant="h4">{`$${totalAmount} USD`}</Typography>
             <StyledTypography>which will recur annually</StyledTypography>
           </Stack>
-        </StyledDetailsStack>
-      </Box>
-      {isSinglePayee ? (
-        <Box sx={{ maxWidth: '600px', margin: '0px auto' }}>
+        </Stack>
+        <Box sx={{ mt: 4, maxWidth: '650px' }}>
           <Stack spacing={3} className={classes.mobilePosition}>
-            <StyledTypography className={`${classes.font18} ${classes.fontBold}`}>
-              {' '}
-              Sphere current subscription provides: :{' '}
-            </StyledTypography>
-            <Stack spacing={1}>
-              <li>
-                A {Math.floor(teamDiscount * 100)}% discount on the price of all course in our
-                library
-              </li>
-              <li>Ongoing access to the Sphere portal (including all recordings and resources)</li>
-              <li>Access to Sphere alumni events</li>
-            </Stack>
-            <StyledTypography>
-              You can adjust or cancel your subscription at any time.
-            </StyledTypography>
+            <>
+              {isSinglePayee ? (
+                <>
+                  <StyledTypography>Sphere current subscription provides:</StyledTypography>
+                  <Stack spacing={1}>
+                    <li>
+                      A {Math.floor(teamDiscount * 100)}% discount on the price of all course in our
+                      library
+                    </li>
+                    <li>
+                      Ongoing access to the Sphere portal (including all recordings and resources)
+                    </li>
+                    <li>Access to Sphere alumni events</li>
+                    <li>You can adjust or cancel your subscription at any time.</li>
+                  </Stack>
+                </>
+              ) : (
+                <>
+                  <StyledTypography style={{ fontWeight: 'bold' }}>
+                    Your team at Stripe has approved Sphere as a Learning & Development expense
+                    meaning they will reimburse the full cost! You can top up or cancel your
+                    subscription at any time.
+                  </StyledTypography>
+                  <StyledTypography>
+                    Your balance can be used to attend our live interactive courses that are led by
+                    industry experts and joined by likeminded professionals.
+                  </StyledTypography>
+                </>
+              )}
+            </>
           </Stack>
         </Box>
-      ) : (
-        <Box sx={{ maxWidth: '600px', margin: '0px auto' }}>
-          <Stack spacing={3} className={classes.mobilePosition}>
-            <StyledTypography style={{ fontWeight: 'bold' }}>
-              Your team at Stripe has approved Sphere as a Learning & Development expense meaning
-              they will reimburse the full cost! You can top up or cancel your subscription at any
-              time.
-            </StyledTypography>
-            <StyledTypography>
-              Your balance can be used to attend our live interactive courses that are led by
-              industry experts and joined by likeminded professionals.
-            </StyledTypography>
-          </Stack>
-        </Box>
-      )}
-    </Stack>
+      </Stack>
+    </Box>
   );
 }

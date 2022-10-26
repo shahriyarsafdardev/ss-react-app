@@ -88,13 +88,10 @@ export const LoadingContainer = styled(Box)(() => ({
 }));
 
 export const PaymentRootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '90vh',
-  maxWidth: '1430px',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  [theme.breakpoints.down('md')]: {
-    marginTop: '45px'
-  }
+  height: '100vh',
+  width: '100%',
+  marginLeft: '0',
+  marginRight: '0'
 }));
 
 export const StyledHeading = styled(Typography)(({ theme }) => ({
@@ -136,11 +133,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold'
   },
   paymentInfo: {
-    width: '50%',
-    backgroundColor: '#FAFAFC',
-    [theme.breakpoints.down('md')]: {
-      width: '100%'
-    }
+    width: '100%',
+    height: '100%',
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
   },
   topUpContainer: {
     height: '100%',
@@ -153,7 +150,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   topUp: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/topup-purple-bg.png')`,
+    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',
@@ -166,26 +163,22 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#864FBC',
     marginTop: '56px !important'
   },
-  grainedBackground: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-desktop.png')`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    [theme.breakpoints.down('md')]: {
-      backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-mbl.png')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }
-  },
+  // grainedBackground: {
+  //   backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-desktop.png')`,
+  //   backgroundSize: 'cover',
+  //   backgroundPosition: 'center',
+  //   [theme.breakpoints.down('md')]: {
+  //     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/purple-bg-mbl.png')`,
+  //     backgroundSize: 'cover',
+  //     backgroundPosition: 'center'
+  //   }
+  // },
   paymentForm: {
-    padding: '100px',
-    height: '90vh',
+    padding: '0 100px',
+    width: '100%',
+    height: '100%',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
-      padding: '64px 20px',
-      height: '75vh'
-    },
-    [theme.breakpoints.down('sm')]: {
-      height: '95vh'
+      padding: '0 20px'
     }
   },
   fullWidthCenter: {

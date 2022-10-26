@@ -142,7 +142,6 @@ export default function CreditCheckout() {
   if (paymentCompleted) {
     return (
       <>
-        <RegistrationNavbar />
         <PaymentPrompt />
       </>
     );
@@ -151,7 +150,6 @@ export default function CreditCheckout() {
   if (email === '' && subscriptionAmount > 0) {
     return (
       <>
-        <RegistrationNavbar />
         <Stack className={classes.topUpContainer}>
           <Box className={classes.topUp}>
             <StyledDetailsStack spacing={4} sx={{ alignItems: 'center' }}>
@@ -182,46 +180,49 @@ export default function CreditCheckout() {
 
   return (
     <PaymentRootStyle title="Sphere Cohort Payment">
-      <RegistrationNavbar />
-      <Grid container style={{ marginTop: '92px' }}>
-        <PaymentDetails
-          amount={creditAmount}
-          isSinglePayee={email === '' && cohortID === ''}
-          teamDiscount={checkoutDetails?.team_discount}
-          registration={registration}
-        />
-        <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentForm}>
-          <Box className={classes.fullWidthCenter}>
-            <Elements
-              key={clientSecret}
-              stripe={stripePromise}
-              options={{
-                clientSecret,
-                appearance: {
-                  theme: 'stripe',
-                  variables: {
-                    colorPrimary: '#475569',
-                    colorBackground: '#ffffff',
-                    colorText: '#475569',
-                    borderRadius: '8px',
-                    fontFamily: 'Public Sans,sans-serif',
-                    fontSizeBase: '1rem'
+      <Grid container sx={{ height: '100%' }}>
+        <Grid item xs={12} md={6} sx={{ height: '100%' }}>
+          <PaymentDetails
+            amount={creditAmount}
+            isSinglePayee={email === '' && cohortID === ''}
+            teamDiscount={checkoutDetails?.team_discount}
+            registration={registration}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} sx={{ height: '100%' }}>
+          <Stack justifyContent="center" alignItems="center" className={classes.paymentForm}>
+            <Box className={classes.fullWidthCenter}>
+              <Elements
+                key={clientSecret}
+                stripe={stripePromise}
+                options={{
+                  clientSecret,
+                  appearance: {
+                    theme: 'stripe',
+                    variables: {
+                      colorPrimary: '#475569',
+                      colorBackground: '#ffffff',
+                      colorText: '#475569',
+                      borderRadius: '8px',
+                      fontFamily: 'Public Sans,sans-serif',
+                      fontSizeBase: '1rem'
+                    }
                   }
-                }
-              }}
-            >
-              <StripePayment
-                team={checkoutDetails.team_name}
-                teamMembers={teamMembers}
-                email={email || checkoutDetails.lead_user_email}
-                registration={registration}
-                stripeCustomerID={stripeCustomerID}
-                setPaymentCompleted={setPaymentCompleted}
-                shouldDisplayBackButton={false}
-              />
-            </Elements>
-          </Box>
-        </Stack>
+                }}
+              >
+                <StripePayment
+                  team={checkoutDetails.team_name}
+                  teamMembers={teamMembers}
+                  email={email || checkoutDetails.lead_user_email}
+                  registration={registration}
+                  stripeCustomerID={stripeCustomerID}
+                  setPaymentCompleted={setPaymentCompleted}
+                  shouldDisplayBackButton={false}
+                />
+              </Elements>
+            </Box>
+          </Stack>
+        </Grid>
       </Grid>
     </PaymentRootStyle>
   );
