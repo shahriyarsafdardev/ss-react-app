@@ -371,9 +371,9 @@ export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = () => {
+  const handleSubmit = (gotoHome: boolean) => {
     dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
-    navigate(`/cohorts/${cohort_id}/home`);
+    gotoHome && navigate(`/cohorts/${cohort_id}/home`);
   };
 
   return (
@@ -388,14 +388,14 @@ export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) 
         <Button
           className={classes.completionPromptButton}
           variant="contained"
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(true)}
         >
           Go to Home
         </Button>
         <Button
           className={classes.completionPromptButton}
           variant="outlined"
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(false)}
         >
           Continue Networking
         </Button>
