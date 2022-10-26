@@ -10,6 +10,20 @@ import { StyledLoadingButton, SubscriptionDetails } from './Common';
 import { Registration } from './TeamRegistration';
 
 const useStyles = makeStyles({
+  root: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        border: '1px solid #E6E6E6'
+      },
+      '&:hover fieldset': {
+        borderColor: '#E6E6E6'
+      },
+      '&.Mui-focused fieldset': {
+        border: '1px solid #475569',
+        boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), #475569'
+      }
+    }
+  },
   input: {
     '&::placeholder': {
       color: '#475569'
@@ -117,8 +131,9 @@ export default function StripePayment({
         placeholder="Name on Card"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        sx={{ marginBottom: '10px' }}
+        sx={{ marginBottom: '20px' }}
         size="small"
+        className={classes.root}
         InputProps={{
           classes: { input: classes.input }
         }}

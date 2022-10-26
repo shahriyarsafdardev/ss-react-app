@@ -79,7 +79,16 @@ export default function Payment({
                     colorText: '#475569',
                     borderRadius: '8px',
                     fontFamily: 'Public Sans,sans-serif',
-                    fontSizeBase: '1rem'
+                    fontSizeBase: '1rem',
+                    colorTextPlaceholder: '#475569',
+                    spacingTab: '8px',
+                    spacingGridRow: '20px'
+                  },
+                  rules: {
+                    '.Input:focus': {
+                      boxShadow: 'none',
+                      border: '1px solid #475569'
+                    }
                   }
                 }
               }}
