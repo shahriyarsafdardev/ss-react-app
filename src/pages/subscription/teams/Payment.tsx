@@ -1,11 +1,11 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
-import { Stack, Grid, Box } from '@material-ui/core';
+import { Stack, Box } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import StripePayment from './StripePayment';
-import { LoadingContainer, PaymentRootStyle, useStyles } from './Common';
+import { LoadingContainer, useStyles } from './Common';
 import { TeamMember } from './InviteMembersForm';
 import PaymentDetails from './PaymentDetails';
 
@@ -61,53 +61,51 @@ export default function Payment({
   }
 
   return (
-    <PaymentRootStyle title="Sphere Cohort Payment">
-      <Grid container>
-        <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />
-        <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentData}>
-          <Box className={classes.fullWidthCenter}>
-            <Elements
-              key={clientSecret}
-              stripe={stripePromise}
-              options={{
-                clientSecret,
-                appearance: {
-                  theme: 'stripe',
-                  variables: {
-                    colorPrimary: '#475569',
-                    colorBackground: '#ffffff',
-                    colorText: '#475569',
-                    borderRadius: '8px',
-                    fontFamily: 'Public Sans,sans-serif',
-                    fontSizeBase: '1rem',
-                    colorTextPlaceholder: '#475569',
-                    spacingTab: '8px',
-                    spacingGridRow: '20px'
-                  },
-                  rules: {
-                    '.Input:focus': {
-                      boxShadow: 'none',
-                      border: '1px solid #475569'
-                    }
+    <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
+      <PaymentDetails amount={amount} isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />
+      <Stack width={{ md: '50%', sm: '100%' }} className={classes.paymentData}>
+        <Box className={classes.fullWidthCenter}>
+          <Elements
+            key={clientSecret}
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+              appearance: {
+                theme: 'stripe',
+                variables: {
+                  colorPrimary: '#475569',
+                  colorBackground: '#ffffff',
+                  colorText: '#475569',
+                  borderRadius: '8px',
+                  fontFamily: 'Public Sans,sans-serif',
+                  fontSizeBase: '1rem',
+                  colorTextPlaceholder: '#475569',
+                  spacingTab: '8px',
+                  spacingGridRow: '20px'
+                },
+                rules: {
+                  '.Input:focus': {
+                    boxShadow: 'none',
+                    border: '1px solid #475569'
                   }
                 }
-              }}
-            >
-              <StripePayment
-                team={team}
-                teamMembers={teamMembers}
-                email={email}
-                setStep={setStep}
-                setCredentials={setCredentials}
-                stripeCustomerID={stripeCustomerID}
-                shouldDisplayBackButton={!isSinglePayee}
-                teamDiscount={teamDiscount}
-                isSinglePayee={isSinglePayee}
-              />
-            </Elements>
-          </Box>
-        </Stack>
-      </Grid>
-    </PaymentRootStyle>
+              }
+            }}
+          >
+            <StripePayment
+              team={team}
+              teamMembers={teamMembers}
+              email={email}
+              setStep={setStep}
+              setCredentials={setCredentials}
+              stripeCustomerID={stripeCustomerID}
+              shouldDisplayBackButton={!isSinglePayee}
+              teamDiscount={teamDiscount}
+              isSinglePayee={isSinglePayee}
+            />
+          </Elements>
+        </Box>
+      </Stack>
+    </Stack>
   );
 }

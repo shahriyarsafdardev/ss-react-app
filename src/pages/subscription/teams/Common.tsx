@@ -79,9 +79,7 @@ export const HeadingTypography = styled(Typography)(({ theme }) => ({
 }));
 
 export const RootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '100%',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(5),
+  minHeight: '100vh',
   justifyContent: 'center',
   alignItems: 'center',
   display: 'flex',
@@ -122,8 +120,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '0px'
   },
   noPadding: {
+    height: '100%',
     paddingTop: '93px',
-    paddingBottom: '0px'
+    paddingBottom: '0px',
+    [theme.breakpoints.down('md')]: {
+      paddingTop: '140px'
+    }
   },
   font20: {
     fontSize: '20px !important',

@@ -150,14 +150,14 @@ export default function TeamRegistration() {
   };
 
   const teamRegistrationFlow = () => (
-    <Stack width="100%">
+    <Stack width="100%" height="100%">
       {!(activeStep === 3 && isSinglePayee) && (
         <Header activeStep={activeStep} isSinglePayee={isSinglePayee} />
       )}
       <Container
         maxWidth="lg"
         className={activeStep === 3 && isSinglePayee ? classes.paymentContainer : ''}
-        sx={{ display: 'flex', justifyContent: 'center' }}
+        sx={{ height: '100%', display: 'flex', justifyContent: 'center' }}
       >
         {selectComponent()}
       </Container>
@@ -180,7 +180,7 @@ export default function TeamRegistration() {
           <LoadingScreen />
         </Box>
       ) : (
-        <>{teamRegistrationFlow()}</>
+        teamRegistrationFlow()
       )}
     </RootStyle>
   );
