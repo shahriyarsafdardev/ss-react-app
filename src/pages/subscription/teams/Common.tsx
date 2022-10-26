@@ -239,12 +239,12 @@ export function SubscriptionDetails({
                 Your Sphere subscription provides:
               </Typography>
               <Stack spacing={2}>
-                <li>A {Math.floor(teamDiscount * 100)}% discount on all courses in our library</li>
                 <li>
-                  Ongoing access to the Sphere portal (including all recordings and resources)
+                  A {Math.floor(teamDiscount * 100)}% discount on all of Sphere's live courses
                 </li>
+                <li>Ongoing access to the Sphere portal</li>
                 <li>Access to Sphere alumni events</li>
-                <li>You can adjust or cancel your subscription at any time.</li>
+                <li>You can adjust or cancel your subscription at any time</li>
               </Stack>
             </>
           ) : (
