@@ -39,7 +39,7 @@ export default function StripePayment({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const url = new URLSearchParams(useLocation().search);
   const teamID = url.get('team_id') || '';
-  const creditAmount = url.get('credit_amount') || '';
+  const creditAmount = url.get('amount') || '';
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState('');
   const theme = useTheme();

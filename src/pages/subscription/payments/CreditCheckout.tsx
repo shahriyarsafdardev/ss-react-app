@@ -35,7 +35,7 @@ export type CheckoutDetails = {
 export default function CreditCheckout() {
   const url = new URLSearchParams(useLocation().search);
   const teamID = url.get('team_id') || '';
-  const amount = url.get('credit_amount') || '';
+  const amount = url.get('amount') || '';
   const creditAmount = amount !== '' ? parseInt(amount, 10) : 0;
   const email = url.get('email') || '';
   const cohortID = url.get('cohort_id') || '';

@@ -32,7 +32,7 @@ export const PATH_PAGE = {
   payment: '/payment',
   registration: '/registration',
   teamRegistration: '/team-registration',
-  creditCheckout: '/credit_checkout',
+  subscriptionCheckout: '/teams/subscription_checkout',
   creditCheckoutInvitation: '/credit_checkout_invitation',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',

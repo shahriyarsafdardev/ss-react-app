@@ -319,7 +319,7 @@ export default function Router() {
     },
     { path: 'registration', element: <Registration /> },
     { path: 'team-registration', element: <TeamRegistration /> },
-    { path: 'credit_checkout', element: <CreditCheckout /> },
+    { path: 'teams/subscription_checkout', element: <CreditCheckout /> },
     { path: 'credit_checkout_invitation', element: <CreditCheckout /> },
     // {
     //   path: '/',
