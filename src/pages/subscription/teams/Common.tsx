@@ -101,6 +101,13 @@ export const StyledHeading = styled(Typography)(({ theme }) => ({
 }));
 
 export const useStyles = makeStyles((theme: Theme) => ({
+  promptContainer: {
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    color: '#ffffff'
+  },
   paymentContainer: {
     width: '100%',
     maxWidth: '100%',

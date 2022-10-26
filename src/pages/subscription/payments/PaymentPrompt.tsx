@@ -1,30 +1,14 @@
-import { Button, Container, Link, Typography } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
+import { useStyles, Logo, StyledTypography } from '../teams/Common';
 
 export default function PaymentPrompt() {
+  const styles = useStyles();
+
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        marginTop: '92px',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '90vh',
-        overflow: 'hidden'
-      }}
-    >
-      <Typography variant="h3" align="center" paragraph>
-        👋 Payment made successfully.
-      </Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link}
-        href="https://www.getsphere.com/pages/contact-us"
-        align="center"
-      >
-        Any questions? Click here to contact Sphere
-      </Button>
-    </Container>
+    <Stack spacing={2} className={`${styles.purpleBackground} ${styles.promptContainer}`}>
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
+      <StyledTypography variant="h4">Your Team Subscription has been created</StyledTypography>
+      <StyledTypography>The Sphere Team will be in touch shortly!</StyledTypography>
+    </Stack>
   );
 }
