@@ -194,7 +194,7 @@ export default function CreditCheckout() {
   }
 
   return (
-    <PaymentRootStyle title="Sphere Cohort Payment">
+    <PaymentRootStyle title="Sphere | Team Subscription">
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
       <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
         <PaymentDetails

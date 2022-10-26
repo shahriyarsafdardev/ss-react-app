@@ -236,7 +236,7 @@ export function SubscriptionDetails({
           {isSinglePayee ? (
             <>
               <Typography textAlign={{ xs: 'left', md: 'center' }}>
-                Your Sphere subscription provides:
+                <strong>Your Sphere subscription provides:</strong>
               </Typography>
               <Stack spacing={2}>
                 <li>
@@ -244,8 +244,10 @@ export function SubscriptionDetails({
                 </li>
                 <li>Ongoing access to the Sphere portal</li>
                 <li>Access to Sphere alumni events</li>
-                <li>You can adjust or cancel your subscription at any time</li>
               </Stack>
+              <Typography textAlign={{ xs: 'left', md: 'center' }}>
+                <i>You can adjust or cancel your subscription at any time.</i>
+              </Typography>
             </>
           ) : (
             <>
