@@ -15,6 +15,7 @@ import {
   StyledDetailsStack,
   StyledLoadingButton,
   StyledTypography,
+  HeadingTypography,
   useStyles
 } from '../teams/Common';
 import PaymentDetails from '../teams/PaymentDetails';
@@ -111,9 +112,6 @@ export default function CreditCheckout() {
         amount: creditAmount
       })
       .then((res) => {
-        enqueueSnackbar('Package updated successfully!', {
-          variant: 'success'
-        });
         setPaymentCompleted(true);
       })
       .catch((err) => {
@@ -142,7 +140,7 @@ export default function CreditCheckout() {
   if (paymentCompleted) {
     return (
       <>
-        <PaymentPrompt />
+        <PaymentPrompt topup={email === '' && subscriptionAmount > 0} />
       </>
     );
   }
@@ -150,29 +148,38 @@ export default function CreditCheckout() {
   if (email === '' && subscriptionAmount > 0) {
     return (
       <>
-        <Stack className={classes.topUpContainer}>
-          <Box className={classes.topUp}>
-            <StyledDetailsStack spacing={4} sx={{ alignItems: 'center' }}>
-              <StyledTypography variant="h4">Top Up Your Team Package</StyledTypography>
-              <StyledTypography>Your top up amount is:</StyledTypography>
-              <Stack alignItems="center">
-                <Typography variant="h4">{`$${creditAmount} USD`}</Typography>
-                <StyledTypography>Due today</StyledTypography>
-              </Stack>
-              <StyledTypography>
+        <Stack className={classes.topUp}>
+          <Logo
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
+            alt="logo"
+          />
+          <StyledDetailsStack spacing={4}>
+            <HeadingTypography variant="h4">Top Up Your Team Package</HeadingTypography>
+            <StyledTypography>Your top up amount is:</StyledTypography>
+            <Stack alignItems="center">
+              <HeadingTypography variant="h4">{`$${creditAmount} USD`}</HeadingTypography>
+              <StyledTypography>Due today</StyledTypography>
+            </Stack>
+            <StyledTypography>
+              <span>
                 Your total package of ${creditAmount + subscriptionAmount} per year will be billed
                 next on{' '}
-                {moment(new Date(checkoutDetails?.next_billing_date)).format('ll').toString()}
-              </StyledTypography>
-              <StyledLoadingButton
-                variant="contained"
-                className={classes.topUpButton}
-                onClick={handleTopUp}
-              >
-                Top Up
-              </StyledLoadingButton>
-            </StyledDetailsStack>
-          </Box>
+                {moment(new Date(checkoutDetails?.next_billing_date)).format('ll').toString()}.
+              </span>
+              <br />
+              <span>
+                Through this package you receive {Math.floor(checkoutDetails?.team_discount * 100)}%
+                discount on all Sphere courses.
+              </span>
+            </StyledTypography>
+            <StyledLoadingButton
+              variant="contained"
+              className={classes.topUpButton}
+              onClick={handleTopUp}
+            >
+              Top Up
+            </StyledLoadingButton>
+          </StyledDetailsStack>
         </Stack>
       </>
     );

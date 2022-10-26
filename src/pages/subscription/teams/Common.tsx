@@ -40,16 +40,15 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
 
 export const StyledDetailsStack = styled(Stack)(({ theme }) => ({
   color: 'white',
-  padding: '100px 50px 200px 50px',
-  [theme.breakpoints.down('md')]: {
-    minHeight: '320px'
-  }
+  alignItems: 'center',
+  maxWidth: '550px',
+  padding: '20px'
 }));
 
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: '30px',
   height: '35px',
-  width: '100%',
+  width: '100% !important',
   marginTop: '32px',
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -69,6 +68,14 @@ export const StyledNextButton = styled(Button)(({ theme }) => ({
 export const StyledTypography = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
   fontSize: '15px'
+}));
+
+export const HeadingTypography = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+  fontSize: '26px',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '40px'
+  }
 }));
 
 export const RootStyle = styled(Page)(({ theme }) => ({
