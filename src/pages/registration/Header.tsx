@@ -68,7 +68,8 @@ export default function Header({
     'MPP',
     'DRS',
     'FDE',
-    'MLS'
+    'MLS',
+    'DCI'
   ];
 
   const selectSubHeading = () => {
