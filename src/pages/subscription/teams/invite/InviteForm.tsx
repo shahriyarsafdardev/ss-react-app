@@ -105,7 +105,8 @@ export default function InviteForm({
         return_url: '',
         payment_method_data: {
           billing_details: {
-            name
+            name,
+            email
           }
         }
       },
