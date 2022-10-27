@@ -7,7 +7,6 @@ import { RootState, useDispatch, useSelector } from 'redux/store';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { ChecklistItem, ChecklistCompletionPrompt } from './Common';
 import InvitePeersModal from './InvitePeersModal';
-import ShareGoalsModal from './ShareGoalsModal';
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   padding: '10px 30px',
@@ -125,7 +124,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
   };
 
   const handleShareGoalsStep = () => {
-    setShareGoalsModalState(true);
+    navigate(`/cohorts/${cohort_id}/sessions`);
   };
 
   const handleCompletedShareGoalsStep = () => {
@@ -157,12 +156,6 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         invitePeersModalState={invitePeersModalState}
         setInvitePeersModalState={setInvitePeersModalState}
         onFinish={handleCompletedInviteTeamStep}
-      />
-      <ShareGoalsModal
-        shareGoalsModalState={shareGoalsModalState}
-        setShareGoalsModalState={setShareGoalsModalState}
-        cohort_id={cohort_id}
-        onFinish={handleCompletedShareGoalsStep}
       />
       {activeStep >= 6 ? (
         <StyledStack

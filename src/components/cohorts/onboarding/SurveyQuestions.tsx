@@ -2,6 +2,7 @@ import { Box, styled, Stack } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
+import { LoadingButton } from '@material-ui/lab';
 import useAuth from '../../../hooks/useAuth';
 // axios
 import axios from '../../../utils/axios';
@@ -11,12 +12,21 @@ import {
   CurrentStep,
   ProgressBarContainer,
   SessionTitle,
-  StyledButton,
   StyledContainer
 } from '../sessions/SurveyForm';
 import SurveyRow from '../sessions/SurveyRow';
 
-export const ButtonsContainer = styled(Box)(({ theme }) => ({
+const NavigationButton = styled(LoadingButton)(({ theme }) => ({
+  padding: 11,
+  borderRadius: '50px',
+  width: '200px',
+  [theme.breakpoints.down('md')]: {
+    marginTop: '10px',
+    width: '100%'
+  }
+}));
+
+const ButtonsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   width: '100%',
@@ -71,7 +81,8 @@ function SurveyQuestionsModal() {
     axios
       .post(`/cohorts/${cohort_id}/onboarding/submit_onboarding_questionnaire.json`, {
         response,
-        current_user_id: user?.id
+        current_user_id: user?.id,
+        cohort_id
       })
       .then((res) => {
         setLoading(false);
@@ -120,17 +131,19 @@ function SurveyQuestionsModal() {
             )}
 
             <ButtonsContainer>
-              <StyledButton
+              <NavigationButton
                 variant="outlined"
                 disabled={currentQuestion === 0}
+                sx={{ mr: { xs: 0, md: 2 } }}
                 onClick={() => setCurrentQuestion(currentQuestion - 1)}
                 data-testid="btn-previous"
               >
                 Previous Question
-              </StyledButton>
-              <StyledButton
+              </NavigationButton>
+              <NavigationButton
                 variant="contained"
                 onClick={handleNext}
+                sx={{ ml: { xs: 0, md: 2 } }}
                 disabled={
                   surveyData[currentQuestion].mandatory === true &&
                   response[questionID] === undefined
@@ -138,7 +151,7 @@ function SurveyQuestionsModal() {
                 data-testid="btn-next"
               >
                 {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
-              </StyledButton>
+              </NavigationButton>
             </ButtonsContainer>
           </Box>
         </StyledContainer>
