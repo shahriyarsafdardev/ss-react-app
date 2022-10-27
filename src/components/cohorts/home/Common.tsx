@@ -376,7 +376,7 @@ export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) 
 
   const handleSubmit = (gotoHome: boolean) => {
     dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
-    gotoHome && navigate(`/cohorts/${cohort_id}/home`);
+    gotoHome && navigate(`/cohorts/${cohort_id}/home?active_step=1`);
   };
 
   return (

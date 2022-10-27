@@ -3,10 +3,11 @@ import LoadingScreen from 'components/LoadingScreen';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
+import { useDispatch } from 'react-redux';
+import { updateOnboardingData } from 'redux/slices/cohort';
 import useAuth from '../../../hooks/useAuth';
 // axios
 import axios from '../../../utils/axios';
-
 import {
   BorderLinearProgress,
   CurrentStep,
@@ -48,6 +49,7 @@ function SurveyQuestionsModal() {
   const [questionID, setQuestionID] = useState('');
   const cohort_id = window.location.pathname.split('/')[2] || '';
 
+  const dispatch = useDispatch();
   useEffect(() => {
     axios.get(`/cohorts/${cohort_id}/onboarding/get_onboarding_questionnaire.json`).then((res) => {
       setSurveyData(res.data);
@@ -86,8 +88,7 @@ function SurveyQuestionsModal() {
       })
       .then((res) => {
         setLoading(false);
-        enqueueSnackbar(res.data.message, { variant: 'success' });
-        // dispatch(updateFeedbackStatus(cohort_id));
+        dispatch(updateOnboardingData(cohort_id, res.data));
       })
       .catch((err) => {
         setLoading(false);

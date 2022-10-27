@@ -5,7 +5,6 @@ import LoadingScreen from 'components/LoadingScreen';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
-import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { trackEvent } from 'utils/eventTracking';
 import CohortQuestionnair from 'components/cohorts/onboarding/new-info-forms/CohortQuestionnair';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -15,6 +14,7 @@ import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
+import ContentReleasePreview from './ContentReleasePreview';
 // ----------------------------------------------------------------------
 
 const SessionsContainer = styled(Container)(({ theme }) => ({
@@ -108,8 +108,11 @@ export default function SessionsTab() {
   };
 
   const cohortSessions = () => {
-    if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed) {
+    if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
       return <CohortQuestionnair />;
+    }
+    if (!cohort?.readings_released && mode === 'Learner') {
+      return <ContentReleasePreview cohort={cohort} />;
     }
     if (filteredSessions && filteredSessions.length > 0) {
       return (
@@ -154,15 +157,7 @@ export default function SessionsTab() {
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="Sphere | Sessions">
-        {cohort?.released_for_learners === true ||
-        cohort?.readings_released === true ||
-        mode === 'Instructor' ? (
-          cohortSessions()
-        ) : (
-          <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />
-        )}
-      </Page>
+      <Page title="Sphere | Sessions">{cohortSessions()}</Page>
     </CohortContext.Provider>
   );
 }

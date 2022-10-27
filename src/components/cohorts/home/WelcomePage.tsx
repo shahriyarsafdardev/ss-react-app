@@ -106,7 +106,7 @@ export default function WelcomePage({
             <ContentReleaseDetails />
           ) : (
             <Box width={{ xs: '80%', sm: '40%', md: '27%' }} sx={{ margin: 'auto' }}>
-              <PreCohortChecklist setHasOnboarded={setHasOnboarded} />
+              <PreCohortChecklist setHasOnboarded={() => setActiveStepper(2)} />
             </Box>
           )}
         </StyledCard>
