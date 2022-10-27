@@ -73,11 +73,11 @@ export default function InviteForm({
 
     await axios
       .get(
-        `subscriptions/teams/${teamID}/invite/subscription_details.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
+        `subscriptions/teams/${teamID}/invite/user_validation.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
       )
       .then((res) => {
-        if (res.data.is_subscription_exist) {
-          setSubscriptionExist(res.data.is_subscription_exist);
+        if (res.data.user_has_existing_subscription) {
+          setSubscriptionExist(res.data.user_has_existing_subscription);
           setPaymentCompleted(true);
         } else {
           makePayment(name, email);
