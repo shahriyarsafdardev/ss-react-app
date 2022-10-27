@@ -26,6 +26,7 @@ const NetworkingMessage = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   width: '45%',
   borderRadius: '16px',
+  justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
     padding: '15px 20px'
   },

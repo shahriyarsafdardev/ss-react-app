@@ -8,6 +8,7 @@ import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 const StyledStack = styled(Stack)(({ theme }) => ({
   height: '650px',
   width: '95%',
+  maxWidth: '1200px',
   margin: 'auto',
   borderRadius: '16px',
   border: '1px solid #E2E8F0',
@@ -27,7 +28,7 @@ const InstructionMessage = styled(Stack)(({ theme }) => ({
   padding: '60px 80px 60px 60px',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '45%',
+  width: '50%',
   borderRadius: '16px',
   [theme.breakpoints.down('sm')]: {
     padding: '40px',
@@ -51,8 +52,11 @@ const ChildStack = styled(Stack)(({ theme }) => ({
 
 const Heading = styled(Typography)(({ theme }) => ({
   fontSize: '32px',
+  lineHeight: '130%',
   fontWeight: 'bold',
-  color: '#ffffff'
+  color: '#ffffff',
+  textAlign: 'center',
+  marginTop: '50px !important'
 }));
 
 const StyledImage = styled('img')(({ theme }) => ({

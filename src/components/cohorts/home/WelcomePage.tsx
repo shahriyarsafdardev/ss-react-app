@@ -29,7 +29,8 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   backgroundPosition: 'right',
   padding: '60px 80px 60px 60px',
   borderRadius: '16px',
-  width: '50%',
+  width: '60%',
+  justifyContent: 'center',
   [theme.breakpoints.down('sm')]: {
     padding: '30px',
     width: '100%',
@@ -104,7 +105,7 @@ export default function WelcomePage({
           {hasOnboarded ? (
             <ContentReleaseDetails />
           ) : (
-            <Box width={{ xs: '80%', sm: '40%', md: '25%' }} sx={{ margin: 'auto' }}>
+            <Box width={{ xs: '80%', sm: '40%', md: '27%' }} sx={{ margin: 'auto' }}>
               <PreCohortChecklist setHasOnboarded={setHasOnboarded} />
             </Box>
           )}

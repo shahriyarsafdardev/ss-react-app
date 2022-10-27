@@ -72,10 +72,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '30px',
     height: '30px',
     textAlign: 'center',
-    padding: '5px',
+    padding: '10px',
     borderRadius: '50%',
     fontWeight: 700,
-    fontSize: '15px'
+    fontSize: '15px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   indexActive: {
     backgroundColor: '#F1F5F9'
@@ -378,13 +381,10 @@ export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) 
 
   return (
     <Stack className={classes.completionPrompt} spacing={4}>
-      <Box className={classes.completionPromptIcon}>
-        <DoneIcon style={{ fontSize: '2rem', padding: '5px' }} />
-      </Box>
       <Typography textAlign="center">
         Congratulations, you have completed the Pre-Cohort Checklist! 🎉
       </Typography>
-      <Stack spacing={2}>
+      <Stack sx={{ width: '100%' }} spacing={2}>
         <Button
           className={classes.completionPromptButton}
           variant="contained"

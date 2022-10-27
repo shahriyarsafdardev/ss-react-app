@@ -67,7 +67,8 @@ export default function DashboardLayout() {
         {mode === 'Learner' && isDesktop && current_tab !== 'home' && (
           <Box
             sx={{
-              width: '20%',
+              maxWidth: '360px',
+              width: '22%',
               position: 'fixed',
               bottom: '30px',
               left: '40px',

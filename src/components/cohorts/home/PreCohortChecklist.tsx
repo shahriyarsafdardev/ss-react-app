@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import { ChecklistItem, ChecklistCompletionPrompt } from './Common';
 import InvitePeersModal from './InvitePeersModal';
 import ShareGoalsModal from './ShareGoalsModal';
@@ -170,7 +170,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         >
           <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
             Pre-Cohort Checklist
-            {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
+            {current_tab !== 'home' && <ExpandMore id="expand-more-icon" />}
           </StyledTypography>
           <Box id="checklist-content" style={{ display: 'block' }}>
             <ChecklistCompletionPrompt cohort_id={cohort_id} />
@@ -182,7 +182,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         >
           <StyledTypography onClick={(event: any) => toggleCheckList(event)}>
             Pre-Cohort Checklist
-            {current_tab !== 'home' && <ExpandLess id="expand-more-icon" />}
+            {current_tab !== 'home' && <ExpandMore id="expand-more-icon" />}
           </StyledTypography>
           <Stack sx={{ padding: '0px 30px', display: 'block' }} id="checklist-content">
             <ChecklistItem

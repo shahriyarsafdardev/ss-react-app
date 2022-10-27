@@ -6,6 +6,7 @@ import ProfileForm from './ProfileForm';
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '650px',
   width: '95%',
+  maxWidth: '1200px',
   margin: 'auto',
   borderRadius: '16px',
   border: '1px solid #E2E8F0',
@@ -26,6 +27,7 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   width: '45%',
   borderRadius: '16px',
+  justifyContent: 'center',
   [theme.breakpoints.down('sm')]: {
     padding: '40px',
     width: '100%',
@@ -49,7 +51,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledImage = styled('img')(({ theme }) => ({
-  width: '200px',
+  width: '100%',
   height: '200px'
 }));
 
