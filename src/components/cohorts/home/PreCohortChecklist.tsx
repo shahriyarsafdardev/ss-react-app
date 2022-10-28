@@ -39,7 +39,6 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
   const onboarding_data = cohort?.onboarding_data;
   const [activeStep, setActiveStep] = useState(1);
   const [invitePeersModalState, setInvitePeersModalState] = useState(false);
-  const [shareGoalsModalState, setShareGoalsModalState] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -125,11 +124,6 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
 
   const handleShareGoalsStep = () => {
     navigate(`/cohorts/${cohort_id}/sessions`);
-  };
-
-  const handleCompletedShareGoalsStep = () => {
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_questionnaire_step_completed'));
-    setShareGoalsModalState(false);
   };
 
   const handleInviteTeamStep = () => {

@@ -69,14 +69,14 @@ export default function InvitePeersModal({
         <StyledStack>
           <InvitationMessage spacing={2}>
             <StyledImage
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/invitation-box.png"
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/invite-team-box.png"
               alt="invitation image"
             />
             <Stack spacing={2}>
               <StyledTypography variant="h3">Upskill your team</StyledTypography>
               <StyledTypography>
-                Please fill in a few details so [Instructor] and your peers will know who you are.
-                You can always edit these later under your profile.
+                Learn collaboratively with your team and apply the learnings to the problems you're
+                facing.
               </StyledTypography>
             </Stack>
           </InvitationMessage>

@@ -437,11 +437,13 @@ export default function AddToCalendarInfo({
 
   return (
     <>
-      <div className={classes.wrapper}>
-        <Box className={classes.outerContainer}>
-          <Box className={classes.section}>{accordion()}</Box>
-        </Box>
-      </div>
+      <Box overflow="auto">
+        <div className={classes.wrapper}>
+          <Box className={classes.outerContainer}>
+            <Box className={classes.section}>{accordion()}</Box>
+          </Box>
+        </div>
+      </Box>
       <Stack
         style={{ justifyContent: 'space-between', marginTop: '20px', width: '100%' }}
         spacing={2}

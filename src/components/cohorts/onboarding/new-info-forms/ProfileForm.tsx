@@ -4,7 +4,7 @@ import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from 'components/upload';
 import axios from 'utils/axios';
 import MUICreatableSelect from 'components/MUICreatableSelect';
-import { useDispatch } from 'redux/store';
+import { RootState, useDispatch, useSelector } from 'redux/store';
 import { updateOnboardingData } from 'redux/slices/cohort';
 import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
@@ -51,6 +51,7 @@ export default function ProfileForm({
   const [infoObject, setInfoObject] = useState<BasicProfile>(fillUserValues());
   const [companies, setCompanies] = useState<any[]>([]);
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const roleOptions = useSelector((state: RootState) => state?.profileOptions?.role_options);
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -137,19 +138,21 @@ export default function ProfileForm({
           value={infoObject?.last_name}
           onChange={(e) => onUpdateAttribute('last_name', e.target.value)}
         />
-        <TextField
-          inputProps={{ 'data-testid': 'user-role' }}
-          fullWidth
-          label="Role"
-          value={infoObject?.role}
-          onChange={(e) => onUpdateAttribute('role', e.target.value)}
-        />
+        <FormControl data-testid="user-role" fullWidth>
+          <MUICreatableSelect
+            options={roleOptions}
+            value={infoObject?.role || ''}
+            onChange={(value: any) => onUpdateAttribute('role', value)}
+            label="Role"
+            isCreatable={false}
+          />
+        </FormControl>
         <FormControl data-testid="company-name" fullWidth>
           <MUICreatableSelect
             options={companies?.map((company: any) => company?.name)}
             value={infoObject?.company || ''}
             onChange={(value: any) => onUpdateAttribute('company', value)}
-            label="Select or create company name"
+            label="Company Name"
           />
         </FormControl>
       </Stack>

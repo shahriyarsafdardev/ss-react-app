@@ -7,8 +7,9 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
 import CohortQuestionnair from 'components/cohorts/onboarding/new-info-forms/CohortQuestionnair';
+import InvitePeersModal from 'components/cohorts/home/InvitePeersModal';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
-import { getSessions } from '../../../../redux/slices/cohort';
+import { getSessions, markOnboardingStep } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
 import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
@@ -51,6 +52,7 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const [invitePeersModalState, setInvitePeersModalState] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -112,7 +114,22 @@ export default function SessionsTab() {
       return <CohortQuestionnair />;
     }
     if (!cohort?.readings_released && mode === 'Learner') {
-      return <ContentReleasePreview cohort={cohort} />;
+      return (
+        <>
+          <InvitePeersModal
+            invitePeersModalState={invitePeersModalState}
+            setInvitePeersModalState={setInvitePeersModalState}
+            onFinish={() => {
+              dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+              setInvitePeersModalState(false);
+            }}
+          />
+          <ContentReleasePreview
+            cohort={cohort}
+            setInvitePeersModalState={setInvitePeersModalState}
+          />
+        </>
+      );
     }
     if (filteredSessions && filteredSessions.length > 0) {
       return (

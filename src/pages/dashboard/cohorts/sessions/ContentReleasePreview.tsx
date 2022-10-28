@@ -1,8 +1,7 @@
 import React from 'react';
-import { Typography, Stack } from '@material-ui/core';
+import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Cohort } from '../../../../@types/cohorts';
-import ContentReleaseDate from './ContentReleaseDate';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '650px',
@@ -24,7 +23,7 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   backgroundPosition: 'right',
-  padding: '60px 80px 60px 60px',
+  padding: '60px',
   borderRadius: '16px',
   width: '45%',
   justifyContent: 'center',
@@ -42,22 +41,56 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: '15px',
-  color: '#ffffff',
   textAlign: 'center',
   maxWidth: '70%'
 }));
 
-export default function ContentReleasePreview({ cohort }: { cohort: Cohort }) {
+const StyledImage = styled('img')(({ theme }) => ({
+  width: '250px',
+  height: '150px'
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  padding: '5px 70px',
+  marginTop: '30px !important'
+}));
+
+export default function ContentReleasePreview({
+  cohort,
+  setInvitePeersModalState
+}: {
+  cohort: Cohort;
+  setInvitePeersModalState: Function;
+}) {
   return (
     <StyledCard>
       <InstructorMessage spacing={2}>
-        <StyledTypography variant="h4">Thank you for sharing!</StyledTypography>
-        <StyledTypography>
+        <StyledTypography variant="h4" color="#ffffff">
+          Thank you for sharing!
+        </StyledTypography>
+        <StyledTypography color="#ffffff">
           We’ll make sure to let {cohort?.host_full_name} know so they can help you meet your
           professional goals.
         </StyledTypography>
       </InstructorMessage>
-      <ContentReleaseDate />
+      <Stack
+        spacing={2}
+        sx={{ justifyContent: 'center', alignItems: 'center', margin: '10px 0px' }}
+      >
+        <StyledImage
+          src="https://sphere-public.s3.eu-west-2.amazonaws.com/invite-team-box-grey.png"
+          alt="invitation image"
+        />
+        <StyledTypography variant="h3">Upskill your team</StyledTypography>
+        <StyledTypography>
+          Learn collaboratively with your team and apply the learnings to the problems you're
+          facing.
+        </StyledTypography>
+        <StyledButton variant="contained" onClick={() => setInvitePeersModalState(true)}>
+          Invite your team
+        </StyledButton>
+      </Stack>
     </StyledCard>
   );
 }

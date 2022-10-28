@@ -76,7 +76,7 @@ export default function WelcomePage({
 
   return (
     <>
-      {displayConfetti && (
+      {hasOnboarded && displayConfetti && (
         <ReactConfetti
           width={windowSize?.innerWidth}
           height={windowSize?.innerHeight}
@@ -106,7 +106,12 @@ export default function WelcomePage({
             <ContentReleaseDetails />
           ) : (
             <Box width={{ xs: '80%', sm: '40%', md: '27%' }} sx={{ margin: 'auto' }}>
-              <PreCohortChecklist setHasOnboarded={() => setActiveStepper(2)} />
+              <PreCohortChecklist
+                setHasOnboarded={() => {
+                  setActiveStepper(2);
+                  setHasOnboarded(true);
+                }}
+              />
             </Box>
           )}
         </StyledCard>

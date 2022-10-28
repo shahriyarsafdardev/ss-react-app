@@ -78,7 +78,7 @@ export default function OnboardingCalendarInstructions() {
 
   const handleSubmit = () => {
     dispatch(markOnboardingStep(cohort_id, 'onboarding_calendar_sync_step_completed'));
-    navigate(`/cohorts/${cohort_id}/home`);
+    navigate(`/cohorts/${cohort_id}/peers`);
   };
 
   return (
