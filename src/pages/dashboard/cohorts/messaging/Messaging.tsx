@@ -156,68 +156,68 @@ export default function Messaging() {
 
   return (
     <Page title="Sphere | Messaging" id="page">
-      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
-        <>
-          {profileFormSubmitted ? (
-            <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-              <Box id="box">
-                <div key={cohortID} className="chat_wrapper">
-                  <Chat {...{ client, i18nInstance }} theme="team light">
-                    <DesktopView>
-                      <ChannelListContainer
-                        {...{
-                          isCreating,
-                          options,
-                          setCreateType,
-                          setIsCreating,
-                          setIsEditing,
-                          cohortID,
-                          cohortUsers: enrollments || [],
-                          sort,
-                          loggedinUserID,
-                          canTrack: desktopView
-                        }}
-                      />
-                    </DesktopView>
-
-                    <ChannelContainer
+      {/* {cohort?.released_for_learners === true || mode === 'Instructor' ? ( */}
+      <>
+        {profileFormSubmitted ? (
+          <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+            <Box id="box">
+              <div key={cohortID} className="chat_wrapper">
+                <Chat {...{ client, i18nInstance }} theme="team light">
+                  <DesktopView>
+                    <ChannelListContainer
                       {...{
-                        createType,
                         isCreating,
-                        isEditing,
+                        options,
+                        setCreateType,
                         setIsCreating,
                         setIsEditing,
                         cohortID,
-                        cohortUsers: enrollments || []
+                        cohortUsers: enrollments || [],
+                        sort,
+                        loggedinUserID,
+                        canTrack: desktopView
                       }}
                     />
-                    <MobileView>
-                      <SidePanel
-                        props={{
-                          isCreating,
-                          options,
-                          setCreateType,
-                          setIsCreating,
-                          setIsEditing,
-                          cohortID,
-                          cohortUsers: enrollments || [],
-                          sort,
-                          loggedinUserID,
-                          canTrack: !desktopView
-                        }}
-                      />
-                    </MobileView>
-                  </Chat>
-                </div>
-              </Box>
-            </AnalyticsContext.Provider>
-          ) : (
-            <BasicProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
-          )}
-        </>
-      ) : (
+                  </DesktopView>
+
+                  <ChannelContainer
+                    {...{
+                      createType,
+                      isCreating,
+                      isEditing,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || []
+                    }}
+                  />
+                  <MobileView>
+                    <SidePanel
+                      props={{
+                        isCreating,
+                        options,
+                        setCreateType,
+                        setIsCreating,
+                        setIsEditing,
+                        cohortID,
+                        cohortUsers: enrollments || [],
+                        sort,
+                        loggedinUserID,
+                        canTrack: !desktopView
+                      }}
+                    />
+                  </MobileView>
+                </Chat>
+              </div>
+            </Box>
+          </AnalyticsContext.Provider>
+        ) : (
+          <BasicProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
+        )}
+      </>
+      {/* ) : (
         <EmptyMessagingTab cohortHost={cohort?.host_names} />
-      )}
+      )} */}
     </Page>
   );
 }

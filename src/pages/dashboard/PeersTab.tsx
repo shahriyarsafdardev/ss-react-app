@@ -14,6 +14,7 @@ import EmptyNetworkingTab from 'components/cohorts/onboarding/empty-states/Empty
 import { ExportToExcel, ExportOnboardingResponse } from 'components/students/Common';
 import StudentProfilePrompt from 'components/students/StudentProfilePrompt';
 import NetworkProfileModal from 'components/cohorts/home/NetworkProfileModal';
+import AlumniData from 'components/students/AlumniData';
 import LoadingScreen from '../../components/LoadingScreen';
 import { RootState, useDispatch, useSelector } from '../../redux/store';
 import { StudentProfile } from '../../@types/cohorts';
@@ -62,27 +63,31 @@ export default function PeersTab() {
   }
 
   useEffect(() => {
-    // get all the companies to choose from peers.
-    let newCompanies = filteredPeers
-      ?.map((peer) => peer.current_company.name)
-      ?.filter((name) => !!name);
-    // make the companies array unique
-    newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
-    setCompanies(newCompanies);
-    // make select items for strengths
-    setSelectedCompanies([]);
-    const user_id = url.get('user_id');
-    if (user_id && filteredPeers?.length > 0) {
-      const peer = filteredPeers.filter((peer) => peer.id === user_id)[0];
-      if (peer) {
-        modalHandler(peer);
+    if (cohort?.released_for_learners) {
+      // get all the companies to choose from peers.
+      let newCompanies = filteredPeers
+        ?.map((peer) => peer.current_company.name)
+        ?.filter((name) => !!name);
+      // make the companies array unique
+      newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
+      setCompanies(newCompanies);
+      // make select items for strengths
+      setSelectedCompanies([]);
+      const user_id = url.get('user_id');
+      if (user_id && filteredPeers?.length > 0) {
+        const peer = filteredPeers.filter((peer) => peer.id === user_id)[0];
+        if (peer) {
+          modalHandler(peer);
+        }
       }
     }
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (cohort && peers?.length > 0) {
-      trackEvent(cohort, 'Networking Page - Page Loaded', {});
+    if (cohort?.released_for_learners) {
+      if (cohort && peers?.length > 0) {
+        trackEvent(cohort, 'Networking Page - Page Loaded', {});
+      }
     }
   }, [cohort, peers]);
 
@@ -95,8 +100,10 @@ export default function PeersTab() {
   };
 
   useEffect(() => {
-    if (cohort && !peers) {
-      dispatch(getPeers(cohort_id.toString(), user?.id));
+    if (cohort?.released_for_learners) {
+      if (cohort && !peers) {
+        dispatch(getPeers(cohort_id.toString(), user?.id));
+      }
     }
   }, [dispatch, cohort]);
 
@@ -135,28 +142,48 @@ export default function PeersTab() {
     });
   };
 
-  const showCardView = () => (
-    <StudentProfileGrid
-      students={applyFilters()}
-      modalHandler={(peer: any) => {
-        modalHandler(peer);
-        trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-      }}
-    />
-  );
+  const showCardView = () =>
+    !cohort?.released_for_learners ? (
+      <AlumniData
+        viewMode="grid"
+        setCompanies={setCompanies}
+        modalHandler={(peer: any) => {
+          modalHandler(peer);
+          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+        }}
+      />
+    ) : (
+      <StudentProfileGrid
+        students={applyFilters()}
+        modalHandler={(peer: any) => {
+          modalHandler(peer);
+          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+        }}
+      />
+    );
 
-  const showTableView = () => (
-    <StudentProfileList
-      students={applyFilters()}
-      modalHandler={(peer: any) => {
-        modalHandler(peer);
-        trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-      }}
-    />
-  );
+  const showTableView = () =>
+    !cohort?.released_for_learners ? (
+      <AlumniData
+        viewMode="list"
+        setCompanies={setCompanies}
+        modalHandler={(peer: any) => {
+          modalHandler(peer);
+          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+        }}
+      />
+    ) : (
+      <StudentProfileList
+        students={applyFilters()}
+        modalHandler={(peer: any) => {
+          modalHandler(peer);
+          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+        }}
+      />
+    );
 
   const renderPeers = () =>
-    peers ? (
+    !cohort?.released_for_learners || peers ? (
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
         {mode === 'Learner' && (
           <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} cohort={cohort} />
@@ -166,7 +193,11 @@ export default function PeersTab() {
           setNetworkingModalState={setNetworkingModalState}
           cohort={cohort}
         />
-        <HeaderBreadcrumbs id="cohort-tab-title" heading="Peers" links={[]} />
+        <HeaderBreadcrumbs
+          id="cohort-tab-title"
+          heading={!cohort?.released_for_learners ? 'Alumni' : 'Peers'}
+          links={[]}
+        />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
@@ -215,7 +246,7 @@ export default function PeersTab() {
 
   return (
     <Page title="Sphere | Peers">
-      {cohort?.released_for_learners === true || mode === 'Instructor' ? (
+      {mode === 'Instructor' || mode === 'Learner' ? (
         renderPeers()
       ) : (
         <EmptyNetworkingTab key={cohort_id} cohortHost={cohort?.host_names} />
