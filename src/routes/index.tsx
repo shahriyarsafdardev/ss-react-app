@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
+import NewPeersTab from 'pages/dashboard/NewPeersTab';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
@@ -180,7 +181,8 @@ export default function Router() {
               path: '/peers',
               element: (
                 <RoleBasedGuard accessibleRoles={learnerRoles}>
-                  <PeersTab />
+                  {/* <PeersTab /> */}
+                  <NewPeersTab />
                 </RoleBasedGuard>
               )
             },
