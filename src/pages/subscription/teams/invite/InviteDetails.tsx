@@ -32,7 +32,7 @@ export default function InviteDetails({
           </Stack>
           <StyledTypography>To attend this course you will be charged:</StyledTypography>
           <Stack alignItems="center" sx={{ marginBottom: '30px' }}>
-            <Typography variant="h4">{`$${amount} USD`}</Typography>
+            <Typography variant="h4">{`$${new Intl.NumberFormat().format(amount)} USD`}</Typography>
             <StyledTypography>which will recur annually</StyledTypography>
           </Stack>
         </Stack>
