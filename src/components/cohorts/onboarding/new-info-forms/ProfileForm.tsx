@@ -138,15 +138,13 @@ export default function ProfileForm({
           value={infoObject?.last_name}
           onChange={(e) => onUpdateAttribute('last_name', e.target.value)}
         />
-        <FormControl data-testid="user-role" fullWidth>
-          <MUICreatableSelect
-            options={roleOptions}
-            value={infoObject?.role || ''}
-            onChange={(value: any) => onUpdateAttribute('role', value)}
-            label="Role"
-            isCreatable={false}
-          />
-        </FormControl>
+        <TextField
+          inputProps={{ 'data-testid': 'user-role' }}
+          fullWidth
+          label="Role"
+          value={infoObject?.role}
+          onChange={(e) => onUpdateAttribute('role', e.target.value)}
+        />
         <FormControl data-testid="company-name" fullWidth>
           <MUICreatableSelect
             options={companies?.map((company: any) => company?.name)}
