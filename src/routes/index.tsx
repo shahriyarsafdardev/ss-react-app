@@ -321,6 +321,7 @@ export default function Router() {
     { path: 'team-registration', element: <TeamRegistration /> },
     { path: 'teams/subscription_checkout', element: <CreditCheckout /> },
     { path: 'credit_checkout_invitation', element: <CreditCheckout /> },
+    { path: 'teams/subscription_invite', element: <InvitePage /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -470,6 +471,7 @@ const TeamRegistration = Loadable(
 const CreditCheckout = Loadable(
   lazy(() => import('../pages/subscription/payments/CreditCheckout'))
 );
+const InvitePage = Loadable(lazy(() => import('../pages/subscription/teams/invite/InvitePage')));
 const SharedResource = Loadable(lazy(() => import('../pages/SharedResource')));
 const FreeSessionInfo = Loadable(lazy(() => import('../pages/registration/FreeSessionInfo')));
 const FreeSessionMessage = Loadable(lazy(() => import('../pages/registration/FreeSessionMessage')));

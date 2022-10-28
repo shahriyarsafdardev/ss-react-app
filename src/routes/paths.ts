@@ -34,6 +34,7 @@ export const PATH_PAGE = {
   teamRegistration: '/team-registration',
   subscriptionCheckout: '/teams/subscription_checkout',
   creditCheckoutInvitation: '/credit_checkout_invitation',
+  invitePage: '/teams/subscription_invite',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
