@@ -132,6 +132,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
 
   const handleCompletedInviteTeamStep = () => {
     dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+    navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
     setInvitePeersModalState(false);
   };
 

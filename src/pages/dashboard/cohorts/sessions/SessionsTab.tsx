@@ -116,21 +116,10 @@ export default function SessionsTab() {
     }
     if (!cohort?.readings_released && mode === 'Learner') {
       return (
-        <>
-          <InvitePeersModal
-            invitePeersModalState={invitePeersModalState}
-            setInvitePeersModalState={setInvitePeersModalState}
-            onFinish={() => {
-              dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
-              setInvitePeersModalState(false);
-              navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
-            }}
-          />
-          <ContentReleasePreview
-            cohort={cohort}
-            setInvitePeersModalState={setInvitePeersModalState}
-          />
-        </>
+        <ContentReleasePreview
+          cohort={cohort}
+          setInvitePeersModalState={setInvitePeersModalState}
+        />
       );
     }
     if (filteredSessions && filteredSessions.length > 0) {
@@ -176,7 +165,20 @@ export default function SessionsTab() {
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="Sphere | Sessions">{cohortSessions()}</Page>
+      <Page title="Sphere | Sessions">
+        <>
+          <InvitePeersModal
+            invitePeersModalState={invitePeersModalState}
+            setInvitePeersModalState={setInvitePeersModalState}
+            onFinish={() => {
+              dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+              navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
+              setInvitePeersModalState(false);
+            }}
+          />
+          {cohortSessions()}
+        </>
+      </Page>
     </CohortContext.Provider>
   );
 }
