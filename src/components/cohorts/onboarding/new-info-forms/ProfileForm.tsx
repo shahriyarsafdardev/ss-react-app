@@ -164,7 +164,7 @@ export default function ProfileForm({
             infoObject?.last_name &&
             infoObject?.role &&
             infoObject?.company &&
-            infoObject?.profile_image
+            (infoObject?.profile_image?.image || infoObject?.profile_image?.preview)
           )
         }
       >
