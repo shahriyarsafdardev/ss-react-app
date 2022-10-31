@@ -10,6 +10,7 @@ type StudentProfileModalProps = {
   trackModalEvent: Function;
   modalUser: any;
   dispalyChatLink: boolean;
+  dispalyEmailLink?: boolean;
   cohort: any;
 };
 
@@ -78,6 +79,7 @@ export default function StudentProfileModal({
   trackModalEvent,
   modalUser,
   dispalyChatLink,
+  dispalyEmailLink,
   cohort
 }: StudentProfileModalProps) {
   const theme = useTheme();
@@ -268,16 +270,18 @@ export default function StudentProfileModal({
             </Link>
           </StyledRow>
         )}
-        <StyledRow>
-          <img
-            alt="sketch icon"
-            src="/static/peers/mail.svg"
-            width={20}
-            height={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text data-testid="user-email">{email}</Text>
-        </StyledRow>
+        {dispalyEmailLink && (
+          <StyledRow>
+            <img
+              alt="sketch icon"
+              src="/static/peers/mail.svg"
+              width={20}
+              height={20}
+              style={{ marginRight: 15 }}
+            />
+            <Text data-testid="user-email">{email}</Text>
+          </StyledRow>
+        )}
 
         {dispalyChatLink && (
           <StyledRow>

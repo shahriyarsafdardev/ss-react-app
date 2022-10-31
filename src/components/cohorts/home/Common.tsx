@@ -341,6 +341,10 @@ export const ChecklistItem = ({
   return (
     <Stack
       direction="row"
+      onClick={() => {
+        status === 'Active' && onSubmit();
+      }}
+      className={`${status === 'Active' && classes.buttonActive}`}
       sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
     >
       <StyledTypography
@@ -359,7 +363,7 @@ export const ChecklistItem = ({
           {heading}
         </StyledTypography>
         <Box
-          onClick={() => onSubmit()}
+          // onClick={() => onSubmit()}
           className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
         >
           <Icon icon={arrowForwardFill} width="20px" height="20px" />

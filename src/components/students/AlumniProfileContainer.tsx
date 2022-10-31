@@ -1,14 +1,17 @@
 import { useState } from 'react';
 // material
-import { Grid, Table, TableBody, TableContainer } from '@material-ui/core';
+import { Grid, Table, Box, CircularProgress, TableBody, TableContainer } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { UserListHead } from '../_dashboard/user/list';
-import Scrollbar from '../Scrollbar';
 import { StudentProfile } from '../../@types/cohorts';
 import StudentProfileRow from './StudentProfileRow';
 import StudentProfileCard from './StudentProfileCard';
-import { Loader } from './AlumniData';
 
+const Loader = () => (
+  <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '20px' }}>
+    <CircularProgress />
+  </Box>
+);
 const TABLE_HEAD = [
   { id: 'name', label: 'Name' },
   { id: 'company', label: 'Company' },

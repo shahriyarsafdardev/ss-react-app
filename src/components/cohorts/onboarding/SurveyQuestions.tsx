@@ -38,7 +38,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-function SurveyQuestionsModal() {
+function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalState: Function }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [surveyData, setSurveyData] = useState<any>([]);
@@ -89,6 +89,7 @@ function SurveyQuestionsModal() {
       .then((res) => {
         setLoading(false);
         dispatch(updateOnboardingData(cohort_id, res.data));
+        setInvitePeersModalState(true);
       })
       .catch((err) => {
         setLoading(false);
@@ -165,4 +166,4 @@ function SurveyQuestionsModal() {
   );
 }
 
-export default SurveyQuestionsModal;
+export default SurveyQuestions;

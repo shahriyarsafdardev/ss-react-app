@@ -76,9 +76,10 @@ export default function OnboardingCalendarInstructions() {
     navigate('/contact-us');
   };
 
-  const handleSubmit = () => {
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_calendar_sync_step_completed'));
+  const handleSubmit = async () => {
+    await dispatch(markOnboardingStep(cohort_id, 'onboarding_calendar_sync_step_completed'));
     navigate(`/cohorts/${cohort_id}/peers`);
+    await dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
   };
 
   return (

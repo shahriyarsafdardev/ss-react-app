@@ -69,7 +69,7 @@ const Index = () => {
         !onboarding_data?.onboarding_checklist_completed
       ) {
         setActiveStepper(0);
-      } else if (typeof activeSession === 'undefined' && paramStep === '1') {
+      } else if (paramStep === '1') {
         setActiveStepper(1);
       } else {
         setActiveStepper(2);

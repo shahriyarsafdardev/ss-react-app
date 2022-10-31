@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
@@ -54,7 +55,7 @@ export default function SessionsTab() {
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const [invitePeersModalState, setInvitePeersModalState] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
-
+  const navigate = useNavigate();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -111,7 +112,7 @@ export default function SessionsTab() {
 
   const cohortSessions = () => {
     if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
-      return <CohortQuestionnair />;
+      return <CohortQuestionnair setInvitePeersModalState={setInvitePeersModalState} />;
     }
     if (!cohort?.readings_released && mode === 'Learner') {
       return (
@@ -122,6 +123,7 @@ export default function SessionsTab() {
             onFinish={() => {
               dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
               setInvitePeersModalState(false);
+              navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
             }}
           />
           <ContentReleasePreview

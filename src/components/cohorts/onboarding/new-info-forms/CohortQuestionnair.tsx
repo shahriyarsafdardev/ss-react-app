@@ -30,11 +30,15 @@ const PictureStyle = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function CohortQuestionnair() {
+export default function CohortQuestionnair({
+  setInvitePeersModalState
+}: {
+  setInvitePeersModalState: Function;
+}) {
   return (
     <StyledStack alignItems="center">
       <PictureStyle />
-      <SurveyQuestions />
+      <SurveyQuestions setInvitePeersModalState={setInvitePeersModalState} />
     </StyledStack>
   );
 }
