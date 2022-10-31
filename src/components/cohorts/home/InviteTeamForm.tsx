@@ -4,6 +4,9 @@ import * as Yup from 'yup';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
+import { trackEvent } from 'utils/eventTracking';
+import { RootState, useSelector } from 'redux/store';
+import useAuth from 'hooks/useAuth';
 
 export type ReferralTypeUser = {
   email: string;
@@ -42,7 +45,11 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function InviteTeamForm({ handleSubmit }: { handleSubmit: Function }) {
   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuth();
   const cohortID = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -66,6 +73,12 @@ export default function InviteTeamForm({ handleSubmit }: { handleSubmit: Functio
         .then((res) => {
           setSubmitting(false);
           enqueueSnackbar(`Invitation sent to ${values.email} 🎉`, { variant: 'success' });
+          trackEvent(cohort, 'Cohort Onboarding - Invite Team - Referral Invite Sent', {
+            'Referee Email': values.email,
+            'Referee Name': values.fullName,
+            'Referrer Email': user?.email,
+            'Referrer Name': user?.displayName
+          });
           resetForm();
         })
         .catch((error: any) => {
