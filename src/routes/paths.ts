@@ -92,6 +92,8 @@ export const PATH_DASHBOARD = {
     home: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/home`),
     calendar_invites: (cohortID: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/calendar-instructions`),
+    calendar_instructions: (cohortID: string) =>
+      path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/onboarding-calendar-instructions`),
     q_a: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/Q&A`),
     analytics: (cohortID: string, instructorName: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/${instructorName}/analytics`)

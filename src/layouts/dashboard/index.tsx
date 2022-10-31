@@ -4,6 +4,9 @@ import { Outlet } from 'react-router-dom';
 import { styled, useTheme } from '@material-ui/core/styles';
 // hooks
 import useAuth from 'hooks/useAuth';
+import { Box, useMediaQuery } from '@material-ui/core';
+import PreCohortChecklist from 'components/cohorts/home/PreCohortChecklist';
+import { RootState, useSelector } from 'redux/store';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
 import DashboardNavbar from './DashboardNavbar';
@@ -40,6 +43,10 @@ export default function DashboardLayout() {
   const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const current_url = window.location.pathname.split('/');
+  const current_tab = current_url[current_url.length - 1];
+  const { mode } = useSelector((state: RootState) => state.instructorView);
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <RootStyle>
@@ -57,6 +64,20 @@ export default function DashboardLayout() {
           })
         }}
       >
+        {mode === 'Learner' && isDesktop && current_tab !== 'home' && (
+          <Box
+            sx={{
+              maxWidth: '360px',
+              width: '22%',
+              position: 'fixed',
+              bottom: '30px',
+              left: '40px',
+              zIndex: '1200'
+            }}
+          >
+            <PreCohortChecklist />
+          </Box>
+        )}
         <Outlet />
       </MainStyle>
     </RootStyle>

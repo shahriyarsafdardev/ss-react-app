@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Container, Grid, Box } from '@material-ui/core';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
-import EmptySessionsTab from 'components/cohorts/onboarding/empty-states/EmptySessionsTab';
 import { trackEvent } from 'utils/eventTracking';
+import CohortQuestionnair from 'components/cohorts/onboarding/new-info-forms/CohortQuestionnair';
+import InvitePeersModal from 'components/cohorts/home/InvitePeersModal';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
-import { getSessions } from '../../../../redux/slices/cohort';
+import { getSessions, markOnboardingStep } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
 import SessionListSidebar from './SessionListSidebar';
 import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
-
+import ContentReleasePreview from './ContentReleasePreview';
 // ----------------------------------------------------------------------
 
 const SessionsContainer = styled(Container)(({ theme }) => ({
@@ -51,8 +53,9 @@ export default function SessionsTab() {
   const dispatch = useDispatch();
   const [selectedSession, setSelectedSession] = useState(0);
   const [analyticsSent, setAnalyticsSent] = useState(false);
+  const [invitePeersModalState, setInvitePeersModalState] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
-
+  const navigate = useNavigate();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -107,55 +110,73 @@ export default function SessionsTab() {
     trackEvent(cohort, eventName, eventData);
   };
 
-  const cohortSessions = () =>
-    filteredSessions && filteredSessions.length > 0 ? (
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <SessionsContainer>
-          <SessionsInnerContainer container>
-            <Grid item md={8} sm={12}>
-              <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                <SessionBoard
-                  session={filteredSessions && filteredSessions[selectedSession]}
-                  isLearner={isLearner}
-                  isFree={cohort.is_free}
-                />
-              </SessionContext.Provider>
-            </Grid>
-            <SessionListDesktopContainer item md={4}>
-              <SessionList
-                isLearner={isLearner}
-                onClick={setSelectedSession}
-                selectedSession={selectedSession}
-                sessionsList={trimmedSessionData}
-              />
-            </SessionListDesktopContainer>
-          </SessionsInnerContainer>
-          <SessionListSidebar
-            setSelectedSession={setSelectedSession}
-            selectedSession={selectedSession}
-            sessionsList={trimmedSessionData}
+  const cohortSessions = () => {
+    if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
+      return <CohortQuestionnair setInvitePeersModalState={setInvitePeersModalState} />;
+    }
+    if (!cohort?.readings_released && mode === 'Learner') {
+      return (
+        <>
+          <InvitePeersModal
+            invitePeersModalState={invitePeersModalState}
+            setInvitePeersModalState={setInvitePeersModalState}
+            onFinish={() => {
+              dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+              setInvitePeersModalState(false);
+              navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
+            }}
           />
-        </SessionsContainer>
-      </AnalyticsContext.Provider>
-    ) : (
+          <ContentReleasePreview
+            cohort={cohort}
+            setInvitePeersModalState={setInvitePeersModalState}
+          />
+        </>
+      );
+    }
+    if (filteredSessions && filteredSessions.length > 0) {
+      return (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <SessionsContainer>
+            <SessionsInnerContainer container>
+              <Grid item md={8} sm={12}>
+                <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
+                  <SessionBoard
+                    session={filteredSessions && filteredSessions[selectedSession]}
+                    isLearner={isLearner}
+                    isFree={cohort.is_free}
+                  />
+                </SessionContext.Provider>
+              </Grid>
+              <SessionListDesktopContainer item md={4}>
+                <SessionList
+                  isLearner={isLearner}
+                  onClick={setSelectedSession}
+                  selectedSession={selectedSession}
+                  sessionsList={trimmedSessionData}
+                />
+              </SessionListDesktopContainer>
+            </SessionsInnerContainer>
+            <SessionListSidebar
+              setSelectedSession={setSelectedSession}
+              selectedSession={selectedSession}
+              sessionsList={trimmedSessionData}
+            />
+          </SessionsContainer>
+        </AnalyticsContext.Provider>
+      );
+    }
+    return (
       <LoadingContainer>
         <LoadingScreen />
       </LoadingContainer>
     );
+  };
 
   return (
     <CohortContext.Provider
       value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
     >
-      <Page title="Sphere | Sessions">
-        {cohort?.released_for_learners === true ||
-        cohort?.readings_released === true ||
-        mode === 'Instructor' ? (
-          cohortSessions()
-        ) : (
-          <EmptySessionsTab key={cohort_id} cohortHost={cohort?.host_names} />
-        )}
-      </Page>
+      <Page title="Sphere | Sessions">{cohortSessions()}</Page>
     </CohortContext.Provider>
   );
 }

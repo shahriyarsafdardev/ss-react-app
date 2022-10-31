@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, Button, Card, CircularProgress, Stack, Theme, Typography } from '@material-ui/core';
+import { Box, Card, CircularProgress, Stack, Theme, Typography, Button } from '@material-ui/core';
 import { uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
@@ -8,7 +8,12 @@ import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext, useEffect } from 'react';
-import { Cohort, Session } from '../../../@types/cohorts';
+import arrowForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
+import Icon from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'redux/store';
+import { markOnboardingStep } from 'redux/slices/cohort';
+import { Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
@@ -43,7 +48,11 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   }
 }));
 
-const useStyles = makeStyles((theme: Theme) => ({
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  fontSize: '15px'
+}));
+
+export const useStyles = makeStyles((theme: Theme) => ({
   calendarInstructionsModal: {
     width: '52%',
     margin: 'auto',
@@ -52,7 +61,112 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: 'auto'
     }
   },
-  heading: { fontSize: '20px', fontWeight: 600 }
+  heading: { fontSize: '20px', fontWeight: 600 },
+  header: {
+    marginBottom: '15px',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '10px'
+    }
+  },
+  index: {
+    width: '30px',
+    height: '30px',
+    textAlign: 'center',
+    padding: '10px',
+    borderRadius: '50%',
+    fontWeight: 700,
+    fontSize: '15px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  indexActive: {
+    backgroundColor: '#F1F5F9'
+  },
+  indexCompleted: {
+    backgroundColor: '#C7D0D0',
+    color: '#FFFFFF',
+    fontWeight: 700
+  },
+  indexNonActive: {
+    backgroundColor: '#F1F5F9',
+    color: '#C7D0D0'
+  },
+  headingActive: {
+    margin: '0 10px'
+  },
+  headingNonActive: {
+    color: '#C7D0D0'
+  },
+  headingCompleted: {
+    textDecoration: 'line-through',
+    color: '#C7D0D0'
+  },
+  buttonActive: {
+    cursor: 'pointer',
+    display: 'flex'
+  },
+  buttonNonActive: {
+    display: 'none'
+  },
+  peersModalCard: {
+    padding: '60px',
+    [theme.breakpoints.down('md')]: {
+      padding: '15px'
+    }
+  },
+  peerModalAvatar: {
+    width: '72px',
+    height: '72px',
+    margin: 'auto'
+  },
+  mainCard: {
+    overflow: 'visible',
+    padding: '50px',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px'
+    }
+  },
+  userInfo: {
+    border: '1px solid #E2E8F0',
+    borderRadius: '8px',
+    padding: '10px'
+  },
+  userAvatar: {
+    width: 64,
+    height: 64,
+    zIndex: 11
+  },
+  modalSubmitButton: {
+    width: '200px',
+    borderRadius: '30px',
+    margin: 'auto !important',
+    marginTop: '32px !important',
+    [theme.breakpoints.down('md')]: {
+      width: '90%'
+    }
+  },
+  completionPrompt: {
+    alignItems: 'center',
+    padding: '20px 30px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '10px 15px'
+    }
+  },
+  completionPromptIcon: {
+    borderRadius: '50%',
+    width: '32px',
+    height: '32px',
+    backgroundColor: '#696DC8',
+    color: 'white'
+  },
+  completionPromptButton: {
+    padding: '5px 20px',
+    borderRadius: '30px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '5px 10px'
+    }
+  }
 }));
 
 const StyledCircularLoader = styled(Box)(({ theme }) => ({
@@ -160,37 +274,37 @@ export const sessionName = (session: Session | undefined, defaultName: string | 
 };
 
 export const CalendarInstructionsModal = ({
-  cohort,
-  modalState,
-  setModalState,
+  calendarURL,
+  calendarInstructionsModalState,
+  setCalendarInstructionsModalState,
   handleSubmit
 }: {
-  cohort: Cohort;
-  modalState: boolean;
-  setModalState: Function;
+  calendarURL: string;
+  calendarInstructionsModalState: boolean;
+  setCalendarInstructionsModalState: Function;
   handleSubmit: Function;
 }) => {
   const classes = useStyles();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
-    modalState &&
+    calendarInstructionsModalState &&
       sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
-        'Calendar URL': cohort?.calendar_invite_url
+        'Calendar URL': calendarURL
       });
-  }, [modalState]);
+  }, [calendarInstructionsModalState]);
 
   const onNeedHandler = () => {
     sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
-      'Calendar URL': cohort?.calendar_invite_url
+      'Calendar URL': calendarURL
     });
   };
 
   return (
     <Modal
-      open={modalState}
+      open={calendarInstructionsModalState}
       onClose={() => {
-        setModalState(false);
+        setCalendarInstructionsModalState(false);
       }}
       zIndex={1400}
       className={classes.calendarInstructionsModal}
@@ -201,69 +315,95 @@ export const CalendarInstructionsModal = ({
         </Typography>
         <AddToCalendarInfo
           onNextHandler={() => {
-            setModalState(false);
+            setCalendarInstructionsModalState(false);
             handleSubmit();
           }}
           onNeedHandler={onNeedHandler}
-          inviteUrl={cohort?.calendar_invite_url}
+          inviteUrl={calendarURL}
         />
       </Card>
     </Modal>
   );
 };
 
-export const OnboardingSectionRow = ({
+export const ChecklistItem = ({
   index,
   heading,
-  subHeading,
   status,
-  classes,
   onSubmit
 }: {
   index: number;
   heading: string;
-  subHeading: string;
   status: string;
-  classes: any;
   onSubmit: Function;
-}) => (
-  <Box className={classes.row}>
-    <Typography
-      className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
-        status === 'NonActive' && classes.indexNonActive
-      } ${status === 'Completed' && classes.indexCompleted}`}
+}) => {
+  const classes = useStyles();
+  return (
+    <Stack
+      direction="row"
+      onClick={() => {
+        status === 'Active' && onSubmit();
+      }}
+      className={`${status === 'Active' && classes.buttonActive}`}
+      sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
     >
-      {status === 'Completed' ? <DoneIcon /> : index}
-    </Typography>
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection={{ xs: 'column', md: 'row' }}
-      justifyContent="space-between"
-    >
-      <Stack direction="column" marginLeft={3}>
-        <Typography
+      <StyledTypography
+        className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
+          status === 'NonActive' && classes.indexNonActive
+        } ${status === 'Completed' && classes.indexCompleted}`}
+      >
+        {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
+      </StyledTypography>
+      <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
+        <StyledTypography
           className={`${classes.headingActive} ${
             status === 'NonActive' && classes.headingNonActive
           } ${status === 'Completed' && classes.headingCompleted}`}
         >
           {heading}
-        </Typography>
-        <Typography
-          className={`${classes.subHeadingActive} ${
-            status === 'NonActive' && classes.headingNonActive
-          } ${status === 'Completed' && classes.headingCompleted}`}
+        </StyledTypography>
+        <Box
+          // onClick={() => onSubmit()}
+          className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
         >
-          {subHeading}
-        </Typography>
+          <Icon icon={arrowForwardFill} width="20px" height="20px" />
+        </Box>
       </Stack>
-      <Button
-        variant="contained"
-        className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
-        onClick={() => onSubmit()}
-      >
-        Start
-      </Button>
-    </Box>
-  </Box>
-);
+    </Stack>
+  );
+};
+
+export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) {
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (gotoHome: boolean) => {
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
+    gotoHome && navigate(`/cohorts/${cohort_id}/home?active_step=1`);
+  };
+
+  return (
+    <Stack className={classes.completionPrompt} spacing={4}>
+      <Typography textAlign="center">
+        Congratulations, you have completed the Pre-Cohort Checklist! 🎉
+      </Typography>
+      <Stack sx={{ width: '100%' }} spacing={2}>
+        <Button
+          className={classes.completionPromptButton}
+          variant="contained"
+          onClick={() => handleSubmit(true)}
+        >
+          Go to Home
+        </Button>
+        <Button
+          className={classes.completionPromptButton}
+          variant="outlined"
+          onClick={() => handleSubmit(false)}
+        >
+          Continue Networking
+        </Button>
+      </Stack>
+    </Stack>
+  );
+}

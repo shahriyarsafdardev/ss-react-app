@@ -70,7 +70,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'attendance',
     'analytics',
     'surveys',
-    'code'
+    'code',
+    'onboarding-calendar-instructions'
   ];
 
   useEffect(() => {
@@ -97,6 +98,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Surveys Questions Form');
         } else if (section === 'code') {
           setCurrentTab('Code');
+        } else if (section === 'onboarding-calendar-instructions') {
+          setCurrentTab('Calendar');
         } else {
           setCurrentTab(section);
         }

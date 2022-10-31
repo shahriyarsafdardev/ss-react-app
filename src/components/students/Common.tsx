@@ -1,8 +1,9 @@
 import writeXlsxFile from 'write-excel-file';
-import { Button } from '@material-ui/core';
+import { Button, Theme } from '@material-ui/core';
 import _ from 'lodash';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
+import { makeStyles } from '@material-ui/styles';
 import { StudentProfile, Cohort } from '../../@types/cohorts';
 
 export const ExportToExcel = ({
