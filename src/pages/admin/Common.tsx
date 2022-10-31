@@ -67,7 +67,8 @@ export const ExampleQuestionModal = () => {
     {
       title: 'If so, which KPI does this course relate to?',
       question_type: 'text-input',
-      options: { placeholder: 'Enter here' }
+      options: { placeholder: 'Enter here' },
+      mandatory: true
     }
   ]`;
 
