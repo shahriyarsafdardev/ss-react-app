@@ -188,7 +188,7 @@ export default function OnboardingModal({
           company_name: payload.participant_profile.current_company,
           company_industries: payload.participant_profile.current_industry_category_selections,
           number_of_employees: payload.participant_profile.number_of_employees,
-          role_title: payload.participant_profile.current_company,
+          role_title: payload.participant_profile.current_position,
           role_category: payload.participant_profile.current_role_category_selections,
           do_manage_team: payload.participant_profile.do_manage_team,
           role_description: payload.participant_profile.bio_text,
