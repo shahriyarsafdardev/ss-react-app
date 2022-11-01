@@ -68,7 +68,8 @@ export default function InviteTeamForm({ handleSubmit }: { handleSubmit: Functio
           referee_email: values.email,
           referee_name: values.fullName,
           id: cohortID,
-          source: 'onboarding-referral'
+          source: 'onboarding-referral',
+          send_ses_email: false
         })
         .then((res) => {
           setSubmitting(false);

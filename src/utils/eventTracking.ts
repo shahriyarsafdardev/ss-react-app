@@ -24,6 +24,7 @@ export const setSegmentUserProperties = (user: any) => {
 };
 
 export const sendSegmentData = async (eventType: string, eventProperties: any) => {
+  let backendEvent = '';
   if (isSessionStarted(eventProperties)) {
     window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
@@ -42,11 +43,21 @@ export const sendSegmentData = async (eventType: string, eventProperties: any) =
     }
   }
 
-  if (eventType === 'Cohort Registration - Send Invitation Page - Referral Invite Sent') {
+  if (
+    [
+      'Cohort Registration - Send Invitation Page - Referral Invite Sent',
+      'Cohort Onboarding - Invite Team - Referral Invite Sent'
+    ].includes(eventType)
+  ) {
+    if (eventType === 'Cohort Registration - Send Invitation Page - Referral Invite Sent') {
+      backendEvent = 'Cohort Registration - Invited by Referral';
+    } else {
+      backendEvent = 'Cohort Onboarding - Invited by Referral';
+    }
     try {
       const data = new FormData();
       data.append('user_id', eventProperties['Referee Email']);
-      data.append('event_type', 'Cohort Registration - Invited by Referral');
+      data.append('event_type', backendEvent);
       data.append('event_properties', JSON.stringify(eventProperties));
       await axios.post(`/segments/trigger_segment_event.json`, data);
     } catch (error) {
