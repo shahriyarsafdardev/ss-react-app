@@ -5,6 +5,8 @@ import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
 import { updateOnboardingData } from 'redux/slices/cohort';
+import { trackEvent } from 'utils/eventTracking';
+import { RootState, useSelector } from 'redux/store';
 import useAuth from '../../../hooks/useAuth';
 // axios
 import axios from '../../../utils/axios';
@@ -48,6 +50,9 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
   const totalQuestions = surveyData.length;
   const [questionID, setQuestionID] = useState('');
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -56,6 +61,10 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
       setLoading(false);
     });
   }, [cohort_id]);
+
+  useEffect(() => {
+    trackEvent(cohort, 'Cohort Onboarding - Questionnaire - Page Loaded');
+  }, []);
 
   useEffect(() => {
     if (surveyData.length > 0) {
@@ -90,6 +99,7 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
         setLoading(false);
         dispatch(updateOnboardingData(cohort_id, res.data));
         setInvitePeersModalState(true);
+        trackEvent(cohort, 'Cohort Onboarding - Questionnaire - Questionnaire Submitted');
       })
       .catch((err) => {
         setLoading(false);
@@ -99,11 +109,17 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
   };
 
   const handleNext = () => {
+    trackEvent(cohort, 'Cohort Onboarding - Questionnaire - "Next Question" Selected');
     if (currentQuestion + 1 === totalQuestions) {
       submitResponse();
       return;
     }
     setCurrentQuestion(currentQuestion + 1);
+  };
+
+  const handlePrevious = () => {
+    trackEvent(cohort, 'Cohort Onboarding - Questionnaire - "Previous Question" Selected');
+    setCurrentQuestion(currentQuestion - 1);
   };
 
   return (
@@ -137,7 +153,7 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
                 variant="outlined"
                 disabled={currentQuestion === 0}
                 sx={{ mr: { xs: 0, md: 2 } }}
-                onClick={() => setCurrentQuestion(currentQuestion - 1)}
+                onClick={handlePrevious}
                 data-testid="btn-previous"
               >
                 Previous Question

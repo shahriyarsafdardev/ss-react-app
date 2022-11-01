@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { trackEvent } from 'utils/eventTracking';
 import { ChecklistItem, ChecklistCompletionPrompt } from './Common';
 import InvitePeersModal from './InvitePeersModal';
 
@@ -116,17 +117,24 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
     return status;
   };
 
+  const trackSegmentEvent = (eventName: string, eventData?: any) => {
+    trackEvent(cohort, eventName, eventData);
+  };
+
   const handleCompletedMessageStep = () => {
+    trackSegmentEvent('Cohort Onboarding - Checklist - "Introduce yourself" Selected');
     navigate(`/cohorts/${cohort_id}/messaging`);
     user?.basic_profile_completed &&
       dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
   };
 
   const handleShareGoalsStep = () => {
+    trackSegmentEvent('Cohort Onboarding - Checklist - "Share your Goals" Selected');
     navigate(`/cohorts/${cohort_id}/sessions`);
   };
 
   const handleInviteTeamStep = () => {
+    trackSegmentEvent('Cohort Onboarding - Checklist - "Invite Your Team" Selected');
     setInvitePeersModalState(true);
   };
 
@@ -134,13 +142,16 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
     dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
     navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
     setInvitePeersModalState(false);
+    trackSegmentEvent('Cohort Onboarding - Invite Team - "Finish" Selected');
   };
 
   const handleCalendarSyncStep = () => {
+    trackSegmentEvent('Cohort Onboarding - Checklist - "Sync Calendar" Selected');
     navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
   };
 
   const handleCompletedNetworkingStep = () => {
+    trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Explore Networking" Selected');
     navigate(`/cohorts/${cohort_id}/peers`);
     dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
   };
@@ -151,6 +162,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         invitePeersModalState={invitePeersModalState}
         setInvitePeersModalState={setInvitePeersModalState}
         onFinish={handleCompletedInviteTeamStep}
+        trackSegmentEvent={trackSegmentEvent}
       />
       {activeStep >= 6 ? (
         <StyledStack
@@ -161,7 +173,10 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
             {current_tab !== 'home' && <ExpandMore id="expand-more-icon" />}
           </StyledTypography>
           <Box id="checklist-content" style={{ display: 'block' }}>
-            <ChecklistCompletionPrompt cohort_id={cohort_id} />
+            <ChecklistCompletionPrompt
+              cohort_id={cohort_id}
+              trackSegmentEvent={trackSegmentEvent}
+            />
           </Box>
         </StyledStack>
       ) : (

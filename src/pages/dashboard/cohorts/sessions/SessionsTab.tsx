@@ -174,7 +174,9 @@ export default function SessionsTab() {
               dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
               navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
               setInvitePeersModalState(false);
+              sendAnalyticsData('Cohort Onboarding - Invite Team - "Finish" Selected', {});
             }}
+            trackSegmentEvent={sendAnalyticsData}
           />
           {cohortSessions()}
         </>

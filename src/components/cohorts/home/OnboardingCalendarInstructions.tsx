@@ -1,8 +1,10 @@
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -72,7 +74,18 @@ export default function OnboardingCalendarInstructions() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
 
+  useEffect(() => {
+    trackSegmentEvent('Calendar Instructions - Page Loaded');
+  }, []);
+
+  const trackSegmentEvent = (eventName: string) => {
+    trackEvent(cohort, eventName, {
+      'Calendar URL': cohort?.calendar_invite_url
+    });
+  };
+
   const onNeedHandler = () => {
+    trackSegmentEvent('Calendar Instructions - "I need help" Selected');
     navigate('/contact-us');
   };
 
@@ -80,6 +93,7 @@ export default function OnboardingCalendarInstructions() {
     await dispatch(markOnboardingStep(cohort_id, 'onboarding_calendar_sync_step_completed'));
     navigate(`/cohorts/${cohort_id}/peers`);
     await dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
+    trackSegmentEvent('Calendar Instructions - "I have added the sessions" Selected');
   };
 
   return (
