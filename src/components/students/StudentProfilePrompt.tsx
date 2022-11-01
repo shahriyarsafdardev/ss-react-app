@@ -48,10 +48,7 @@ const NetworkingMessage = styled(Stack)(({ theme }) => ({
 const StyledContent = styled(Stack)(({ theme }) => ({
   justifyContent: 'center',
   margin: 'auto',
-  padding: '0px 100px',
-  [theme.breakpoints.down('lg')]: {
-    padding: '0px 80px'
-  },
+  padding: '0px 80px',
   [theme.breakpoints.down('md')]: {
     padding: '20px'
   },
