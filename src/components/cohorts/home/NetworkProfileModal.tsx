@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
 
@@ -19,6 +19,7 @@ import MultiSelect from 'components/MultiSelect';
 import axios from 'utils/axios';
 import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
+import { trackEvent } from 'utils/eventTracking';
 import { Cohort } from '../../../@types/cohorts';
 import { useStyles } from './Common';
 
@@ -45,6 +46,10 @@ export default function NetworkProfileModal({
   const { industry_options } = useSelector((state: RootState) => state.profileOptions);
   const classes = useStyles();
 
+  useEffect(() => {
+    networkingModalState && trackEvent(cohort, 'Networking - Profile Form - Modal Opened');
+  }, [networkingModalState]);
+
   const fillUserValues = () => ({
     preferred_pronoun: user?.preferred_pronoun || '',
     linkedin_url: user?.linkedin_url || '',
@@ -62,6 +67,7 @@ export default function NetworkProfileModal({
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    trackEvent(cohort, 'Networking - Profile Form - "Save" Selected');
     const uploadData = new FormData();
     uploadData.append('preferred_pronoun', infoObject.preferred_pronoun);
     uploadData.append('linkedin_url', infoObject.linkedin_url);
@@ -85,6 +91,7 @@ export default function NetworkProfileModal({
     <Modal
       open={networkingModalState}
       onClose={() => {
+        trackEvent(cohort, 'Networking - Profile Form - Modal Closed');
         setNetworkingModalState(false);
       }}
       id="student-modal"

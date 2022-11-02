@@ -8,6 +8,8 @@ import { RootState, useDispatch, useSelector } from 'redux/store';
 import { updateOnboardingData } from 'redux/slices/cohort';
 import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
+import { trackEvent } from 'utils/eventTracking';
+import { Cohort } from '../../../../@types/cohorts';
 
 type BasicProfile = {
   first_name: string;
@@ -32,10 +34,10 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
 
 export default function ProfileForm({
   setProfileFormSubmitted,
-  cohortID
+  cohort
 }: {
   setProfileFormSubmitted: Function;
-  cohortID: string;
+  cohort: Cohort;
 }) {
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -62,6 +64,7 @@ export default function ProfileForm({
   };
 
   useEffect(() => {
+    trackEvent(cohort, 'Cohort Onboarding - Basic Profile Form - Page Loaded');
     axios
       .get('/cohorts/select_fields_data.json')
       .then((res) => res.data)
@@ -77,7 +80,7 @@ export default function ProfileForm({
     uploadData.append('last_name', infoObject.last_name);
     uploadData.append('current_company', infoObject.company);
     uploadData.append('current_position', infoObject.role);
-    uploadData.append('cohort_id', cohortID);
+    uploadData.append('cohort_id', cohort?.id);
     infoObject?.profile_image?.image &&
       uploadData.append('image', infoObject?.profile_image?.image);
 
@@ -88,6 +91,7 @@ export default function ProfileForm({
         updateProfile({ ...user, ...res.data.user });
         setProfileFormSubmitted(true);
         setIsSubmitting(false);
+        trackEvent(cohort, 'Cohort Onboarding - Basic Profile Form - Form Submitted');
       })
       .catch((error) => {
         enqueueSnackbar('Some error occurred!', { variant: 'error' });

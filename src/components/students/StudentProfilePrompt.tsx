@@ -1,5 +1,6 @@
 import { Button, Stack, styled, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
+import { trackEvent } from 'utils/eventTracking';
 import { Cohort } from '../../@types/cohorts';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -86,6 +87,7 @@ export default function StudentProfilePrompt({
       : 'Complete my networking profile';
 
   const handleButtonSubmit = () => {
+    trackEvent(cohort, 'Networking - "Complete My Networking Profile" Selected');
     setNetworkingModalState(true);
   };
 

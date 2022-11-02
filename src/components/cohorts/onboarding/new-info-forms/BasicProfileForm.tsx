@@ -83,7 +83,7 @@ export default function BasicProfileForm({
             </StyledTypography>
           </Stack>
         </InstructorMessage>
-        <ProfileForm setProfileFormSubmitted={setProfileFormSubmitted} cohortID={cohort_id} />
+        <ProfileForm setProfileFormSubmitted={setProfileFormSubmitted} cohort={cohort} />
       </StyledCard>
     </>
   );

@@ -373,14 +373,25 @@ export const ChecklistItem = ({
   );
 };
 
-export function ChecklistCompletionPrompt({ cohort_id }: { cohort_id: string }) {
+export function ChecklistCompletionPrompt({
+  cohort_id,
+  trackSegmentEvent
+}: {
+  cohort_id: string;
+  trackSegmentEvent: Function;
+}) {
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = (gotoHome: boolean) => {
+    if (gotoHome) {
+      trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Go to Home" Selected');
+      navigate(`/cohorts/${cohort_id}/home?active_step=1`);
+    } else {
+      trackSegmentEvent('Cohort Onboarding - Checklist - "Continue Networking" Selected');
+    }
     dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
-    gotoHome && navigate(`/cohorts/${cohort_id}/home?active_step=1`);
   };
 
   return (

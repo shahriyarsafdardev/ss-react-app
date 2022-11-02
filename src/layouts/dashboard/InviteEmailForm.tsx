@@ -41,7 +41,8 @@ function InviteEmailForm({
           referee_email: values.email,
           referee_name: values.fullName,
           id: cohortId,
-          source: 'sidebar-referral'
+          source: 'sidebar-referral',
+          send_ses_email: true
         })
         .then((res) => {
           trackEvent(cohort, 'Sidebar - Referral Preview - Email Invite Sent', {
