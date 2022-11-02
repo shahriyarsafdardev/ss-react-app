@@ -16,6 +16,9 @@ const StyledCard = styled(Stack)(({ theme }) => ({
   border: '1px solid #E2E8F0',
   position: 'relative',
   flexDirection: 'row',
+  [theme.breakpoints.down('md')]: {
+    height: '630px'
+  },
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     height: 'auto'
@@ -31,11 +34,13 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   borderRadius: '16px',
   width: '60%',
   justifyContent: 'center',
+  [theme.breakpoints.down('md')]: {
+    width: '57%'
+  },
   [theme.breakpoints.down('sm')]: {
     padding: '30px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
-    backgroundSize: '100%',
     backgroundPosition: 'top center',
     flexDirection: 'column',
     height: 'auto'
@@ -99,7 +104,7 @@ export default function WelcomePage({
               <Typography color="#ffffff" style={{ fontSize: '15px' }}>
                 Looking forward to seeing you soon,
               </Typography>
-              <StyledTypography>{cohort?.host_full_name}</StyledTypography>
+              <StyledTypography>{cohort?.host_full_names}</StyledTypography>
             </Stack>
           </InstructorMessage>
           {hasOnboarded ? (

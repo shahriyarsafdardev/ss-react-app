@@ -31,7 +31,6 @@ const InvitationMessage = styled(Stack)(({ theme }) => ({
     padding: '20px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
-    backgroundSize: '100%',
     backgroundPosition: 'top center',
     flexDirection: 'column',
     height: 'auto'
@@ -45,7 +44,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledImage = styled('img')(({ theme }) => ({
-  width: '250px',
+  width: '275px',
   height: '150px'
 }));
 

@@ -139,6 +139,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   modalSubmitButton: {
     width: '200px',
+    height: '48px',
     borderRadius: '30px',
     margin: 'auto !important',
     marginTop: '32px !important',
@@ -163,6 +164,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   completionPromptButton: {
     padding: '5px 20px',
     borderRadius: '30px',
+    height: '48px',
     [theme.breakpoints.down('lg')]: {
       padding: '5px 10px'
     }

@@ -29,7 +29,8 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 }));
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  borderRadius: '30px'
+  borderRadius: '30px',
+  height: '48px'
 }));
 
 export default function ProfileForm({

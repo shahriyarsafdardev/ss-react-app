@@ -30,7 +30,6 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
     padding: '30px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
-    backgroundSize: '100%',
     backgroundPosition: 'top center',
     flexDirection: 'column',
     height: 'auto'

@@ -34,6 +34,7 @@ const ChildStack = styled(Stack)(({ theme }) => ({
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderRadius: '30px',
   width: '40%',
+  height: '48px',
   margin: 'auto !important',
   marginTop: '32px !important',
   [theme.breakpoints.down('md')]: {
@@ -135,7 +136,7 @@ export default function InviteTeamForm({
       </FormikProvider>
       <Button
         fullWidth
-        sx={{ borderRadius: '30px' }}
+        sx={{ borderRadius: '30px', height: '48px' }}
         variant="outlined"
         onClick={() => handleSubmit()}
       >

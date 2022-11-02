@@ -38,7 +38,6 @@ const NetworkingMessage = styled(Stack)(({ theme }) => ({
     padding: '40px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
-    backgroundSize: '100%',
     backgroundPosition: 'top center',
     flexDirection: 'column',
     height: 'auto'
@@ -59,7 +58,7 @@ const StyledContent = styled(Stack)(({ theme }) => ({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: '30px',
-  height: '40px',
+  height: '48px',
   width: 'fit-content',
   [theme.breakpoints.down('md')]: {
     width: '90%',
