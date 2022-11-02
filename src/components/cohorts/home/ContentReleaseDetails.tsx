@@ -9,7 +9,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 const StyledStack = styled(Stack)(({ theme }) => ({
   width: '25%',
   margin: 'auto',
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     margin: '30px auto',
     width: '90%'
   }
