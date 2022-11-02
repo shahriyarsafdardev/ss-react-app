@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '34px'
   },
   navigationButtons: {
-    height: '40px',
+    height: '48px',
     borderRadius: '30px'
   }
 }));

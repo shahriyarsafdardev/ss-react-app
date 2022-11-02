@@ -59,7 +59,7 @@ const StyledContent = styled(Stack)(({ theme }) => ({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: '30px',
-  height: '40px',
+  height: '48px',
   width: 'fit-content',
   [theme.breakpoints.down('md')]: {
     width: '90%',
