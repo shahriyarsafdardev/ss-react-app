@@ -68,7 +68,7 @@ export default function GetReadyPage({ cohort }: { cohort: Cohort }) {
               Looking forward to seeing you soon,
             </Typography>
             <StyledTypography sx={{ fontWeight: 'bold' }}>
-              {cohort?.host_full_name}
+              {cohort?.host_full_names}
             </StyledTypography>
           </InstructorMessage>
           <ContentReleaseDetails />
