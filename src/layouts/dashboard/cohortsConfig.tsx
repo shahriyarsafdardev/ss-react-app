@@ -25,6 +25,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       icon: ICONS.cohorts,
       children: [
         { title: 'live sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        { title: 'resources', path: PATH_DASHBOARD.cohorts.resources(cohort.id) },
         { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) },
         {
           title: instructor ? 'students' : 'networking',
@@ -125,7 +126,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed) ||
           (child.title === 'messaging' && onboarding_messaging_step_completed) ||
-          (['live sessions', 'Q&A', 'networking', 'code'].includes(child.title) &&
+          (['live sessions', 'Q&A', 'networking', 'code', 'resources'].includes(child.title) &&
             onboarding_messaging_step_completed &&
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed &&
@@ -134,9 +135,15 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         ) {
           data = { ...child, disabled: false };
         } else if (
-          ['live sessions', 'Q&A', 'networking', 'messaging', 'calendar invites', 'code'].includes(
-            child.title
-          )
+          [
+            'live sessions',
+            'Q&A',
+            'networking',
+            'messaging',
+            'calendar invites',
+            'code',
+            'resources'
+          ].includes(child.title)
         ) {
           data = { ...child, disabled: true };
         }
