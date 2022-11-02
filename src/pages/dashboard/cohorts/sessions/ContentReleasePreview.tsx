@@ -46,7 +46,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const StyledImage = styled('img')(({ theme }) => ({
-  width: '250px',
+  width: '275px',
   height: '150px'
 }));
 
