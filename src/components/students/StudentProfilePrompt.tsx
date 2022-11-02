@@ -12,6 +12,9 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   position: 'relative',
   flexDirection: 'row',
   marginBottom: '32px',
+  [theme.breakpoints.down('md')]: {
+    height: '350px'
+  },
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     height: 'auto'
@@ -23,13 +26,13 @@ const NetworkingMessage = styled(Stack)(({ theme }) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   backgroundPosition: 'right',
-  padding: '60px',
+  padding: '60px 20px',
   alignItems: 'center',
-  width: '45%',
+  width: '50%',
   borderRadius: '16px',
   justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    padding: '15px 20px'
+    width: '60%'
   },
   [theme.breakpoints.down('sm')]: {
     padding: '40px',
@@ -39,6 +42,18 @@ const NetworkingMessage = styled(Stack)(({ theme }) => ({
     backgroundPosition: 'top center',
     flexDirection: 'column',
     height: 'auto'
+  }
+}));
+
+const StyledContent = styled(Stack)(({ theme }) => ({
+  justifyContent: 'center',
+  margin: 'auto',
+  padding: '0px 80px',
+  [theme.breakpoints.down('md')]: {
+    padding: '20px'
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '20px 40px'
   }
 }));
 
@@ -62,14 +77,6 @@ const BoldText = styled(Typography)(({ theme }) => ({
 const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: '15px',
   color: '#ffffff'
-}));
-
-const StyledContent = styled(Stack)(({ theme }) => ({
-  justifyContent: 'center',
-  padding: '0px 120px',
-  [theme.breakpoints.down('md')]: {
-    padding: '15px'
-  }
 }));
 
 export default function StudentProfilePrompt({
