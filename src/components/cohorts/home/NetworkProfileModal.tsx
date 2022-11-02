@@ -53,8 +53,8 @@ export default function NetworkProfileModal({
   const fillUserValues = () => ({
     preferred_pronoun: user?.preferred_pronoun || '',
     linkedin_url: user?.linkedin_url || '',
-    industries: user?.industries || [],
-    role_description: ''
+    industries: user?.current_role_category_selections || [],
+    role_description: user?.bio_text || ''
   });
 
   const [infoObject, setInfoObject] = useState<UserNetworkingProfile>(fillUserValues());
