@@ -2,6 +2,7 @@ import React from 'react';
 import Page from 'components/Page';
 import { Container } from '@material-ui/core';
 import useSettings from 'hooks/useSettings';
+import ToggleButtons from './ToggleButtons';
 import ResourcesSection from './ResourcesSection';
 
 const sessionMaterials = [
@@ -80,6 +81,7 @@ export default function ResourcesPage() {
   return (
     <Page title="Sphere | Resources">
       <Container maxWidth={themeStretch ? false : 'xl'}>
+        <ToggleButtons />
         {sessionMaterials.map((session, index) => (
           <ResourcesSection key={index} sessionData={session} />
         ))}
