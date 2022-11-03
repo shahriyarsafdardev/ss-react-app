@@ -1,7 +1,7 @@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
-import { Stack, Box, Typography } from '@material-ui/core';
+import { Stack, Box } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation } from 'react-router-dom';
@@ -219,7 +219,7 @@ export default function CreditCheckout() {
                     borderRadius: '8px',
                     fontFamily: 'Public Sans,sans-serif',
                     fontSizeBase: '1rem',
-                    colorTextPlaceholder: '#475569',
+                    colorTextPlaceholder: '#D3D3D3',
                     spacingTab: '8px',
                     spacingGridRow: '20px'
                   },

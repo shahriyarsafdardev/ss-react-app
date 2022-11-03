@@ -97,6 +97,7 @@ export default function Payment() {
                 onFailure={onFailure}
                 onSuccess={onSuccess}
                 isUserPayment={isUserPayment}
+                clientSecret={link?.client_secret || ''}
               />
             </Grid>
           </Grid>

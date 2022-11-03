@@ -156,12 +156,6 @@ export default function StripePayment({
         }}
       />
       <PaymentElement
-        options={{
-          wallets: {
-            applePay: 'auto',
-            googlePay: 'auto'
-          }
-        }}
         onChange={(e) => {
           setValid(e.complete);
         }}

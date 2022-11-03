@@ -103,7 +103,7 @@ export default function InvitePage() {
                     borderRadius: '8px',
                     fontFamily: 'Public Sans,sans-serif',
                     fontSizeBase: '1rem',
-                    colorTextPlaceholder: '#475569',
+                    colorTextPlaceholder: '#D3D3D3',
                     spacingTab: '8px',
                     spacingGridRow: '20px'
                   },

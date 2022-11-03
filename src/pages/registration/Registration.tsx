@@ -406,6 +406,13 @@ export default function Registration() {
             setStep={(step: number) => setActiveStep(step)}
             payLaterMessage={payLaterMessage}
             trackRegistrationEvent={trackRegistrationEvent}
+            paymentData={{
+              company,
+              account,
+              activeStep,
+              waitlist: wait_listed,
+              preRelease: pre_release
+            }}
           />
         </Stack>
       );
@@ -481,7 +488,7 @@ export default function Registration() {
     }
     return (
       <Stack width="100%">
-        {![4, 5, 6].includes(activeStep) && (
+        {![3, 4, 5, 6].includes(activeStep) && (
           <Header
             company={company}
             account={account}

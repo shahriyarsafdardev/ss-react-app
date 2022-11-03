@@ -186,12 +186,6 @@ export default function InviteForm({
           }}
         />
         <PaymentElement
-          options={{
-            wallets: {
-              applePay: 'auto',
-              googlePay: 'auto'
-            }
-          }}
           onChange={(e) => {
             setValid(e.complete);
           }}
