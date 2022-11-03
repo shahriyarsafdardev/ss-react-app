@@ -4,11 +4,9 @@ import { useRef, useState, useContext } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
-import { Box, MenuItem, IconButton } from '@material-ui/core';
+import { Box, MenuItem, IconButton, Typography } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuPopover from 'components/MenuPopover';
-import { Icon } from '@iconify/react';
-import cancel from '@iconify/icons-ic/cancel';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -20,14 +18,17 @@ type SessionRowProps = {
   isLearner?: boolean;
 };
 
-const ListItem = styled('div')((props) => ({
+const ListItem = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   borderBottom: '1px solid #E5E5E5',
-  padding: '5px 0',
+  padding: '16px 0',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(77, 77, 205, 0.07)'
+  },
+  [theme.breakpoints.down('md')]: {
+    padding: '16px 8px'
   }
 }));
 
@@ -39,18 +40,26 @@ const ListIcon = styled('div')(({ theme }) => ({
 }));
 
 const Title = styled('p')((props) => ({
-  fontSize: '18px',
+  fontSize: '16px',
+  lineHeight: '26px',
   fontWeight: 'bold'
 }));
 
 const SessionDetails = styled('div')((props) => ({
   display: 'flex',
+  alignItems: 'flex-start',
   fontSize: '15px',
   lineHeight: '33px',
   color: '#6C7885',
   img: {
     width: '20px'
   }
+}));
+
+const SessionTimes = styled(Typography)((props) => ({
+  fontSize: '12px',
+  lineHeight: '20px',
+  paddingRight: '4px'
 }));
 
 const StyledIcon = styled('img')(() => ({
@@ -166,9 +175,12 @@ export default function SessionRow({
           data-testid={`session-list-number-${index}`}
         >{`Session ${session.number} | ${session.length}`}</SessionDetails>
         <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
-        <SessionDetails data-testid={`session-list-time-container-${index}`}>
+        <SessionDetails
+          data-testid={`session-list-time-container-${index}`}
+          sx={{ padding: '8px 0px' }}
+        >
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
-          {sessionTime(firstUpcomingDate(session.times))}
+          <SessionTimes>{sessionTime(firstUpcomingDate(session.times))}</SessionTimes>
         </SessionDetails>
       </div>
       {!isLearner && <InstructorOptions handleDelete={() => {}} />}
