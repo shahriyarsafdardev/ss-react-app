@@ -1,62 +1,31 @@
 import React from 'react';
 import { ToggleButtonGroup } from '@material-ui/core';
-import { StyledToggleButton, ToggleButtonTypography } from './Common';
+import { StyledToggleButton, ToggleButtonTypography, MaterialTypes } from './Common';
 
-const materialTypes = [
-  {
-    type: 'Academic Paper',
-    display: 'Academic Paper'
-  },
-  {
-    type: 'Article',
-    display: 'Articles'
-  },
-  {
-    type: 'Book',
-    display: 'Books'
-  },
-  {
-    type: 'Book Passage',
-    display: 'Book Passages'
-  },
-  {
-    type: 'Github',
-    display: 'Github'
-  },
-  {
-    type: 'Jupyter Notebook',
-    display: 'Jupyter'
-  },
-  {
-    type: 'Slides',
-    display: 'Slides'
-  },
-  {
-    type: 'Spreadsheet',
-    display: 'Spreadsheets'
-  },
-  {
-    type: 'Other',
-    display: 'Other'
-  }
-];
-
-export default function ToggleButtons() {
+function ToggleButtons({ filters, setFilters }: { filters: String[]; setFilters: Function }) {
   return (
     <ToggleButtonGroup
       style={{
-        marginBottom: '2rem',
+        marginBottom: '50px',
         display: 'grid',
         gridTemplateColumns: 'auto auto auto auto auto auto auto auto auto',
-        gridGap: '20px'
+        gridGap: '20px',
+        flexWrap: 'wrap'
       }}
       fullWidth={true}
+      value={filters}
+      onChange={(event, newFilters) => {
+        setFilters(newFilters);
+        console.log('Filters:', filters);
+      }}
     >
-      {materialTypes.map((m) => (
-        <StyledToggleButton selected={true} key={m.type} value={m.type}>
+      {MaterialTypes.map((m) => (
+        <StyledToggleButton key={m.type} value={m.type}>
           <ToggleButtonTypography>{m.display}</ToggleButtonTypography>
         </StyledToggleButton>
       ))}
     </ToggleButtonGroup>
   );
 }
+
+export default ToggleButtons;

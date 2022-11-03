@@ -1,35 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Page from 'components/Page';
-import { Container } from '@material-ui/core';
+import { Container, InputAdornment, TextField } from '@material-ui/core';
 import useSettings from 'hooks/useSettings';
 import { getCohortResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
+import searchFill from '@iconify/icons-eva/search-fill';
+import { Icon } from '@iconify/react';
 import ToggleButtons from './ToggleButtons';
 import ResourcesSection from './ResourcesSection';
+import { SearchbarStyle } from './Common';
 
 const sessionMaterials = [
   {
     sessionNumber: 1,
+    sessionName: 'Metrics, the OEC, Interpreting Results and Trust',
+    sessionID: '1',
     totalMaterials: 4,
     completedMaterials: 3,
     materials: [
       {
+        materialID: '1',
+        complete: true,
         materialName: 'Chapter 1 - Trustworthy Online Components',
         author: 'Ronny',
         type: 'Jupyter Notebook'
       },
       {
+        materialID: '2',
+        complete: false,
         materialName: 'An Exploration of Code',
         author: 'Steve, Charlotte, Andrew, Nancy, Peter, Alan & Dave',
         type: 'Slides'
       },
       {
+        materialID: '1',
+        complete: true,
         materialName:
           'Chapter 1 - Trustworthy Online Components To Use When Coding or Project Planning',
         author: 'Ronny',
         type: 'Academic Paper'
       },
       {
+        materialID: '1',
+        complete: true,
         materialName: 'An Exploration of Code Through the Ages of Time',
         author: 'Steve',
         type: 'Other'
@@ -38,15 +51,21 @@ const sessionMaterials = [
   },
   {
     sessionNumber: 2,
+    sessionName: 'Ideation Funnel, Machine Learning, Culture and Ethics',
+    sessionID: '1',
     totalMaterials: 2,
     completedMaterials: 0,
     materials: [
       {
+        materialID: '1',
+        complete: true,
         materialName: 'Chapter 1 - Trustworthy Online Components',
         author: 'Ronny',
         type: 'Github'
       },
       {
+        materialID: '1',
+        complete: true,
         materialName: 'An Exploration of Code',
         author: 'Steve',
         type: 'Book Passage'
@@ -55,6 +74,8 @@ const sessionMaterials = [
   },
   {
     sessionNumber: 3,
+    sessionName: 'Implementing Convolutional Neural Networks',
+    sessionID: '1',
     totalMaterials: 3,
     completedMaterials: 1,
     materials: [
@@ -70,7 +91,7 @@ const sessionMaterials = [
       },
       {
         materialName:
-          'Chapter 12 - Trustworthy Online Components To Use When Coding or Project Planning',
+          'Chapter 12 - Trustworthy Online Components To Use When Coding or Project Planning Even When You Think You Can No Longer Use Your Brain and Be Creative',
         author: 'Steve, Charlotte, Andrew, Nancy, Peter, Alan & Dave',
         type: 'Article'
       }
@@ -79,6 +100,7 @@ const sessionMaterials = [
 ];
 
 export default function ResourcesPage() {
+  const [filters, setFilters] = useState<String[]>([]);
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -98,7 +120,29 @@ export default function ResourcesPage() {
   return (
     <Page title="Sphere | Resources">
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <ToggleButtons />
+        {/* <SearchbarStyle> */}
+        <TextField
+          fullWidth
+          placeholder="Search"
+          onSubmit={() => console.log('Submitted!')}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Icon
+                  style={{ marginLeft: '5px' }}
+                  icon={searchFill}
+                  width={25}
+                  height={25}
+                  color="#101658"
+                />
+              </InputAdornment>
+            )
+          }}
+          color="primary"
+          sx={{ marginBottom: '30px' }}
+        />
+        {/* </SearchbarStyle> */}
+        <ToggleButtons filters={filters} setFilters={setFilters} />
         {sessionMaterials.map((session, index) => (
           <ResourcesSection key={index} sessionData={session} />
         ))}

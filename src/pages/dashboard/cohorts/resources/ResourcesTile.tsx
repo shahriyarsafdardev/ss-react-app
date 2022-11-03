@@ -1,58 +1,71 @@
 import React from 'react';
-import { Card, CardContent, Stack, Typography, Checkbox } from '@material-ui/core';
+import { CardContent, Stack, Typography, Checkbox, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
-import { StyledImage } from './Common';
+import { StyledImage, StyledTooltip, StyledCard, StyledBox, getColor, ParentBox } from './Common';
 
 function ResourcesTile({ material }: { material: any }) {
   return (
-    <Card
-      variant="outlined"
-      style={{
-        borderRadius: '8px !important',
-        width: '100%'
-      }}
-    >
+    <StyledCard variant="outlined">
       <CardContent>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
-            <StyledImage
-              src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.type}.png`}
-            />
+            <ParentBox>
+              <StyledImage
+                src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.type}.png`}
+              />
+              <StyledBox
+                key={material.materialID}
+                sx={{ backgroundColor: getColor(material.type) }}
+              >
+                <Typography
+                  sx={{ color: '#ffffff', fontWeight: 'bold', fontSize: '12px', width: '100px' }}
+                >
+                  {material.type}
+                </Typography>
+              </StyledBox>
+            </ParentBox>
             <Stack>
-              <Typography variant="h5" style={{ marginBottom: '10px' }}>
-                {material.materialName.length > 55
-                  ? `${material.materialName.slice(0, 56)}...`
+              <Typography variant="h5" style={{ marginBottom: '14px' }}>
+                {material.materialName.length > 95
+                  ? `${material.materialName.slice(0, 96)}...`
                   : material.materialName}
               </Typography>
               <Typography variant="subtitle2">
-                {material.author.length > 45
-                  ? `${material.author.slice(0, 46)}...`
+                {material.author.length > 130
+                  ? `${material.author.slice(0, 131)}...`
                   : material.author}
               </Typography>
             </Stack>
           </Stack>
-          <Checkbox
-            checked={false}
-            sx={{ height: '50px', width: '50px' }}
-            icon={
-              <Icon
-                icon={checkCircleFilled}
-                color="#E0E0E0"
-                width="100%"
-                height="100%"
-                style={{
-                  '&:hover': {
-                    color: '#828282'
-                  }
-                }}
-              />
-            }
-            checkedIcon={<Icon icon={checkCircleFilled} color="#101658" width="40" height="40" />}
-          />
+          <StyledTooltip
+            title="I've read this resource"
+            placement="left"
+            arrow
+            sx={{ backgroundColor: '#ffffff', color: '#101658' }}
+          >
+            <Checkbox
+              checked={false}
+              sx={{ height: '50px', width: '50px' }}
+              icon={
+                <Icon
+                  icon={checkCircleFilled}
+                  color="#E0E0E0"
+                  width="100%"
+                  height="100%"
+                  style={{
+                    '&:hover': {
+                      color: '#828282'
+                    }
+                  }}
+                />
+              }
+              checkedIcon={<Icon icon={checkCircleFilled} color="#101658" width="40" height="40" />}
+            />
+          </StyledTooltip>
         </Stack>
       </CardContent>
-    </Card>
+    </StyledCard>
   );
 }
 

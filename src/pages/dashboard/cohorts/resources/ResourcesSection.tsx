@@ -17,17 +17,18 @@ function ResourcesSection({ sessionData }: { sessionData: any }) {
 
   return (
     <Box style={{ marginBottom: '2rem' }}>
-      <Typography
-        variant="h3"
-        style={{ marginBottom: '1rem', color: '#101658' }}
-      >{`Session ${sessionData.sessionNumber}`}</Typography>
+      <Typography variant="h3" style={{ marginBottom: '1rem', color: '#101658' }}>
+        {sessionData.sessionName}
+      </Typography>
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         style={{ marginBottom: '10px' }}
       >
-        <Typography>{progress()}% of resources read</Typography>
+        <Typography>
+          {sessionData.completedMaterials}/{sessionData.totalMaterials} resources read
+        </Typography>
 
         {sessionData.totalMaterials > 3 && (
           <Button variant="text" onClick={() => setMore(!more)}>
