@@ -153,6 +153,32 @@ const slice = createSlice({
         state.cohorts[targetCohortIndex] = { ...updated, enrollments: action.payload.enrollments };
       }
     },
+    getCohortResourcesSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const copyCohort: Cohort = state.cohorts[targetCohortIndex];
+        copyCohort.resources = action.payload.resources;
+        state.cohorts[targetCohortIndex] = copyCohort;
+      }
+    },
+    getCohortSessionResourcesSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].resources;
+        const targetResourceIndex = updated.findIndex(
+          (resource) => resource.session_id === action.payload.sessionID
+        );
+
+        if (targetResourceIndex !== -1) {
+          updated[targetResourceIndex].materials = action.payload.materials;
+          state.cohorts[targetCohortIndex].resources = updated;
+        }
+      }
+    },
     getAnalyticsSuccess(state, action) {
       const targetCohortIndex = state.cohorts.findIndex(
         (cohort) => cohort.id === action.payload.cohort_id
@@ -179,6 +205,33 @@ const slice = createSlice({
         const copyCohort: Cohort = state.cohorts[targetCohortIndex];
         copyCohort.onboarding_data = action.payload.onboarding_data;
         state.cohorts[targetCohortIndex] = copyCohort;
+      }
+    },
+    updateCohortResourceMaterial(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].resources;
+        const targetResourceIndex = updated.findIndex(
+          (resource) => resource.session_id === action.payload.sessionID
+        );
+
+        if (targetResourceIndex !== -1) {
+          let targetMaterialIndex = -1;
+
+          updated[targetResourceIndex].materials.map((material, j) => {
+            if (material.id === action.payload.materialID) {
+              targetMaterialIndex = j;
+            }
+          });
+
+          if (targetMaterialIndex !== -1) {
+            updated[targetResourceIndex].materials[targetMaterialIndex].complete =
+              action.payload.result;
+            state.cohorts[targetCohortIndex].resources = updated;
+          }
+        }
       }
     },
     updateFeedbackStatusSuccess(state, action) {
@@ -364,6 +417,35 @@ export function markApplicationAsPaid(cohortID: string, enrollmentID: string) {
   };
 }
 
+export function markReadingCompleted(
+  cohortID: string,
+  sessionID: string,
+  materialID: string,
+  marked: boolean
+) {
+  return async () => {
+    try {
+      await axios
+        .post(`/cohorts/${cohortID}/resources/mark_reading.json`, {
+          materialID,
+          marked
+        })
+        .then((res) => {
+          dispatch(
+            slice.actions.updateCohortResourceMaterial({
+              cohortID,
+              sessionID,
+              materialID,
+              result: marked
+            })
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
 export function markOnboardingStep(cohortID: string, type: string) {
   return async () => {
     try {
@@ -497,6 +579,39 @@ export function getEnrollments(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/enrollments.json`);
       dispatch(slice.actions.getEnrollmentsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getCohortResources(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/resources.json`);
+      dispatch(
+        slice.actions.getCohortResourcesSuccess({
+          resources: response.data.resources,
+          cohortID
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getCohortSessionResources(cohortID: string, sessionID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/resources/see_more.json`);
+      dispatch(
+        slice.actions.getCohortSessionResourcesSuccess({
+          cohortID,
+          sessionID,
+          materials: response.data.materials
+        })
+      );
     } catch (error) {
       console.log(error);
     }

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Page from 'components/Page';
 import { Container } from '@material-ui/core';
 import useSettings from 'hooks/useSettings';
+import { getCohortResources } from 'redux/slices/cohort';
+import { RootState, useDispatch, useSelector } from 'redux/store';
 import ToggleButtons from './ToggleButtons';
 import ResourcesSection from './ResourcesSection';
 
@@ -78,6 +80,21 @@ const sessionMaterials = [
 
 export default function ResourcesPage() {
   const { themeStretch } = useSettings();
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { resources } = cohort || [];
+
+  useEffect(() => {
+    if (cohort && !resources) {
+      dispatch(getCohortResources(cohort_id));
+    }
+  }, [cohort]);
+
+  useEffect(() => {}, []);
+
   return (
     <Page title="Sphere | Resources">
       <Container maxWidth={themeStretch ? false : 'xl'}>
