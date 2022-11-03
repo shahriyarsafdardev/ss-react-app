@@ -1,17 +1,15 @@
 import React from 'react';
-import { List, ListItem } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import ResourcesTile from './ResourcesTile';
 
 function ResourcesList({ sessionMaterials }: { sessionMaterials: any }) {
   return (
     <>
-      <List>
+      <Stack spacing={2}>
         {sessionMaterials.map((material: any, index: any) => (
-          <ListItem key={index}>
-            <ResourcesTile material={material} />
-          </ListItem>
+          <ResourcesTile key={index} material={material} />
         ))}
-      </List>
+      </Stack>
     </>
   );
 }

@@ -102,20 +102,18 @@ const sessionMaterials = [
 export default function ResourcesPage() {
   const [filters, setFilters] = useState<String[]>([]);
   const { themeStretch } = useSettings();
-  const dispatch = useDispatch();
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
-  const { resources } = cohort || [];
+  // const dispatch = useDispatch();
+  // const cohort_id = window.location.pathname.split('/')[2] || '';
+  // const cohort = useSelector(
+  //   (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  // );
+  // const { resources } = cohort || [];
 
-  useEffect(() => {
-    if (cohort && !resources) {
-      dispatch(getCohortResources(cohort_id));
-    }
-  }, [cohort]);
-
-  useEffect(() => {}, []);
+  // useEffect(() => {
+  //   if (cohort && !resources) {
+  //     dispatch(getCohortResources(cohort_id));
+  //   }
+  // }, [cohort]);
 
   return (
     <Page title="Sphere | Resources">
