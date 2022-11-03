@@ -23,12 +23,6 @@ export type NetworkInfoType = {
   interested_in_being_matched: boolean;
 };
 
-export type HouseKeepingInfoType = {
-  current_understanding: string;
-  payed_by: string;
-  referred_by: string;
-};
-
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   padding: 11,
   '&.next': {

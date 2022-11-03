@@ -3,7 +3,6 @@ import { useState } from 'react';
 // material
 import {
   Grid,
-  Card,
   Stack,
   InputLabel,
   FormControl,
@@ -14,17 +13,6 @@ import {
 import { HouseKeepingInfoType, NavigationButtons } from './dataTypes';
 import { checkFormValidity } from '../Common';
 
-const REFERRER_OPTIONS = [
-  'Instructor',
-  'Promoter / Influencer',
-  'Sphere social media',
-  'Sphere emails',
-  'Google search',
-  'Recommended by manager',
-  'Recommended by colleague',
-  'Recommended by friend',
-  'Other'
-];
 const YES_NO_OPTIONS = ['Yes', 'No'];
 
 export default function HouseKeepingForm({
@@ -79,24 +67,6 @@ export default function HouseKeepingForm({
                   inputProps={{ 'data-testid': 'network-fellow-member' }}
                 >
                   {YES_NO_OPTIONS?.map((name: any) => (
-                    <MenuItem key={name} value={name}>
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </MaterialSelect>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel>How did you hear about this cohort?</InputLabel>
-                <MaterialSelect
-                  fullWidth
-                  data-testid="about-cohort"
-                  label="How did you hear about this cohort?"
-                  onChange={(e) => onUpdateAttribute('referred_by', e.target.value)}
-                  defaultValue={infoObject.referred_by}
-                  inputProps={{ 'data-testid': 'housekeeping-about-cohort' }}
-                  style={{ opacity: '1000' }}
-                >
-                  {REFERRER_OPTIONS?.map((name: any) => (
                     <MenuItem key={name} value={name}>
                       <ListItemText primary={name} />
                     </MenuItem>

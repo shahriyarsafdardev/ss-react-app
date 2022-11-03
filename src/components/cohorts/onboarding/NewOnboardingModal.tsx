@@ -16,11 +16,6 @@ type HomeResponse = {
   cohort_id: string;
   cohort_title: string;
   setup_completed: boolean;
-  discord_invitation_link: string | undefined;
-  onboarding_side_image_url: string | undefined;
-  onboarding_video_url: string | undefined;
-  onboarding_video_thumbnail_url: string | undefined;
-  onboarding_header: string | undefined;
   participant_profile: {
     profile_image_url: string;
     current_position: string;
@@ -75,9 +70,7 @@ type OnboardingDataType = {
   company_name: string;
   role_title: string;
   interested_in_being_matched?: boolean;
-  referred_by: string;
   goals: string;
-  improvements: string;
 };
 
 export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function }) {
@@ -97,9 +90,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
   const [onboardingData, setOnboardingData] = useState<OnboardingDataType>({
     company_name: '',
     role_title: '',
-    referred_by: '',
-    goals: '',
-    improvements: ''
+    goals: ''
   });
 
   useEffect(() => {
@@ -116,9 +107,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
           role_title: payload.participant_profile.current_position,
           interested_in_being_matched:
             payload.participant_profile.opted_in_for_matching_suggestions,
-          referred_by: '',
-          goals: '',
-          improvements: ''
+          goals: ''
         });
       });
   }, [cohort_id, user?.id]);
@@ -129,16 +118,14 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
         ...onboardingData,
         company_name: data.name,
         role_title: data.role_title,
-        goals: data.goals,
-        improvements: data.improvements
+        goals: data.goals
       };
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
     } else if (type === FormTypes.housekeepingInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
-        interested_in_being_matched: data.interested_in_being_matched,
-        referred_by: data.referred_by
+        interested_in_being_matched: data.interested_in_being_matched
       };
       setOnboardingData(tempData);
       setActiveStep(activeStep + 1);
@@ -205,8 +192,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
           companyProfile={{
             name: onboardingData.company_name || '',
             role_title: onboardingData.role_title || '',
-            goals: onboardingData.goals || '',
-            improvements: onboardingData.improvements || ''
+            goals: onboardingData.goals || ''
           }}
           isSubmitting={isSubmitting}
           onSubmit={(data: any) => {
@@ -235,8 +221,7 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
           }}
           isSubmitting={isSubmitting}
           infoDetails={{
-            interested_in_being_matched: onboardingData.interested_in_being_matched,
-            referred_by: onboardingData.referred_by
+            interested_in_being_matched: onboardingData.interested_in_being_matched
           }}
           onPrevHandler={() => setActiveStep(activeStep - 1)}
         />
@@ -322,7 +307,9 @@ export default function NewOnboardingModal({ onSubmit }: { onSubmit: Function })
   const OnBoardingSteps = () => (
     <OnboardingStepsContainer>
       <CohortAuthorPreview
-        style={{ backgroundImage: `url("${homeConfig?.onboarding_side_image_url}")` }}
+        style={{
+          backgroundImage: `url('https://cohort-videos.s3.eu-west-2.amazonaws.com/General+Onboard.jpg')`
+        }}
         data-testid="onboarding-image"
       />
       <ContentContainer>

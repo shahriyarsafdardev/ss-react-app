@@ -7,12 +7,10 @@ export type GoalsType = {
   name: string;
   role_title: string;
   goals: string;
-  improvements: string;
 };
 
 export type HouseKeepingInfoType = {
   interested_in_being_matched?: boolean;
-  referred_by: string;
 };
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({

@@ -3,12 +3,6 @@
   "cohort_title": "title",
   "setup_completed": "false",
   "enrollment_id": "uuid",
-  "discord_invitation_link": "https://discordapp.com/scholarsite",
-  "last_recorded_step": 0,
-  "onboarding_header": "string",
-  "onboarding_side_image_url": "string",
-  "onboarding_video_thumbnail_url": "string",
-  "onboarding_video_url": "string",
   "participant_profile": {
     "email": "string",
     "first_name": "string",

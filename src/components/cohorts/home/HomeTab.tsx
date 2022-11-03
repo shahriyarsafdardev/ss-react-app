@@ -126,25 +126,9 @@ const Index = () => {
 
   return (
     <Page title="Sphere | Homepage">
-      {/* {cohort?.onboarding_data?.is_onboarded === true && questionSubmittedModal() && (
-        <SurveyQuestionsModal state={questionSubmittedModal()} cohort_id={cohort_id} />
-      )} */}
-      {/* {sessions?.length > 0 &&
-      (cohort?.released_for_learners === true ||
-        cohort?.readings_released === true ||
-        mode === 'Instructor') ? ( */}
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {homeTabSection()}
       </AnalyticsContext.Provider>
-      {/* ) : (
-        <EmptyHomeTab
-          key={cohort?.id}
-          calendarLink={cohort?.calendar_invite_url}
-          cohortID={cohort?.id}
-          cohortCode={cohort?.name}
-          cohortHost={cohort?.host_names}
-        />
-      )} */}
     </Page>
   );
 };

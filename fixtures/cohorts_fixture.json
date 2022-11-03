@@ -2,7 +2,6 @@
   {
     "id": "uuid",
     "name": "string",
-    "discord_directory_url": "string",
     "isOnboarded": "boolean"
   }
 ]

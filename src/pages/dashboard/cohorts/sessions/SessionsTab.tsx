@@ -114,7 +114,7 @@ export default function SessionsTab() {
     if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
       return <CohortQuestionnair setInvitePeersModalState={setInvitePeersModalState} />;
     }
-    if (!cohort?.readings_released && mode === 'Learner') {
+    if (!cohort?.released_for_learners && mode === 'Learner') {
       return (
         <ContentReleasePreview
           cohort={cohort}

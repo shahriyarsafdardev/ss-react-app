@@ -818,11 +818,6 @@ export const ExportToExcel = ({
         width: 30
       },
       {
-        column: 'Stream',
-        value: (registration: any) => registration.stream,
-        width: 30
-      },
-      {
         column: 'Price',
         value: (registration: any) => registration.price,
         width: 20

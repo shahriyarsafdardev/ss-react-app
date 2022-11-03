@@ -331,20 +331,6 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
     />
   ];
 
-  if (session?.summary_notes_included) {
-    tabsContent.push(
-      <Summary
-        key="summary"
-        onTrack={() =>
-          sendAnalyticsData('Resources Page - Summary - Tab Opened', {
-            ...commonProperties
-          })
-        }
-        innerContent={session?.summary || ''}
-      />
-    );
-  }
-
   if (session?.timestamps) {
     tabsContent.push(
       <SessionTimestamps
@@ -510,9 +496,6 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Resources" data-testid="session-resources" />
           <SessionTab label="Session Slides" data-testid="session-slides" />
-          {session?.summary_notes_included && (
-            <SessionTab label="Summary Notes" data-testid="session-notes" />
-          )}
           {session?.timestamps && session?.timestamps.length > 0 && (
             <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
           )}

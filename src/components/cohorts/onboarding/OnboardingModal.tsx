@@ -7,7 +7,6 @@ import { useSnackbar } from 'notistack5';
 import { dispatch, RootState, useSelector } from 'redux/store';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { updateOnboardingStatus } from 'redux/slices/cohort';
-import { OnboardingContext } from 'contexts/OnboardingContext';
 import { UserInfoForm, CompanyInfoForm, RoleInfoForm, HouseKeepingForm } from './info-forms';
 
 import HomeTabHeader from './HomeTabHeader';
@@ -16,11 +15,6 @@ type HomeResponse = {
   cohort_id: string;
   cohort_title: string;
   setup_completed: boolean;
-  discord_invitation_link: string | undefined;
-  onboarding_side_image_url: string | undefined;
-  onboarding_video_url: string | undefined;
-  onboarding_video_thumbnail_url: string | undefined;
-  onboarding_header: string | undefined;
   participant_profile: {
     first_name: string;
     last_name: string;
@@ -40,9 +34,6 @@ type HomeResponse = {
     bio_text: string;
     new_user: boolean;
     date_of_birth: string;
-    referred_by: string;
-    payed_by: string;
-    current_understanding: string;
   };
 };
 
@@ -104,9 +95,6 @@ type OnboardingDataType = {
   do_manage_team: boolean;
   role_description: string;
   date_of_birth: string;
-  cohort_understanding: string;
-  referred_by: string;
-  payed_by: string;
   goals: string;
   github_username: string;
 };
@@ -149,9 +137,6 @@ export default function OnboardingModal({
     do_manage_team: false,
     role_description: '',
     date_of_birth: '',
-    cohort_understanding: '',
-    referred_by: '',
-    payed_by: '',
     goals: '',
     github_username: ''
   });
@@ -193,9 +178,6 @@ export default function OnboardingModal({
           do_manage_team: payload.participant_profile.do_manage_team,
           role_description: payload.participant_profile.bio_text,
           date_of_birth: '',
-          cohort_understanding: payload.participant_profile.current_understanding,
-          referred_by: payload.participant_profile.referred_by,
-          payed_by: payload.participant_profile.payed_by,
           goals: payload.participant_profile.goals,
           github_username: payload.participant_profile.github_username
         });
@@ -240,9 +222,6 @@ export default function OnboardingModal({
     } else if (type === FormTypes.housekeepingInfo) {
       const tempData: OnboardingDataType = {
         ...onboardingData,
-        cohort_understanding: data.current_understanding,
-        payed_by: data.payed_by,
-        referred_by: data.referred_by,
         date_of_birth: data.date_of_birth,
         goals: data.goals
       };
@@ -367,11 +346,6 @@ export default function OnboardingModal({
         <HouseKeepingForm
           onSubmit={(data: any) => {
             updateOnboardingData(FormTypes.housekeepingInfo, data);
-          }}
-          infoDetails={{
-            current_understanding: onboardingData.cohort_understanding,
-            payed_by: onboardingData.payed_by,
-            referred_by: onboardingData.referred_by
           }}
           goalsValue={onboardingData.goals}
           isSubmitting={isSubmitting}

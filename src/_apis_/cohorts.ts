@@ -356,8 +356,6 @@ mock.onGet('/cohorts/cohort-1/home.json').reply((config) => {
       setup_completed: false,
       intro_video_url:
         'https://cdn.videvo.net/videvo_files/video/free/2016-08/large_watermarked/IMG_5528_preview.mp4',
-      discord_invitation_link: 'https://discordapp.com/scholarsite',
-      last_recorded_step: 2,
       participant_profile: {
         first_name: 'Aqib',
         last_name: 'Maqbool',

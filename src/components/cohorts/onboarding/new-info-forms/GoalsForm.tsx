@@ -112,17 +112,6 @@ export default function CompanyInfoForm({
                 rows={3}
               />
             </FormControl>
-            <FormControl fullWidth style={{ marginBottom: '20px' }}>
-              <TextField
-                inputProps={{ 'data-testid': 'improvements' }}
-                fullWidth
-                label="Are there any specific KPIs that your team is hoping to improve using the learning from this course?"
-                value={infoObject?.improvements}
-                onChange={(e) => onUpdateAttribute('improvements', e.target.value)}
-                multiline
-                rows={3}
-              />
-            </FormControl>
           </Stack>
         </Grid>
       </Grid>

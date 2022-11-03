@@ -2,7 +2,6 @@
   "cohorts": [
     {
       "code": "EDU",
-      "discord_directory_url": "https://discord.com/",
       "enrollments": [
         "d03a6dca-f8f1-4a80-86bc-1bc64120013b",
         "741f148b-050c-4deb-af03-25aaf8ac607b",
@@ -16,7 +15,6 @@
       "intake": "85",
       "isOnboarded": true,
       "name": "the economics of digital platforms",
-      "questions_url": null,
       "released_for_learners": false,
       "host_names": "Waqas"
     }

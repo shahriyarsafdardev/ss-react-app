@@ -23,7 +23,6 @@
       "presentation_pdf_downloadable": true,
       "survey_completed": true,
       "custom_name": "Session 1",
-      "summary_notes_included": true,
       "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
@@ -43,7 +42,6 @@
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
       "custom_name": "Custom 1",
-      "summary_notes_included": true,
       "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
@@ -65,7 +63,6 @@
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
       "custom_name": "Custom 1",
-      "summary_notes_included": true,
       "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []
@@ -87,7 +84,6 @@
       "presentation_pdf_downloadable": false,
       "survey_completed": true,
       "custom_name": "Custom 1",
-      "summary_notes_included": true,
       "display_in_sessions_tab": true,
       "resources": [],
       "session_materials": []

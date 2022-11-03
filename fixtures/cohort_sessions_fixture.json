@@ -16,8 +16,7 @@
       "resources": "string",
       "presentation_pdf_downloadable": "boolean",
       "recording_thumbnail_url": "string",
-      "zoom_url": "string",
-      "summary_notes_included": "boolean"
+      "zoom_url": "string"
     }
   ]
 }

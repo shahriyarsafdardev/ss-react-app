@@ -111,7 +111,6 @@ export type Session = {
   summary: string;
   presentation_pdf_url: string;
   presentation_pdf_downloadable: boolean;
-  summary_notes_included: boolean;
   survey: Survey;
   resources: string;
   materials: SessionMaterial[];
@@ -154,7 +153,6 @@ export type Enrollment = {
   credit_account: string;
   status: string;
   notes: string;
-  stream: string;
   card_added: boolean;
   coupon_code: string;
   referrer_domain?: string;
@@ -217,7 +215,6 @@ export type Cohort = {
   is_feedback_submitted: boolean;
   released_for_learners: boolean;
   intake: number;
-  questions_url: string;
   goodbye_message: string;
   peers: StudentProfile[];
   sessions: Session[];
@@ -232,7 +229,6 @@ export type Cohort = {
   registration_page_url: string;
   new_home_tab: boolean;
   instructor_message: string;
-  readings_released: boolean;
   amplitude_events_timeline: AmplitudeEventsTimeline;
   onboarding_data: OnboardingData;
 };

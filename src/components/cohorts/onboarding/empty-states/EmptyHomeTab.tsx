@@ -1,13 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { makeStyles } from '@material-ui/styles';
-import { Typography, Box, Button, Link } from '@material-ui/core';
+import { Typography, Box, Button } from '@material-ui/core';
 import { Theme, styled } from '@material-ui/core/styles';
 import useAuth from 'hooks/useAuth';
 import { LoadingButton } from '@material-ui/lab';
-import axios from 'utils/axios';
 import { Link as RouterLink } from 'react-router-dom';
-import { AddToCalendarInfo } from '../new-info-forms';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -87,12 +85,6 @@ const EmptyHomeTab = ({
   const classes = useStyles();
   const { user } = useAuth();
 
-  const calendarAlert = () => {
-    if (calendarLink) {
-      axios.post(`/cohorts/${cohortID}/enrollments/calendar_added.json`);
-    }
-  };
-
   return (
     <Container className={classes.container}>
       <Box className={classes.inner}>
@@ -120,7 +112,7 @@ const EmptyHomeTab = ({
             className={`${classes.btns} mr`}
             component={RouterLink}
             to={`/cohorts/${cohortID}/calendar-instructions`}
-            onClick={calendarAlert}
+            onClick={() => {}}
             variant="contained"
           >
             Add sessions to my calendar
