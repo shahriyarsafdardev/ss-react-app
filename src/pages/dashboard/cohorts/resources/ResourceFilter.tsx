@@ -10,7 +10,9 @@ import {
   InputAdornment,
   TextField,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Typography,
+  Button
 } from '@material-ui/core';
 import searchFill from '@iconify/icons-eva/search-fill';
 import { Icon } from '@iconify/react';
@@ -79,13 +81,28 @@ function ResourceFilter({
         .then((res) => {
           setFilteredMaterials(res.data.materials);
         });
-    }, 500);
+    }, 300);
 
     setTimer(newTimer);
   };
 
+  const clearSearch = () => {
+    setSearchQuery('');
+    setSelectedTypes([]);
+    setIsSearch(false);
+  };
+
   return (
     <Stack direction="column" width="100%">
+      {isSearch && (
+        <Button
+          sx={{ marginBottom: '20px', width: 'fit-content' }}
+          variant="text"
+          onClick={clearSearch}
+        >
+          {'< Back'}
+        </Button>
+      )}
       <TextField
         fullWidth
         placeholder="Search"
@@ -135,15 +152,23 @@ function ResourceFilter({
           </Select>
         </FormControl>
       )}
-      {isSearch && filteredMaterials?.length !== 0 && (
-        <>
+      <>
+        {searchQuery && (
+          <Typography sx={{ color: '#000', fontSize: '20px', marginBottom: '20px' }}>
+            {filteredMaterials && filteredMaterials?.length !== 0
+              ? `All results for `
+              : `No results found for `}
+            <b>"{searchQuery}"</b>
+          </Typography>
+        )}
+        {isSearch && filteredMaterials?.length !== 0 && (
           <Stack spacing={2}>
             {filteredMaterials?.map((material: any, index: any) => (
               <ResourcesTile key={index} sessionID={material?.session_id} material={material} />
             ))}
           </Stack>
-        </>
-      )}
+        )}
+      </>
     </Stack>
   );
 }

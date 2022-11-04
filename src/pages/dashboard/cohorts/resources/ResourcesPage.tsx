@@ -30,7 +30,7 @@ export default function ResourcesPage() {
     return () => {
       clearData();
     };
-  }, [cohort]);
+  }, [cohort?.id]);
 
   if (resources === undefined || resources?.length === 0) {
     return (
