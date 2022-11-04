@@ -31,8 +31,8 @@ function ResourceFilter({
   const theme = useTheme();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [filteredMaterials, setFilteredMaterials] = useState<any[]>();
-  const [selectedTypes, setSelectedTypes] = useState<String[]>([]);
-  const [searchQuery, setSearchQuery] = useState<String>('');
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const mobileView = useMediaQuery(theme.breakpoints.down('sm'));
   const [timer, setTimer] = useState<any>(null);
 
@@ -40,6 +40,7 @@ function ResourceFilter({
     let types = [];
     if (request === 'query') {
       setSearchQuery(value);
+      inputChanged(value, selectedTypes);
     } else if (request === 'desktop-view-types') {
       if (selectedTypes.includes(value)) {
         types = selectedTypes.filter((t) => t !== value);
@@ -48,8 +49,10 @@ function ResourceFilter({
         types = [...selectedTypes, value];
         setSelectedTypes(types);
       }
+      inputChanged(searchQuery, types);
     } else {
       setSelectedTypes(value);
+      inputChanged(searchQuery, value);
     }
 
     if (request === 'query' && value === '' && selectedTypes.length === 0) {
@@ -61,16 +64,21 @@ function ResourceFilter({
     } else {
       !isSearch && setIsSearch(true);
     }
-    inputChanged();
   };
 
-  const inputChanged = () => {
+  const inputChanged = (query: string, types: String[]) => {
     clearTimeout(timer);
 
     const newTimer = setTimeout(async () => {
-      await axios.get(`/cohorts/${cohort_id}/resources/search.json`).then((res) => {
-        setFilteredMaterials(res.data.materials);
-      });
+      await axios
+        .get(
+          `/cohorts/${cohort_id}/resources/search.json?search_query=${query}&selected_types=${types?.join(
+            ','
+          )}`
+        )
+        .then((res) => {
+          setFilteredMaterials(res.data.materials);
+        });
     }, 500);
 
     setTimer(newTimer);
