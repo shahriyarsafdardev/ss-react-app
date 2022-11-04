@@ -45,23 +45,19 @@ export const StyledImage = styled('img')(({ theme }) => ({
   height: 'auto',
   width: '50px',
   minWidth: '50px'
-  // '&:hover': {
-  //   display: 'none'
-  // }
 }));
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-  backgroundColor: '#E1E4E74D',
+  backgroundColor: '#E1E4E7',
   padding: '10px 18px',
   border: 'none',
   borderRadius: '10px !important',
-  '& .Mui-selected': {
+  '&.Mui-selected': {
     backgroundColor: '#2F80ED !important',
     '& .toggleText': {
-      color: '#ffffff'
+      color: '#ffffff !important'
     }
   },
-  // marginBottom: '20px',
   '&:hover': {
     backgroundColor: '#2F80ED !important',
     '& .toggleText': {

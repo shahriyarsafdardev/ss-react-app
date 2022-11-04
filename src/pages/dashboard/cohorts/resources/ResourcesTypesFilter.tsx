@@ -13,7 +13,7 @@ function ResourcesTypesFilter({
 }) {
   const handleChange = (type: String) => {
     if (selectedTypes.includes(type)) {
-      setSelectedTypes(selectedTypes.filter((t) => t === type));
+      setSelectedTypes(selectedTypes.filter((t) => t !== type));
     } else {
       setSelectedTypes([...selectedTypes, type]);
     }

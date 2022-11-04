@@ -36,7 +36,7 @@ export default function ResourcesPage() {
 
   return (
     <Page title="Sphere | Resources">
-      <Container sx={{ px: '50px' }} maxWidth={themeStretch ? false : 'xl'}>
+      <Container sx={{ px: '50px !important' }} maxWidth={themeStretch ? false : 'xl'}>
         <ResourceFilter
           types={resources_types}
           handleSearch={(value: boolean) => setIsSearch(value)}
