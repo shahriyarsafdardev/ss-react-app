@@ -19,11 +19,17 @@ export default function ResourcesPage() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { resources, resources_types } = cohort || [];
+  const clearData = () => {
+    setIsSearch(false);
+  };
 
   useEffect(() => {
     if (cohort && (!resources || !resources_types)) {
       dispatch(getCohortResources(cohort_id));
     }
+    return () => {
+      clearData();
+    };
   }, [cohort]);
 
   if (resources === undefined || resources?.length === 0) {
@@ -36,7 +42,11 @@ export default function ResourcesPage() {
 
   return (
     <Page title="Sphere | Resources">
-      <Container sx={{ px: '50px !important' }} maxWidth={themeStretch ? false : 'xl'}>
+      <Container
+        sx={{ px: '50px !important' }}
+        key={cohort_id}
+        maxWidth={themeStretch ? false : 'xl'}
+      >
         <ResourceFilter types={resources_types} isSearch={isSearch} setIsSearch={setIsSearch} />
         {!isSearch && (
           <>
