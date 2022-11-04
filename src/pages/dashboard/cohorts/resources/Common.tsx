@@ -44,26 +44,15 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 export const StyledImage = styled('img')(({ theme }) => ({
   height: 'auto',
   width: '50px',
-  minWidth: '50px'
+  minWidth: '50px',
+  maxHeight: '50px'
 }));
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-  backgroundColor: '#E1E4E7',
+  backgroundColor: 'rgba(225, 228, 231, 0.3)',
   padding: '10px 18px',
   border: 'none',
-  borderRadius: '10px !important',
-  '&.Mui-selected': {
-    backgroundColor: '#2F80ED !important',
-    '& .toggleText': {
-      color: '#ffffff !important'
-    }
-  },
-  '&:hover': {
-    backgroundColor: '#2F80ED !important',
-    '& .toggleText': {
-      color: '#ffffff'
-    }
-  }
+  borderRadius: '10px !important'
 }));
 
 export const ToggleButtonTypography = styled(Typography)(({ theme }) => ({
@@ -95,86 +84,30 @@ export const StyledCard = styled(Card)(({ theme }) => ({
   }
 }));
 
-export const MaterialTypes = [
-  {
-    type: 'Academic Paper',
-    display: 'Academic Papers',
-    color: '#56CCF2'
-  },
-  {
-    type: 'Article',
-    display: 'Articles',
-    color: '#D96BC1'
-  },
-  {
-    type: 'Book',
-    display: 'Books',
-    color: '#F2C94C'
-  },
-  {
-    type: 'Book Passage',
-    display: 'Book Passages',
-    color: '#2F80ED'
-  },
-  {
-    type: 'Github',
-    display: 'Github',
-    color: '#9B51E0'
-  },
-  {
-    type: 'Jupyter Notebook',
-    display: 'Jupyter',
-    color: '#F2994A'
-  },
-  {
-    type: 'Slides',
-    display: 'Slides',
-    color: '#EB5757'
-  },
-  {
-    type: 'Spreadsheet',
-    display: 'Spreadsheets',
-    color: '#219653'
-  },
-  {
-    type: 'Video',
-    display: 'Videos',
-    color: '#EB5757'
-  },
-  {
-    type: 'Other',
-    display: 'Other',
-    color: '#828282'
+export const getColor = (type: String) => {
+  switch (type) {
+    case 'Academic Paper':
+      return '#56CCF2';
+    case 'Article':
+      return '#D96BC1';
+    case 'Book':
+      return '#F2C94C';
+    case 'Book Passage':
+      return '#2F80ED';
+    case 'Github':
+      return '#9B51E0';
+    case 'Jupyter Notebook':
+      return '#F2994A';
+    case 'Slides':
+      return '#EB5757';
+    case 'Spreadsheet':
+      return '#219653';
+    case 'Video':
+      return '#EB5757';
+    default:
+      return '#828282';
   }
-];
-
-export const getColor = (materialType: String) => {
-  const idx = MaterialTypes.findIndex((material) => material.type === materialType);
-  return MaterialTypes[idx].color;
 };
-
-export const StyledBox = styled(Box)(({ theme }) => ({
-  width: '80px',
-  height: '80px',
-  display: 'none',
-  alignItems: 'center',
-  textAlign: 'center',
-  borderRadius: '10px'
-  // '&:hover': {
-  //   display: 'flex'
-  // }
-}));
-
-export const ParentBox = styled(Box)(({ theme }) => ({
-  '&:hover': {
-    '& .StyledBox': {
-      display: 'flex'
-    },
-    '& .StyledImage': {
-      display: 'none'
-    }
-  }
-}));
 
 export const types = [
   'Academic Paper',
@@ -188,3 +121,32 @@ export const types = [
   'Github',
   'Other'
 ];
+
+export const ResourceIcon = styled('div')(({ theme }) => ({
+  width: '50px',
+  minWidth: '50px',
+  height: '50px',
+  maxHeight: '50px',
+  display: 'flex',
+  cursor: 'pointer',
+  overflow: 'hidden',
+  position: 'relative',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.disabled,
+  '& img': { width: '100%', height: '100%' }
+}));
+
+export const ResourceType = styled('div')(({ theme }) => ({
+  opacity: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  position: 'absolute',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '10px',
+  transition: theme.transitions.create('opacity'),
+  '&:hover': { opacity: 1 }
+}));

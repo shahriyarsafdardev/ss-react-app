@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from '@material-ui/core';
-import { StyledToggleButton, ToggleButtonTypography, getDisplayName } from './Common';
+import { StyledToggleButton, ToggleButtonTypography, getDisplayName, getColor } from './Common';
 
 function ResourcesTypesFilter({
   types,
@@ -37,6 +37,20 @@ function ResourcesTypesFilter({
             value={type}
             selected={selectedTypes.includes(type)}
             onChange={() => handleChange(type)}
+            sx={{
+              '&.Mui-selected': {
+                backgroundColor: getColor(type),
+                '& .toggleText': {
+                  color: '#ffffff !important'
+                }
+              },
+              ':hover': {
+                backgroundColor: getColor(type),
+                '& .toggleText': {
+                  color: '#ffffff !important'
+                }
+              }
+            }}
           >
             <ToggleButtonTypography className="toggleText">
               {getDisplayName(type)}

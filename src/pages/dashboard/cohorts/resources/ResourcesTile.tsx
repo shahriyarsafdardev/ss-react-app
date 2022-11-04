@@ -5,7 +5,14 @@ import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
 import { useDispatch } from 'redux/store';
 import { markReadingCompleted } from 'redux/slices/cohort';
 import { SessionMaterial } from '../../../../@types/cohorts';
-import { StyledImage, StyledTooltip, StyledCard, StyledBox, getColor, ParentBox } from './Common';
+import {
+  StyledImage,
+  StyledTooltip,
+  StyledCard,
+  getColor,
+  ResourceIcon,
+  ResourceType
+} from './Common';
 
 function ResourcesTile({ sessionID, material }: { sessionID: string; material: SessionMaterial }) {
   const cohortID = window.location.pathname.split('/')[2] || '';
@@ -21,22 +28,26 @@ function ResourcesTile({ sessionID, material }: { sessionID: string; material: S
     <StyledCard variant="outlined">
       <CardContent sx={{ padding: '20px !important' }}>
         <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" spacing={2}>
-            <ParentBox>
+          <Stack direction="row" spacing={2} sx={{ marginRight: '15px' }}>
+            <ResourceIcon>
               <StyledImage
                 src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
               />
-              <StyledBox
-                key={material.id}
-                sx={{ backgroundColor: getColor(material.material_type) }}
-              >
+              <ResourceType sx={{ backgroundColor: getColor(material.material_type) }}>
                 <Typography
-                  sx={{ color: '#ffffff', fontWeight: 'bold', fontSize: '12px', width: '100px' }}
+                  sx={{
+                    color: '#ffffff',
+                    fontWeight: 'bold',
+                    fontSize: '10px',
+                    width: '100px',
+                    textAlign: 'center',
+                    wordBreak: 'break-word'
+                  }}
                 >
                   {material.material_type}
                 </Typography>
-              </StyledBox>
-            </ParentBox>
+              </ResourceType>
+            </ResourceIcon>
             <Stack>
               <Typography variant="h5" style={{ fontSize: '1.1rem' }}>
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
@@ -57,7 +68,7 @@ function ResourcesTile({ sessionID, material }: { sessionID: string; material: S
           >
             <Checkbox
               checked={checked}
-              sx={{ height: '50px', width: '50px' }}
+              sx={{ height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' }}
               icon={
                 <Icon
                   icon={checkCircleFilled}
