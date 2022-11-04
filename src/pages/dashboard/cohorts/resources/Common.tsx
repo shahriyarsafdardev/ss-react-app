@@ -72,9 +72,10 @@ export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.common.white,
     fontSize: '16px',
-    borderWidth: '1px',
+    border: '1px solid #101658',
     fontWeight: '400',
-    color: '#101658'
+    color: '#101658',
+    padding: '10px'
   }
 }));
 
