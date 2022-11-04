@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   FormControl,
   MenuItem,
@@ -37,8 +37,10 @@ function ResourceFilter({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const mobileView = useMediaQuery(theme.breakpoints.down('sm'));
   const [timer, setTimer] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleOnChange = (value: any, request: string) => {
+    setLoading(true);
     let types = [];
     if (request === 'query') {
       setSearchQuery(value);
@@ -80,6 +82,7 @@ function ResourceFilter({
         )
         .then((res) => {
           setFilteredMaterials(res.data.materials);
+          setLoading(false);
         });
     }, 300);
 
@@ -152,23 +155,25 @@ function ResourceFilter({
           </Select>
         </FormControl>
       )}
-      <>
-        {searchQuery && (
-          <Typography sx={{ color: '#000', fontSize: '20px', marginBottom: '20px' }}>
-            {filteredMaterials && filteredMaterials?.length !== 0
-              ? `All results for `
-              : `No results found for `}
-            <b>"{searchQuery}"</b>
-          </Typography>
-        )}
-        {isSearch && filteredMaterials?.length !== 0 && (
-          <Stack spacing={2}>
-            {filteredMaterials?.map((material: any, index: any) => (
-              <ResourcesTile key={index} sessionID={material?.session_id} material={material} />
-            ))}
-          </Stack>
-        )}
-      </>
+      {!loading && (
+        <>
+          {searchQuery && (
+            <Typography sx={{ color: '#000', fontSize: '20px', marginBottom: '20px' }}>
+              {filteredMaterials && filteredMaterials?.length !== 0
+                ? `All results for `
+                : `No results found for `}
+              <b>"{searchQuery}"</b>
+            </Typography>
+          )}
+          {isSearch && filteredMaterials?.length !== 0 && (
+            <Stack spacing={2}>
+              {filteredMaterials?.map((material: any, index: any) => (
+                <ResourcesTile key={index} sessionID={material?.session_id} material={material} />
+              ))}
+            </Stack>
+          )}
+        </>
+      )}
     </Stack>
   );
 }
