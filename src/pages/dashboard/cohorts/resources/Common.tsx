@@ -10,6 +10,27 @@ import {
   Box
 } from '@material-ui/core';
 
+export const getDisplayName = (type: String) => {
+  switch (type) {
+    case 'Academic Paper':
+      return 'Academic Papers';
+    case 'Article':
+      return 'Articles';
+    case 'Book':
+      return 'Books';
+    case 'Book Passage':
+      return 'Book Passages';
+    case 'Jupyter Notebook':
+      return 'Jupyter';
+    case 'Spreadsheet':
+      return 'Spreadsheets';
+    case 'Video':
+      return 'Videos';
+    default:
+      return type;
+  }
+};
+
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
   height: 4,
@@ -22,7 +43,8 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export const StyledImage = styled('img')(({ theme }) => ({
   height: 'auto',
-  width: '80px'
+  width: '50px',
+  minWidth: '50px'
   // '&:hover': {
   //   display: 'none'
   // }
@@ -30,24 +52,27 @@ export const StyledImage = styled('img')(({ theme }) => ({
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   backgroundColor: '#E1E4E74D',
+  padding: '10px 18px',
   border: 'none',
   borderRadius: '10px !important',
-  ':hover': {
+  '& .Mui-selected': {
     backgroundColor: '#2F80ED !important',
-    '&:ToggleButtonTypography': {
+    '& .toggleText': {
       color: '#ffffff'
     }
   },
-  ':active': {
-    backgroundColor: '#2F80ED !important'
+  // marginBottom: '20px',
+  '&:hover': {
+    backgroundColor: '#2F80ED !important',
+    '& .toggleText': {
+      color: '#ffffff'
+    }
   }
 }));
 
 export const ToggleButtonTypography = styled(Typography)(({ theme }) => ({
   color: '#334155',
-  ':hover': {
-    color: '#ffffff'
-  }
+  fontSize: '18px'
 }));
 
 export const SearchbarStyle = styled('div')(({ theme }) => ({
@@ -67,8 +92,10 @@ export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
+  boxShadow: 'none',
   '&:hover': {
-    boxShadow: '0px 9px 24px rgba(7, 26, 51, 0.2)'
+    boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)',
+    cursor: 'pointer'
   }
 }));
 
@@ -114,6 +141,11 @@ export const MaterialTypes = [
     color: '#219653'
   },
   {
+    type: 'Video',
+    display: 'Videos',
+    color: '#EB5757'
+  },
+  {
     type: 'Other',
     display: 'Other',
     color: '#828282'
@@ -147,3 +179,16 @@ export const ParentBox = styled(Box)(({ theme }) => ({
     }
   }
 }));
+
+export const types = [
+  'Academic Paper',
+  'Article',
+  'Book',
+  'Book Passage',
+  'Jupyter Notebook',
+  'Spreadsheet',
+  'Video',
+  'Slides',
+  'Github',
+  'Other'
+];

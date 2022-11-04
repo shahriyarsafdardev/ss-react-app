@@ -19,7 +19,7 @@ function ResourcesTile({ sessionID, material }: { sessionID: string; material: S
 
   return (
     <StyledCard variant="outlined">
-      <CardContent>
+      <CardContent sx={{ px: '50px !important' }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={2}>
             <ParentBox>
@@ -38,18 +38,18 @@ function ResourcesTile({ sessionID, material }: { sessionID: string; material: S
               </StyledBox>
             </ParentBox>
             <Stack>
-              <Typography variant="h5" style={{ marginBottom: '14px' }}>
+              <Typography variant="h5" style={{ fontSize: '1.1rem' }}>
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
               </Typography>
               <Typography variant="subtitle2">
-                {material.info_text.length > 130
-                  ? `${material.info_text.slice(0, 131)}...`
+                {material.info_text?.length > 130
+                  ? `${material.info_text?.slice(0, 131)}...`
                   : material.info_text}
               </Typography>
             </Stack>
           </Stack>
           <StyledTooltip
-            title="I've read this resource"
+            title={checked ? "I haven't read this resource" : "I've read this resource"}
             placement="left"
             arrow
             sx={{ backgroundColor: '#ffffff', color: '#101658' }}
