@@ -37,13 +37,10 @@ export default function ResourcesPage() {
   return (
     <Page title="Sphere | Resources">
       <Container sx={{ px: '50px !important' }} maxWidth={themeStretch ? false : 'xl'}>
-        <ResourceFilter
-          types={resources_types}
-          handleSearch={(value: boolean) => setIsSearch(value)}
-        />
+        <ResourceFilter types={resources_types} isSearch={isSearch} setIsSearch={setIsSearch} />
         {!isSearch && (
           <>
-            {resources.map((resource, index) => (
+            {resources?.map((resource, index) => (
               <ResourcesSection key={index} resourceData={resource} />
             ))}
           </>

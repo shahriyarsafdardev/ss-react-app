@@ -5,20 +5,12 @@ import { StyledToggleButton, ToggleButtonTypography, getDisplayName, getColor } 
 function ResourcesTypesFilter({
   types,
   selectedTypes,
-  setSelectedTypes
+  handleOnChange
 }: {
   types: String[];
   selectedTypes: String[];
-  setSelectedTypes: Function;
+  handleOnChange: Function;
 }) {
-  const handleChange = (type: String) => {
-    if (selectedTypes.includes(type)) {
-      setSelectedTypes(selectedTypes.filter((t) => t !== type));
-    } else {
-      setSelectedTypes([...selectedTypes, type]);
-    }
-  };
-
   return (
     <>
       <Stack
@@ -36,7 +28,7 @@ function ResourcesTypesFilter({
             key={type}
             value={type}
             selected={selectedTypes.includes(type)}
-            onChange={() => handleChange(type)}
+            onChange={() => handleOnChange(type, 'desktop-view-types')}
             sx={{
               '&.Mui-selected': {
                 backgroundColor: getColor(type),
