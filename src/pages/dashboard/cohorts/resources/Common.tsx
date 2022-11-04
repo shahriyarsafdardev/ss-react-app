@@ -6,8 +6,7 @@ import {
   Tooltip,
   TooltipProps,
   tooltipClasses,
-  Card,
-  Box
+  Card
 } from '@material-ui/core';
 
 export const getDisplayName = (type: String) => {
@@ -69,9 +68,10 @@ export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11
+    fontSize: '16px',
+    borderWidth: '1px',
+    fontWeight: '400',
+    color: '#101658'
   }
 }));
 

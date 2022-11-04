@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardContent, Stack, Typography, Checkbox } from '@material-ui/core';
+import { CardContent, Stack, Typography, Checkbox, Link } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
 import { useDispatch } from 'redux/store';
@@ -49,9 +49,14 @@ function ResourcesTile({ sessionID, material }: { sessionID: string; material: S
               </ResourceType>
             </ResourceIcon>
             <Stack>
-              <Typography variant="h5" style={{ fontSize: '1.1rem' }}>
+              <Link
+                variant="h5"
+                href={material.action_url}
+                target="_blank"
+                style={{ fontSize: '1.1rem' }}
+              >
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
-              </Typography>
+              </Link>
               <Typography variant="subtitle2">
                 {material.info_text?.length > 130
                   ? `${material.info_text?.slice(0, 131)}...`
