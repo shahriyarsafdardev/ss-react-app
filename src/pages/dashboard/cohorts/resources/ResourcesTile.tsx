@@ -1,10 +1,22 @@
-import React from 'react';
-import { CardContent, Stack, Typography, Checkbox, Box } from '@material-ui/core';
+import React, { useState } from 'react';
+import { CardContent, Stack, Typography, Checkbox } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
+import { useDispatch } from 'redux/store';
+import { markReadingCompleted } from 'redux/slices/cohort';
+import { SessionMaterial } from '../../../../@types/cohorts';
 import { StyledImage, StyledTooltip, StyledCard, StyledBox, getColor, ParentBox } from './Common';
 
-function ResourcesTile({ material }: { material: any }) {
+function ResourcesTile({ sessionID, material }: { sessionID: string; material: SessionMaterial }) {
+  const cohortID = window.location.pathname.split('/')[2] || '';
+  const [checked, setChecked] = useState(material?.complete);
+  const dispatch = useDispatch();
+
+  const handleToggleRead = () => {
+    dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
+    setChecked(!checked);
+  };
+
   return (
     <StyledCard variant="outlined">
       <CardContent>
@@ -12,29 +24,27 @@ function ResourcesTile({ material }: { material: any }) {
           <Stack direction="row" spacing={2}>
             <ParentBox>
               <StyledImage
-                src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.type}.png`}
+                src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
               />
               <StyledBox
-                key={material.materialID}
-                sx={{ backgroundColor: getColor(material.type) }}
+                key={material.id}
+                sx={{ backgroundColor: getColor(material.material_type) }}
               >
                 <Typography
                   sx={{ color: '#ffffff', fontWeight: 'bold', fontSize: '12px', width: '100px' }}
                 >
-                  {material.type}
+                  {material.material_type}
                 </Typography>
               </StyledBox>
             </ParentBox>
             <Stack>
               <Typography variant="h5" style={{ marginBottom: '14px' }}>
-                {material.materialName.length > 95
-                  ? `${material.materialName.slice(0, 96)}...`
-                  : material.materialName}
+                {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
               </Typography>
               <Typography variant="subtitle2">
-                {material.author.length > 130
-                  ? `${material.author.slice(0, 131)}...`
-                  : material.author}
+                {material.info_text.length > 130
+                  ? `${material.info_text.slice(0, 131)}...`
+                  : material.info_text}
               </Typography>
             </Stack>
           </Stack>
@@ -43,9 +53,10 @@ function ResourcesTile({ material }: { material: any }) {
             placement="left"
             arrow
             sx={{ backgroundColor: '#ffffff', color: '#101658' }}
+            onClick={handleToggleRead}
           >
             <Checkbox
-              checked={false}
+              checked={checked}
               sx={{ height: '50px', width: '50px' }}
               icon={
                 <Icon

@@ -160,6 +160,7 @@ const slice = createSlice({
       if (targetCohortIndex !== -1) {
         const copyCohort: Cohort = state.cohorts[targetCohortIndex];
         copyCohort.resources = action.payload.resources;
+        copyCohort.resources_types = action.payload.resources_types;
         state.cohorts[targetCohortIndex] = copyCohort;
       }
     },
@@ -219,6 +220,10 @@ const slice = createSlice({
 
         if (targetResourceIndex !== -1) {
           let targetMaterialIndex = -1;
+          const completedMaterialsCount = action.payload.marked
+            ? updated[targetResourceIndex].completed_session_materials_count + 1
+            : updated[targetResourceIndex].completed_session_materials_count - 1;
+          updated[targetResourceIndex].completed_session_materials_count = completedMaterialsCount;
 
           updated[targetResourceIndex].materials.map((material, j) => {
             if (material.id === action.payload.materialID) {
@@ -228,7 +233,7 @@ const slice = createSlice({
 
           if (targetMaterialIndex !== -1) {
             updated[targetResourceIndex].materials[targetMaterialIndex].complete =
-              action.payload.result;
+              action.payload.marked;
             state.cohorts[targetCohortIndex].resources = updated;
           }
         }
@@ -427,7 +432,7 @@ export function markReadingCompleted(
     try {
       await axios
         .post(`/cohorts/${cohortID}/resources/mark_reading.json`, {
-          materialID,
+          id: materialID,
           marked
         })
         .then((res) => {
@@ -436,7 +441,7 @@ export function markReadingCompleted(
               cohortID,
               sessionID,
               materialID,
-              result: marked
+              marked
             })
           );
         });
@@ -592,6 +597,7 @@ export function getCohortResources(cohortID: string) {
       dispatch(
         slice.actions.getCohortResourcesSuccess({
           resources: response.data.resources,
+          resources_types: response.data.resources_types,
           cohortID
         })
       );
@@ -604,7 +610,9 @@ export function getCohortResources(cohortID: string) {
 export function getCohortSessionResources(cohortID: string, sessionID: string) {
   return async () => {
     try {
-      const response = await axios.get(`/cohorts/${cohortID}/resources/see_more.json`);
+      const response = await axios.get(
+        `/cohorts/${cohortID}/resources/see_more.json?cohort_session_id=${sessionID}`
+      );
       dispatch(
         slice.actions.getCohortSessionResourcesSuccess({
           cohortID,

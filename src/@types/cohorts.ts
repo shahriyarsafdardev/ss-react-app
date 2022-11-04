@@ -83,6 +83,7 @@ export type SessionMaterial = {
   info_text: string;
   action_url: string;
   category: string;
+  material_type: string;
   complete: boolean;
   is_private: boolean;
   index?: number;
@@ -241,6 +242,7 @@ export type Cohort = {
   amplitude_events_timeline: AmplitudeEventsTimeline;
   onboarding_data: OnboardingData;
   resources: SessionResource[];
+  resources_types: string[];
 };
 
 export type CodeOnboardingItem = {

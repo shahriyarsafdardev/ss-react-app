@@ -6,9 +6,11 @@ import { getCohortResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import searchFill from '@iconify/icons-eva/search-fill';
 import { Icon } from '@iconify/react';
+import LoadingScreen from 'components/LoadingScreen';
 import ToggleButtons from './ToggleButtons';
 import ResourcesSection from './ResourcesSection';
 import { SearchbarStyle } from './Common';
+import { LoadingContainer } from '../code/CodeTab';
 
 const sessionMaterials = [
   {
@@ -102,18 +104,26 @@ const sessionMaterials = [
 export default function ResourcesPage() {
   const [filters, setFilters] = useState<String[]>([]);
   const { themeStretch } = useSettings();
-  // const dispatch = useDispatch();
-  // const cohort_id = window.location.pathname.split('/')[2] || '';
-  // const cohort = useSelector(
-  //   (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  // );
-  // const { resources } = cohort || [];
+  const dispatch = useDispatch();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
+  );
+  const { resources } = cohort || [];
 
-  // useEffect(() => {
-  //   if (cohort && !resources) {
-  //     dispatch(getCohortResources(cohort_id));
-  //   }
-  // }, [cohort]);
+  useEffect(() => {
+    if (cohort && !resources) {
+      dispatch(getCohortResources(cohort_id));
+    }
+  }, [cohort]);
+
+  if (resources === undefined || resources?.length === 0) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <Page title="Sphere | Resources">
@@ -141,8 +151,8 @@ export default function ResourcesPage() {
         />
         {/* </SearchbarStyle> */}
         <ToggleButtons filters={filters} setFilters={setFilters} />
-        {sessionMaterials.map((session, index) => (
-          <ResourcesSection key={index} sessionData={session} />
+        {resources.map((resource, index) => (
+          <ResourcesSection key={index} resourceData={resource} />
         ))}
       </Container>
     </Page>

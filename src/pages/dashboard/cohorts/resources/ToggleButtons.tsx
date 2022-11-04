@@ -1,8 +1,19 @@
 import React from 'react';
 import { ToggleButtonGroup } from '@material-ui/core';
-import { StyledToggleButton, ToggleButtonTypography, MaterialTypes } from './Common';
+import { RootState, useSelector } from 'redux/store';
+import { StyledToggleButton, ToggleButtonTypography } from './Common';
 
 function ToggleButtons({ filters, setFilters }: { filters: String[]; setFilters: Function }) {
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+  const resourcesTypes = useSelector(
+    (state: RootState) =>
+      state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]?.resources_types
+  );
+  const options = resourcesTypes.map((type) => ({
+    type,
+    display: ['Github', 'Other'].includes(type) ? type : `${type}s`
+  }));
+
   return (
     <ToggleButtonGroup
       style={{
@@ -19,7 +30,7 @@ function ToggleButtons({ filters, setFilters }: { filters: String[]; setFilters:
         console.log('Filters:', filters);
       }}
     >
-      {MaterialTypes.map((m) => (
+      {options.map((m) => (
         <StyledToggleButton key={m.type} value={m.type}>
           <ToggleButtonTypography>{m.display}</ToggleButtonTypography>
         </StyledToggleButton>
