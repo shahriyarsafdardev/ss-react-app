@@ -15,7 +15,6 @@ function ResourcesTypesFilter({
     <>
       <Stack
         direction="row"
-        spacing={3}
         sx={{
           marginBottom: '25px',
           width: '100%',

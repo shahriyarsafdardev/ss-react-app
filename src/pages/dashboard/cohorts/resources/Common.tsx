@@ -51,7 +51,10 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   backgroundColor: 'rgba(225, 228, 231, 0.3)',
   padding: '10px 18px',
   border: 'none',
-  borderRadius: '10px !important'
+  borderRadius: '10px !important',
+  marginLeft: '0 !important',
+  marginRight: '15px',
+  marginTop: '10px'
 }));
 
 export const ToggleButtonTypography = styled(Typography)(({ theme }) => ({
