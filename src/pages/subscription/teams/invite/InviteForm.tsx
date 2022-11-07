@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
+import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { StyledLoadingButton } from '../Common';
 import { InvitationDetails } from './InvitePage';
 import InvitationSubscriptionDetails from './InvitationSubscriptionDetails';
@@ -189,7 +190,9 @@ export default function InviteForm({
           onChange={(e) => {
             setValid(e.complete);
           }}
+          options={{ terms: { card: 'never' } }}
         />
+        <PaymentTermsCheckBox />
         <Stack spacing={{ xs: 3, md: 2 }}>
           {!desktopView && (
             <InvitationSubscriptionDetails

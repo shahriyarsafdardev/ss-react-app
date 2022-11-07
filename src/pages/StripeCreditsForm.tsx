@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { LoadingButton } from '@material-ui/lab';
 import { Box, InputLabel, Stack, TextField } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
+import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { useStyles } from './Common';
 
 type CardType = {
@@ -95,7 +96,9 @@ export default function StripeCreditsForm({
         onChange={(e) => {
           setValid(e.complete);
         }}
+        options={{ terms: { card: 'never' } }}
       />
+      <PaymentTermsCheckBox />
       <Stack
         width="100%"
         spacing={2}

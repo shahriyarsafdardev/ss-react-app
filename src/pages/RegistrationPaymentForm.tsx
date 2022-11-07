@@ -17,7 +17,7 @@ import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
 
 import { LoadingButton } from '@material-ui/lab';
-import TermsCheckBox from 'components/TermsCheckBox';
+import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { useStyles } from './Common';
 
 type CardInfo = {
@@ -92,7 +92,7 @@ export default function RegistrationPaymentForm({
     enableReinitialize: true,
     initialValues: {
       name: userFullName || '',
-      acceptedTerms: false
+      acceptedTerms: true
     },
     validationSchema: CardSchema,
     onSubmit: () => {}
@@ -195,11 +195,9 @@ export default function RegistrationPaymentForm({
           onChange={(e) => {
             setValid(e.complete);
           }}
+          options={{ terms: { card: 'never' } }}
         />
-        <TermsCheckBox
-          value={values.acceptedTerms}
-          onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
-        />
+        <PaymentTermsCheckBox />
         <Stack
           width="100%"
           spacing={2}

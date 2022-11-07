@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
+import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton, SubscriptionDetails } from './Common';
 import { Registration } from './TeamRegistration';
@@ -65,7 +66,7 @@ export default function StripePayment({
     },
     input: {
       '&::placeholder': {
-        color: '#475569'
+        color: '#D3D3D3'
       }
     },
     helperText: {
@@ -159,7 +160,9 @@ export default function StripePayment({
         onChange={(e) => {
           setValid(e.complete);
         }}
+        options={{ terms: { card: 'never' } }}
       />
+      <PaymentTermsCheckBox />
       <Stack spacing={{ xs: 3, md: 2 }}>
         {!desktopView && (
           <SubscriptionDetails isSinglePayee={isSinglePayee} teamDiscount={teamDiscount} />

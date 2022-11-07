@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import TermsCheckBox from 'components/TermsCheckBox';
+import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { LoadingButton } from '@material-ui/lab';
 import { Box, InputLabel, Stack, TextField } from '@material-ui/core';
 import { useStyles } from './Common';
@@ -32,7 +32,7 @@ export default function StripePaymentForm({ onSuccess }: { onSuccess: Function }
     initialValues: {
       cardName: '',
       cardEmail: '',
-      acceptedTerms: false
+      acceptedTerms: true
     },
     validationSchema: ValidationSchema,
     onSubmit: () => {}
@@ -124,11 +124,9 @@ export default function StripePaymentForm({ onSuccess }: { onSuccess: Function }
         onChange={(e) => {
           setValid(e.complete);
         }}
+        options={{ terms: { card: 'never' } }}
       />
-      <TermsCheckBox
-        value={values.acceptedTerms}
-        onChange={(value: boolean) => setFieldValue('acceptedTerms', value)}
-      />
+      <PaymentTermsCheckBox />
       <LoadingButton
         type="submit"
         fullWidth
