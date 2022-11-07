@@ -32,7 +32,9 @@ export default function PaymentDetails({
             <StyledTypography>To attend this course you will be charged:</StyledTypography>
           )}
           <Stack alignItems="center" sx={{ marginBottom: '30px' }}>
-            <Typography variant="h4">{`$${totalAmount} USD`}</Typography>
+            <Typography variant="h4">{`$${new Intl.NumberFormat().format(
+              totalAmount
+            )} USD`}</Typography>
             <StyledTypography>which will recur annually</StyledTypography>
           </Stack>
         </Stack>
