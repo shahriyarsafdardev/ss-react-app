@@ -3,7 +3,10 @@ import { LoadingButton } from '@material-ui/lab';
 import MUICreatableSelect from 'components/MUICreatableSelect';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { RootState, useSelector } from 'redux/store';
 import axios from 'utils/axios';
+import { trackEvent } from 'utils/eventTracking';
 
 export default function ExpenseCheckerForm({
   companies,
@@ -17,12 +20,20 @@ export default function ExpenseCheckerForm({
   const { enqueueSnackbar } = useSnackbar();
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
 
   const checkApprovalStatus = async () => {
     if (company === '') {
       enqueueSnackbar('No company selected!', { variant: 'error' });
       return;
     }
+    trackEvent(cohort, 'L&D Approval Checker - Company Selection - Company Selected', {
+      Company: company
+    });
     setLoading(true);
     await axios
       .get(`companies/check_approval_status.json`, {

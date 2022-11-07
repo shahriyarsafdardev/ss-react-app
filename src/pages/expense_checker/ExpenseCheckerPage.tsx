@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
+import { trackEvent } from 'utils/eventTracking';
+import { RootState, useSelector } from 'redux/store';
 import { LoadingContainer, Logo, PaymentRootStyle, useStyles } from './Common';
 import ExpenseCheckerDetails from './ExpenseCheckerDetails';
 import ExpenseCheckerForm from './ExpenseCheckerForm';
@@ -21,6 +23,9 @@ export type InvitationDetails = {
 export default function ExpenseCheckerPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
@@ -45,6 +50,7 @@ export default function ExpenseCheckerPage() {
   };
 
   useEffect(() => {
+    trackEvent(cohort, 'L&D Approval Checker - Company Selection - Page Opened');
     getCompanies();
   }, []);
 

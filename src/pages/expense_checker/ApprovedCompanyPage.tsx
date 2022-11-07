@@ -1,10 +1,25 @@
 import { Stack, Box, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { RootState, useSelector } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, StyledImage } from './Common';
 
 export default function ApprovedCompanyPage({ handleEnroll }: { handleEnroll: Function }) {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const cohort = useSelector(
+    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
+  );
+
+  useEffect(() => {
+    trackEvent(cohort, 'L&D Approval Checker - Approved Company - Page Opened', {
+      Company: company
+    });
+  }, []);
 
   return (
     <PaymentRootStyle title="Sphere | Expense Approval Checker">
