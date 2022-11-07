@@ -1,23 +1,25 @@
-import { Stack, Box, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core';
+import { Stack, Box, Typography, Button, useTheme, useMediaQuery, Avatar } from '@material-ui/core';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { RootState, useSelector } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
-import { PaymentRootStyle, Logo, useStyles, StyledImage } from './Common';
+import { PaymentRootStyle, Logo, useStyles } from './Common';
+import { Company } from './ExpenseCheckerPage';
 
-export default function ApprovedCompanyPage({ handleEnroll }: { handleEnroll: Function }) {
+export default function ApprovedCompanyPage({
+  handleEnroll,
+  company,
+  cohort
+}: {
+  handleEnroll: Function;
+  company: Company;
+  cohort: any;
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const url = new URLSearchParams(useLocation().search);
-  const cohortID = url.get('cohort_id') || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
-  );
 
   useEffect(() => {
     trackEvent(cohort, 'L&D Approval Checker - Approved Company - Page Opened', {
-      Company: company
+      Company: company?.name
     });
   }, []);
 
@@ -30,20 +32,17 @@ export default function ApprovedCompanyPage({ handleEnroll }: { handleEnroll: Fu
           alignItems="center"
           spacing={3}
         >
-          <StyledImage
-            src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-s-logo.png"
-            alt="sphere-logo"
-          />
+          <Avatar alt={company?.logo_url} src={company?.name} sx={{ width: 112, height: 112 }} />
           <Typography className={`${classes.heading} ${classes.whiteFont}`}>
-            Stripe has approved Sphere courses as an L&D expense
+            {company?.name} has approved Sphere courses as an L&D expense
           </Typography>
         </Stack>
         <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>
           <Box className={classes.fullWidthCenter}>
             <Stack spacing={3}>
               <Typography className={classes.toggleFont}>
-                Several Stripe teams & individuals have attended Sphere courses and expensed the
-                full cost to their L&D budget.
+                Several {company?.name} teams & individuals have attended Sphere courses and
+                expensed the full cost to their L&D budget.
               </Typography>
               <Typography className={classes.toggleFont}>
                 You can secure your seat now by enrolling below.

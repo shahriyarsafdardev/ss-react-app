@@ -5,27 +5,20 @@ import axios from 'utils/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
 import { trackEvent } from 'utils/eventTracking';
-import { RootState, useSelector } from 'redux/store';
 import { LoadingContainer, Logo, PaymentRootStyle, useStyles } from './Common';
 import ExpenseCheckerDetails from './ExpenseCheckerDetails';
 import ExpenseCheckerForm from './ExpenseCheckerForm';
 import ApprovedCompanyPage from './ApprovedCompanyPage';
 import NewCompanyPage from './NewCompanyPage';
 
-export type InvitationDetails = {
-  cohort_name: string;
-  cohort_host_name: string;
-  lead_user_name: string;
-  team_company_name: string;
-  team_discount: number;
+export type Company = {
+  name: string;
+  logo_url: string;
 };
 
 export default function ExpenseCheckerPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
-  );
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
@@ -35,13 +28,23 @@ export default function ExpenseCheckerPage() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [selectedCompany, setSelectedCompany] = useState<Company>({
+    name: '',
+    logo_url: ''
+  });
+  const [cohort, setCohort] = useState<any>();
 
   const getCompanies = async () => {
     setLoading(true);
     await axios
-      .get(`companies/companies.json`)
+      .get(`companies/companies.json`, {
+        params: {
+          cohort_id: cohortID
+        }
+      })
       .then((res) => {
         setCompanies(res?.data?.companies);
+        setCohort(res?.data?.cohort);
         setLoading(false);
       })
       .catch((err) => {
@@ -50,14 +53,23 @@ export default function ExpenseCheckerPage() {
   };
 
   useEffect(() => {
-    trackEvent(cohort, 'L&D Approval Checker - Company Selection - Page Opened');
     getCompanies();
   }, []);
 
+  useEffect(() => {
+    cohort && trackEvent(cohort, 'L&D Approval Checker - Company Selection - Page Opened');
+  }, [cohort]);
+
   const handleEnroll = () => {
+    const eventName = companyExist
+      ? 'L&D Approval Checker - Approved Company - "Enroll" Selected'
+      : 'L&D Approval Checker - New Company - "Enroll" Selected';
+    trackEvent(cohort, eventName, {
+      Company: selectedCompany?.name
+    });
     navigate(`/registration?cohort_id=${cohortID}`);
   };
-  if (companies?.length === 0 || loading || cohortID === '') {
+  if (companies?.length === 0 || loading || cohortID === '' || !cohort) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -65,11 +77,11 @@ export default function ExpenseCheckerPage() {
     );
   }
 
-  if (statusApproved) {
+  if (statusApproved && selectedCompany?.name !== '') {
     return companyExist ? (
-      <ApprovedCompanyPage handleEnroll={handleEnroll} />
+      <ApprovedCompanyPage handleEnroll={handleEnroll} company={selectedCompany} cohort={cohort} />
     ) : (
-      <NewCompanyPage handleEnroll={handleEnroll} />
+      <NewCompanyPage handleEnroll={handleEnroll} company={selectedCompany} cohort={cohort} />
     );
   }
 
@@ -92,6 +104,8 @@ export default function ExpenseCheckerPage() {
               companies={companies || []}
               setStatusApproved={setStatusApproved}
               setCompanyExist={setCompanyExist}
+              setSelectedCompany={setSelectedCompany}
+              cohort={cohort}
             />
           </Box>
         </Stack>

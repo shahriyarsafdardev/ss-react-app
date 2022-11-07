@@ -1,10 +1,27 @@
 import { Stack, Box, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core';
+import { useEffect } from 'react';
+import { trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles } from './Common';
+import { Company } from './ExpenseCheckerPage';
 
-export default function NewCompanyPage({ handleEnroll }: { handleEnroll: Function }) {
+export default function NewCompanyPage({
+  handleEnroll,
+  company,
+  cohort
+}: {
+  handleEnroll: Function;
+  company: Company;
+  cohort: any;
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  useEffect(() => {
+    trackEvent(cohort, 'L&D Approval Checker - New Company - Page Opened', {
+      Company: company?.name
+    });
+  }, []);
 
   return (
     <PaymentRootStyle title="Sphere | Expense Approval Checker">
@@ -15,7 +32,7 @@ export default function NewCompanyPage({ handleEnroll }: { handleEnroll: Functio
           alignItems="center"
         >
           <Typography className={`${classes.heading} ${classes.whiteFont}`}>
-            🚀 We don’t have any Stripe alumni, but you could be the first!
+            🚀 We don’t have any {company?.name} alumni, but you could be the first!
           </Typography>
         </Stack>
         <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>

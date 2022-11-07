@@ -3,28 +3,25 @@ import { LoadingButton } from '@material-ui/lab';
 import MUICreatableSelect from 'components/MUICreatableSelect';
 import { useSnackbar } from 'notistack5';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { RootState, useSelector } from 'redux/store';
 import axios from 'utils/axios';
 import { trackEvent } from 'utils/eventTracking';
 
 export default function ExpenseCheckerForm({
   companies,
   setStatusApproved,
-  setCompanyExist
+  setCompanyExist,
+  setSelectedCompany,
+  cohort
 }: {
   companies: string[];
   setStatusApproved: Function;
   setCompanyExist: Function;
+  setSelectedCompany: Function;
+  cohort: any;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
-  const url = new URLSearchParams(useLocation().search);
-  const cohortID = url.get('cohort_id') || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohortID === cohort.id)[0]
-  );
 
   const checkApprovalStatus = async () => {
     if (company === '') {
@@ -44,6 +41,10 @@ export default function ExpenseCheckerForm({
       .then((res) => {
         setStatusApproved(true);
         setCompanyExist(res?.data?.company_exist);
+        setSelectedCompany({
+          name: company,
+          logo_url: res?.data?.company_logo_url
+        });
         setLoading(false);
       })
       .catch((err) => {

@@ -102,8 +102,3 @@ export const PaymentRootStyle = styled(Page)(({ theme }) => ({
     color: 'white'
   }
 }));
-
-export const StyledImage = styled('img')(({ theme }) => ({
-  width: '112px',
-  height: '112px'
-}));
