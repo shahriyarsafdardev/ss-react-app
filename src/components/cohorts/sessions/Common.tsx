@@ -1,7 +1,6 @@
 import { Typography, Card } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
-import { Cohort } from '../../../@types/cohorts';
 import { StyledCheckBox, StyledText } from '../home/MarkCheckbox';
 
 export const StyledShareModal = styled(Card)(() => ({
@@ -33,7 +32,7 @@ export function ShareReading({
     <StyledCheckBox
       onClick={() => {
         onShare(true);
-        ontriggerShareEvent('Resources Page - Resources - "Share" Selected');
+        ontriggerShareEvent('Sessions Page - Resources - "Share" Selected');
       }}
       style={{ justifyContent: 'center' }}
     >

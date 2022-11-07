@@ -37,7 +37,7 @@ export default function SessionMaterials({ materials, session }: SessionMaterial
   };
 
   useEffect(() => {
-    sendAnalyticsData('Resources Page - Resources - Tab Opened', {
+    sendAnalyticsData('Sessions Page - Resources - Tab Opened', {
       ...commonProperties
     });
   }, []);

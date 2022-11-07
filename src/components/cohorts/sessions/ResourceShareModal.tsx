@@ -50,7 +50,7 @@ export default function ResourceShareModal({
     },
     validationSchema: emailValidation,
     onSubmit: (values, { setSubmitting, resetForm }) => {
-      ontriggerShareEvent('Resources Page - Share Resource Modal - "Share" Selected', {
+      ontriggerShareEvent('Sessions Page - Share Resource Modal - "Share" Selected', {
         'Recipient Email Address': values.email
       });
       axios
@@ -60,7 +60,7 @@ export default function ResourceShareModal({
         .then(() => {
           resetForm();
           setSubmitting(false);
-          ontriggerShareEvent('Resources Page - Share Resource Modal - Resource Shared', {
+          ontriggerShareEvent('Sessions Page - Share Resource Modal - Resource Shared', {
             'Recipient Email Address': values.email
           });
           enqueueSnackbar('This resource has been shared via email!', { variant: 'success' });
@@ -73,7 +73,7 @@ export default function ResourceShareModal({
 
   useEffect(() => {
     if (open) {
-      ontriggerShareEvent('Resources Page - Share Resource Modal - Modal Opened');
+      ontriggerShareEvent('Sessions Page - Share Resource Modal - Modal Opened');
     }
   }, [open]);
 
@@ -83,7 +83,7 @@ export default function ResourceShareModal({
       onClose={() => {
         onClose(false);
         resetForm();
-        ontriggerShareEvent('Resources Page - Share Resource Modal - Modal Closed');
+        ontriggerShareEvent('Sessions Page - Share Resource Modal - Modal Closed');
       }}
     >
       <StyledShareModal sx={{ padding: '5% 10%', height: '700px' }}>

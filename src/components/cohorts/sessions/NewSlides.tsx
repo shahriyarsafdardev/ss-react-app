@@ -69,7 +69,7 @@ export default function NewSlides({
   const slideNumber = useRef(1);
 
   const handleShareSlides = () => {
-    sliderEvents('Resources Page - "Share Slide" Selected', slideNumber.current);
+    sliderEvents('Sessions Page - "Share Slide" Selected', slideNumber.current);
     setShareModal(true);
   };
 
@@ -178,7 +178,7 @@ export default function NewSlides({
                         <Box
                           onClick={() =>
                             sliderEvents(
-                              'Resources Page - Slides - "Full Screen" Selected',
+                              'Sessions Page - Slides - "Full Screen" Selected',
                               slideNumber.current
                             )
                           }
@@ -210,7 +210,7 @@ export default function NewSlides({
                 setNumPages(e.doc.numPages);
               }}
               onPageChange={(e: PageChangeEvent) => {
-                sliderEvents('Resources Page - Slides - Slide Opened', e.currentPage + 1);
+                sliderEvents('Sessions Page - Slides - Slide Opened', e.currentPage + 1);
                 slideNumber.current = e.currentPage + 1;
               }}
               renderError={renderError}
