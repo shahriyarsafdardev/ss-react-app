@@ -46,7 +46,6 @@ function ResourceFilter({
     let types = [];
     if (request === 'query') {
       setSearchQuery(value);
-      !!value && sendAnalyticsData('Resources Page - Search Made', { 'Search Query': value });
       inputChanged(value, selectedTypes);
     } else if (request === 'desktop-view-types') {
       if (selectedTypes.includes(value)) {
@@ -85,6 +84,7 @@ function ResourceFilter({
           )}`
         )
         .then((res) => {
+          !!query && sendAnalyticsData('Resources Page - Search Made', { 'Search Query': query });
           setFilteredMaterials(res.data.materials);
           setLoading(false);
         });
