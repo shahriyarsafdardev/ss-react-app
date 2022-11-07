@@ -70,6 +70,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'attendance',
     'analytics',
     'surveys',
+    'resources',
     'code',
     'onboarding-calendar-instructions'
   ];

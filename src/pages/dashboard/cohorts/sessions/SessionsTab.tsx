@@ -81,7 +81,7 @@ export default function SessionsTab() {
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
-      sendAnalyticsData('Resources Page - Page Loaded', {});
+      sendAnalyticsData('Sessions Page - Page Loaded', {});
       setAnalyticsSent(true);
     }
   }, [cohort]);

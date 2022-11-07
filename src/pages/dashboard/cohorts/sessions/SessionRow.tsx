@@ -154,7 +154,7 @@ export default function SessionRow({
       <div
         onClick={() => {
           onClick(index);
-          sendAnalyticsData('Resources Page - Session Sidebar - Session Selected', {
+          sendAnalyticsData('Sessions Page - Session Sidebar - Session Selected', {
             'Session ID': session?.id,
             'Session Number': session?.number,
             'Session Name': session?.name

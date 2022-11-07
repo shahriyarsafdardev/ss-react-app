@@ -67,13 +67,24 @@ export type Survey = {
   contents: SurveyContent[];
 };
 
+export type SessionResource = {
+  session_id: string;
+  session_name: string;
+  session_number: number;
+  session_materials_count: number;
+  completed_session_materials_count: number;
+  materials: SessionMaterial[];
+};
+
 export type SessionMaterial = {
   id: string;
+  session_id: string;
   name: string;
   action_text: string;
   info_text: string;
   action_url: string;
   category: string;
+  material_type: string;
   complete: boolean;
   is_private: boolean;
   index?: number;
@@ -231,6 +242,8 @@ export type Cohort = {
   instructor_message: string;
   amplitude_events_timeline: AmplitudeEventsTimeline;
   onboarding_data: OnboardingData;
+  resources: SessionResource[];
+  resources_types: string[];
 };
 
 export type CodeOnboardingItem = {

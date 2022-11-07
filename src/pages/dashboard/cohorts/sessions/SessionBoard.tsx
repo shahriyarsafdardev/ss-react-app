@@ -20,12 +20,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import ReactPlayer from 'react-player';
 import { makeStyles } from '@material-ui/styles';
-import {
-  SessionMaterials,
-  Description,
-  Summary,
-  SurveyForm
-} from '../../../../components/cohorts/sessions';
+import { Summary, SurveyForm } from '../../../../components/cohorts/sessions';
 import NewSlides from '../../../../components/cohorts/sessions/NewSlides';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
@@ -287,35 +282,10 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   };
 
   const tabsContent = [
-    <>
-      <Description
-        key="description"
-        innerContent={session?.description || ''}
-        resourcesPresent={session?.materials && session?.materials?.length > 0}
-      />
-      {/* {!isLearner ? (
-        <InstructorSessionMaterials
-          groupedMaterialsProp={session?.session_materials || []}
-          sessionId={session?.id}
-          cohortId={id}
-          key="instructor_session_materials"
-          onTrack={
-            (eventData: string) => {}
-            // sendAnalyticsData(sessionNumber, SESSION_EVENTS.resources_tab, eventData)
-          }
-        />
-      ) : ( */}
-      <SessionMaterials
-        materials={session?.materials?.filter((m) => m.included_in_session_materials_tab) || []}
-        session={session}
-        key="session_materials"
-      />
-      {/* )} */}
-    </>,
     <NewSlides
       key={session?.id}
       onTrack={() =>
-        sendAnalyticsData('Resources Page - Slides - Tab Opened', {
+        sendAnalyticsData('Sessions Page - Slides - Tab Opened', {
           ...commonProperties
         })
       }
@@ -384,20 +354,20 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
                   style={{ maxWidth: '100%' }}
                   onStart={() => markAttendance('watched_recording')}
                   onPause={() => {
-                    sendAnalyticsData('Resources Page - Recording Player - Play Pause', {
-                      ...commonProperties,
+                    sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
+                      // ...commonProperties,
                       Timepoint: videoRefVimeo.current?.getCurrentTime()
                     });
                   }}
                   onSeek={() =>
-                    sendAnalyticsData('Resources Page - Recording Player - Timepoint Selected', {
-                      ...commonProperties,
+                    sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
+                      // ...commonProperties,
                       Timepoint: videoRefVimeo.current?.getCurrentTime()
                     })
                   }
                   onPlay={() =>
-                    sendAnalyticsData('Resources Page - Recording Player - Play Clicked', {
-                      ...commonProperties,
+                    sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
+                      // ...commonProperties,
                       Timepoint: videoRefVimeo.current?.getCurrentTime() || 0
                     })
                   }
@@ -414,20 +384,20 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
                 ref={videoRefS3}
                 onPlay={(e) => {
                   markAttendance('watched_recording');
-                  sendAnalyticsData('Resources Page - Recording Player - Play Clicked', {
-                    ...commonProperties,
+                  sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
+                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
                 onPause={(e) => {
-                  sendAnalyticsData('Resources Page - Recording Player - Play Pause', {
-                    ...commonProperties,
+                  sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
+                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
                 onSeeked={(e) => {
-                  sendAnalyticsData('Resources Page - Recording Player - Timepoint Selected', {
-                    ...commonProperties,
+                  sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
+                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
@@ -447,7 +417,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             sessionZoomUrl={session.zoom_url}
             onClick={(sessionNumber: number) => {
               markAttendance('attended_live');
-              sendAnalyticsData('Resources Page - Session Preview - "Join Session" Selected', {
+              sendAnalyticsData('Sessions Page - Session Preview - "Join Session" Selected', {
                 ...commonProperties
               });
             }}
@@ -494,7 +464,6 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
           </FeedbackButton>
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
-          <SessionTab label="Resources" data-testid="session-resources" />
           <SessionTab label="Session Slides" data-testid="session-slides" />
           {session?.timestamps && session?.timestamps.length > 0 && (
             <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
