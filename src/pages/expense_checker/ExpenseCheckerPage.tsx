@@ -57,8 +57,13 @@ export default function ExpenseCheckerPage() {
   }, []);
 
   useEffect(() => {
-    cohort && trackEvent(cohort, 'L&D Approval Checker - Company Selection - Page Opened');
-  }, [cohort]);
+    cohort &&
+      window.analytics?.ready &&
+      window.analytics?.ready(() => {
+        window.analytics?.identify(window.analytics?.user().anonymousId(), {});
+        trackEvent(cohort, 'L&D Approval Checker - Company Selection - Page Opened');
+      });
+  }, [cohort, window.analytics?.ready]);
 
   const handleEnroll = () => {
     const eventName = companyExist
