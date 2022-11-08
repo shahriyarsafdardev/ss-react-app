@@ -35,6 +35,7 @@ export const PATH_PAGE = {
   subscriptionCheckout: '/teams/subscription_checkout',
   creditCheckoutInvitation: '/credit_checkout_invitation',
   invitePage: '/teams/subscription_invite',
+  expenseApprovalChecker: '/expense-approval-checker',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
