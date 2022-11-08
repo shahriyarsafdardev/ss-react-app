@@ -32,7 +32,7 @@ export default function ApprovedCompanyPage({
           alignItems="center"
           spacing={3}
         >
-          <Avatar alt={company?.logo_url} src={company?.name} sx={{ width: 112, height: 112 }} />
+          <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
           <Typography className={`${classes.heading} ${classes.whiteFont}`}>
             {company?.name} has approved Sphere courses as an L&D expense
           </Typography>
