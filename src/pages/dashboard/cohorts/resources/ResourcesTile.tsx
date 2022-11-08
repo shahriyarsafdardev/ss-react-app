@@ -5,6 +5,7 @@ import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
 import { useDispatch } from 'redux/store';
 import { markReadingCompleted } from 'redux/slices/cohort';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { ResourceContext } from 'contexts/ResourceContext';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -28,6 +29,7 @@ function ResourcesTile({
   const [checked, setChecked] = useState(material?.complete);
   const dispatch = useDispatch();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const { setSelectedResource } = useContext(ResourceContext);
 
   const handleToggleRead = () => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
@@ -53,7 +55,8 @@ function ResourcesTile({
                 'Resource Author': material?.info_text,
                 'Resource Link': material?.action_url
               });
-              window.open(material?.action_url, '_blank');
+              setSelectedResource({ ...material });
+              // window.open(material?.action_url, '_blank');
             }}
           >
             <ResourceIcon>
@@ -76,12 +79,7 @@ function ResourcesTile({
               </ResourceType>
             </ResourceIcon>
             <Stack>
-              <Link
-                variant="h5"
-                href={material.action_url}
-                target="_blank"
-                style={{ fontSize: '1.1rem' }}
-              >
+              <Link variant="h5" style={{ fontSize: '1.1rem' }}>
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
               </Link>
               <Typography variant="subtitle2">

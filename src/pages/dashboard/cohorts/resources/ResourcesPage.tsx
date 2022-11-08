@@ -8,9 +8,11 @@ import { getCohortResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 
 import LoadingScreen from 'components/LoadingScreen';
+import { ResourceContext } from 'contexts/ResourceContext';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
 import { LoadingContainer } from '../code/CodeTab';
+import ResourceViewer from './ResourceViewer';
 
 export default function ResourcesPage() {
   const [isSearch, setIsSearch] = useState<boolean>(false);
@@ -21,6 +23,8 @@ export default function ResourcesPage() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { resources, resources_types } = cohort || [];
+  const [selectedResource, setSelectedResource] = useState<any>({});
+
   const clearData = () => {
     setIsSearch(false);
   };
@@ -49,20 +53,30 @@ export default function ResourcesPage() {
   return (
     <Page title="Sphere | Resources">
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <Container
-          sx={{ px: '50px !important' }}
-          key={cohort_id}
-          maxWidth={themeStretch ? false : 'xl'}
-        >
-          <ResourceFilter types={resources_types} isSearch={isSearch} setIsSearch={setIsSearch} />
-          {!isSearch && (
-            <>
-              {resources?.map((resource, index) => (
-                <ResourcesSection key={index} resourceData={resource} />
-              ))}
-            </>
+        <ResourceContext.Provider value={{ setSelectedResource }}>
+          {selectedResource?.name ? (
+            <ResourceViewer resource={selectedResource} setIsSearch={setIsSearch} />
+          ) : (
+            <Container
+              sx={{ px: '50px !important' }}
+              key={cohort_id}
+              maxWidth={themeStretch ? false : 'xl'}
+            >
+              <ResourceFilter
+                types={resources_types}
+                isSearch={isSearch}
+                setIsSearch={setIsSearch}
+              />
+              {!isSearch && (
+                <>
+                  {resources?.map((resource, index) => (
+                    <ResourcesSection key={index} resourceData={resource} />
+                  ))}
+                </>
+              )}
+            </Container>
           )}
-        </Container>
+        </ResourceContext.Provider>
       </AnalyticsContext.Provider>
     </Page>
   );
