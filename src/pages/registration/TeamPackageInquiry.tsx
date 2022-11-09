@@ -100,22 +100,24 @@ export default function TeamPackageInquiry() {
                     error={Boolean(touched.fullName && errors.fullName)}
                     onChange={(e: any) => setFieldValue('fullName', e.target.value)}
                   />
-                  <StyledLoadingButton
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                    onClick={() => {}}
-                  >
-                    Share Information
-                  </StyledLoadingButton>
-                  <StyledLoadingButton
-                    type="submit"
-                    variant="outlined"
-                    loading={isSubmitting}
-                    onClick={() => {}}
-                  >
-                    Back
-                  </StyledLoadingButton>
+                  <Stack spacing={2}>
+                    <StyledLoadingButton
+                      type="submit"
+                      variant="contained"
+                      loading={isSubmitting}
+                      onClick={() => {}}
+                    >
+                      Share Information
+                    </StyledLoadingButton>
+                    <StyledLoadingButton
+                      type="submit"
+                      variant="outlined"
+                      loading={isSubmitting}
+                      onClick={() => {}}
+                    >
+                      Back
+                    </StyledLoadingButton>
+                  </Stack>
                 </Stack>
               </Form>
             </FormikProvider>

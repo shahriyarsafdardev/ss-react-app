@@ -86,7 +86,7 @@ export default function CoursePaymentPage() {
                 }
               }}
             >
-              <SubscriptionPaymentForm />
+              <SubscriptionPaymentForm paymentType="course payment" />
             </Elements>
           </Box>
         </Stack>

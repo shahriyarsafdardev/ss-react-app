@@ -6,16 +6,19 @@ import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
 import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { LoadingButton } from '@material-ui/lab';
+import { useNavigate } from 'react-router';
 
 type CardInfo = {
   name: string;
 };
 
-export default function SubscriptionPaymentForm() {
+export default function SubscriptionPaymentForm({ paymentType }: { paymentType: string }) {
   const stripe = useStripe();
   const elements = useElements();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
+  const navigate = useNavigate();
+
   const useStyles = makeStyles({
     root: {
       '& .MuiOutlinedInput-root.Mui-error fieldset': {
@@ -51,6 +54,13 @@ export default function SubscriptionPaymentForm() {
   const handleSubmit = async (event: any, name: string) => {
     setIsSubmitting(true);
     event.preventDefault();
+    navigate('/registration/course-invite');
+  };
+
+  const handleBackButton = () => {
+    paymentType === 'course payment'
+      ? navigate('/registration/course-payment')
+      : navigate('/registration/subscription-payment');
   };
 
   const makePayment = async (name: string, email: string) => {
@@ -79,8 +89,7 @@ export default function SubscriptionPaymentForm() {
   };
 
   const CardSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().email().required('Email is required')
+    name: Yup.string().required('Name is required')
   });
 
   const formik = useFormik<CardInfo>({
@@ -134,7 +143,12 @@ export default function SubscriptionPaymentForm() {
           >
             Start Membership
           </LoadingButton>
-          <Button fullWidth variant="outlined" className={classes.submitButton}>
+          <Button
+            fullWidth
+            variant="outlined"
+            className={classes.submitButton}
+            onClick={handleBackButton}
+          >
             Back
           </Button>
         </Stack>

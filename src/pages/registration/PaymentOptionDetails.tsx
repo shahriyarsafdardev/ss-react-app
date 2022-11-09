@@ -77,7 +77,9 @@ export function TeamMembershipPaymentDetails() {
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
-        onClick={() => {}}
+        onClick={() => {
+          navigate('/registration/team-package-inquiry');
+        }}
       >
         Select
       </Button>
