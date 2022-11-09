@@ -96,6 +96,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   enrollButton: {
     borderRadius: '30px',
+    height: '48px',
     [theme.breakpoints.down('md')]: {
       backgroundColor: '#fff',
       color: '#12125C',
@@ -107,7 +108,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: '40px'
   },
   submitButton: {
-    height: '40px',
+    height: '48px',
     borderRadius: '30px'
   },
   paymentOptionButton: {
@@ -168,7 +169,7 @@ export const Logo = styled('img')(({ theme }) => ({
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   marginTop: '24px',
   borderRadius: '30px',
-  height: '40px',
+  height: '48px',
   width: '100%',
   [theme.breakpoints.down('md')]: {
     height: '48px'

@@ -44,7 +44,7 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
       }
     },
     submitButton: {
-      height: '40px',
+      height: '48px',
       borderRadius: '30px'
     }
   });

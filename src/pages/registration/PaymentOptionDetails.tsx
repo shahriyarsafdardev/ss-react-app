@@ -14,7 +14,7 @@ export function OneTimePaymentDetails() {
           $800
         </Typography>
       </Stack>
-      <Stack className={classes.optionsStack}>
+      <Stack className={classes.optionsStack} spacing={1}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
       </Stack>
       <Button
@@ -40,7 +40,7 @@ export function IndividualMembershipPaymentDetails() {
           Starting at $760 per year
         </Typography>
       </Stack>
-      <Stack className={classes.optionsStack}>
+      <Stack className={classes.optionsStack} spacing={1}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
         <Typography>✅ Access to Alumni events</Typography>
         <Typography>✅ 5% discount on all Sphere courses</Typography>
@@ -68,7 +68,7 @@ export function TeamMembershipPaymentDetails() {
           Starting at $760 per year
         </Typography>
       </Stack>
-      <Stack className={classes.optionsStack}>
+      <Stack className={classes.optionsStack} spacing={1}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
         <Typography>✅ Access to Alumni events</Typography>
         <Typography>✅ Free access to a course of your choosing</Typography>
