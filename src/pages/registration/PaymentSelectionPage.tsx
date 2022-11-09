@@ -1,5 +1,6 @@
-import { Stack, Typography, Avatar } from '@material-ui/core';
-import { PaymentRootStyle, Logo, useStyles } from './Common';
+import { Stack, Typography, Avatar, useTheme, useMediaQuery } from '@material-ui/core';
+import Page from 'components/Page';
+import { Logo, useStyles } from './Common';
 import {
   IndividualMembershipPaymentDetails,
   OneTimePaymentDetails,
@@ -8,22 +9,25 @@ import {
 
 export default function PaymentSelectionPage() {
   const classes = useStyles();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
-    <PaymentRootStyle title="Sphere Payment" className={classes.purpleBackground}>
+    <Page
+      width="100%"
+      height={`${isDesktop && '100vh'}`}
+      title="Sphere Payment"
+      className={classes.purpleBackground}
+    >
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
       <Stack
         className={classes.wrapperStack}
         spacing={4}
         justifyContent="center"
         alignItems="center"
-        paddingX={{ xs: '0px', md: '50px', lg: '112px' }}
+        padding={{ xs: '10px', md: '50px', lg: '112px' }}
       >
-        <Avatar
-          src=""
-          alt="Logo"
-          sx={{ width: '72px', height: '72px', border: '1px solid #fff', marginX: 'auto' }}
-        />
+        <Avatar src="" alt="Logo" className={classes.paymentSelectionAvatar} />
         <Typography className={`${classes.heading} ${classes.whiteFont}`}>
           Pay now to secure your seat
         </Typography>
@@ -41,12 +45,14 @@ export default function PaymentSelectionPage() {
           width="100%"
           spacing={3}
           justifyContent="space-around"
+          alignItems={`${!isDesktop && 'center'}`}
+          marginTop={`${isDesktop && '50px'}`}
         >
           <OneTimePaymentDetails />
           <IndividualMembershipPaymentDetails />
           <TeamMembershipPaymentDetails />
         </Stack>
       </Stack>
-    </PaymentRootStyle>
+    </Page>
   );
 }

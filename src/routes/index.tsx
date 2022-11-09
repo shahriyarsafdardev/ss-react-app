@@ -350,6 +350,8 @@ export default function Router() {
     { path: 'registration/payment-options', element: <PaymentSelection /> },
     { path: 'registration/team-package-inquiry', element: <TeamPackageInquiry /> },
     { path: 'registration/course-invite', element: <CourseInvite /> },
+    { path: 'registration/subscription-payment', element: <SubscriptionPayment /> },
+    { path: 'registration/course-payment', element: <CoursePayment /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -503,6 +505,10 @@ const PersonalDetailsForm = Loadable(
   lazy(() => import('../pages/registration/PersonalDetailsPage'))
 );
 const PaymentSelection = Loadable(lazy(() => import('../pages/registration/PaymentSelectionPage')));
+const SubscriptionPayment = Loadable(
+  lazy(() => import('../pages/registration/SubscriptionPaymentPage'))
+);
+const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );

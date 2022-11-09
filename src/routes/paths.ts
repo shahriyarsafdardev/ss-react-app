@@ -38,6 +38,8 @@ export const PATH_PAGE = {
   expenseApprovalChecker: '/expense-approval-checker',
   personalDetailsForm: '/registration/personal-details',
   PaymentSelection: '/registration/payment-options',
+  subscriptionPayment: '/registration/subscription-payment',
+  CoursePayment: 'registration/course-payment',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',

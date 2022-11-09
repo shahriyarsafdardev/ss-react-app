@@ -1,4 +1,4 @@
-import { Box, styled, Theme } from '@material-ui/core';
+import { Box, styled, Theme, Input, Stack, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import Page from 'components/Page';
@@ -118,11 +118,34 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '30px',
     paddingBottom: '15px',
     borderRadius: '16px',
-    width: '31%',
+    width: '30%',
     color: '#000',
     [theme.breakpoints.down('md')]: {
-      width: '90%'
+      width: '95%'
     }
+  },
+  optionsStack: {
+    marginBottom: '40px !important',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '15px !important'
+    }
+  },
+  paymentSelectionAvatar: {
+    width: '72px',
+    height: '72px',
+    border: '1px solid #fff',
+    marginX: 'auto',
+    [theme.breakpoints.down('md')]: {
+      marginTop: '80px'
+    }
+  },
+  counterButton: {
+    borderRadius: '50%',
+    border: '1px solid #fff',
+    color: '#fff',
+    cursor: 'pointer',
+    minWidth: '35px',
+    minHeight: '35px'
   }
 }));
 
@@ -164,3 +187,26 @@ export const PaymentRootStyle = styled(Page)(({ theme }) => ({
     color: 'white'
   }
 }));
+
+export const InputAmount = ({ amount, onChange }: { amount: number; onChange: Function }) => (
+  <Stack direction="row" justifyContent="center" spacing={1}>
+    <Typography variant="h4">$</Typography>
+    <Input
+      disableUnderline
+      size="small"
+      value={amount}
+      onChange={(e) => onChange(e?.target?.value)}
+      inputProps={{ min: 0, type: 'number' }}
+      sx={{
+        typography: 'h4',
+        '& input': {
+          p: 0,
+          color: '#fff',
+          textAlign: 'center',
+          width: `${amount?.toString()?.length}ch`
+        }
+      }}
+    />
+    <Typography variant="h4">USD</Typography>
+  </Stack>
+);

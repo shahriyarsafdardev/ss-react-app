@@ -34,11 +34,7 @@ export default function PersonalDetailsPage() {
 
   return (
     <PaymentRootStyle title="Sphere Registration">
-      {isDesktop ? (
-        <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png" alt="logo" />
-      ) : (
-        <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
-      )}
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png" alt="logo" />
       <Stack direction={{ xs: 'column', md: 'row' }} className={classes.wrapperStack}>
         <Stack className={classes.paymentData} alignItems="center" spacing={4}>
           <Typography className={`${classes.heading} ${classes.toggleFont}`}>
@@ -56,7 +52,7 @@ export default function PersonalDetailsPage() {
           <Box className={classes.fullWidthCenter}>
             <FormikProvider value={formik}>
               <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
-                <Stack spacing={3} className={classes.whiteStackCard}>
+                <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
                   <TextField
                     fullWidth
                     label="Company Email"

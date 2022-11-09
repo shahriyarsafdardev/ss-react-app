@@ -1,8 +1,10 @@
 import { Button, Stack, Typography } from '@material-ui/core';
+import { useNavigate } from 'react-router';
 import { useStyles } from './Common';
 
 export function OneTimePaymentDetails() {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -12,12 +14,13 @@ export function OneTimePaymentDetails() {
           $800
         </Typography>
       </Stack>
-      <Stack marginBottom={{ xs: '15px', md: '40px' }}>
+      <Stack className={classes.optionsStack}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
       </Stack>
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
+        onClick={() => navigate('/registration/course-payment')}
       >
         Select
       </Button>
@@ -27,6 +30,7 @@ export function OneTimePaymentDetails() {
 
 export function IndividualMembershipPaymentDetails() {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -36,7 +40,7 @@ export function IndividualMembershipPaymentDetails() {
           Starting at $760 per year
         </Typography>
       </Stack>
-      <Stack marginBottom={{ xs: '15px', md: '40px' }}>
+      <Stack className={classes.optionsStack}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
         <Typography>✅ Access to Alumni events</Typography>
         <Typography>✅ 5% discount on all Sphere courses</Typography>
@@ -44,6 +48,7 @@ export function IndividualMembershipPaymentDetails() {
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
+        onClick={() => navigate('/registration/subscription-payment')}
       >
         Select
       </Button>
@@ -53,6 +58,7 @@ export function IndividualMembershipPaymentDetails() {
 
 export function TeamMembershipPaymentDetails() {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -62,7 +68,7 @@ export function TeamMembershipPaymentDetails() {
           Starting at $760 per year
         </Typography>
       </Stack>
-      <Stack marginBottom={{ xs: '15px', md: '40px' }}>
+      <Stack className={classes.optionsStack}>
         <Typography>✅ Access to Ronny Kohavi’s course</Typography>
         <Typography>✅ Access to Alumni events</Typography>
         <Typography>✅ Free access to a course of your choosing</Typography>
@@ -71,6 +77,7 @@ export function TeamMembershipPaymentDetails() {
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
+        onClick={() => {}}
       >
         Select
       </Button>
