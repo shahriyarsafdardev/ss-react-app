@@ -1,4 +1,4 @@
-import { Box, Button, styled, Theme } from '@material-ui/core';
+import { Box, styled, Theme } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import Page from 'components/Page';
@@ -21,6 +21,20 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '20px'
     }
   },
+  inquiryTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    padding: '120px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '30px'
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '20px',
+      height: 'fit-content'
+    }
+  },
   wrapperStack: {
     width: '100%',
     height: '100%',
@@ -33,6 +47,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 'auto',
     width: '80%',
     maxWidth: '600px',
+    [theme.breakpoints.down('md')]: {
+      width: '95%'
+    }
+  },
+  formContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '80%',
+    maxWidth: '600px',
+    padding: '5%',
     [theme.breakpoints.down('md')]: {
       width: '95%'
     }
@@ -53,6 +77,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   toggleFont: {
     color: '#000',
+    [theme.breakpoints.down('md')]: {
+      color: '#fff'
+    }
+  },
+  inquiryFont: {
+    color: '#334155',
+    fontWeight: 600,
     [theme.breakpoints.down('md')]: {
       color: '#fff'
     }
@@ -107,9 +138,17 @@ export const Logo = styled('img')(({ theme }) => ({
   top: '4%',
   left: '2%',
   [theme.breakpoints.down('md')]: {
-    width: '30%',
-    top: '3%',
-    left: '6%'
+    display: 'none'
+  }
+}));
+
+export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  marginTop: '24px',
+  borderRadius: '30px',
+  height: '40px',
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    height: '48px'
   }
 }));
 
