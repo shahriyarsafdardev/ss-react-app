@@ -98,7 +98,9 @@ export const PATH_DASHBOARD = {
     q_a: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/Q&A`),
     analytics: (cohortID: string, instructorName: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/${instructorName}/analytics`),
-    resources: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/resources`)
+    resources: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/resources`),
+    publicResources: (cohortID: string) =>
+      path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/public-resources`)
   },
   adminTools: {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),

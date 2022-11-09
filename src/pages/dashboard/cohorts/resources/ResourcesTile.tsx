@@ -18,11 +18,13 @@ import {
 function ResourcesTile({
   sessionID,
   material,
+  isPublic,
   sessionData
 }: {
   sessionID: string;
   material: SessionMaterial;
   sessionData: any;
+  isPublic: boolean;
 }) {
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [checked, setChecked] = useState(material?.complete);
@@ -76,47 +78,64 @@ function ResourcesTile({
               </ResourceType>
             </ResourceIcon>
             <Stack>
-              <Link
-                variant="h5"
-                href={material.action_url}
-                target="_blank"
-                style={{ fontSize: '1.1rem' }}
-              >
+              <Typography variant="h5" sx={{ color: '#222C36', fontSize: '1.1rem' }}>
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
-              </Link>
-              <Typography variant="subtitle2">
-                {material.info_text?.length > 130
-                  ? `${material.info_text?.slice(0, 131)}...`
-                  : material.info_text}
               </Typography>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                alignItems={{ xs: 'flex-start', md: 'center' }}
+                spacing={{ xs: 1, md: 2 }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: '13px',
+                    px: 1,
+                    py: 0.2,
+                    backgroundColor: '#F6F7F8',
+                    borderRadius: '5px',
+                    color: '#334155'
+                  }}
+                >
+                  Session {sessionData?.session_number}
+                </Typography>
+                <Typography variant="subtitle2" sx={{ color: '#a9a9a9' }}>
+                  {material.info_text?.length > 130
+                    ? `${material.info_text?.slice(0, 131)}...`
+                    : material.info_text}
+                </Typography>
+              </Stack>
             </Stack>
           </Stack>
-          <StyledTooltip
-            title={checked ? "I haven't read this resource" : "I've read this resource"}
-            placement="left"
-            arrow
-            sx={{ backgroundColor: '#ffffff', color: '#101658' }}
-            onClick={handleToggleRead}
-          >
-            <Checkbox
-              checked={checked}
-              sx={{ height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' }}
-              icon={
-                <Icon
-                  icon={checkCircleFilled}
-                  color="#E0E0E0"
-                  width="100%"
-                  height="100%"
-                  style={{
-                    '&:hover': {
-                      color: '#828282'
-                    }
-                  }}
-                />
-              }
-              checkedIcon={<Icon icon={checkCircleFilled} color="#101658" width="40" height="40" />}
-            />
-          </StyledTooltip>
+          {!isPublic && (
+            <StyledTooltip
+              title={checked ? "I haven't read this resource" : "I've read this resource"}
+              placement="left"
+              arrow
+              sx={{ backgroundColor: '#ffffff', color: '#101658' }}
+              onClick={handleToggleRead}
+            >
+              <Checkbox
+                checked={checked}
+                sx={{ height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' }}
+                icon={
+                  <Icon
+                    icon={checkCircleFilled}
+                    color="#E0E0E0"
+                    width="100%"
+                    height="100%"
+                    style={{
+                      '&:hover': {
+                        color: '#828282'
+                      }
+                    }}
+                  />
+                }
+                checkedIcon={
+                  <Icon icon={checkCircleFilled} color="#101658" width="40" height="40" />
+                }
+              />
+            </StyledTooltip>
+          )}
         </Stack>
       </CardContent>
     </StyledCard>

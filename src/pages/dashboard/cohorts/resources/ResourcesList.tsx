@@ -6,17 +6,20 @@ import ResourcesTile from './ResourcesTile';
 function ResourcesList({
   sessionID,
   sessionMaterials,
+  isPublic,
   sessionData
 }: {
   sessionID: string;
   sessionMaterials: any;
   sessionData: any;
+  isPublic: boolean;
 }) {
   return (
     <>
       <Stack spacing={2}>
         {sessionMaterials.map((material: SessionMaterial, index: any) => (
           <ResourcesTile
+            isPublic={isPublic}
             key={index}
             sessionID={sessionID}
             material={material}

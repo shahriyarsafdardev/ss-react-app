@@ -5,6 +5,7 @@ import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
+import SphereNavbarLayout from '../layouts/SphereNavbarLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
@@ -334,6 +335,11 @@ export default function Router() {
         { path: 'resource', element: <SharedResource /> }
       ]
     },
+    {
+      path: '*',
+      element: <SphereNavbarLayout />,
+      children: [{ path: 'cohorts/:cohortID/public_resources', element: <PublicResources /> }]
+    },
     { path: 'registration', element: <Registration /> },
     { path: 'team-registration', element: <TeamRegistration /> },
     { path: 'teams/subscription_checkout', element: <CreditCheckout /> },
@@ -486,6 +492,9 @@ const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
 const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Registration = Loadable(lazy(() => import('../pages/registration/Registration')));
+const PublicResources = Loadable(
+  lazy(() => import('../pages/dashboard/cohorts/resources/PublicResources'))
+);
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );

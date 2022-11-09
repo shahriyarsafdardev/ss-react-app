@@ -4,7 +4,7 @@ import { Container } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useSettings from 'hooks/useSettings';
-import { getCohortResources } from 'redux/slices/cohort';
+import { getCohortResources, getCohortSessionResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 
 import LoadingScreen from 'components/LoadingScreen';
@@ -27,6 +27,10 @@ export default function ResourcesPage() {
 
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     cohort && trackEvent(cohort, eventName, eventData);
+  };
+
+  const handleShowMore = async (sessionID: string) => {
+    dispatch(getCohortSessionResources(cohort_id, sessionID));
   };
 
   useEffect(() => {
@@ -54,11 +58,21 @@ export default function ResourcesPage() {
           key={cohort_id}
           maxWidth={themeStretch ? false : 'xl'}
         >
-          <ResourceFilter types={resources_types} isSearch={isSearch} setIsSearch={setIsSearch} />
+          <ResourceFilter
+            isPublic={false}
+            types={resources_types}
+            isSearch={isSearch}
+            setIsSearch={setIsSearch}
+          />
           {!isSearch && (
             <>
               {resources?.map((resource, index) => (
-                <ResourcesSection key={index} resourceData={resource} />
+                <ResourcesSection
+                  handleShowMore={(data: string) => handleShowMore(data)}
+                  isPublic={false}
+                  key={index}
+                  resourceData={resource}
+                />
               ))}
             </>
           )}

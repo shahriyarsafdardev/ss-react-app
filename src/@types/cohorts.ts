@@ -244,6 +244,7 @@ export type Cohort = {
   onboarding_data: OnboardingData;
   resources: SessionResource[];
   resources_types: string[];
+  cohort_header_name?: string;
 };
 
 export type CodeOnboardingItem = {

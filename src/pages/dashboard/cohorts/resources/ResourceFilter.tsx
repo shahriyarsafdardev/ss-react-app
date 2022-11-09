@@ -25,11 +25,13 @@ import ResourcesTile from './ResourcesTile';
 function ResourceFilter({
   types,
   setIsSearch,
-  isSearch
+  isSearch,
+  isPublic
 }: {
   types: String[];
   isSearch: boolean;
   setIsSearch: Function;
+  isPublic: boolean;
 }) {
   const theme = useTheme();
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -183,6 +185,7 @@ function ResourceFilter({
               {filteredMaterials?.map((material: any, index: any) => (
                 <ResourcesTile
                   key={index}
+                  isPublic={isPublic}
                   sessionID={material?.session_id}
                   material={material}
                   sessionData={{
