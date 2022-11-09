@@ -69,7 +69,8 @@ export default function Header({
     'DRS',
     'FDE',
     'MLS',
-    'DCI'
+    'DCI',
+    'MRS'
   ];
 
   const selectSubHeading = () => {

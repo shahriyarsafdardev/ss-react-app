@@ -103,7 +103,8 @@ export const NEW_REGISTRATION_FLOW_COHORT_CODES = [
   'DRS',
   'FDE',
   'MLS',
-  'DCI'
+  'DCI',
+  'MRS'
 ];
 
 const RONNY_COHORT_CODE = 'AAB';
