@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import {
   Stack,
-  Box,
   Typography,
   Card,
   useTheme,
@@ -12,12 +11,14 @@ import {
 } from '@material-ui/core';
 
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useSnackbar } from 'notistack5';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton } from './Common';
 
 export default function TeamPackageInquiry() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const { enqueueSnackbar } = useSnackbar();
 
   const TeamLeadSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -30,7 +31,10 @@ export default function TeamPackageInquiry() {
       fullName: ''
     },
     validationSchema: TeamLeadSchema,
-    onSubmit: () => {}
+    onSubmit: (values, { setSubmitting }) => {
+      enqueueSnackbar(`Request Inquired to ${values?.email}! 🎉`, { variant: 'success' });
+      setSubmitting(false);
+    }
     // onSubmit: async (values, { setErrors, setSubmitting }) => {
     //   try {
     //     handleNextStep();
@@ -42,8 +46,7 @@ export default function TeamPackageInquiry() {
     // }
   });
 
-  const { values, isSubmitting, touched, errors, handleSubmit, getFieldProps, setFieldValue } =
-    formik;
+  const { values, isSubmitting, touched, errors, getFieldProps, isValid, handleSubmit } = formik;
 
   return (
     <PaymentRootStyle title="Sphere">
@@ -89,22 +92,23 @@ export default function TeamPackageInquiry() {
                   <TextField
                     label="Team Lead Email"
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
                     {...getFieldProps('email')}
-                    onChange={(e: any) => setFieldValue('email', e.target.value)}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
                   />
                   <TextField
                     label="Team Lead Full Name"
                     fullWidth
                     {...getFieldProps('fullName')}
+                    helperText={touched.fullName && errors.fullName}
                     error={Boolean(touched.fullName && errors.fullName)}
-                    onChange={(e: any) => setFieldValue('fullName', e.target.value)}
                   />
                   <Stack spacing={2}>
                     <StyledLoadingButton
                       type="submit"
                       variant="contained"
                       loading={isSubmitting}
+                      disabled={!isValid || values.email === '' || values.fullName === ''}
                       onClick={() => {}}
                     >
                       Share Information
@@ -113,7 +117,7 @@ export default function TeamPackageInquiry() {
                       type="submit"
                       variant="outlined"
                       loading={isSubmitting}
-                      onClick={() => {}}
+                      onClick={() => handleSubmit()}
                     >
                       Back
                     </StyledLoadingButton>

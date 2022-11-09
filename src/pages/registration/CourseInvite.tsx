@@ -12,6 +12,7 @@ import {
 import { useEffect } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useSnackbar } from 'notistack5';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton } from './Common';
 import { Company } from '../expense_checker/ExpenseCheckerPage';
 
@@ -19,6 +20,7 @@ export default function CourseInvite() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const { enqueueSnackbar } = useSnackbar();
 
   // useEffect(() => {
   //   trackEvent(cohort, 'L&D Approval Checker - Approved Company - Page Opened', {
@@ -36,7 +38,10 @@ export default function CourseInvite() {
       fullName: ''
     },
     validationSchema: FormSchema,
-    onSubmit: () => {}
+    onSubmit: (values, { setSubmitting }) => {
+      enqueueSnackbar(`Invitation Sent to ${values?.email}! 🎉`, { variant: 'success' });
+      setSubmitting(false);
+    }
     // onSubmit: async (values, { setErrors, setSubmitting }) => {
     //   try {
     //     handleNextStep();
@@ -48,8 +53,16 @@ export default function CourseInvite() {
     // }
   });
 
-  const { values, isSubmitting, touched, errors, handleSubmit, getFieldProps, setFieldValue } =
-    formik;
+  const {
+    values,
+    isSubmitting,
+    touched,
+    errors,
+    getFieldProps,
+    setFieldValue,
+    isValid,
+    handleSubmit
+  } = formik;
 
   return (
     <PaymentRootStyle title="Sphere">
@@ -86,8 +99,9 @@ export default function CourseInvite() {
                   <TextField
                     label="Email"
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
                     {...getFieldProps('email')}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
                     onChange={(e: any) => setFieldValue('email', e.target.value)}
                   />
                   <TextField
@@ -95,13 +109,15 @@ export default function CourseInvite() {
                     fullWidth
                     {...getFieldProps('fullName')}
                     error={Boolean(touched.fullName && errors.fullName)}
+                    helperText={touched.fullName && errors.fullName}
                     onChange={(e: any) => setFieldValue('fullName', e.target.value)}
                   />
                   <StyledLoadingButton
                     type="submit"
                     variant="contained"
                     loading={isSubmitting}
-                    onClick={() => {}}
+                    onClick={() => handleSubmit()}
+                    disabled={!isValid || values.email === '' || values.fullName === ''}
                   >
                     Send Invite
                   </StyledLoadingButton>
