@@ -1,9 +1,13 @@
 import { Stack, Box, Typography, useTheme, useMediaQuery, TextField } from '@material-ui/core';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
-import { PaymentRootStyle, Logo, useStyles } from './Common';
+import { useEffect, useState } from 'react';
+import axiosV2 from 'utils/axiosV2';
+import { useSnackbar } from 'notistack5';
+import LoadingScreen from 'components/LoadingScreen';
+import { PaymentRootStyle, Logo, useStyles, LoadingContainer } from './Common';
 
 export type UserType = {
   email: string;
@@ -11,9 +15,25 @@ export type UserType = {
   linkedin_url: string;
 };
 
+export type CohortType = {
+  id: string;
+  code: string;
+  name: string;
+  price: number;
+  session_times: string;
+  host_full_names: string;
+};
+
+export type CompanyType = {
+  name: string;
+  logo_url: string;
+};
+
 export default function PersonalDetailsPage() {
   const navigate = useNavigate();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const ValidationSchema = Yup.object().shape({
@@ -21,16 +41,63 @@ export default function PersonalDetailsPage() {
     full_name: Yup.string().required('Full Name is required'),
     linkedin_url: Yup.string().required('LinkedIn url is required')
   });
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const [cohort, setCohort] = useState<CohortType>({
+    id: '',
+    code: '',
+    name: '',
+    price: 0,
+    session_times: '',
+    host_full_names: ''
+  });
+
+  useEffect(() => {
+    setLoading(true);
+    axiosV2
+      .get(`cohorts/${cohortID}.json`)
+      .then((res) => {
+        setCohort(res?.data?.cohort);
+        setLoading(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+      });
+  }, []);
 
   const formik = useFormik<UserType>({
     initialValues: { email: '', full_name: '', linkedin_url: '' },
     validationSchema: ValidationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      navigate('/registration/payment-options');
+      await axiosV2
+        .post(`enrollments.json`, {
+          cohort_id: cohortID,
+          email: values?.email,
+          full_name: values?.full_name,
+          linkedin_url: values?.linkedin_url
+        })
+        .then((res) => {
+          navigate(
+            `/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}`
+          );
+          setSubmitting(false);
+          resetForm();
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
     }
   });
 
   const { errors, touched, getFieldProps, isSubmitting, isValid, submitForm } = formik;
+
+  if (loading || !cohortID) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <PaymentRootStyle title="Sphere Registration">
@@ -38,10 +105,10 @@ export default function PersonalDetailsPage() {
       <Stack direction={{ xs: 'column', md: 'row' }} className={classes.wrapperStack}>
         <Stack className={classes.paymentData} alignItems="center" spacing={4}>
           <Typography className={`${classes.heading} ${classes.toggleFont}`}>
-            Accelerating Innovation with A/B Testing
+            {cohort?.name}
           </Typography>
           <Typography textAlign="center" className={`${isDesktop && classes.paddingHorizontal40}`}>
-            live with Ronny Kohavi and a community of likeminded industry professionals
+            live with {cohort?.host_full_names} and a community of likeminded industry professionals
           </Typography>
         </Stack>
         <Stack
@@ -51,7 +118,7 @@ export default function PersonalDetailsPage() {
         >
           <Box className={classes.fullWidthCenter}>
             <FormikProvider value={formik}>
-              <Form noValidate autoComplete="off" onSubmit={formik.handleSubmit}>
+              <Form noValidate autoComplete="off">
                 <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
                   <TextField
                     fullWidth
@@ -84,11 +151,11 @@ export default function PersonalDetailsPage() {
                     }}
                   />
                   <LoadingButton
-                    type="submit"
                     variant="contained"
                     loading={isSubmitting}
                     disabled={!isValid}
-                    onClick={() => submitForm()}
+                    onClick={submitForm}
+                    type="submit"
                     data-testid="submit-registration-form"
                     id="btn-submit"
                     className={classes.submitButton}

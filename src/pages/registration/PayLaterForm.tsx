@@ -7,17 +7,27 @@ import { FormikProvider, useFormik } from 'formik';
 import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
 import { LoadingButton } from '@material-ui/lab';
 import { useNavigate } from 'react-router';
+import axiosV2 from 'utils/axiosV2';
+import { useSnackbar } from 'notistack5';
 
 type CardInfo = {
   name: string;
 };
 
-export default function SubscriptionPaymentForm({ paymentType }: { paymentType: string }) {
+export default function PayLaterForm({
+  cohortID,
+  enrollmentID,
+  customerID
+}: {
+  cohortID: string;
+  enrollmentID: string;
+  customerID: string;
+}) {
   const stripe = useStripe();
   const elements = useElements();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const useStyles = makeStyles({
     root: {
@@ -33,7 +43,7 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
     },
     input: {
       '&::placeholder': {
-        color: '#475569'
+        color: '#D3D3D3'
       }
     },
     helperText: {
@@ -51,41 +61,8 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
 
   const classes = useStyles();
 
-  const handleSubmit = async (event: any, name: string) => {
-    setIsSubmitting(true);
-    event.preventDefault();
-    navigate('/registration/course-invite');
-  };
-
   const handleBackButton = () => {
-    paymentType === 'course payment'
-      ? navigate('/registration/course-payment')
-      : navigate('/registration/subscription-payment');
-  };
-
-  const makePayment = async (name: string, email: string) => {
-    const uploadData = new FormData();
-    uploadData.append('name', name);
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const result = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: '',
-        payment_method_data: {
-          billing_details: {
-            name,
-            email
-          }
-        }
-      },
-      redirect: 'if_required'
-    });
-
-    setIsSubmitting(false);
+    navigate(`/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`);
   };
 
   const CardSchema = Yup.object().shape({
@@ -98,10 +75,50 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
       name: ''
     },
     validationSchema: CardSchema,
-    onSubmit: () => {}
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      if (!stripe || !elements) {
+        return;
+      }
+
+      const result = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          return_url: '',
+          payment_method_data: {
+            billing_details: {
+              name: values?.name
+            }
+          }
+        },
+        redirect: 'if_required'
+      });
+
+      if (result?.setupIntent && result?.setupIntent.status === 'succeeded') {
+        await axiosV2
+          .put(`enrollments/${enrollmentID}.json`, {
+            stripeCustomerID: customerID,
+            stripePaymentMethodID: String(result.setupIntent?.payment_method)
+          })
+          .then((res) => {
+            navigate(
+              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
+            );
+          })
+          .catch((err) => {
+            enqueueSnackbar(err.message, { variant: 'error' });
+          });
+      } else if (result.error) {
+        enqueueSnackbar(result.error.message, { variant: 'error' });
+        setSubmitting(false);
+      } else {
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        setSubmitting(false);
+      }
+    }
   });
 
-  const { isValid, errors, touched, values, getFieldProps } = formik;
+  const { isValid, errors, touched, getFieldProps, handleSubmit, isSubmitting } = formik;
 
   return (
     <>
@@ -133,7 +150,7 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
         <Stack spacing={{ xs: 3, md: 2 }} marginY="40px">
           <LoadingButton
             fullWidth
-            onClick={(e: any) => handleSubmit(e, values.name)}
+            onClick={() => handleSubmit()}
             type="submit"
             variant="contained"
             size="large"
@@ -141,13 +158,13 @@ export default function SubscriptionPaymentForm({ paymentType }: { paymentType: 
             disabled={!(valid && isValid)}
             className={classes.submitButton}
           >
-            Start Membership
+            Secure Your Seat
           </LoadingButton>
           <Button
             fullWidth
             variant="outlined"
             className={classes.submitButton}
-            onClick={handleBackButton}
+            onClick={() => handleBackButton()}
           >
             Back
           </Button>

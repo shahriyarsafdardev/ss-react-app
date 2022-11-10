@@ -2,22 +2,77 @@ import { Stack, Box, Typography, useTheme, useMediaQuery, Button } from '@materi
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Page from 'components/Page';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import minusFill from '@iconify/icons-eva/minus-outline';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import Icon from '@iconify/react';
-import { InputAmount, Logo, useStyles } from './Common';
-import SubscriptionPaymentForm from './SubscriptionPaymentForm';
+import { useLocation, useNavigate } from 'react-router';
+import axiosV2 from 'utils/axiosV2';
+import { useSnackbar } from 'notistack5';
+import LoadingScreen from 'components/LoadingScreen';
+import { InputAmount, LoadingContainer, Logo, useStyles } from './Common';
+import PayNowForm from './PayNowForm';
 
 export default function SubscriptionPaymentPage() {
   const classes = useStyles();
-  const [clientSecret, setClientSecret] = useState(
-    'pi_3M2IwjCZlN68pp1b1WdwNopZ_secret_6ie7NlwIk3Z2QKbUZyAmeDaW4'
-  );
+  const [customerID, setCustomerID] = useState('');
+  const [clientSecret, setClientSecret] = useState('');
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
   const theme = useTheme();
+  const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const [amount, setAmount] = useState(0);
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const enrollmentID = url.get('enrollment_id') || '';
+  const { enqueueSnackbar } = useSnackbar();
+  const [cohort, setCohort] = useState<any>({});
+  const [registrantEmail, setRegistrantEmail] = useState('');
+
+  useEffect(() => {
+    if (enrollmentID && cohortID) {
+      axiosV2
+        .get(`enrollments/${enrollmentID}/details.json`)
+        .then((res) => {
+          setCohort({ ...res?.data?.cohort });
+          setRegistrantEmail(res?.data?.registrant_email);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    if (registrantEmail) {
+      axiosV2
+        .get('payments/intent.json', {
+          params: {
+            is_membership: true,
+            amount,
+            email: registrantEmail
+          }
+        })
+        .then((res) => {
+          setClientSecret(res?.data?.clientSecret);
+          setCustomerID(res?.data?.customerID);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, [registrantEmail]);
+
+  if (loading || !clientSecret || !customerID || !enrollmentID || !cohortID) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <Page height="100vh" width="100%" title="Sphere Membership">
@@ -54,13 +109,12 @@ export default function SubscriptionPaymentPage() {
           <Box sx={{ mt: 4, maxWidth: '650px' }}>
             <Stack spacing={3} margin={{ xs: '20px', md: '60px 20px' }}>
               <Typography className={classes.whiteFont}>
-                Every year, you will be able to enroll in $y worth of Sphere courses with a x%
-                discount. You can update or cancel your subscription at any time.
+                Every year, you will be able to enroll in ${amount} worth of Sphere courses with a
+                5% discount. You can update or cancel your subscription at any time.
               </Typography>
               <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
-                The x% discount starts immediately and will be applied to your enrollment in
-                Accelerating Innovation with A/B Testing. You will also receive access to our alumni
-                events and community.
+                The 5% discount starts immediately and will be applied to your enrollment in
+                {cohort?.name}. You will also receive access to our alumni events and community.
               </Typography>
             </Stack>
           </Box>
@@ -94,7 +148,12 @@ export default function SubscriptionPaymentPage() {
                 }
               }}
             >
-              <SubscriptionPaymentForm paymentType="course payment" />
+              <PayNowForm
+                cohortID={cohortID}
+                enrollmentID={enrollmentID}
+                customerID={customerID}
+                amount={amount}
+              />
             </Elements>
           </Box>
         </Stack>

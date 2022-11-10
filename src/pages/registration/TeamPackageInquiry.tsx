@@ -7,18 +7,49 @@ import {
   useMediaQuery,
   Link,
   TextField,
-  Avatar
+  Avatar,
+  Button
 } from '@material-ui/core';
 
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
-import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton } from './Common';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axiosV2 from 'utils/axiosV2';
+import LoadingScreen from 'components/LoadingScreen';
+import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function TeamPackageInquiry() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const navigate = useNavigate();
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const enrollmentID = url.get('enrollment_id') || '';
+  const [loading, setLoading] = useState(false);
+  const [company, setCompany] = useState<any>({});
+  const [registrantEmail, setRegistrantEmail] = useState('');
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (enrollmentID) {
+      axiosV2
+        .get(`enrollments/${enrollmentID}/details.json`)
+        .then((res) => {
+          setCompany({ ...res?.data?.company });
+          setRegistrantEmail(res?.data?.registrant_email);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, []);
+
+  const handleBackButton = () => {
+    navigate(`/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`);
+  };
 
   const TeamLeadSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -31,22 +62,33 @@ export default function TeamPackageInquiry() {
       fullName: ''
     },
     validationSchema: TeamLeadSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      enqueueSnackbar(`Request Inquired to ${values?.email}! 🎉`, { variant: 'success' });
-      setSubmitting(false);
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      await axiosV2
+        .post('invites/team_package.json', {
+          email: registrantEmail,
+          referee_name: values?.fullName,
+          referee_email: values?.email
+        })
+        .then((res) => {
+          enqueueSnackbar(`Request Inquired from ${values?.email}! 🎉`, { variant: 'success' });
+          setSubmitting(false);
+          resetForm();
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
     }
-    // onSubmit: async (values, { setErrors, setSubmitting }) => {
-    //   try {
-    //     handleNextStep();
-    //   } catch (error) {
-    //     console.error(error);
-    //     setSubmitting(false);
-    //     setErrors(error.message);
-    //   }
-    // }
   });
 
   const { values, isSubmitting, touched, errors, getFieldProps, isValid, handleSubmit } = formik;
+
+  if (loading || !cohortID || !enrollmentID) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <PaymentRootStyle title="Sphere">
@@ -56,11 +98,7 @@ export default function TeamPackageInquiry() {
         className={`${classes.wrapperStack} ${classes.textCenter}`}
       >
         <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
-          <Avatar
-            src="https://sphere-public.s3.eu-west-2.amazonaws.com/dark-email-background.png"
-            alt="company?.name"
-            sx={{ width: 112, height: 112 }}
-          />
+          <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
           <Typography variant="h3" className={classes.heading}>
             Inquire about our Team Packages
           </Typography>
@@ -105,22 +143,20 @@ export default function TeamPackageInquiry() {
                   />
                   <Stack spacing={2}>
                     <StyledLoadingButton
-                      type="submit"
                       variant="contained"
                       loading={isSubmitting}
+                      onClick={() => handleSubmit()}
                       disabled={!isValid || values.email === '' || values.fullName === ''}
-                      onClick={() => {}}
                     >
                       Share Information
                     </StyledLoadingButton>
-                    <StyledLoadingButton
-                      type="submit"
+                    <Button
                       variant="outlined"
-                      loading={isSubmitting}
-                      onClick={() => handleSubmit()}
+                      onClick={() => handleBackButton()}
+                      className={classes.submitButton}
                     >
                       Back
-                    </StyledLoadingButton>
+                    </Button>
                   </Stack>
                 </Stack>
               </Form>

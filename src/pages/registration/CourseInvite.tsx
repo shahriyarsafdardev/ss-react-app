@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import {
   Stack,
-  Box,
   Card,
   Typography,
   useTheme,
@@ -9,24 +8,41 @@ import {
   TextField,
   Avatar
 } from '@material-ui/core';
-import { useEffect } from 'react';
-import { trackEvent } from 'utils/eventTracking';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
-import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton } from './Common';
-import { Company } from '../expense_checker/ExpenseCheckerPage';
+import axiosV2 from 'utils/axiosV2';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import LoadingScreen from 'components/LoadingScreen';
+import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function CourseInvite() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const { enqueueSnackbar } = useSnackbar();
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const enrollmentID = url.get('enrollment_id') || '';
+  const [loading, setLoading] = useState(false);
+  const [company, setCompany] = useState<any>({});
+  const [registrantEmail, setRegistrantEmail] = useState('');
 
-  // useEffect(() => {
-  //   trackEvent(cohort, 'L&D Approval Checker - Approved Company - Page Opened', {
-  //     Company: company?.name
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (enrollmentID) {
+      axiosV2
+        .get(`enrollments/${enrollmentID}/details.json`)
+        .then((res) => {
+          setCompany({ ...res?.data?.company });
+          setRegistrantEmail(res?.data?.registrantEmail);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, []);
+
   const FormSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     fullName: Yup.string().required('Full Name is required')
@@ -38,19 +54,23 @@ export default function CourseInvite() {
       fullName: ''
     },
     validationSchema: FormSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      enqueueSnackbar(`Invitation Sent to ${values?.email}! 🎉`, { variant: 'success' });
-      setSubmitting(false);
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      await axiosV2
+        .post('invites/course.json', {
+          cohort_id: cohortID,
+          email: registrantEmail,
+          referee_name: values?.fullName,
+          referee_email: values?.email
+        })
+        .then((res) => {
+          enqueueSnackbar(`Invitation Sent to ${values?.email}! 🎉`, { variant: 'success' });
+          setSubmitting(false);
+          resetForm();
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
     }
-    // onSubmit: async (values, { setErrors, setSubmitting }) => {
-    //   try {
-    //     handleNextStep();
-    //   } catch (error) {
-    //     console.error(error);
-    //     setSubmitting(false);
-    //     setErrors(error.message);
-    //   }
-    // }
   });
 
   const {
@@ -64,6 +84,14 @@ export default function CourseInvite() {
     handleSubmit
   } = formik;
 
+  if (loading || !cohortID || !enrollmentID) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <PaymentRootStyle title="Sphere">
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg" alt="logo" />
@@ -72,11 +100,7 @@ export default function CourseInvite() {
         className={`${classes.wrapperStack} ${classes.textCenter}`}
       >
         <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
-          <Avatar
-            src="https://sphere-public.s3.eu-west-2.amazonaws.com/dark-email-background.png"
-            alt="company?.name"
-            sx={{ width: 112, height: 112 }}
-          />
+          <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
           <Typography variant="h3" className={classes.heading}>
             Invite your Colleagues
           </Typography>

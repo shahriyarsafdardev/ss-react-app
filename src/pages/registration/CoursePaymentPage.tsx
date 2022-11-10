@@ -1,19 +1,75 @@
-import { Stack, Box, Typography, useTheme, useMediaQuery, Button } from '@material-ui/core';
+import { Stack, Box, Typography, useTheme, useMediaQuery } from '@material-ui/core';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
-import { useState } from 'react';
-import { Logo, useStyles } from './Common';
-import SubscriptionPaymentForm from './SubscriptionPaymentForm';
+import { useSnackbar } from 'notistack5';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axiosV2 from 'utils/axiosV2';
+import { LoadingContainer, Logo, useStyles } from './Common';
+import PayLaterForm from './PayLaterForm';
 
 export default function CoursePaymentPage() {
   const classes = useStyles();
-  const [clientSecret, setClientSecret] = useState(
-    'pi_3M2IwjCZlN68pp1b1WdwNopZ_secret_6ie7NlwIk3Z2QKbUZyAmeDaW4'
-  );
+  const [clientSecret, setClientSecret] = useState('');
+  const [customerID, setCustomerID] = useState('');
   const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  const url = new URLSearchParams(useLocation().search);
+  const cohortID = url.get('cohort_id') || '';
+  const enrollmentID = url.get('enrollment_id') || '';
+  const [cohort, setCohort] = useState<any>({});
+  const [registrantEmail, setRegistrantEmail] = useState('');
+
+  useEffect(() => {
+    setLoading(true);
+    if (enrollmentID && cohortID) {
+      axiosV2
+        .get(`enrollments/${enrollmentID}/details.json`)
+        .then((res) => {
+          setCohort({ ...res?.data?.cohort });
+          setRegistrantEmail(res?.data?.registrant_email);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    if (registrantEmail) {
+      axiosV2
+        .get('payments/intent.json', {
+          params: {
+            is_membership: false,
+            amount: cohort?.price,
+            email: registrantEmail
+          }
+        })
+        .then((res) => {
+          setClientSecret(res?.data?.clientSecret);
+          setCustomerID(res?.data?.customerID);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    }
+  }, [registrantEmail]);
+
+  if (loading || !clientSecret || !customerID || !enrollmentID || !cohortID) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
 
   return (
     <Page height="100vh" width="100%" title="Sphere Payment">
@@ -43,16 +99,16 @@ export default function CoursePaymentPage() {
               }}
             >
               <Typography className={classes.whiteFont}>
-                <b>Course:</b> Accelerating Innovation with A/B Testing
+                <b>Course:</b> {cohort?.name}
               </Typography>
               <Typography className={classes.whiteFont}>
-                <b>Instructor:</b> Ronny Kohavi
+                <b>Instructor:</b> {cohort?.host_full_names}
               </Typography>
               <Typography className={classes.whiteFont}>
-                <b>Dates:</b> Aug 1, 3, 25, 27
+                <b>Dates:</b> {cohort?.session_times}
               </Typography>
               <Typography className={classes.whiteFont}>
-                <b>Price:</b> $700
+                <b>Price:</b> ${Math.floor(cohort?.price)}
               </Typography>
             </Stack>
           </Stack>
@@ -86,7 +142,11 @@ export default function CoursePaymentPage() {
                 }
               }}
             >
-              <SubscriptionPaymentForm paymentType="course payment" />
+              <PayLaterForm
+                cohortID={cohortID}
+                enrollmentID={enrollmentID}
+                customerID={customerID}
+              />
             </Elements>
           </Box>
         </Stack>
