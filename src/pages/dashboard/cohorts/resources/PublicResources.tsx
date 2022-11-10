@@ -75,11 +75,11 @@ export default function PublicResources() {
           maxWidth={themeStretch ? false : 'xl'}
         >
           <Stack sx={{ alignItems: 'center', marginBottom: '80px' }}>
-            <Typography variant="h2" sx={{ color: '#101658', mb: 2 }}>
+            <Typography variant="h2" sx={{ color: '#101658', mb: 2, mt: '40px' }}>
               {cohort?.cohort_header_name} Resources
             </Typography>
             <Typography sx={{ fontSize: '21px' }}>
-              Curated by {cohort.host_full_name} their course{' '}
+              Curated by {cohort.host_full_name} for {cohort.instructor_pronoun} course{' '}
               <Link
                 sx={{ fontWeight: 'bold', color: '#212121', textDecoration: 'underline' }}
                 href={cohort.registration_page_url}
@@ -103,6 +103,7 @@ export default function PublicResources() {
                   isPublic={true}
                   key={index}
                   resourceData={resource}
+                  hostName={cohort?.host_full_name}
                 />
               ))}
             </>

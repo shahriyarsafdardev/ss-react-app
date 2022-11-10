@@ -245,6 +245,7 @@ export type Cohort = {
   resources: SessionResource[];
   resources_types: string[];
   cohort_header_name?: string;
+  instructor_pronoun?: string;
 };
 
 export type CodeOnboardingItem = {

@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { CardContent, Stack, Typography, Checkbox, Link } from '@material-ui/core';
+import { CardContent, Stack, Typography, Checkbox, useMediaQuery, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
 import { useDispatch } from 'redux/store';
 import { markReadingCompleted } from 'redux/slices/cohort';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useTheme } from '@material-ui/core/styles';
+import { useSnackbar } from 'notistack5';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -12,29 +14,69 @@ import {
   StyledCard,
   getColor,
   ResourceIcon,
-  ResourceType
+  ResourceType,
+  ResourceDetailBox
 } from './Common';
 
 function ResourcesTile({
   sessionID,
   material,
   isPublic,
-  sessionData
+  sessionData,
+  hostName
 }: {
   sessionID: string;
   material: SessionMaterial;
   sessionData: any;
   isPublic: boolean;
+  hostName?: string;
 }) {
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [checked, setChecked] = useState(material?.complete);
   const dispatch = useDispatch();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleToggleRead = () => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
     setChecked(!checked);
   };
+
+  const handleTileOnClick = () => {
+    const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
+    const isPreReading = material?.category === 'Pre-Reading';
+    if (isLocalLink && isPreReading && isPublic) {
+      enqueueSnackbar(`You need to enroll in ${hostName}’s course to access this material`, {
+        variant: 'warning'
+      });
+    } else {
+      window.open(material?.action_url, '_blank');
+    }
+  };
+
+  const resourceIcon = () => (
+    <ResourceIcon>
+      <StyledImage
+        src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
+      />
+      <ResourceType sx={{ backgroundColor: getColor(material.material_type) }}>
+        <Typography
+          sx={{
+            color: '#ffffff',
+            fontWeight: 'bold',
+            fontSize: '10px',
+            width: '100px',
+            textAlign: 'center',
+            wordBreak: 'break-word'
+          }}
+        >
+          {material.material_type}
+        </Typography>
+      </ResourceType>
+    </ResourceIcon>
+  );
 
   return (
     <StyledCard variant="outlined">
@@ -55,58 +97,59 @@ function ResourcesTile({
                 'Resource Author': material?.info_text,
                 'Resource Link': material?.action_url
               });
-              window.open(material?.action_url, '_blank');
+              handleTileOnClick();
             }}
           >
-            <ResourceIcon>
-              <StyledImage
-                src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
-              />
-              <ResourceType sx={{ backgroundColor: getColor(material.material_type) }}>
-                <Typography
-                  sx={{
-                    color: '#ffffff',
-                    fontWeight: 'bold',
-                    fontSize: '10px',
-                    width: '100px',
-                    textAlign: 'center',
-                    wordBreak: 'break-word'
-                  }}
-                >
-                  {material.material_type}
-                </Typography>
-              </ResourceType>
-            </ResourceIcon>
+            {!isMobile && resourceIcon()}
             <Stack>
-              <Typography variant="h5" sx={{ color: '#222C36', fontSize: '1.1rem' }}>
+              <Typography variant="h5" sx={{ color: '#222C36', fontSize: '1.1rem', mb: '5px' }}>
                 {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
               </Typography>
               <Stack
-                direction={{ xs: 'column', md: 'row' }}
+                direction="row"
                 alignItems={{ xs: 'flex-start', md: 'center' }}
                 spacing={{ xs: 1, md: 2 }}
               >
-                <Typography
-                  sx={{
-                    fontSize: '13px',
-                    px: 1,
-                    py: 0.2,
-                    backgroundColor: '#F6F7F8',
-                    borderRadius: '5px',
-                    color: '#334155'
-                  }}
-                >
-                  Session {sessionData?.session_number}
-                </Typography>
-                <Typography variant="subtitle2" sx={{ color: '#a9a9a9' }}>
-                  {material.info_text?.length > 130
-                    ? `${material.info_text?.slice(0, 131)}...`
-                    : material.info_text}
-                </Typography>
+                {isMobile && resourceIcon()}
+                <ResourceDetailBox>
+                  <Stack direction="row" spacing={{ xs: 1, md: 2 }}>
+                    <Typography
+                      sx={{
+                        fontSize: '13px',
+                        px: 1,
+                        py: 0.2,
+                        backgroundColor: '#F6F7F8',
+                        borderRadius: '5px',
+                        color: '#334155'
+                      }}
+                    >
+                      Session {sessionData?.session_number}
+                    </Typography>
+                    {material.category === 'Pre-Reading' && (
+                      <Typography
+                        sx={{
+                          fontSize: '13px',
+                          px: 1,
+                          py: 0.2,
+                          backgroundColor: '#F6F7F8',
+                          borderRadius: '5px',
+                          color: '#334155'
+                        }}
+                      >
+                        Pre-Reading
+                      </Typography>
+                    )}
+                  </Stack>
+                  <Typography variant="subtitle2" sx={{ color: '#a9a9a9' }}>
+                    {material.info_text?.length > 130
+                      ? `${material.info_text?.slice(0, 131)}...`
+                      : material.info_text}
+                  </Typography>
+                </ResourceDetailBox>
               </Stack>
             </Stack>
           </Stack>
-          {!isPublic && (
+          {!isPublic && !isMobile && (
             <StyledTooltip
               title={checked ? "I haven't read this resource" : "I've read this resource"}
               placement="left"

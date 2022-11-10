@@ -59,7 +59,7 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 
 export const ToggleButtonTypography = styled(Typography)(({ theme }) => ({
   color: '#334155',
-  fontSize: '18px'
+  fontSize: '16px'
 }));
 
 export const SearchbarStyle = styled('div')(({ theme }) => ({
@@ -153,4 +153,12 @@ export const ResourceType = styled('div')(({ theme }) => ({
   borderRadius: '10px',
   transition: theme.transitions.create('opacity'),
   '&:hover': { opacity: 1 }
+}));
+
+export const ResourceDetailBox = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column'
+  }
 }));

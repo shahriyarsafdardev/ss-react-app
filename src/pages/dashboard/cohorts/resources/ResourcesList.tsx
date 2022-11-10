@@ -7,12 +7,14 @@ function ResourcesList({
   sessionID,
   sessionMaterials,
   isPublic,
-  sessionData
+  sessionData,
+  hostName
 }: {
   sessionID: string;
   sessionMaterials: any;
   sessionData: any;
   isPublic: boolean;
+  hostName?: string;
 }) {
   return (
     <>
@@ -20,6 +22,7 @@ function ResourcesList({
         {sessionMaterials.map((material: SessionMaterial, index: any) => (
           <ResourcesTile
             isPublic={isPublic}
+            hostName={hostName}
             key={index}
             sessionID={sessionID}
             material={material}

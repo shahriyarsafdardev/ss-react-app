@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Box, Stack, Button } from '@material-ui/core';
+import { Typography, Box, Stack, useMediaQuery, Button, useTheme } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
@@ -10,13 +10,17 @@ import { BorderLinearProgress } from './Common';
 function ResourcesSection({
   resourceData,
   handleShowMore,
-  isPublic
+  isPublic,
+  hostName
 }: {
   resourceData: SessionResource;
   handleShowMore: Function;
   isPublic: boolean;
+  hostName?: string;
 }) {
+  const theme = useTheme();
   const [more, setMore] = useState(false);
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const progress = () => {
     if (resourceData.session_materials_count === 0) {
@@ -63,12 +67,12 @@ function ResourcesSection({
   );
 
   return (
-    <Box style={{ marginBottom: '2rem' }}>
+    <Box style={{ marginBottom: '2rem', marginTop: '32px' }}>
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         justifyContent="space-between"
         alignItems="center"
-        style={{ marginBottom: '10px' }}
+        style={{ marginBottom: '10px', alignItems: 'baseline' }}
       >
         <Typography variant="h3" sx={{ color: '#101658' }}>
           {resourceData.session_name}
@@ -99,6 +103,7 @@ function ResourcesSection({
       )}
       <ResourcesList
         isPublic={isPublic}
+        hostName={hostName}
         sessionID={resourceData?.session_id}
         sessionData={{
           session_number: resourceData?.session_number,
