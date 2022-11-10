@@ -18,9 +18,11 @@ import searchFill from '@iconify/icons-eva/search-fill';
 import { Icon } from '@iconify/react';
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import LoadingScreen from 'components/LoadingScreen';
 import ResourcesTypesFilter from './ResourcesTypesFilter';
 import { getDisplayName } from './Common';
 import ResourcesTile from './ResourcesTile';
+import { LoadingContainer } from '../code/CodeTab';
 
 function ResourceFilter({
   types,
@@ -44,7 +46,6 @@ function ResourceFilter({
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const handleOnChange = (value: any, request: string) => {
-    setLoading(true);
     let types = [];
     if (request === 'query') {
       setSearchQuery(value);
@@ -79,6 +80,7 @@ function ResourceFilter({
     clearTimeout(timer);
 
     const newTimer = setTimeout(async () => {
+      setLoading(true);
       await axios
         .get(
           `/cohorts/${cohort_id}/resources/search.json?search_query=${query}&selected_types=${types?.join(
@@ -197,6 +199,11 @@ function ResourceFilter({
             </Stack>
           )}
         </>
+      )}
+      {isSearch && loading && (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
       )}
     </Stack>
   );

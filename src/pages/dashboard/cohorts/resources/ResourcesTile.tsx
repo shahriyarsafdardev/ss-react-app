@@ -56,6 +56,16 @@ function ResourcesTile({
     }
   };
 
+  const clipTitle = (title: String) => {
+    if (!isMobile && title.length > 95) {
+      return `${title.slice(0, 96)}...`;
+    }
+    if (isMobile && title.length > 60) {
+      return `${title.slice(0, 61)}...`;
+    }
+    return title;
+  };
+
   const resourceIcon = () => (
     <ResourceIcon>
       <StyledImage
@@ -102,8 +112,11 @@ function ResourcesTile({
           >
             {!isMobile && resourceIcon()}
             <Stack>
-              <Typography variant="h5" sx={{ color: '#222C36', fontSize: '1.1rem', mb: '5px' }}>
-                {material.name.length > 95 ? `${material.name.slice(0, 96)}...` : material.name}
+              <Typography
+                variant="h5"
+                sx={{ color: '#222C36', fontSize: '1.1rem', mb: { xs: '15px', md: '5px' } }}
+              >
+                {clipTitle(material.name)}
               </Typography>
               <Stack
                 direction="row"
@@ -140,7 +153,10 @@ function ResourcesTile({
                       </Typography>
                     )}
                   </Stack>
-                  <Typography variant="subtitle2" sx={{ color: '#a9a9a9' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ color: '#a9a9a9', marginLeft: { xs: 0, md: '15px' } }}
+                  >
                     {material.info_text?.length > 130
                       ? `${material.info_text?.slice(0, 131)}...`
                       : material.info_text}

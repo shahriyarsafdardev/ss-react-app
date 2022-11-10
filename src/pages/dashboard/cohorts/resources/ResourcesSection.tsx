@@ -39,7 +39,11 @@ function ResourcesSection({
   };
 
   const ShowMoreButton = () => (
-    <Button sx={{ minWidth: '200px' }} variant="text" onClick={showMore}>
+    <Button
+      sx={{ minWidth: { xs: '100%', md: '200px' }, mt: { xs: '20px', md: 'auto' } }}
+      variant="text"
+      onClick={showMore}
+    >
       {more ? (
         <>
           <Typography>Show Less</Typography>
@@ -74,10 +78,10 @@ function ResourcesSection({
         alignItems="center"
         style={{ marginBottom: '10px', alignItems: 'baseline' }}
       >
-        <Typography variant="h3" sx={{ color: '#101658' }}>
+        <Typography variant="h3" sx={{ color: '#101658', fontSize: { xs: '20px', md: '32px' } }}>
           {resourceData.session_name}
         </Typography>
-        {isPublic && resourceData.session_materials_count > 3 && <ShowMoreButton />}
+        {isDesktop && isPublic && resourceData.session_materials_count > 3 && <ShowMoreButton />}
       </Stack>
       <Stack
         direction="row"
@@ -92,7 +96,7 @@ function ResourcesSection({
           </Typography>
         )}
 
-        {!isPublic && resourceData.session_materials_count > 3 && <ShowMoreButton />}
+        {isDesktop && !isPublic && resourceData.session_materials_count > 3 && <ShowMoreButton />}
       </Stack>
       {!isPublic && (
         <BorderLinearProgress
@@ -113,6 +117,7 @@ function ResourcesSection({
           more === false ? resourceData.materials.slice(0, 3) : resourceData.materials
         }
       />
+      {!isDesktop && resourceData.session_materials_count > 3 && <ShowMoreButton />}
     </Box>
   );
 }
