@@ -106,7 +106,7 @@ export default function PayNowForm({
             enrollment_id: enrollmentID,
             amount,
             stripe_customer_id: customerID,
-            payment_method: String(result.setupIntent?.payment_method)
+            stripe_payment_method_id: String(result.setupIntent?.payment_method)
           })
           .then((res) => {
             navigate(
