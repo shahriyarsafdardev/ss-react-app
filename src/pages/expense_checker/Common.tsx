@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   purpleBackground: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white'
@@ -96,7 +96,7 @@ export const PaymentRootStyle = styled(Page)(({ theme }) => ({
   marginLeft: '0',
   marginRight: '0',
   [theme.breakpoints.down('md')]: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white'
