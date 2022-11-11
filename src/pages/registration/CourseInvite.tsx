@@ -1,12 +1,12 @@
 import * as Yup from 'yup';
 import {
   Stack,
-  Card,
   Typography,
   useTheme,
   useMediaQuery,
   TextField,
-  Avatar
+  Avatar,
+  Box
 } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
@@ -107,7 +107,7 @@ export default function CourseInvite() {
           <Typography
             sx={{ color: { xs: '#fff', md: '#64748B' }, fontWeight: '600', fontSize: '18px' }}
           >
-            Enter your colleagues email and name and we will send them an exclusive invite to the
+            Enter your colleague's email and name and we will send them an exclusive invite to the
             course
           </Typography>
         </Stack>
@@ -116,10 +116,10 @@ export default function CourseInvite() {
           alignItems="center"
           className={`${classes.inquiryTextContainer} ${isDesktop && classes.purpleBackground}`}
         >
-          <Card className={classes.formContainer}>
+          <Box className={classes.fullWidthCenter}>
             <FormikProvider value={formik}>
               <Form autoComplete="off">
-                <Stack spacing={3}>
+                <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
                   <TextField
                     label="Email"
                     fullWidth
@@ -148,7 +148,7 @@ export default function CourseInvite() {
                 </Stack>
               </Form>
             </FormikProvider>
-          </Card>
+          </Box>
         </Stack>
       </Stack>
     </PaymentRootStyle>

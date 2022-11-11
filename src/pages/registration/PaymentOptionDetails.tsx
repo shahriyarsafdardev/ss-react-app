@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router';
-import { useStyles } from './Common';
+import { StyledCheckIcon, useStyles } from './Common';
 
 export function OneTimePaymentDetails({
   cohortID,
@@ -25,7 +25,13 @@ export function OneTimePaymentDetails({
         </Typography>
       </Stack>
       <Stack className={classes.optionsStack} spacing={1}>
-        <Typography>✅ Access to {hostName}’s course</Typography>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Access to {hostName}’s course</Typography>
+        </Stack>
       </Stack>
       <Button
         variant="contained"
@@ -61,13 +67,31 @@ export function IndividualMembershipPaymentDetails({
       <Stack>
         <Typography fontWeight="bold">Sphere Membership </Typography>
         <Typography fontSize="14px" color="#828282">
-          Starting at ${Math.floor(price - price * 0.05)} per year
+          Starting at ${Math.floor(price * 0.95)} per year
         </Typography>
       </Stack>
       <Stack className={classes.optionsStack} spacing={1}>
-        <Typography>✅ Access to {hostName}’s course</Typography>
-        <Typography>✅ Access to Alumni events</Typography>
-        <Typography>✅ 5% discount on all Sphere courses</Typography>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Access to {hostName}’s course</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Access to Alumni events</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>5% discount on all Sphere courses</Typography>
+        </Stack>
       </Stack>
       <Button
         variant="contained"
@@ -101,16 +125,40 @@ export function TeamMembershipPaymentDetails({
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
       <Stack>
-        <Typography fontWeight="bold">Sphere Membership </Typography>
+        <Typography fontWeight="bold">Sphere Team Membership </Typography>
         <Typography fontSize="14px" color="#828282">
           Flexible for your team
         </Typography>
       </Stack>
       <Stack className={classes.optionsStack} spacing={1}>
-        <Typography>✅ Access to {hostName}’s course</Typography>
-        <Typography>✅ Access to Alumni events</Typography>
-        <Typography>✅ Free access to a course of your choosing</Typography>
-        <Typography>✅ 10%+ discount on all Sphere courses</Typography>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Access to {hostName}’s course</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Access to Alumni events</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>Free access to a course of your choosing</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography>10%+ discount on all Sphere courses</Typography>
+        </Stack>
       </Stack>
       <Button
         variant="contained"

@@ -78,6 +78,7 @@ export default function CoursePaymentPage() {
         <Stack
           className={`${classes.paymentData} ${classes.purpleBackground}`}
           paddingTop={`${!isDesktop && '60px !important'}`}
+          paddingBottom={`${!isDesktop && '40px !important'}`}
         >
           <Stack spacing={3}>
             <Typography variant="h4" className={`${classes.heading} ${classes.whiteFont}`}>

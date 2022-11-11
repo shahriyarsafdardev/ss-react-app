@@ -63,23 +63,29 @@ export default function PaymentSelectionPage() {
         alignItems="center"
         padding={{ xs: '10px', md: '50px', lg: '112px' }}
       >
-        <Avatar
-          src={company?.logo_url}
-          alt={company?.name}
-          className={classes.paymentSelectionAvatar}
-        />
-        <Typography className={`${classes.heading} ${classes.whiteFont}`}>
+        {company?.logo_url && (
+          <Avatar
+            src={company?.logo_url}
+            alt={company?.name}
+            className={classes.paymentSelectionAvatar}
+          />
+        )}
+        <Typography
+          className={`${classes.heading} ${classes.whiteFont}`}
+          sx={{ ...(!isDesktop && !company?.logo_url && { marginTop: '80px !important' }) }}
+        >
           Pay now to secure your seat
         </Typography>
         <Typography
           textAlign="center"
           className={classes.whiteFont}
-          width={{ xs: '100%', md: '80%', lg: '60%' }}
+          width={{ xs: '100%', md: '80%', lg: '65%' }}
         >
-          {company?.name || 'Your company'} has already approved Sphere courses as an L&D expense
-          for teams and individuals at {company?.name || 'your company'}. We provide an invoice for
-          expense purposes. You can get a full refund up to 72 hours before the date of the first
-          session.
+          {company?.name
+            ? `${company?.name} has already approved Sphere courses as an L&D expense for teams and
+          individuals at ${company?.name}. We provide an invoice for expense purposes. You can get a
+          full refund up to 72 hours before the date of the first session.`
+            : 'We provide an invoice for expense purposes. You can get a full refund up to 72 hours before the date of the first session.'}
         </Typography>
         <Stack
           direction={{ xs: 'column', md: 'row' }}

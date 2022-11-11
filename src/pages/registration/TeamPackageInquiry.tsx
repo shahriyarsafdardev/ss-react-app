@@ -2,13 +2,13 @@ import * as Yup from 'yup';
 import {
   Stack,
   Typography,
-  Card,
   useTheme,
   useMediaQuery,
   Link,
   TextField,
   Avatar,
-  Button
+  Button,
+  Box
 } from '@material-ui/core';
 
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -70,7 +70,7 @@ export default function TeamPackageInquiry() {
           referee_email: values?.email
         })
         .then((res) => {
-          enqueueSnackbar(`Request Inquired from ${values?.email}! 🎉`, { variant: 'success' });
+          enqueueSnackbar(`Information shared with ${values?.email}!`, { variant: 'success' });
           setSubmitting(false);
           resetForm();
         })
@@ -109,6 +109,8 @@ export default function TeamPackageInquiry() {
                 textDecoration: 'underline !important',
                 color: { xs: '#FFFFFF', md: '#4D4DCD' }
               }}
+              href="https://www.getsphere.com/pricing"
+              target="_blank"
             >
               our team pricing page
             </Link>
@@ -123,10 +125,10 @@ export default function TeamPackageInquiry() {
           alignItems="center"
           className={`${classes.inquiryTextContainer} ${isDesktop && classes.purpleBackground}`}
         >
-          <Card className={classes.formContainer}>
+          <Box className={classes.fullWidthCenter}>
             <FormikProvider value={formik}>
               <Form autoComplete="off">
-                <Stack spacing={3}>
+                <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
                   <TextField
                     label="Team Lead Email"
                     fullWidth
@@ -161,7 +163,7 @@ export default function TeamPackageInquiry() {
                 </Stack>
               </Form>
             </FormikProvider>
-          </Card>
+          </Box>
         </Stack>
       </Stack>
     </PaymentRootStyle>

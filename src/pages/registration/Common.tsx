@@ -51,16 +51,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '95%'
     }
   },
-  formContainer: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    width: '80%',
-    maxWidth: '600px',
-    padding: '5%',
-    [theme.breakpoints.down('md')]: {
-      width: '95%'
-    }
-  },
   purpleBackground: {
     background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
@@ -117,7 +107,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   whiteStackCard: {
     backgroundColor: 'white',
     padding: '30px',
-    paddingBottom: '15px',
     borderRadius: '16px',
     width: '30%',
     color: '#000',
@@ -150,10 +139,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const LoadingContainer = styled(Box)(() => ({
+export const LoadingContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
-  left: '50%'
+  left: '45%'
 }));
 
 export const Logo = styled('img')(({ theme }) => ({
@@ -164,6 +153,12 @@ export const Logo = styled('img')(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     display: 'none'
   }
+}));
+
+export const StyledCheckIcon = styled('img')(({ theme }) => ({
+  width: '24px',
+  height: '24px',
+  marginRight: '8px'
 }));
 
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -189,15 +184,23 @@ export const PaymentRootStyle = styled(Page)(({ theme }) => ({
   }
 }));
 
-export const InputAmount = ({ amount, onChange }: { amount: number; onChange: Function }) => (
+export const InputAmount = ({
+  amount,
+  onChange,
+  minValue
+}: {
+  amount: number;
+  onChange: Function;
+  minValue: number;
+}) => (
   <Stack direction="row" justifyContent="center" spacing={1}>
     <Typography variant="h4">$</Typography>
     <Input
       disableUnderline
       size="small"
-      value={amount}
+      value={amount < minValue ? minValue : amount}
       onChange={(e) => onChange(e?.target?.value)}
-      inputProps={{ min: 0, type: 'number' }}
+      inputProps={{ min: minValue, type: 'number' }}
       sx={{
         typography: 'h4',
         '& input': {

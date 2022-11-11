@@ -36,6 +36,7 @@ export default function SubscriptionPaymentPage() {
         .then((res) => {
           setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrant_email);
+          setAmount(Math.floor(res?.data?.cohort?.price * 0.95));
           setLoading(false);
         })
         .catch((err) => {
@@ -91,13 +92,14 @@ export default function SubscriptionPaymentPage() {
                 <Button
                   className={classes.counterButton}
                   onClick={() => setAmount(amount - 100)}
-                  disabled={amount <= 0}
+                  disabled={amount <= Math.floor(cohort?.price * 0.95)}
                 >
                   <Icon icon={minusFill} style={{ width: '100%', height: '100%' }} />
                 </Button>
                 <InputAmount
                   amount={amount}
                   onChange={(amount: number) => setAmount(Number(amount))}
+                  minValue={Math.floor(cohort?.price * 0.95)}
                 />
                 <Button className={classes.counterButton} onClick={() => setAmount(amount + 100)}>
                   <Icon icon={plusFill} style={{ width: '100%', height: '100%' }} />
@@ -113,7 +115,7 @@ export default function SubscriptionPaymentPage() {
                 5% discount. You can update or cancel your subscription at any time.
               </Typography>
               <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
-                The 5% discount starts immediately and will be applied to your enrollment in
+                The 5% discount starts immediately and will be applied to your enrollment in{' '}
                 {cohort?.name}. You will also receive access to our alumni events and community.
               </Typography>
             </Stack>
