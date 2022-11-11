@@ -10,6 +10,7 @@ import { useLocation } from 'react-router';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
+import { setSegmentUserProperties } from 'utils/eventTracking';
 import { InputAmount, LoadingContainer, Logo, useStyles } from './Common';
 import PayNowForm from './PayNowForm';
 
@@ -38,6 +39,7 @@ export default function SubscriptionPaymentPage() {
           setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrant_email);
           setLoading(false);
+          setSegmentUserProperties(res?.data?.user);
         })
         .catch((err) => {
           enqueueSnackbar('Some error occurred!', { variant: 'error' });
@@ -168,6 +170,7 @@ export default function SubscriptionPaymentPage() {
                 enrollmentID={enrollmentID}
                 customerID={customerID}
                 amount={amount}
+                cohort={cohort}
               />
             </Elements>
           </Box>

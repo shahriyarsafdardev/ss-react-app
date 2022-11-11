@@ -9,6 +9,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { useNavigate } from 'react-router';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
+import { trackEvent } from 'utils/eventTracking';
 
 type CardInfo = {
   name: string;
@@ -18,12 +19,14 @@ export default function PayNowForm({
   cohortID,
   enrollmentID,
   customerID,
-  amount
+  amount,
+  cohort
 }: {
   cohortID: string;
   enrollmentID: string;
   customerID: string;
   amount: number;
+  cohort: any;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -70,6 +73,7 @@ export default function PayNowForm({
   const classes = useStyles();
 
   const handleBackButton = () => {
+    trackEvent(cohort, 'Cohort Registration - Subscription Payment - "Back" Selected');
     navigate(`/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`);
   };
 
@@ -115,6 +119,7 @@ export default function PayNowForm({
             stripe_payment_method_id: String(result.setupIntent?.payment_method)
           })
           .then((res) => {
+            trackEvent(cohort, 'Cohort Registration - Subscription Payment - Payment Made');
             navigate(
               `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=subscription`
             );

@@ -14,6 +14,7 @@ import axiosV2 from 'utils/axiosV2';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import LoadingScreen from 'components/LoadingScreen';
+import { setSegmentUserProperties } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function CourseInvite() {
@@ -28,6 +29,7 @@ export default function CourseInvite() {
   const mode = url.get('mode') || '';
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<any>({});
+  const [cohort, setCohort] = useState<any>({});
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {
@@ -36,8 +38,10 @@ export default function CourseInvite() {
         .get(`enrollments/${enrollmentID}/details.json`)
         .then((res) => {
           setCompany({ ...res?.data?.company });
+          setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrantEmail);
           setLoading(false);
+          setSegmentUserProperties(res?.data?.user);
         })
         .catch((err) => {
           enqueueSnackbar('Some error occurred!', { variant: 'error' });

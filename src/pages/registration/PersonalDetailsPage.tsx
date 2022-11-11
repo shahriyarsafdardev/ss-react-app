@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
-import { trackEvent } from 'utils/eventTracking';
+import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, LoadingContainer } from './Common';
 
 export type UserType = {
@@ -18,11 +18,14 @@ export type UserType = {
 
 export type CohortType = {
   id: string;
-  code: string;
   name: string;
-  price: number;
-  session_times: string;
+  intake: string;
+  intake_name: string;
   host_full_names: string;
+  dates: string;
+  price: string;
+  code: string;
+  amplitude_events_timeline: any;
 };
 
 export type CompanyType = {
@@ -45,14 +48,7 @@ export default function PersonalDetailsPage() {
   });
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
-  const [cohort, setCohort] = useState<CohortType>({
-    id: '',
-    code: '',
-    name: '',
-    price: 0,
-    session_times: '',
-    host_full_names: ''
-  });
+  const [cohort, setCohort] = useState<any>({});
 
   useEffect(() => {
     setLoading(true);
@@ -61,6 +57,7 @@ export default function PersonalDetailsPage() {
       .then((res) => {
         setCohort(res?.data?.cohort);
         setLoading(false);
+        setSegmentUserProperties(res?.data?.user);
         sendAnalyticsData('Cohort Registration - Personal Info Page - Page Loaded', {
           Source: '',
           Referrer: '',

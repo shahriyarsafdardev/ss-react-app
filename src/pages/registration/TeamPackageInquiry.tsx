@@ -17,6 +17,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import LoadingScreen from 'components/LoadingScreen';
+import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function TeamPackageInquiry() {
@@ -30,6 +31,7 @@ export default function TeamPackageInquiry() {
   const enrollmentID = url.get('enrollment_id') || '';
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<any>({});
+  const [cohort, setCohort] = useState<any>({});
   const [registrantEmail, setRegistrantEmail] = useState('');
   const { enqueueSnackbar } = useSnackbar();
 
@@ -39,8 +41,10 @@ export default function TeamPackageInquiry() {
         .get(`enrollments/${enrollmentID}/details.json`)
         .then((res) => {
           setCompany({ ...res?.data?.company });
+          setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrant_email);
           setLoading(false);
+          setSegmentUserProperties(res?.data?.user);
         })
         .catch((err) => {
           enqueueSnackbar('Some error occurred!', { variant: 'error' });
@@ -49,6 +53,7 @@ export default function TeamPackageInquiry() {
   }, []);
 
   const handleBackButton = () => {
+    trackEvent(cohort, 'Cohort Registration - Team Package - "Back" Selected');
     navigate(`/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`);
   };
 
@@ -74,6 +79,7 @@ export default function TeamPackageInquiry() {
         })
         .then((res) => {
           enqueueSnackbar(`Information shared with ${values?.email}!`, { variant: 'success' });
+          trackEvent(cohort, 'Cohort Registration - Team Package - Team Lead Details Shared');
           setSubmitting(false);
           resetForm();
         })
@@ -116,6 +122,9 @@ export default function TeamPackageInquiry() {
               }}
               href="https://www.getsphere.com/pricing"
               target="_blank"
+              onClick={() =>
+                trackEvent(cohort, 'Cohort Registration - Team Package - Pricing Page Opened')
+              }
             >
               our team pricing page
             </Link>

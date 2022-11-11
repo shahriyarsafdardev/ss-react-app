@@ -5,8 +5,8 @@ import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
-import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import { LoadingContainer, Logo, useStyles } from './Common';
 import {
   IndividualMembershipPaymentDetails,
@@ -26,11 +26,6 @@ export default function PaymentSelectionPage() {
   const [cohort, setCohort] = useState<any>({});
   const { enqueueSnackbar } = useSnackbar();
 
-  const sendAnalyticsData = (eventName: string, eventData: any) => {
-    // cohort &&
-    trackEvent(cohort, eventName, eventData);
-  };
-
   useEffect(() => {
     setLoading(true);
     if (enrollmentID && cohortID) {
@@ -40,6 +35,7 @@ export default function PaymentSelectionPage() {
           setCohort({ ...res?.data?.cohort });
           setCompany({ ...res?.data?.company });
           setLoading(false);
+          setSegmentUserProperties(res?.data?.user);
           sendAnalyticsData('Cohort Registration - Payment Choice - Page Loaded', {});
         })
         .catch((err) => {
@@ -47,6 +43,10 @@ export default function PaymentSelectionPage() {
         });
     }
   }, []);
+
+  const sendAnalyticsData = (eventName: string, eventData: any) => {
+    trackEvent(cohort, eventName, eventData);
+  };
 
   if (loading || !cohortID || !enrollmentID) {
     return (

@@ -5,8 +5,9 @@ import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
+import { setSegmentUserProperties } from 'utils/eventTracking';
 import { LoadingContainer, Logo, useStyles } from './Common';
 import PayLaterForm from './PayLaterForm';
 
@@ -34,6 +35,7 @@ export default function CoursePaymentPage() {
           setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrant_email);
           setLoading(false);
+          setSegmentUserProperties(res?.data?.user);
         })
         .catch((err) => {
           enqueueSnackbar('Some error occurred!', { variant: 'error' });
@@ -106,7 +108,7 @@ export default function CoursePaymentPage() {
                 <b>Instructor:</b> {cohort?.host_full_names}
               </Typography>
               <Typography className={classes.whiteFont}>
-                <b>Dates:</b> {cohort?.session_times}
+                <b>Dates:</b> {cohort?.dates}
               </Typography>
               <Typography className={classes.whiteFont}>
                 <b>Price:</b> ${Math.floor(cohort?.price)}
@@ -147,6 +149,7 @@ export default function CoursePaymentPage() {
                 cohortID={cohortID}
                 enrollmentID={enrollmentID}
                 customerID={customerID}
+                cohort={cohort}
               />
             </Elements>
           </Box>
