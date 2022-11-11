@@ -43,6 +43,30 @@ export const sendSegmentData = async (eventType: string, eventProperties: any) =
     }
   }
 
+  if (eventType === 'Cohort Registration - Invited by Referral') {
+    try {
+      const data = new FormData();
+      data.append('user_id', window.analytics?.user().anonymousId());
+      data.append('event_type', 'Cohort Registration - Invited by Referral');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (eventType === 'Cohort Registration - Invited for team package') {
+    try {
+      const data = new FormData();
+      data.append('user_id', window.analytics?.user().anonymousId());
+      data.append('event_type', 'Cohort Registration - Invited for team package');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (
     [
       'Cohort Registration - Send Invitation Page - Referral Invite Sent',

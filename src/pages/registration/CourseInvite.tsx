@@ -14,7 +14,8 @@ import axiosV2 from 'utils/axiosV2';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import LoadingScreen from 'components/LoadingScreen';
-import { setSegmentUserProperties } from 'utils/eventTracking';
+import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
+
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function CourseInvite() {
@@ -68,14 +69,21 @@ export default function CourseInvite() {
           cohort_id: cohortID,
           email: registrantEmail,
           referee_name: values?.fullName,
-          referee_email: values?.email
+          referee_email: values?.email,
+          enrollment_id: enrollmentID
         })
         .then((res) => {
           enqueueSnackbar(`Invitation Sent to ${values?.email}! 🎉`, { variant: 'success' });
           setSubmitting(false);
+          trackEvent(cohort, 'Cohort Registration - Invited by Referral', {
+            ...res?.data,
+            'Referee Email': values.email,
+            'Referee Name': values.fullName
+          });
           resetForm();
         })
         .catch((err) => {
+          console.log('error from here', err);
           enqueueSnackbar('Some error occurred!', { variant: 'error' });
         });
     }

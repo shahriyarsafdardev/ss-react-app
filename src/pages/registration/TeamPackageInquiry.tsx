@@ -75,11 +75,16 @@ export default function TeamPackageInquiry() {
         .post('invites/team_package.json', {
           email: registrantEmail,
           referee_name: values?.fullName,
-          referee_email: values?.email
+          referee_email: values?.email,
+          enrollment_id: enrollmentID
         })
         .then((res) => {
           enqueueSnackbar(`Information shared with ${values?.email}!`, { variant: 'success' });
-          trackEvent(cohort, 'Cohort Registration - Team Package - Team Lead Details Shared');
+          trackEvent(cohort, 'Cohort Registration - Invited for team package', {
+            ...res?.data,
+            'Referee Email': values.email,
+            'Referee Name': values.fullName
+          });
           setSubmitting(false);
           resetForm();
         })
