@@ -149,7 +149,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold'
   },
   purpleBackground: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white'
@@ -176,7 +176,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   topUp: {
-    backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/Purple_BG.png')`,
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',

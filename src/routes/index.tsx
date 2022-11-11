@@ -346,6 +346,12 @@ export default function Router() {
     { path: 'credit_checkout_invitation', element: <CreditCheckout /> },
     { path: 'teams/subscription_invite', element: <InvitePage /> },
     { path: 'expense-approval-checker', element: <ExpenseCheckerPage /> },
+    { path: 'registration/personal-details', element: <PersonalDetailsForm /> },
+    { path: 'registration/payment-options', element: <PaymentSelection /> },
+    { path: 'registration/team-package-inquiry', element: <TeamPackageInquiry /> },
+    { path: 'registration/course-invite', element: <CourseInvite /> },
+    { path: 'registration/subscription-payment', element: <SubscriptionPayment /> },
+    { path: 'registration/course-payment', element: <CoursePayment /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -495,9 +501,19 @@ const Registration = Loadable(lazy(() => import('../pages/registration/Registrat
 const PublicResources = Loadable(
   lazy(() => import('../pages/dashboard/cohorts/resources/PublicResources'))
 );
+const PersonalDetailsForm = Loadable(
+  lazy(() => import('../pages/registration/PersonalDetailsPage'))
+);
+const PaymentSelection = Loadable(lazy(() => import('../pages/registration/PaymentSelectionPage')));
+const SubscriptionPayment = Loadable(
+  lazy(() => import('../pages/registration/SubscriptionPaymentPage'))
+);
+const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );
+const TeamPackageInquiry = Loadable(lazy(() => import('../pages/registration/TeamPackageInquiry')));
+const CourseInvite = Loadable(lazy(() => import('../pages/registration/CourseInvite')));
 const CreditCheckout = Loadable(
   lazy(() => import('../pages/subscription/payments/CreditCheckout'))
 );

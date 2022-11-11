@@ -2,7 +2,8 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Grid, Card, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
-import { UserType, StyledLoadingButton, NEW_REGISTRATION_FLOW_COHORT_CODES } from './Registration';
+import { UserType, NEW_REGISTRATION_FLOW_COHORT_CODES } from './Registration';
+import { StyledLoadingButton } from './Common';
 
 export default function UserForm({
   user,

@@ -28,14 +28,42 @@ export const sendSegmentData = async (eventType: string, eventProperties: any) =
   if (isSessionStarted(eventProperties)) {
     window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
-
-  window.analytics?.track(eventType, eventProperties);
+  if (
+    eventType !== 'Cohort Registration - Invited by Referral' &&
+    eventType !== 'Cohort Registration - Invited for team package'
+  ) {
+    window.analytics?.track(eventType, eventProperties);
+  }
 
   if (eventType === 'Cohort Registration - Personal Info Page - Page Loaded') {
     try {
       const data = new FormData();
       data.append('user_id', window.analytics?.user().anonymousId());
       data.append('event_type', 'Backend Cohort Registration - Personal Info Page - Page Loaded');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (eventType === 'Cohort Registration - Invited by Referral') {
+    try {
+      const data = new FormData();
+      data.append('user_id', window.analytics?.user().anonymousId());
+      data.append('event_type', 'Cohort Registration - Invited by Referral');
+      data.append('event_properties', JSON.stringify(eventProperties));
+      await axios.post(`/segments/trigger_segment_event.json`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (eventType === 'Cohort Registration - Invited for team package') {
+    try {
+      const data = new FormData();
+      data.append('user_id', window.analytics?.user().anonymousId());
+      data.append('event_type', 'Cohort Registration - Invited for team package');
       data.append('event_properties', JSON.stringify(eventProperties));
       await axios.post(`/segments/trigger_segment_event.json`, data);
     } catch (error) {
