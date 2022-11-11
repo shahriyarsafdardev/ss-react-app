@@ -28,8 +28,9 @@ export const sendSegmentData = async (eventType: string, eventProperties: any) =
   if (isSessionStarted(eventProperties)) {
     window.analytics?.track('Sphere Portal - Session Started', eventProperties);
   }
-
-  window.analytics?.track(eventType, eventProperties);
+  if (eventType !== 'Cohort Registration - Invited by Referral') {
+    window.analytics?.track(eventType, eventProperties);
+  }
 
   if (eventType === 'Cohort Registration - Personal Info Page - Page Loaded') {
     try {
