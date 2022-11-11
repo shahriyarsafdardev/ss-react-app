@@ -23,7 +23,7 @@ export default function CoursePaymentPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {

@@ -31,7 +31,7 @@ export default function TeamPackageInquiry() {
   const enrollmentID = url.get('enrollment_id') || '';
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<any>({});
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
   const [registrantEmail, setRegistrantEmail] = useState('');
   const { enqueueSnackbar } = useSnackbar();
 

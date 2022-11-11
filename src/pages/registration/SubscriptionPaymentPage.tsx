@@ -28,7 +28,7 @@ export default function SubscriptionPaymentPage() {
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
   const { enqueueSnackbar } = useSnackbar();
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {

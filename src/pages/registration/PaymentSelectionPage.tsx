@@ -23,7 +23,7 @@ export default function PaymentSelectionPage() {
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
   const [loading, setLoading] = useState(false);
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -36,15 +36,18 @@ export default function PaymentSelectionPage() {
           setCompany({ ...res?.data?.company });
           setLoading(false);
           setSegmentUserProperties(res?.data?.user);
-          sendAnalyticsData('Cohort Registration - Payment Choice - Page Loaded', {});
         })
         .catch((err) => {
-          enqueueSnackbar('Some error occurred!', { variant: 'error' });
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
         });
     }
   }, []);
 
-  const sendAnalyticsData = (eventName: string, eventData: any) => {
+  useEffect(() => {
+    cohort && sendAnalyticsData('Cohort Registration - Payment Choice - Page Loaded', {});
+  }, [cohort]);
+
+  const sendAnalyticsData = (eventName: string, eventData?: any) => {
     trackEvent(cohort, eventName, eventData);
   };
 

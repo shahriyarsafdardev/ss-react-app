@@ -30,7 +30,7 @@ export default function CourseInvite() {
   const mode = url.get('mode') || '';
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<any>({});
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {

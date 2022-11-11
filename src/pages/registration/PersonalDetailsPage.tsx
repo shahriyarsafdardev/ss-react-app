@@ -48,7 +48,7 @@ export default function PersonalDetailsPage() {
   });
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
-  const [cohort, setCohort] = useState<any>({});
+  const [cohort, setCohort] = useState<any>();
 
   useEffect(() => {
     setLoading(true);
@@ -57,20 +57,27 @@ export default function PersonalDetailsPage() {
       .then((res) => {
         setCohort(res?.data?.cohort);
         setLoading(false);
-        setSegmentUserProperties(res?.data?.user);
-        sendAnalyticsData('Cohort Registration - Personal Info Page - Page Loaded', {
-          Source: '',
-          Referrer: '',
-          'Cohort Price': cohort?.price
-        });
       })
       .catch((err) => {
         enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
       });
   }, []);
 
+  useEffect(() => {
+    cohort &&
+      window.analytics?.ready &&
+      window.analytics?.ready(() => {
+        window.analytics?.identify(window.analytics?.user().anonymousId(), {});
+        sendAnalyticsData('Cohort Registration - Personal Info Page - Page Loaded', {
+          Source: '',
+          Referrer: '',
+          'Cohort Price': cohort?.price
+        });
+      });
+  }, [cohort, window.analytics?.ready]);
+
   const sendAnalyticsData = (eventType: string, eventData: any) => {
-    trackEvent({}, eventType, eventData);
+    trackEvent(cohort, eventType, eventData);
   };
 
   const formik = useFormik<UserType>({
@@ -87,6 +94,7 @@ export default function PersonalDetailsPage() {
           linkedin_url: values?.linkedin_url
         })
         .then((res) => {
+          setSegmentUserProperties(res?.data?.user);
           sendAnalyticsData('Cohort Registration - Personal Info Page - Details Submitted', {
             'Registrant First Name': values?.full_name.split(' ')?.[0] || '',
             'Registrant Last Name':
