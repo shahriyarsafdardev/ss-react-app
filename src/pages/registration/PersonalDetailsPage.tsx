@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
+import { trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, LoadingContainer } from './Common';
 
 export type UserType = {
@@ -60,11 +61,20 @@ export default function PersonalDetailsPage() {
       .then((res) => {
         setCohort(res?.data?.cohort);
         setLoading(false);
+        sendAnalyticsData('Cohort Registration - Personal Info Page - Page Loaded', {
+          Source: '',
+          Referrer: '',
+          'Cohort Price': cohort?.price
+        });
       })
       .catch((err) => {
         enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
       });
   }, []);
+
+  const sendAnalyticsData = (eventType: string, eventData: any) => {
+    trackEvent({}, eventType, eventData);
+  };
 
   const formik = useFormik<UserType>({
     initialValues: { email: '', full_name: '', linkedin_url: '' },
@@ -80,6 +90,16 @@ export default function PersonalDetailsPage() {
           linkedin_url: values?.linkedin_url
         })
         .then((res) => {
+          sendAnalyticsData('Cohort Registration - Personal Info Page - Details Submitted', {
+            'Registrant First Name': values?.full_name.split(' ')?.[0] || '',
+            'Registrant Last Name':
+              values?.full_name.split(' ')?.[1] || values?.full_name.split(' ')?.[0],
+            'Registrant LinkedIn URL': values?.linkedin_url,
+            'Registrant Email': values?.email,
+            Source: '',
+            Referrer: '',
+            'Cohort Price': cohort?.price
+          });
           navigate(
             `/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}`
           );

@@ -1,5 +1,7 @@
 import { Button, Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { StyledCheckIcon, useStyles } from './Common';
 
 export function OneTimePaymentDetails({
@@ -15,6 +17,7 @@ export function OneTimePaymentDetails({
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -36,11 +39,12 @@ export function OneTimePaymentDetails({
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
-        onClick={() =>
+        onClick={() => {
+          sendAnalyticsData('Cohort Registration - Payment Choice - Course Payment Selected', {});
           navigate(
             `/registration/course-payment?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
-          )
-        }
+          );
+        }}
       >
         Select
       </Button>
@@ -61,6 +65,7 @@ export function IndividualMembershipPaymentDetails({
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -96,13 +101,17 @@ export function IndividualMembershipPaymentDetails({
       <Button
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
-        onClick={() =>
+        onClick={() => {
+          sendAnalyticsData(
+            'Cohort Registration - Payment Choice - Subscription Payment Selected',
+            {}
+          );
           navigate(
             `/registration/subscription-payment?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&amount=${Math.floor(
               price * 0.95
             )}`
-          )
-        }
+          );
+        }}
       >
         Select
       </Button>
@@ -123,6 +132,7 @@ export function TeamMembershipPaymentDetails({
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
@@ -166,6 +176,7 @@ export function TeamMembershipPaymentDetails({
         variant="contained"
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
         onClick={() => {
+          sendAnalyticsData('Cohort Registration - Payment Choice - Team Package Selected', {});
           navigate(
             `/registration/team-package-inquiry?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
           );
