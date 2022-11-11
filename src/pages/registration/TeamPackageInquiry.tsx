@@ -98,7 +98,9 @@ export default function TeamPackageInquiry() {
         className={`${classes.wrapperStack} ${classes.textCenter}`}
       >
         <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
-          <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
+          {company?.logo_url && (
+            <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
+          )}
           <Typography variant="h3" className={classes.heading}>
             Inquire about our Team Packages
           </Typography>

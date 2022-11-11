@@ -162,7 +162,7 @@ export const StyledCheckIcon = styled('img')(({ theme }) => ({
 }));
 
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
-  marginTop: '24px',
+  marginTop: '8px',
   borderRadius: '30px',
   height: '48px',
   width: '100%',
@@ -198,8 +198,11 @@ export const InputAmount = ({
     <Input
       disableUnderline
       size="small"
-      value={amount < minValue ? minValue : amount}
+      value={amount}
       onChange={(e) => onChange(e?.target?.value)}
+      onBlur={(e) =>
+        onChange(parseInt(e?.target?.value, 10) < minValue ? minValue : e?.target?.value)
+      }
       inputProps={{ min: minValue, type: 'number' }}
       sx={{
         typography: 'h4',
@@ -207,7 +210,7 @@ export const InputAmount = ({
           p: 0,
           color: '#fff',
           textAlign: 'center',
-          width: `${amount?.toString()?.length}ch`
+          width: `${amount?.toString()?.length + 1}ch`
         }
       }}
     />

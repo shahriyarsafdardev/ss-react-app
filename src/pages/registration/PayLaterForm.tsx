@@ -1,5 +1,5 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Button, InputLabel, Stack, TextField } from '@material-ui/core';
+import { Button, InputLabel, Stack, TextField, Theme } from '@material-ui/core';
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import * as Yup from 'yup';
@@ -29,7 +29,7 @@ export default function PayLaterForm({
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme: Theme) => ({
     root: {
       '& .MuiOutlinedInput-root.Mui-error fieldset': {
         border: '2px solid #DF1B41'
@@ -56,8 +56,14 @@ export default function PayLaterForm({
     submitButton: {
       height: '48px',
       borderRadius: '30px'
+    },
+    paymentButtonsStack: {
+      marginTop: '40px',
+      [theme.breakpoints.down('md')]: {
+        marginBottom: '40px'
+      }
     }
-  });
+  }));
 
   const classes = useStyles();
 
@@ -102,7 +108,7 @@ export default function PayLaterForm({
           })
           .then((res) => {
             navigate(
-              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
+              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=individual`
             );
           })
           .catch((err) => {
@@ -147,7 +153,7 @@ export default function PayLaterForm({
           options={{ terms: { card: 'never' } }}
         />
         <PaymentTermsCheckBox />
-        <Stack spacing={{ xs: 3, md: 2 }} marginY="40px">
+        <Stack spacing={{ xs: 3, md: 2 }} className={classes.paymentButtonsStack}>
           <LoadingButton
             fullWidth
             onClick={() => handleSubmit()}

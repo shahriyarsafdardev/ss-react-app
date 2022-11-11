@@ -62,6 +62,7 @@ export default function PaymentSelectionPage() {
         justifyContent="center"
         alignItems="center"
         padding={{ xs: '10px', md: '50px', lg: '112px' }}
+        paddingBottom="80px !important"
       >
         {company?.logo_url && (
           <Avatar

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import minusFill from '@iconify/icons-eva/minus-outline';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import Icon from '@iconify/react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
@@ -21,8 +21,9 @@ export default function SubscriptionPaymentPage() {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const [amount, setAmount] = useState(0);
   const url = new URLSearchParams(useLocation().search);
+  const amountURL = url.get('amount') || '';
+  const [amount, setAmount] = useState(amountURL !== '' ? parseInt(amountURL, 10) : 0);
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
   const { enqueueSnackbar } = useSnackbar();
@@ -30,13 +31,12 @@ export default function SubscriptionPaymentPage() {
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {
-    if (enrollmentID && cohortID) {
+    if (enrollmentID && cohortID && amountURL) {
       axiosV2
         .get(`enrollments/${enrollmentID}/details.json`)
         .then((res) => {
           setCohort({ ...res?.data?.cohort });
           setRegistrantEmail(res?.data?.registrant_email);
-          setAmount(Math.floor(res?.data?.cohort?.price * 0.95));
           setLoading(false);
         })
         .catch((err) => {
@@ -67,6 +67,13 @@ export default function SubscriptionPaymentPage() {
     }
   }, [registrantEmail]);
 
+  const handleAmountChange = (amount: string) => {
+    if (amount === '') {
+      amount = '0';
+    }
+    setAmount(parseInt(amount, 10));
+  };
+
   if (loading || !clientSecret || !customerID || !enrollmentID || !cohortID) {
     return (
       <LoadingContainer>
@@ -91,14 +98,20 @@ export default function SubscriptionPaymentPage() {
               <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
                 <Button
                   className={classes.counterButton}
-                  onClick={() => setAmount(amount - 100)}
+                  onClick={() =>
+                    setAmount(
+                      amount - 100 < Math.floor(cohort?.price * 0.95)
+                        ? Math.floor(cohort?.price * 0.95)
+                        : amount - 100
+                    )
+                  }
                   disabled={amount <= Math.floor(cohort?.price * 0.95)}
                 >
                   <Icon icon={minusFill} style={{ width: '100%', height: '100%' }} />
                 </Button>
                 <InputAmount
                   amount={amount}
-                  onChange={(amount: number) => setAmount(Number(amount))}
+                  onChange={(amount: string) => handleAmountChange(amount)}
                   minValue={Math.floor(cohort?.price * 0.95)}
                 />
                 <Button className={classes.counterButton} onClick={() => setAmount(amount + 100)}>
@@ -122,7 +135,7 @@ export default function SubscriptionPaymentPage() {
           </Box>
         </Stack>
         <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>
-          <Box className={classes.fullWidthCenter}>
+          <Box className={classes.fullWidthCenter} width="100% !important">
             <Elements
               key={clientSecret}
               stripe={stripePromise}

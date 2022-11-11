@@ -24,12 +24,13 @@ export default function CourseInvite() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
+  const mode = url.get('mode') || '';
   const [loading, setLoading] = useState(false);
   const [company, setCompany] = useState<any>({});
   const [registrantEmail, setRegistrantEmail] = useState('');
 
   useEffect(() => {
-    if (enrollmentID) {
+    if (enrollmentID && mode) {
       axiosV2
         .get(`enrollments/${enrollmentID}/details.json`)
         .then((res) => {
@@ -100,15 +101,20 @@ export default function CourseInvite() {
         className={`${classes.wrapperStack} ${classes.textCenter}`}
       >
         <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
-          <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
+          {company?.logo_url && (
+            <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
+          )}
           <Typography variant="h3" className={classes.heading}>
-            Invite your Colleagues
+            {mode === 'subscription'
+              ? 'Congratulations, you’ve started your membership'
+              : 'Congratulations, you will receive your onboarding details shortly'}
           </Typography>
           <Typography
             sx={{ color: { xs: '#fff', md: '#64748B' }, fontWeight: '600', fontSize: '18px' }}
           >
-            Enter your colleague's email and name and we will send them an exclusive invite to the
-            course
+            {mode === 'subscription'
+              ? 'Would you like to refer colleagues'
+              : "Enter your colleague's email and name and we will send them an exclusive invite to the course"}
           </Typography>
         </Stack>
         <Stack

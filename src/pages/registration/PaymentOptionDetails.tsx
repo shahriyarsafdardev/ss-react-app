@@ -98,7 +98,9 @@ export function IndividualMembershipPaymentDetails({
         className={`${classes.submitButton} ${classes.paymentOptionButton}`}
         onClick={() =>
           navigate(
-            `/registration/subscription-payment?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
+            `/registration/subscription-payment?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&amount=${Math.floor(
+              price * 0.95
+            )}`
           )
         }
       >

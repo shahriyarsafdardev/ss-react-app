@@ -115,7 +115,7 @@ export default function CoursePaymentPage() {
           </Stack>
         </Stack>
         <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>
-          <Box className={classes.fullWidthCenter}>
+          <Box className={classes.fullWidthCenter} width="100% !important">
             <Elements
               key={clientSecret}
               stripe={stripePromise}
