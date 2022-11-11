@@ -17,6 +17,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function CourseInvite() {
+  const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -55,6 +56,8 @@ export default function CourseInvite() {
       fullName: ''
     },
     validationSchema: FormSchema,
+    validateOnChange: isFormSubmit,
+    validateOnBlur: isFormSubmit,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       await axiosV2
         .post('invites/course.json', {
@@ -146,7 +149,10 @@ export default function CourseInvite() {
                     type="submit"
                     variant="contained"
                     loading={isSubmitting}
-                    onClick={() => handleSubmit()}
+                    onClick={() => {
+                      handleSubmit();
+                      setIsFormSubmit(true);
+                    }}
                     disabled={!isValid || values.email === '' || values.fullName === ''}
                   >
                     Send Invite

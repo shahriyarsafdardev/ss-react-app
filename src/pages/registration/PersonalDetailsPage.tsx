@@ -30,6 +30,7 @@ export type CompanyType = {
 };
 
 export default function PersonalDetailsPage() {
+  const [isFormSubmit, setIsFormSubmit] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -68,6 +69,8 @@ export default function PersonalDetailsPage() {
   const formik = useFormik<UserType>({
     initialValues: { email: '', full_name: '', linkedin_url: '' },
     validationSchema: ValidationSchema,
+    validateOnChange: isFormSubmit,
+    validateOnBlur: isFormSubmit,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       await axiosV2
         .post(`enrollments.json`, {
@@ -154,7 +157,10 @@ export default function PersonalDetailsPage() {
                     variant="contained"
                     loading={isSubmitting}
                     disabled={!isValid}
-                    onClick={submitForm}
+                    onClick={() => {
+                      submitForm();
+                      setIsFormSubmit(true);
+                    }}
                     type="submit"
                     data-testid="submit-registration-form"
                     id="btn-submit"

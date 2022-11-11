@@ -20,6 +20,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function TeamPackageInquiry() {
+  const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -62,6 +63,8 @@ export default function TeamPackageInquiry() {
       fullName: ''
     },
     validationSchema: TeamLeadSchema,
+    validateOnChange: isFormSubmit,
+    validateOnBlur: isFormSubmit,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       await axiosV2
         .post('invites/team_package.json', {
@@ -149,7 +152,10 @@ export default function TeamPackageInquiry() {
                     <StyledLoadingButton
                       variant="contained"
                       loading={isSubmitting}
-                      onClick={() => handleSubmit()}
+                      onClick={() => {
+                        handleSubmit();
+                        setIsFormSubmit(true);
+                      }}
                       disabled={!isValid || values.email === '' || values.fullName === ''}
                     >
                       Share Information
