@@ -1,4 +1,4 @@
-import { Stack, Box, Typography, useTheme, useMediaQuery, Button } from '@material-ui/core';
+import { Stack, Box, Typography, useTheme, useMediaQuery, Button, Link } from '@material-ui/core';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Page from 'components/Page';
@@ -94,7 +94,7 @@ export default function SubscriptionPaymentPage() {
         >
           <Stack alignItems="center" spacing={3}>
             <Typography variant="h4" className={`${classes.heading} ${classes.whiteFont}`}>
-              Your Sphere Membership
+              Individual Subscription
             </Typography>
             <Stack alignItems="center" sx={{ marginBottom: '30px' }} spacing={1}>
               <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
@@ -133,6 +133,18 @@ export default function SubscriptionPaymentPage() {
                 The 5% discount starts immediately and will be applied to your enrollment in{' '}
                 {cohort?.name}. You will also receive access to our alumni events and community.
               </Typography>
+              <Link
+                sx={{
+                  textDecoration: 'underline !important',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  marginTop: '0px !important'
+                }}
+                href="https://www.getsphere.com/pricing"
+                target="_blank"
+              >
+                Learn more here.
+              </Link>
             </Stack>
           </Box>
         </Stack>

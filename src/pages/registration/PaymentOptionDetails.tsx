@@ -70,7 +70,7 @@ export function IndividualMembershipPaymentDetails({
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
       <Stack>
-        <Typography fontWeight="bold">Sphere Membership </Typography>
+        <Typography fontWeight="bold">Individual Subscription</Typography>
         <Typography fontSize="14px" color="#828282">
           Starting at ${Math.floor(price * 0.95)} per year
         </Typography>
@@ -95,7 +95,9 @@ export function IndividualMembershipPaymentDetails({
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
-          <Typography>5% discount on all Sphere courses</Typography>
+          <Typography>
+            Your choice of ${Math.floor(price)} worth of Sphere courses every year (5% discount)
+          </Typography>
         </Stack>
       </Stack>
       <Button
@@ -137,7 +139,7 @@ export function TeamMembershipPaymentDetails({
   return (
     <Stack className={classes.whiteStackCard} spacing={3}>
       <Stack>
-        <Typography fontWeight="bold">Sphere Team Membership </Typography>
+        <Typography fontWeight="bold">Team Subscription</Typography>
         <Typography fontSize="14px" color="#828282">
           Flexible for your team
         </Typography>

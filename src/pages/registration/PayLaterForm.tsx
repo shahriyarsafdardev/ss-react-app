@@ -113,7 +113,7 @@ export default function PayLaterForm({
           .then((res) => {
             trackEvent(cohort, 'Cohort Registration - Course Payment - Payment Made');
             navigate(
-              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=individual`
+              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=one-time`
             );
           })
           .catch((err) => {

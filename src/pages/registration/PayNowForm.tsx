@@ -121,7 +121,7 @@ export default function PayNowForm({
           .then((res) => {
             trackEvent(cohort, 'Cohort Registration - Subscription Payment - Payment Made');
             navigate(
-              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=subscription`
+              `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=individual-subscription`
             );
           })
           .catch((err) => {
@@ -176,7 +176,7 @@ export default function PayNowForm({
             disabled={!(valid && isValid)}
             className={classes.submitButton}
           >
-            Start Membership
+            Individual Subscription
           </LoadingButton>
           <Button
             fullWidth
