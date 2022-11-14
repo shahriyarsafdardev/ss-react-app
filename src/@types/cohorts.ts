@@ -162,6 +162,8 @@ export type Enrollment = {
   linkedin_url: string;
   price: number;
   credit_account: string;
+  credit_account_type?: string;
+  company_name?: string;
   status: string;
   notes: string;
   card_added: boolean;
