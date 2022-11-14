@@ -144,14 +144,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const CompanyTooltipMessage = (enrollment: Enrollment) => {
-  let header = `${enrollment.first_name} enrolled`;
+  let header = `${enrollment.first_name} ${enrollment.last_name} enrolled`;
   if (enrollment.first_name.includes('Unknown')) {
     header = 'This user enrolled';
   }
   if (enrollment.first_name.includes('Employee')) {
     header = 'Enrolled';
   }
-  return `${header} using ${enrollment.credit_account}'s Sphere credits`;
+  if (enrollment?.credit_account_type === 'individual') {
+    return `${header} through an individual subscription`;
+  }
+  return `${header} through ${enrollment?.company_name} ${enrollment?.credit_account_type} subscription`;
 };
 export const InfoTooltip = ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
   const classes = useStyles();
