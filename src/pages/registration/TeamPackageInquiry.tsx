@@ -80,6 +80,9 @@ export default function TeamPackageInquiry() {
         })
         .then((res) => {
           enqueueSnackbar(`Information shared with ${values?.email}!`, { variant: 'success' });
+          navigate(
+            `/registration/course-invite?cohort_id=${cohortID}&enrollment_id=${enrollmentID}&mode=team-subscription`
+          );
           trackEvent(cohort, 'Cohort Registration - Invited for team package', {
             ...res?.data,
             'Referee Email': values.email,
