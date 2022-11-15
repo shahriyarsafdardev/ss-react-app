@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import { useState } from 'react';
 import { Card, Stack, Typography, TextField } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
@@ -37,7 +37,7 @@ export default function SendReferralInviteForm() {
 
   return (
     <Card className={classes.formCard}>
-      <Typography className={classes.greyBGFont22Bold}>
+      <Typography className={classes.font22Bold}>
         Send more referrals to give and receive more rewards 🎁
       </Typography>
       <FormikProvider value={formik}>

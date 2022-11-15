@@ -1,5 +1,4 @@
-import react from 'react';
-import { Card, Stack, Typography, Box } from '@material-ui/core';
+import { Card, Typography, Box } from '@material-ui/core';
 import { useStyles } from './Common';
 
 export default function ReferralFAQs() {
@@ -49,12 +48,12 @@ export default function ReferralFAQs() {
   ];
 
   return (
-    <Card className={classes.greyBackground}>
+    <Card className={classes.greyBackground} sx={{ padding: '52px 48px' }}>
       <Typography className={classes.greyBGHeading40}>FAQs</Typography>
       {questions.map((question, index) => (
         <Box key={index}>
-          <Typography className={classes.greyBGFont16Bold}>{question.question}</Typography>
-          <Typography className={classes.greyBGFont16}>{question.answer}</Typography>
+          <Typography className={classes.font16Bold}>{question.question}</Typography>
+          <Typography className={classes.font16}>{question.answer}</Typography>
         </Box>
       ))}
     </Card>

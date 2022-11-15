@@ -1,5 +1,4 @@
-import react from 'react';
-import { Card, Stack, Typography } from '@material-ui/core';
+import { Card, Typography } from '@material-ui/core';
 import { useStyles } from './Common';
 
 export default function ReferralHeader() {

@@ -1,41 +1,44 @@
-import react from 'react';
 import { Card, Typography, Stack } from '@material-ui/core';
 import { useStyles, StyledDiv } from './Common';
+import ReferralProgress from './ReferralProgress';
 
 export default function ReferralInviteSummary() {
   const classes = useStyles();
 
   return (
-    <Card className={classes.greyBackground} sx={{ width: '100%' }}>
-      <Stack direction="row">
+    <Card className={classes.greyBackground} sx={{ width: '100%', padding: '40px 50px' }}>
+      <Stack direction={{ xs: 'column', md: 'row' }}>
+        <Stack style={{ marginLeft: '-30px' }}>
+          <ReferralProgress enrolled={3} referralsSent={5} enrolledReferrees={7} />
+        </Stack>
         <Stack>
-          <Typography className={classes.greyBGFont22Bold}>
+          <Typography className={classes.font22Bold}>
             You're only 4 accepted referrals away from earning a free course 🎉
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: '15px' }}>
+          <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv
               style={{ background: 'linear-gradient(135deg, #5BE584 0%, #007B55 100%)' }}
             />
-            <Typography className={classes.greyBGFont18}>3</Typography>
-            <Typography className={classes.greyBGFont16}>
-              referrees have enrolled in a Sphere course
+            <Typography className={classes.font16}>
+              <span className={classes.font18}>7</span> referrees have enrolled in a Sphere course
             </Typography>
           </Stack>
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: '15px' }}>
+          <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv
               style={{
                 background:
                   'linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), linear-gradient(135deg, #5BE584 0%, #007B55 100%)'
               }}
             />
-            <Typography className={classes.greyBGFont18}>5</Typography>
-            <Typography className={classes.greyBGFont16}>referrals sent</Typography>
+            <Typography className={classes.font16}>
+              <span className={classes.font18}>5</span> referrals sent
+            </Typography>
           </Stack>
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: '15px' }}>
+          <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv style={{ background: '#EDEFF2' }} />
-            <Typography className={classes.greyBGFont18}>7</Typography>
-            <Typography className={classes.greyBGFont16}>
-              enrolled referrees = $700 = enough to cover a free Sphere course!
+            <Typography className={classes.font16}>
+              <span className={classes.font18}>7</span> enrolled referrees = $700 = enough to cover
+              a free Sphere course!
             </Typography>
           </Stack>
         </Stack>

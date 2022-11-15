@@ -8,39 +8,45 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white',
-    padding: '50px',
-    textAlign: 'center'
+    padding: '67px 100px',
+    textAlign: 'center',
+    [theme.breakpoints.down('md')]: {
+      padding: '50px 30px'
+    }
   },
   greyBackground: {
     background: '#FAFAFC',
     color: '#071A33',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    marginTop: '2rem !important',
-    padding: '70px 50px'
+    marginTop: '2rem !important'
   },
-  greyBGFont22Bold: {
+  font22Bold: {
     fontSize: '22px',
     fontWeight: 'bold'
   },
-  greyBGFont22: {
+  font22: {
     fontSize: '22px',
+    lineHeight: '30px',
     marginTop: '15px'
   },
   greyBGHeading40: {
     fontSize: '40px',
     fontWeight: 'bold'
   },
-  greyBGFont18: {
+  font18: {
     fontSize: '18px',
+    lineHeight: '24px',
     fontWeight: 'bold'
   },
-  greyBGFont16: {
+  font16: {
     fontSize: '16px',
+    lineHeight: '20px',
     marginTop: '15px'
   },
-  greyBGFont16Bold: {
+  font16Bold: {
     fontSize: '16px',
+    lineHeight: '20px',
     fontWeight: 'bold',
     marginTop: '15px'
   },

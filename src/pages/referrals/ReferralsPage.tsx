@@ -1,5 +1,4 @@
-import react from 'react';
-import { Container, Box, Stack, Card, Typography } from '@material-ui/core';
+import { Container, Stack } from '@material-ui/core';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import ReferralHeader from './ReferralHeader';
