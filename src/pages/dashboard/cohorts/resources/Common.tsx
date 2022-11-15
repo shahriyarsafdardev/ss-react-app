@@ -168,13 +168,18 @@ export const ResourceDetailBox = styled('div')(({ theme }) => ({
 
 export const StyledModal = styled(Modal)(({ theme }) => ({
   width: '35% !important',
-  margin: 'auto',
+  minWidth: '440px',
   maxWidth: '530px',
-  [theme.breakpoints.down('md')]: {
-    width: '70% !important'
-  },
+  margin: 'auto',
   [theme.breakpoints.down('sm')]: {
-    width: '95% !important'
+    minWidth: '90% !important'
+  }
+}));
+
+export const ModalCard = styled(Card)(({ theme }) => ({
+  padding: '80px 40px',
+  [theme.breakpoints.down('sm')]: {
+    padding: '80px 10px'
   }
 }));
 
@@ -196,7 +201,7 @@ export const ReachedLimitModal = ({
     }}
     zIndex={1400}
   >
-    <Card sx={{ padding: '80px 40px' }}>
+    <ModalCard>
       <Stack spacing={8}>
         <Stack spacing={3}>
           <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
@@ -218,6 +223,6 @@ export const ReachedLimitModal = ({
           View Course Details
         </Button>
       </Stack>
-    </Card>
+    </ModalCard>
   </StyledModal>
 );
