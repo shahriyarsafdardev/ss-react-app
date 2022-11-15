@@ -105,10 +105,11 @@ export const NEW_REGISTRATION_FLOW_COHORT_CODES = [
   'MLS',
   'DCI',
   'MRS',
-  'MDS'
+  'MDS',
+  'AAB'
 ];
 
-const RONNY_COHORT_CODE = 'AAB';
+const RONNY_COHORT_CODE = 'BBC';
 
 export default function Registration() {
   const [activeStep, setActiveStep] = useState(1);
