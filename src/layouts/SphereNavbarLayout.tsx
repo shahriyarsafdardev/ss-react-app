@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
 // material
 import { AppBar, Button, Stack, Link, MenuItem, IconButton } from '@material-ui/core';
 import { styled, alpha } from '@material-ui/core/styles';
 import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
+import axios from 'utils/axios';
 import MenuPopover from '../components/MenuPopover';
 
 // ----------------------------------------------------------------------
@@ -24,6 +25,17 @@ const HeaderStyle = styled(AppBar)(({ theme }) => ({
 export default function SphereNavbarLayout() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
+  const [cohort, setCohort] = useState<any>();
+  const cohort_id = window.location.pathname.split('/')[2] || '';
+
+  useEffect(() => {
+    const getCohort = async () => {
+      await axios.get(`/cohorts/${cohort_id}.json`).then((res) => {
+        setCohort(res.data.cohort);
+      });
+    };
+    !!cohort_id && getCohort();
+  }, [cohort_id]);
 
   return (
     <>
@@ -32,6 +44,14 @@ export default function SphereNavbarLayout() {
           <img src="/static/sphere_with_logo.svg" alt="logo" width="150px" />
         </RouterLink>
         <Stack sx={{ display: { xs: 'none', md: 'block' } }} direction="row" spacing={3}>
+          <Button
+            variant="text"
+            size="large"
+            href="https://www.getsphere.com/#cohort-tabs"
+            target="_blank"
+          >
+            Our Courses
+          </Button>
           <Button
             size="large"
             variant="text"
@@ -48,8 +68,17 @@ export default function SphereNavbarLayout() {
           >
             For Experts
           </Button>
-          <Button variant="contained" target="_blank" href="https://www.getsphere.com/#cohort-tabs">
-            Our Courses
+          <Button
+            variant="contained"
+            target="_blank"
+            href={cohort?.registration_page_url}
+            sx={{
+              height: '48px',
+              borderRadius: '4px',
+              background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
+            }}
+          >
+            View Course Details
           </Button>
         </Stack>
         <MenuPopover

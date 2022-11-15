@@ -6,8 +6,11 @@ import {
   Tooltip,
   TooltipProps,
   tooltipClasses,
-  Card
+  Card,
+  Stack,
+  Button
 } from '@material-ui/core';
+import { Modal } from 'components/animate';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -162,3 +165,59 @@ export const ResourceDetailBox = styled('div')(({ theme }) => ({
     flexDirection: 'column'
   }
 }));
+
+export const StyledModal = styled(Modal)(({ theme }) => ({
+  width: '35% !important',
+  margin: 'auto',
+  maxWidth: '530px',
+  [theme.breakpoints.down('md')]: {
+    width: '70% !important'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '95% !important'
+  }
+}));
+
+export const ReachedLimitModal = ({
+  open,
+  shouldOpen,
+  hostName,
+  cohortRegistrationURL
+}: {
+  open: boolean;
+  shouldOpen: Function;
+  hostName: string;
+  cohortRegistrationURL: string;
+}) => (
+  <StyledModal
+    open={open}
+    onClose={() => {
+      shouldOpen(false);
+    }}
+    zIndex={1400}
+  >
+    <Card sx={{ padding: '80px 40px' }}>
+      <Stack spacing={8}>
+        <Stack spacing={3}>
+          <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
+            You’ve reached your monthly resource limit
+          </Typography>
+          <Typography sx={{ textAlign: 'center' }}>
+            Signup to {hostName}’s course to receive unlimited access
+          </Typography>
+        </Stack>
+        <Button
+          variant="contained"
+          sx={{
+            borderRadius: '4px',
+            height: '48px',
+            background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
+          }}
+          onClick={() => window.open(cohortRegistrationURL, '_blank')}
+        >
+          View Course Details
+        </Button>
+      </Stack>
+    </Card>
+  </StyledModal>
+);

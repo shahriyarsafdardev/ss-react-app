@@ -7,10 +7,12 @@ import useSettings from 'hooks/useSettings';
 
 import LoadingScreen from 'components/LoadingScreen';
 import axios from 'utils/axios';
+import { ResourceContext } from 'contexts/ResourceContext';
 import { SessionResource, Cohort } from '../../../../@types/cohorts';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
 import { LoadingContainer } from '../code/CodeTab';
+import { ReachedLimitModal } from './Common';
 
 export default function PublicResources() {
   const [isSearch, setIsSearch] = useState<boolean>(false);
@@ -19,6 +21,7 @@ export default function PublicResources() {
   const [cohort, setCohort] = useState<Cohort>();
   const [resources, setResources] = useState<SessionResource[]>([]);
   const [resources_types, setResourcesTypes] = useState<String[]>([]);
+  const [limitModalState, setLimitModalState] = useState(false);
 
   const clearData = () => {
     setIsSearch(false);
@@ -68,48 +71,56 @@ export default function PublicResources() {
   }
   return (
     <Page title="Sphere | Public Resources">
-      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <Container
-          sx={{ px: '50px !important', pt: '100px', pb: '50px' }}
-          key={cohort_id}
-          maxWidth={themeStretch ? false : 'xl'}
-        >
-          <Stack sx={{ alignItems: 'center', marginBottom: '80px' }}>
-            <Typography variant="h2" sx={{ color: '#101658', mb: 2, mt: '40px' }}>
-              {cohort?.cohort_header_name} Resources
-            </Typography>
-            <Typography sx={{ fontSize: '21px' }}>
-              Curated by {cohort.host_full_name} for {cohort.instructor_pronoun} course{' '}
-              <Link
-                sx={{ fontWeight: 'bold', color: '#212121', textDecoration: 'underline' }}
-                href={cohort.registration_page_url}
-                target="_blank"
-              >
-                {cohort.name}
-              </Link>
-            </Typography>
-          </Stack>
-          <ResourceFilter
-            isPublic={true}
-            types={resources_types}
-            isSearch={isSearch}
-            setIsSearch={setIsSearch}
-          />
-          {!isSearch && (
-            <>
-              {resources?.map((resource, index) => (
-                <ResourcesSection
-                  handleShowMore={(data: string) => handleShowMore(data)}
-                  isPublic={true}
-                  key={index}
-                  resourceData={resource}
-                  hostName={cohort?.host_full_name}
-                />
-              ))}
-            </>
-          )}
-        </Container>
-      </AnalyticsContext.Provider>
+      <ReachedLimitModal
+        open={limitModalState}
+        shouldOpen={setLimitModalState}
+        hostName={cohort?.host_full_name}
+        cohortRegistrationURL={cohort?.registration_page_url}
+      />
+      <ResourceContext.Provider value={{ showLimitModal: setLimitModalState }}>
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <Container
+            sx={{ px: '50px !important', pt: '100px', pb: '50px' }}
+            key={cohort_id}
+            maxWidth={themeStretch ? false : 'xl'}
+          >
+            <Stack sx={{ alignItems: 'center', marginBottom: '80px' }}>
+              <Typography variant="h2" sx={{ color: '#101658', mb: 2, mt: '40px' }}>
+                {cohort?.cohort_header_name} Resources
+              </Typography>
+              <Typography sx={{ fontSize: '21px' }}>
+                Curated by {cohort.host_full_name} for {cohort.instructor_pronoun} course{' '}
+                <Link
+                  sx={{ fontWeight: 'bold', color: '#212121', textDecoration: 'underline' }}
+                  href={cohort.registration_page_url}
+                  target="_blank"
+                >
+                  {cohort.name}
+                </Link>
+              </Typography>
+            </Stack>
+            <ResourceFilter
+              isPublic={true}
+              types={resources_types}
+              isSearch={isSearch}
+              setIsSearch={setIsSearch}
+            />
+            {!isSearch && (
+              <>
+                {resources?.map((resource, index) => (
+                  <ResourcesSection
+                    handleShowMore={(data: string) => handleShowMore(data)}
+                    isPublic={true}
+                    key={index}
+                    resourceData={resource}
+                    hostName={cohort?.host_full_name}
+                  />
+                ))}
+              </>
+            )}
+          </Container>
+        </AnalyticsContext.Provider>
+      </ResourceContext.Provider>
     </Page>
   );
 }

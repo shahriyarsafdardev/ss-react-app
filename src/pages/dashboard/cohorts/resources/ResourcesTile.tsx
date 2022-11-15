@@ -7,6 +7,7 @@ import { markReadingCompleted } from 'redux/slices/cohort';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useTheme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
+import { ResourceContext } from 'contexts/ResourceContext';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -35,6 +36,7 @@ function ResourcesTile({
   const [checked, setChecked] = useState(material?.complete);
   const dispatch = useDispatch();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const { showLimitModal } = useContext(ResourceContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { enqueueSnackbar } = useSnackbar();
@@ -45,6 +47,10 @@ function ResourcesTile({
   };
 
   const handleTileOnClick = () => {
+    if (localStorage.getItem('resources_opened_count') === '1') {
+      showLimitModal(true);
+      return;
+    }
     const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
     const isPreReading = material?.category === 'Pre-Reading';
     if (isLocalLink && isPreReading && isPublic) {
@@ -53,6 +59,7 @@ function ResourcesTile({
       });
     } else {
       window.open(material?.action_url, '_blank');
+      localStorage.setItem('resources_opened_count', '1');
     }
   };
 
