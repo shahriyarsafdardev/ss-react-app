@@ -72,7 +72,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'surveys',
     'resources',
     'code',
-    'onboarding-calendar-instructions'
+    'onboarding-calendar-instructions',
+    'referrals'
   ];
 
   useEffect(() => {
@@ -101,6 +102,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Code');
         } else if (section === 'onboarding-calendar-instructions') {
           setCurrentTab('Calendar');
+        } else if (section === 'referrals') {
+          setCurrentTab('Referrals');
         } else {
           setCurrentTab(section);
         }

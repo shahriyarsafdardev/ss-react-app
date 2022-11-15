@@ -82,7 +82,8 @@ export const PATH_DASHBOARD = {
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
     editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
-    account: path(ROOTS_DASHBOARD, '/user/account')
+    account: path(ROOTS_DASHBOARD, '/user/account'),
+    referrals: path(ROOTS_DASHBOARD, '/user/referrals')
   },
   cohorts: {
     root: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}`),

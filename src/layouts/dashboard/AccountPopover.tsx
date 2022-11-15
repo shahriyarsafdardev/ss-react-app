@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
+import roundPeople from '@iconify/icons-ic/baseline-people';
+
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { resetStore } from 'redux/rootReducer';
@@ -27,6 +29,11 @@ const MENU_OPTIONS = [
     label: 'Settings',
     icon: settings2Fill,
     linkTo: PATH_DASHBOARD.user.account
+  },
+  {
+    label: 'Referrals',
+    icon: roundPeople,
+    linkTo: PATH_DASHBOARD.user.referrals
   }
 ];
 

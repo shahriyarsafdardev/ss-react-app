@@ -163,7 +163,8 @@ export default function Router() {
             { path: 'list', element: <UserList /> },
             { path: 'new', element: <UserCreate /> },
             { path: '/:name/edit', element: <UserCreate /> },
-            { path: 'account', element: <UserAccount /> }
+            { path: 'account', element: <UserAccount /> },
+            { path: 'referrals', element: <ReferralsPage /> }
           ]
         },
         {
@@ -461,7 +462,6 @@ const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')
 const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
 const PeersTab = Loadable(lazy(() => import('../pages/dashboard/PeersTab')));
 const Dashboard = Loadable(lazy(() => import('components/cohorts/businessCredit/Dashboard')));
-
 const HomePage = Loadable(lazy(() => import('components/cohorts/home/HomeTab')));
 const CalendarInstructions = Loadable(
   lazy(() => import('components/cohorts/onboarding/empty-states/CalendarInstructions'))
@@ -486,6 +486,8 @@ const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
 const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
+const ReferralsPage = Loadable(lazy(() => import('../pages/referrals/ReferralsPage')));
+
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
