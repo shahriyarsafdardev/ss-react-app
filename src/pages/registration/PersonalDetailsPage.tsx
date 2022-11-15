@@ -49,6 +49,9 @@ export default function PersonalDetailsPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const [cohort, setCohort] = useState<any>();
+  const source = url.get('source') || '';
+  const referrerDomain = url.get('referrer_domain') || '';
+  const couponCode = url.get('referrer') || '';
 
   useEffect(() => {
     setLoading(true);
@@ -91,7 +94,10 @@ export default function PersonalDetailsPage() {
           cohort_id: cohortID,
           email: values?.email,
           full_name: values?.full_name,
-          linkedin_url: values?.linkedin_url
+          linkedin_url: values?.linkedin_url,
+          source,
+          referrer_domain: referrerDomain,
+          coupon_code: couponCode
         })
         .then((res) => {
           setSegmentUserProperties(res?.data?.user);
