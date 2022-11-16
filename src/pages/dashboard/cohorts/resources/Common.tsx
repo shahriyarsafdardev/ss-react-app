@@ -204,7 +204,7 @@ export const ReachedLimitModal = ({
 
   const handleViewCourses = () => {
     trackEvent(cohort, 'Resources Page - Monthly Limit Modal - "View Course Details" Selected');
-    window.open(cohortRegistrationURL, '_blank');
+    window.open(`${cohortRegistrationURL}?source=Sphere-Outbound-Resources-Page`, '_blank');
   };
 
   return (

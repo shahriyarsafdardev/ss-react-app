@@ -52,7 +52,7 @@ export default function SphereNavbarLayout() {
           <Button
             variant="text"
             size="large"
-            href="https://www.getsphere.com/#cohort-tabs?source=Sphere-Outbound-Resources-Page"
+            href="https://www.getsphere.com/#cohort-tabs"
             target="_blank"
             onClick={() => sendAnalyticsEvent('Resources Page - "Our Courses" Selected')}
           >
@@ -61,7 +61,7 @@ export default function SphereNavbarLayout() {
           <Button
             size="large"
             variant="text"
-            href="https://www.getsphere.com/#businesses?source=Sphere-Outbound-Resources-Page"
+            href="https://www.getsphere.com/#businesses"
             target="_blank"
             onClick={() => sendAnalyticsEvent('Resources Page - "For Business" Selected')}
           >
@@ -70,7 +70,7 @@ export default function SphereNavbarLayout() {
           <Button
             variant="text"
             size="large"
-            href="https://www.getsphere.com/pages/expert-instructors?source=Sphere-Outbound-Resources-Page"
+            href="https://www.getsphere.com/pages/expert-instructors"
             target="_blank"
             onClick={() => sendAnalyticsEvent('Resources Page - "For Experts" Selected')}
           >
@@ -100,7 +100,7 @@ export default function SphereNavbarLayout() {
           <MenuItem>
             <Link
               target="_blank"
-              href="https://www.getsphere.com/#cohort-tabs?source=Sphere-Outbound-Resources-Page"
+              href="https://www.getsphere.com/#cohort-tabs"
               onClick={() => sendAnalyticsEvent('Resources Page - "Our Courses" Selected')}
             >
               Our Courses
@@ -108,7 +108,7 @@ export default function SphereNavbarLayout() {
           </MenuItem>
           <MenuItem>
             <Link
-              href="https://www.getsphere.com/#businesses?source=Sphere-Outbound-Resources-Page"
+              href="https://www.getsphere.com/#businesses"
               target="_blank"
               onClick={() => sendAnalyticsEvent('Resources Page - "For Business" Selected')}
             >
@@ -117,7 +117,7 @@ export default function SphereNavbarLayout() {
           </MenuItem>
           <MenuItem>
             <Link
-              href="https://www.getsphere.com/pages/expert-instructors?source=Sphere-Outbound-Resources-Page"
+              href="https://www.getsphere.com/pages/expert-instructors"
               target="_blank"
               onClick={() => sendAnalyticsEvent('Resources Page - "For Experts" Selected')}
             >
