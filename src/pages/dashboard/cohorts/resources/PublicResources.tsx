@@ -8,6 +8,7 @@ import useSettings from 'hooks/useSettings';
 import LoadingScreen from 'components/LoadingScreen';
 import axios from 'utils/axios';
 import { ResourceContext } from 'contexts/ResourceContext';
+import { useLocation } from 'react-router-dom';
 import { SessionResource, Cohort } from '../../../../@types/cohorts';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
@@ -22,6 +23,8 @@ export default function PublicResources() {
   const [resources, setResources] = useState<SessionResource[]>([]);
   const [resources_types, setResourcesTypes] = useState<String[]>([]);
   const [limitModalState, setLimitModalState] = useState(false);
+  const url = new URLSearchParams(useLocation().search);
+  const source = url.get('source') || '';
 
   const clearData = () => {
     setIsSearch(false);
@@ -51,6 +54,7 @@ export default function PublicResources() {
     const getCohortAndResources = async () => {
       await axios.get(`/cohorts/${cohort_id}/resources/public_resources.json`).then((res) => {
         setCohort(res.data.cohort);
+        trackEvent(res?.data?.cohort, 'Resources Page - Page Loaded', { Source: source });
         setResources(res.data.resources);
         setResourcesTypes(res.data.resources_types);
       });
@@ -76,6 +80,7 @@ export default function PublicResources() {
         shouldOpen={setLimitModalState}
         hostName={cohort?.host_full_name}
         cohortRegistrationURL={cohort?.registration_page_url}
+        cohort={cohort}
       />
       <ResourceContext.Provider value={{ showLimitModal: setLimitModalState }}>
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>

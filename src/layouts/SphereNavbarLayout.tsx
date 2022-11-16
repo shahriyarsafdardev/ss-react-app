@@ -6,6 +6,7 @@ import { styled, alpha } from '@material-ui/core/styles';
 import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import axios from 'utils/axios';
+import { trackEvent } from 'utils/eventTracking';
 import MenuPopover from '../components/MenuPopover';
 
 // ----------------------------------------------------------------------
@@ -37,6 +38,10 @@ export default function SphereNavbarLayout() {
     !!cohort_id && getCohort();
   }, [cohort_id]);
 
+  const sendAnalyticsEvent = (eventName: string, eventData?: any) => {
+    trackEvent(cohort, eventName, eventData);
+  };
+
   return (
     <>
       <HeaderStyle>
@@ -47,36 +52,40 @@ export default function SphereNavbarLayout() {
           <Button
             variant="text"
             size="large"
-            href="https://www.getsphere.com/#cohort-tabs"
+            href="https://www.getsphere.com/#cohort-tabs?source=Sphere-Outbound-Resources-Page"
             target="_blank"
+            onClick={() => sendAnalyticsEvent('Resources Page - "Our Courses" Selected')}
           >
             Our Courses
           </Button>
           <Button
             size="large"
             variant="text"
-            href="https://www.getsphere.com/#businesses"
+            href="https://www.getsphere.com/#businesses?source=Sphere-Outbound-Resources-Page"
             target="_blank"
+            onClick={() => sendAnalyticsEvent('Resources Page - "For Business" Selected')}
           >
             For Businesses
           </Button>
           <Button
             variant="text"
             size="large"
-            href="https://www.getsphere.com/pages/expert-instructors"
+            href="https://www.getsphere.com/pages/expert-instructors?source=Sphere-Outbound-Resources-Page"
             target="_blank"
+            onClick={() => sendAnalyticsEvent('Resources Page - "For Experts" Selected')}
           >
             For Experts
           </Button>
           <Button
             variant="contained"
             target="_blank"
-            href={cohort?.registration_page_url}
+            href={`${cohort?.registration_page_url}?source=Sphere-Outbound-Resources-Page`}
             sx={{
               height: '48px',
               borderRadius: '4px',
               background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
             }}
+            onClick={() => sendAnalyticsEvent('Resources Page - "View Course Details" Selected')}
           >
             View Course Details
           </Button>
@@ -89,18 +98,39 @@ export default function SphereNavbarLayout() {
           anchorEl={menuRef.current}
         >
           <MenuItem>
-            <Link href="https://www.getsphere.com/#businesses" target="_blank">
+            <Link
+              target="_blank"
+              href="https://www.getsphere.com/#cohort-tabs?source=Sphere-Outbound-Resources-Page"
+              onClick={() => sendAnalyticsEvent('Resources Page - "Our Courses" Selected')}
+            >
+              Our Courses
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              href="https://www.getsphere.com/#businesses?source=Sphere-Outbound-Resources-Page"
+              target="_blank"
+              onClick={() => sendAnalyticsEvent('Resources Page - "For Business" Selected')}
+            >
               For Businesses
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link href="https://www.getsphere.com/pages/expert-instructors" target="_blank">
+            <Link
+              href="https://www.getsphere.com/pages/expert-instructors?source=Sphere-Outbound-Resources-Page"
+              target="_blank"
+              onClick={() => sendAnalyticsEvent('Resources Page - "For Experts" Selected')}
+            >
               For Experts
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link target="_blank" href="https://www.getsphere.com/#cohort-tabs">
-              Our Courses
+            <Link
+              target="_blank"
+              href={`${cohort?.registration_page_url}?source=Sphere-Outbound-Resources-Page`}
+              onClick={() => sendAnalyticsEvent('Resources Page - "View Course Details" Selected')}
+            >
+              View Course Details
             </Link>
           </MenuItem>
         </MenuPopover>

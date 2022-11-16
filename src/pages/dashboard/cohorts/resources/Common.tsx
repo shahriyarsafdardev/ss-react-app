@@ -11,6 +11,8 @@ import {
   Button
 } from '@material-ui/core';
 import { Modal } from 'components/animate';
+import { trackEvent } from 'utils/eventTracking';
+import { useEffect } from 'react';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -187,42 +189,56 @@ export const ReachedLimitModal = ({
   open,
   shouldOpen,
   hostName,
-  cohortRegistrationURL
+  cohortRegistrationURL,
+  cohort
 }: {
   open: boolean;
   shouldOpen: Function;
   hostName: string;
   cohortRegistrationURL: string;
-}) => (
-  <StyledModal
-    open={open}
-    onClose={() => {
-      shouldOpen(false);
-    }}
-    zIndex={1400}
-  >
-    <ModalCard>
-      <Stack spacing={8}>
-        <Stack spacing={3}>
-          <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
-            You’ve reached your monthly resource limit
-          </Typography>
-          <Typography sx={{ textAlign: 'center' }}>
-            Signup to {hostName}’s course to receive unlimited access
-          </Typography>
+  cohort: any;
+}) => {
+  useEffect(() => {
+    open && trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Opened');
+  }, [open]);
+
+  const handleViewCourses = () => {
+    trackEvent(cohort, 'Resources Page - Monthly Limit Modal - "View Course Details" Selected');
+    window.open(cohortRegistrationURL, '_blank');
+  };
+
+  return (
+    <StyledModal
+      open={open}
+      onClose={() => {
+        trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Closed');
+        shouldOpen(false);
+      }}
+      zIndex={1400}
+    >
+      <ModalCard>
+        <Stack spacing={8}>
+          <Stack spacing={3}>
+            <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
+              You’ve reached your monthly resource limit
+            </Typography>
+            <Typography sx={{ textAlign: 'center' }}>
+              Signup to {hostName}’s course to receive unlimited access
+            </Typography>
+          </Stack>
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: '4px',
+              height: '48px',
+              background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
+            }}
+            onClick={() => handleViewCourses()}
+          >
+            View Course Details
+          </Button>
         </Stack>
-        <Button
-          variant="contained"
-          sx={{
-            borderRadius: '4px',
-            height: '48px',
-            background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
-          }}
-          onClick={() => window.open(cohortRegistrationURL, '_blank')}
-        >
-          View Course Details
-        </Button>
-      </Stack>
-    </ModalCard>
-  </StyledModal>
-);
+      </ModalCard>
+    </StyledModal>
+  );
+};

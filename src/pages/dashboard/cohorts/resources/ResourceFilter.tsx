@@ -19,6 +19,7 @@ import { Icon } from '@iconify/react';
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import LoadingScreen from 'components/LoadingScreen';
+import { useLocation } from 'react-router-dom';
 import ResourcesTypesFilter from './ResourcesTypesFilter';
 import { getDisplayName } from './Common';
 import ResourcesTile from './ResourcesTile';
@@ -44,6 +45,8 @@ function ResourceFilter({
   const [timer, setTimer] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const url = new URLSearchParams(useLocation().search);
+  const source = url.get('source') || '';
 
   const handleOnChange = (value: any, request: string) => {
     let types = [];
@@ -56,7 +59,10 @@ function ResourceFilter({
         setSelectedTypes(types);
       } else {
         types = [...selectedTypes, value];
-        sendAnalyticsData('Resources Page - Filter Selected', { 'Selected Filter': value });
+        sendAnalyticsData('Resources Page - Filter Selected', {
+          'Selected Filter': value,
+          Source: source
+        });
         setSelectedTypes(types);
       }
       inputChanged(searchQuery, types);
@@ -88,7 +94,11 @@ function ResourceFilter({
           )}`
         )
         .then((res) => {
-          !!query && sendAnalyticsData('Resources Page - Search Made', { 'Search Query': query });
+          !!query &&
+            sendAnalyticsData('Resources Page - Search Made', {
+              'Search Query': query,
+              Source: source
+            });
           setFilteredMaterials(res.data.materials);
           setLoading(false);
         });
@@ -159,7 +169,8 @@ function ResourceFilter({
                 onClick={() =>
                   selectedTypes.indexOf(type) === -1 &&
                   sendAnalyticsData('Resources Page - Filter Selected', {
-                    'Selected Filter': type
+                    'Selected Filter': type,
+                    Source: source
                   })
                 }
                 key={type}
