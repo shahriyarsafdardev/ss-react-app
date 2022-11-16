@@ -50,10 +50,21 @@ function ResourcesTile({
   };
 
   const handleTileOnClick = () => {
-    if (localStorage.getItem('resources_opened_count') === '1') {
+    if (localStorage.getItem('resources_opened_count') === '1' && isPublic) {
       showLimitModal(true);
       return;
     }
+    sendAnalyticsData('Resources Page - Resource Opened', {
+      'Session ID': material?.session_id,
+      'Session Number': sessionData?.session_number,
+      'Session Name': sessionData?.session_name,
+      'Resource ID': material?.id,
+      'Resource Number': material?.index,
+      'Resource Name': material?.name,
+      'Resource Author': material?.info_text,
+      'Resource Link': material?.action_url,
+      Source: source
+    });
     const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
     const isPreReading = material?.category === 'Pre-Reading';
     if (isLocalLink && isPreReading && isPublic) {
@@ -62,7 +73,7 @@ function ResourcesTile({
       });
     } else {
       window.open(material?.action_url, '_blank');
-      localStorage.setItem('resources_opened_count', '1');
+      isPublic && localStorage.setItem('resources_opened_count', '1');
     }
   };
 
@@ -106,21 +117,7 @@ function ResourcesTile({
             direction="row"
             spacing={2}
             sx={{ marginRight: '15px', width: '100%' }}
-            onClick={() => {
-              localStorage.getItem('resources_opened_count') !== '1' &&
-                sendAnalyticsData('Resources Page - Resource Opened', {
-                  'Session ID': material?.session_id,
-                  'Session Number': sessionData?.session_number,
-                  'Session Name': sessionData?.session_name,
-                  'Resource ID': material?.id,
-                  'Resource Number': material?.index,
-                  'Resource Name': material?.name,
-                  'Resource Author': material?.info_text,
-                  'Resource Link': material?.action_url,
-                  Source: source
-                });
-              handleTileOnClick();
-            }}
+            onClick={() => handleTileOnClick()}
           >
             {!isMobile && resourceIcon()}
             <Stack>

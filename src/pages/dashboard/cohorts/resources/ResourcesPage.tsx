@@ -37,8 +37,8 @@ export default function ResourcesPage() {
   };
 
   useEffect(() => {
-    sendAnalyticsData('Resources Page - Page Loaded', { Source: source });
-  }, []);
+    cohort?.id && sendAnalyticsData('Resources Page - Page Loaded', { Source: source });
+  }, [cohort?.id]);
 
   useEffect(() => {
     if (cohort && (!resources || !resources_types)) {
