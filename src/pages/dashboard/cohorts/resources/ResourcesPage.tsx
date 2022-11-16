@@ -8,6 +8,7 @@ import { getCohortResources, getCohortSessionResources } from 'redux/slices/coho
 import { RootState, useDispatch, useSelector } from 'redux/store';
 
 import LoadingScreen from 'components/LoadingScreen';
+import { useLocation } from 'react-router-dom';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
 import { LoadingContainer } from '../code/CodeTab';
@@ -17,6 +18,8 @@ export default function ResourcesPage() {
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
+  const url = new URLSearchParams(useLocation().search);
+  const source = url.get('source') || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -32,6 +35,10 @@ export default function ResourcesPage() {
   const handleShowMore = async (sessionID: string) => {
     dispatch(getCohortSessionResources(cohort_id, sessionID));
   };
+
+  useEffect(() => {
+    cohort?.id && sendAnalyticsData('Resources Page - Page Loaded', { Source: source });
+  }, [cohort?.id]);
 
   useEffect(() => {
     if (cohort && (!resources || !resources_types)) {

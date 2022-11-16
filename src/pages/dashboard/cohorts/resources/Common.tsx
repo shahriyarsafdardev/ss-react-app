@@ -6,8 +6,13 @@ import {
   Tooltip,
   TooltipProps,
   tooltipClasses,
-  Card
+  Card,
+  Stack,
+  Button
 } from '@material-ui/core';
+import { Modal } from 'components/animate';
+import { trackEvent } from 'utils/eventTracking';
+import { useEffect } from 'react';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -162,3 +167,78 @@ export const ResourceDetailBox = styled('div')(({ theme }) => ({
     flexDirection: 'column'
   }
 }));
+
+export const StyledModal = styled(Modal)(({ theme }) => ({
+  width: '35% !important',
+  minWidth: '440px',
+  maxWidth: '530px',
+  margin: 'auto',
+  [theme.breakpoints.down('sm')]: {
+    minWidth: '90% !important'
+  }
+}));
+
+export const ModalCard = styled(Card)(({ theme }) => ({
+  padding: '80px 40px',
+  [theme.breakpoints.down('sm')]: {
+    padding: '80px 10px'
+  }
+}));
+
+export const ReachedLimitModal = ({
+  open,
+  shouldOpen,
+  hostName,
+  cohortRegistrationURL,
+  cohort
+}: {
+  open: boolean;
+  shouldOpen: Function;
+  hostName: string;
+  cohortRegistrationURL: string;
+  cohort: any;
+}) => {
+  useEffect(() => {
+    open && trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Opened');
+  }, [open]);
+
+  const handleViewCourses = () => {
+    trackEvent(cohort, 'Resources Page - Monthly Limit Modal - "View Course Details" Selected');
+    window.open(`${cohortRegistrationURL}?source=Sphere-Outbound-Resources-Page`, '_blank');
+  };
+
+  return (
+    <StyledModal
+      open={open}
+      onClose={() => {
+        trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Closed');
+        shouldOpen(false);
+      }}
+      zIndex={1400}
+    >
+      <ModalCard>
+        <Stack spacing={8}>
+          <Stack spacing={3}>
+            <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
+              You’ve reached your monthly resource limit
+            </Typography>
+            <Typography sx={{ textAlign: 'center' }}>
+              Signup to {hostName}’s course to receive unlimited access
+            </Typography>
+          </Stack>
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: '4px',
+              height: '48px',
+              background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
+            }}
+            onClick={() => handleViewCourses()}
+          >
+            View Course Details
+          </Button>
+        </Stack>
+      </ModalCard>
+    </StyledModal>
+  );
+};

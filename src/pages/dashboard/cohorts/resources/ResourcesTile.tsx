@@ -7,6 +7,8 @@ import { markReadingCompleted } from 'redux/slices/cohort';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useTheme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
+import { ResourceContext } from 'contexts/ResourceContext';
+import { useLocation } from 'react-router-dom';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -35,9 +37,12 @@ function ResourcesTile({
   const [checked, setChecked] = useState(material?.complete);
   const dispatch = useDispatch();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const { showLimitModal } = useContext(ResourceContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { enqueueSnackbar } = useSnackbar();
+  const url = new URLSearchParams(useLocation().search);
+  const source = url.get('source') || '';
 
   const handleToggleRead = () => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
@@ -45,6 +50,21 @@ function ResourcesTile({
   };
 
   const handleTileOnClick = () => {
+    if (localStorage.getItem('resources_opened_count') === '1' && isPublic) {
+      showLimitModal(true);
+      return;
+    }
+    sendAnalyticsData('Resources Page - Resource Opened', {
+      'Session ID': material?.session_id,
+      'Session Number': sessionData?.session_number,
+      'Session Name': sessionData?.session_name,
+      'Resource ID': material?.id,
+      'Resource Number': material?.index,
+      'Resource Name': material?.name,
+      'Resource Author': material?.info_text,
+      'Resource Link': material?.action_url,
+      Source: source
+    });
     const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
     const isPreReading = material?.category === 'Pre-Reading';
     if (isLocalLink && isPreReading && isPublic) {
@@ -53,6 +73,7 @@ function ResourcesTile({
       });
     } else {
       window.open(material?.action_url, '_blank');
+      isPublic && localStorage.setItem('resources_opened_count', '1');
     }
   };
 
@@ -96,19 +117,7 @@ function ResourcesTile({
             direction="row"
             spacing={2}
             sx={{ marginRight: '15px', width: '100%' }}
-            onClick={() => {
-              sendAnalyticsData('Resources Page - Resource Opened', {
-                'Session ID': material?.session_id,
-                'Session Number': sessionData?.session_number,
-                'Session Name': sessionData?.session_name,
-                'Resource ID': material?.id,
-                'Resource Number': material?.index,
-                'Resource Name': material?.name,
-                'Resource Author': material?.info_text,
-                'Resource Link': material?.action_url
-              });
-              handleTileOnClick();
-            }}
+            onClick={() => handleTileOnClick()}
           >
             {!isMobile && resourceIcon()}
             <Stack>
