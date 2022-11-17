@@ -103,7 +103,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         } else if (section === 'onboarding-calendar-instructions') {
           setCurrentTab('Calendar');
         } else if (section === 'referrals') {
-          setCurrentTab('Referrals');
+          setCurrentTab('Balance');
         } else {
           setCurrentTab(section);
         }

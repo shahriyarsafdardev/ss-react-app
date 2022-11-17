@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
-import { styled, Theme, Box } from '@material-ui/core';
+import { styled, Theme, Box, Tabs, Tab } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 export const useStyles = makeStyles((theme: Theme) => ({
@@ -19,7 +19,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     color: '#071A33',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    marginTop: '2rem !important'
+    marginTop: '2rem !important',
+    boxShadow: 'none'
   },
   font22Bold: {
     fontSize: '22px',
@@ -34,8 +35,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '40px',
     fontWeight: 'bold'
   },
-  font18: {
+  font18Bold: {
     fontSize: '18px',
+    lineHeight: '24px',
+    fontWeight: 'bold'
+  },
+  font20Bold: {
+    fontSize: '20px',
     lineHeight: '24px',
     fontWeight: 'bold'
   },
@@ -77,4 +83,81 @@ export const StyledDiv = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   borderRadius: '8px'
+}));
+
+export const VerticalLine = styled(Box)(({ theme }) => ({
+  // borderLeft: '1px',
+  // height: '70%',
+  // width: '1px'
+}));
+
+export const ReferralTab = styled(Tab)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  justifyContent: 'space-around',
+  marginRight: 0,
+  width: '20%',
+  '.MuiButtonBase-root .Mui-selected': {
+    fontWeight: '700'
+  }
+}));
+
+export const ReferralTabs = styled(Tabs)(({ theme }) => ({
+  width: '100%',
+  margin: '2rem 0',
+  backgroundColor: '#F4F6F8',
+  borderTopLeftRadius: '10px',
+  borderTopRightRadius: '10px',
+  justifyContent: 'center',
+  overflow: 'unset !important',
+  [theme.breakpoints.down('sm')]: {
+    button: {
+      width: '30%',
+      minWidth: 60,
+      fontSize: 12
+    },
+    '.MuiTabs-flexContainer': {
+      justifyContent: 'center'
+    }
+  },
+  [theme.breakpoints.between(900, 1000)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(1200, 1300)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  [theme.breakpoints.between(600, 700)]: {
+    justifyContent: 'space-evenly',
+    paddingLeft: '10px',
+    button: {
+      width: '18%',
+      minWidth: 30,
+      fontSize: 15
+    }
+  },
+  '.MuiTabs-flexContainer': {
+    justifyContent: 'space-evenly'
+  },
+  button: {
+    justifyContent: 'center',
+    '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
+      paddingTop: '15px',
+      marginRight: '0 !important'
+    },
+    color: theme.palette.text.secondary,
+    '&.Mui-selected': {
+      color: theme.palette.primary.main
+    }
+  }
 }));

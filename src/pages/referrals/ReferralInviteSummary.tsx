@@ -20,7 +20,8 @@ export default function ReferralInviteSummary() {
               style={{ background: 'linear-gradient(135deg, #5BE584 0%, #007B55 100%)' }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18}>7</span> referrees have enrolled in a Sphere course
+              <span className={classes.font18Bold}>7</span> referrees have enrolled in a Sphere
+              course
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
@@ -31,14 +32,14 @@ export default function ReferralInviteSummary() {
               }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18}>5</span> referrals sent
+              <span className={classes.font18Bold}>5</span> referrals sent
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv style={{ background: '#EDEFF2' }} />
             <Typography className={classes.font16}>
-              <span className={classes.font18}>7</span> enrolled referrees = $700 = enough to cover
-              a free Sphere course!
+              <span className={classes.font18Bold}>7</span> enrolled referrees = $700 = enough to
+              cover a free Sphere course!
             </Typography>
           </Stack>
         </Stack>
