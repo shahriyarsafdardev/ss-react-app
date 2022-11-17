@@ -100,8 +100,12 @@ export default function AccountSubscription() {
         setCancelSubscriptionModal={setCancelSubscriptionModal}
         accountDetails={accountDetails}
       />
-      <PaymentDetails setPaymentMethodModal={setPaymentMethodModal} />
-      <PaymentHistory transactions={accountDetails?.history || []} />
+      {accountDetails?.subscription?.is_active && (
+        <>
+          <PaymentDetails setPaymentMethodModal={setPaymentMethodModal} />
+          <PaymentHistory transactions={accountDetails?.history || []} />
+        </>
+      )}
     </>
   );
 }

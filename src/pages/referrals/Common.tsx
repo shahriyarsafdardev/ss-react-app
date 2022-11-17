@@ -95,7 +95,7 @@ export const VerticalLine = styled(Box)(({ theme }) => ({
   }
 }));
 
-export const ReferralTab = styled(Tab)(({ theme }) => ({
+export const NavbarTab = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.secondary,
   justifyContent: 'space-around',
   marginRight: 0,
@@ -105,7 +105,7 @@ export const ReferralTab = styled(Tab)(({ theme }) => ({
   }
 }));
 
-export const ReferralTabs = styled(Tabs)(({ theme }) => ({
+export const TabsNavBar = styled(Tabs)(({ theme }) => ({
   width: '100%',
   margin: '2rem 0',
   backgroundColor: '#F4F6F8',
@@ -165,3 +165,33 @@ export const ReferralTabs = styled(Tabs)(({ theme }) => ({
     }
   }
 }));
+
+export const getColor = (status: String) => {
+  switch (status.toLocaleLowerCase()) {
+    case 'credit received':
+      return '#229A16';
+    case 'enrolled':
+      return '#B78103';
+    case 'invited':
+      return '#637381';
+    case 'redeemed':
+      return '#0C53B7';
+    default:
+      return '#000';
+  }
+};
+
+export const getBackgroundColor = (status: String) => {
+  switch (status.toLocaleLowerCase()) {
+    case 'credit received':
+      return 'rgba(84, 214, 44, 0.16)';
+    case 'enrolled':
+      return 'rgba(255, 193, 7, 0.16)';
+    case 'invited':
+      return 'rgba(145, 158, 171, 0.16)';
+    case 'redeemed':
+      return 'rgba(24, 144, 255, 0.16)';
+    default:
+      return '#fff';
+  }
+};

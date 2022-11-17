@@ -1,6 +1,7 @@
 export type ReferralHistory = {
   date: Date;
   description: string;
+  status: string;
 };
 
 export type ReferralCount = {

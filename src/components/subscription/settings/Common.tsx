@@ -1,6 +1,7 @@
 import { Stack, styled, Typography, Theme, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
+import moment from 'moment';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   backgroundColor: '#F6F7F8',
@@ -95,9 +96,71 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '8px'
   },
   subscriptionDetail: {
-    width: '60%',
+    width: '90%',
     [theme.breakpoints.down('md')]: {
       width: '100%'
     }
   }
 }));
+
+export const ActiveSubscriptionDetails = ({
+  subscription,
+  accountDetails,
+  setAddCreditModal,
+  setCancelSubscriptionModal
+}: {
+  subscription: any;
+  accountDetails: any;
+  setAddCreditModal: Function;
+  setCancelSubscriptionModal: Function;
+}) => {
+  const account = accountDetails?.account;
+  const renewalDate = moment(new Date(subscription?.next_billing_date)).format('ll').toString();
+  return (
+    <>
+      <Stack spacing={5}>
+        <StyledHeading>Sphere Subscription</StyledHeading>
+        <StyledText>
+          You are on a <b>Yearly Plan</b> for ${subscription?.yearly_credit_amount} of Sphere
+          courses on a {Math.floor(accountDetails?.team_discount * 100)}% discount. You currently
+          have <b>${account?.credit_balance || 0}</b> remaining for use. Your next charge will be on{' '}
+          {renewalDate} for ${subscription?.yearly_credit_amount}
+        </StyledText>
+      </Stack>
+      <Stack direction="row" spacing={2}>
+        <StyledLink
+          onClick={() => {
+            setAddCreditModal(true);
+          }}
+        >
+          Top up
+        </StyledLink>
+        <StyledLink onClick={() => setCancelSubscriptionModal(true)}>
+          Cancel Subscription
+        </StyledLink>
+      </Stack>
+    </>
+  );
+};
+
+export const NonActiveSubscriptionDetails = () => (
+  <>
+    <Stack spacing={1}>
+      <StyledHeading>Sphere Subscription</StyledHeading>
+      <StyledText>You currently do not have a Sphere Subscription.</StyledText>
+    </Stack>
+    <Typography>
+      Buying annual subscriptions upfront gives your team and organization discounts on our course
+      library.
+    </Typography>
+    <Typography>
+      To learn more and/or start a subscription, please visit our{' '}
+      <StyledLink
+        sx={{ display: 'inline' }}
+        onClick={() => window.open('https://www.getsphere.com/pricing', '_blank')}
+      >
+        Pricing page.
+      </StyledLink>
+    </Typography>
+  </>
+);

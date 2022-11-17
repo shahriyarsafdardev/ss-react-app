@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import { Container } from '@material-ui/core';
+import AccountSubscription from 'components/subscription/settings/AccountSubscription';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import ReferralHeader from './ReferralHeader';
-import { ReferralTabs, ReferralTab } from './Common';
 import ReferralsTab from './ReferralsTab';
+import BalanceHistoryTab from './BalanceHistoryTab';
+import ReferralsPageNavbar from './ReferralsPageNavbar';
 
 export default function ReferralsPage() {
-  const [currentTab, setCurrentTab] = useState(0);
   const { themeStretch } = useSettings();
+  const [activeTab, setActiveTab] = useState(0);
+
+  const showTab = () => {
+    if (activeTab === 1) {
+      return <AccountSubscription />;
+    }
+    if (activeTab === 2) {
+      return <BalanceHistoryTab />;
+    }
+    return <ReferralsTab />;
+  };
 
   return (
     <Page title="Sphere Referrals">
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
         <ReferralHeader />
-        <ReferralTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
-          <ReferralTab label="Referrals" />
-          <ReferralTab label="Subscription" />
-          <ReferralTab label="Balance History" />
-        </ReferralTabs>
-
-        <ReferralsTab />
+        <ReferralsPageNavbar setActiveTab={setActiveTab} />
+        {showTab()}
       </Container>
     </Page>
   );

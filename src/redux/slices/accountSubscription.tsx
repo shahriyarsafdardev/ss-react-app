@@ -17,7 +17,7 @@ const initialState: { subscription_detail: SubscriptionDetail } = {
       id: '',
       start_date: '',
       next_billing_date: '',
-      active: false,
+      is_active: false,
       yearly_credit_amount: 0
     },
     team_discount: 0
