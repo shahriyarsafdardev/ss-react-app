@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from '@material-ui/core';
 import AccountSubscription from 'components/subscription/settings/AccountSubscription';
+import useAuth from 'hooks/useAuth';
+import { getAccountDetails, getReferralsCount } from 'redux/slices/referral';
+import { useDispatch } from 'redux/store';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import ReferralHeader from './ReferralHeader';
@@ -10,7 +13,14 @@ import ReferralsPageNavbar from './ReferralsPageNavbar';
 
 export default function ReferralsPage() {
   const { themeStretch } = useSettings();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    dispatch(getAccountDetails(user?.credit_account_id));
+    dispatch(getReferralsCount());
+  }, []);
 
   const showTab = () => {
     if (activeTab === 1) {

@@ -117,29 +117,58 @@ export default function AccountPopover() {
 
         <Divider sx={{ my: 1 }} />
 
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem
-            data-testid="user-setting"
-            key={option.label}
-            id="user-settings"
-            to={option.linkTo}
-            component={RouterLink}
-            onClick={handleClose}
-            sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          >
-            <Box
-              component={Icon}
-              icon={option.icon}
-              sx={{
-                mr: 2,
-                width: 24,
-                height: 24
-              }}
-            />
+        {MENU_OPTIONS.map((option) => {
+          if (option.label === 'Referrals') {
+            return (
+              user?.type === 'learner' && (
+                <MenuItem
+                  data-testid="user-setting"
+                  key={option.label}
+                  id="user-settings"
+                  to={option.linkTo}
+                  component={RouterLink}
+                  onClick={handleClose}
+                  sx={{ typography: 'body2', py: 1, px: 2.5 }}
+                >
+                  <Box
+                    component={Icon}
+                    icon={option.icon}
+                    sx={{
+                      mr: 2,
+                      width: 24,
+                      height: 24
+                    }}
+                  />
 
-            {option.label}
-          </MenuItem>
-        ))}
+                  {option.label}
+                </MenuItem>
+              )
+            );
+          }
+          return (
+            <MenuItem
+              data-testid="user-setting"
+              key={option.label}
+              id="user-settings"
+              to={option.linkTo}
+              component={RouterLink}
+              onClick={handleClose}
+              sx={{ typography: 'body2', py: 1, px: 2.5 }}
+            >
+              <Box
+                component={Icon}
+                icon={option.icon}
+                sx={{
+                  mr: 2,
+                  width: 24,
+                  height: 24
+                }}
+              />
+
+              {option.label}
+            </MenuItem>
+          );
+        })}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>

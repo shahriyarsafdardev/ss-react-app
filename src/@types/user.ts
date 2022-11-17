@@ -165,4 +165,5 @@ export type ParticipantProfile = {
   networking_matching_preferences: string[];
   basic_profile_completed: boolean;
   networking_profile_completed: boolean;
+  credit_account_id: string;
 };

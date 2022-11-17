@@ -1,8 +1,11 @@
 import { Card, Typography, Stack, Button } from '@material-ui/core';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles, VerticalLine } from './Common';
 
 export default function CurrentCreditAmount() {
+  const { credit_balance } = useSelector((state: RootState) => state.referral.referral);
   const classes = useStyles();
+
   return (
     <Card
       sx={{
@@ -25,7 +28,7 @@ export default function CurrentCreditAmount() {
           </Typography>
           <Stack direction="row" alignItems="baseline" spacing={1}>
             <Typography className={classes.greyBGHeading40} sx={{ mt: '15px' }}>
-              $300
+              ${credit_balance}
             </Typography>
             <Typography className={classes.font20Bold} sx={{ mt: '15px' }}>
               USD

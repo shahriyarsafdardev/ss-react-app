@@ -1,9 +1,11 @@
 import { Card, Typography, Stack } from '@material-ui/core';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles, StyledDiv } from './Common';
 import ReferralProgress from './ReferralProgress';
 
 export default function ReferralInviteSummary() {
   const classes = useStyles();
+  const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
 
   return (
     <Card className={classes.greyBackground} sx={{ width: '100%', padding: '40px 50px' }}>
@@ -13,7 +15,11 @@ export default function ReferralInviteSummary() {
         </Stack>
         <Stack>
           <Typography className={classes.font22Bold} sx={{ marginTop: { xs: '2rem', md: '15px' } }}>
-            You're only 4 accepted referrals away from earning a free course
+            You're only{' '}
+            {7 - referrals_count?.enrolled_referrals_count < 0
+              ? 0
+              : 7 - referrals_count?.enrolled_referrals_count}{' '}
+            accepted referrals away from earning a free course
           </Typography>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv
@@ -23,7 +29,10 @@ export default function ReferralInviteSummary() {
               }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>2</span> sent referrals are awaiting acceptance
+              <span className={classes.font18Bold}>
+                {referrals_count?.total_referrals_count - referrals_count?.enrolled_referrals_count}
+              </span>{' '}
+              sent referrals are awaiting acceptance
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
@@ -31,8 +40,10 @@ export default function ReferralInviteSummary() {
               style={{ background: 'linear-gradient(135deg, #5BE584 0%, #007B55 100%)' }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>3</span> referrees have enrolled in a Sphere
-              course
+              <span className={classes.font18Bold}>
+                {referrals_count?.enrolled_referrals_count}
+              </span>{' '}
+              referees have enrolled in a Sphere course
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
