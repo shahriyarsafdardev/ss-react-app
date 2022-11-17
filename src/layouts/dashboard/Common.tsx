@@ -7,6 +7,7 @@ import { uniq } from 'lodash';
 import { trackEvent } from 'utils/eventTracking';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
+import ReferralChart from './ReferralChart';
 
 export const seasonOrder: { [index: string]: number } = {
   winter: 4,
@@ -144,30 +145,27 @@ export const ShareReferralLink = ({
 
   return (
     <>
-      <Typography variant="h5" align="center" color="primary">
-        Invite your colleagues
+      <Typography
+        variant="h5"
+        align="center"
+        color="primary"
+        sx={{ width: '50%', textAlign: 'center', margin: 'auto !important', color: '#212B36' }}
+      >
+        Give $100, Get $100
       </Typography>
+      <ReferralChart enrolled={5} referralsSent={2} requiredReferrees={7} />
       <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
-        learning is more enjoyable with friends
+        You've earned <b>$300</b> to use towards Sphere courses
       </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
           variant="contained"
-          style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
+          style={{ width: '-webkit-fill-available', borderRadius: '30px', height: '40px' }}
           onClick={() => {
             handleSendViaEmail();
           }}
         >
-          Share My Link
-        </Button>
-        <Button
-          variant="outlined"
-          style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
-          onClick={() => {
-            handleCopyReferralLink();
-          }}
-        >
-          Copy My Link
+          Send more referrals
         </Button>
       </Box>
       <ReferralEmailModal
