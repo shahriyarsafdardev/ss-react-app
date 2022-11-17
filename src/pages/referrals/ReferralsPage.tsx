@@ -26,7 +26,7 @@ export default function ReferralsPage() {
     <Page title="Sphere Referrals">
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
         <ReferralHeader />
-        <ReferralsPageNavbar setActiveTab={setActiveTab} />
+        <ReferralsPageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
         {showTab()}
       </Container>
     </Page>
