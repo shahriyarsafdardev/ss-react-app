@@ -1,9 +1,7 @@
-import { Card, Typography, Box } from '@material-ui/core';
-import { useStyles } from './Common';
+import { Typography, Box } from '@material-ui/core';
+import ReferralQuestion from './ReferralQuestion';
 
 export default function ReferralFAQs() {
-  const classes = useStyles();
-
   const questions = [
     {
       question: 'How do I use the credit?',
@@ -48,14 +46,14 @@ export default function ReferralFAQs() {
   ];
 
   return (
-    <Card className={classes.greyBackground} sx={{ padding: '52px 48px' }}>
-      <Typography className={classes.greyBGHeading40}>FAQs</Typography>
+    <Box sx={{ mt: '3rem' }}>
+      <Typography variant="h3" sx={{ color: '#071A33' }}>
+        Referrals FAQ
+      </Typography>
+
       {questions.map((question, index) => (
-        <Box key={index}>
-          <Typography className={classes.font16Bold}>{question.question}</Typography>
-          <Typography className={classes.font16}>{question.answer}</Typography>
-        </Box>
+        <ReferralQuestion key={index} questionData={question} />
       ))}
-    </Card>
+    </Box>
   );
 }

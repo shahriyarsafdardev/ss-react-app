@@ -5,16 +5,16 @@ import { BaseOptionChart } from '../../components/charts';
 export default function ReferralProgress({
   enrolled,
   referralsSent,
-  enrolledReferrees
+  requiredReferrees
 }: {
   enrolled: number;
   referralsSent: number;
-  enrolledReferrees: number;
+  requiredReferrees: number;
 }) {
-  const CHART_DATA = [enrolled, referralsSent, enrolledReferrees];
+  const CHART_DATA = [enrolled, referralsSent, requiredReferrees];
   const chartOptions = merge(BaseOptionChart(), {
     legend: { show: false },
-    labels: ['Enrolled', 'Referrals sent', 'Enrolled referrees'],
+    labels: ['Enrolled', 'Referrals sent', 'Required referrees'],
     colors: ['#637381', '#637381', '#637381'],
     plotOptions: {
       pie: {
@@ -32,7 +32,7 @@ export default function ReferralProgress({
               color: '#637381',
               fontWeight: '600',
               fontSize: '16px',
-              formatter: () => 'Your Referral Progress'
+              formatter: () => `${enrolled} Referrals Accepted`
             },
             total: {
               show: true,
@@ -79,5 +79,13 @@ export default function ReferralProgress({
     ]
   });
 
-  return <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} width={280} />;
+  return (
+    <ReactApexChart
+      type="donut"
+      series={CHART_DATA}
+      options={chartOptions}
+      width={280}
+      style={{ margin: 'auto' }}
+    />
+  );
 }

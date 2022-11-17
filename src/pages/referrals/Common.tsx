@@ -3,13 +3,14 @@ import { styled, Theme, Box, Tabs, Tab } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  purpleBackground: {
+  purpleContainer: {
     background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white',
     padding: '67px 100px',
     textAlign: 'center',
+    marginTop: '2rem',
     [theme.breakpoints.down('md')]: {
       padding: '50px 30px'
     }
@@ -20,7 +21,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     marginTop: '2rem !important',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    border: 'solid 1px rgba(145, 158, 171, 0.5)'
   },
   font22Bold: {
     fontSize: '22px',
@@ -58,8 +60,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   formCard: {
     color: '#071A33',
-    marginTop: '2rem',
-    padding: '50px',
+    marginTop: '3rem',
+    padding: '40px',
     textAlign: 'center',
     border: 'solid 1px rgba(145, 158, 171, 0.5)'
   }
@@ -86,9 +88,11 @@ export const StyledDiv = styled(Box)(({ theme }) => ({
 }));
 
 export const VerticalLine = styled(Box)(({ theme }) => ({
-  // borderLeft: '1px',
-  // height: '70%',
-  // width: '1px'
+  borderLeft: '2px solid #CBD5E1',
+  height: '100px !important',
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
 }));
 
 export const ReferralTab = styled(Tab)(({ theme }) => ({

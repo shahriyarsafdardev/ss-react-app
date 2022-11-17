@@ -37,17 +37,9 @@ export default function SendReferralInviteForm() {
 
   return (
     <Card className={classes.formCard}>
-      <Typography className={classes.font22Bold}>
-        Send more referrals to give and receive more rewards 🎁
-      </Typography>
       <FormikProvider value={formik}>
         <Form>
-          <Stack
-            alignItems="center"
-            direction={{ xs: 'column', md: 'row' }}
-            sx={{ mt: '2rem' }}
-            spacing={2}
-          >
+          <Stack alignItems="center" direction={{ xs: 'column', md: 'row' }} spacing={2}>
             <TextField
               label="Team Lead Email"
               fullWidth
@@ -67,7 +59,7 @@ export default function SendReferralInviteForm() {
                 setIsFormSubmit(true);
               }}
             >
-              Send Invite
+              Send referral
             </StyledLoadingButton>
           </Stack>
         </Form>

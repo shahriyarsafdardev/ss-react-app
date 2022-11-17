@@ -9,21 +9,12 @@ export default function ReferralInviteSummary() {
     <Card className={classes.greyBackground} sx={{ width: '100%', padding: '40px 50px' }}>
       <Stack direction={{ xs: 'column', md: 'row' }}>
         <Stack style={{ marginLeft: '-30px' }}>
-          <ReferralProgress enrolled={3} referralsSent={5} enrolledReferrees={7} />
+          <ReferralProgress enrolled={3} referralsSent={2} requiredReferrees={7} />
         </Stack>
         <Stack>
-          <Typography className={classes.font22Bold}>
-            You're only 4 accepted referrals away from earning a free course 🎉
+          <Typography className={classes.font22Bold} sx={{ marginTop: { xs: '2rem', md: '15px' } }}>
+            You're only 4 accepted referrals away from earning a free course
           </Typography>
-          <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
-            <StyledDiv
-              style={{ background: 'linear-gradient(135deg, #5BE584 0%, #007B55 100%)' }}
-            />
-            <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>7</span> referrees have enrolled in a Sphere
-              course
-            </Typography>
-          </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv
               style={{
@@ -32,7 +23,16 @@ export default function ReferralInviteSummary() {
               }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>5</span> referrals sent
+              <span className={classes.font18Bold}>2</span> sent referrals are awaiting acceptance
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
+            <StyledDiv
+              style={{ background: 'linear-gradient(135deg, #5BE584 0%, #007B55 100%)' }}
+            />
+            <Typography className={classes.font16}>
+              <span className={classes.font18Bold}>3</span> referrees have enrolled in a Sphere
+              course
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>

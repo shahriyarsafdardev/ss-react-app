@@ -7,9 +7,9 @@ export default function ReferralHeader() {
 
   return (
     <Card className={classes.greyBackground} sx={{ padding: '20px' }}>
-      <Stack direction="row" alignItems="center">
+      <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center">
         <CurrentCreditAmount />
-        <Stack spacing={2} sx={{ marginLeft: '10%' }}>
+        <Stack spacing={2} sx={{ margin: 'auto', mt: { xs: '30px', md: 'auto' } }}>
           <Typography className={classes.font18Bold}>Increase your balance</Typography>
           <ul style={{ textDecoration: 'underline' }}>
             <li>
@@ -21,15 +21,6 @@ export default function ReferralHeader() {
           </ul>
         </Stack>
       </Stack>
-      {/* <Typography variant="h3" sx={{ fontSize: '32px', mb: '20px' }}>
-        Give $100, Get $100
-      </Typography>
-      <Typography sx={{ mb: '5px' }}>
-        Invite a friend or colleague to Sphere and they will receive $100 to use towards a course.
-      </Typography>
-      <Typography>
-        Once they have enrolled, you will also receive $100 credit to use towards Sphere courses.
-      </Typography> */}
     </Card>
   );
 }

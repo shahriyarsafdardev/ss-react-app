@@ -7,14 +7,22 @@ export default function CurrentCreditAmount() {
     <Card
       sx={{
         textAlign: 'center',
-        width: '60%',
+        width: { xs: '100%', md: '60%' },
         minWidth: '60%',
-        padding: '60px 55px'
+        padding: '60px 55px',
+        boxShadow: 'none',
+        border: 'solid 1px rgba(145, 158, 171, 0.5)'
       }}
     >
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Stack textAlign="center" sx={{ color: '#071A33' }}>
-          <Typography className={classes.font22Bold}>Current balance:</Typography>
+          <Typography sx={{ textAlign: 'center' }} className={classes.font22Bold}>
+            Current balance:
+          </Typography>
           <Stack direction="row" alignItems="baseline" spacing={1}>
             <Typography className={classes.greyBGHeading40} sx={{ mt: '15px' }}>
               $300
@@ -26,7 +34,13 @@ export default function CurrentCreditAmount() {
         </Stack>
         <VerticalLine />
         <Button
-          sx={{ height: '40px', width: '200px', border: '3px solid #12125C', borderRadius: '30px' }}
+          sx={{
+            height: '40px',
+            width: '200px',
+            border: '2px solid #12125C',
+            borderRadius: '30px',
+            mt: { xs: '15px', md: 0 }
+          }}
           variant="outlined"
         >
           Use my balance
