@@ -1,6 +1,7 @@
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext, useState } from 'react';
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
 import axios from 'utils/axios';
 import { useDispatch } from 'redux/store';
 import { updateSubscription } from 'redux/slices/accountSubscription';
@@ -23,6 +24,7 @@ export default function AddCreditsForm({
   const subscription = accountDetails?.subscription;
   const account = accountDetails?.account;
   const dispatch = useDispatch();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const currentDate = () => `${new Date().toDateString()}`;
 
@@ -34,6 +36,11 @@ export default function AddCreditsForm({
       })
       .then((response) => {
         dispatch(updateSubscription(response.data));
+        sendAnalyticsData('Balance Page - Subscription Tab - Top Up Modal - Credits added', {
+          'Credit Amount Before': account?.credit_balance || 0,
+          'Credit Amount Added': credit,
+          'Credit Amount After': response?.data?.account?.credit_balance
+        });
         enqueueSnackbar('Credits Added to your account!', { variant: 'success' });
         setIsSubmitting(false);
       })

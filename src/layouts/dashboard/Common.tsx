@@ -135,6 +135,14 @@ export const ShareReferralLink = ({
     }
   };
 
+  const buttonText = () =>
+    referrals_count?.total_referrals_count === 0 ? 'Go to Referrals' : 'Send more referrals';
+
+  const handleButtonClick = () => {
+    trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
+    handleSendViaEmail();
+  };
+
   return (
     <>
       <Typography
@@ -164,11 +172,9 @@ export const ShareReferralLink = ({
         <Button
           variant="contained"
           style={{ width: '-webkit-fill-available', borderRadius: '30px', height: '40px' }}
-          onClick={() => {
-            handleSendViaEmail();
-          }}
+          onClick={() => handleButtonClick()}
         >
-          Send more referrals
+          {buttonText()}
         </Button>
       </Box>
       <ReferralEmailModal

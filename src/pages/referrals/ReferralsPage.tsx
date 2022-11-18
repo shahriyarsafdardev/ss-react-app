@@ -3,7 +3,9 @@ import { Container } from '@material-ui/core';
 import AccountSubscription from 'components/subscription/settings/AccountSubscription';
 import useAuth from 'hooks/useAuth';
 import { getAccountDetails, getReferralsCount } from 'redux/slices/referral';
-import { useDispatch } from 'redux/store';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';
 import ReferralHeader from './ReferralHeader';
@@ -16,11 +18,20 @@ export default function ReferralsPage() {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
+
+  useEffect(() => {
+    cohort && sendAnalyticsData('Balance Page - Page loaded');
+  }, [cohort]);
 
   useEffect(() => {
     dispatch(getAccountDetails(user?.credit_account_id));
     dispatch(getReferralsCount());
   }, []);
+
+  const sendAnalyticsData = (eventName: string, eventProperties?: {}) => {
+    trackEvent(cohort, eventName, eventProperties);
+  };
 
   const showTab = () => {
     if (activeTab === 1) {
@@ -34,11 +45,13 @@ export default function ReferralsPage() {
 
   return (
     <Page title="Sphere Referrals">
-      <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
-        <ReferralHeader setActiveTab={setActiveTab} />
-        <ReferralsPageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
-        {showTab()}
-      </Container>
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
+          <ReferralHeader setActiveTab={setActiveTab} />
+          <ReferralsPageNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
+          {showTab()}
+        </Container>
+      </AnalyticsContext.Provider>
     </Page>
   );
 }

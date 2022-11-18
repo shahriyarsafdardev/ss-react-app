@@ -1,4 +1,6 @@
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack } from '@material-ui/core';
+import { useContext } from 'react';
 import {
   ActiveSubscriptionDetails,
   NonActiveSubscriptionDetails,
@@ -16,6 +18,7 @@ export default function SubscriptionDetails({
   accountDetails: any;
 }) {
   const classes = useStyles();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const subscription = accountDetails?.subscription;
 
@@ -29,9 +32,10 @@ export default function SubscriptionDetails({
               accountDetails={accountDetails}
               setAddCreditModal={setAddCreditModal}
               setCancelSubscriptionModal={setCancelSubscriptionModal}
+              sendAnalyticsData={sendAnalyticsData}
             />
           ) : (
-            <NonActiveSubscriptionDetails />
+            <NonActiveSubscriptionDetails sendAnalyticsData={sendAnalyticsData} />
           )}
         </Stack>
       </StyledStack>

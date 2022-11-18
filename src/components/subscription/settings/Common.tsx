@@ -107,15 +107,27 @@ export const ActiveSubscriptionDetails = ({
   subscription,
   accountDetails,
   setAddCreditModal,
-  setCancelSubscriptionModal
+  setCancelSubscriptionModal,
+  sendAnalyticsData
 }: {
   subscription: any;
   accountDetails: any;
   setAddCreditModal: Function;
   setCancelSubscriptionModal: Function;
+  sendAnalyticsData: Function;
 }) => {
   const account = accountDetails?.account;
   const renewalDate = moment(new Date(subscription?.next_billing_date)).format('ll').toString();
+
+  const handleTopUp = () => {
+    sendAnalyticsData('Balance Page - Subscription Tab - "Top up" link opened');
+    setAddCreditModal(true);
+  };
+
+  const handleCancelSubscription = () => {
+    sendAnalyticsData('Balance Page - Subscription Tab - "Cancel subscription" link opened');
+    setCancelSubscriptionModal(true);
+  };
   return (
     <>
       <Stack spacing={5}>
@@ -128,39 +140,38 @@ export const ActiveSubscriptionDetails = ({
         </StyledText>
       </Stack>
       <Stack direction="row" spacing={2}>
-        <StyledLink
-          onClick={() => {
-            setAddCreditModal(true);
-          }}
-        >
-          Top up
-        </StyledLink>
-        <StyledLink onClick={() => setCancelSubscriptionModal(true)}>
-          Cancel Subscription
-        </StyledLink>
+        <StyledLink onClick={() => handleTopUp()}>Top up</StyledLink>
+        <StyledLink onClick={() => handleCancelSubscription()}>Cancel Subscription</StyledLink>
       </Stack>
     </>
   );
 };
 
-export const NonActiveSubscriptionDetails = () => (
-  <>
-    <Stack spacing={1}>
-      <StyledHeading>Sphere Subscription</StyledHeading>
-      <StyledText>You currently do not have a Sphere Subscription.</StyledText>
-    </Stack>
-    <StyledText>
-      Buying annual subscriptions upfront gives your team and organization discounts on our course
-      library.
-    </StyledText>
-    <StyledText>
-      To learn more and/or start a subscription, please visit our{' '}
-      <StyledLink
-        sx={{ display: 'inline' }}
-        onClick={() => window.open('https://www.getsphere.com/pricing', '_blank')}
-      >
-        Pricing page.
-      </StyledLink>
-    </StyledText>
-  </>
-);
+export const NonActiveSubscriptionDetails = ({
+  sendAnalyticsData
+}: {
+  sendAnalyticsData: Function;
+}) => {
+  const handleOpenPricing = () => {
+    sendAnalyticsData('Balance Page - Subscription Tab - "Pricing page" link opened');
+    window.open('https://www.getsphere.com/pricing', '_blank');
+  };
+  return (
+    <>
+      <Stack spacing={1}>
+        <StyledHeading>Sphere Subscription</StyledHeading>
+        <StyledText>You currently do not have a Sphere Subscription.</StyledText>
+      </Stack>
+      <StyledText>
+        Buying annual subscriptions upfront gives your team and organization discounts on our course
+        library.
+      </StyledText>
+      <StyledText>
+        To learn more and/or start a subscription, please visit our{' '}
+        <StyledLink sx={{ display: 'inline' }} onClick={() => handleOpenPricing()}>
+          Pricing page.
+        </StyledLink>
+      </StyledText>
+    </>
+  );
+};

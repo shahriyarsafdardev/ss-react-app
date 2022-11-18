@@ -1,6 +1,7 @@
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext, useState } from 'react';
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
 import axios from 'utils/axios';
 import { updateSubscription } from 'redux/slices/accountSubscription';
 import { useDispatch } from 'redux/store';
@@ -24,6 +25,7 @@ export default function UpdateSubscriptionForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const currentDate = () => `${new Date().toDateString()}`;
 
@@ -34,7 +36,21 @@ export default function UpdateSubscriptionForm({
         amount: credit
       })
       .then((response) => {
+        const eventName =
+          response?.data?.subscription.yearly_credit_amount >
+          (subscription?.yearly_credit_amount || 0)
+            ? 'increased'
+            : 'decreased';
         dispatch(updateSubscription(response.data));
+        sendAnalyticsData(
+          `Balance Page - Subscription Tab - Edit Subscription Modal - Subscription ${eventName}`,
+          {
+            'Subscription Amount Before': subscription?.yearly_credit_amount || 0,
+            'Subscription Amount Added': credit,
+            'Subscription Amount After':
+              subscription?.yearly_credit_amount && subscription?.yearly_credit_amount + credit
+          }
+        );
         enqueueSnackbar('Subscription plan updated!', { variant: 'success' });
         setIsSubmitting(false);
         setModal(false);

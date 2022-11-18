@@ -1,3 +1,5 @@
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext, useEffect } from 'react';
 import {
   Box,
   Stack,
@@ -10,7 +12,6 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import UserListHead from 'components/_dashboard/user/list/UserListHead';
-import { useEffect } from 'react';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { getReferralsDetails } from 'redux/slices/referral';
 import useAuth from 'hooks/useAuth';
@@ -49,8 +50,10 @@ export default function BalanceHistoryTab() {
   const dispatch = useDispatch();
   const { user } = useAuth();
   const { referrals_details } = useSelector((state: RootState) => state.referral.referral);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
+    sendAnalyticsData('Balance Page - Balance History Tab - Tab opened');
     dispatch(getReferralsDetails(user?.credit_account_id));
   }, []);
 

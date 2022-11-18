@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Modal } from 'components/animate';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { initializeSubscription } from 'redux/slices/accountSubscription';
@@ -20,8 +21,10 @@ export default function AccountSubscription() {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
+    sendAnalyticsData('Balance Page - Subscription Tab - Tab opened');
     dispatch(initializeSubscription());
   }, []);
 

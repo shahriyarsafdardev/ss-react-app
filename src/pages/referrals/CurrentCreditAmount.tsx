@@ -1,10 +1,18 @@
 import { Card, Typography, Stack, Button } from '@material-ui/core';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { useStyles, VerticalLine } from './Common';
 
 export default function CurrentCreditAmount() {
   const { credit_balance } = useSelector((state: RootState) => state.referral.referral);
   const classes = useStyles();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
+  const handleUseBalance = () => {
+    sendAnalyticsData('Balance Page - "Use My Balance" button clicked');
+    window.open('https://www.getsphere.com/#cohort-tabs', '_blank');
+  };
 
   return (
     <Card
@@ -45,7 +53,7 @@ export default function CurrentCreditAmount() {
             mt: { xs: '15px', md: 0 }
           }}
           variant="outlined"
-          onClick={() => window.open('https://www.getsphere.com/#cohort-tabs', '_blank')}
+          onClick={() => handleUseBalance()}
         >
           Use my balance
         </Button>

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Card, Stack, TextField } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
@@ -12,6 +13,7 @@ export default function SendReferralInviteForm() {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
@@ -30,6 +32,9 @@ export default function SendReferralInviteForm() {
           referee_email: values?.email
         })
         .then((response) => {
+          sendAnalyticsData('Balance Page - Referrals Tab - Referral sent', {
+            'Referee Email': values?.email
+          });
           enqueueSnackbar(`Invitation sent to ${values.email} 🎉`, { variant: 'success' });
           resetForm();
         })
