@@ -125,6 +125,7 @@ export const ShareReferralLink = ({
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
   const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
+  const cohortID = window.location.pathname.split('/')[2] || '';
 
   const handleSendViaEmail = () => {
     if (referralLink) {
@@ -139,8 +140,12 @@ export const ShareReferralLink = ({
     referrals_count?.total_referrals_count === 0 ? 'Go to Referrals' : 'Send more referrals';
 
   const handleButtonClick = () => {
-    trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
-    handleSendViaEmail();
+    if (window.location.pathname.split('/')[1] === 'cohorts' && cohortID !== '') {
+      trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
+      handleSendViaEmail();
+    } else {
+      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
+    }
   };
 
   return (

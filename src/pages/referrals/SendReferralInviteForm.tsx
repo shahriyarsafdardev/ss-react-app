@@ -52,7 +52,7 @@ export default function SendReferralInviteForm() {
         <Form>
           <Stack alignItems="center" direction={{ xs: 'column', md: 'row' }} spacing={2}>
             <TextField
-              label="Team Lead Email"
+              label="Email"
               fullWidth
               {...getFieldProps('email')}
               error={Boolean(touched.email && errors.email)}
