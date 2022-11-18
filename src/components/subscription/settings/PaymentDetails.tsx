@@ -1,8 +1,8 @@
-import { Stack, Typography } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import iconEdit from '@iconify/icons-ic/edit';
 import CardDetails from './CardDetails';
-import { StyledHeading, useStyles } from './Common';
+import { StyledHeading, useStyles, StyledText } from './Common';
 
 export default function PaymentDetails({
   setPaymentMethodModal
@@ -25,7 +25,7 @@ export default function PaymentDetails({
             }}
           >
             <Icon icon={iconEdit} width={30} height={30} />
-            <Typography>Update Payment Method</Typography>
+            <StyledText>Update Payment Method</StyledText>
           </Stack>
         </Stack>
       </Stack>

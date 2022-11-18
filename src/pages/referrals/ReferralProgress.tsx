@@ -15,10 +15,11 @@ export default function ReferralProgress({
   const chartOptions = merge(BaseOptionChart(), {
     legend: { show: false },
     labels: ['Enrolled', 'Referrals sent', 'Required referrees'],
-    colors: ['#637381', '#637381', '#637381'],
+    colors: ['#ffffff', '#ffffff', '#ffffff'],
     plotOptions: {
       pie: {
         startAngle: 0,
+        expandOnClick: false,
         endAngle: 360,
         customScale: 1.0,
         donut: {
@@ -27,26 +28,27 @@ export default function ReferralProgress({
             show: true,
             name: {
               show: true,
+              showAlways: true,
               offsetY: 0,
-              fontFamily: 'Public Sans',
-              color: '#637381',
-              fontWeight: '600',
-              fontSize: '16px',
-              formatter: () => `${enrolled} Referrals Accepted`
+              formatter: () => `${enrolled} referrals`
             },
             total: {
               show: true,
-              showAlways: false
-            },
-            value: {
-              show: false
+              showAlways: true,
+              offsetY: 0,
+              formatter: () => `accepted`
             }
           }
         }
       }
     },
     tooltip: {
-      enabled: false
+      enabled: true,
+      theme: false,
+      style: {
+        fontSize: '12px',
+        background: '#fff'
+      }
     },
     dataLabels: {
       enabled: false

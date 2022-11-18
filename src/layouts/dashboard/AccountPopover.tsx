@@ -1,8 +1,6 @@
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
 import { useRef, useState } from 'react';
-import homeFill from '@iconify/icons-eva/home-fill';
-import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import roundPeople from '@iconify/icons-ic/baseline-people';
 
@@ -11,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { resetStore } from 'redux/rootReducer';
 // material
 import { alpha } from '@material-ui/core/styles';
-import { Button, Box, Divider, MenuItem, Typography } from '@material-ui/core';
+import { Button, Box, Divider, MenuItem, Typography, styled } from '@material-ui/core';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -31,11 +29,17 @@ const MENU_OPTIONS = [
     linkTo: PATH_DASHBOARD.user.account
   },
   {
-    label: 'Referrals',
+    label: 'Balance',
     icon: roundPeople,
     linkTo: PATH_DASHBOARD.user.referrals
   }
 ];
+
+const StyledImage = styled('img')(({ theme }) => ({
+  marginRight: 16,
+  width: 24,
+  height: 24
+}));
 
 // ----------------------------------------------------------------------
 
@@ -118,7 +122,7 @@ export default function AccountPopover() {
         <Divider sx={{ my: 1 }} />
 
         {MENU_OPTIONS.map((option) => {
-          if (option.label === 'Referrals') {
+          if (option.label === 'Balance') {
             return (
               user?.type === 'learner' && (
                 <MenuItem
@@ -130,14 +134,9 @@ export default function AccountPopover() {
                   onClick={handleClose}
                   sx={{ typography: 'body2', py: 1, px: 2.5 }}
                 >
-                  <Box
-                    component={Icon}
-                    icon={option.icon}
-                    sx={{
-                      mr: 2,
-                      width: 24,
-                      height: 24
-                    }}
+                  <StyledImage
+                    src="https://sphere-public.s3.eu-west-2.amazonaws.com/wallet-giftcard.png"
+                    alt="Wallet Giftcard"
                   />
 
                   {option.label}

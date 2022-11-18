@@ -45,6 +45,7 @@ export default function CurrentCreditAmount() {
             mt: { xs: '15px', md: 0 }
           }}
           variant="outlined"
+          onClick={() => window.open('https://www.getsphere.com/#cohort-tabs', '_blank')}
         >
           Use my balance
         </Button>

@@ -7,19 +7,29 @@ export default function ReferralInviteSummary() {
   const classes = useStyles();
   const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
 
+  const headText = () => {
+    const remainingReferralsCount =
+      7 - referrals_count?.enrolled_referrals_count < 0
+        ? 0
+        : 7 - referrals_count?.enrolled_referrals_count;
+    return referrals_count?.total_referrals_count === 0
+      ? 'Start sending referrals to earn a free Sphere course'
+      : `You're only ${remainingReferralsCount} accepted referrals away from earning a free course`;
+  };
+
   return (
     <Card className={classes.greyBackground} sx={{ width: '100%', padding: '40px 50px' }}>
       <Stack direction={{ xs: 'column', md: 'row' }}>
         <Stack style={{ marginLeft: '-30px' }}>
-          <ReferralProgress enrolled={3} referralsSent={2} requiredReferrees={7} />
+          <ReferralProgress
+            enrolled={referrals_count?.enrolled_referrals_count}
+            referralsSent={referrals_count?.total_referrals_count}
+            requiredReferrees={7}
+          />
         </Stack>
         <Stack>
           <Typography className={classes.font22Bold} sx={{ marginTop: { xs: '2rem', md: '15px' } }}>
-            You're only{' '}
-            {7 - referrals_count?.enrolled_referrals_count < 0
-              ? 0
-              : 7 - referrals_count?.enrolled_referrals_count}{' '}
-            accepted referrals away from earning a free course
+            {headText()}
           </Typography>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv

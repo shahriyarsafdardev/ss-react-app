@@ -54,16 +54,23 @@ export default function ReferralChart({
     },
     legend: {
       show: false
+    },
+    grid: {
+      show: false
     }
   });
 
   return (
-    <ReactApexChart
-      type="bar"
-      series={CHART_DATA}
-      options={chartOptions}
-      width={200}
-      style={{ margin: 'auto' }}
-    />
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <ReactApexChart
+        type="bar"
+        series={CHART_DATA}
+        options={chartOptions}
+        width={200}
+        height={60}
+        style={{ margin: 'auto', minHeight: '60px' }}
+      />
+      <p style={{ marginLeft: '-15px', zIndex: 1, fontSize: '22px' }}>🎁</p>
+    </div>
   );
 }

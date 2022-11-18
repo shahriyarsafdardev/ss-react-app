@@ -1,6 +1,6 @@
-import { Stack, Typography } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import { RootState, useSelector } from 'redux/store';
-import { useStyles } from './Common';
+import { useStyles, StyledText } from './Common';
 
 export default function CardDetails() {
   const classes = useStyles();
@@ -11,17 +11,17 @@ export default function CardDetails() {
   return (
     <>
       <Stack className={classes.cardDetailsBox} spacing={1} justifyContent="center">
-        <Typography sx={{ paddingBottom: '5px', borderBottom: '1px solid #E5E8EB' }}>
+        <StyledText sx={{ paddingBottom: '5px', borderBottom: '1px solid #E5E8EB' }}>
           Card Details
-        </Typography>
+        </StyledText>
         <Stack direction="row" spacing={5}>
           <Stack spacing={1}>
-            <Typography>Card Number:</Typography>
-            <Typography>{account?.cardNumber || '**** **** **** ****'}</Typography>
+            <StyledText>Card Number:</StyledText>
+            <StyledText>{account?.cardNumber || '**** **** **** ****'}</StyledText>
           </Stack>
           <Stack spacing={1}>
-            <Typography>Expiration Date:</Typography>
-            <Typography>{account?.cardExpiry || '**/**'}</Typography>
+            <StyledText>Expiration Date:</StyledText>
+            <StyledText>{account?.cardExpiry || '**/**'}</StyledText>
           </Stack>
         </Stack>
       </Stack>

@@ -149,11 +149,11 @@ export const NonActiveSubscriptionDetails = () => (
       <StyledHeading>Sphere Subscription</StyledHeading>
       <StyledText>You currently do not have a Sphere Subscription.</StyledText>
     </Stack>
-    <Typography>
+    <StyledText>
       Buying annual subscriptions upfront gives your team and organization discounts on our course
       library.
-    </Typography>
-    <Typography>
+    </StyledText>
+    <StyledText>
       To learn more and/or start a subscription, please visit our{' '}
       <StyledLink
         sx={{ display: 'inline' }}
@@ -161,6 +161,6 @@ export const NonActiveSubscriptionDetails = () => (
       >
         Pricing page.
       </StyledLink>
-    </Typography>
+    </StyledText>
   </>
 );

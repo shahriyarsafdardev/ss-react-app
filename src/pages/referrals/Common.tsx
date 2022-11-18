@@ -73,7 +73,7 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   height: '48px',
   minWidth: '300px',
   [theme.breakpoints.down('md')]: {
-    width: '100%',
+    minWidth: '100%',
     height: '48px'
   }
 }));
@@ -115,7 +115,7 @@ export const TabsNavBar = styled(Tabs)(({ theme }) => ({
   overflow: 'unset !important',
   [theme.breakpoints.down('sm')]: {
     button: {
-      width: '30%',
+      width: '25%',
       minWidth: 60,
       fontSize: 12
     },

@@ -150,9 +150,15 @@ export const ShareReferralLink = ({
         referralsSent={referrals_count?.total_referrals_count}
         requiredReferees={7}
       />
-      <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
-        You've earned <b>${referrals_count?.enrolled_referrals_count * 100}</b> to use towards
-        Sphere courses
+      <Typography align="center" color="text.primary">
+        {referrals_count?.total_referrals_count === 0 ? (
+          'Refer friends to earn a free Sphere course!'
+        ) : (
+          <>
+            You've earned <b>${referrals_count?.enrolled_referrals_count * 100}</b> to use towards
+            Sphere courses
+          </>
+        )}
       </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
