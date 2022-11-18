@@ -5,6 +5,7 @@ import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
 import { trackEvent } from 'utils/eventTracking';
+import { RootState, useSelector } from 'redux/store';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
 import ReferralChart from './ReferralChart';
@@ -123,16 +124,7 @@ export const ShareReferralLink = ({
 }: EmailModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
-
-  const handleCopyReferralLink = () => {
-    if (referralLink) {
-      copy(`${referralLink}&alumni=true`);
-      trackEvent(cohort, "Sidebar - Referral Preview - 'Copy Link' Selected", {});
-      enqueueSnackbar('Referral Link Copied', { variant: 'success' });
-    } else {
-      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
-    }
-  };
+  const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
 
   const handleSendViaEmail = () => {
     if (referralLink) {
@@ -149,13 +141,18 @@ export const ShareReferralLink = ({
         variant="h5"
         align="center"
         color="primary"
-        sx={{ width: '50%', textAlign: 'center', margin: 'auto !important', color: '#212B36' }}
+        sx={{ textAlign: 'center', margin: 'auto !important', color: '#212B36' }}
       >
         Give $100, Get $100
       </Typography>
-      <ReferralChart enrolled={5} referralsSent={2} requiredReferrees={7} />
+      <ReferralChart
+        enrolled={referrals_count?.enrolled_referrals_count}
+        referralsSent={referrals_count?.total_referrals_count}
+        requiredReferees={7}
+      />
       <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
-        You've earned <b>$300</b> to use towards Sphere courses
+        You've earned <b>${referrals_count?.enrolled_referrals_count * 100}</b> to use towards
+        Sphere courses
       </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button

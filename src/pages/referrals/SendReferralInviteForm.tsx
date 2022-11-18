@@ -4,13 +4,14 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles, StyledLoadingButton } from './Common';
 
 export default function SendReferralInviteForm() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
@@ -25,11 +26,12 @@ export default function SendReferralInviteForm() {
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       await axiosV2
         .post('/referrals.json', {
-          cohort_id: '',
+          cohort_id: cohort?.id,
           referee_email: values?.email
         })
         .then((response) => {
-          enqueueSnackbar('Invited sent to user!', { variant: 'success' });
+          enqueueSnackbar(`Invitation sent to ${values.email} 🎉`, { variant: 'success' });
+          resetForm();
         })
         .catch((error) => {
           enqueueSnackbar(error.message || 'Some error occurred!', { variant: 'error' });

@@ -5,11 +5,11 @@ import { BaseOptionChart } from '../../components/charts';
 export default function ReferralChart({
   enrolled,
   referralsSent,
-  requiredReferrees
+  requiredReferees
 }: {
   enrolled: number;
   referralsSent: number;
-  requiredReferrees: number;
+  requiredReferees: number;
 }) {
   const CHART_DATA = [
     { name: 'Enrolled', data: [enrolled] },
@@ -19,14 +19,13 @@ export default function ReferralChart({
     },
     {
       name: 'Required Referrals',
-      data: [requiredReferrees - enrolled]
+      data: [requiredReferees - enrolled]
     }
   ];
   const chartOptions = merge(BaseOptionChart(), {
     colors: ['#007B55', '#5BE584', '#ffffff'],
     chart: {
       type: 'bar',
-      height: 20,
       stacked: true,
       columnWidth: '28%',
       borderRadius: 4,
