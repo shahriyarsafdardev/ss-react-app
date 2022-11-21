@@ -9,30 +9,42 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import UserListHead from 'components/_dashboard/user/list/UserListHead';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useContext } from 'react';
 import { BillHistory } from '../../../@types/cohorts';
 import { StyledHeading } from './Common';
 
-const BillRow = ({ key, billHistory }: { key: number; billHistory: BillHistory }) => (
-  <TableRow hover key={key} tabIndex={-1} sx={{ borderBottom: '1px solid #E5E8EB' }}>
-    <TableCell style={{ width: 100 }} align="left">
-      {moment(new Date(billHistory?.date)).format('ll').toString()}
-    </TableCell>
-    <TableCell style={{ width: 100 }} align="center">
-      {billHistory.description}
-    </TableCell>
-    <TableCell style={{ width: 100 }} align="center">
-      ${billHistory.amount}
-    </TableCell>
-    <TableCell style={{ width: 100 }} align="center">
-      <Link
-        href={billHistory.invoice}
-        style={{ color: '#101658 !importent', textDecoration: 'underline', cursor: 'pointer' }}
-      >
-        Download
-      </Link>
-    </TableCell>
-  </TableRow>
-);
+const BillRow = ({ key, billHistory }: { key: number; billHistory: BillHistory }) => {
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+  return (
+    <TableRow hover key={key} tabIndex={-1} sx={{ borderBottom: '1px solid #E5E8EB' }}>
+      <TableCell style={{ width: 100 }} align="left">
+        {moment(new Date(billHistory?.date)).format('ll').toString()}
+      </TableCell>
+      <TableCell style={{ width: 100 }} align="center">
+        {billHistory.description}
+      </TableCell>
+      <TableCell style={{ width: 100 }} align="center">
+        ${billHistory.amount}
+      </TableCell>
+      <TableCell style={{ width: 100 }} align="center">
+        <Link
+          href={billHistory.invoice}
+          style={{ color: '#101658 !importent', textDecoration: 'underline', cursor: 'pointer' }}
+          onClick={() =>
+            sendAnalyticsData('Balance Page - Subscription Tab - Invoice downloaded', {
+              'Billing Date': billHistory?.date,
+              'Billing Description': billHistory?.description,
+              'Billing Amount': billHistory?.amount
+            })
+          }
+        >
+          Download
+        </Link>
+      </TableCell>
+    </TableRow>
+  );
+};
 
 export default function PaymentHistory({ transactions }: { transactions: BillHistory[] }) {
   const TABLE_HEAD = [

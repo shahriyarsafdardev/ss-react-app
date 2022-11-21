@@ -48,6 +48,7 @@ export default function CreditCheckout() {
   const [subscriptionAmount, setSubscriptionAmount] = useState(0);
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [accountID, setAccountID] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const [checkoutDetails, setCheckoutDetails] = useState<CheckoutDetails>({
     team_name: '',
     team_discount: 0,
@@ -84,6 +85,9 @@ export default function CreditCheckout() {
         setClientSecret(res.data.payment_intent.clientSecret);
         setStripeCustomerID(res.data.payment_intent.customer_id);
         setSubscriptionAmount(res.data.subscription_amount);
+        if (res.data.is_subscribed !== 'null') {
+          setIsSubscribed(res.data.is_subscribed);
+        }
         if (email !== '' && cohortID !== '') {
           getRegistrationDetails(res.data.team_name);
         }
@@ -145,7 +149,7 @@ export default function CreditCheckout() {
     );
   }
 
-  if (accountID) {
+  if (isSubscribed) {
     return (
       <>
         <PaymentPrompt topup={false} />

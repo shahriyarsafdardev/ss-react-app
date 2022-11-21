@@ -45,6 +45,7 @@ export default function DashboardLayout() {
   const { user } = useAuth();
   const current_url = window.location.pathname.split('/');
   const current_tab = current_url[current_url.length - 1];
+  const isUserTab = current_url[current_url.length - 2] === 'user';
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -64,7 +65,7 @@ export default function DashboardLayout() {
           })
         }}
       >
-        {mode === 'Learner' && isDesktop && current_tab !== 'home' && (
+        {mode === 'Learner' && isDesktop && current_tab !== 'home' && !isUserTab && (
           <Box
             sx={{
               maxWidth: '360px',

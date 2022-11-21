@@ -374,7 +374,7 @@ export type Subscription = {
   id: string;
   start_date: string | null;
   next_billing_date: string | null;
-  active: boolean;
+  is_active: boolean;
   yearly_credit_amount: number;
 };
 

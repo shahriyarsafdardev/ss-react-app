@@ -5,8 +5,10 @@ import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
 import { trackEvent } from 'utils/eventTracking';
+import { RootState, useSelector } from 'redux/store';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
+import ReferralChart from './ReferralChart';
 
 export const seasonOrder: { [index: string]: number } = {
   winter: 4,
@@ -122,16 +124,8 @@ export const ShareReferralLink = ({
 }: EmailModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
-
-  const handleCopyReferralLink = () => {
-    if (referralLink) {
-      copy(`${referralLink}&alumni=true`);
-      trackEvent(cohort, "Sidebar - Referral Preview - 'Copy Link' Selected", {});
-      enqueueSnackbar('Referral Link Copied', { variant: 'success' });
-    } else {
-      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
-    }
-  };
+  const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
+  const cohortID = window.location.pathname.split('/')[2] || '';
 
   const handleSendViaEmail = () => {
     if (referralLink) {
@@ -142,32 +136,50 @@ export const ShareReferralLink = ({
     }
   };
 
+  const buttonText = () =>
+    referrals_count?.total_referrals_count === 0 ? 'Go to Referrals' : 'Send more referrals';
+
+  const handleButtonClick = () => {
+    if (window.location.pathname.split('/')[1] === 'cohorts' && cohortID !== '') {
+      trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
+      handleSendViaEmail();
+    } else {
+      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
+    }
+  };
+
   return (
     <>
-      <Typography variant="h5" align="center" color="primary">
-        Invite your colleagues
+      <Typography
+        variant="h5"
+        align="center"
+        color="primary"
+        sx={{ textAlign: 'center', margin: 'auto !important', color: '#212B36' }}
+      >
+        Give $100, Get $100
       </Typography>
-      <Typography align="center" color="text.primary" sx={{ mt: 2 }}>
-        learning is more enjoyable with friends
+      <ReferralChart
+        enrolled={referrals_count?.enrolled_referrals_count}
+        referralsSent={referrals_count?.total_referrals_count}
+        requiredReferees={7}
+      />
+      <Typography align="center" color="text.primary">
+        {referrals_count?.total_referrals_count === 0 ? (
+          'Refer friends to earn a free Sphere course!'
+        ) : (
+          <>
+            You've earned <b>${referrals_count?.enrolled_referrals_count * 100}</b> to use towards
+            Sphere courses
+          </>
+        )}
       </Typography>
       <Box sx={{ margin: '32px 0px 14px 0px' }}>
         <Button
           variant="contained"
-          style={{ width: '-webkit-fill-available', borderRadius: '4px' }}
-          onClick={() => {
-            handleSendViaEmail();
-          }}
+          style={{ width: '-webkit-fill-available', borderRadius: '30px', height: '40px' }}
+          onClick={() => handleButtonClick()}
         >
-          Share My Link
-        </Button>
-        <Button
-          variant="outlined"
-          style={{ width: '-webkit-fill-available', borderRadius: '4px', marginTop: '12px' }}
-          onClick={() => {
-            handleCopyReferralLink();
-          }}
-        >
-          Copy My Link
+          {buttonText()}
         </Button>
       </Box>
       <ReferralEmailModal

@@ -10,6 +10,7 @@ import GoogleTagManager from 'components/GoogleTagManager';
 import FullStoryScript from 'components/FullStoryScript';
 import SegmentScript from 'components/SegmentScript';
 import { setSegmentUserProperties } from 'utils/eventTracking';
+import { getReferralsCount } from 'redux/slices/referral';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -49,6 +50,7 @@ export default function App() {
     let fetchCohortsTimeline: NodeJS.Timer;
     if (isAuthenticated) {
       dispatch(getCohorts());
+      dispatch(getReferralsCount());
       fetchCohortsTimeline = setInterval(() => {
         dispatch(getCohortsTimeline());
       }, FETCH_EVENT_DELAY * 1000);

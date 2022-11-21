@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Card, Stack, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
 import { updateSubscription } from 'redux/slices/accountSubscription';
@@ -18,11 +20,18 @@ export default function CancelSubscriptionForm({
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const handleEditSubscription = () => {
+    sendAnalyticsData(
+      'Balance Page - Subscription Tab - Cancel Modal - "Edit Subscription" clicked'
+    );
     setModal(false);
     setUpdateSubscriptionModal(true);
   };
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   const handleSubmit = async () => {
+    sendAnalyticsData(
+      'Balance Page - Subscription Tab - Cancel Modal - "Cancel Subscription" clicked'
+    );
     await axios
       .post(`/credit_subscriptions/${accountID}/cancel_subscription.json`)
       .then((res) => {
