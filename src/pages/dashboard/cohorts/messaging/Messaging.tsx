@@ -158,7 +158,7 @@ export default function Messaging() {
     <Page title="Sphere | Messaging" id="page">
       {/* {cohort?.released_for_learners === true || mode === 'Instructor' ? ( */}
       <>
-        {profileFormSubmitted || mode === 'Instructor' ? (
+        {profileFormSubmitted ? (
           <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
             <Box id="box">
               <div key={cohortID} className="chat_wrapper">
