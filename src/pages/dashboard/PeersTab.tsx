@@ -61,12 +61,18 @@ export default function PeersTab() {
   const { peers } = cohort || { peers: null };
   let filteredPeers: Array<StudentProfile> = [];
 
-  if (cohort?.released_for_learners && peers) {
+  const displayPeers =
+    cohort?.released_for_learners ||
+    user?.type === 'expert' ||
+    user?.type === 'admin' ||
+    user?.admin;
+
+  if (displayPeers && peers) {
     filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.profile_image_url);
   }
 
   useEffect(() => {
-    if (cohort?.released_for_learners) {
+    if (displayPeers) {
       // get all the companies to choose from peers.
       let newCompanies = filteredPeers
         ?.map((peer) => peer.current_company.name)
@@ -87,7 +93,7 @@ export default function PeersTab() {
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (cohort?.released_for_learners) {
+    if (displayPeers) {
       if (cohort && peers?.length > 0) {
         trackEvent(cohort, 'Networking Page - Page Loaded', {});
       }
@@ -103,7 +109,7 @@ export default function PeersTab() {
   };
 
   useEffect(() => {
-    if (cohort?.released_for_learners) {
+    if (displayPeers) {
       if (cohort && !peers) {
         dispatch(getPeers(cohort_id.toString(), user?.id));
       }
@@ -170,7 +176,7 @@ export default function PeersTab() {
   };
 
   const showCardView = () =>
-    !cohort?.released_for_learners ? (
+    !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
         loadMore={() => getAlumni()}
@@ -192,7 +198,7 @@ export default function PeersTab() {
     );
 
   const showTableView = () =>
-    !cohort?.released_for_learners ? (
+    !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
         loadMore={() => getAlumni()}
@@ -214,7 +220,7 @@ export default function PeersTab() {
     );
 
   const renderPeers = () =>
-    !cohort?.released_for_learners || peers ? (
+    !displayPeers || peers ? (
       <Container maxWidth={themeStretch ? false : 'lg'} style={{ paddingBottom: '50px' }}>
         {mode === 'Learner' && (
           <StudentProfilePrompt setNetworkingModalState={setNetworkingModalState} cohort={cohort} />
@@ -226,7 +232,7 @@ export default function PeersTab() {
         />
         <HeaderBreadcrumbs
           id="cohort-tab-title"
-          heading={!cohort?.released_for_learners ? 'Alumni' : 'Peers'}
+          heading={displayPeers ? 'Peers' : 'Alumni'}
           links={[]}
         />
         <StudentProfileModal
@@ -237,9 +243,9 @@ export default function PeersTab() {
           dispalyChatLink={
             modalState.id !== user?.id &&
             cohort_id !== 'e5659779-2c87-43b1-98f7-93d8b7173d61' &&
-            cohort?.released_for_learners
+            displayPeers
           }
-          dispalyEmailLink={cohort?.released_for_learners}
+          dispalyEmailLink={displayPeers}
           cohort={cohort}
         />
         <Stack
