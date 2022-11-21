@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles, LoadingContainer } from './Common';
+import WaitListSuccessPage from './WaitListSuccessPage';
 
 export type UserType = {
   email: string;
@@ -26,6 +27,7 @@ export type CohortType = {
   price: string;
   code: string;
   amplitude_events_timeline: any;
+  wait_listed: boolean;
 };
 
 export type CompanyType = {
@@ -35,23 +37,33 @@ export type CompanyType = {
 
 export default function PersonalDetailsPage() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const ValidationSchema = Yup.object().shape({
-    email: Yup.string().email('Email is invalid').required('Email is required'),
-    full_name: Yup.string().required('Full Name is required'),
-    linkedin_url: Yup.string().required('LinkedIn url is required')
-  });
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const [cohort, setCohort] = useState<any>();
   const source = url.get('source') || '';
   const referrerDomain = url.get('referrer_domain') || '';
   const couponCode = url.get('referrer') || '';
+
+  const ValidationSchema = Yup.object().shape({
+    email: Yup.string().email('Email is invalid').required('Email is required'),
+    full_name: Yup.string().when([], {
+      is: () => cohort?.wait_listed === true,
+      then: Yup.string().nullable(),
+      otherwise: Yup.string().required('Full Name is required')
+    }),
+    linkedin_url: Yup.string().when([], {
+      is: () => cohort?.wait_listed === true,
+      then: Yup.string().nullable(),
+      otherwise: Yup.string().required('LinkedIn url is required')
+    })
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -93,13 +105,14 @@ export default function PersonalDetailsPage() {
         .post(`enrollments.json`, {
           cohort_id: cohortID,
           email: values?.email,
-          full_name: values?.full_name,
+          full_name: values?.full_name || 'Unknown Unknown',
           linkedin_url: values?.linkedin_url,
           source,
           referrer_domain: referrerDomain,
           coupon_code: couponCode
         })
         .then((res) => {
+          cohort?.wait_listed && setFormSubmitted(true);
           setSegmentUserProperties(res?.data?.user);
           sendAnalyticsData('Cohort Registration - Personal Info Page - Details Submitted', {
             'Registrant First Name': values?.full_name.split(' ')?.[0] || '',
@@ -111,9 +124,10 @@ export default function PersonalDetailsPage() {
             Referrer: '',
             'Cohort Price': cohort?.price
           });
-          navigate(
-            `/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}`
-          );
+          !cohort?.wait_listed &&
+            navigate(
+              `/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}`
+            );
           setSubmitting(false);
           resetForm();
         })
@@ -135,76 +149,104 @@ export default function PersonalDetailsPage() {
 
   return (
     <PaymentRootStyle title="Sphere Registration">
-      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png" alt="logo" />
-      <Stack direction={{ xs: 'column', md: 'row' }} className={classes.wrapperStack}>
-        <Stack className={classes.paymentData} alignItems="center" spacing={4}>
-          <Typography className={`${classes.heading} ${classes.toggleFont}`}>
-            {cohort?.name}
-          </Typography>
-          <Typography textAlign="center" className={`${isDesktop && classes.paddingHorizontal40}`}>
-            live with {cohort?.host_full_names} and a community of likeminded industry professionals
-          </Typography>
-        </Stack>
-        <Stack
-          justifyContent="center"
-          alignItems="center"
-          className={`${classes.paymentData} ${isDesktop && classes.purpleBackground}`}
-        >
-          <Box className={classes.fullWidthCenter}>
-            <FormikProvider value={formik}>
-              <Form noValidate autoComplete="off">
-                <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
-                  <TextField
-                    fullWidth
-                    label="Company Email"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                    inputProps={{
-                      'data-testid': 'email'
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    {...getFieldProps('full_name')}
-                    error={Boolean(touched.full_name && errors.full_name)}
-                    helperText={touched.full_name && errors.full_name}
-                    inputProps={{
-                      'data-testid': 'full-name'
-                    }}
-                  />
-                  <TextField
-                    fullWidth
-                    label="LinkedIn URL"
-                    {...getFieldProps('linkedin_url')}
-                    error={Boolean(touched.linkedin_url && errors.linkedin_url)}
-                    helperText={touched.linkedin_url && errors.linkedin_url}
-                    inputProps={{
-                      'data-testid': 'linkedin_url'
-                    }}
-                  />
-                  <LoadingButton
-                    variant="contained"
-                    loading={isSubmitting}
-                    disabled={!isValid}
-                    onClick={() => {
-                      submitForm();
-                      setIsFormSubmit(true);
-                    }}
-                    type="submit"
-                    data-testid="submit-registration-form"
-                    id="btn-submit"
-                    className={classes.submitButton}
-                  >
-                    Get Started
-                  </LoadingButton>
-                </Stack>
-              </Form>
-            </FormikProvider>
-          </Box>
-        </Stack>
-      </Stack>
+      {cohort?.wait_listed && formSubmitted ? (
+        <WaitListSuccessPage />
+      ) : (
+        <>
+          <Logo
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png"
+            alt="logo"
+          />
+
+          <Stack direction={{ xs: 'column', md: 'row' }} className={classes.wrapperStack}>
+            <Stack className={classes.paymentData} alignItems="center" spacing={4}>
+              <Typography className={`${classes.heading} ${classes.toggleFont}`}>
+                {cohort?.name}
+              </Typography>
+              {cohort?.wait_listed ? (
+                <Typography
+                  textAlign="center"
+                  className={`${isDesktop && classes.paddingHorizontal40}`}
+                >
+                  We’re currently finalizing the details of this upcoming cohort and would love to
+                  keep you in the loop when we release updates.
+                </Typography>
+              ) : (
+                <Typography
+                  textAlign="center"
+                  className={`${isDesktop && classes.paddingHorizontal40}`}
+                >
+                  live with {cohort?.host_full_names} and a community of likeminded industry
+                  professionals
+                </Typography>
+              )}
+            </Stack>
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              className={`${classes.paymentData} ${isDesktop && classes.purpleBackground}`}
+            >
+              <Box className={classes.fullWidthCenter}>
+                <FormikProvider value={formik}>
+                  <Form noValidate autoComplete="off">
+                    <Stack spacing={3} className={classes.whiteStackCard} width="100% !important">
+                      <TextField
+                        fullWidth
+                        label="Company Email"
+                        {...getFieldProps('email')}
+                        error={Boolean(touched.email && errors.email)}
+                        helperText={touched.email && errors.email}
+                        inputProps={{
+                          'data-testid': 'email'
+                        }}
+                      />
+                      {!cohort?.wait_listed && (
+                        <>
+                          <TextField
+                            fullWidth
+                            label="Full Name"
+                            {...getFieldProps('full_name')}
+                            error={Boolean(touched.full_name && errors.full_name)}
+                            helperText={touched.full_name && errors.full_name}
+                            inputProps={{
+                              'data-testid': 'full-name'
+                            }}
+                          />
+                          <TextField
+                            fullWidth
+                            label="LinkedIn URL"
+                            {...getFieldProps('linkedin_url')}
+                            error={Boolean(touched.linkedin_url && errors.linkedin_url)}
+                            helperText={touched.linkedin_url && errors.linkedin_url}
+                            inputProps={{
+                              'data-testid': 'linkedin_url'
+                            }}
+                          />
+                        </>
+                      )}
+                      <LoadingButton
+                        variant="contained"
+                        loading={isSubmitting}
+                        disabled={!isValid}
+                        onClick={() => {
+                          submitForm();
+                          setIsFormSubmit(true);
+                        }}
+                        type="submit"
+                        data-testid="submit-registration-form"
+                        id="btn-submit"
+                        className={classes.submitButton}
+                      >
+                        {cohort?.wait_listed ? 'Join Waitlist' : 'Get Started'}
+                      </LoadingButton>
+                    </Stack>
+                  </Form>
+                </FormikProvider>
+              </Box>
+            </Stack>
+          </Stack>
+        </>
+      )}
     </PaymentRootStyle>
   );
 }
