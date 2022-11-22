@@ -5,12 +5,14 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
-import { RootState, useSelector } from 'redux/store';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import { updateTotalReferralsCount } from 'redux/slices/referral';
 import { useStyles, StyledLoadingButton } from './Common';
 
 export default function SendReferralInviteForm() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
@@ -39,6 +41,7 @@ export default function SendReferralInviteForm() {
             ...response?.data,
             'Referee Email': values?.email
           });
+          dispatch(updateTotalReferralsCount());
           enqueueSnackbar(`Invitation sent to ${values.email} 🎉`, { variant: 'success' });
           resetForm();
         })

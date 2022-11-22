@@ -5,16 +5,16 @@ import { BaseOptionChart } from '../../components/charts';
 export default function ReferralProgress({
   enrolled,
   referralsSent,
-  requiredReferrees
+  requiredReferees
 }: {
   enrolled: number;
   referralsSent: number;
-  requiredReferrees: number;
+  requiredReferees: number;
 }) {
-  const CHART_DATA = [enrolled, referralsSent, requiredReferrees];
+  const CHART_DATA = [referralsSent, referralsSent - enrolled, 7];
   const chartOptions = merge(BaseOptionChart(), {
     legend: { show: false },
-    labels: ['Enrolled', 'Referrals sent', 'Required referrees'],
+    labels: ['Referrals Sent + Enrolled', 'Referrals waiting for Acceptance', 'Required Referees'],
     colors: ['#ffffff', '#ffffff', '#ffffff'],
     plotOptions: {
       pie: {

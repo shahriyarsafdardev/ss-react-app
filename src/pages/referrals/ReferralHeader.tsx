@@ -1,14 +1,14 @@
 import { Card, Typography, Stack, Link } from '@material-ui/core';
-import useAuth from 'hooks/useAuth';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useContext } from 'react';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles } from './Common';
 import CurrentCreditAmount from './CurrentCreditAmount';
 
 export default function ReferralHeader({ setActiveTab }: { setActiveTab: Function }) {
   const classes = useStyles();
-  const { user } = useAuth();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const accountDetails = useSelector((state: RootState) => state.subscription.subscription_detail);
 
   const handleTopUpSubscription = () => {
     sendAnalyticsData('Balance Page - "Sphere subscription" hyperlink clicked');
@@ -29,7 +29,7 @@ export default function ReferralHeader({ setActiveTab }: { setActiveTab: Functio
           <ul style={{ textDecoration: 'underline' }}>
             <li>
               <Typography sx={{ cursor: 'pointer' }} onClick={() => handleTopUpSubscription()}>
-                {user?.credit_account_id
+                {accountDetails?.subscription?.is_active
                   ? 'Top up your Sphere subscription'
                   : 'Start a Sphere subscription'}
               </Typography>

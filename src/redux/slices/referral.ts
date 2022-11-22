@@ -30,6 +30,11 @@ const slice = createSlice({
     updateReferralsCount(state, action) {
       state.referral.referrals_count = action.payload;
     },
+    updateTotalReferralsCount(state, action) {
+      const copyReferralsCount = state.referral.referrals_count;
+      copyReferralsCount.total_referrals_count += 1;
+      state.referral.referrals_count = copyReferralsCount;
+    },
     updateReferralsDetails(state, action) {
       state.referral.referrals_details = action.payload;
     },
@@ -73,6 +78,16 @@ export function getAccountDetails(creditAccountID: string) {
     try {
       const response = await axiosV2.get(`/credit_accounts/${creditAccountID}.json`);
       dispatch(slice.actions.updateCreditBalance(response?.data?.credit_balance));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateTotalReferralsCount() {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateTotalReferralsCount({}));
     } catch (error) {
       console.log(error);
     }

@@ -24,7 +24,7 @@ export default function ReferralInviteSummary() {
           <ReferralProgress
             enrolled={referrals_count?.enrolled_referrals_count}
             referralsSent={referrals_count?.total_referrals_count}
-            requiredReferrees={7}
+            requiredReferees={7}
           />
         </Stack>
         <Stack>
