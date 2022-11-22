@@ -6,6 +6,8 @@ import ReferralProgress from './ReferralProgress';
 export default function ReferralInviteSummary() {
   const classes = useStyles();
   const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
+  const referralsAwaiting =
+    referrals_count?.total_referrals_count - referrals_count?.enrolled_referrals_count;
 
   const headText = () => {
     const remainingReferralsCount =
@@ -14,7 +16,9 @@ export default function ReferralInviteSummary() {
         : 7 - referrals_count?.enrolled_referrals_count;
     return referrals_count?.total_referrals_count === 0
       ? 'Start sending referrals to earn a free Sphere course'
-      : `You're only ${remainingReferralsCount} accepted referrals away from earning a free course`;
+      : `You're only ${remainingReferralsCount} accepted referral${
+          remainingReferralsCount !== 1 ? 's' : ''
+        } away from earning a free course`;
   };
 
   return (
@@ -24,7 +28,7 @@ export default function ReferralInviteSummary() {
           <ReferralProgress
             enrolled={referrals_count?.enrolled_referrals_count}
             referralsSent={referrals_count?.total_referrals_count}
-            requiredReferrees={7}
+            requiredReferees={7}
           />
         </Stack>
         <Stack>
@@ -39,10 +43,8 @@ export default function ReferralInviteSummary() {
               }}
             />
             <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>
-                {referrals_count?.total_referrals_count - referrals_count?.enrolled_referrals_count}
-              </span>{' '}
-              sent referrals are awaiting acceptance
+              <span className={classes.font18Bold}>{referralsAwaiting}</span>{' '}
+              {`sent referral${referralsAwaiting !== 1 ? 's are' : ' is'} awaiting acceptance`}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
@@ -53,13 +55,15 @@ export default function ReferralInviteSummary() {
               <span className={classes.font18Bold}>
                 {referrals_count?.enrolled_referrals_count}
               </span>{' '}
-              referees have enrolled in a Sphere course
+              {`referee${
+                referrals_count?.enrolled_referrals_count !== 1 ? 's' : ''
+              } have enrolled in a Sphere course`}
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="flex-start" spacing={1} sx={{ mt: '15px' }}>
             <StyledDiv style={{ background: '#EDEFF2' }} />
             <Typography className={classes.font16}>
-              <span className={classes.font18Bold}>7</span> enrolled referrees = $700 = enough to
+              <span className={classes.font18Bold}>7</span> enrolled referees = $700 = enough to
               cover a free Sphere course!
             </Typography>
           </Stack>

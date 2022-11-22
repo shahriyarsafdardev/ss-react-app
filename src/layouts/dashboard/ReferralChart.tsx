@@ -12,14 +12,14 @@ export default function ReferralChart({
   requiredReferees: number;
 }) {
   const CHART_DATA = [
-    { name: 'Enrolled', data: [enrolled] },
+    { name: 'Referrals Sent', data: [referralsSent] },
     {
-      name: 'Referrals Sent',
-      data: [referralsSent]
+      name: 'Referrals Waiting',
+      data: [referralsSent - enrolled]
     },
     {
-      name: 'Required Referrals',
-      data: [requiredReferees - enrolled]
+      name: 'Referrals Until Free Course',
+      data: [requiredReferees]
     }
   ];
   const chartOptions = merge(BaseOptionChart(), {
