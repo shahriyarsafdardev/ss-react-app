@@ -12,11 +12,12 @@ import {
 export const setSegmentUserProperties = (user: any) => {
   window.analytics?.identify(user?.id, {
     ID: user?.id,
+    Type: user?.type,
     Slug: user?.slug,
     Email: user?.email,
     'First Name': user?.first_name,
     'Last Name': user?.last_name,
-    Attended: user?.attended_cohorts,
+    'Attended Cohorts': user?.attended_cohorts,
     Attendance: `${user?.attendance}%`,
     'Company ID': user?.current_company_id,
     'Company Name': user?.current_company
