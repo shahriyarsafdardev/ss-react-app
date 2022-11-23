@@ -1,4 +1,5 @@
-import { styled, Tab, Tabs } from '@material-ui/core';
+import { styled, Tab, Tabs, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
   'DATA ANALYSIS & EXPERIMENTATION',
@@ -81,6 +82,74 @@ export const CurriculumTabsNavBar = styled(Tabs)(({ theme }) => ({
     color: theme.palette.text.secondary,
     '&.Mui-selected': {
       color: theme.palette.primary.main
+    }
+  }
+}));
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  headerContainer: {
+    padding: '64px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      padding: '20px 0px'
+    }
+  },
+  coursesHeading: {
+    color: '#082139',
+    fontSize: '68px',
+    lineHeight: '1.4',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '38px'
+    }
+  },
+  headerText: {
+    color: '#30364d',
+    fontSize: '20px',
+    textAlign: 'center'
+  },
+  coursesContainer: {
+    padding: '64px 72px',
+    alignItems: 'center',
+    backgroundColor: '#082139',
+    backgroundImage: 'linear-gradient(189deg, #082139, rgba(116, 116, 208, 0.26))',
+    color: '#fff',
+    [theme.breakpoints.down('lg')]: {
+      padding: '64px 52px'
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '40px 38px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '24px 20px'
+    }
+  },
+  courseTile: {
+    width: '32%',
+    backgroundColor: '#fff',
+    color: '#000',
+    borderRadius: '8px',
+    padding: '20px 20px 16px',
+    marginBottom: '16px',
+    minHeight: '250px',
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]: {
+      width: '48%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      margin: 'auto',
+      marginBottom: '16px !important'
+    }
+  },
+  topicButton: {
+    borderRadius: '30px',
+    height: '48px',
+    width: '380px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   }
 }));

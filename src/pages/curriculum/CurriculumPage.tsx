@@ -30,6 +30,7 @@ export default function CurriculumPage() {
     }
     return filteredCourses;
   };
+
   if (courses.length === 0) {
     return (
       <LoadingContainer>
@@ -37,9 +38,10 @@ export default function CurriculumPage() {
       </LoadingContainer>
     );
   }
+
   return (
     <Page>
-      <Box paddingX="72px">
+      <Box paddingX={{ xs: '20px', md: '72px' }}>
         <CurriculumHeader />
         <CurriculumTabs
           currentTab={activeTab}
