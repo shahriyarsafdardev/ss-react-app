@@ -353,6 +353,7 @@ export default function Router() {
     { path: 'registration/course-invite', element: <CourseInvite /> },
     { path: 'registration/subscription-payment', element: <SubscriptionPayment /> },
     { path: 'registration/course-payment', element: <CoursePayment /> },
+    { path: 'curriculum', element: <CurriculumPage /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -511,6 +512,7 @@ const SubscriptionPayment = Loadable(
   lazy(() => import('../pages/registration/SubscriptionPaymentPage'))
 );
 const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
+const CurriculumPage = Loadable(lazy(() => import('../pages/curriculum/CurriculumPage')));
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );
