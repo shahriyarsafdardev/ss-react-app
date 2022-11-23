@@ -142,7 +142,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
       margin: 'auto',
       marginBottom: '16px !important'
-    }
+    },
+    '&:hover > .descriptionHover': {
+      top: 0,
+      opacity: 1
+    },
+    overflow: 'hidden'
   },
   topicButton: {
     borderRadius: '30px',
@@ -157,28 +162,25 @@ export const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export const CourseTileHover = ({ course }: { course: any }) => {
-  const theme = useTheme();
-
   const buttonText = () => (course?.wait_listed ? 'Join the waitlist' : 'Learn more');
 
   return (
     <Stack
+      className="descriptionHover"
       sx={{
         position: 'absolute',
-        top: 0,
+        top: '100%',
         left: 0,
         opacity: 0,
-        backgroundColor: '#2f80ed !important',
+        backgroundColor: '#7474D0 !important',
         color: '#fff',
         width: '100%',
         height: '100%',
         borderRadius: '8px',
         padding: '20px 20px 16px',
         justifyContent: 'space-between',
-        transition: theme.transitions.create('opacity'),
-        '&:hover': {
-          opacity: 1
-        }
+        transition: 'all .4s ease-out',
+        overflow: 'hidden'
       }}
     >
       <Typography>{course?.description}</Typography>
