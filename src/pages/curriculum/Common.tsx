@@ -1,4 +1,4 @@
-import { styled, Tab, Tabs, Theme } from '@material-ui/core';
+import { Stack, styled, Tab, Tabs, Theme, Typography, useTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
@@ -129,9 +129,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',
+    position: 'relative',
     padding: '20px 20px 16px',
     margin: '0px 8px 16px 8px',
     minHeight: '250px',
+    cursor: 'pointer',
     justifyContent: 'space-between',
     [theme.breakpoints.down('md')]: {
       width: '46.5%'
@@ -153,3 +155,39 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
+
+export const CourseTileHover = ({ course }: { course: any }) => {
+  const theme = useTheme();
+
+  const buttonText = () => (course?.wait_listed ? 'Join the waitlist' : 'Learn more');
+
+  return (
+    <Stack
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: 0,
+        backgroundColor: '#2f80ed !important',
+        color: '#fff',
+        width: '100%',
+        height: '100%',
+        borderRadius: '8px',
+        padding: '20px 20px 16px',
+        justifyContent: 'space-between',
+        transition: theme.transitions.create('opacity'),
+        '&:hover': {
+          opacity: 1
+        }
+      }}
+    >
+      <Typography>
+        Learn how to design, measure and implement trustworthy A/B tests, live with world-leading
+        experimentation expert Ronny Kohavi.
+      </Typography>
+      <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
+        {buttonText()}
+      </Typography>
+    </Stack>
+  );
+};
