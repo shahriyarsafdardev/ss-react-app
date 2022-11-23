@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Page from 'components/Page';
+import LoadingScreen from 'components/LoadingScreen';
+import axiosV2 from 'utils/axiosV2';
+import { LoadingContainer } from 'pages/admin/Common';
 import CurriculumHeader from './CurriculumHeader';
 import CurriculumTabs from './CurriculumTabs';
 import { TOPICS } from './Common';
@@ -7,6 +10,15 @@ import { TOPICS } from './Common';
 export default function CurriculumPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
   const [courses, setCourses] = useState<any>([]);
+
+  useEffect(() => {
+    const getCourses = async () => {
+      await axiosV2.get(`/cohorts.json`).then((res) => {
+        setCourses(res.data.cohorts);
+      });
+    };
+    getCourses();
+  }, []);
 
   const applyFilters = (tab: number) => {
     const topic = TOPICS[tab];
@@ -16,6 +28,13 @@ export default function CurriculumPage() {
     }
     return filteredCourses;
   };
+  if (courses.length === 0) {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
   return (
     <Page paddingX="72px">
       <CurriculumHeader />
