@@ -1,5 +1,12 @@
 import { styled, Tab, Tabs } from '@material-ui/core';
 
+export const TOPICS = [
+  'DATA ANALYSIS & EXPERIMENTATION',
+  'ML Systems',
+  'Data Infrastructure',
+  'Data Essentials'
+];
+
 export const CurriculumTab = styled(Tab)(({ theme }) => ({
   color: theme.palette.text.secondary,
   justifyContent: 'space-around',

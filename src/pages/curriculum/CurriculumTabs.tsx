@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { CurriculumTab, CurriculumTabsNavBar } from './Common';
+import { TOPICS, CurriculumTab, CurriculumTabsNavBar } from './Common';
 
-export default function CurriculumTabs() {
-  const [value, setValue] = useState(0);
-  const setActiveTab = (value: number) => {
-    setValue(value);
-  };
+export default function CurriculumTabs({
+  currentTab,
+  setActiveTab
+}: {
+  currentTab: number;
+  setActiveTab: Function;
+}) {
   return (
-    <CurriculumTabsNavBar value={value} onChange={(e, value) => setActiveTab(value)}>
-      <CurriculumTab label="DATA ANALYSIS & EXPERIMENTATION" onClick={() => setActiveTab(0)} />
-      <CurriculumTab label="ML Systems" onClick={() => setActiveTab(1)} />
-      <CurriculumTab label="Data Infrastructure" onClick={() => setActiveTab(2)} />
-      <CurriculumTab label="Data Essentials" onClick={() => setActiveTab(3)} />
+    <CurriculumTabsNavBar value={currentTab} onChange={(e, value) => setActiveTab(value)}>
+      <CurriculumTab label={TOPICS[0]} onClick={() => setActiveTab(0)} />
+      <CurriculumTab label={TOPICS[1]} onClick={() => setActiveTab(1)} />
+      <CurriculumTab label={TOPICS[2]} onClick={() => setActiveTab(2)} />
+      <CurriculumTab label={TOPICS[3]} onClick={() => setActiveTab(3)} />
     </CurriculumTabsNavBar>
   );
 }
