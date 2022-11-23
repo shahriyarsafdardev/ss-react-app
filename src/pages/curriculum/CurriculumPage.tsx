@@ -45,7 +45,7 @@ export default function CurriculumPage() {
       );
     }
     return filteredCourses;
-  }, [selectedSeniority, activeTab]);
+  }, [selectedSeniority, activeTab, courses]);
 
   if (courses.length === 0) {
     return (
@@ -56,7 +56,7 @@ export default function CurriculumPage() {
   }
 
   return (
-    <Page>
+    <Page title="Sphere | Curriculum">
       <Box paddingX={{ xs: '20px', md: '72px' }}>
         <CurriculumHeader />
         {seniority.length > 0 && (
