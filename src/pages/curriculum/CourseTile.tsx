@@ -3,7 +3,6 @@ import { CourseTileHover, useStyles } from './Common';
 
 export default function CourseTile({ course }: { course: any }) {
   const classes = useStyles();
-
   return (
     <>
       <Stack className={classes.courseTile}>
@@ -12,26 +11,35 @@ export default function CourseTile({ course }: { course: any }) {
             {course.name}
           </Typography>
           <Stack>
-            <Stack direction="row" spacing={2.5} alignItems="center" marginBottom="20px">
-              <Avatar
-                src={course?.host_image_url}
-                alt={course?.host_full_name}
-                sx={{ width: 56, height: 56 }}
-              />
-              <Stack>
-                <Typography>Live with {course?.host_full_name || 'the instructor'}</Typography>
-                <Typography>Technical Fellow and Corporate VP</Typography>
+            {course?.preview_instructor_name && (
+              <Stack direction="row" spacing={2.5} alignItems="center" marginBottom="20px">
+                <Avatar
+                  src={course?.preview_instructor_image}
+                  alt={course?.preview_instructor_name}
+                  sx={{ width: 56, height: 56 }}
+                />
+                <Stack>
+                  <Typography>
+                    Live with {course?.preview_instructor_name || 'the instructor'}
+                  </Typography>
+                  <Typography>{course?.preview_instructor_affiliation}</Typography>
+                </Stack>
               </Stack>
-            </Stack>
-            <Box sx={{ borderTop: '1px solid #64748B' }}>
-              <img
-                src="https://global-uploads.webflow.com/62b10e6dc5648dfcaf401a94/637549dd346f273befe8c42a_Frame%2048095550%20(1).svg"
-                alt="instructor-companies"
-                width="140"
-                height="25"
-                style={{ margin: '20px auto 0px auto' }}
-              />
-            </Box>
+            )}
+            {course?.preview_instructor_logos && (
+              <Box sx={{ borderTop: '1px solid #64748B' }}>
+                <img
+                  src={course?.preview_instructor_logos}
+                  alt="instructor-companies"
+                  width="140"
+                  height="25"
+                  style={{ margin: '20px auto 0px auto' }}
+                />
+              </Box>
+            )}
+            {!course?.preview_instructor_name && !course?.preview_instructor_logos && (
+              <Typography>{course?.description}</Typography>
+            )}
           </Stack>
         </>
         <CourseTileHover course={course} />

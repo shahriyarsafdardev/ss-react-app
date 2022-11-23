@@ -181,10 +181,7 @@ export const CourseTileHover = ({ course }: { course: any }) => {
         }
       }}
     >
-      <Typography>
-        Learn how to design, measure and implement trustworthy A/B tests, live with world-leading
-        experimentation expert Ronny Kohavi.
-      </Typography>
+      <Typography>{course?.description}</Typography>
       <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
         {buttonText()}
       </Typography>
