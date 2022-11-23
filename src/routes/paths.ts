@@ -60,6 +60,7 @@ export const PATH_DASHBOARD = {
     app: path(ROOTS_DASHBOARD, '/'),
     discover: path(ROOTS_DASHBOARD, '/discover'),
     contactUs: path(ROOTS_DASHBOARD, '/contact-us'),
+    allCourses: path(ROOTS_DASHBOARD, '/all-courses'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),

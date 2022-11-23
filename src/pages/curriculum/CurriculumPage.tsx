@@ -4,7 +4,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { LoadingContainer } from 'pages/admin/Common';
 import { Box } from '@material-ui/core';
-import CoursesContainer from './CoursesContainer';
+import CurriculumContainer from './CurriculumContainer';
 import CurriculumHeader from './CurriculumHeader';
 import CurriculumTabs from './CurriculumTabs';
 import { TOPICS, HEADINGS } from './Common';
@@ -71,7 +71,7 @@ export default function CurriculumPage() {
           setActiveTab={(value: number) => setActiveTab(value)}
         />
       </Box>
-      <CoursesContainer courses={applyFilters()} heading={HEADINGS[activeTab]} />
+      <CurriculumContainer courses={applyFilters()} heading={HEADINGS[activeTab]} />
     </Page>
   );
 }

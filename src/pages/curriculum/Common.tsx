@@ -124,8 +124,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 20px'
     }
   },
+  purpleBackground: {
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: '40px',
+    width: '100% !important'
+  },
   courseTile: {
-    width: '31%',
+    width: '32%',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',

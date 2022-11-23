@@ -1,18 +1,12 @@
 import { Stack, Typography } from '@material-ui/core';
-import { useStyles } from './Common';
-import CoursesList from './CoursesList';
+import CourseTile from './CourseTile';
 
-export default function CoursesContainer({ courses, heading }: { courses: any; heading: string }) {
-  const classes = useStyles();
-
+export default function CoursesContainer({ courses }: { courses: any }) {
   return (
-    <Stack spacing={4} className={classes.coursesContainer}>
-      <Typography
-        fontSize="20px"
-        textAlign="center"
-      >{`Designed for teams and individuals ${heading} `}</Typography>
-
-      <CoursesList courses={courses} />
+    <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ width: '100%', flexWrap: 'wrap' }}>
+      {courses.map((course: any) => (
+        <CourseTile key={course.id} course={course} />
+      ))}
     </Stack>
   );
 }
