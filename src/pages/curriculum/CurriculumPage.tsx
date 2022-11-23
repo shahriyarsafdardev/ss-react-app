@@ -7,7 +7,7 @@ import { Box } from '@material-ui/core';
 import CoursesContainer from './CoursesContainer';
 import CurriculumHeader from './CurriculumHeader';
 import CurriculumTabs from './CurriculumTabs';
-import { TOPICS } from './Common';
+import { TOPICS, HEADINGS } from './Common';
 
 export default function CurriculumPage() {
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -46,7 +46,7 @@ export default function CurriculumPage() {
           setActiveTab={(value: number) => setActiveTab(value)}
         />
       </Box>
-      <CoursesContainer courses={applyFilters(activeTab)} />
+      <CoursesContainer courses={applyFilters(activeTab)} heading={HEADINGS[activeTab]} />
     </Page>
   );
 }

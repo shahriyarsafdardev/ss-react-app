@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@material-ui/core';
 import CoursesList from './CoursesList';
 
-export default function CoursesContainer({ courses }: { courses: any }) {
+export default function CoursesContainer({ courses, heading }: { courses: any; heading: string }) {
   return (
     <Stack
       spacing={4}
@@ -14,9 +14,7 @@ export default function CoursesContainer({ courses }: { courses: any }) {
         color: '#fff'
       }}
     >
-      <Typography fontSize="20px">
-        Designed for teams and individuals conducting data analysis & experimentation
-      </Typography>
+      <Typography fontSize="20px">{`Designed for teams and individuals ${heading} `}</Typography>
       <CoursesList courses={courses} />
     </Stack>
   );

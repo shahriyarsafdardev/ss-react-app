@@ -7,6 +7,13 @@ export const TOPICS = [
   'Data Essentials'
 ];
 
+export const HEADINGS = [
+  'conducting data analysis & experimentation',
+  'creating ML systems',
+  'building data infrastructure',
+  'wanting to learn about data essentials'
+];
+
 export const CurriculumTab = styled(Tab)(({ theme }) => ({
   justifyContent: 'space-around',
   marginRight: 0,
