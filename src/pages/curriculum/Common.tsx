@@ -8,10 +8,13 @@ export const TOPICS = [
 ];
 
 export const CurriculumTab = styled(Tab)(({ theme }) => ({
-  color: theme.palette.text.secondary,
   justifyContent: 'space-around',
   marginRight: 0,
   width: '20%',
+  color: '#101658',
+  fontWeight: 700,
+  fontSize: '16px',
+  textTransform: 'uppercase',
   '.MuiButtonBase-root .Mui-selected': {
     fontWeight: '700'
   }
@@ -19,7 +22,6 @@ export const CurriculumTab = styled(Tab)(({ theme }) => ({
 
 export const CurriculumTabsNavBar = styled(Tabs)(({ theme }) => ({
   width: '100%',
-  margin: '2rem 0',
   backgroundColor: '#fff',
   justifyContent: 'center',
   overflow: 'unset !important',

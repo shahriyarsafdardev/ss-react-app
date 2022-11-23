@@ -3,6 +3,8 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { LoadingContainer } from 'pages/admin/Common';
+import { Box } from '@material-ui/core';
+import CoursesContainer from './CoursesContainer';
 import CurriculumHeader from './CurriculumHeader';
 import CurriculumTabs from './CurriculumTabs';
 import { TOPICS } from './Common';
@@ -36,12 +38,15 @@ export default function CurriculumPage() {
     );
   }
   return (
-    <Page paddingX="72px">
-      <CurriculumHeader />
-      <CurriculumTabs
-        currentTab={activeTab}
-        setActiveTab={(value: number) => setActiveTab(value)}
-      />
+    <Page>
+      <Box paddingX="72px">
+        <CurriculumHeader />
+        <CurriculumTabs
+          currentTab={activeTab}
+          setActiveTab={(value: number) => setActiveTab(value)}
+        />
+      </Box>
+      <CoursesContainer />
     </Page>
   );
 }
