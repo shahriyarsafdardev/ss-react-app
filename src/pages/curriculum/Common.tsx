@@ -125,16 +125,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   courseTile: {
-    width: '32%',
+    width: '31%',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',
     padding: '20px 20px 16px',
-    marginBottom: '16px',
+    margin: '0px 8px 16px 8px',
     minHeight: '250px',
     justifyContent: 'space-between',
     [theme.breakpoints.down('md')]: {
-      width: '48%'
+      width: '46.5%'
     },
     [theme.breakpoints.down('sm')]: {
       width: '100%',
