@@ -1,6 +1,6 @@
 import { Avatar, Stack, Typography } from '@material-ui/core';
 
-export default function CourseTile() {
+export default function CourseTile({ course }: { course: any }) {
   return (
     <Stack
       sx={{
@@ -15,7 +15,7 @@ export default function CourseTile() {
       }}
     >
       <Typography variant="h4" sx={{ marginBottom: '20px' }}>
-        Accelerating Innovation with A/B Testing
+        {course.name}
       </Typography>
       <Stack>
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2.5} alignItems="center">

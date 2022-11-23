@@ -46,7 +46,7 @@ export default function CurriculumPage() {
           setActiveTab={(value: number) => setActiveTab(value)}
         />
       </Box>
-      <CoursesContainer />
+      <CoursesContainer courses={applyFilters(activeTab)} />
     </Page>
   );
 }

@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@material-ui/core';
 import CoursesList from './CoursesList';
 
-export default function CoursesContainer() {
+export default function CoursesContainer({ courses }: { courses: any }) {
   return (
     <Stack
       spacing={4}
@@ -17,7 +17,7 @@ export default function CoursesContainer() {
       <Typography fontSize="20px">
         Designed for teams and individuals conducting data analysis & experimentation
       </Typography>
-      <CoursesList />
+      <CoursesList courses={courses} />
     </Stack>
   );
 }
