@@ -40,6 +40,7 @@ export const PATH_PAGE = {
   PaymentSelection: '/registration/payment-options',
   subscriptionPayment: '/registration/subscription-payment',
   CoursePayment: 'registration/course-payment',
+  CurriculumPage: 'curriculum/curriculum-page',
   resource: '/resource',
   freeSessionInfo: '/free-session-info',
   freeSessionMessage: '/free-session-message',
