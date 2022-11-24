@@ -181,6 +181,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
         </StyledStack>
       ) : (
         <StyledStack
+          key={cohort_id}
           sx={{ display: onboarding_data?.onboarding_checklist_completed ? 'none' : 'block' }}
         >
           <StyledTypography onClick={(event: any) => toggleCheckList(event)}>

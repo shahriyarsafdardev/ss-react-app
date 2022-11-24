@@ -92,7 +92,7 @@ export default function WelcomePage({
           }}
         />
       )}
-      <Stack direction="column" spacing={2} width="100%">
+      <Stack key={cohort?.id} direction="column" spacing={2} width="100%">
         <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
           {hasOnboarded ? `Get ready for ${cohort?.name}` : `Welcome, ${user?.first_name}`}
         </Typography>
