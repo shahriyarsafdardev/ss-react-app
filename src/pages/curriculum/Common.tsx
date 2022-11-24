@@ -127,7 +127,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    padding: '40px',
+    padding: '20px',
     width: '100% !important'
   },
   courseTile: {
