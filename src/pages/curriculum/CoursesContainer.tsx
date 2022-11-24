@@ -1,12 +1,12 @@
-import { Stack } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CourseTile from './CourseTile';
 
 export default function CoursesContainer({ courses }: { courses: any }) {
   return (
-    <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ width: '100%', flexWrap: 'wrap' }}>
+    <Grid container spacing={2} sx={{ ml: '-8px !important' }}>
       {courses.map((course: any) => (
         <CourseTile key={course.id} course={course} />
       ))}
-    </Stack>
+    </Grid>
   );
 }

@@ -12,7 +12,7 @@ export default function CurriculumContainer({
   const classes = useStyles();
 
   return (
-    <Stack spacing={4} className={classes.coursesContainer}>
+    <Stack spacing={2} className={classes.coursesContainer}>
       <Typography
         fontSize="20px"
         textAlign="center"

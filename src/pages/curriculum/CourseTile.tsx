@@ -1,10 +1,10 @@
-import { Avatar, Stack, Typography, Box } from '@material-ui/core';
+import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
 import { CourseTileHover, useStyles } from './Common';
 
 export default function CourseTile({ course }: { course: any }) {
   const classes = useStyles();
   return (
-    <>
+    <Grid item xs={12} sm={6} md={4} sx={{ px: '8px !important' }}>
       <Stack className={classes.courseTile}>
         <>
           <Typography variant="h4" sx={{ marginBottom: '20px' }}>
@@ -44,6 +44,6 @@ export default function CourseTile({ course }: { course: any }) {
         </>
         <CourseTileHover course={course} />
       </Stack>
-    </>
+    </Grid>
   );
 }
