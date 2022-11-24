@@ -35,7 +35,7 @@ export default function CurriculumPage() {
   }, []);
 
   const applyFilters = useCallback(() => {
-    const topic = TOPICS[activeTab].toLowerCase();
+    const topic = TOPICS[activeTab];
     let filteredCourses: any = [];
     if (topic) {
       filteredCourses = courses?.filter(

@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import CourseTile from './CourseTile';
 
 export default function CoursesContainer({ courses }: { courses: any }) {
