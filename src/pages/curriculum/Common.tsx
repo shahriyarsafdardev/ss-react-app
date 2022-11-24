@@ -110,13 +110,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   coursesContainer: {
     padding: '64px 72px',
+    flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#082139',
     backgroundImage: 'linear-gradient(189deg, #082139, rgba(116, 116, 208, 0.26))',
     color: '#fff',
-    [theme.breakpoints.down('lg')]: {
-      padding: '64px 52px'
-    },
+
     [theme.breakpoints.down('md')]: {
       padding: '40px 38px'
     },
@@ -124,25 +123,23 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 20px'
     }
   },
+  purpleBackground: {
+    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    padding: '40px',
+    width: '100% !important'
+  },
   courseTile: {
-    width: '31%',
+    height: '100%',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',
     position: 'relative',
     padding: '20px 20px 16px',
-    margin: '0px 8px 16px 8px',
     minHeight: '250px',
     cursor: 'pointer',
     justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
-      width: '46.5%'
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      margin: 'auto',
-      marginBottom: '16px !important'
-    },
     '&:hover > .descriptionHover': {
       top: 0,
       opacity: 1

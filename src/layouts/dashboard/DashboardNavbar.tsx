@@ -73,7 +73,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'resources',
     'code',
     'onboarding-calendar-instructions',
-    'referrals'
+    'referrals',
+    'all-courses'
   ];
 
   useEffect(() => {
@@ -106,6 +107,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Balance');
         } else if (section === 'sessions') {
           setCurrentTab('Recordings & Slides');
+        } else if (section === 'all-courses') {
+          setCurrentTab('All Courses');
         } else {
           setCurrentTab(section);
         }
