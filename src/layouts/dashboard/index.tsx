@@ -47,6 +47,7 @@ export default function DashboardLayout() {
   const current_tab = current_url[current_url.length - 1];
   const isChecklistVisible = current_url[1] === 'cohorts';
   const { mode } = useSelector((state: RootState) => state.instructorView);
+  const isAnyCohortExist = useSelector((state: RootState) => state?.cohort?.cohorts).length > 0;
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
@@ -65,20 +66,24 @@ export default function DashboardLayout() {
           })
         }}
       >
-        {mode === 'Learner' && isDesktop && current_tab !== 'home' && isChecklistVisible && (
-          <Box
-            sx={{
-              maxWidth: '360px',
-              width: '22%',
-              position: 'fixed',
-              bottom: '30px',
-              left: '40px',
-              zIndex: '1200'
-            }}
-          >
-            <PreCohortChecklist />
-          </Box>
-        )}
+        {mode === 'Learner' &&
+          isDesktop &&
+          current_tab !== 'home' &&
+          isChecklistVisible &&
+          isAnyCohortExist && (
+            <Box
+              sx={{
+                maxWidth: '360px',
+                width: '22%',
+                position: 'fixed',
+                bottom: '30px',
+                left: '40px',
+                zIndex: '1200'
+              }}
+            >
+              <PreCohortChecklist />
+            </Box>
+          )}
         <Outlet />
       </MainStyle>
     </RootStyle>
