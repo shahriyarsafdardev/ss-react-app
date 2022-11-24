@@ -30,10 +30,10 @@ export default function AllCoursesFilters({
   seniority: String[];
 }) {
   return (
-    <Grid container spacing={2} mt="1rem">
+    <Grid container spacing={{ xs: 1, md: 2 }}>
       {functions.length > 0 && (
         <Grid item md={4} sm={6} xs={12}>
-          <FormControl sx={{ width: '100%', marginBottom: '20px' }}>
+          <FormControl sx={{ width: '100%' }}>
             <InputLabel id="function-filter">Filter by Function</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
@@ -60,7 +60,7 @@ export default function AllCoursesFilters({
       )}
       {topics.length > 0 && (
         <Grid item md={4} sm={6} xs={12}>
-          <FormControl sx={{ width: '100%', marginBottom: '20px' }}>
+          <FormControl sx={{ width: '100%' }}>
             <InputLabel id="topic-filter">Filter by Topic</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
@@ -87,7 +87,7 @@ export default function AllCoursesFilters({
       )}
       {seniority.length > 0 && (
         <Grid item md={4} sm={6} xs={12}>
-          <FormControl sx={{ width: '100%', marginBottom: '20px' }}>
+          <FormControl sx={{ width: '100%' }}>
             <InputLabel id="seniority-filter">Filter by Seniority</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
