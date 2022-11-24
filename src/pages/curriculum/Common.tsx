@@ -127,8 +127,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    padding: '20px',
-    width: '100% !important'
+    padding: '40px',
+    width: '100% !important',
+    [theme.breakpoints.down('md')]: {
+      padding: '24px 20px'
+    }
   },
   courseTile: {
     height: '100%',
