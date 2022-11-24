@@ -51,25 +51,26 @@ export default function AllCourses() {
   }, []);
 
   const applyFilters = useCallback(() => {
-    let filteredCourses: any = [];
-    filteredCourses = courses?.filter((course: any) => {
-      let val = false;
-      if (selectedSeniority.length > 0) {
-        val = selectedSeniority.includes(course.seniority);
-      }
-      if (selectedFunctions.length > 0) {
-        val = val || selectedFunctions.includes(course.function);
-      }
-      if (selectedTopics.length > 0) {
-        val = val || _.intersection(selectedTopics, course.topics).length > 0;
-      }
-      return (
-        val ||
-        (!(selectedSeniority.length > 0) &&
-          !(selectedFunctions.length > 0) &&
-          !(selectedTopics.length > 0))
+    let filteredCourses: any = courses;
+
+    if (selectedSeniority.length > 0) {
+      filteredCourses = filteredCourses?.filter((course: any) =>
+        selectedSeniority.includes(course.seniority)
       );
-    });
+    }
+
+    if (selectedFunctions.length > 0) {
+      filteredCourses = filteredCourses?.filter((course: any) =>
+        selectedFunctions.includes(course.function)
+      );
+    }
+
+    if (selectedTopics.length > 0) {
+      filteredCourses = filteredCourses?.filter(
+        (course: any) => _.intersection(selectedTopics, course.topics).length > 0
+      );
+    }
+
     return filteredCourses;
   }, [selectedSeniority, courses, selectedFunctions, selectedTopics]);
 
@@ -83,7 +84,7 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere Courses">
-      <Box paddingX={{ xs: '20px', md: '72px' }}>
+      <Box paddingX={{ xs: '20px', md: '40px' }}>
         <AllCoursesFilters
           functions={functions}
           seniority={seniority}
