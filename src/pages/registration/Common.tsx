@@ -70,6 +70,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   saleBanner: {
     background: 'linear-gradient(180deg, #9D4EDD 0%, #212B36 179.63%)',
     backgroundSize: 'cover',
+    backfaceVisibility: 'hidden',
     backgroundPosition: 'center',
     color: 'white',
     padding: '10px',
