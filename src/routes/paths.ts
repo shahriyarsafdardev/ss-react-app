@@ -113,7 +113,8 @@ export const PATH_DASHBOARD = {
     cohort_experiences: path(ROOTS_DASHBOARD, `/cohort_experiences`),
     waitlist_form: path(ROOTS_DASHBOARD, `/waitlist_form`),
     alumni: path(ROOTS_DASHBOARD, `/alumni`),
-    surveys: path(ROOTS_DASHBOARD, `/surveys`)
+    surveys: path(ROOTS_DASHBOARD, `/surveys`),
+    zoomSessions: path(ROOTS_DASHBOARD, '/zoom-sessions')
   },
   eCommerce: {
     root: path(ROOTS_DASHBOARD, '/e-commerce'),

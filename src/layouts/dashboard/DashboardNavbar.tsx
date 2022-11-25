@@ -73,7 +73,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'resources',
     'code',
     'onboarding-calendar-instructions',
-    'referrals'
+    'referrals',
+    'zoom-sessions'
   ];
 
   useEffect(() => {
@@ -104,6 +105,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Calendar');
         } else if (section === 'referrals') {
           setCurrentTab('Balance');
+        } else if (section === 'zoom-sessions') {
+          setCurrentTab('Zoom Sessions');
         } else {
           setCurrentTab(section);
         }

@@ -59,6 +59,11 @@ const adminToolsConfig = {
       title: 'Surveys',
       path: PATH_DASHBOARD.adminTools.surveys,
       icon: ICONS.cohorts
+    },
+    {
+      title: 'Zoom Sessions',
+      path: PATH_DASHBOARD.adminTools.zoomSessions,
+      icon: ICONS.cohorts
     }
   ]
 };

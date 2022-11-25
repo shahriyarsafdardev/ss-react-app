@@ -6,7 +6,18 @@ import { StyledContainer } from 'components/cohorts/sessions/SurveyForm';
 import { useState } from 'react';
 import Highlight from 'react-highlight';
 import copy from 'clipboard-copy';
+import { Form } from 'formik';
 import { useSnackbar } from 'notistack5';
+
+export const StyledForm = styled(Form)(({ theme }) => ({
+  width: '80%',
+  maxHeight: '80vh',
+  maxWidth: '1232px',
+  margin: 'auto',
+  [theme.breakpoints.down('sm')]: {
+    width: '90%'
+  }
+}));
 
 export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',

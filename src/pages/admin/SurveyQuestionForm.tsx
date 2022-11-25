@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
-import { Form, FormikProvider, useFormik } from 'formik';
+import { FormikProvider, useFormik } from 'formik';
 import {
   Grid,
   Card,
@@ -15,7 +15,6 @@ import {
   TextField,
   Button
 } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { uniq } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -23,7 +22,7 @@ import { getSessions } from 'redux/slices/cohort';
 import LoadingScreen from 'components/LoadingScreen';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
-import { ExampleQuestionModal, LoadingContainer } from './Common';
+import { ExampleQuestionModal, LoadingContainer, StyledForm } from './Common';
 
 interface Survey {
   cohortCode: string;
@@ -32,16 +31,6 @@ interface Survey {
   isOnboardedQuestion: boolean;
   questionsJSON: string;
 }
-
-const StyledForm = styled(Form)(({ theme }) => ({
-  width: '80%',
-  maxHeight: '80vh',
-  maxWidth: '1232px',
-  margin: 'auto',
-  [theme.breakpoints.down('sm')]: {
-    width: '90%'
-  }
-}));
 
 export default function SurveyQuestionForm() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
