@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import {
   Stack,
   Typography,
@@ -12,12 +11,13 @@ import {
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import axiosV2 from 'utils/axiosV2';
+import Page from 'components/Page';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 
-import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
+import { Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
 export default function CourseInvite() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
@@ -113,13 +113,16 @@ export default function CourseInvite() {
   }
 
   return (
-    <PaymentRootStyle title="Sphere">
+    <Page height="100vh" width="100%" title="Sphere">
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg" alt="logo" />
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        className={`${classes.wrapperStack} ${classes.textCenter}`}
+        sx={{ height: 'auto', minHeight: '100%' }}
+        className={`${classes.wrapperPaymentStack} ${!isDesktop && classes.purpleBackground} ${
+          classes.textCenter
+        }`}
       >
-        <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
+        <Stack className={`${classes.paymentData}`} alignItems="center" spacing={3}>
           {company?.logo_url && (
             <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
           )}
@@ -153,8 +156,8 @@ export default function CourseInvite() {
         </Stack>
         <Stack
           justifyContent="center"
-          className={`${classes.inquiryTextContainer} ${isDesktop && classes.purpleBackground}`}
-          padding="80px !important"
+          alignItems="center"
+          className={`${classes.paymentData} ${isDesktop && classes.purpleBackground}`}
         >
           <Box className={classes.fullWidthCenter} width="100% !important">
             <Stack spacing={3} alignItems="center">
@@ -194,6 +197,6 @@ export default function CourseInvite() {
           </Box>
         </Stack>
       </Stack>
-    </PaymentRootStyle>
+    </Page>
   );
 }

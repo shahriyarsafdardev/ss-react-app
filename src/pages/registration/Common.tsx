@@ -8,10 +8,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '100%',
+    height: 'auto',
     padding: '120px',
     [theme.breakpoints.down('lg')]: {
-      padding: '30px'
+      padding: '60px'
     },
     [theme.breakpoints.down('md')]: {
       padding: '60px',
@@ -42,14 +42,20 @@ export const useStyles = makeStyles((theme: Theme) => ({
       justifyContent: 'center'
     }
   },
+  wrapperPaymentStack: {
+    width: '100%',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'center'
+    }
+  },
   paymentStack: {
     width: '100%',
-    height: 'calc(100% - 84px) !important',
+    minHeight: 'calc(100% - 84px) !important',
     [theme.breakpoints.down('md')]: {
-      height: 'calc(100% - 104px) !important'
+      minHeight: 'calc(100% - 104px) !important'
     },
     [theme.breakpoints.down('sm')]: {
-      height: 'calc(100% - 125px) !important'
+      minHeight: 'calc(100% - 125px) !important'
     }
   },
   fullWidthCenter: {
@@ -170,6 +176,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     background: '-webkit-linear-gradient(94.23deg, #913DFF -4.78%, #43009A 53.44%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
+  },
+  whiteFridayText: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    color: '#fff',
+    [theme.breakpoints.up('md')]: {
+      background: '-webkit-linear-gradient(94.23deg, #913DFF -4.78%, #43009A 53.44%)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent'
+    }
   }
 }));
 

@@ -10,7 +10,7 @@ import {
   Button,
   Box
 } from '@material-ui/core';
-
+import Page from 'components/Page';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,14 +18,7 @@ import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import {
-  PaymentRootStyle,
-  BannerLogo,
-  useStyles,
-  StyledLoadingButton,
-  LoadingContainer,
-  SaleBanner
-} from './Common';
+import { BannerLogo, useStyles, StyledLoadingButton, LoadingContainer, SaleBanner } from './Common';
 
 export default function TeamPackageInquiry() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
@@ -115,7 +108,7 @@ export default function TeamPackageInquiry() {
   }
 
   return (
-    <PaymentRootStyle title="Sphere">
+    <Page height="100vh" width="100%" title="Sphere ">
       <SaleBanner />
       <BannerLogo
         src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg"
@@ -123,12 +116,14 @@ export default function TeamPackageInquiry() {
       />
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        className={`${classes.wrapperStack} ${classes.paymentStack} ${classes.textCenter}`}
+        className={`${classes.wrapperPaymentStack} ${classes.paymentStack} ${
+          !isDesktop && classes.purpleBackground
+        } ${classes.textCenter}`}
       >
-        <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
-          {/* {company?.logo_url && (
+        <Stack className={`${classes.paymentData}`} alignItems="center" spacing={3}>
+          {company?.logo_url && (
             <Avatar src={company?.logo_url} alt={company?.name} sx={{ width: 112, height: 112 }} />
-          )} */}
+          )}
           <Typography variant="h3" className={classes.heading}>
             Inquire about our Team Packages
           </Typography>
@@ -152,7 +147,7 @@ export default function TeamPackageInquiry() {
             If you provide the contact details of your team lead / training rep we will get in touch
             to share more information.
           </Typography>
-          <Typography className={classes.blackFridayText}>
+          <Typography className={classes.whiteFridayText}>
             As part of our Black Friday Sale you will also recieve an additional $400 on your
             account which you can use towards your next Sphere course.
           </Typography>
@@ -160,7 +155,7 @@ export default function TeamPackageInquiry() {
         <Stack
           justifyContent="center"
           alignItems="center"
-          className={`${classes.inquiryTextContainer} ${isDesktop && classes.purpleBackground}`}
+          className={`${classes.paymentData} ${isDesktop && classes.purpleBackground}`}
         >
           <Box className={classes.fullWidthCenter}>
             <FormikProvider value={formik}>
@@ -206,6 +201,6 @@ export default function TeamPackageInquiry() {
           </Box>
         </Stack>
       </Stack>
-    </PaymentRootStyle>
+    </Page>
   );
 }

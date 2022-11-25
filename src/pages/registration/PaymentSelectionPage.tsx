@@ -60,12 +60,7 @@ export default function PaymentSelectionPage() {
   }
 
   return (
-    <Page
-      width="100%"
-      height={`${isDesktop && '100vh'}`}
-      title="Sphere Payment"
-      className={classes.purpleBackground}
-    >
+    <Page width="100%" height={`${isDesktop && '100vh'}`} title="Sphere Payment">
       <SaleBanner />
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <BannerLogo
@@ -73,7 +68,7 @@ export default function PaymentSelectionPage() {
           alt="logo"
         />
         <Stack
-          className={`${classes.paymentStack} ${classes.wrapperStack}`}
+          className={`${classes.purpleBackground} ${classes.paymentStack} ${classes.wrapperPaymentStack}`}
           spacing={4}
           justifyContent="center"
           alignItems="center"

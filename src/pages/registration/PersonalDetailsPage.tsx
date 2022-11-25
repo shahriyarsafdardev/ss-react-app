@@ -5,10 +5,11 @@ import { useLocation, useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
+import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { PaymentRootStyle, BannerLogo, useStyles, LoadingContainer, SaleBanner } from './Common';
+import { BannerLogo, useStyles, LoadingContainer, SaleBanner } from './Common';
 import WaitListSuccessPage from './WaitListSuccessPage';
 
 export type UserType = {
@@ -148,7 +149,7 @@ export default function PersonalDetailsPage() {
   }
 
   return (
-    <PaymentRootStyle title="Sphere Registration">
+    <Page height="100vh" width="100%" title="Sphere Registration ">
       <SaleBanner />
       {cohort?.wait_listed && formSubmitted ? (
         <WaitListSuccessPage />
@@ -161,9 +162,11 @@ export default function PersonalDetailsPage() {
 
           <Stack
             direction={{ xs: 'column', md: 'row' }}
-            className={`${classes.paymentStack} ${classes.wrapperStack}`}
+            className={`${classes.wrapperPaymentStack} ${classes.paymentStack} ${
+              !isDesktop && classes.purpleBackground
+            } ${classes.textCenter}`}
           >
-            <Stack className={classes.paymentData} alignItems="center" spacing={4}>
+            <Stack className={`${classes.paymentData}`} alignItems="center" spacing={3}>
               <Typography className={`${classes.heading} ${classes.toggleFont}`}>
                 {cohort?.name}
               </Typography>
@@ -180,7 +183,7 @@ export default function PersonalDetailsPage() {
                   textAlign="center"
                   className={`${isDesktop && classes.paddingHorizontal40}`}
                 >
-                  live with {cohort?.host_full_names} and a community of likeminded industry
+                  Live with {cohort?.host_full_names} and a community of likeminded industry
                   professionals
                 </Typography>
               )}
@@ -251,6 +254,6 @@ export default function PersonalDetailsPage() {
           </Stack>
         </>
       )}
-    </PaymentRootStyle>
+    </Page>
   );
 }
