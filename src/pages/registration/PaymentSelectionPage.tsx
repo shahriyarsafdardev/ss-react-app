@@ -80,13 +80,13 @@ export default function PaymentSelectionPage() {
           padding={{ xs: '10px', md: '50px', lg: '112px' }}
           paddingBottom="80px !important"
         >
-          {company?.logo_url && (
+          {/* {company?.logo_url && (
             <Avatar
               src={company?.logo_url}
               alt={company?.name}
               className={classes.paymentSelectionAvatar}
             />
-          )}
+          )} */}
           <Typography
             className={`${classes.heading} ${classes.whiteFont}`}
             sx={{ ...(!isDesktop && !company?.logo_url && { marginTop: '80px !important' }) }}
