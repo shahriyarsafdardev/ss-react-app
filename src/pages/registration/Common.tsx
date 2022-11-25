@@ -42,6 +42,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
       justifyContent: 'center'
     }
   },
+  paymentStack: {
+    width: '100%',
+    height: 'calc(100% - 84px) !important',
+    [theme.breakpoints.down('md')]: {
+      height: 'calc(100% - 104px) !important'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100% - 125px) !important'
+    }
+  },
   fullWidthCenter: {
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -56,6 +66,23 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     color: 'white'
+  },
+  saleBanner: {
+    background: 'linear-gradient(180deg, #9D4EDD 0%, #212B36 179.63%)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    color: 'white',
+    padding: '10px',
+    height: '84px',
+    textAlign: 'center',
+    width: '100%',
+    fontSize: '18px',
+    [theme.breakpoints.down('md')]: {
+      height: '104px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '125px'
+    }
   },
   heading: {
     fontSize: '32px',
@@ -155,6 +182,15 @@ export const Logo = styled('img')(({ theme }) => ({
   }
 }));
 
+export const BannerLogo = styled('img')(({ theme }) => ({
+  width: '9%',
+  position: 'absolute',
+  top: '120px',
+  left: '2%',
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}));
 export const StyledCheckIcon = styled('img')(({ theme }) => ({
   width: '24px',
   height: '24px',
@@ -217,3 +253,16 @@ export const InputAmount = ({
     <Typography variant="h4">USD</Typography>
   </Stack>
 );
+
+export function SaleBanner() {
+  const classes = useStyles();
+
+  return (
+    <Stack className={classes.saleBanner} alignItems="center" justifyContent="center">
+      <Typography>
+        🚨 <b>Black Friday Sale</b> 🚨 Get $400 towards your next course by purchasing a course
+        through an individual or team subscription | Expires Monday 5pm PT
+      </Typography>
+    </Stack>
+  );
+}

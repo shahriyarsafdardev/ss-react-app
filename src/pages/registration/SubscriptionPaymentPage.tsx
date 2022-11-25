@@ -11,7 +11,7 @@ import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties } from 'utils/eventTracking';
-import { InputAmount, LoadingContainer, Logo, useStyles } from './Common';
+import { InputAmount, LoadingContainer, BannerLogo, useStyles, SaleBanner } from './Common';
 import PayNowForm from './PayNowForm';
 
 export default function SubscriptionPaymentPage() {
@@ -86,8 +86,12 @@ export default function SubscriptionPaymentPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Membership">
-      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
-      <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
+      <SaleBanner />
+      <BannerLogo
+        src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
+        alt="logo"
+      />
+      <Stack direction={{ xs: 'column', md: 'row' }} className={classes.paymentStack}>
         <Stack
           className={`${classes.paymentData} ${classes.purpleBackground}`}
           paddingTop={`${!isDesktop && '60px !important'}`}

@@ -8,7 +8,7 @@ import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { PaymentRootStyle, Logo, useStyles, LoadingContainer } from './Common';
+import { PaymentRootStyle, BannerLogo, useStyles, LoadingContainer, SaleBanner } from './Common';
 import WaitListSuccessPage from './WaitListSuccessPage';
 
 export type UserType = {
@@ -149,16 +149,20 @@ export default function PersonalDetailsPage() {
 
   return (
     <PaymentRootStyle title="Sphere Registration">
+      <SaleBanner />
       {cohort?.wait_listed && formSubmitted ? (
         <WaitListSuccessPage />
       ) : (
         <>
-          <Logo
+          <BannerLogo
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png"
             alt="logo"
           />
 
-          <Stack direction={{ xs: 'column', md: 'row' }} className={classes.wrapperStack}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            className={`${classes.paymentStack} ${classes.wrapperStack}`}
+          >
             <Stack className={classes.paymentData} alignItems="center" spacing={4}>
               <Typography className={`${classes.heading} ${classes.toggleFont}`}>
                 {cohort?.name}

@@ -18,7 +18,14 @@ import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { PaymentRootStyle, Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
+import {
+  PaymentRootStyle,
+  BannerLogo,
+  useStyles,
+  StyledLoadingButton,
+  LoadingContainer,
+  SaleBanner
+} from './Common';
 
 export default function TeamPackageInquiry() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
@@ -109,10 +116,14 @@ export default function TeamPackageInquiry() {
 
   return (
     <PaymentRootStyle title="Sphere">
-      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg" alt="logo" />
+      <SaleBanner />
+      <BannerLogo
+        src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg"
+        alt="logo"
+      />
       <Stack
         direction={{ xs: 'column', md: 'row' }}
-        className={`${classes.wrapperStack} ${classes.textCenter}`}
+        className={`${classes.wrapperStack} ${classes.paymentStack} ${classes.textCenter}`}
       >
         <Stack className={`${classes.inquiryTextContainer}`} alignItems="center" spacing={3}>
           {company?.logo_url && (
