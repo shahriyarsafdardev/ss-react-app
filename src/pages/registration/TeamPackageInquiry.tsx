@@ -133,7 +133,7 @@ export default function TeamPackageInquiry() {
             Inquire about our Team Packages
           </Typography>
           <Typography className={classes.inquiryFont}>
-            You can learn more about our team packages through{' '}
+            You can learn more about our team packages through our{' '}
             <Link
               sx={{
                 textDecoration: 'underline !important',
@@ -145,12 +145,16 @@ export default function TeamPackageInquiry() {
                 trackEvent(cohort, 'Cohort Registration - Team Package - Pricing Page Opened')
               }
             >
-              our team pricing page
+              team pricing page
             </Link>
           </Typography>
           <Typography className={classes.inquiryFont}>
             If you provide the contact details of your team lead / training rep we will get in touch
             to share more information.
+          </Typography>
+          <Typography className={classes.blackFridayText}>
+            As part of our Black Friday Sale you will also recieve an additional $400 on your
+            account which you can use towards your next Sphere course.
           </Typography>
         </Stack>
         <Stack

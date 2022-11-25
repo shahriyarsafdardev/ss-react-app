@@ -176,7 +176,7 @@ export default function PayNowForm({
             disabled={!(valid && isValid)}
             className={classes.submitButton}
           >
-            Individual Subscription
+            Get Started
           </LoadingButton>
           <Button
             fullWidth

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
 import { setSegmentUserProperties } from 'utils/eventTracking';
-import { LoadingContainer, BannerLogo, useStyles, SaleBanner } from './Common';
+import { LoadingContainer, Logo, useStyles } from './Common';
 import PayLaterForm from './PayLaterForm';
 
 export default function CoursePaymentPage() {
@@ -75,12 +75,8 @@ export default function CoursePaymentPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Payment">
-      <SaleBanner />
-      <BannerLogo
-        src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
-        alt="logo"
-      />
-      <Stack direction={{ xs: 'column', md: 'row' }} className={classes.paymentStack}>
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
+      <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
         <Stack
           className={`${classes.paymentData} ${classes.purpleBackground}`}
           paddingTop={`${!isDesktop && '60px !important'}`}

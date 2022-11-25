@@ -101,7 +101,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   inquiryFont: {
     color: '#334155',
-    fontWeight: 600,
     [theme.breakpoints.down('md')]: {
       color: '#fff'
     }
@@ -164,6 +163,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
     minWidth: '35px',
     minHeight: '35px'
+  },
+  blackFridayText: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    background: '-webkit-linear-gradient(94.23deg, #913DFF -4.78%, #43009A 53.44%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent'
   }
 }));
 

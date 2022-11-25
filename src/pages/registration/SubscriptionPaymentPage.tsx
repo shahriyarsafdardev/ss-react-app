@@ -98,7 +98,7 @@ export default function SubscriptionPaymentPage() {
         >
           <Stack alignItems="center" spacing={3}>
             <Typography variant="h4" className={`${classes.heading} ${classes.whiteFont}`}>
-              Individual Subscription
+              Your Sphere Subscription
             </Typography>
             <Stack alignItems="center" sx={{ marginBottom: '30px' }} spacing={1}>
               <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
@@ -133,22 +133,26 @@ export default function SubscriptionPaymentPage() {
                 Every year, you will be able to enroll in ${amount} worth of Sphere courses with a
                 5% discount. You can update or cancel your subscription at any time.
               </Typography>
-              <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
-                The 5% discount starts immediately and will be applied to your enrollment in{' '}
-                {cohort?.name}. You will also receive access to our alumni events and community.
+              <Typography className={classes.whiteFont}>
+                Your subscsription and associated discount starts immediatly and will be applied to
+                your enrollment in {cohort?.name}.{' '}
+                <Link
+                  sx={{
+                    textDecoration: 'underline !important',
+                    color: '#FFFFFF',
+                    textAlign: 'center',
+                    marginTop: '0px !important'
+                  }}
+                  href="https://www.getsphere.com/pricing"
+                  target="_blank"
+                >
+                  Learn more here.
+                </Link>
               </Typography>
-              <Link
-                sx={{
-                  textDecoration: 'underline !important',
-                  color: '#FFFFFF',
-                  textAlign: 'center',
-                  marginTop: '0px !important'
-                }}
-                href="https://www.getsphere.com/pricing"
-                target="_blank"
-              >
-                Learn more here.
-              </Link>
+              <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
+                As part of our Black Friday Sale you will also recieve an additional $400 on your
+                account which you can use towards your next Sphere course.
+              </Typography>
             </Stack>
           </Box>
         </Stack>

@@ -96,7 +96,17 @@ export function IndividualMembershipPaymentDetails({
             alt="check icon"
           />
           <Typography>
-            Your choice of ${Math.floor(price)} worth of Sphere courses every year (5% discount)
+            Your choice of ${Math.floor(price)} worth of Sphere courses every year (with a 5%
+            discount across our library)
+          </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography className={classes.blackFridayText}>
+            Black Friday Sale: $400 towards your next Sphere course
           </Typography>
         </Stack>
       </Stack>
@@ -164,14 +174,25 @@ export function TeamMembershipPaymentDetails({
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
-          <Typography>Free access to a course of your choosing</Typography>
+          <Typography>
+            Get a free course of your choosing if you successfully refer your team
+          </Typography>
         </Stack>
         <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
-          <Typography>10%+ discount on all Sphere courses</Typography>
+          <Typography>10%+ discount on all Sphere courses for your team</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
+          <Typography className={classes.blackFridayText}>
+            Black Friday Sale: $400 towards your next Sphere course
+          </Typography>
         </Stack>
       </Stack>
       <Button
