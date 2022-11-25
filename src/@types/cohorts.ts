@@ -129,6 +129,7 @@ export type Session = {
   display_in_sessions_tab: boolean;
   custom_name: string;
   networking_session: string;
+  included?: boolean;
 };
 
 export type SessionListItem = {

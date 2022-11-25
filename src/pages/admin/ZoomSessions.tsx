@@ -34,15 +34,15 @@ export default function ZoomSessions() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const [currentCode, setCurrentCode] = useState('');
   const [intakeList, setIntakeList] = useState<any>([]);
-  const [included, setIncluded] = useState(true);
+  const [included, setIncluded] = useState<boolean | null>(null);
 
   const SessionSchema = Yup.object().shape({
     cohortCode: Yup.string().required('Cohort Code is required'),
     cohortIntake: Yup.string().required('cohort Intake is required'),
-    sessionNumber: Yup.string().test(
+    sessionID: Yup.string().test(
       'oneOfRequired',
-      'Select session or check is Onboarding question.',
-      (item, inputValue) => inputValue.parent.sessionNumber || inputValue.parent.isOnboardedQuestion
+      'Select session',
+      (item, inputValue) => inputValue.parent.sessionID
     )
   });
 
@@ -51,7 +51,7 @@ export default function ZoomSessions() {
     initialValues: {
       cohortCode: '',
       cohortIntake: '',
-      sessionNumber: ''
+      sessionID: ''
     },
     validationSchema: SessionSchema,
     onSubmit: () => {}
@@ -122,7 +122,7 @@ export default function ZoomSessions() {
                           onClick={() => {
                             setFieldValue('cohortCode', code);
                             setFieldValue('cohortIntake', '');
-                            setFieldValue('sessionNumber', '');
+                            setFieldValue('sessionID', '');
                             setIntakes(code);
                           }}
                         >
@@ -152,7 +152,7 @@ export default function ZoomSessions() {
                             value={intakeName}
                             onClick={() => {
                               setFieldValue('cohortIntake', intakeName);
-                              setFieldValue('sessionNumber', '');
+                              setFieldValue('sessionID', '');
                             }}
                           >
                             {intakeName}
@@ -163,26 +163,26 @@ export default function ZoomSessions() {
                   </Stack>
                 )}
 
-                {sessions && !values.isOnboardedQuestion && (
+                {sessions && (
                   <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                     <FormControl fullWidth>
                       <InputLabel>Session Number</InputLabel>
                       <MaterialSelect
                         label="Session Number"
                         fullWidth
-                        defaultValue={values.sessionNumber}
-                        value={values.sessionNumber}
+                        defaultValue={values.sessionID}
+                        value={values.sessionID}
                         data-testid="session-number"
                         disabled={sessions?.length <= 0 || !cohort}
-                        error={Boolean(touched.sessionNumber && errors.sessionNumber)}
+                        error={Boolean(touched.sessionID && errors.sessionID)}
                       >
                         {uniq(
                           sessions?.map((session: any) => (
                             <MenuItem
-                              key={session.number}
-                              value={session.number}
+                              key={session.id}
+                              value={session.id}
                               onClick={() => {
-                                setFieldValue('sessionNumber', session.number);
+                                setFieldValue('sessionID', session.id);
                               }}
                             >
                               Session # {session.number} - {session.name}
@@ -193,10 +193,10 @@ export default function ZoomSessions() {
                     </FormControl>
                   </Stack>
                 )}
-                {values.sessionNumber && (
+                {values.sessionID && (
                   <Stack alignItems="center" direction="row">
                     <LabelStyled className={!included ? 'blue' : 'gray'}>Not Included</LabelStyled>
-                    <Switch checked={included} onChange={() => setIncluded(!included)} />
+                    <Switch checked={!!included} onChange={() => setIncluded(!included)} />
                     <LabelStyled className={included ? 'blue' : 'gray'}>Included</LabelStyled>
                   </Stack>
                 )}
