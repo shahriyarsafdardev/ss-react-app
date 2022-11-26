@@ -15,6 +15,8 @@ import { uniq } from 'lodash';
 import LoadingScreen from 'components/LoadingScreen';
 import { getSessions } from 'redux/slices/cohort';
 import { styled } from '@material-ui/core/styles';
+import axiosV2 from 'utils/axiosV2';
+import { useSnackbar } from 'notistack5';
 import { LoadingContainer, StyledForm } from './Common';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 
@@ -35,6 +37,7 @@ export default function ZoomSessions() {
   const [currentCode, setCurrentCode] = useState('');
   const [intakeList, setIntakeList] = useState<any>([]);
   const [included, setIncluded] = useState<boolean | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const SessionSchema = Yup.object().shape({
     cohortCode: Yup.string().required('Cohort Code is required'),
@@ -42,7 +45,7 @@ export default function ZoomSessions() {
     sessionID: Yup.string().test(
       'oneOfRequired',
       'Select session',
-      (item, inputValue) => inputValue.parent.sessionID
+      (item, inputValue) => inputValue.parent.sessionNumber || inputValue.parent.isOnboardedQuestion
     )
   });
 
@@ -54,10 +57,30 @@ export default function ZoomSessions() {
       sessionID: ''
     },
     validationSchema: SessionSchema,
-    onSubmit: () => {}
+    onSubmit: (values) => {
+      let activeSession: any = {};
+      axiosV2.get('/session_timestamps/active_session.json').then((res) => {
+        activeSession = res.data?.active_session;
+      });
+      if (activeSession?.id) {
+        const sessionID = sessions.filter((session) => session.number === values.sessionNumber)?.[0]
+          ?.id;
+        axiosV2
+          .post('/session_timestamps/add_admin_timestamp.json', {
+            session_id: sessionID,
+            session_time: activeSession?.session_time,
+            included
+          })
+          .then((res) => {
+            setIncluded(!included);
+          });
+      } else {
+        enqueueSnackbar('Session is not live!', { variant: 'error' });
+      }
+    }
   });
 
-  const { values, setFieldValue, touched, errors } = formik;
+  const { values, setFieldValue, touched, errors, handleSubmit } = formik;
 
   const cohort = useSelector(
     (state: RootState) =>
@@ -89,6 +112,7 @@ export default function ZoomSessions() {
       setIntakeList([]);
     }
   };
+
   if (cohorts.length <= 0) {
     return (
       <LoadingContainer>
