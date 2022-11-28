@@ -158,10 +158,27 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%'
     }
+  },
+  font14: {
+    fontSize: '14px'
+  },
+  instructorAvatar: {
+    width: 56,
+    height: 56,
+    alignSelf: 'flex-end',
+    [theme.breakpoints.down('sm')]: {
+      alignSelf: 'center'
+    }
   }
 }));
 
-export const CourseTileHover = ({ course }: { course: any }) => {
+export const CourseTileHover = ({
+  handleTileClick,
+  course
+}: {
+  handleTileClick: Function;
+  course: any;
+}) => {
   const buttonText = () => (course?.wait_listed ? 'Join the waitlist' : 'Learn more');
 
   return (
@@ -182,6 +199,7 @@ export const CourseTileHover = ({ course }: { course: any }) => {
         transition: 'all .4s ease-out',
         overflow: 'hidden'
       }}
+      onClick={() => handleTileClick()}
     >
       <Typography>{course?.description}</Typography>
       <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
