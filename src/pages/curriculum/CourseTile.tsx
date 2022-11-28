@@ -1,11 +1,45 @@
 import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
+import { trackEvent } from 'utils/eventTracking';
 import { CourseTileHover, useStyles } from './Common';
 
 export default function CourseTile({ course }: { course: any }) {
   const classes = useStyles();
+
+  let startTime: any = {};
+  let endTime: any = {};
+
+  function handleMouseIn() {
+    startTime = new Date();
+  }
+
+  function handleMouseOut() {
+    endTime = new Date();
+    let timeDiff = endTime - startTime;
+    timeDiff /= 1000;
+
+    const hoverTime = Math.round(timeDiff % 60);
+    if (hoverTime >= 2) {
+      trackEvent(course, 'Curriculum Page - Cohort Tile - Hover', { 'Course Title': course?.name });
+    }
+  }
+
+  const handleTileClick = () => {
+    trackEvent(course, 'Curriculum Page - Cohort Tile - Selected', {
+      'Course Title': course?.name
+    });
+    window.open(
+      `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`,
+      '_blank'
+    );
+  };
+
   return (
     <Grid item xs={12} sm={6} md={4} sx={{ px: '8px !important' }}>
-      <Stack className={classes.courseTile}>
+      <Stack
+        className={classes.courseTile}
+        onMouseEnter={() => handleMouseIn()}
+        onMouseLeave={() => handleMouseOut()}
+      >
         <>
           <Typography variant="h4" sx={{ marginBottom: '20px' }}>
             {course.name}
@@ -16,13 +50,15 @@ export default function CourseTile({ course }: { course: any }) {
                 <Avatar
                   src={course?.preview_instructor_image}
                   alt={course?.preview_instructor_name}
-                  sx={{ width: 56, height: 56 }}
+                  className={classes.instructorAvatar}
                 />
                 <Stack>
-                  <Typography>
+                  <Typography className={classes.font14}>
                     Live with {course?.preview_instructor_name || 'the instructor'}
                   </Typography>
-                  <Typography>{course?.preview_instructor_affiliation}</Typography>
+                  <Typography className={classes.font14}>
+                    {course?.preview_instructor_affiliation}
+                  </Typography>
                 </Stack>
               </Stack>
             )}
@@ -31,9 +67,7 @@ export default function CourseTile({ course }: { course: any }) {
                 <img
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
-                  width="140"
-                  height="25"
-                  style={{ margin: '20px auto 0px auto' }}
+                  style={{ margin: '20px auto 0px auto', maxHeight: '30px', maxWidth: '250px' }}
                 />
               </Box>
             )}
@@ -42,7 +76,7 @@ export default function CourseTile({ course }: { course: any }) {
             )}
           </Stack>
         </>
-        <CourseTileHover course={course} />
+        <CourseTileHover handleTileClick={handleTileClick} course={course} />
       </Stack>
     </Grid>
   );
