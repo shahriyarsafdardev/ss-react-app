@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import SessionRow from './SessionRow';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -22,9 +22,6 @@ export default function SessionList({
 }: SessionListProps) {
   return (
     <ListContainer>
-      <Box marginBottom={2}>
-        <Typography variant="h4">All Sessions</Typography>
-      </Box>
       <Box data-testid="sessions-list-container" id="sessions-list-container">
         {sessionsList.map((session, index) => (
           <SessionRow

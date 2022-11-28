@@ -24,7 +24,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
-        { title: 'live sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        { title: 'recordings & slides', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
         { title: 'resources', path: PATH_DASHBOARD.cohorts.resources(cohort.id) },
         { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) },
         {
@@ -126,7 +126,9 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed) ||
           (child.title === 'messaging' && onboarding_messaging_step_completed) ||
-          (['live sessions', 'Q&A', 'networking', 'code', 'resources'].includes(child.title) &&
+          (['recordings & slides', 'Q&A', 'networking', 'code', 'resources'].includes(
+            child.title
+          ) &&
             onboarding_messaging_step_completed &&
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed &&
@@ -136,7 +138,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
           data = { ...child, disabled: false };
         } else if (
           [
-            'live sessions',
+            'recordings & slides',
             'Q&A',
             'networking',
             'messaging',

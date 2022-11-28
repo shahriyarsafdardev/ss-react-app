@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Grid, Box } from '@material-ui/core';
+import { Stack, Box } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
@@ -19,25 +19,18 @@ import SessionList from './SessionList';
 import ContentReleasePreview from './ContentReleasePreview';
 // ----------------------------------------------------------------------
 
-const SessionsContainer = styled(Container)(({ theme }) => ({
-  display: 'flex',
+const SessionsContainer = styled(Stack)(({ theme }) => ({
   marginBottom: '50px',
+  borderTop: '1px solid #E5E5E5',
   [theme.breakpoints.down('sm')]: {
     display: 'block'
   }
 }));
 
-const SessionsInnerContainer = styled(Grid)(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    display: 'block',
-    marginLeft: 0,
-    '.MuiGrid-item': {
-      paddingLeft: 0
-    }
-  }
-}));
-
-const SessionListDesktopContainer = styled(Grid)(({ theme }) => ({
+const SessionListDesktopContainer = styled(Box)(({ theme }) => ({
+  maxWidth: '280px',
+  width: '280px',
+  borderRight: '1px solid #E5E5E5',
   [theme.breakpoints.down('md')]: {
     display: 'none'
   }
@@ -101,6 +94,12 @@ export default function SessionsTab() {
   }, [sessions]);
 
   useEffect(() => {
+    if (filteredSessions && filteredSessions.length > 0) {
+      setSelectedSession(filteredSessions.length - 1);
+    }
+  }, [filteredSessions]);
+
+  useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
     }
@@ -125,26 +124,22 @@ export default function SessionsTab() {
     if (filteredSessions && filteredSessions.length > 0) {
       return (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-          <SessionsContainer>
-            <SessionsInnerContainer container>
-              <Grid item md={8} sm={12}>
-                <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
-                  <SessionBoard
-                    session={filteredSessions && filteredSessions[selectedSession]}
-                    isLearner={isLearner}
-                    isFree={cohort.is_free}
-                  />
-                </SessionContext.Provider>
-              </Grid>
-              <SessionListDesktopContainer item md={4}>
-                <SessionList
-                  isLearner={isLearner}
-                  onClick={setSelectedSession}
-                  selectedSession={selectedSession}
-                  sessionsList={trimmedSessionData}
-                />
-              </SessionListDesktopContainer>
-            </SessionsInnerContainer>
+          <SessionsContainer direction="row">
+            <SessionListDesktopContainer>
+              <SessionList
+                isLearner={isLearner}
+                onClick={setSelectedSession}
+                selectedSession={selectedSession}
+                sessionsList={trimmedSessionData}
+              />
+            </SessionListDesktopContainer>
+            <SessionContext.Provider value={{ sessionNumber: selectedSession + 1 }}>
+              <SessionBoard
+                session={filteredSessions && filteredSessions[selectedSession]}
+                isLearner={isLearner}
+                isFree={cohort.is_free}
+              />
+            </SessionContext.Provider>
             <SessionListSidebar
               setSelectedSession={setSelectedSession}
               selectedSession={selectedSession}

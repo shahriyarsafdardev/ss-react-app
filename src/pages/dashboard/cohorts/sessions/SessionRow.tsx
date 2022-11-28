@@ -31,23 +31,23 @@ const ListItem = styled('div')((props) => ({
   }
 }));
 
-const ListIcon = styled('div')(({ theme }) => ({
-  padding: 10,
-  [theme.breakpoints.down('md')]: {
-    padding: 6
-  }
-}));
-
 const Title = styled('p')((props) => ({
-  fontSize: '18px',
+  fontSize: '16px',
   fontWeight: 'bold'
 }));
 
 const SessionDetails = styled('div')((props) => ({
   display: 'flex',
-  fontSize: '15px',
+  fontSize: '14px',
   lineHeight: '33px',
-  color: '#6C7885',
+  color: '#6C7885'
+}));
+
+const SessionCountdown = styled('div')((props) => ({
+  display: 'flex',
+  fontSize: '12px',
+  lineHeight: '33px',
+  color: '#A6AEB7',
   img: {
     width: '20px'
   }
@@ -140,17 +140,13 @@ export default function SessionRow({
     <ListItem
       id={`session-list-${index}`}
       data-testid={`session-list-${index}`}
-      style={{ ...(isSelected && { backgroundColor: 'rgba(77, 77, 205, 0.03)' }) }}
+      style={{
+        padding: '10px 30px',
+        ...(isSelected && {
+          backgroundColor: 'rgba(77, 77, 205, 0.03)'
+        })
+      }}
     >
-      <ListIcon>
-        <img
-          src={isPastSession ? '/static/icons/ic_recorder.svg' : '/static/icons/ic_clock.svg'}
-          alt="clock-icon"
-          data-testid={`session-icon-${index}`}
-          width={35}
-          style={{ maxWidth: 'unset' }}
-        />
-      </ListIcon>
       <div
         onClick={() => {
           onClick(index);
@@ -166,10 +162,10 @@ export default function SessionRow({
           data-testid={`session-list-number-${index}`}
         >{`Session ${session.number} | ${session.length}`}</SessionDetails>
         <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
-        <SessionDetails data-testid={`session-list-time-container-${index}`}>
+        <SessionCountdown data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
           {sessionTime(firstUpcomingDate(session.times))}
-        </SessionDetails>
+        </SessionCountdown>
       </div>
       {!isLearner && <InstructorOptions handleDelete={() => {}} />}
     </ListItem>
