@@ -117,18 +117,18 @@ export const ShareReferralLink = ({
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
   const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
-  const cohortID = window.location.pathname.split('/')[2] || '';
+  const firstCohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
   const navigate = useNavigate();
 
   const buttonText = () =>
     referrals_count?.total_referrals_count === 0 ? 'Go to Referrals' : 'Send more referrals';
 
   const handleButtonClick = () => {
-    if (window.location.pathname.split('/')[1] === 'cohorts' && cohortID !== '') {
-      trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
+    if (firstCohort) {
+      trackEvent(firstCohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
       navigate('/user/referrals');
     } else {
-      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
+      enqueueSnackbar('Please enroll in a cohort to send referrals!', { variant: 'warning' });
     }
   };
 
