@@ -30,7 +30,7 @@ export default function ReferralProgress({
               show: true,
               showAlways: true,
               offsetY: 0,
-              formatter: () => `${enrolled} referrals`
+              formatter: () => `${enrolled} referral${enrolled > 1 ? 's' : ''}`
             },
             total: {
               show: true,
