@@ -4,6 +4,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { LoadingContainer } from 'pages/admin/Common';
 import { Box } from '@material-ui/core';
+import useAuth from 'hooks/useAuth';
 import CurriculumContainer from './CurriculumContainer';
 import CurriculumHeader from './CurriculumHeader';
 import CurriculumTabs from './CurriculumTabs';
@@ -15,6 +16,7 @@ export default function CurriculumPage() {
   const [courses, setCourses] = useState<any>([]);
   const [seniority, setSeniority] = useState<string[]>([]);
   const [selectedSeniority, setSelectedSeniority] = useState<string[]>([]);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const getCourses = async () => {
@@ -32,6 +34,14 @@ export default function CurriculumPage() {
     return () => {
       setSelectedSeniority([]);
     };
+  }, []);
+
+  useEffect(() => {
+    !isAuthenticated &&
+      window.analytics?.ready &&
+      window.analytics?.ready(() => {
+        window.analytics?.identify(window.analytics?.user().anonymousId(), {});
+      });
   }, []);
 
   const applyFilters = useCallback(() => {
