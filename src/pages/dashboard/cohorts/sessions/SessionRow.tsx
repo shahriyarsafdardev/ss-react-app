@@ -4,11 +4,9 @@ import { useRef, useState, useContext } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
-import { Box, MenuItem, IconButton } from '@material-ui/core';
+import { Box, MenuItem, IconButton, Stack } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MenuPopover from 'components/MenuPopover';
-import { Icon } from '@iconify/react';
-import cancel from '@iconify/icons-ic/cancel';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -158,16 +156,20 @@ export default function SessionRow({
         }}
         style={{ width: '100%' }}
       >
-        <SessionDetails
-          data-testid={`session-list-number-${index}`}
-        >{`Session ${session.number} | ${session.length}`}</SessionDetails>
-        <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
+        <Stack direction="row">
+          <Box>
+            <SessionDetails
+              data-testid={`session-list-number-${index}`}
+            >{`Session ${session.number} | ${session.length}`}</SessionDetails>
+            <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
+          </Box>
+          {!isLearner && <InstructorOptions handleDelete={() => {}} />}
+        </Stack>
         <SessionCountdown data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
           {sessionTime(firstUpcomingDate(session.times))}
         </SessionCountdown>
       </div>
-      {!isLearner && <InstructorOptions handleDelete={() => {}} />}
     </ListItem>
   );
 }

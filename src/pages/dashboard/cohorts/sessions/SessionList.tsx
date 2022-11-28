@@ -11,7 +11,8 @@ type SessionListProps = {
 };
 
 const ListContainer = styled('div')((props) => ({
-  width: '100%'
+  width: '100%',
+  minWidth: '280px'
 }));
 
 export default function SessionList({

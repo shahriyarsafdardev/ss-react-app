@@ -9,6 +9,8 @@ import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
 import CohortQuestionnair from 'components/cohorts/onboarding/new-info-forms/CohortQuestionnair';
 import InvitePeersModal from 'components/cohorts/home/InvitePeersModal';
+import moment from 'moment';
+import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
 import { getSessions, markOnboardingStep } from '../../../../redux/slices/cohort';
 import { Session, SessionListItem } from '../../../../@types/cohorts';
@@ -28,8 +30,7 @@ const SessionsContainer = styled(Stack)(({ theme }) => ({
 }));
 
 const SessionListDesktopContainer = styled(Box)(({ theme }) => ({
-  maxWidth: '280px',
-  width: '280px',
+  width: '280px !important',
   borderRight: '1px solid #E5E5E5',
   [theme.breakpoints.down('md')]: {
     display: 'none'
@@ -90,14 +91,10 @@ export default function SessionsTab() {
       sessionNumber < filteredSessions.length
     ) {
       setSelectedSession(sessionNumber);
+    } else {
+      setActivSession();
     }
   }, [sessions]);
-
-  useEffect(() => {
-    if (filteredSessions && filteredSessions.length > 0) {
-      setSelectedSession(filteredSessions.length - 1);
-    }
-  }, [filteredSessions]);
 
   useEffect(() => {
     if (cohort && !sessions) {
@@ -105,6 +102,17 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
+  const setActivSession = () => {
+    let found = false;
+    filteredSessions?.forEach((session, index) => {
+      const isPastSession = moment(firstUpcomingDate(session.times)).add(1, 'hours') < moment();
+      if (!found && isPastSession && session?.recording_urls.length > 0) {
+        setSelectedSession(index);
+      } else {
+        found = true;
+      }
+    });
+  };
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     trackEvent(cohort, eventName, eventData);
   };
@@ -113,7 +121,11 @@ export default function SessionsTab() {
     if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
       return <CohortQuestionnair setInvitePeersModalState={setInvitePeersModalState} />;
     }
-    if (!cohort?.released_for_learners && mode === 'Learner') {
+    if (
+      !cohort?.released_for_learners &&
+      !cohort?.onboarding_data?.onboarding_referral_step_completed &&
+      mode === 'Learner'
+    ) {
       return (
         <ContentReleasePreview
           cohort={cohort}

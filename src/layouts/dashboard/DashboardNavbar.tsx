@@ -104,6 +104,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Calendar');
         } else if (section === 'referrals') {
           setCurrentTab('Balance');
+        } else if (section === 'sessions') {
+          setCurrentTab('Recordings & Slides');
         } else {
           setCurrentTab(section);
         }
