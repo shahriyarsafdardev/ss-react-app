@@ -9,7 +9,7 @@ import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { BannerLogo, useStyles, LoadingContainer, SaleBanner } from './Common';
+import { Logo, useStyles, LoadingContainer, SaleBanner } from './Common';
 import WaitListSuccessPage from './WaitListSuccessPage';
 
 export type UserType = {
@@ -150,12 +150,12 @@ export default function PersonalDetailsPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Registration ">
-      <SaleBanner />
+      {/* <SaleBanner /> */}
       {cohort?.wait_listed && formSubmitted ? (
         <WaitListSuccessPage />
       ) : (
         <>
-          <BannerLogo
+          <Logo
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-purple.png"
             alt="logo"
           />

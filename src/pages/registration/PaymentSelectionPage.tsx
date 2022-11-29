@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { LoadingContainer, BannerLogo, useStyles, SaleBanner } from './Common';
+import { LoadingContainer, Logo, useStyles, SaleBanner } from './Common';
 import {
   IndividualMembershipPaymentDetails,
   OneTimePaymentDetails,
@@ -61,12 +61,9 @@ export default function PaymentSelectionPage() {
 
   return (
     <Page width="100%" height={`${isDesktop && '100vh'}`} title="Sphere Payment">
-      <SaleBanner />
+      {/* <SaleBanner /> */}
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        <BannerLogo
-          src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
-          alt="logo"
-        />
+        <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
         <Stack
           className={`${classes.purpleBackground} ${classes.paymentStack} ${classes.wrapperPaymentStack}`}
           spacing={4}

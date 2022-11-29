@@ -50,12 +50,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   paymentStack: {
     width: '100%',
-    minHeight: 'calc(100% - 84px) !important',
+    minHeight: '100% !important',
     [theme.breakpoints.down('md')]: {
-      minHeight: 'calc(100% - 104px) !important'
+      minHeight: '100% !important'
     },
     [theme.breakpoints.down('sm')]: {
-      minHeight: 'calc(100% - 125px) !important'
+      minHeight: '100% !important'
     }
   },
   fullWidthCenter: {

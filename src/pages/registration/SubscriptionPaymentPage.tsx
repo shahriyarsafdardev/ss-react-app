@@ -11,7 +11,7 @@ import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties } from 'utils/eventTracking';
-import { InputAmount, LoadingContainer, BannerLogo, useStyles, SaleBanner } from './Common';
+import { InputAmount, LoadingContainer, Logo, useStyles, SaleBanner } from './Common';
 import PayNowForm from './PayNowForm';
 
 export default function SubscriptionPaymentPage() {
@@ -86,11 +86,8 @@ export default function SubscriptionPaymentPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Membership">
-      <SaleBanner />
-      <BannerLogo
-        src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
-        alt="logo"
-      />
+      {/* <SaleBanner /> */}
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
       <Stack direction={{ xs: 'column', md: 'row' }} className={classes.paymentStack}>
         <Stack
           className={`${classes.paymentData} ${classes.purpleBackground}`}
@@ -149,10 +146,10 @@ export default function SubscriptionPaymentPage() {
                   Learn more here.
                 </Link>
               </Typography>
-              <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
+              {/* <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
                 As part of our Black Friday Sale you will also recieve an additional $400 on your
                 account which you can use towards your next Sphere course.
-              </Typography>
+              </Typography> */}
             </Stack>
           </Box>
         </Stack>

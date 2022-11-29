@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
-import { BannerLogo, useStyles, StyledLoadingButton, LoadingContainer, SaleBanner } from './Common';
+import { Logo, useStyles, StyledLoadingButton, LoadingContainer, SaleBanner } from './Common';
 
 export default function TeamPackageInquiry() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
@@ -109,11 +109,8 @@ export default function TeamPackageInquiry() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere ">
-      <SaleBanner />
-      <BannerLogo
-        src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg"
-        alt="logo"
-      />
+      {/* <SaleBanner /> */}
+      <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg" alt="logo" />
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         className={`${classes.wrapperPaymentStack} ${classes.paymentStack} ${
@@ -147,10 +144,10 @@ export default function TeamPackageInquiry() {
             If you provide the contact details of your team lead / training rep we will get in touch
             to share more information.
           </Typography>
-          <Typography className={classes.whiteFridayText}>
+          {/* <Typography className={classes.whiteFridayText}>
             As part of our Black Friday Sale you will also recieve an additional $400 on your
             account which you can use towards your next Sphere course.
-          </Typography>
+          </Typography> */}
         </Stack>
         <Stack
           justifyContent="center"
