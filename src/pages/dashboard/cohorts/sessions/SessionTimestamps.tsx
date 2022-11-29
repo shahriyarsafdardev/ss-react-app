@@ -14,7 +14,7 @@ export default function SessionTimestamps({
   sessionId: string;
 }) {
   return (
-    <Box>
+    <Box width="100%">
       {timestamps?.length ? (
         timestamps?.map((timestamp) => (
           <Timestamp

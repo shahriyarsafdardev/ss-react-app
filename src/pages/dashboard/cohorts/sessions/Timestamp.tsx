@@ -97,7 +97,7 @@ function Timestamp({
             <Button
               onClick={() => handlePlay(timestamp?.timestamp)}
               variant="contained"
-              style={{ borderRadius: '20px' }}
+              sx={{ borderRadius: '20px', lineHeight: '120%' }}
               fullWidth
             >
               Open Timestamp

@@ -1,25 +1,32 @@
-import { Stack, Typography, Link } from '@material-ui/core';
-import { styled } from '@material-ui/styles';
-
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  color: '#64748B',
-  fontSize: '14px'
-}));
+import { Stack, Typography, Link, Button } from '@material-ui/core';
+import { useStyles } from './Common';
 
 export default function EmptySessionTimestamps() {
+  const classes = useStyles();
+
   return (
-    <Stack spacing={2} sx={{}}>
-      <StyledTypography>
-        Use{' '}
-        <Link href="#" target="_blank" sx={{ textDecoration: 'underline' }}>
-          Sphere's Zoom App
-        </Link>{' '}
-        to save timestamps during sessions.
-      </StyledTypography>
-      <StyledTypography>
-        Timestamps allow you to easily save points in your sessions so that you can review them
-        later!
-      </StyledTypography>
+    <Stack spacing={4} direction={{ xs: 'column', md: 'row' }} className={classes.parentStack}>
+      <img
+        src="https://sphere-public.s3.eu-west-2.amazonaws.com/timestamps-detail.png"
+        alt="zoom details"
+        className={classes.detailsImage}
+      />
+      <Stack spacing={3}>
+        <Typography className={classes.styledText}>
+          Use{' '}
+          <Link
+            href="https://marketplace.zoom.us/apps/Mc37aXV3RoibIJkOBBPmzA"
+            target="_blank"
+            className={classes.greyLink}
+          >
+            Sphere's Zoom App
+          </Link>{' '}
+          to save timestamps during sessions.
+        </Typography>
+        <Button variant="outlined" className={classes.styledButton}>
+          Learn More
+        </Button>
+      </Stack>
     </Stack>
   );
 }
