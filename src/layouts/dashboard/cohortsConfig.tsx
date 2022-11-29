@@ -15,20 +15,30 @@ const ICONS = {
 
 const CODE_TAB_COHORTS = ['HPT', 'MLS'];
 
-const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => ({
+export const learnerCohortsConfig = (rawCohorts: any, header: string) => ({
   subheader: header,
   items: rawCohorts.map((cohort: any) => {
     const object: any = {
       id: cohort.id,
-      title: instructor ? cohort.intake_name || `Intake ${cohort.intake}` : cohort.name,
+      title: cohort.name,
       path: PATH_DASHBOARD.cohorts.root(cohort.id),
       icon: ICONS.cohorts,
       children: [
-        { title: 'live sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
-        { title: 'resources', path: PATH_DASHBOARD.cohorts.resources(cohort.id) },
-        { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) },
         {
-          title: instructor ? 'students' : 'networking',
+          title: 'home',
+          path: PATH_DASHBOARD.cohorts.home(cohort.id),
+          notifications: false
+        },
+        {
+          title: 'messaging',
+          path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+          notifications: true,
+          category: 'Messaging'
+        },
+        { title: 'recordings & slides', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
+        { title: 'resources', path: PATH_DASHBOARD.cohorts.resources(cohort.id) },
+        {
+          title: 'networking',
           path: PATH_DASHBOARD.cohorts.peers(cohort.id),
           notifications: false
         }
@@ -42,64 +52,14 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id) }
       ];
     }
-    object.children = [
-      ...object.children,
-      {
-        title: 'messaging',
-        path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
-        notifications: true,
-        category: 'Messaging'
-      }
-    ];
-    if (cohort.alumni_event && !instructor) {
+    if (cohort.alumni_event) {
       object.children = [
-        {
-          title: 'home',
-          path: PATH_DASHBOARD.cohorts.home(cohort.id),
-          notifications: false
-        },
-        ...object.children
+        ...object.children,
+        { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) }
       ];
       return object;
     }
-    // object.children = [
-    //   { title: 'sessions', path: PATH_DASHBOARD.cohorts.sessions(cohort.id) },
-    //   ...object.children
-    // ];
-    if (instructor) {
-      object.children = [
-        {
-          title: 'registrations',
-          path: PATH_DASHBOARD.cohorts.registrations(cohort.id),
-          notifications: false
-        },
-        // {
-        //   title: 'networking',
-        //   path: PATH_DASHBOARD.cohorts.networking(cohort.id),
-        //   notifications: false
-        // },
-        {
-          title: 'attendance',
-          path: PATH_DASHBOARD.cohorts.attendance(cohort.id),
-          notifications: false
-        },
-        {
-          title: 'analytics',
-          path: PATH_DASHBOARD.cohorts.analytics(cohort.id, cohort.host_names),
-          notifications: false
-        },
-        ...object.children
-      ];
-    } else {
-      object.children = [
-        {
-          title: 'home',
-          path: PATH_DASHBOARD.cohorts.home(cohort.id),
-          notifications: false
-        },
-        ...object.children
-      ];
-    }
+
     object.children = [
       ...object.children,
       {
@@ -107,7 +67,8 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
         path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
         notifications: false,
         category: 'Question'
-      }
+      },
+      { title: 'calendar invites', path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id) }
     ];
 
     object.children = object.children.map((child: any) => {
@@ -126,7 +87,9 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed) ||
           (child.title === 'messaging' && onboarding_messaging_step_completed) ||
-          (['live sessions', 'Q&A', 'networking', 'code', 'resources'].includes(child.title) &&
+          (['recordings & slides', 'Q&A', 'networking', 'code', 'resources'].includes(
+            child.title
+          ) &&
             onboarding_messaging_step_completed &&
             onboarding_questionnaire_step_completed &&
             onboarding_referral_step_completed &&
@@ -136,7 +99,7 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
           data = { ...child, disabled: false };
         } else if (
           [
-            'live sessions',
+            'recordings & slides',
             'Q&A',
             'networking',
             'messaging',
@@ -156,4 +119,82 @@ const cohortsConfig = (rawCohorts: any, header: string, instructor: boolean) => 
   })
 });
 
-export default cohortsConfig;
+export const instructorCohortsConfig = (rawCohorts: any, header: string) => ({
+  subheader: header,
+  items: rawCohorts.map((cohort: any) => {
+    const object: any = {
+      id: cohort.id,
+      title: cohort.intake_name || `Intake ${cohort.intake}`,
+      path: PATH_DASHBOARD.cohorts.root(cohort.id),
+      icon: ICONS.cohorts,
+      children: [
+        {
+          title: 'registrations',
+          path: PATH_DASHBOARD.cohorts.registrations(cohort.id),
+          notifications: false,
+          disabled: false
+        },
+        // {
+        //   title: 'networking',
+        //   path: PATH_DASHBOARD.cohorts.networking(cohort.id),
+        //   notifications: false
+        // },
+        {
+          title: 'attendance',
+          path: PATH_DASHBOARD.cohorts.attendance(cohort.id),
+          notifications: false,
+          disabled: false
+        },
+        {
+          title: 'analytics',
+          path: PATH_DASHBOARD.cohorts.analytics(cohort.id, cohort.host_names),
+          notifications: false,
+          disabled: false
+        },
+        {
+          title: 'recordings & slides',
+          path: PATH_DASHBOARD.cohorts.sessions(cohort.id),
+          disabled: false
+        },
+        { title: 'resources', path: PATH_DASHBOARD.cohorts.resources(cohort.id), disabled: false },
+        {
+          title: 'calendar invites',
+          path: PATH_DASHBOARD.cohorts.calendar_invites(cohort.id),
+          disabled: false
+        },
+        {
+          title: 'students',
+          path: PATH_DASHBOARD.cohorts.peers(cohort.id),
+          notifications: false,
+          disabled: false
+        }
+      ]
+    };
+    if (CODE_TAB_COHORTS.includes(cohort?.code)) {
+      object.children = [
+        ...object.children,
+        { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id), disabled: false }
+      ];
+    }
+    object.children = [
+      ...object.children,
+      {
+        title: 'messaging',
+        path: PATH_DASHBOARD.cohorts.messaging(cohort.id),
+        notifications: true,
+        category: 'Messaging',
+        disabled: false
+      },
+      {
+        title: 'Q&A',
+        path: PATH_DASHBOARD.cohorts.q_a(cohort.id),
+        notifications: false,
+        category: 'Question',
+        disabled: false
+      }
+    ];
+
+    object.children = [...object.children];
+    return object;
+  })
+});

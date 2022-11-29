@@ -2,8 +2,9 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import Timestamp from './Timestamp';
+import EmptySessionTimestamps from './EmptySessionTimestamps';
 
-function SessionTimestamps({
+export default function SessionTimestamps({
   timestamps,
   handlePlayTimeStamp,
   sessionId
@@ -13,17 +14,19 @@ function SessionTimestamps({
   sessionId: string;
 }) {
   return (
-    <Box>
-      {timestamps?.map((timestamp) => (
-        <Timestamp
-          timestamp={timestamp}
-          key={timestamp.id}
-          handlePlay={handlePlayTimeStamp}
-          sessionId={sessionId}
-        />
-      ))}
+    <Box width="100%">
+      {timestamps?.length ? (
+        timestamps?.map((timestamp) => (
+          <Timestamp
+            timestamp={timestamp}
+            key={timestamp.id}
+            handlePlay={handlePlayTimeStamp}
+            sessionId={sessionId}
+          />
+        ))
+      ) : (
+        <EmptySessionTimestamps />
+      )}
     </Box>
   );
 }
-
-export default SessionTimestamps;

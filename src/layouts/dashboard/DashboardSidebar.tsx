@@ -27,7 +27,7 @@ import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
 import adminToolsConfig from './AdminToolsConfig';
-import cohortsConfig from './cohortsConfig';
+import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
 
 // ----------------------------------------------------------------------
 
@@ -168,10 +168,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             <NavSection
               data-testid="member-sidebar"
               key={intakeCategory || 'With no intake Name'}
-              navConfig={cohortsConfig(
+              navConfig={learnerCohortsConfig(
                 getLearnerCohorts(cohorts, intakeCategory),
-                intakeCategory || 'With no intake Name',
-                false
+                intakeCategory || 'With no intake Name'
               )}
               isShow={!isCollapse}
             />
@@ -181,7 +180,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             <NavSection
               data-testid="instructor-sidebar"
               key={category}
-              navConfig={cohortsConfig(getInstructorCohorts(cohorts, category), category, true)}
+              navConfig={instructorCohortsConfig(getInstructorCohorts(cohorts, category), category)}
               isShow={!isCollapse}
             />
           ))}

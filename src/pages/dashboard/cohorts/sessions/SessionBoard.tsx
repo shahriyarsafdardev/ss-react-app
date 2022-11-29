@@ -141,7 +141,7 @@ const SessionsContainer = styled(Container)(({ theme }) => ({
 }));
 
 const StyledVideoPreview = styled('video')(({ theme }) => ({
-  maxWidth: '100%',
+  width: '100%',
   borderRadius: '20px'
 }));
 
@@ -333,7 +333,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       )}
 
       <SessionsContainer>
-        <Box width="100%" marginBottom={2}>
+        <Box width="100%" py={2}>
           <SessionNumber data-testid="session-number">
             {`Session ${session.number} |`}{' '}
           </SessionNumber>
@@ -465,9 +465,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Session Slides" data-testid="session-slides" />
-          {session?.timestamps && session?.timestamps.length > 0 && (
-            <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
-          )}
+          <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
         </SessionTabs>
 
         {tabsContent[currentTab]}
