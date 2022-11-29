@@ -23,7 +23,16 @@ export default function EmptySessionTimestamps() {
           </Link>{' '}
           to save timestamps during sessions.
         </Typography>
-        <Button variant="outlined" className={classes.styledButton}>
+        <Button
+          variant="outlined"
+          className={classes.styledButton}
+          onClick={() =>
+            window.open(
+              'https://drive.google.com/file/d/1pNXGlh2UOy_0y-t6N6upyRz_fQoHPwjO/view?usp=sharing',
+              '_blank'
+            )
+          }
+        >
           Learn More
         </Button>
       </Stack>
