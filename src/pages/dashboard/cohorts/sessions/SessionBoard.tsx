@@ -465,9 +465,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         )}
         <SessionTabs value={currentTab} onChange={(e, value) => setCurrentTab(value)}>
           <SessionTab label="Session Slides" data-testid="session-slides" />
-          {session?.timestamps && session?.timestamps.length > 0 && (
-            <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
-          )}
+          <SessionTab label="Your Timestamps" data-testid="session-timestamps" />
         </SessionTabs>
 
         {tabsContent[currentTab]}
