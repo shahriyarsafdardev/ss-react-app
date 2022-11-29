@@ -1,11 +1,11 @@
 /* eslint-disable no-else-return */
 import { Box, Button, styled, Typography } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import copy from 'clipboard-copy';
 import { Modal } from 'components/animate';
 import { uniq } from 'lodash';
 import { trackEvent } from 'utils/eventTracking';
 import { RootState, useSelector } from 'redux/store';
+import { useNavigate } from 'react-router-dom';
 import { Cohort } from '../../@types/cohorts';
 import InviteEmailForm from './InviteEmailForm';
 import ReferralChart from './ReferralChart';
@@ -71,14 +71,6 @@ const ContentContainer = styled('div')(({ theme }) => ({
   }
 }));
 
-const LightText = styled(Typography)(() => ({
-  textAlign: 'center',
-  marginTop: '12px',
-  fontSize: '16px',
-  padding: '0px 26px',
-  color: '#212B36CC'
-}));
-
 const InviteYourTeamMates = () => (
   <Box sx={{ paddingRight: '64px', borderRight: '1px solid #DCE0E480', width: '50%' }}>
     <img alt="sketch icon" src="/static/peers/peers-group.png" width={160} />
@@ -125,26 +117,18 @@ export const ShareReferralLink = ({
   const { enqueueSnackbar } = useSnackbar();
   const referrer_code = String(String(referralLink.split('?')[1]).split('=')[1]);
   const { referrals_count } = useSelector((state: RootState) => state.referral.referral);
-  const cohortID = window.location.pathname.split('/')[2] || '';
-
-  const handleSendViaEmail = () => {
-    if (referralLink) {
-      setReferralEmailModal(true);
-      trackEvent(cohort, 'Sidebar - Referral Preview - Email Invite Modal Opened', {});
-    } else {
-      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
-    }
-  };
+  const firstCohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
+  const navigate = useNavigate();
 
   const buttonText = () =>
     referrals_count?.total_referrals_count === 0 ? 'Go to Referrals' : 'Send more referrals';
 
   const handleButtonClick = () => {
-    if (window.location.pathname.split('/')[1] === 'cohorts' && cohortID !== '') {
-      trackEvent(cohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
-      handleSendViaEmail();
+    if (firstCohort) {
+      trackEvent(firstCohort, `Sidebar - Referral Preview - '${buttonText()}' Selected`);
+      navigate('/user/referrals');
     } else {
-      enqueueSnackbar('Please select a cohort.', { variant: 'warning' });
+      enqueueSnackbar('Please enroll in a cohort to send referrals!', { variant: 'warning' });
     }
   };
 
