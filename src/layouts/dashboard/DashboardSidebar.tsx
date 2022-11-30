@@ -165,7 +165,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
 
         {mode === 'Learner' && (
           <>
-            <NavSection navConfig={learnerSidebarConfig} isShow={!isCollapse} />
+            {user?.type !== 'admin' && (
+              <NavSection navConfig={learnerSidebarConfig} isShow={!isCollapse} />
+            )}
             {groupByIntake(cohorts).map((intakeCategory: string) => (
               <NavSection
                 data-testid="member-sidebar"
@@ -190,7 +192,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             />
           ))}
 
-        {mode !== 'Learner' && <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />}
+        {(mode !== 'Learner' || user?.type === 'admin') && (
+          <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+        )}
         {user?.type !== 'learner' && (
           <StyledBox>
             <ViewSwitcherStyle>
