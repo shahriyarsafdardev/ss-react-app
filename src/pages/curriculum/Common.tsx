@@ -1,8 +1,8 @@
-import { Stack, styled, Tab, Tabs, Theme, Typography, useTheme } from '@material-ui/core';
+import { Stack, styled, Tab, Tabs, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
-  'DATA ANALYSIS & EXPERIMENTATION',
+  'Data Analysis & Experimentation',
   'ML Systems',
   'Data Infrastructure',
   'Data Essentials'
@@ -124,7 +124,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   purpleBackground: {
-    background: 'linear-gradient(163.43deg, #9E5AD7 11.47%, #29064C 91.06%)',
+    background: 'linear-gradient(163.43deg, #29064C 11.47%, #9E5AD7 91.06%)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     padding: '40px',
@@ -139,7 +139,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     color: '#000',
     borderRadius: '8px',
     position: 'relative',
-    padding: '20px 20px 16px',
+    padding: '20px 0px 16px 0px',
     minHeight: '250px',
     cursor: 'pointer',
     justifyContent: 'space-between',
@@ -159,8 +159,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '100%'
     }
   },
-  font14: {
-    fontSize: '14px'
+  font15: {
+    fontSize: '15px'
+  },
+  font13: {
+    fontSize: '13px'
   },
   instructorAvatar: {
     width: 56,
