@@ -95,9 +95,16 @@ export function IndividualMembershipPaymentDetails({
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
+          <Typography>5% discount on all Sphere courses</Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start">
+          <StyledCheckIcon
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+            alt="check icon"
+          />
           <Typography>
-            Your choice of ${Math.floor(price)} worth of Sphere courses every year (with a 5%
-            discount across our library)
+            ${Math.floor(price)} of Sphere Credits per year, which you can use to purchase your next
+            course
           </Typography>
         </Stack>
         {/* <Stack direction="row" alignItems="flex-start">
