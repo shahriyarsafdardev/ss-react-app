@@ -12,7 +12,7 @@ export default function ReferralChart({
   requiredReferees: number;
 }) {
   const CHART_DATA = [
-    { name: 'Sent', data: [referralsSent] },
+    { name: 'Enrolled', data: [enrolled] },
     {
       name: 'Awaiting',
       data: [referralsSent - enrolled]
