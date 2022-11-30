@@ -51,7 +51,7 @@ const SessionTab = styled(Tab)(({ theme }) => ({
 
 const SessionTabs = styled(Tabs)(({ theme }) => ({
   width: '100%',
-  margin: '20px 0',
+  margin: '16px 0px 14px 0',
   backgroundColor: '#F4F6F8',
   borderTopLeftRadius: '10px',
   borderTopRightRadius: '10px',
@@ -332,6 +332,7 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
         key="session_timestamps"
         sessionId={session?.id}
         handlePlayTimeStamp={(time: any) => handlePlayTimeStamp(time)}
+        isRecordingAvailable={session?.recording_urls.length > 0}
       />
     );
   }
