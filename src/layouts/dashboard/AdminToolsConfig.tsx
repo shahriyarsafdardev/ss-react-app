@@ -24,12 +24,18 @@ const ICONS = {
   booking: getIcon('ic_booking'),
   discover: getIcon('ic_discover'),
   cohorts: getIcon('ic_cohorts'),
-  contact: getIcon('ic_contact')
+  contact: getIcon('ic_contact'),
+  bookshelf: getIcon('ic_bookshelf')
 };
 
 const adminToolsConfig = {
   subheader: 'admin tools',
   items: [
+    {
+      title: 'all courses',
+      path: PATH_DASHBOARD.general.allCourses,
+      icon: ICONS.bookshelf
+    },
     {
       title: 'Registrations',
       path: PATH_DASHBOARD.adminTools.root,
