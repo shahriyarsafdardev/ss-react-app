@@ -1,4 +1,4 @@
-import { Stack, styled, Tab, Tabs, Theme, Typography } from '@material-ui/core';
+import { Box, Stack, styled, Tab, Tabs, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
@@ -211,3 +211,13 @@ export const CourseTileHover = ({
     </Stack>
   );
 };
+
+export const LoadingContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: '35%',
+  left: '45%',
+  [theme.breakpoints.down('md')]: {
+    top: '40%',
+    left: '43%'
+  }
+}));

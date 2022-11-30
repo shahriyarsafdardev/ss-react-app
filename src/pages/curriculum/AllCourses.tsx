@@ -2,10 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
-import { LoadingContainer } from 'pages/admin/Common';
-import { Box, Stack } from '@material-ui/core';
+import { Box, Container, Stack } from '@material-ui/core';
 import _ from 'lodash';
-import { useStyles } from './Common';
+import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
 
@@ -78,9 +77,11 @@ export default function AllCourses() {
 
   if (courses.length === 0) {
     return (
-      <LoadingContainer>
-        <LoadingScreen />
-      </LoadingContainer>
+      <Container sx={{ position: 'relative', height: '100%' }}>
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      </Container>
     );
   }
 
