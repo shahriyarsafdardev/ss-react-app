@@ -172,10 +172,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               <NavSection
                 data-testid="member-sidebar"
                 key={intakeCategory || 'With no intake Name'}
-                navConfig={cohortsConfig(
+                navConfig={learnerCohortsConfig(
                   getLearnerCohorts(cohorts, intakeCategory),
-                  intakeCategory || 'With no intake Name',
-                  false
+                  intakeCategory || 'With no intake Name'
                 )}
                 isShow={!isCollapse}
               />
