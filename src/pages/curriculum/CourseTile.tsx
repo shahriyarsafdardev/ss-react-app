@@ -34,36 +34,43 @@ export default function CourseTile({ course }: { course: any }) {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} sx={{ px: '8px !important' }}>
+    <Grid item xs={12} sm={6} md={4} sx={{ px: '16px !important' }}>
       <Stack
         className={classes.courseTile}
         onMouseEnter={() => handleMouseIn()}
         onMouseLeave={() => handleMouseOut()}
       >
         <>
-          <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+          <Typography
+            variant="h4"
+            sx={{ marginBottom: '20px', padding: '0px 20px', fontSize: '1.2rem !important' }}
+          >
             {course.name}
           </Typography>
           <Stack>
             {course?.preview_instructor_name && (
-              <Stack direction="row" spacing={2.5} alignItems="center" marginBottom="20px">
+              <Stack
+                direction="row"
+                spacing={2.5}
+                sx={{ alignItems: 'center', marginBottom: '20px', padding: '0px 20px' }}
+              >
                 <Avatar
                   src={course?.preview_instructor_image}
                   alt={course?.preview_instructor_name}
                   className={classes.instructorAvatar}
                 />
                 <Stack>
-                  <Typography className={classes.font14}>
+                  <Typography className={classes.font15}>
                     Live with {course?.preview_instructor_name || 'the instructor'}
                   </Typography>
-                  <Typography className={classes.font14}>
+                  <Typography className={classes.font13}>
                     {course?.preview_instructor_affiliation}
                   </Typography>
                 </Stack>
               </Stack>
             )}
             {course?.preview_instructor_logos && (
-              <Box sx={{ borderTop: '1px solid #64748B' }}>
+              <Box sx={{ borderTop: '1px solid #E6E6E6' }}>
                 <img
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
@@ -72,7 +79,7 @@ export default function CourseTile({ course }: { course: any }) {
               </Box>
             )}
             {!course?.preview_instructor_name && !course?.preview_instructor_logos && (
-              <Typography>{course?.description}</Typography>
+              <Typography sx={{ padding: '0px 20px' }}>{course?.description}</Typography>
             )}
           </Stack>
         </>

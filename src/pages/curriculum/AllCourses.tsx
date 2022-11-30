@@ -34,6 +34,7 @@ export default function AllCourses() {
           ?.filter((func: string) => !!func);
         functionList = Array.from(new Set(functionList)).sort((a: any, b) => a.localeCompare(b));
         setFunctions(functionList);
+        setSelectedFunctions([functionList[0]]);
 
         let topicList = res.data.cohorts
           ?.map((cohort: any) => cohort.topics)
@@ -41,6 +42,7 @@ export default function AllCourses() {
           .filter((topic: string) => !!topic);
         topicList = Array.from(new Set(topicList)).sort((a: any, b) => a.localeCompare(b));
         setTopics(topicList);
+        setSelectedTopics([topicList[0]]);
       });
     };
     getCourses();
