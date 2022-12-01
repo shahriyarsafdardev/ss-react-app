@@ -42,15 +42,13 @@ function Timestamp({
   const classes = useStyles();
 
   function secondsToHms(d: any) {
-    d = Number(d);
-    const h = Math.floor(d / 3600);
-    const m = Math.floor((d % 3600) / 60);
-    const s = Math.floor((d % 3600) % 60);
+    const secs = Number(d);
+    const h = Math.floor(secs / 3600);
 
-    const hDisplay = h > 0 ? (m > 0 ? `${h}:` : `${h}`) : '';
-    const mDisplay = m > 0 ? (s > 0 ? `${m}:` : `${m}`) : '';
-    const sDisplay = s > 0 ? (h === 0 && m === 0 ? `00:${s}` : `${s}`) : ':00';
-    return hDisplay + mDisplay + sDisplay;
+    if (h > 0) {
+      return new Date(secs * 1000).toISOString().slice(11, 19);
+    }
+    return new Date(secs * 1000).toISOString().slice(14, 19);
   }
 
   const handleSubmit = () => {
@@ -80,7 +78,12 @@ function Timestamp({
           height: 'auto'
         }}
       />
-      <Stack direction="column" spacing={4} width={{ sm: '100%', md: '60%' }}>
+      <Stack
+        direction="column"
+        justifyContent="space-between"
+        spacing={4}
+        width={{ sm: '100%', md: '60%' }}
+      >
         {updateDescription ? (
           <TextField
             id="outlined-multiline-static"
@@ -110,9 +113,7 @@ function Timestamp({
           <Button
             onClick={handleSubmit}
             variant="outlined"
-            className={`${classes.timestampButton} ${
-              !isRecordingAvailable && classes.halfWidthButton
-            }`}
+            className={classes.timestampButton}
             fullWidth
           >
             {updateDescription

@@ -41,12 +41,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '120%',
     height: '40px'
   },
-  halfWidthButton: {
-    width: '50%',
-    [theme.breakpoints.down('md')]: {
-      width: '100%'
-    }
-  },
   recordingNotAvailableText: {
     color: '#64748B',
     marginBottom: '16px',
