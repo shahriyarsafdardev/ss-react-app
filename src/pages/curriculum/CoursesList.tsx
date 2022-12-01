@@ -3,7 +3,7 @@ import CourseTile from './CourseTile';
 
 export default function CoursesList({ courses }: { courses: any }) {
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={3}>
       {courses.map((course: any) => (
         <CourseTile key={course.id} course={course} />
       ))}
