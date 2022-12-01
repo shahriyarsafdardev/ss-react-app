@@ -6,6 +6,7 @@ import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-u
 // hooks
 import { useEffect, useState } from 'react';
 import useAuth from 'hooks/useAuth';
+import ZoopAppAnnouncementPopover from 'pages/zoom/ZoopAppAnnouncementPopover';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
@@ -159,6 +160,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             <Box sx={{ flexGrow: 1 }} />
 
             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+              <ZoopAppAnnouncementPopover />
               <NotificationsPopover />
               <AccountPopover />
             </Stack>

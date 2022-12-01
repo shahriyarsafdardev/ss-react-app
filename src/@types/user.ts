@@ -166,4 +166,5 @@ export type ParticipantProfile = {
   basic_profile_completed: boolean;
   networking_profile_completed: boolean;
   credit_account_id: string;
+  opened_announcement: boolean;
 };

@@ -126,8 +126,11 @@ const FeedbackButton = styled('div')(({ theme }) => ({
 }));
 
 const Wrapper = styled(Container)(({ theme }) => ({
+  maxWidth: '1000px',
+  maxHeight: '100%',
+  overflowY: 'hidden',
   [theme.breakpoints.down('sm')]: {
-    padding: 0
+    padding: '10px'
   }
 }));
 
@@ -178,6 +181,27 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   padding: '25% 0'
+}));
+
+const VideoPlayerWrapper = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  paddingBottom: '56.25% !important',
+  paddingTop: '0px !important',
+  height: '0px !important',
+  overflow: 'hidden !important',
+  width: '100%',
+  maxWidth: '100%',
+  '& iframe': {
+    position: 'absolute',
+    top: '0px !important',
+    left: '0px !important',
+    width: '100% !important',
+    height: '100% !important'
+  },
+  '& div': {
+    height: '100% !important',
+    width: '100vw !important'
+  }
 }));
 
 const CircularLoader = () => (
@@ -344,34 +368,36 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
             {recording?.includes('vimeo') ? (
               <>
                 {loading && <CircularLoader />}
-                <ReactPlayer
-                  controls={true}
-                  url={recording}
-                  ref={videoRefVimeo}
-                  playing={playing}
-                  className={loading ? classes.hidden : classes.shown}
-                  onReady={() => setLoading(false)}
-                  style={{ maxWidth: '100%' }}
-                  onStart={() => markAttendance('watched_recording')}
-                  onPause={() => {
-                    sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
-                      // ...commonProperties,
-                      Timepoint: videoRefVimeo.current?.getCurrentTime()
-                    });
-                  }}
-                  onSeek={() =>
-                    sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
-                      // ...commonProperties,
-                      Timepoint: videoRefVimeo.current?.getCurrentTime()
-                    })
-                  }
-                  onPlay={() =>
-                    sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
-                      // ...commonProperties,
-                      Timepoint: videoRefVimeo.current?.getCurrentTime() || 0
-                    })
-                  }
-                />
+                <VideoPlayerWrapper>
+                  <ReactPlayer
+                    controls={true}
+                    url={recording}
+                    ref={videoRefVimeo}
+                    playing={playing}
+                    className={loading ? classes.hidden : classes.shown}
+                    onReady={() => setLoading(false)}
+                    style={{ maxWidth: '100%' }}
+                    onStart={() => markAttendance('watched_recording')}
+                    onPause={() => {
+                      sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
+                        // ...commonProperties,
+                        Timepoint: videoRefVimeo.current?.getCurrentTime()
+                      });
+                    }}
+                    onSeek={() =>
+                      sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
+                        // ...commonProperties,
+                        Timepoint: videoRefVimeo.current?.getCurrentTime()
+                      })
+                    }
+                    onPlay={() =>
+                      sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
+                        // ...commonProperties,
+                        Timepoint: videoRefVimeo.current?.getCurrentTime() || 0
+                      })
+                    }
+                  />
+                </VideoPlayerWrapper>
               </>
             ) : (
               <StyledVideoPreview

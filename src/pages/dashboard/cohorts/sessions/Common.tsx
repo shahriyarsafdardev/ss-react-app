@@ -19,7 +19,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   detailsImage: {
     width: '50%',
-    height: '270px',
     [theme.breakpoints.down('md')]: {
       width: '80%'
     },

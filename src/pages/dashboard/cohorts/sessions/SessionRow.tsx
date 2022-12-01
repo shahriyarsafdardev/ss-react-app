@@ -42,9 +42,11 @@ const SessionDetails = styled('div')((props) => ({
 }));
 
 const SessionCountdown = styled('div')((props) => ({
+  marginTop: '5px',
   display: 'flex',
+  alignItems: 'center',
   fontSize: '12px',
-  lineHeight: '33px',
+  lineHeight: '17px',
   color: '#A6AEB7',
   img: {
     width: '20px'
@@ -127,19 +129,20 @@ export default function SessionRow({
   const isPastSession = sessionDate < moment();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const sessionTime = (date: string) => {
-    if (isPastSession) {
-      return `Recorded on ${moment(date).format('DD MMMM YYYY')}`;
-    }
-    return `Live ${moment(date).fromNow()} | ${moment(date).format('DD MMMM YYYY')}`;
-  };
+  const sessionTime = (date: string) => (
+    <span>
+      {`Live ${moment(date).fromNow()}`}
+      <br />
+      {`${moment(date).format('DD MMMM YYYY')}`}
+    </span>
+  );
 
   return (
     <ListItem
       id={`session-list-${index}`}
       data-testid={`session-list-${index}`}
       style={{
-        padding: '10px 30px',
+        padding: '10px 20px',
         ...(isSelected && {
           backgroundColor: 'rgba(77, 77, 205, 0.03)'
         })
@@ -163,11 +166,13 @@ export default function SessionRow({
             >{`Session ${session.number} | ${session.length}`}</SessionDetails>
             <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
           </Box>
-          {!isLearner && <InstructorOptions handleDelete={() => {}} />}
+          {/* {!isLearner && <InstructorOptions handleDelete={() => {}} />} */}
         </Stack>
         <SessionCountdown data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
-          {sessionTime(firstUpcomingDate(session.times))}
+          {isPastSession
+            ? `Recorded on ${moment(firstUpcomingDate(session.times)).format('DD MMMM YYYY')}`
+            : sessionTime(firstUpcomingDate(session.times))}
         </SessionCountdown>
       </div>
     </ListItem>
