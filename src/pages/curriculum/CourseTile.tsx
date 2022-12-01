@@ -34,7 +34,7 @@ export default function CourseTile({ course }: { course: any }) {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} sx={{ px: '16px !important' }}>
+    <Grid item xs={12} sm={6} md={4} sx={{ px: '12px !important' }}>
       <Stack
         className={classes.courseTile}
         onMouseEnter={() => handleMouseIn()}

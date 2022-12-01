@@ -123,6 +123,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 20px'
     }
   },
+  coursesGrid: {
+    minHeight: 'calc(100vh - 202px)',
+    [theme.breakpoints.down('lg')]: {
+      minHeight: 'calc(100vh - 174px)'
+    },
+    [theme.breakpoints.down('md')]: {
+      minHeight: 'calc(100vh - 164px)'
+    }
+  },
   purpleBackground: {
     background: 'linear-gradient(163.43deg, #29064C 11.47%, #9E5AD7 91.06%)',
     backgroundSize: 'cover',
@@ -140,7 +149,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '8px',
     position: 'relative',
     padding: '20px 0px 16px 0px',
-    minHeight: '250px',
     cursor: 'pointer',
     justifyContent: 'space-between',
     '&:hover > .descriptionHover': {
@@ -160,10 +168,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   font15: {
-    fontSize: '15px'
+    fontSize: '15px',
+    fontWeight: 500
   },
   font13: {
-    fontSize: '13px'
+    fontSize: '13px',
+    fontWeight: 300
   },
   instructorAvatar: {
     width: 56,

@@ -100,7 +100,10 @@ export default function AllCourses() {
           selectedSeniority={selectedSeniority}
         />
       </Box>
-      <Stack className={classes.purpleBackground} justifyContent="center">
+      <Stack
+        className={`${classes.purpleBackground} ${classes.coursesGrid}`}
+        justifyContent="center"
+      >
         <CoursesContainer courses={applyFilters()} />
       </Stack>
     </Page>
