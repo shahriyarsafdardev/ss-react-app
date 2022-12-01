@@ -25,7 +25,8 @@ const ICONS = {
   discover: getIcon('ic_discover'),
   cohorts: getIcon('ic_cohorts'),
   contact: getIcon('ic_contact'),
-  bookshelf: getIcon('ic_bookshelf')
+  bookshelf: getIcon('ic_bookshelf'),
+  bellChart: getIcon('ic_bell_curve_chart')
 };
 
 export const sidebarConfig = {
@@ -42,6 +43,11 @@ export const sidebarConfig = {
 export const learnerSidebarConfig = {
   subheader: 'your learning journey',
   items: [
+    {
+      title: 'the complete data scientist track',
+      path: PATH_DASHBOARD.general.dataScienceTrack,
+      icon: ICONS.bellChart
+    },
     {
       title: 'all courses',
       path: PATH_DASHBOARD.general.allCourses,

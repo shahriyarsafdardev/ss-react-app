@@ -74,7 +74,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'code',
     'onboarding-calendar-instructions',
     'referrals',
-    'all-courses'
+    'all-courses',
+    'data-scientist-track'
   ];
 
   useEffect(() => {
@@ -109,6 +110,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Recordings & Slides');
         } else if (section === 'all-courses') {
           setCurrentTab('All Courses');
+        } else if (section === 'data-scientist-track') {
+          setCurrentTab('The Complete Data Scientist');
         } else {
           setCurrentTab(section);
         }

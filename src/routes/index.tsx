@@ -90,6 +90,7 @@ export default function Router() {
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
         { path: '/all-courses', element: <AllCourses /> },
+        { path: '/data-scientist-track', element: <DataScienceTrack /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -496,6 +497,9 @@ const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
+const DataScienceTrack = Loadable(
+  lazy(() => import('../pages/data_science_track/DataScienceTrack'))
+);
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
