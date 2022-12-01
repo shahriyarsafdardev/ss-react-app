@@ -24,10 +24,11 @@ const ICONS = {
   booking: getIcon('ic_booking'),
   discover: getIcon('ic_discover'),
   cohorts: getIcon('ic_cohorts'),
-  contact: getIcon('ic_contact')
+  contact: getIcon('ic_contact'),
+  bookshelf: getIcon('ic_bookshelf')
 };
 
-const sidebarConfig = {
+export const sidebarConfig = {
   subheader: 'general',
   items: [
     {
@@ -38,4 +39,18 @@ const sidebarConfig = {
   ]
 };
 
-export default sidebarConfig;
+export const learnerSidebarConfig = {
+  subheader: 'your learning journey',
+  items: [
+    {
+      title: 'all courses',
+      path: PATH_DASHBOARD.general.allCourses,
+      icon: ICONS.bookshelf
+    },
+    {
+      title: 'contact us',
+      path: PATH_DASHBOARD.general.contactUs,
+      icon: ICONS.contact
+    }
+  ]
+};

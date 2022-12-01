@@ -25,7 +25,7 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 
 //
-import sidebarConfig from './SidebarConfig';
+import { sidebarConfig, learnerSidebarConfig } from './SidebarConfig';
 import adminToolsConfig from './AdminToolsConfig';
 import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
 
@@ -163,18 +163,24 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
         )}
 
-        {mode === 'Learner' &&
-          groupByIntake(cohorts).map((intakeCategory: string) => (
-            <NavSection
-              data-testid="member-sidebar"
-              key={intakeCategory || 'With no intake Name'}
-              navConfig={learnerCohortsConfig(
-                getLearnerCohorts(cohorts, intakeCategory),
-                intakeCategory || 'With no intake Name'
-              )}
-              isShow={!isCollapse}
-            />
-          ))}
+        {mode === 'Learner' && (
+          <>
+            {user?.type !== 'admin' && (
+              <NavSection navConfig={learnerSidebarConfig} isShow={!isCollapse} />
+            )}
+            {groupByIntake(cohorts).map((intakeCategory: string) => (
+              <NavSection
+                data-testid="member-sidebar"
+                key={intakeCategory || 'With no intake Name'}
+                navConfig={learnerCohortsConfig(
+                  getLearnerCohorts(cohorts, intakeCategory),
+                  intakeCategory || 'With no intake Name'
+                )}
+                isShow={!isCollapse}
+              />
+            ))}
+          </>
+        )}
         {mode === 'Instructor' &&
           getCategories(cohorts).map((category) => (
             <NavSection
@@ -185,7 +191,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             />
           ))}
 
-        <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+        {(mode !== 'Learner' || user?.type === 'admin') && (
+          <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
+        )}
         {user?.type !== 'learner' && (
           <StyledBox>
             <ViewSwitcherStyle>

@@ -89,6 +89,7 @@ export default function Router() {
         { path: '/', element: <RedirectToCohort /> },
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
+        { path: '/all-courses', element: <AllCourses /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -353,6 +354,7 @@ export default function Router() {
     { path: 'registration/course-invite', element: <CourseInvite /> },
     { path: 'registration/subscription-payment', element: <SubscriptionPayment /> },
     { path: 'registration/course-payment', element: <CoursePayment /> },
+    { path: 'curriculum', element: <CurriculumPage /> },
     // {
     //   path: '/',
     // element: <MainLayout />,
@@ -493,6 +495,7 @@ const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
+const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
@@ -511,6 +514,7 @@ const SubscriptionPayment = Loadable(
   lazy(() => import('../pages/registration/SubscriptionPaymentPage'))
 );
 const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
+const CurriculumPage = Loadable(lazy(() => import('../pages/curriculum/CurriculumPage')));
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );
