@@ -11,10 +11,10 @@ export default function ReferralProgress({
   referralsSent: number;
   requiredReferees: number;
 }) {
-  const CHART_DATA = [referralsSent, referralsSent - enrolled, 7];
+  const CHART_DATA = [enrolled, referralsSent - enrolled, 7];
   const chartOptions = merge(BaseOptionChart(), {
     legend: { show: false },
-    labels: ['Referrals Sent + Enrolled', 'Referrals waiting for Acceptance', 'Required Referees'],
+    labels: ['Referrals Enrolled', 'Referrals waiting for Acceptance', 'Required Referees'],
     colors: ['#ffffff', '#ffffff', '#ffffff'],
     plotOptions: {
       pie: {
@@ -30,7 +30,7 @@ export default function ReferralProgress({
               show: true,
               showAlways: true,
               offsetY: 0,
-              formatter: () => `${enrolled} referral${enrolled > 1 ? 's' : ''}`
+              formatter: () => `${enrolled} referral${enrolled !== 1 ? 's' : ''}`
             },
             total: {
               show: true,

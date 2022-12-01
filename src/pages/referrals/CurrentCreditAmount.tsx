@@ -11,7 +11,7 @@ export default function CurrentCreditAmount() {
 
   const handleUseBalance = () => {
     sendAnalyticsData('Balance Page - "Use My Balance" button clicked');
-    window.open('https://www.getsphere.com/#cohort-tabs', '_blank');
+    window.open('https://www.getsphere.com/functions/data-and-ml', '_blank');
   };
 
   return (
