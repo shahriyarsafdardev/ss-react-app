@@ -35,5 +35,24 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '48px',
     color: '#475569',
     borderRadius: '30px'
+  },
+  timestampButton: {
+    borderRadius: '20px',
+    lineHeight: '120%',
+    height: '40px'
+  },
+  halfWidthButton: {
+    width: '50%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  recordingNotAvailableText: {
+    color: '#64748B',
+    marginBottom: '16px',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0px 16px',
+      marginBottom: '16px !important'
+    }
   }
 }));

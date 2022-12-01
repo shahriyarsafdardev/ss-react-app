@@ -6,6 +6,7 @@ import { CohortContext } from 'contexts/CohortContext';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import { updateTimestamp } from '../../../../redux/slices/cohort';
 import { useDispatch } from '../../../../redux/store';
+import { useStyles } from './Common';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   marginBottom: '30px',
@@ -26,16 +27,19 @@ const StyledImageContainer = styled(Box)(({ theme }) => ({
 function Timestamp({
   timestamp,
   handlePlay,
-  sessionId
+  sessionId,
+  isRecordingAvailable
 }: {
   timestamp: SessionTimestamp;
   handlePlay: Function;
   sessionId: string;
+  isRecordingAvailable: boolean;
 }) {
   const [updateDescription, setUpdateDescription] = useState(false);
   const [description, setDescription] = useState<string>(timestamp?.description || '');
   const dispatch = useDispatch();
   const { id } = useContext(CohortContext);
+  const classes = useStyles();
 
   function secondsToHms(d: any) {
     d = Number(d);
@@ -76,7 +80,7 @@ function Timestamp({
           height: 'auto'
         }}
       />
-      <Stack direction="column" spacing={2} width={{ sm: '100%', md: '60%' }}>
+      <Stack direction="column" spacing={4} width={{ sm: '100%', md: '60%' }}>
         {updateDescription ? (
           <TextField
             id="outlined-multiline-static"
@@ -92,12 +96,12 @@ function Timestamp({
             {` | ${timestamp?.description || 'New Timestamp'}`}
           </Typography>
         )}
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-          {!updateDescription && (
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          {!updateDescription && isRecordingAvailable && (
             <Button
               onClick={() => handlePlay(timestamp?.timestamp)}
               variant="contained"
-              sx={{ borderRadius: '20px', lineHeight: '120%' }}
+              className={classes.timestampButton}
               fullWidth
             >
               Open Timestamp
@@ -106,7 +110,9 @@ function Timestamp({
           <Button
             onClick={handleSubmit}
             variant="outlined"
-            style={{ borderRadius: '20px' }}
+            className={`${classes.timestampButton} ${
+              !isRecordingAvailable && classes.halfWidthButton
+            }`}
             fullWidth
           >
             {updateDescription
