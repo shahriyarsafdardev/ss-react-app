@@ -78,7 +78,12 @@ function Timestamp({
           height: 'auto'
         }}
       />
-      <Stack direction="column" spacing={4} width={{ sm: '100%', md: '60%' }}>
+      <Stack
+        direction="column"
+        justifyContent="space-between"
+        spacing={4}
+        width={{ sm: '100%', md: '60%' }}
+      >
         {updateDescription ? (
           <TextField
             id="outlined-multiline-static"
@@ -108,9 +113,7 @@ function Timestamp({
           <Button
             onClick={handleSubmit}
             variant="outlined"
-            className={`${classes.timestampButton} ${
-              !isRecordingAvailable && classes.halfWidthButton
-            }`}
+            className={classes.timestampButton}
             fullWidth
           >
             {updateDescription
