@@ -76,6 +76,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
     overflow: 'hidden'
   },
+  activeCourseTile: {
+    opacity: 1,
+    height: '250px',
+    width: '425px'
+  },
   topicButton: {
     borderRadius: '30px',
     height: '48px',

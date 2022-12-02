@@ -148,8 +148,8 @@ export default function CarouselCenterMode({ courses }: { courses: any }) {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {courses.map((course: any) => (
-          <CarouselItem key={course.name} course={course} />
+        {courses.map((course: any, index: number) => (
+          <CarouselItem key={course.name} course={course} isActive={activeCourse === index} />
         ))}
       </Slider>
 
