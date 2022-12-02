@@ -4,12 +4,12 @@ import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
 import { useStyles } from './Common';
 
-export default function CarouselItem({ course, isActive }: { course: any; isActive: boolean }) {
+export default function CarouselItem({ course }: { course: any }) {
   const classes = useStyles();
 
   return (
-    <Stack sx={{ height: '320px', alignItems: 'center', justifyContent: 'center' }}>
-      <Stack className={`${classes.courseTile} ${isActive ? classes.activeCourseTile : ''}`}>
+    <Stack sx={{ mx: 3, height: '320px', alignItems: 'center', justifyContent: 'center' }}>
+      <Stack className={classes.courseTile}>
         <>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h4" sx={{ fontSize: '1.2rem !important' }}>
