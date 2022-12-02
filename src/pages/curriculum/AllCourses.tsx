@@ -45,7 +45,7 @@ export default function AllCourses() {
   }, []);
 
   const selectFilterTopics = (cohorts: any, value: string) => {
-    if (value === 'Other') {
+    if (value.toLocaleLowerCase() === 'other') {
       setSelectedTopic(null);
       setTopics(['All']);
       return;
