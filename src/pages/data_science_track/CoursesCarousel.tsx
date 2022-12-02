@@ -1,23 +1,9 @@
 import Slider from 'react-slick';
 import { useEffect, useRef, useState } from 'react';
-import { Icon } from '@iconify/react';
-import { Link as RouterLink } from 'react-router-dom';
-import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
-// material
-import { alpha, useTheme, styled } from '@material-ui/core/styles';
-import { Stack, Box, Paper, Link, Typography, CardContent } from '@material-ui/core';
-// utils
-import mockData from 'utils/mock-data'; //
+import { useTheme, styled } from '@material-ui/core/styles';
+import { Box } from '@material-ui/core';
 import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
-// ----------------------------------------------------------------------
-
-// const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
-//   id: mockData.id(index),
-//   title: mockData.text.title(index),
-//   image: mockData.image.feed(index),
-//   description: mockData.text.description(index)
-// }));
 
 const RootStyle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -28,80 +14,19 @@ const RootStyle = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(163.43deg, #29064C 11.47%, #9E5AD7 91.06%)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  '&:before, &:after': {
-    top: 0,
-    left: 0,
-    zIndex: 8,
-    width: 48,
-    content: "''",
-    height: '100%',
-    display: 'none',
-    position: 'absolute',
-    [theme.breakpoints.up(480)]: {
-      display: 'block'
-    }
-  },
-  '&:after': {
-    right: 0,
-    left: 'auto',
-    transform: 'scaleX(-1)'
-  }
+  '& .slick-slide': { opacity: 0.7 },
+  '& .slick-current': { opacity: 1, transform: 'scale(1.2)' },
+  '& .slick-center': { opacity: 1, transform: 'scale(1.2)' }
 }));
 
-// const CarouselImgStyle = styled('img')(({ theme }) => ({
-//   top: 0,
-//   width: '100%',
-//   height: '100%',
-//   objectFit: 'cover',
-//   position: 'absolute'
-//   // transition: theme.transitions.create('all')
-// }));
-
-// ----------------------------------------------------------------------
-
-// type CarouselItemProps = {
-//   title: string;
-//   description: string;
-//   image: string;
-// };
-
-// function CarouselItem({ item }: { item: CarouselItemProps }) {
-//   const { image, title } = item;
-
-//   return (
-//     <Paper
-//       sx={{
-//         m: 5,
-//         height: '210px',
-//         width: '280px',
-//         borderRadius: 2,
-//         overflow: 'hidden',
-//         position: 'relative',
-//         '&:hover': {
-//           transform: 'scale(1.2)'
-//         }
-//       }}
-//     >
-//       <CarouselImgStyle alt={title} src={image} />
-//     </Paper>
-//   );
-// }
-
-export default function CarouselCenterMode({ courses }: { courses: any }) {
-  const [activeCourse, setActiveCourse] = useState(0);
+export default function CarouselCenterMode({
+  courses,
+  setActiveCourse
+}: {
+  courses: any;
+  setActiveCourse: Function;
+}) {
   const carouselRef = useRef<Slider | null>(null);
-  const theme = useTheme();
-
-  // const findActiveSlide = () => {
-  //   let found = false;
-  //   courses.map((course: any, index: any) => {
-  //     if (!found && !course.complete) {
-  //       setActiveCourse(index);
-  //       found = true;
-  //     }
-  //   });
-  //   return activeCourse;
-  // };
 
   useEffect(() => {
     let found = false;
@@ -115,11 +40,16 @@ export default function CarouselCenterMode({ courses }: { courses: any }) {
 
   const settings = {
     slidesToShow: 3,
-    centerMode: true,
-    focusOnSelect: true,
-    centerPadding: '60px',
+    arrows: false,
+    focusOnSelect: false,
     rtl: true,
-    initialSlide: activeCourse,
+    cssEase: 'linear',
+    variableWidth: true,
+    variableHeight: true,
+    centerPadding: '0',
+    infinite: true,
+    slidesToScroll: 1,
+    beforeChange: (current: number, next: number) => setActiveCourse(courses.length - next - 1),
     responsive: [
       {
         breakpoint: 1024,
@@ -127,11 +57,7 @@ export default function CarouselCenterMode({ courses }: { courses: any }) {
       },
       {
         breakpoint: 600,
-        settings: { slidesToShow: 2 }
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1, centerPadding: '0' }
+        settings: { slidesToShow: 1 }
       }
     ]
   };
@@ -146,12 +72,13 @@ export default function CarouselCenterMode({ courses }: { courses: any }) {
 
   return (
     <RootStyle>
-      <Slider ref={carouselRef} {...settings}>
-        {courses.map((course: any, index: number) => (
-          <CarouselItem key={course.name} course={course} isActive={activeCourse === index} />
-        ))}
-      </Slider>
-
+      <Box sx={{ maxWidth: '92%', mx: 'auto' }}>
+        <Slider centerMode={true} ref={carouselRef} {...settings}>
+          {courses.map((course: any, index: number) => (
+            <CarouselItem key={course.name} course={course} />
+          ))}
+        </Slider>
+      </Box>
       <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />
     </RootStyle>
   );

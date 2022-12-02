@@ -24,7 +24,7 @@ export default function TrackHeader({
   const progress = () => Math.floor((complete / total) * 100);
 
   return (
-    <Stack spacing={2} sx={{ p: '50px' }}>
+    <Stack spacing={2} sx={{ p: '0 50px 50px' }}>
       <Typography sx={{ fontSize: '28px', fontWeight: '600', color: '#000' }}>
         {track.name}
       </Typography>
