@@ -2,7 +2,7 @@ import Page from 'components/Page';
 import { Stack } from '@material-ui/core';
 import TrackHeader from './TrackHeader';
 import CourseDetails from './CourseDetails';
-import CoursesCarousel from './CoursesCaoursel';
+import CoursesCarousel from './CoursesCarousel';
 
 const TRACK = {
   name: 'The Complete Data Scientist',
@@ -16,8 +16,12 @@ const COURSES = [
     is_complete: true,
     description:
       'Learn how to use applied causal inference methods to make better product and business decisions live with Rob Donnelly, an industry leader with experience at Instacart and Meta.',
-    preview_instructor_name: 'Inst1',
     preview_instructor_affiliation: 'Engineer at Stripe',
+    preview_instructor_image:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/6376823275bd376e551ef49d_DRS.png',
+    preview_instructor_logos:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/63781e0fd6003161d79cd496_DRS.svg',
+    preview_instructor_name: 'Xavier Amatrian & Deepak Agarwal',
     sessions: [
       {
         number: 1,
@@ -39,8 +43,12 @@ const COURSES = [
     is_complete: true,
     description:
       'Learn how to use applied causal inference methods to make better product and business decisions live with Rob Donnelly, an industry leader with experience at Instacart and Meta.',
-    preview_instructor_name: 'Inst1',
     preview_instructor_affiliation: 'Engineer at Stripe',
+    preview_instructor_image:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/6376823275bd376e551ef49d_DRS.png',
+    preview_instructor_logos:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/63781e0fd6003161d79cd496_DRS.svg',
+    preview_instructor_name: 'Xavier Amatrian & Deepak Agarwal',
     sessions: [
       {
         number: 1,
@@ -62,8 +70,12 @@ const COURSES = [
     is_complete: false,
     description:
       'Learn how to use applied causal inference methods to make better product and business decisions live with Rob Donnelly, an industry leader with experience at Instacart and Meta.',
-    preview_instructor_name: 'Inst1',
     preview_instructor_affiliation: 'Engineer at Stripe',
+    preview_instructor_image:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/6376823275bd376e551ef49d_DRS.png',
+    preview_instructor_logos:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/63781e0fd6003161d79cd496_DRS.svg',
+    preview_instructor_name: 'Xavier Amatrian & Deepak Agarwal',
     sessions: [
       {
         number: 1,
@@ -85,8 +97,12 @@ const COURSES = [
     is_complete: false,
     description:
       'Learn how to use applied causal inference methods to make better product and business decisions live with Rob Donnelly, an industry leader with experience at Instacart and Meta.',
-    preview_instructor_name: 'Inst1',
     preview_instructor_affiliation: 'Engineer at Stripe',
+    preview_instructor_image:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/6376823275bd376e551ef49d_DRS.png',
+    preview_instructor_logos:
+      'https://uploads-ssl.webflow.com/62b10e6dc5648dfcaf401a94/63781e0fd6003161d79cd496_DRS.svg',
+    preview_instructor_name: 'Xavier Amatrian & Deepak Agarwal',
     sessions: [
       {
         number: 1,
@@ -113,7 +129,7 @@ export default function DataScienceTrack() {
           total={COURSES.length}
           complete={COURSES.filter((course) => course.is_complete).length}
         />
-        <CoursesCarousel />
+        <CoursesCarousel courses={COURSES} />
         <CourseDetails courseData={COURSES[0]} />
       </Stack>
     </Page>

@@ -1,4 +1,7 @@
 import { Avatar, Stack, Typography, Box } from '@material-ui/core';
+import { Icon } from '@iconify/react';
+import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
+import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
 import { useStyles } from './Common';
 
 export default function CarouselItem({ course }: { course: any }) {
@@ -7,18 +10,22 @@ export default function CarouselItem({ course }: { course: any }) {
   return (
     <Stack className={classes.courseTile}>
       <>
-        <Typography
-          variant="h4"
-          sx={{ marginBottom: '20px', padding: '0px 20px', fontSize: '1.2rem !important' }}
-        >
-          {course.name}
-        </Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="h4" sx={{ fontSize: '1.2rem !important' }}>
+            {course.name}
+          </Typography>
+          {course.is_complete ? (
+            <Icon icon={checkmarkCircle2Fill} color="#27ae60" width={20} height={20} />
+          ) : (
+            <Icon icon={checkmarkCircle2Outline} color="#d9d9d9" width={20} height={20} />
+          )}
+        </Stack>
         <Stack>
           {course?.preview_instructor_name && (
             <Stack
               direction="row"
               spacing={2.5}
-              sx={{ alignItems: 'center', marginBottom: '20px', padding: '0px 20px' }}
+              sx={{ alignItems: 'center', marginBottom: '20px' }}
             >
               <Avatar
                 src={course?.preview_instructor_image}
@@ -35,6 +42,8 @@ export default function CarouselItem({ course }: { course: any }) {
               </Stack>
             </Stack>
           )}
+        </Stack>
+        <Stack>
           {course?.preview_instructor_logos && (
             <Box sx={{ borderTop: '1px solid #E6E6E6' }}>
               <img

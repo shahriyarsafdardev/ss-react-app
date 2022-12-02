@@ -58,17 +58,21 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   courseTile: {
-    height: '50%',
+    height: '210px',
+    width: '400px',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',
     position: 'relative',
-    padding: '20px 0px 16px 0px',
+    padding: '20px 20px 16px',
     cursor: 'pointer',
     justifyContent: 'space-between',
-    '&:hover > .descriptionHover': {
-      top: 0,
-      opacity: 1
+    opacity: 0.7,
+    '&:hover': {
+      opacity: 1,
+      borderRadius: '8px !important',
+      height: '250px',
+      width: '425px'
     },
     overflow: 'hidden'
   },

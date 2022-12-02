@@ -31,7 +31,7 @@ export default function TrackHeader({
       <Typography sx={{ color: '#363853' }}>{track.description}</Typography>
       <Stack spacing={1}>
         <Typography sx={{ color: '#000' }}>
-          {complete} / {total} courses completed
+          {complete}/{total} courses completed
         </Typography>
         <BorderLinearProgress
           variant="determinate"
