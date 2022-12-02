@@ -27,10 +27,10 @@ export default function CourseTile({ course }: { course: any }) {
     trackEvent(course, 'Curriculum Page - Cohort Tile - Selected', {
       'Course Title': course?.name
     });
-    window.open(
-      `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`,
-      '_blank'
-    );
+    const url = course?.wait_listed
+      ? `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`
+      : course?.registration_page_url;
+    window.open(url, '_blank');
   };
 
   return (
