@@ -8,8 +8,7 @@ import { alpha, useTheme, styled } from '@material-ui/core/styles';
 import { Stack, Box, Paper, Link, Typography, CardContent } from '@material-ui/core';
 // utils
 import mockData from 'utils/mock-data'; //
-import CarouselControlsArrowsBasic2 from '../../components/carousel/controls/CarouselControlsArrowsBasic2';
-
+import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
 // ----------------------------------------------------------------------
 
@@ -60,11 +59,11 @@ const RootStyle = styled(Box)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type CarouselItemProps = {
-  title: string;
-  description: string;
-  image: string;
-};
+// type CarouselItemProps = {
+//   title: string;
+//   description: string;
+//   image: string;
+// };
 
 // function CarouselItem({ item }: { item: CarouselItemProps }) {
 //   const { image, title } = item;
@@ -153,7 +152,7 @@ export default function CarouselCenterMode({ courses }: { courses: any }) {
         ))}
       </Slider>
 
-      <CarouselControlsArrowsBasic2 onNext={handleNext} onPrevious={handlePrevious} />
+      <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />
     </RootStyle>
   );
 }
