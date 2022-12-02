@@ -124,12 +124,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   coursesGrid: {
-    minHeight: 'calc(100vh - 202px)',
+    minHeight: 'calc(100vh - 203px)',
+    alignItems: 'center',
     [theme.breakpoints.down('lg')]: {
-      minHeight: 'calc(100vh - 174px)'
+      minHeight: 'calc(100vh - 175px)'
     },
     [theme.breakpoints.down('md')]: {
-      minHeight: 'calc(100vh - 164px)'
+      minHeight: 'calc(100vh - 165px)'
+    },
+    [theme.breakpoints.down('sm')]: {
+      minHeight: 'calc(100vh - 230px)'
     }
   },
   purpleBackground: {
@@ -181,6 +185,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignSelf: 'flex-end',
     [theme.breakpoints.down('sm')]: {
       alignSelf: 'center'
+    }
+  },
+  justifyMobileCenter: {
+    maxWidth: '1280px',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'center'
     }
   }
 }));

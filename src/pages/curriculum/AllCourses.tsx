@@ -3,7 +3,7 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { Box, Container, Stack } from '@material-ui/core';
-import _ from 'lodash';
+import { uniq } from 'lodash';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
@@ -12,10 +12,10 @@ export default function AllCourses() {
   const [courses, setCourses] = useState<any>([]);
   const [seniority, setSeniority] = useState<string[]>([]);
   const [functions, setFunctions] = useState<string[]>([]);
-  const [topics, setTopics] = useState<string[]>([]);
-  const [selectedSeniority, setSelectedSeniority] = useState<string[]>([]);
-  const [selectedFunctions, setSelectedFunctions] = useState<string[]>([]);
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [topics, setTopics] = useState<any[]>([]);
+  const [selectedSeniority, setSelectedSeniority] = useState<any>();
+  const [selectedFunction, setSelectedFunction] = useState<any>();
+  const [selectedTopic, setSelectedTopic] = useState<any>();
   const classes = useStyles();
 
   useEffect(() => {
@@ -32,16 +32,9 @@ export default function AllCourses() {
           ?.map((cohort: any) => cohort.function)
           ?.filter((func: string) => !!func);
         functionList = Array.from(new Set(functionList)).sort((a: any, b) => a.localeCompare(b));
+        setSelectedFunction(functionList[0]);
         setFunctions(functionList);
-        setSelectedFunctions([functionList[0]]);
-
-        let topicList = res.data.cohorts
-          ?.map((cohort: any) => cohort.topics)
-          .flat()
-          .filter((topic: string) => !!topic);
-        topicList = Array.from(new Set(topicList)).sort((a: any, b) => a.localeCompare(b));
-        setTopics(topicList);
-        setSelectedTopics([topicList[0]]);
+        selectFilterTopics(res.data.cohorts, functionList[0]);
       });
     };
     getCourses();
@@ -51,29 +44,51 @@ export default function AllCourses() {
     };
   }, []);
 
+  const selectFilterTopics = (cohorts: any, value: string) => {
+    if (value === 'Other') {
+      setSelectedTopic(null);
+      setTopics(['All']);
+      return;
+    }
+    const filteredTopics = uniq(
+      cohorts
+        .filter((course: any) => course.function === value)
+        .map((course: any) => course.topics)
+        .flat()
+        .sort((a: any, b: any) => a.localeCompare(b))
+    );
+    setTopics(filteredTopics);
+    setSelectedTopic(filteredTopics[0]);
+  };
+
   const applyFilters = useCallback(() => {
     let filteredCourses: any = courses;
 
-    if (selectedSeniority.length > 0) {
-      filteredCourses = filteredCourses?.filter((course: any) =>
-        selectedSeniority.includes(course.seniority)
-      );
-    }
-
-    if (selectedFunctions.length > 0) {
-      filteredCourses = filteredCourses?.filter((course: any) =>
-        selectedFunctions.includes(course.function)
-      );
-    }
-
-    if (selectedTopics.length > 0) {
+    if (selectedSeniority) {
       filteredCourses = filteredCourses?.filter(
-        (course: any) => _.intersection(selectedTopics, course.topics).length > 0
+        (course: any) => selectedSeniority === course.seniority
+      );
+    }
+
+    if (selectedFunction) {
+      filteredCourses = filteredCourses?.filter(
+        (course: any) => selectedFunction === course.function
+      );
+    }
+
+    if (selectedTopic) {
+      filteredCourses = filteredCourses?.filter((course: any) =>
+        course.topics.includes(selectedTopic)
       );
     }
 
     return filteredCourses;
-  }, [selectedSeniority, courses, selectedFunctions, selectedTopics]);
+  }, [selectedSeniority, courses, selectedFunction, selectedTopic]);
+
+  const handleChangeFunction = (value: any) => {
+    setSelectedFunction(value);
+    selectFilterTopics(courses, value);
+  };
 
   if (courses.length === 0) {
     return (
@@ -89,21 +104,20 @@ export default function AllCourses() {
     <Page title="Sphere Courses">
       <Box paddingX={{ xs: '20px', md: '40px' }} mb={{ xs: '20px', md: '30px' }}>
         <AllCoursesFilters
+          key={`${topics.length} ${functions.length}`}
           functions={functions}
           seniority={seniority}
           topics={topics}
-          setSelectedFunctions={setSelectedFunctions}
+          setSelectedFunction={setSelectedFunction}
           setSelectedSeniority={setSelectedSeniority}
-          setSelectedTopics={setSelectedTopics}
-          selectedTopics={selectedTopics}
-          selectedFunctions={selectedFunctions}
+          setSelectedTopic={setSelectedTopic}
+          selectedTopic={selectedTopic}
+          selectedFunction={selectedFunction}
           selectedSeniority={selectedSeniority}
+          handleChangeFunction={handleChangeFunction}
         />
       </Box>
-      <Stack
-        className={`${classes.purpleBackground} ${classes.coursesGrid}`}
-        justifyContent="center"
-      >
+      <Stack className={`${classes.purpleBackground} ${classes.coursesGrid}`}>
         <CoursesContainer courses={applyFilters()} />
       </Stack>
     </Page>
