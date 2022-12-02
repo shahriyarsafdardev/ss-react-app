@@ -21,6 +21,8 @@ const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
 
 const RootStyle = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
+  width: '100%',
+  height: '280px',
   position: 'relative',
   '&:before, &:after': {
     top: 0,
@@ -48,8 +50,8 @@ const CarouselImgStyle = styled('img')(({ theme }) => ({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  position: 'absolute',
-  transition: theme.transitions.create('all')
+  position: 'absolute'
+  // transition: theme.transitions.create('all')
 }));
 
 // ----------------------------------------------------------------------
@@ -66,53 +68,18 @@ function CarouselItem({ item }: { item: CarouselItemProps }) {
   return (
     <Paper
       sx={{
-        mx: 1,
+        m: 5,
+        height: '210px',
+        width: '280px',
         borderRadius: 2,
         overflow: 'hidden',
-        paddingTop: 'calc(16 /9 * 100%)',
         position: 'relative',
-        '&:hover img': {
-          width: '120%',
-          height: '120%'
+        '&:hover': {
+          transform: 'scale(1.2)'
         }
       }}
     >
       <CarouselImgStyle alt={title} src={image} />
-      <CardContent
-        sx={{
-          bottom: 0,
-          zIndex: 9,
-          width: '100%',
-          textAlign: 'left',
-          position: 'absolute',
-          color: 'common.white',
-          backgroundImage: (theme) =>
-            `linear-gradient(to top, ${theme.palette.grey[900]} 0%,${alpha(
-              theme.palette.grey[900],
-              0
-            )} 100%)`
-        }}
-      >
-        <Typography variant="h4" paragraph>
-          {title}
-        </Typography>
-        <Link
-          to="#"
-          color="inherit"
-          variant="overline"
-          component={RouterLink}
-          sx={{
-            opacity: 0.72,
-            alignItems: 'center',
-            display: 'inline-flex',
-            transition: (theme) => theme.transitions.create('opacity'),
-            '&:hover': { opacity: 1 }
-          }}
-        >
-          learn More
-          <Box component={Icon} icon={arrowForwardFill} sx={{ width: 16, height: 16, ml: 1 }} />
-        </Link>
-      </CardContent>
     </Paper>
   );
 }
