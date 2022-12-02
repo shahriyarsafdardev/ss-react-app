@@ -3,7 +3,7 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { Box, Container, Stack } from '@material-ui/core';
-import _ from 'lodash';
+import { uniq } from 'lodash';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
@@ -12,7 +12,7 @@ export default function AllCourses() {
   const [courses, setCourses] = useState<any>([]);
   const [seniority, setSeniority] = useState<string[]>([]);
   const [functions, setFunctions] = useState<string[]>([]);
-  const [topics, setTopics] = useState<string[]>([]);
+  const [topics, setTopics] = useState<any[]>([]);
   const [selectedSeniority, setSelectedSeniority] = useState<any>();
   const [selectedFunction, setSelectedFunction] = useState<any>();
   const [selectedTopic, setSelectedTopic] = useState<any>();
@@ -34,14 +34,7 @@ export default function AllCourses() {
         functionList = Array.from(new Set(functionList)).sort((a: any, b) => a.localeCompare(b));
         setSelectedFunction(functionList[0]);
         setFunctions(functionList);
-
-        let topicList = res.data.cohorts
-          ?.map((cohort: any) => cohort.topics)
-          .flat()
-          .filter((topic: string) => !!topic);
-        topicList = Array.from(new Set(topicList)).sort((a: any, b) => a.localeCompare(b));
-        setSelectedTopic(topicList[0]);
-        setTopics(topicList);
+        selectFilterTopics(res.data.cohorts, functionList[0]);
       });
     };
     getCourses();
@@ -50,6 +43,23 @@ export default function AllCourses() {
       setSelectedSeniority([]);
     };
   }, []);
+
+  const selectFilterTopics = (cohorts: any, value: string) => {
+    if (value === 'Other') {
+      setSelectedTopic(null);
+      setTopics(['All']);
+      return;
+    }
+    const filteredTopics = uniq(
+      cohorts
+        .filter((course: any) => course.function === value)
+        .map((course: any) => course.topics)
+        .flat()
+        .sort((a: any, b: any) => a.localeCompare(b))
+    );
+    setTopics(filteredTopics);
+    setSelectedTopic(filteredTopics[0]);
+  };
 
   const applyFilters = useCallback(() => {
     let filteredCourses: any = courses;
@@ -75,6 +85,11 @@ export default function AllCourses() {
     return filteredCourses;
   }, [selectedSeniority, courses, selectedFunction, selectedTopic]);
 
+  const handleChangeFunction = (value: any) => {
+    setSelectedFunction(value);
+    selectFilterTopics(courses, value);
+  };
+
   if (courses.length === 0) {
     return (
       <Container sx={{ position: 'relative', height: '100%' }}>
@@ -99,6 +114,7 @@ export default function AllCourses() {
           selectedTopic={selectedTopic}
           selectedFunction={selectedFunction}
           selectedSeniority={selectedSeniority}
+          handleChangeFunction={handleChangeFunction}
         />
       </Box>
       <Stack className={`${classes.purpleBackground} ${classes.coursesGrid}`}>

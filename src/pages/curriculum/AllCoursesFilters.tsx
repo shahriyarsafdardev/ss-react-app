@@ -9,7 +9,8 @@ export default function AllCoursesFilters({
   topics,
   setSelectedSeniority,
   selectedSeniority,
-  seniority
+  seniority,
+  handleChangeFunction
 }: {
   setSelectedFunction: Function;
   selectedFunction: string;
@@ -20,6 +21,7 @@ export default function AllCoursesFilters({
   setSelectedSeniority: Function;
   selectedSeniority: string;
   seniority: String[];
+  handleChangeFunction: Function;
 }) {
   return (
     <Grid container spacing={{ xs: 1, md: 2 }}>
@@ -29,7 +31,7 @@ export default function AllCoursesFilters({
             <InputLabel id="function-filter">Filter by Function</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
-              onChange={(e: any) => setSelectedFunction(e.target?.value)}
+              onChange={(e: any) => handleChangeFunction(e.target?.value)}
               labelId="function-filter"
               value={selectedFunction}
               label="Filter by Function"
@@ -51,7 +53,7 @@ export default function AllCoursesFilters({
               MenuProps={{ sx: { maxHeight: 500 } }}
               onChange={(e: any) => setSelectedTopic(e.target?.value)}
               labelId="topic-filter"
-              value={selectedTopic}
+              value={selectedTopic || 'All'}
               label="Filter by Topic"
             >
               {topics.map((type: any) => (
