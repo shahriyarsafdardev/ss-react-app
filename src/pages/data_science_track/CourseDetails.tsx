@@ -15,7 +15,7 @@ export default function CourseDetails({ courseData }: { courseData: any }) {
   return (
     <>
       <Stack spacing={2} sx={{ px: '50px', paddingTop: '50px', color: '#1E293B' }}>
-        {courseData.is_next_reccommended && (
+        {courseData.is_next_reccommended && !courseData.is_complete && (
           <Typography sx={{ fontWeight: '700' }}>
             The next reccommended course in this track is:
           </Typography>
