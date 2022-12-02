@@ -28,12 +28,14 @@ function Timestamp({
   timestamp,
   handlePlay,
   sessionId,
-  isRecordingAvailable
+  isRecordingAvailable,
+  sendAnalyticsEvent
 }: {
   timestamp: SessionTimestamp;
   handlePlay: Function;
   sessionId: string;
   isRecordingAvailable: boolean;
+  sendAnalyticsEvent: Function;
 }) {
   const [updateDescription, setUpdateDescription] = useState(false);
   const [description, setDescription] = useState<string>(timestamp?.description || '');
@@ -52,11 +54,28 @@ function Timestamp({
   }
 
   const handleSubmit = () => {
+    handleEvent(`Sessions Page - Timestamps - "${buttonText()}" button clicked`);
     setUpdateDescription(!updateDescription);
     if (updateDescription) {
       dispatch(updateTimestamp(id, sessionId, timestamp.id, description));
     }
   };
+
+  const handleEvent = (eventName: string) => {
+    sendAnalyticsEvent(eventName, { 'Time Point': secondsToHms(timestamp?.timestamp || 0) });
+  };
+
+  const handleOpenTimestamp = () => {
+    handlePlay(timestamp?.timestamp);
+    handleEvent('Sessions Page - Timestamps - "Open Timestamp" button clicked');
+  };
+
+  const buttonText = () =>
+    updateDescription
+      ? 'Save Description'
+      : !timestamp?.description
+      ? 'Add Description'
+      : 'Edit Description';
 
   return (
     <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={1}>
@@ -102,7 +121,7 @@ function Timestamp({
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
           {!updateDescription && isRecordingAvailable && (
             <Button
-              onClick={() => handlePlay(timestamp?.timestamp)}
+              onClick={() => handleOpenTimestamp()}
               variant="contained"
               className={classes.timestampButton}
               fullWidth
@@ -116,11 +135,7 @@ function Timestamp({
             className={classes.timestampButton}
             fullWidth
           >
-            {updateDescription
-              ? 'Save Description'
-              : !timestamp?.description
-              ? 'Add Description'
-              : 'Edit Description'}
+            {buttonText()}
           </Button>
         </Stack>
       </Stack>

@@ -330,9 +330,9 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       <SessionTimestamps
         timestamps={session?.timestamps || []}
         key="session_timestamps"
-        sessionId={session?.id}
         handlePlayTimeStamp={(time: any) => handlePlayTimeStamp(time)}
         isRecordingAvailable={session?.recording_urls.length > 0}
+        session={session}
       />
     );
   }
