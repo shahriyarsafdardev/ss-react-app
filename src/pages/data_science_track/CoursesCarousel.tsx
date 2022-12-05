@@ -15,28 +15,19 @@ const RootStyle = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   '& .slick-slide': { opacity: 0.7 },
-  '& .slick-current': { opacity: 1, transform: 'scale(1.2)' },
   '& .slick-center': { opacity: 1, transform: 'scale(1.2)' }
 }));
 
 export default function CarouselCenterMode({
   courses,
+  activeCourse,
   setActiveCourse
 }: {
   courses: any;
+  activeCourse: number;
   setActiveCourse: Function;
 }) {
   const carouselRef = useRef<Slider | null>(null);
-
-  useEffect(() => {
-    let found = false;
-    courses.map((course: any, index: any) => {
-      if (!found && !course.is_complete) {
-        setActiveCourse(index);
-        found = true;
-      }
-    });
-  }, []);
 
   const settings = {
     slidesToShow: 3,
@@ -49,6 +40,7 @@ export default function CarouselCenterMode({
     centerPadding: '0',
     infinite: true,
     slidesToScroll: 1,
+    initialSlide: activeCourse,
     beforeChange: (current: number, next: number) => setActiveCourse(courses.length - next - 1),
     responsive: [
       {
@@ -72,7 +64,7 @@ export default function CarouselCenterMode({
 
   return (
     <RootStyle>
-      <Box sx={{ maxWidth: '92%', mx: 'auto' }}>
+      <Box sx={{ maxWidth: { sm: '85%', md: '90%', lg: '93%' }, mx: 'auto' }}>
         <Slider centerMode={true} ref={carouselRef} {...settings}>
           {courses.map((course: any, index: number) => (
             <CarouselItem key={course.name} course={course} />

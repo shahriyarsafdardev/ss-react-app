@@ -1,4 +1,4 @@
-import { Stack, Typography, Button } from '@material-ui/core';
+import { Stack, Typography, Button, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import SessionDetails from './SessionDetails';
 
@@ -13,8 +13,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 export default function CourseDetails({ courseData }: { courseData: any }) {
   return (
-    <>
-      <Stack spacing={2} sx={{ px: '50px', paddingTop: '50px', color: '#1E293B' }}>
+    <Box sx={{ p: '50px', color: '#1E293B' }}>
+      <Stack spacing={2}>
         {courseData.is_next_reccommended && !courseData.is_complete && (
           <Typography sx={{ fontWeight: '700' }}>
             The next recommended course in this track is:
@@ -32,6 +32,6 @@ export default function CourseDetails({ courseData }: { courseData: any }) {
       {courseData.sessions.map((session: any) => (
         <SessionDetails key={session.number} sessionData={session} />
       ))}
-    </>
+    </Box>
   );
 }

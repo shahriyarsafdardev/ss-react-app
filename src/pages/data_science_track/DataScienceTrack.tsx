@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Page from 'components/Page';
-import { Stack } from '@material-ui/core';
+import LoadingScreen from 'components/LoadingScreen';
+
+import { Stack, Container } from '@material-ui/core';
 import TrackHeader from './TrackHeader';
 import CourseDetails from './CourseDetails';
 import CoursesCarousel from './CoursesCarousel';
+import { LoadingContainer } from './Common';
 
 const TRACK = {
   name: 'The Complete Data Scientist',
@@ -123,6 +126,29 @@ const COURSES = [
 
 export default function DataScienceTrack() {
   const [activeCourse, setActiveCourse] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let found = false;
+    COURSES.map((course: any, index: any) => {
+      if (!found && !course.is_complete) {
+        setActiveCourse(index);
+        found = true;
+      }
+    });
+    setLoading(false);
+  }, []);
+
+  if (loading || COURSES.length === 0) {
+    return (
+      <Container sx={{ position: 'relative', height: '100%' }}>
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      </Container>
+    );
+  }
+
   return (
     <Page title="Sphere | Courses Track">
       <Stack>
@@ -133,9 +159,10 @@ export default function DataScienceTrack() {
         />
         <CoursesCarousel
           courses={COURSES}
+          activeCourse={activeCourse}
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
-        <CourseDetails key={String(activeCourse)} courseData={COURSES[activeCourse || 0]} />
+        <CourseDetails key={String(activeCourse)} courseData={COURSES[activeCourse]} />
       </Stack>
     </Page>
   );

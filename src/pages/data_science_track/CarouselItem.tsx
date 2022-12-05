@@ -8,7 +8,7 @@ export default function CarouselItem({ course }: { course: any }) {
   const classes = useStyles();
 
   return (
-    <Stack sx={{ mx: 3, height: '320px', alignItems: 'center', justifyContent: 'center' }}>
+    <Stack sx={{ mx: 4, height: '320px', alignItems: 'center', justifyContent: 'center' }}>
       <Stack className={classes.courseTile}>
         <>
           <Stack direction="row" justifyContent="space-between">
