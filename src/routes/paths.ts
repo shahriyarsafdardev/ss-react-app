@@ -64,8 +64,7 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
-    booking: path(ROOTS_DASHBOARD, '/booking'),
-    dataScienceTrack: path(ROOTS_DASHBOARD, '/data-scientist-track')
+    booking: path(ROOTS_DASHBOARD, '/booking')
   },
   mail: {
     root: path(ROOTS_DASHBOARD, '/mail'),
@@ -109,6 +108,9 @@ export const PATH_DASHBOARD = {
     resources: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/resources`),
     publicResources: (cohortID: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/public-resources`)
+  },
+  tracks: {
+    root: (trackSlug: string) => path(ROOTS_DASHBOARD, `/tracks/${trackSlug}`)
   },
   adminTools: {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),
