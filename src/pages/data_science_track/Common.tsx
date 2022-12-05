@@ -12,7 +12,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '20px 20px 16px',
     cursor: 'pointer',
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    transition: theme.transitions.create('opacity')
   },
   font15: {
     fontSize: '15px',
@@ -32,6 +33,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
+export const LoadingContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: '35%',
+  left: '45%',
+  [theme.breakpoints.down('md')]: {
+    top: '40%',
+    left: '43%'
+  }
+}));
 export const SessionSummaryBox = styled(Box)(() => ({
   fontWeight: 'normal',
   fontSize: 15,
