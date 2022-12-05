@@ -1,7 +1,7 @@
 import Slider from 'react-slick';
 import { useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Box, Stack } from '@material-ui/core';
 import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
 
@@ -15,10 +15,10 @@ const RootStyle = styled(Box)(({ theme }) => ({
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   '& .slick-slide': { opacity: 0.7 },
-  '& .slick-center': { opacity: 1, transform: 'scale(1.2)' }
+  '& .slick-center': { opacity: 1, transform: 'scale(1.1)' }
 }));
 
-export default function CarouselCenterMode({
+export default function CoursesCarousel({
   courses,
   activeCourse,
   setActiveCourse
@@ -40,10 +40,10 @@ export default function CarouselCenterMode({
   }, []);
 
   const settings = {
-    slidesToShow: courses.length > 3 ? 3 : courses.length,
+    slidesToShow: courses.length === 2 ? 2 : 1,
     arrows: false,
     focusOnSelect: false,
-    rtl: true,
+    rtl: false,
     cssEase: 'linear',
     variableWidth: true,
     variableHeight: true,
@@ -51,14 +51,10 @@ export default function CarouselCenterMode({
     infinite: true,
     slidesToScroll: 1,
     initialSlide: activeCourse,
-    beforeChange: (current: number, next: number) => setActiveCourse(courses.length - next - 1),
+    beforeChange: (current: number, next: number) => setActiveCourse(next),
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 2 }
-      },
-      {
-        breakpoint: 600,
         settings: { slidesToShow: 1 }
       }
     ]
@@ -72,16 +68,38 @@ export default function CarouselCenterMode({
     carouselRef.current?.slickNext();
   };
 
+  const displaySlider = () => (
+    <Slider centerMode={true} ref={carouselRef} {...settings}>
+      {courses.map((course: any, index: number) => (
+        <CarouselItem key={course.name} course={course} />
+      ))}
+    </Slider>
+  );
+
   return (
     <RootStyle>
-      <Box sx={{ maxWidth: { sm: '85%', md: '90%', lg: '93%' }, mx: 'auto' }}>
-        <Slider centerMode={true} ref={carouselRef} {...settings}>
-          {courses?.map((course: any, index: number) => (
-            <CarouselItem key={course?.name} course={course} />
-          ))}
-        </Slider>
-      </Box>
-      <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />
+      {courses.length < 3 ? (
+        <Stack
+          direction="row"
+          sx={{
+            m: 'auto',
+            maxWidth: { sm: '85%', md: '90%', lg: '93%' },
+            justifyContent: 'center'
+          }}
+        >
+          {displaySlider()}
+        </Stack>
+      ) : (
+        <Box
+          sx={{
+            m: 'auto',
+            maxWidth: { sm: '85%', md: '90%', lg: '93%' }
+          }}
+        >
+          {displaySlider()}
+        </Box>
+      )}
+      {courses.length > 1 && <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />}
     </RootStyle>
   );
 }

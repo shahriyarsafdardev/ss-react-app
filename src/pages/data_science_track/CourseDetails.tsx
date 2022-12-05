@@ -23,7 +23,13 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
   margin: '100px auto'
 }));
 
-export default function CourseDetails({ courseData }: { courseData: Course }) {
+export default function CourseDetails({
+  courseData,
+  nextRecommended
+}: {
+  courseData: Course;
+  nextRecommended: boolean;
+}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,7 +41,7 @@ export default function CourseDetails({ courseData }: { courseData: Course }) {
   return (
     <Box sx={{ p: '50px', color: '#1E293B' }}>
       <Stack spacing={2}>
-        {courseData.is_next_recommended && !courseData.is_complete && (
+        {nextRecommended && (
           <Typography sx={{ fontWeight: '700' }}>
             The next recommended course in this track is:
           </Typography>

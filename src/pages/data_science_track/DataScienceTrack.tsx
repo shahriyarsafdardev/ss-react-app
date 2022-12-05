@@ -11,6 +11,7 @@ import { LoadingContainer } from './Common';
 
 export default function DataScienceTrack() {
   const [activeCourse, setActiveCourse] = useState<number>(0);
+  const [nextRecommended, setNextRecommended] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const trackSlug = window.location.pathname.split('/')[2] || '';
@@ -23,6 +24,7 @@ export default function DataScienceTrack() {
       track?.cohorts?.map((course: any, index: any) => {
         if (!found && !course.is_complete) {
           setActiveCourse(index);
+          setNextRecommended(index);
           found = true;
         }
       });
@@ -54,7 +56,11 @@ export default function DataScienceTrack() {
           activeCourse={activeCourse}
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
-        <CourseDetails key={String(activeCourse)} courseData={track?.cohorts[activeCourse]} />
+        <CourseDetails
+          key={String(activeCourse)}
+          courseData={track?.cohorts[activeCourse]}
+          nextRecommended={activeCourse === nextRecommended}
+        />
       </Stack>
     </Page>
   );
