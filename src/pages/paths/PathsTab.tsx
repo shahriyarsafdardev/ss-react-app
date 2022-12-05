@@ -49,7 +49,7 @@ export default function PathsTab() {
   }
 
   return (
-    <Page title="Sphere | Courses Path">
+    <Page sx={{ m: 'auto', maxWidth: '1200px' }} title="Sphere | Courses Track">
       <Stack>
         <PathHeader
           pathName={path?.name}
