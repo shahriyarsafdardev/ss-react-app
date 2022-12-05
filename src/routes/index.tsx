@@ -94,7 +94,6 @@ export default function Router() {
         { path: '/discover', element: <GeneralApp /> },
         { path: '/contact-us', element: <ContactUs /> },
         { path: '/all-courses', element: <AllCourses /> },
-        { path: '/data-scientist-track', element: <DataScienceTrack /> },
         { path: 'ecommerce', element: <GeneralEcommerce /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
@@ -290,6 +289,10 @@ export default function Router() {
               )
             }
           ]
+        },
+        {
+          path: 'tracks/:trackSlug',
+          children: [{ path: '/', element: <DataScienceTrack /> }]
         },
         {
           path: 'blog',

@@ -1,6 +1,6 @@
 import Slider from 'react-slick';
-import { useEffect, useRef, useState } from 'react';
-import { useTheme, styled } from '@material-ui/core/styles';
+import { useEffect, useRef } from 'react';
+import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
@@ -28,6 +28,16 @@ export default function CarouselCenterMode({
   setActiveCourse: Function;
 }) {
   const carouselRef = useRef<Slider | null>(null);
+
+  useEffect(() => {
+    let found = false;
+    courses?.map((course: any, index: any) => {
+      if (!found && !course.is_complete) {
+        setActiveCourse(index);
+        found = true;
+      }
+    });
+  }, []);
 
   const settings = {
     slidesToShow: 3,
@@ -66,8 +76,8 @@ export default function CarouselCenterMode({
     <RootStyle>
       <Box sx={{ maxWidth: { sm: '85%', md: '90%', lg: '93%' }, mx: 'auto' }}>
         <Slider centerMode={true} ref={carouselRef} {...settings}>
-          {courses.map((course: any, index: number) => (
-            <CarouselItem key={course.name} course={course} />
+          {courses?.map((course: any, index: number) => (
+            <CarouselItem key={course?.name} course={course} />
           ))}
         </Slider>
       </Box>

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import Page from 'components/Page';
-import LoadingScreen from 'components/LoadingScreen';
-
+import { useEffect, useState } from 'react';
 import { Stack, Container } from '@material-ui/core';
+import Page from 'components/Page';
+import { getTrackData } from 'redux/slices/track';
+import { RootState, useDispatch, useSelector } from 'redux/store';
+import LoadingScreen from 'components/LoadingScreen';
 import TrackHeader from './TrackHeader';
 import CourseDetails from './CourseDetails';
 import CoursesCarousel from './CoursesCarousel';
@@ -127,17 +128,23 @@ const COURSES = [
 export default function DataScienceTrack() {
   const [activeCourse, setActiveCourse] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  const trackSlug = window.location.pathname.split('/')[2] || '';
+  const track = useSelector((state: RootState) => state?.track?.track);
 
   useEffect(() => {
+    dispatch(getTrackData(trackSlug));
     let found = false;
-    COURSES.map((course: any, index: any) => {
-      if (!found && !course.is_complete) {
-        setActiveCourse(index);
-        found = true;
-      }
-    });
-    setLoading(false);
-  }, []);
+    if (track?.cohorts?.length > 0) {
+      track?.cohorts?.map((course: any, index: any) => {
+        if (!found && !course.is_complete) {
+          setActiveCourse(index);
+          found = true;
+        }
+      });
+      setLoading(false);
+    }
+  }, [trackSlug]);
 
   if (loading || COURSES.length === 0) {
     return (
@@ -158,11 +165,11 @@ export default function DataScienceTrack() {
           complete={COURSES.filter((course) => course.is_complete).length}
         />
         <CoursesCarousel
-          courses={COURSES}
+          courses={track?.cohorts}
           activeCourse={activeCourse}
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
-        <CourseDetails key={String(activeCourse)} courseData={COURSES[activeCourse]} />
+        <CourseDetails key={String(activeCourse)} courseData={track?.cohorts[activeCourse]} />
       </Stack>
     </Page>
   );
