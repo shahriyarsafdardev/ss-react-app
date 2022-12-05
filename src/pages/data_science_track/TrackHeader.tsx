@@ -13,11 +13,13 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 export default function TrackHeader({
-  track,
+  trackName,
+  trackDescription,
   total,
   complete
 }: {
-  track: any;
+  trackName: string;
+  trackDescription: string;
   total: any;
   complete: any;
 }) {
@@ -26,9 +28,9 @@ export default function TrackHeader({
   return (
     <Stack spacing={2} sx={{ p: '0 50px 50px' }}>
       <Typography sx={{ fontSize: '28px', fontWeight: '600', color: '#000' }}>
-        {track.name}
+        {trackName}
       </Typography>
-      <Typography sx={{ color: '#363853' }}>{track.description}</Typography>
+      <Typography sx={{ color: '#363853' }}>{trackDescription}</Typography>
       <Stack spacing={1}>
         <Typography sx={{ color: '#000' }}>
           {complete}/{total} courses completed

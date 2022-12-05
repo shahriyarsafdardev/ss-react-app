@@ -40,7 +40,7 @@ export default function CarouselCenterMode({
   }, []);
 
   const settings = {
-    slidesToShow: 3,
+    slidesToShow: courses.length > 3 ? 3 : courses.length,
     arrows: false,
     focusOnSelect: false,
     rtl: true,
