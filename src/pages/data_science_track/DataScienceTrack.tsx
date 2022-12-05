@@ -18,10 +18,10 @@ export default function DataScienceTrack() {
   const track = useSelector((state: RootState) => state?.track?.track);
 
   useEffect(() => {
-    dispatch(getTrackData(trackSlug));
+    !track?.id && dispatch(getTrackData(trackSlug));
     let found = false;
     if (track?.cohorts?.length > 0) {
-      track?.cohorts?.map((course: any, index: any) => {
+      track?.cohorts?.forEach((course: any, index: any) => {
         if (!found && !course.is_complete) {
           setActiveCourse(index);
           setNextRecommended(index);
@@ -57,7 +57,7 @@ export default function DataScienceTrack() {
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
         <CourseDetails
-          key={String(activeCourse)}
+          key={`${String(activeCourse)} ${track?.cohorts[activeCourse]}`}
           courseData={track?.cohorts[activeCourse]}
           nextRecommended={activeCourse === nextRecommended}
         />
