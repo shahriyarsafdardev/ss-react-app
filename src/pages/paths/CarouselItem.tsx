@@ -17,7 +17,7 @@ export default function CarouselItem({
 
   return (
     <Stack
-      sx={{ mx: 3, height: '320px', alignItems: 'center', justifyContent: 'center' }}
+      sx={{ mx: 2, height: '320px', alignItems: 'center', justifyContent: 'center' }}
       onClick={() => setNextActive(index)}
     >
       <Stack className={classes.courseTile}>
