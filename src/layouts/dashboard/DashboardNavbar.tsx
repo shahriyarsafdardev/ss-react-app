@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
@@ -56,7 +57,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const { isCollapse } = useCollapseDrawer();
   const { user } = useAuth();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
+  const paths = useSelector((state: RootState) => state?.path?.paths);
+  const pathSlugs = paths.map((path) => path.slug);
   const visibleHeaders = [
+    ...pathSlugs,
     'messaging',
     'home',
     'registrations',
@@ -75,9 +79,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'code',
     'onboarding-calendar-instructions',
     'referrals',
-    'all-courses',
-    'data-scientist'
+    'all-courses'
   ];
+
+  const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -111,8 +116,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Recordings & Slides');
         } else if (section === 'all-courses') {
           setCurrentTab('All Courses');
-        } else if (section === 'data-scientist') {
-          setCurrentTab('Data Scientist');
+        } else if (pathSlugs.includes(section)) {
+          setCurrentTab(pathName(section));
         } else {
           setCurrentTab(section);
         }
