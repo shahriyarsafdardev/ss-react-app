@@ -18,12 +18,16 @@ export default function PathsTab() {
   const path = useSelector(
     (state: RootState) => state?.path?.paths.filter((path) => path.slug === pathSlug)[0]
   );
+  const { courses } = path || [];
 
   useEffect(() => {
-    !path?.id && dispatch(getPathData(pathSlug));
+    !courses && dispatch(getPathData(pathSlug));
+  }, []);
+
+  useEffect(() => {
     let found = false;
-    if (path?.courses?.length > 0) {
-      path?.courses?.forEach((course: any, index: any) => {
+    if (courses?.length > 0) {
+      courses?.forEach((course: any, index: any) => {
         if (!found && !course.is_complete) {
           setActiveCourse(index);
           setNextRecommended(index);
@@ -32,9 +36,9 @@ export default function PathsTab() {
       });
       setLoading(false);
     }
-  }, [path?.id]);
+  }, [courses?.length]);
 
-  if (loading || path?.courses?.length === 0) {
+  if (loading || courses?.length === 0) {
     return (
       <Container sx={{ position: 'relative', height: '100%' }}>
         <LoadingContainer>
@@ -50,17 +54,17 @@ export default function PathsTab() {
         <PathHeader
           pathName={path?.name}
           pathDescription={path?.description}
-          total={path?.courses?.length}
-          complete={path?.courses?.filter((course) => course.is_complete).length}
+          total={courses?.length}
+          complete={courses?.filter((course) => course.is_complete).length}
         />
         <CoursesCarousel
-          courses={path?.courses}
+          courses={courses}
           activeCourse={activeCourse}
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
         <CourseDetails
-          key={`${String(activeCourse)} ${path?.courses[activeCourse]}`}
-          courseData={path?.courses[activeCourse]}
+          key={`${String(activeCourse)} ${courses[activeCourse]}`}
+          courseData={courses[activeCourse]}
           pathSlug={path?.slug}
           nextRecommended={activeCourse === nextRecommended}
         />
