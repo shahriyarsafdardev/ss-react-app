@@ -1,8 +1,20 @@
 import { Stack, Typography, Link, Button } from '@material-ui/core';
 import { useStyles } from './Common';
 
-export default function EmptySessionTimestamps() {
+export default function EmptySessionTimestamps({
+  sendAnalyticsEvent
+}: {
+  sendAnalyticsEvent: Function;
+}) {
   const classes = useStyles();
+
+  const handleLearnMore = () => {
+    sendAnalyticsEvent('Sessions Page - Timestamps - "Learn More" button clicked');
+    window.open(
+      'https://drive.google.com/file/d/1pNXGlh2UOy_0y-t6N6upyRz_fQoHPwjO/view?usp=sharing',
+      '_blank'
+    );
+  };
 
   return (
     <Stack spacing={4} direction={{ xs: 'column', md: 'row' }} className={classes.parentStack}>
@@ -26,12 +38,7 @@ export default function EmptySessionTimestamps() {
         <Button
           variant="outlined"
           className={classes.styledButton}
-          onClick={() =>
-            window.open(
-              'https://drive.google.com/file/d/1pNXGlh2UOy_0y-t6N6upyRz_fQoHPwjO/view?usp=sharing',
-              '_blank'
-            )
-          }
+          onClick={() => handleLearnMore()}
         >
           Learn More
         </Button>
