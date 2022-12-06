@@ -1,10 +1,11 @@
 import Slider from 'react-slick';
 import { useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
-import { Box, Stack } from '@material-ui/core';
+import { Box, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
+import { useStyles } from './Common';
 
 const RootStyle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -12,7 +13,7 @@ const RootStyle = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '320px',
   position: 'relative',
-  background: 'linear-gradient(163.43deg, #29064C 11.47%, #9E5AD7 91.06%)',
+  background: '#101658',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   '& .slick-slide': { opacity: 0.7 },
@@ -29,6 +30,10 @@ export default function CoursesCarousel({
   setActiveCourse: Function;
 }) {
   const carouselRef = useRef<Slider | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down(500));
+  const isLarge = useMediaQuery(theme.breakpoints.up('xl'));
+  const classes = useStyles();
 
   useEffect(() => {
     let found = false;
@@ -88,16 +93,18 @@ export default function CoursesCarousel({
   };
 
   const displaySlider = () => (
-    <Slider centerMode={true} ref={carouselRef} {...settings}>
-      {courses.map((course: any, index: number) => (
-        <CarouselItem
-          key={course.name}
-          course={course}
-          index={index}
-          setNextActive={setNextActive}
-        />
-      ))}
-    </Slider>
+    <Box className={`${!isMobile && !isLarge && classes.tileGradient}`}>
+      <Slider centerMode={true} ref={carouselRef} {...settings}>
+        {courses.map((course: any, index: number) => (
+          <CarouselItem
+            key={course.name}
+            course={course}
+            index={index}
+            setNextActive={setNextActive}
+          />
+        ))}
+      </Slider>
+    </Box>
   );
 
   return (
@@ -108,7 +115,8 @@ export default function CoursesCarousel({
           sx={{
             m: 'auto',
             maxWidth: { sm: '85%', md: '90%', lg: '93%' },
-            justifyContent: 'center'
+            justifyContent: 'center',
+            position: 'relative'
           }}
         >
           {displaySlider()}
@@ -117,7 +125,8 @@ export default function CoursesCarousel({
         <Box
           sx={{
             m: 'auto',
-            maxWidth: { sm: '85%', md: '90%', lg: '89%' }
+            maxWidth: { sm: '85%', md: '90%', lg: '89%' },
+            position: 'relative'
           }}
         >
           {displaySlider()}

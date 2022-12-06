@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 export const useStyles = makeStyles((theme: Theme) => ({
   courseTile: {
     height: '235px',
-    width: '300px',
+    width: '316px',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',
@@ -36,6 +36,19 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: '24px'
     }
+  },
+  tileGradient: {
+    '&:before': { left: -1 },
+    '&:before, &:after': {
+      top: 0,
+      zIndex: 9,
+      content: "''",
+      height: '100%',
+      position: 'absolute',
+      width: 65,
+      backgroundImage: (theme) => 'linear-gradient(to right, #12125C 15%, rgba(18, 18, 92, 0) 85%);'
+    },
+    '&:after': { right: -2, transform: 'scaleX(-1)' }
   }
 }));
 
