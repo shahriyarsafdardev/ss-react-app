@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   courseTile: {
-    height: '225px',
+    height: '235px',
     width: '300px',
     backgroundColor: '#fff',
     color: '#000',
@@ -29,6 +29,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignSelf: 'flex-end',
     [theme.breakpoints.down('sm')]: {
       alignSelf: 'center'
+    }
+  },
+  courseDetailsHeading: {
+    fontSize: '38px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '24px'
     }
   }
 }));
