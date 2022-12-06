@@ -24,17 +24,19 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
 }));
 
 export default function CourseDetails({
+  pathSlug,
   courseData,
   nextRecommended
 }: {
   courseData: Course;
+  pathSlug: String;
   nextRecommended: boolean;
 }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!courseData?.sessions) {
-      dispatch(getCourseSessions(courseData?.id));
+    if (!courseData?.sessions && pathSlug) {
+      dispatch(getCourseSessions(pathSlug, courseData?.id));
     }
   }, []);
 
