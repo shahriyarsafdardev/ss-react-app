@@ -7,7 +7,7 @@ import { uniq } from 'lodash';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
-import PathHeader from './PathHeader';
+import PathsList from './PathsList';
 
 export default function AllCourses() {
   const [courses, setCourses] = useState<any>([]);
@@ -103,7 +103,7 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere Courses">
-      <PathHeader />
+      <PathsList />
       <Box paddingX={{ xs: '20px', md: '40px' }} marginY={{ xs: '20px', md: '30px' }}>
         <AllCoursesFilters
           key={`${topics.length} ${functions.length}`}
