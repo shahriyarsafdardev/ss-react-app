@@ -61,6 +61,7 @@ export default function PathsTab() {
         <CourseDetails
           key={`${String(activeCourse)} ${path?.courses[activeCourse]}`}
           courseData={path?.courses[activeCourse]}
+          pathSlug={path?.slug}
           nextRecommended={activeCourse === nextRecommended}
         />
       </Stack>
