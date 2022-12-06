@@ -65,12 +65,14 @@ export default function CarouselItem({
                 />
               </Box>
             )}
-            {!course?.preview_instructor_name && !course?.preview_instructor_logos && (
-              <Typography>
-                {course?.description.substring(0, 160)}
-                {course?.description.length > 160 && '...'}
-              </Typography>
-            )}
+            {!course?.preview_instructor_name &&
+              !course?.preview_instructor_logos &&
+              course?.description && (
+                <Typography>
+                  {course?.description.substring(0, 160)}
+                  {course?.description.length > 160 && '...'}
+                </Typography>
+              )}
           </Stack>
         </>
       </Stack>
