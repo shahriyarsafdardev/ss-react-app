@@ -109,8 +109,8 @@ export const PATH_DASHBOARD = {
     publicResources: (cohortID: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/public-resources`)
   },
-  tracks: {
-    root: (trackSlug: string) => path(ROOTS_DASHBOARD, `/tracks/${trackSlug}`)
+  coursePaths: {
+    root: (pathSlug: string) => path(ROOTS_DASHBOARD, `/paths/${pathSlug}`)
   },
   adminTools: {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),

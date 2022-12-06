@@ -12,14 +12,14 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-export default function TrackHeader({
-  trackName,
-  trackDescription,
+export default function PathHeader({
+  pathName,
+  pathDescription,
   total,
   complete
 }: {
-  trackName: string;
-  trackDescription: string;
+  pathName: string;
+  pathDescription: string;
   total: any;
   complete: any;
 }) {
@@ -28,9 +28,9 @@ export default function TrackHeader({
   return (
     <Stack spacing={2} sx={{ p: '0 50px 50px' }}>
       <Typography sx={{ fontSize: '28px', fontWeight: '600', color: '#000' }}>
-        {trackName}
+        {pathName}
       </Typography>
-      <Typography sx={{ color: '#363853' }}>{trackDescription}</Typography>
+      <Typography sx={{ color: '#363853' }}>{pathDescription}</Typography>
       <Stack spacing={1}>
         <Typography sx={{ color: '#000' }}>
           {complete}/{total} courses completed
