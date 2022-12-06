@@ -3,6 +3,7 @@ import { styled } from '@material-ui/core/styles';
 import { useEffect } from 'react';
 import { getCourseSessions } from 'redux/slices/path';
 import { useDispatch } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 import { Course } from '../../@types/course';
 import { useStyles } from './Common';
 import SessionDetails from './SessionDetails';
@@ -43,10 +44,27 @@ export default function CourseDetails({
   }, []);
 
   const handleSeeDetails = () => {
+    trackEvent(courseData, 'Path Pages - "See More Details" button clicked', {
+      'Course Name': courseData?.name
+    });
     window.open(courseData?.registration_page_url, '_blank');
   };
 
   const handleEnroll = () => {
+    trackEvent(courseData, 'Path Pages - "Enroll" button clicked', {
+      'Course Name': courseData?.name
+    });
+    openRegistrationPage();
+  };
+
+  const handleJoinWaitlist = () => {
+    trackEvent(courseData, 'Path Pages - "Join the waitlist" button clicked', {
+      'Course Name': courseData?.name
+    });
+    openRegistrationPage();
+  };
+
+  const openRegistrationPage = () => {
     window.open(
       `https://portal.getsphere.com/registration/personal-details?cohort_id=${courseData?.id}`,
       '_blank'
@@ -69,7 +87,7 @@ export default function CourseDetails({
           <StyledButton
             variant="contained"
             sx={{ marginX: 'auto !important' }}
-            onClick={() => handleEnroll()}
+            onClick={() => handleJoinWaitlist()}
           >
             Join the Waitlist
           </StyledButton>
