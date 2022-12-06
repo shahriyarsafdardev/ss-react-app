@@ -48,9 +48,6 @@ export default function CarouselButtons({
   onPrevious,
   ...other
 }: CarouselControlsArrowsBasic2Props) {
-  const theme = useTheme();
-  const isRTL = theme.direction === 'rtl';
-
   return (
     <RootStyle {...other}>
       {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}

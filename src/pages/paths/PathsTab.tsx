@@ -1,27 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Stack, Container } from '@material-ui/core';
 import Page from 'components/Page';
-import { getTrackData } from 'redux/slices/track';
+import { getPathData } from 'redux/slices/path';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import LoadingScreen from 'components/LoadingScreen';
-import TrackHeader from './TrackHeader';
+import PathHeader from './PathHeader';
 import CourseDetails from './CourseDetails';
 import CoursesCarousel from './CoursesCarousel';
 import { LoadingContainer } from './Common';
 
-export default function DataScienceTrack() {
+export default function PathsTab() {
   const [activeCourse, setActiveCourse] = useState<number>(0);
   const [nextRecommended, setNextRecommended] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const trackSlug = window.location.pathname.split('/')[2] || '';
-  const track = useSelector((state: RootState) => state?.track?.track);
+  const pathSlug = window.location.pathname.split('/')[2] || '';
+  const path = useSelector(
+    (state: RootState) => state?.path?.paths.filter((path) => path.slug === pathSlug)[0]
+  );
 
   useEffect(() => {
-    !track?.id && dispatch(getTrackData(trackSlug));
+    !path?.id && dispatch(getPathData(pathSlug));
     let found = false;
-    if (track?.cohorts?.length > 0) {
-      track?.cohorts?.forEach((course: any, index: any) => {
+    if (path?.courses?.length > 0) {
+      path?.courses?.forEach((course: any, index: any) => {
         if (!found && !course.is_complete) {
           setActiveCourse(index);
           setNextRecommended(index);
@@ -30,9 +32,9 @@ export default function DataScienceTrack() {
       });
       setLoading(false);
     }
-  }, [track?.id]);
+  }, [path?.id]);
 
-  if (loading || track?.cohorts?.length === 0) {
+  if (loading || path?.courses?.length === 0) {
     return (
       <Container sx={{ position: 'relative', height: '100%' }}>
         <LoadingContainer>
@@ -43,22 +45,22 @@ export default function DataScienceTrack() {
   }
 
   return (
-    <Page title="Sphere | Courses Track">
+    <Page title="Sphere | Courses Path">
       <Stack>
-        <TrackHeader
-          trackName={track?.name}
-          trackDescription={track?.description}
-          total={track?.cohorts?.length}
-          complete={track?.cohorts?.filter((course) => course.is_complete).length}
+        <PathHeader
+          pathName={path?.name}
+          pathDescription={path?.description}
+          total={path?.courses?.length}
+          complete={path?.courses?.filter((course) => course.is_complete).length}
         />
         <CoursesCarousel
-          courses={track?.cohorts}
+          courses={path?.courses}
           activeCourse={activeCourse}
           setActiveCourse={(value: number) => setActiveCourse(value)}
         />
         <CourseDetails
-          key={`${String(activeCourse)} ${track?.cohorts[activeCourse]}`}
-          courseData={track?.cohorts[activeCourse]}
+          key={`${String(activeCourse)} ${path?.courses[activeCourse]}`}
+          courseData={path?.courses[activeCourse]}
           nextRecommended={activeCourse === nextRecommended}
         />
       </Stack>

@@ -10,7 +10,7 @@ import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
 import referralReducer from './slices/referral';
-import trackReducer from './slices/track';
+import pathReducer from './slices/path';
 import cohortReducer from './slices/cohort';
 import accountSubscription from './slices/accountSubscription';
 import notificationReducer from './slices/notification';
@@ -55,7 +55,7 @@ const appReducer = combineReducers({
   cohortCredit: cohortCreditReducer,
   adminRegistrations: adminRegistrationsReducer,
   referral: referralReducer,
-  track: trackReducer
+  path: pathReducer
 });
 
 const rootReducer = (state: any, action: any) => {

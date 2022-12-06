@@ -32,10 +32,11 @@ export type CourseSession = {
   summary: string;
 };
 
-export type Track = {
+export type Path = {
   id: string;
   name: string;
   description: string;
   slug: string;
-  cohorts: Course[];
+  is_enrolled: boolean;
+  courses: Course[];
 };

@@ -1,7 +1,7 @@
 import { Stack, Typography, Button, CircularProgress, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { useEffect } from 'react';
-import { getCourseSessions } from 'redux/slices/track';
+import { getCourseSessions } from 'redux/slices/path';
 import { useDispatch } from 'redux/store';
 import { Course } from '../../@types/course';
 import SessionDetails from './SessionDetails';
