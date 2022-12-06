@@ -4,6 +4,7 @@ import Page from 'components/Page';
 import { getPathData } from 'redux/slices/path';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import LoadingScreen from 'components/LoadingScreen';
+import { trackEvent } from 'utils/eventTracking';
 import PathHeader from './PathHeader';
 import CourseDetails from './CourseDetails';
 import CoursesCarousel from './CoursesCarousel';
@@ -27,6 +28,9 @@ export default function PathsTab() {
   useEffect(() => {
     let found = false;
     if (courses?.length > 0) {
+      trackEvent(courses?.[0], 'Path Pages - Page Loaded', {
+        'Path Name': path?.name
+      });
       courses?.forEach((course: any, index: any) => {
         if (!found && !course.is_complete) {
           setActiveCourse(index);

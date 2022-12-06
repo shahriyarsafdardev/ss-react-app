@@ -2,6 +2,7 @@ import Slider from 'react-slick';
 import { useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack } from '@material-ui/core';
+import { trackEvent } from 'utils/eventTracking';
 import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
 
@@ -60,11 +61,19 @@ export default function CoursesCarousel({
     ]
   };
 
+  const sendAnalyticsData = () => {
+    trackEvent(courses[activeCourse], 'Path Pages - Course selected', {
+      'Course Name': courses[activeCourse]?.name
+    });
+  };
+
   const handlePrevious = () => {
+    sendAnalyticsData();
     carouselRef.current?.slickPrev();
   };
 
   const handleNext = () => {
+    sendAnalyticsData();
     carouselRef.current?.slickNext();
   };
 
