@@ -1,4 +1,4 @@
-import { Box, Stack, styled, Tab, Tabs, Theme, Typography } from '@material-ui/core';
+import { Box, Stack, styled, Tab, Tabs, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
@@ -142,6 +142,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 20px'
     }
   },
+  whiteBox: {
+    backgroundColor: '#fff',
+    borderRadius: '5px',
+    padding: '40px',
+    width: '50%',
+    border: '1px solid #E2E8F0',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
   courseTile: {
     height: '100%',
     backgroundColor: '#fff',
@@ -182,6 +192,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       alignSelf: 'center'
     }
+  },
+  font24Headings: {
+    fontSize: '24px',
+    fontWeight: 700,
+    marginTop: '0 !important'
   }
 }));
 
@@ -230,4 +245,10 @@ export const LoadingContainer = styled(Box)(({ theme }) => ({
     top: '40%',
     left: '43%'
   }
+}));
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  padding: '5px',
+  width: '100%'
 }));

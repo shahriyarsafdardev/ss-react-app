@@ -45,7 +45,7 @@ export const learnerSidebarConfig = {
   items: [
     {
       title: 'the complete data scientist track',
-      path: PATH_DASHBOARD.coursePaths.root('data-scientist'),
+      path: PATH_DASHBOARD.coursePaths.root('the-complete-experimentation-professional'),
       icon: ICONS.bellChart
     },
     {
