@@ -68,10 +68,25 @@ export default function CoursesCarousel({
     carouselRef.current?.slickNext();
   };
 
+  const setNextActive = (index: number) => {
+    if ((index === 0 && activeCourse === 1) || (activeCourse === 0 && index !== 1)) {
+      handlePrevious();
+    } else if (index < activeCourse && index !== 0) {
+      handlePrevious();
+    } else {
+      handleNext();
+    }
+  };
+
   const displaySlider = () => (
     <Slider centerMode={true} ref={carouselRef} {...settings}>
       {courses.map((course: any, index: number) => (
-        <CarouselItem key={course.name} course={course} />
+        <CarouselItem
+          key={course.name}
+          course={course}
+          index={index}
+          setNextActive={setNextActive}
+        />
       ))}
     </Slider>
   );
@@ -93,7 +108,7 @@ export default function CoursesCarousel({
         <Box
           sx={{
             m: 'auto',
-            maxWidth: { sm: '85%', md: '90%', lg: '93%' }
+            maxWidth: { sm: '85%', md: '90%', lg: '89%' }
           }}
         >
           {displaySlider()}

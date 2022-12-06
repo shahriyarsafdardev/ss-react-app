@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { getCourseSessions } from 'redux/slices/path';
 import { useDispatch } from 'redux/store';
 import { Course } from '../../@types/course';
+import { useStyles } from './Common';
 import SessionDetails from './SessionDetails';
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -33,12 +34,24 @@ export default function CourseDetails({
   nextRecommended: boolean;
 }) {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   useEffect(() => {
     if (!courseData?.sessions && pathSlug) {
       dispatch(getCourseSessions(pathSlug, courseData?.id));
     }
   }, []);
+
+  const handleSeeDetails = () => {
+    window.open(courseData?.registration_page_url, '_blank');
+  };
+
+  const handleEnroll = () => {
+    window.open(
+      `https://portal.getsphere.com/registration/personal-details?cohort_id=${courseData?.id}`,
+      '_blank'
+    );
+  };
 
   return (
     <Box sx={{ p: '50px', color: '#1E293B' }}>
@@ -48,14 +61,28 @@ export default function CourseDetails({
             The next recommended course in this track is:
           </Typography>
         )}
-        <Typography variant="h3" sx={{ fontSize: '38px' }}>
+        <Typography variant="h3" className={classes.courseDetailsHeading}>
           {courseData?.name}
         </Typography>
         <Typography>{courseData?.description}</Typography>
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-          <StyledButton variant="outlined">See More Details</StyledButton>
-          <StyledButton variant="contained">Enroll</StyledButton>
-        </Stack>
+        {courseData?.wait_listed ? (
+          <StyledButton
+            variant="contained"
+            sx={{ marginX: 'auto !important' }}
+            onClick={() => handleEnroll()}
+          >
+            Join the Waitlist
+          </StyledButton>
+        ) : (
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            <StyledButton variant="outlined" onClick={() => handleSeeDetails()}>
+              See More Details
+            </StyledButton>
+            <StyledButton variant="contained" onClick={() => handleEnroll()}>
+              Enroll
+            </StyledButton>
+          </Stack>
+        )}
       </Stack>
       {courseData?.sessions ? (
         courseData?.sessions?.map((session: any) => (

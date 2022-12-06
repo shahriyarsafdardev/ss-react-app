@@ -27,9 +27,6 @@ export default function PathHeader({
 
   return (
     <Stack spacing={2} sx={{ p: '0 50px 50px' }}>
-      <Typography sx={{ fontSize: '28px', fontWeight: '600', color: '#000' }}>
-        {pathName}
-      </Typography>
       <Typography sx={{ color: '#363853' }}>{pathDescription}</Typography>
       <Stack spacing={1}>
         <Typography sx={{ color: '#000' }}>
