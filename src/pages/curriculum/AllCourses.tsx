@@ -3,6 +3,7 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { Box, Container, Stack } from '@material-ui/core';
+import { trackEvent } from 'utils/eventTracking';
 import { uniq } from 'lodash';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
@@ -23,6 +24,7 @@ export default function AllCourses() {
     const getCourses = async () => {
       await axiosV2.get(`/cohorts.json?hide_duplicates=true`).then((res) => {
         setCourses(res.data.cohorts);
+        trackEvent(res.data.cohorts[0], 'All Courses Page - Page Loaded');
         let seniorityList = res.data.cohorts
           ?.map((cohort: any) => cohort.seniority)
           ?.filter((seniority: string) => !!seniority);
