@@ -1,10 +1,12 @@
 import { Box } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import { RootState, useSelector, dispatch } from 'redux/store';
 import { getAnalytics } from 'redux/slices/cohort';
+import { Helmet } from 'react-helmet-async';
 import StackedBarChart from './StackBarChart';
 import AnalyticsTable from './AnalyticsTable';
 
@@ -43,6 +45,7 @@ function AnalyticsTab() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { analytics } = cohort || [];
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (cohort_id && instructor_name && cohort && !analytics) {
@@ -60,6 +63,9 @@ function AnalyticsTab() {
   }
   return (
     <Page title="Sphere | Analytics">
+      <Helmet>
+        <link rel="canonical" href={`https://portal.getsphere.com${pathname}`} />
+      </Helmet>
       {cohort?.analytics && (
         <ChartsContainer>
           <Row>

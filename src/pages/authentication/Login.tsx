@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@material-ui/core';
 // routes
+import { Helmet } from 'react-helmet-async';
 import { PATH_AUTH } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
@@ -71,6 +72,9 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 export default function Login() {
   return (
     <RootStyle title="Sphere | Login">
+      <Helmet>
+        <link rel="canonical" href="https://portal.getsphere.com" />
+      </Helmet>
       <MHidden width="mdDown">
         <SectionStyle>
           <img src="/static/sphere_home.png" alt="login" style={{ width: '700px' }} />

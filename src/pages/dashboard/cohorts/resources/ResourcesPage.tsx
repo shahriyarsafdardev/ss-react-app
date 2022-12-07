@@ -4,11 +4,14 @@ import { Container } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useSettings from 'hooks/useSettings';
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
+
 import { getCohortResources, getCohortSessionResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 
 import LoadingScreen from 'components/LoadingScreen';
-import { useLocation } from 'react-router-dom';
+
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
 import { LoadingContainer } from '../code/CodeTab';
@@ -19,6 +22,7 @@ export default function ResourcesPage() {
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const url = new URLSearchParams(useLocation().search);
+  const { pathname } = useLocation();
   const source = url.get('source') || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -59,6 +63,9 @@ export default function ResourcesPage() {
 
   return (
     <Page title="Sphere | Resources">
+      <Helmet>
+        <link rel="canonical" href={`https://portal.getsphere.com${pathname}`} />
+      </Helmet>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <Container
           sx={{ px: '50px !important' }}

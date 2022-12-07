@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 // layouts
 import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
@@ -36,6 +37,9 @@ const Loadable = (Component: React.ElementType) => (props: any) => {
         />
       }
     >
+      <Helmet>
+        <link rel="canonical" href={`https://portal.getsphere.com${pathname}`} />
+      </Helmet>
       <Component {...props} />
     </Suspense>
   );
