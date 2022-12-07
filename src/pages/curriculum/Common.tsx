@@ -149,14 +149,20 @@ export const useStyles = makeStyles((theme: Theme) => ({
   whiteBox: {
     backgroundColor: '#fff',
     borderRadius: '5px',
-    padding: '40px',
-    width: '50%',
+    padding: '20px',
     border: '1px solid #E2E8F0',
-    [theme.breakpoints.down('md')]: {
-      width: '100%'
-    },
+    textAlign: 'center',
+    margin: '0px 12px',
     [theme.breakpoints.down('sm')]: {
-      padding: '30px 20px'
+      padding: '30px 20px',
+      margin: 0
+    }
+  },
+  whiteBoxGrid: {
+    display: 'grid',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '16px !important',
+      maxWidth: '100% !important'
     }
   },
   courseTile: {
@@ -213,10 +219,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   pathList: {
     backgroundColor: '#F1F1FB',
-    padding: '40px',
-    textAlign: 'center',
+    padding: '40px 28px',
     color: '#000',
     [theme.breakpoints.down('md')]: {
+      padding: '40px 8px'
+    },
+    [theme.breakpoints.down('sm')]: {
       padding: '40px 20px'
     }
   }
