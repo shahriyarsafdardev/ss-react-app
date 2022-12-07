@@ -1,4 +1,5 @@
 import { FormControl, MenuItem, InputLabel, Select, ListItemText, Grid } from '@material-ui/core';
+import { RootState, useSelector } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
 
 export default function AllCoursesFilters({
@@ -24,13 +25,15 @@ export default function AllCoursesFilters({
   seniority: String[];
   handleChangeFunction: Function;
 }) {
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
+
   const handleFunctionChange = (value: any) => {
-    trackEvent(null, 'All Courses Page - Filter by Function selected', { 'Filter Name': value });
+    trackEvent(cohort, 'All Courses Page - Filter by Function selected', { 'Filter Name': value });
     handleChangeFunction(value);
   };
 
   const handleTopicChange = (value: any) => {
-    trackEvent(null, 'All Courses Page - Filter by Topic selected', { 'Filter Name': value });
+    trackEvent(cohort, 'All Courses Page - Filter by Topic selected', { 'Filter Name': value });
     setSelectedTopic(value);
   };
 
