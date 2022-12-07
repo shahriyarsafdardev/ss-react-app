@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { RootState, useSelector } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 import { useStyles, StyledButton } from './Common';
 import { PATH_DASHBOARD } from '../../routes/paths';
 
@@ -9,7 +10,10 @@ export default function PathsList() {
   const navigate = useNavigate();
   const paths = useSelector((state: RootState) => state?.path?.paths);
 
-  const navigateToPath = (slug: string) => {
+  const navigateToPath = (slug: string, name: string) => {
+    trackEvent(null, 'All Courses Page - Path "Learn More" button clicked', {
+      'Path Name': name
+    });
     navigate(`${PATH_DASHBOARD.coursePaths.root(slug)}`);
   };
 
@@ -27,7 +31,7 @@ export default function PathsList() {
               <Typography>The Complete</Typography>
               <Typography className={classes.font24Headings}>{path.name.slice(12)}</Typography>
               <Typography>Scale and Optimize a reliable data engineering stack</Typography>
-              <StyledButton variant="outlined" onClick={() => navigateToPath(path.slug)}>
+              <StyledButton variant="outlined" onClick={() => navigateToPath(path.slug, path.name)}>
                 Learn More
               </StyledButton>
             </Stack>
