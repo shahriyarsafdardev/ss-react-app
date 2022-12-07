@@ -26,11 +26,13 @@ export default function CarouselItem({
             <Typography variant="h4" sx={{ fontSize: '1.2rem !important' }}>
               {course.name}
             </Typography>
-            {course.is_complete ? (
-              <Icon icon={checkmarkCircle2Fill} color="#27ae60" width={24} height={24} />
-            ) : (
-              <Icon icon={checkmarkCircle2Outline} color="#d9d9d9" width={24} height={24} />
-            )}
+            <Box width="24px" height="24px">
+              {course.is_complete ? (
+                <Icon icon={checkmarkCircle2Fill} color="#27ae60" width={24} height={24} />
+              ) : (
+                <Icon icon={checkmarkCircle2Outline} color="#d9d9d9" width={24} height={24} />
+              )}
+            </Box>
           </Stack>
           <Stack>
             {course?.preview_instructor_name && (

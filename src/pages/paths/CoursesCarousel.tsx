@@ -109,30 +109,36 @@ export default function CoursesCarousel({
 
   return (
     <RootStyle>
-      {courses.length < 3 ? (
-        <Stack
-          direction="row"
-          sx={{
-            m: 'auto',
-            maxWidth: { sm: '85%', md: '90%', lg: '93%' },
-            justifyContent: 'center',
-            position: 'relative'
-          }}
-        >
-          {displaySlider()}
-        </Stack>
-      ) : (
-        <Box
-          sx={{
-            m: 'auto',
-            maxWidth: { sm: '85%', md: '90%', lg: '89%' },
-            position: 'relative'
-          }}
-        >
-          {displaySlider()}
-        </Box>
-      )}
-      {courses.length > 1 && <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />}
+      <Box sx={{ maxWidth: '1200px', margin: 'auto', position: 'relative' }}>
+        {courses.length < 3 ? (
+          <Stack
+            direction="row"
+            sx={{
+              m: 'auto',
+              maxWidth: { sm: '85%', md: '90%', lg: '93%' },
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: '10'
+            }}
+          >
+            {displaySlider()}
+          </Stack>
+        ) : (
+          <Box
+            sx={{
+              m: 'auto',
+              maxWidth: { sm: '85%', md: '90%', lg: '89%' },
+              position: 'relative',
+              zIndex: '10'
+            }}
+          >
+            {displaySlider()}
+          </Box>
+        )}
+        {!isMobile && courses.length > 1 && (
+          <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />
+        )}
+      </Box>
     </RootStyle>
   );
 }
