@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@material-ui/core';
+import { Grid, Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { RootState, useSelector } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
@@ -21,25 +21,30 @@ export default function PathsList() {
   return (
     <>
       {paths.length > 0 && (
-        <Stack
-          direction={{ xs: 'column', md: 'row' }}
-          justifyContent="space-between"
-          spacing={4}
-          className={classes.pathList}
-        >
-          {paths.map((path) => (
-            <Stack key={path.slug} spacing={2} className={classes.whiteBox}>
-              <Typography>The Complete</Typography>
-              <Typography className={classes.font24Headings}>{path.name.slice(12)}</Typography>
-              <Typography sx={{ marginBottom: 'auto !important' }}>
-                {path.description.substring(0, 174)}
-                {path.description.length > 174 && '...'}
-              </Typography>
-              <StyledButton variant="outlined" onClick={() => navigateToPath(path.slug, path.name)}>
-                Learn More
-              </StyledButton>
-            </Stack>
-          ))}
+        <Stack className={classes.pathList}>
+          <Grid
+            direction={{ xs: 'column', sm: 'row' }}
+            sx={{ maxWidth: '1280px', display: 'flex', margin: 'auto' }}
+          >
+            {paths.map((path) => (
+              <Grid item xs={12} sm={6} md={4} key={path.slug} className={classes.whiteBoxGrid}>
+                <Stack spacing={2} className={classes.whiteBox}>
+                  <Typography>The Complete</Typography>
+                  <Typography className={classes.font24Headings}>{path.name.slice(12)}</Typography>
+                  <Typography sx={{ marginBottom: 'auto !important' }}>
+                    {path.description.substring(0, 174)}
+                    {path.description.length > 174 && '...'}
+                  </Typography>
+                  <StyledButton
+                    variant="outlined"
+                    onClick={() => navigateToPath(path.slug, path.name)}
+                  >
+                    Learn More
+                  </StyledButton>
+                </Stack>
+              </Grid>
+            ))}
+          </Grid>
         </Stack>
       )}
     </>
