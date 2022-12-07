@@ -19,6 +19,7 @@ export default function PathsTab() {
   const path = useSelector(
     (state: RootState) => state?.path?.paths.filter((path) => path.slug === pathSlug)[0]
   );
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
   const { courses } = path || [];
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function PathsTab() {
   useEffect(() => {
     let found = false;
     if (courses?.length > 0) {
-      trackEvent(courses?.[0], 'Path Pages - Page Loaded', {
+      trackEvent(cohort || courses[0], 'Path Pages - Page Loaded', {
         'Path Name': path?.name
       });
       courses?.forEach((course: any, index: any) => {
@@ -53,8 +54,8 @@ export default function PathsTab() {
   }
 
   return (
-    <Page sx={{ m: 'auto', maxWidth: '1200px' }} title="Sphere | Courses Track">
-      <Stack>
+    <Page title="Sphere | Courses Track">
+      <Stack sx={{ alignItems: 'center' }}>
         <PathHeader
           pathName={path?.name}
           pathDescription={path?.description}

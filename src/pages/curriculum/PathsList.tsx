@@ -9,9 +9,10 @@ export default function PathsList() {
   const classes = useStyles();
   const navigate = useNavigate();
   const paths = useSelector((state: RootState) => state?.path?.paths);
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
 
   const navigateToPath = (slug: string, name: string) => {
-    trackEvent(null, 'All Courses Page - Path "Learn More" button clicked', {
+    trackEvent(cohort, 'All Courses Page - Path "Learn More" button clicked', {
       'Path Name': name
     });
     navigate(`${PATH_DASHBOARD.coursePaths.root(slug)}`);
@@ -24,13 +25,16 @@ export default function PathsList() {
           direction={{ xs: 'column', md: 'row' }}
           justifyContent="space-between"
           spacing={4}
-          sx={{ backgroundColor: '#F1F1FB', p: '50px', textAlign: 'center', color: '#000' }}
+          className={classes.pathList}
         >
           {paths.map((path) => (
             <Stack key={path.slug} spacing={2} className={classes.whiteBox}>
               <Typography>The Complete</Typography>
               <Typography className={classes.font24Headings}>{path.name.slice(12)}</Typography>
-              <Typography>Scale and Optimize a reliable data engineering stack</Typography>
+              <Typography sx={{ marginBottom: 'auto !important' }}>
+                {path.description.substring(0, 174)}
+                {path.description.length > 174 && '...'}
+              </Typography>
               <StyledButton variant="outlined" onClick={() => navigateToPath(path.slug, path.name)}>
                 Learn More
               </StyledButton>

@@ -154,6 +154,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     border: '1px solid #E2E8F0',
     [theme.breakpoints.down('md')]: {
       width: '100%'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '30px 20px'
     }
   },
   courseTile: {
@@ -207,6 +210,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '24px',
     fontWeight: 700,
     marginTop: '0 !important'
+  },
+  pathList: {
+    backgroundColor: '#F1F1FB',
+    padding: '40px',
+    textAlign: 'center',
+    color: '#000',
+    [theme.breakpoints.down('md')]: {
+      padding: '40px 20px'
+    }
   }
 }));
 

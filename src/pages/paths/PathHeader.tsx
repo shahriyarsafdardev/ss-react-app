@@ -26,7 +26,7 @@ export default function PathHeader({
   const progress = () => Math.floor((complete / total) * 100);
 
   return (
-    <Stack spacing={2} sx={{ p: '0 50px 50px' }}>
+    <Stack spacing={2} sx={{ p: '0 50px 50px', width: '100%', maxWidth: '1200px' }}>
       <Typography sx={{ color: '#363853' }}>{pathDescription}</Typography>
       <Stack spacing={1}>
         <Typography sx={{ color: '#000' }}>
