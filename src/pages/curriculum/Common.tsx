@@ -153,7 +153,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box',
     border: '1px solid #E2E8F0',
     textAlign: 'center',
-    margin: '0px 12px',
+    marginLeft: '14px',
+    marginRight: '33px',
     [theme.breakpoints.down('sm')]: {
       padding: '30px 20px',
       margin: 0
