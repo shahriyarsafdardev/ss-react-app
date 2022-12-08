@@ -36,6 +36,7 @@ export type Path = {
   id: string;
   name: string;
   description: string;
+  short_description: string;
   slug: string;
   is_enrolled: boolean;
   courses: Course[];

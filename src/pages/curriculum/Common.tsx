@@ -148,8 +148,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   whiteBox: {
     backgroundColor: '#fff',
-    borderRadius: '5px',
-    padding: '20px',
+    borderRadius: '8px',
+    padding: '16px',
+    boxSizing: 'border-box',
     border: '1px solid #E2E8F0',
     textAlign: 'center',
     margin: '0px 12px',
@@ -219,7 +220,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   pathList: {
     backgroundColor: '#F1F1FB',
-    padding: '40px 28px',
+    padding: '40px 24px',
     color: '#000',
     [theme.breakpoints.down('md')]: {
       padding: '40px 8px'

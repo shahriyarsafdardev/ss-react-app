@@ -58,7 +58,7 @@ export default function PathsTab() {
       <Stack sx={{ alignItems: 'center' }}>
         <PathHeader
           pathName={path?.name}
-          pathDescription={path?.description}
+          pathDescription={path?.description || ''}
           total={courses?.length}
           complete={courses?.filter((course) => course.is_complete).length}
         />

@@ -24,16 +24,15 @@ export default function PathsList() {
         <Stack width="100%" className={classes.pathList}>
           <Grid
             direction={{ xs: 'column', sm: 'row' }}
-            sx={{ maxWidth: '1280px', display: 'flex', margin: 'auto' }}
+            sx={{ width: '100%', maxWidth: '1280px', display: 'flex', margin: 'auto' }}
           >
             {paths.map((path) => (
-              <Grid item xs={12} sm={6} md={4} key={path.slug} className={classes.whiteBoxGrid}>
+              <Grid item xs={12} sm={6} key={path.slug} className={classes.whiteBoxGrid}>
                 <Stack spacing={2} className={classes.whiteBox}>
                   <Typography>The Complete</Typography>
                   <Typography className={classes.font24Headings}>{path.name.slice(12)}</Typography>
                   <Typography sx={{ marginBottom: 'auto !important' }}>
-                    {path.description.substring(0, 174)}
-                    {path.description.length > 174 && '...'}
+                    {path.short_description || ''}
                   </Typography>
                   <StyledButton
                     variant="outlined"
