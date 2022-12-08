@@ -149,14 +149,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
   whiteBox: {
     backgroundColor: '#fff',
     borderRadius: '8px',
-    padding: '16px',
+    padding: '40px 50px',
     boxSizing: 'border-box',
     border: '1px solid #E2E8F0',
     textAlign: 'center',
     marginLeft: '14px',
     marginRight: '33px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '30px 20px',
+      marginRight: '12px'
+    },
+    [theme.breakpoints.down('sm')]: {
       margin: 0
     }
   },
