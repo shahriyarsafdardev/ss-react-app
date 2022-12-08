@@ -8,7 +8,7 @@ const SIZE = 32;
 const RootStyle = styled(Box)(({ theme }) => ({
   top: 0,
   bottom: 0,
-  zIndex: 9,
+  zIndex: 11,
   height: SIZE,
   width: '100%',
   margin: 'auto',

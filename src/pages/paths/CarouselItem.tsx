@@ -22,7 +22,7 @@ export default function CarouselItem({
     >
       <Stack className={classes.courseTile}>
         <>
-          <Stack direction="row" justifyContent="space-between" sx={{ paddingBottom: '20px' }}>
+          <Stack direction="row" justifyContent="space-between">
             <Typography variant="h4" sx={{ fontSize: '1.2rem !important' }}>
               {course.name}
             </Typography>
@@ -36,11 +36,7 @@ export default function CarouselItem({
           </Stack>
           <Stack>
             {course?.preview_instructor_name && (
-              <Stack
-                direction="row"
-                spacing={2.5}
-                sx={{ alignItems: 'center', marginBottom: '20px' }}
-              >
+              <Stack direction="row" spacing={2.5} sx={{ alignItems: 'center' }}>
                 <Avatar
                   src={course?.preview_instructor_image}
                   alt={course?.preview_instructor_name}

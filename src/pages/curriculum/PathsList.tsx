@@ -21,7 +21,7 @@ export default function PathsList() {
   return (
     <>
       {paths.length > 0 && (
-        <Stack className={classes.pathList}>
+        <Stack width="100%" className={classes.pathList}>
           <Grid
             direction={{ xs: 'column', sm: 'row' }}
             sx={{ maxWidth: '1280px', display: 'flex', margin: 'auto' }}

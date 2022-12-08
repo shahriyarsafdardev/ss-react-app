@@ -125,7 +125,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         setCurrentTab(null);
       }
     }
-  }, [window.location.href]);
+  }, [window.location.href, pathSlugs]);
 
   let TOP_NAVBAR_WIDTH = '100%';
   if (user?.type! === 'company') {

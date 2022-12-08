@@ -114,6 +114,7 @@ export default function CoursesCarousel({
           <Stack
             direction="row"
             sx={{
+              overflow: 'hidden',
               m: 'auto',
               maxWidth: { sm: '85%', md: '90%', lg: '93%' },
               justifyContent: 'center',
@@ -127,6 +128,7 @@ export default function CoursesCarousel({
           <Box
             sx={{
               m: 'auto',
+              overflow: 'hidden',
               maxWidth: { sm: '85%', md: '90%', lg: '89%' },
               position: 'relative',
               zIndex: '10'
