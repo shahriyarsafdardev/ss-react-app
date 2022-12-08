@@ -86,7 +86,7 @@ export default function SubscriptionPaymentPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Membership">
-      {/* <SaleBanner /> */}
+      <SaleBanner />
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
       <Stack direction={{ xs: 'column', md: 'row' }} className={classes.paymentStack}>
         <Stack
@@ -146,10 +146,10 @@ export default function SubscriptionPaymentPage() {
                   Learn more here.
                 </Link>
               </Typography>
-              {/* <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
-                As part of our Black Friday Sale you will also recieve an additional $400 on your
+              <Typography style={{ fontWeight: 'bold' }} className={classes.whiteFont}>
+                As part of our End of Year Deal you will also recieve an additional $200 on your
                 account which you can use towards your next Sphere course.
-              </Typography> */}
+              </Typography>
             </Stack>
           </Box>
         </Stack>

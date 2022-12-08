@@ -61,7 +61,7 @@ export default function PaymentSelectionPage() {
 
   return (
     <Page width="100%" height={`${isDesktop && '100vh'}`} title="Sphere Payment">
-      {/* <SaleBanner /> */}
+      <SaleBanner />
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
         <Stack

@@ -283,8 +283,8 @@ export function SaleBanner() {
   return (
     <Stack className={classes.saleBanner} alignItems="center" justifyContent="center">
       <Typography>
-        🚨 <b>Black Friday Sale</b> 🚨 Get $400 towards your next course by purchasing a course
-        through an individual or team subscription | Expires Monday 5pm PT
+        🚨 <b>End of Year Deal</b> 🚨 Get $200 towards your next purchase by purchasing a course
+        through an individual or team subscription | Expires Jan 1 2023
       </Typography>
     </Stack>
   );

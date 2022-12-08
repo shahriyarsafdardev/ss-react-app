@@ -107,15 +107,15 @@ export function IndividualMembershipPaymentDetails({
             course
           </Typography>
         </Stack>
-        {/* <Stack direction="row" alignItems="flex-start">
+        <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
           <Typography className={classes.blackFridayText}>
-            Black Friday Sale: $400 towards your next Sphere course
+            End of Year Deal: $200 towards your next Sphere course
           </Typography>
-        </Stack> */}
+        </Stack>
       </Stack>
       <Button
         variant="contained"
@@ -192,15 +192,15 @@ export function TeamMembershipPaymentDetails({
           />
           <Typography>10%+ discount on all Sphere courses for your team</Typography>
         </Stack>
-        {/* <Stack direction="row" alignItems="flex-start">
+        <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
           />
           <Typography className={classes.blackFridayText}>
-            Black Friday Sale: $400 towards your next Sphere course
+            End of Year Deal: $200 towards your next Sphere course
           </Typography>
-        </Stack> */}
+        </Stack>
       </Stack>
       <Button
         variant="contained"

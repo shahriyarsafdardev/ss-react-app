@@ -150,7 +150,7 @@ export default function PersonalDetailsPage() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere Registration ">
-      {/* <SaleBanner /> */}
+      <SaleBanner />
       {cohort?.wait_listed && formSubmitted ? (
         <WaitListSuccessPage />
       ) : (
