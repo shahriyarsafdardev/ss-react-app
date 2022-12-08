@@ -72,7 +72,7 @@ export default function CourseDetails({
   };
 
   return (
-    <Box sx={{ p: '50px', color: '#1E293B', maxWidth: '1200px' }}>
+    <Box sx={{ width: '100%', p: '50px', color: '#1E293B', maxWidth: '1200px' }}>
       <Stack spacing={2}>
         {nextRecommended && (
           <Typography sx={{ fontWeight: '700' }}>

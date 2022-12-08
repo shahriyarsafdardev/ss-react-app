@@ -24,7 +24,7 @@ export default function PathsTab() {
 
   useEffect(() => {
     !courses && dispatch(getPathData(pathSlug));
-  }, []);
+  }, [pathSlug]);
 
   useEffect(() => {
     let found = false;
@@ -43,7 +43,7 @@ export default function PathsTab() {
     }
   }, [courses?.length]);
 
-  if (loading || courses?.length === 0) {
+  if (typeof courses === 'undefined' || loading || courses?.length === 0) {
     return (
       <Container sx={{ position: 'relative', height: '100%' }}>
         <LoadingContainer>
