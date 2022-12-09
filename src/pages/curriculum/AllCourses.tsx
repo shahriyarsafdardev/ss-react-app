@@ -21,7 +21,7 @@ export default function AllCourses() {
 
   useEffect(() => {
     const getCourses = async () => {
-      await axiosV2.get(`/cohorts.json`).then((res) => {
+      await axiosV2.get(`/cohorts.json?hide_duplicates=true`).then((res) => {
         setCourses(res.data.cohorts);
         let seniorityList = res.data.cohorts
           ?.map((cohort: any) => cohort.seniority)
