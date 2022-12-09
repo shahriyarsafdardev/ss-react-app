@@ -153,14 +153,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
     boxSizing: 'border-box',
     border: '1px solid #E2E8F0',
     textAlign: 'center',
-    marginLeft: '14px',
-    marginRight: '33px',
+    marginLeft: '16px',
+    marginRight: '16px !important',
+    [theme.breakpoints.up(1615)]: {
+      marginRight: '33px !important'
+    },
     [theme.breakpoints.down('md')]: {
-      padding: '30px 20px',
-      marginRight: '12px'
+      padding: '30px 20px'
     },
     [theme.breakpoints.down('sm')]: {
-      margin: 0
+      margin: '0px auto !important',
+      maxWidth: '420px !important'
     }
   },
   whiteBoxGrid: {
@@ -227,7 +230,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '40px 24px',
     color: '#000',
     [theme.breakpoints.down('md')]: {
-      padding: '40px 8px'
+      padding: '40px 4px'
     },
     [theme.breakpoints.down('sm')]: {
       padding: '40px 20px'

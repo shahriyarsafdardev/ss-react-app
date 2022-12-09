@@ -8,14 +8,17 @@ const SIZE = 32;
 const RootStyle = styled(Box)(({ theme }) => ({
   top: 0,
   bottom: 0,
-  zIndex: 11,
+  zIndex: 9,
   height: SIZE,
   width: '100%',
   margin: 'auto',
   display: 'flex',
   position: 'absolute',
   padding: theme.spacing(0, 2),
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  [theme.breakpoints.down(600)]: {
+    zIndex: 11
+  }
 }));
 
 const ArrowStyle = styled('img')(({ theme }) => ({

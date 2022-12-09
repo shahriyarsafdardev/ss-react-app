@@ -12,6 +12,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   width: '50%',
   borderRadius: '30px',
   padding: '10px',
+  margin: '40px auto !important',
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
@@ -50,27 +51,6 @@ export default function CourseDetails({
     window.open(courseData?.registration_page_url, '_blank');
   };
 
-  const handleEnroll = () => {
-    trackEvent(courseData, 'Path Pages - "Enroll" button clicked', {
-      'Course Name': courseData?.name
-    });
-    openRegistrationPage();
-  };
-
-  const handleJoinWaitlist = () => {
-    trackEvent(courseData, 'Path Pages - "Join the waitlist" button clicked', {
-      'Course Name': courseData?.name
-    });
-    openRegistrationPage();
-  };
-
-  const openRegistrationPage = () => {
-    window.open(
-      `https://portal.getsphere.com/registration/personal-details?cohort_id=${courseData?.id}`,
-      '_blank'
-    );
-  };
-
   return (
     <Box sx={{ width: '100%', p: '50px', color: '#1E293B', maxWidth: '1200px' }}>
       <Stack spacing={2}>
@@ -83,24 +63,13 @@ export default function CourseDetails({
           {courseData?.name}
         </Typography>
         <Typography>{courseData?.description}</Typography>
-        {courseData?.wait_listed ? (
-          <StyledButton
-            variant="contained"
-            sx={{ marginX: 'auto !important' }}
-            onClick={() => handleJoinWaitlist()}
-          >
-            Join the Waitlist
-          </StyledButton>
-        ) : (
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <StyledButton variant="outlined" onClick={() => handleSeeDetails()}>
-              See More Details
-            </StyledButton>
-            <StyledButton variant="contained" onClick={() => handleEnroll()}>
-              Enroll
-            </StyledButton>
-          </Stack>
-        )}
+        <StyledButton
+          variant="contained"
+          sx={{ marginX: 'auto !important' }}
+          onClick={() => handleSeeDetails()}
+        >
+          See More Details
+        </StyledButton>
       </Stack>
       {courseData?.sessions ? (
         courseData?.sessions?.map((session: any) => (
