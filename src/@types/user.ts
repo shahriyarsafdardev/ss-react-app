@@ -158,6 +158,8 @@ export type ParticipantProfile = {
   everyone_tag_notifications: string;
   channel_summary_email: string;
   upcoming_session_email: string;
+  marketing_emails: boolean;
+  session_reminder_emails: boolean;
   accepted_terms: boolean;
   popup_viewed: boolean;
   new_instructor: boolean;
