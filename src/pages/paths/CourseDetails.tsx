@@ -9,13 +9,10 @@ import { useStyles } from './Common';
 import SessionDetails from './SessionDetails';
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  width: '50%',
+  width: '100%',
   borderRadius: '30px',
   padding: '10px',
-  margin: '40px auto !important',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
+  margin: '40px auto !important'
 }));
 
 const StyledCircularLoader = styled(Box)(({ theme }) => ({
@@ -52,7 +49,10 @@ export default function CourseDetails({
   };
 
   return (
-    <Box sx={{ width: '100%', p: '50px', color: '#1E293B', maxWidth: '1200px' }}>
+    <Box
+      padding={{ xs: '20px', sm: '50px' }}
+      sx={{ width: '100%', color: '#1E293B', maxWidth: '1200px' }}
+    >
       <Stack spacing={2}>
         {nextRecommended && (
           <Typography sx={{ fontWeight: '700' }}>
