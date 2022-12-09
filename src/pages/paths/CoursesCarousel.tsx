@@ -3,9 +3,8 @@ import { useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
-import CarouselButtons from './CarouselButtons';
 import CarouselItem from './CarouselItem';
-import { useStyles } from './Common';
+import { useStyles, ArrowStyle } from './Common';
 
 const RootStyle = styled(Box)(({ theme }) => ({
   alignItems: 'center',
@@ -109,14 +108,27 @@ export default function CoursesCarousel({
 
   return (
     <RootStyle>
-      <Box sx={{ maxWidth: '1200px', margin: 'auto', position: 'relative' }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={{ maxWidth: '1200px', margin: 'auto', position: 'relative' }}
+      >
+        {courses.length > 1 && (
+          <ArrowStyle
+            data-testid="left-arrow-icon"
+            src="/static/cohorts-home/left-arrow.svg"
+            onClick={handlePrevious}
+            alt="left arrow"
+            onKeyDown={handlePrevious}
+          />
+        )}
         {courses.length < 3 ? (
           <Stack
             direction="row"
             sx={{
               overflow: 'hidden',
               m: 'auto',
-              maxWidth: { sm: '85%', md: '90%', lg: '93%' },
+              width: '100%',
               justifyContent: 'center',
               position: 'relative',
               zIndex: '10'
@@ -137,10 +149,16 @@ export default function CoursesCarousel({
             {displaySlider()}
           </Box>
         )}
-        {!isMobile && courses.length > 1 && (
-          <CarouselButtons onNext={handleNext} onPrevious={handlePrevious} />
+        {courses.length > 1 && (
+          <ArrowStyle
+            data-testid="left-arrow-icon"
+            src="/static/cohorts-home/right-arrow.svg"
+            onClick={handleNext}
+            alt="left arrow"
+            onKeyDown={handleNext}
+          />
         )}
-      </Box>
+      </Stack>
     </RootStyle>
   );
 }

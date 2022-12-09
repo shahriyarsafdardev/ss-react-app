@@ -1,6 +1,23 @@
 import { Box, styled, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
+export const ArrowStyle = styled('img')(({ theme }) => ({
+  width: 32,
+  height: 32,
+  opacity: 0.48,
+  display: 'flex',
+  cursor: 'pointer',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.common.white,
+  borderRadius: theme.shape.borderRadiusSm,
+  margin: '10px',
+  transition: theme.transitions.create('opacity'),
+  '&:hover': {
+    opacity: 1
+  }
+}));
+
 export const useStyles = makeStyles((theme: Theme) => ({
   courseTile: {
     height: '235px',
