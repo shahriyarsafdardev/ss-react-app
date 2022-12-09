@@ -36,7 +36,7 @@ export default function CarouselItem({
           </Stack>
           <Stack>
             {course?.preview_instructor_name && (
-              <Stack direction="row" spacing={2.5} sx={{ alignItems: 'center' }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
                 <Avatar
                   src={course?.preview_instructor_image}
                   alt={course?.preview_instructor_name}

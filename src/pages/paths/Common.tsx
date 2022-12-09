@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 export const useStyles = makeStyles((theme: Theme) => ({
   courseTile: {
     height: '235px',
-    width: '316px',
+    width: '320px',
     backgroundColor: '#fff',
     color: '#000',
     borderRadius: '8px',

@@ -72,9 +72,10 @@ export default function CourseDetails({
         </StyledButton>
       </Stack>
       {courseData?.sessions ? (
-        courseData?.sessions?.map((session: any) => (
-          <SessionDetails key={session.number} sessionData={session} />
-        ))
+        courseData?.sessions?.map(
+          (session: any) =>
+            session.summary && <SessionDetails key={session.number} sessionData={session} />
+        )
       ) : (
         <StyledCircularLoader>
           <CircularProgress />
