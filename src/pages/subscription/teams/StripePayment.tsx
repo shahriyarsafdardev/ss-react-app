@@ -21,7 +21,8 @@ export default function StripePayment({
   registration,
   shouldDisplayBackButton,
   teamDiscount,
-  isSinglePayee
+  isSinglePayee,
+  creditAccountID
 }: {
   team: string;
   teamMembers: TeamMember[];
@@ -34,6 +35,7 @@ export default function StripePayment({
   shouldDisplayBackButton: boolean;
   teamDiscount: number;
   isSinglePayee: boolean;
+  creditAccountID?: any;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -85,18 +87,23 @@ export default function StripePayment({
     setIsSubmitting(true);
     event.preventDefault();
     const uploadData = new FormData();
-    uploadData.append('email', email);
-    uploadData.append('team', team);
-    if (teamID === '') {
-      uploadData.append('team_members', JSON.stringify(teamMembers));
-      url = 'team_registrations/team_members_registration.json';
-    } else if (registration?.cohort_id !== '') {
-      uploadData.append('cohort_id', registration?.cohort_id || '');
-      url = 'team_registrations/member_payment.json';
-    } else if (teamID !== '' && creditAmount !== '') {
-      uploadData.append('team_id', teamID);
+    if (creditAccountID) {
       uploadData.append('amount', creditAmount);
-      url = 'team_registrations/team_subscription.json';
+      url = `credit_subscriptions/${creditAccountID}/topup_subscription.json`;
+    } else {
+      uploadData.append('email', email);
+      uploadData.append('team', team);
+      if (teamID === '') {
+        uploadData.append('team_members', JSON.stringify(teamMembers));
+        url = 'team_registrations/team_members_registration.json';
+      } else if (registration?.cohort_id !== '') {
+        uploadData.append('cohort_id', registration?.cohort_id || '');
+        url = 'team_registrations/member_payment.json';
+      } else if (creditAmount !== '') {
+        uploadData.append('team_id', teamID);
+        uploadData.append('amount', creditAmount);
+        url = 'team_registrations/team_subscription.json';
+      }
     }
 
     if (!stripe || !elements) {

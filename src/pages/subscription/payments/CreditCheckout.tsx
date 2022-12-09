@@ -109,22 +109,6 @@ export default function CreditCheckout() {
       });
   };
 
-  const handleTopUp = async () => {
-    axios
-      .post(`credit_subscriptions/${accountID}/add_credit.json`, {
-        team_id: teamID,
-        amount: creditAmount
-      })
-      .then((res) => {
-        setPaymentCompleted(true);
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message || 'Some error occurred!', {
-          variant: 'error'
-        });
-      });
-  };
-
   useEffect(() => {
     setLoading(true);
     if (teamID !== '' && (creditAmount !== 0 || (cohortID !== '' && email !== ''))) {
@@ -157,42 +141,91 @@ export default function CreditCheckout() {
     );
   }
 
-  if (email === '' && subscriptionAmount > 0) {
+  if (subscriptionAmount > 0) {
     return (
       <>
-        <Stack className={classes.topUp}>
+        <PaymentRootStyle title="Sphere | Team Subscription">
           <Logo
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
             alt="logo"
           />
-          <StyledDetailsStack spacing={4}>
-            <HeadingTypography variant="h4">Top Up Your Team Package</HeadingTypography>
-            <StyledTypography>Your top up amount is:</StyledTypography>
-            <Stack alignItems="center">
-              <HeadingTypography variant="h4">{`$${creditAmount} USD`}</HeadingTypography>
-              <StyledTypography>Due today</StyledTypography>
+          <Stack direction={{ xs: 'column', md: 'row' }} sx={{ width: '100%', height: '100%' }}>
+            <Stack className={`${classes.paymentData} ${classes.purpleBackground}`}>
+              <Logo
+                src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png"
+                alt="logo"
+              />
+              <StyledDetailsStack spacing={4}>
+                <HeadingTypography variant="h4">Top Up Your Team Subscription</HeadingTypography>
+                <StyledTypography>Your top up amount is:</StyledTypography>
+                <Stack alignItems="center">
+                  <HeadingTypography variant="h4">{`$${new Intl.NumberFormat().format(
+                    creditAmount
+                  )} USD`}</HeadingTypography>
+                  <StyledTypography>Due today</StyledTypography>
+                </Stack>
+                <StyledTypography>
+                  <span>
+                    Your total package of{' '}
+                    {`$${new Intl.NumberFormat().format(creditAmount + subscriptionAmount)}`} per
+                    year will be billed next on{' '}
+                    {moment(new Date(checkoutDetails?.next_billing_date)).format('ll').toString()}.
+                  </span>
+                  <br />
+                  <span>
+                    Through this package you receive{' '}
+                    {Math.floor(checkoutDetails?.team_discount * 100)}% discount on all Sphere
+                    courses.
+                  </span>
+                </StyledTypography>
+              </StyledDetailsStack>
             </Stack>
-            <StyledTypography>
-              <span>
-                Your total package of ${creditAmount + subscriptionAmount} per year will be billed
-                next on{' '}
-                {moment(new Date(checkoutDetails?.next_billing_date)).format('ll').toString()}.
-              </span>
-              <br />
-              <span>
-                Through this package you receive {Math.floor(checkoutDetails?.team_discount * 100)}%
-                discount on all Sphere courses.
-              </span>
-            </StyledTypography>
-            <StyledLoadingButton
-              variant="contained"
-              className={classes.topUpButton}
-              onClick={handleTopUp}
-            >
-              Top Up
-            </StyledLoadingButton>
-          </StyledDetailsStack>
-        </Stack>
+            <Stack justifyContent="center" alignItems="center" className={classes.paymentData}>
+              <Box className={classes.fullWidthCenter}>
+                <Elements
+                  key={clientSecret}
+                  stripe={stripePromise}
+                  options={{
+                    clientSecret,
+                    appearance: {
+                      theme: 'stripe',
+                      variables: {
+                        colorPrimary: '#475569',
+                        colorBackground: '#ffffff',
+                        colorText: '#475569',
+                        borderRadius: '8px',
+                        fontFamily: 'Public Sans,sans-serif',
+                        fontSizeBase: '1rem',
+                        colorTextPlaceholder: '#D3D3D3',
+                        spacingTab: '8px',
+                        spacingGridRow: '20px'
+                      },
+                      rules: {
+                        '.Input:focus': {
+                          boxShadow: 'none',
+                          border: '1px solid #475569'
+                        }
+                      }
+                    }
+                  }}
+                >
+                  <StripePayment
+                    team={checkoutDetails.team_name}
+                    teamMembers={teamMembers}
+                    email={email || checkoutDetails.lead_user_email}
+                    registration={registration}
+                    stripeCustomerID={stripeCustomerID}
+                    setPaymentCompleted={setPaymentCompleted}
+                    shouldDisplayBackButton={false}
+                    isSinglePayee={!email && !cohortID}
+                    teamDiscount={checkoutDetails?.team_discount}
+                    creditAccountID={accountID || ''}
+                  />
+                </Elements>
+              </Box>
+            </Stack>
+          </Stack>
+        </PaymentRootStyle>
       </>
     );
   }
