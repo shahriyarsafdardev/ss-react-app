@@ -59,7 +59,7 @@ export default function CarouselItem({
                 <img
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
-                  style={{ margin: '15px auto 0px auto', maxHeight: '30px', maxWidth: '250px' }}
+                  className={classes.companyLogos}
                 />
               </Box>
             )}

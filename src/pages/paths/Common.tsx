@@ -38,10 +38,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     transition: theme.transitions.create('opacity'),
     [theme.breakpoints.down('sm')]: {
       height: '225px !important',
-      width: '260px !important'
+      width: '260px !important',
+      padding: '20px 10px 16px'
     },
     [theme.breakpoints.down(292)]: {
-      height: '250px !important',
+      height: '200px !important',
       width: '220px !important'
     }
   },
@@ -103,6 +104,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('sm')]: {
       fontSize: '14px'
+    }
+  },
+  companyLogos: {
+    margin: '15px auto 0px auto',
+    maxHeight: '30px',
+    maxWidth: '250px',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100% !important'
     }
   }
 }));
