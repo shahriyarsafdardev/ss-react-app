@@ -23,7 +23,7 @@ export default function CarouselItem({
       <Stack className={classes.courseTile}>
         <>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h4" sx={{ fontSize: '1.2rem !important' }}>
+            <Typography variant="h4" className={classes.tileHeading}>
               {course.name}
             </Typography>
             <Box width="24px" height="24px">

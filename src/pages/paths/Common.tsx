@@ -15,6 +15,11 @@ export const ArrowStyle = styled('img')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
   '&:hover': {
     opacity: 1
+  },
+  [theme.breakpoints.down('sm')]: {
+    position: 'absolute',
+    display: 'block',
+    zIndex: '11'
   }
 }));
 
@@ -30,15 +35,29 @@ export const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
     justifyContent: 'space-between',
     overflow: 'hidden',
-    transition: theme.transitions.create('opacity')
+    transition: theme.transitions.create('opacity'),
+    [theme.breakpoints.down('sm')]: {
+      height: '225px !important',
+      width: '260px !important'
+    },
+    [theme.breakpoints.down(292)]: {
+      height: '250px !important',
+      width: '220px !important'
+    }
   },
   font15: {
     fontSize: '15px',
-    fontWeight: 500
+    fontWeight: 500,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '13px'
+    }
   },
   font13: {
     fontSize: '13px',
-    fontWeight: 300
+    fontWeight: 300,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '11px'
+    }
   },
   instructorAvatar: {
     width: 56,
@@ -66,6 +85,25 @@ export const useStyles = makeStyles((theme: Theme) => ({
       backgroundImage: (theme) => 'linear-gradient(to right, #12125C 15%, rgba(18, 18, 92, 0) 85%);'
     },
     '&:after': { right: -2, transform: 'scaleX(-1)' }
+  },
+  arrowLeft: {
+    [theme.breakpoints.down('sm')]: {
+      left: 0
+    }
+  },
+  arrowRight: {
+    [theme.breakpoints.down('sm')]: {
+      right: 0
+    }
+  },
+  tileHeading: {
+    fontSize: '1.2rem',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1rem'
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '14px'
+    }
   }
 }));
 

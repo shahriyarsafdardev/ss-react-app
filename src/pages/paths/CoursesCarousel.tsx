@@ -120,6 +120,7 @@ export default function CoursesCarousel({
             onClick={handlePrevious}
             alt="left arrow"
             onKeyDown={handlePrevious}
+            className={classes.arrowLeft}
           />
         )}
         {courses.length < 3 ? (
@@ -156,6 +157,7 @@ export default function CoursesCarousel({
             onClick={handleNext}
             alt="left arrow"
             onKeyDown={handleNext}
+            className={classes.arrowRight}
           />
         )}
       </Stack>

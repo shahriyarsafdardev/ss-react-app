@@ -47,6 +47,20 @@ const CompanyLogo = styled(Box)(({ theme }) => ({
   }
 }));
 
+const HeadText = styled(Typography)(({ theme }) => ({
+  fontSize: '1.25rem',
+  textTransform: 'capitalize',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '1rem'
+  },
+  [theme.breakpoints.down(345)]: {
+    fontSize: '13px !important'
+  },
+  [theme.breakpoints.down(301)]: {
+    fontSize: '10px !important'
+  }
+}));
+
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
@@ -155,14 +169,13 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             </MHidden>
 
             {currentTab && (
-              <Typography
+              <HeadText
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
                 variant="h4"
-                style={{ color: 'text.primary', textTransform: 'capitalize' }}
               >
                 {currentTab}
-              </Typography>
+              </HeadText>
             )}
 
             <Box sx={{ flexGrow: 1 }} />
