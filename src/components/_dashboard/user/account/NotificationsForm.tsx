@@ -102,6 +102,7 @@ export default function NotificationsForm({
                         color="primary"
                         {...getFieldProps('marketing_emails')}
                         checked={values.marketing_emails}
+                        disabled={!userProfile.marketing_emails}
                       />
                       <Stack direction={{ xs: 'column', md: 'row' }}>
                         <OptionHeading>Marketing</OptionHeading>
