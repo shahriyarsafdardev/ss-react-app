@@ -109,6 +109,9 @@ export const PATH_DASHBOARD = {
     publicResources: (cohortID: string) =>
       path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/public-resources`)
   },
+  coursePaths: {
+    root: (pathSlug: string) => path(ROOTS_DASHBOARD, `/paths/${pathSlug}`)
+  },
   adminTools: {
     root: path(ROOTS_DASHBOARD, `/monthly-registrations`),
     cohort_sales: path(ROOTS_DASHBOARD, `/cohort_sales`),

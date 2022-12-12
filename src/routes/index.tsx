@@ -291,6 +291,10 @@ export default function Router() {
           ]
         },
         {
+          path: 'paths/:pathSlug',
+          children: [{ path: '/', element: <PathsTab /> }]
+        },
+        {
           path: 'blog',
           children: [
             { path: '/', element: <Navigate to="/blog/posts" replace /> },
@@ -500,6 +504,7 @@ const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
+const PathsTab = Loadable(lazy(() => import('../pages/paths/PathsTab')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
 const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));

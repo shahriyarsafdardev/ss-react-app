@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
@@ -46,6 +47,20 @@ const CompanyLogo = styled(Box)(({ theme }) => ({
   }
 }));
 
+const HeadText = styled(Typography)(({ theme }) => ({
+  fontSize: '1.25rem',
+  textTransform: 'capitalize',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '1rem'
+  },
+  [theme.breakpoints.down(345)]: {
+    fontSize: '13px !important'
+  },
+  [theme.breakpoints.down(301)]: {
+    fontSize: '10px !important'
+  }
+}));
+
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
@@ -56,7 +71,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const { isCollapse } = useCollapseDrawer();
   const { user } = useAuth();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
+  const paths = useSelector((state: RootState) => state?.path?.paths);
+  const pathSlugs = paths.map((path) => path.slug);
   const visibleHeaders = [
+    ...pathSlugs,
     'messaging',
     'home',
     'registrations',
@@ -77,6 +95,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'referrals',
     'all-courses'
   ];
+
+  const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -110,6 +130,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Recordings & Slides');
         } else if (section === 'all-courses') {
           setCurrentTab('All Courses');
+        } else if (pathSlugs.includes(section)) {
+          setCurrentTab(pathName(section));
         } else {
           setCurrentTab(section);
         }
@@ -117,7 +139,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         setCurrentTab(null);
       }
     }
-  }, [window.location.href]);
+  }, [window.location.href, pathSlugs]);
 
   let TOP_NAVBAR_WIDTH = '100%';
   if (user?.type! === 'company') {
@@ -147,14 +169,13 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             </MHidden>
 
             {currentTab && (
-              <Typography
+              <HeadText
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
                 variant="h4"
-                style={{ color: 'text.primary', textTransform: 'capitalize' }}
               >
                 {currentTab}
-              </Typography>
+              </HeadText>
             )}
 
             <Box sx={{ flexGrow: 1 }} />

@@ -27,6 +27,7 @@ import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
 import { useDispatch } from './redux/store';
 import { getCohorts, getCohortsTimeline } from './redux/slices/cohort';
+import { getPaths } from './redux/slices/path';
 
 require('dotenv').config({ path: '../.env' });
 
@@ -50,6 +51,7 @@ export default function App() {
     let fetchCohortsTimeline: NodeJS.Timer;
     if (isAuthenticated) {
       dispatch(getCohorts());
+      dispatch(getPaths());
       dispatch(getReferralsCount());
       fetchCohortsTimeline = setInterval(() => {
         dispatch(getCohortsTimeline());

@@ -24,7 +24,7 @@ export default function AllCoursesFilters({
   handleChangeFunction: Function;
 }) {
   return (
-    <Grid container spacing={{ xs: 1, md: 2 }}>
+    <Grid container spacing={{ xs: 2.5, md: 2 }}>
       {functions.length > 0 && (
         <Grid item md={4} sm={6} xs={12}>
           <FormControl sx={{ width: '100%' }}>

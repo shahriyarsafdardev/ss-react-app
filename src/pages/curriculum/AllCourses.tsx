@@ -7,6 +7,7 @@ import { uniq } from 'lodash';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
+import PathsList from './PathsList';
 
 export default function AllCourses() {
   const [courses, setCourses] = useState<any>([]);
@@ -20,7 +21,7 @@ export default function AllCourses() {
 
   useEffect(() => {
     const getCourses = async () => {
-      await axiosV2.get(`/cohorts.json`).then((res) => {
+      await axiosV2.get(`/cohorts.json?hide_duplicates=true`).then((res) => {
         setCourses(res.data.cohorts);
         let seniorityList = res.data.cohorts
           ?.map((cohort: any) => cohort.seniority)
@@ -102,7 +103,8 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere Courses">
-      <Box paddingX={{ xs: '20px', md: '40px' }} mb={{ xs: '20px', md: '30px' }}>
+      <PathsList />
+      <Box paddingX={{ xs: '20px', md: '40px' }} marginY={{ xs: '20px', md: '30px' }}>
         <AllCoursesFilters
           key={`${topics.length} ${functions.length}`}
           functions={functions}

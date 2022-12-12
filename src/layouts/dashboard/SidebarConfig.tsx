@@ -2,6 +2,7 @@
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import SvgIconStyle from '../../components/SvgIconStyle';
+import { Path } from '../../@types/course';
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +26,8 @@ const ICONS = {
   discover: getIcon('ic_discover'),
   cohorts: getIcon('ic_cohorts'),
   contact: getIcon('ic_contact'),
-  bookshelf: getIcon('ic_bookshelf')
+  bookshelf: getIcon('ic_bookshelf'),
+  bellChart: getIcon('ic_bell_curve_chart')
 };
 
 export const sidebarConfig = {
@@ -39,18 +41,27 @@ export const sidebarConfig = {
   ]
 };
 
-export const learnerSidebarConfig = {
-  subheader: 'your learning journey',
-  items: [
-    {
-      title: 'all courses',
-      path: PATH_DASHBOARD.general.allCourses,
-      icon: ICONS.bookshelf
-    },
-    {
-      title: 'contact us',
-      path: PATH_DASHBOARD.general.contactUs,
-      icon: ICONS.contact
-    }
-  ]
+export const learnerSidebarConfig = (paths: Path[]) => {
+  const object = {
+    subheader: 'your learning journey',
+    items: [
+      {
+        title: 'all courses',
+        path: PATH_DASHBOARD.general.allCourses,
+        icon: ICONS.bookshelf
+      },
+      {
+        title: 'contact us',
+        path: PATH_DASHBOARD.general.contactUs,
+        icon: ICONS.contact
+      }
+    ]
+  };
+  const paths_link = paths.map((path) => ({
+    title: path.name,
+    path: PATH_DASHBOARD.coursePaths.root(path.slug),
+    icon: ICONS.bellChart
+  }));
+  object.items = [...paths_link, ...object.items];
+  return object;
 };

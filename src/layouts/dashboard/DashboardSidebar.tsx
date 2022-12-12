@@ -110,6 +110,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const paths = useSelector((state: RootState) => state?.path?.paths);
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -166,7 +167,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         {mode === 'Learner' && (
           <>
             {user?.type !== 'admin' && (
-              <NavSection navConfig={learnerSidebarConfig} isShow={!isCollapse} />
+              <NavSection
+                navConfig={learnerSidebarConfig(paths.filter((path) => path.is_enrolled))}
+                isShow={!isCollapse}
+              />
             )}
             {groupByIntake(cohorts).map((intakeCategory: string) => (
               <NavSection

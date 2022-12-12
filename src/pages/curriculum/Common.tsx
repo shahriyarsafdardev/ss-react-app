@@ -1,4 +1,4 @@
-import { Box, Stack, styled, Tab, Tabs, Theme, Typography } from '@material-ui/core';
+import { Box, Stack, styled, Tab, Tabs, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 export const TOPICS = [
@@ -146,6 +146,33 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '24px 20px'
     }
   },
+  whiteBox: {
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    padding: '40px 50px',
+    boxSizing: 'border-box',
+    border: '1px solid #E2E8F0',
+    textAlign: 'center',
+    marginLeft: '16px',
+    marginRight: '16px !important',
+    [theme.breakpoints.up(1615)]: {
+      marginRight: '33px !important'
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '30px 20px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: '0px auto !important',
+      maxWidth: '420px !important'
+    }
+  },
+  whiteBoxGrid: {
+    display: 'grid',
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '16px !important',
+      maxWidth: '100% !important'
+    }
+  },
   courseTile: {
     height: '100%',
     backgroundColor: '#fff',
@@ -191,6 +218,22 @@ export const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '1280px',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
+    }
+  },
+  font24Headings: {
+    fontSize: '24px',
+    fontWeight: 700,
+    marginTop: '0 !important'
+  },
+  pathList: {
+    backgroundColor: '#F1F1FB',
+    padding: '40px 24px',
+    color: '#000',
+    [theme.breakpoints.down('md')]: {
+      padding: '40px 4px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '40px 20px'
     }
   }
 }));
@@ -240,4 +283,10 @@ export const LoadingContainer = styled(Box)(({ theme }) => ({
     top: '40%',
     left: '43%'
   }
+}));
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  padding: '5px',
+  width: '100%'
 }));
