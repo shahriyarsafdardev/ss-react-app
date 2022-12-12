@@ -287,6 +287,14 @@ export default function Router() {
                   <ResourcesPage />
                 </RoleBasedGuard>
               )
+            },
+            {
+              path: '/offboarding',
+              element: (
+                <RoleBasedGuard accessibleRoles={learnerRoles}>
+                  <OffboardingPage />
+                </RoleBasedGuard>
+              )
             }
           ]
         },
@@ -488,6 +496,9 @@ const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessi
 const CodeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/code/CodeTab')));
 const NetworkingTab = Loadable(
   lazy(() => import('../pages/dashboard/cohorts/networking/NetworkingTab'))
+);
+const OffboardingPage = Loadable(
+  lazy(() => import('../pages/dashboard/cohorts/Home/OffboardingPage'))
 );
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
