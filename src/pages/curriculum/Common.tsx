@@ -1,5 +1,6 @@
 import { Box, Stack, styled, Tab, Tabs, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { trackEvent } from 'utils/eventTracking';
 
 export const TOPICS = [
   'Data Analysis & Experimentation',
@@ -247,6 +248,13 @@ export const CourseTileHover = ({
 }) => {
   const buttonText = () => (course?.wait_listed ? 'Join the waitlist' : 'Learn more');
 
+  const handleClick = () => {
+    trackEvent(course, `All Courses Page - Course "${buttonText()}" button clicked`, {
+      'Course Name': course?.name
+    });
+    handleTileClick();
+  };
+
   return (
     <Stack
       className="descriptionHover"
@@ -265,7 +273,7 @@ export const CourseTileHover = ({
         transition: 'all .4s ease-out',
         overflow: 'hidden'
       }}
-      onClick={() => handleTileClick()}
+      onClick={() => handleClick()}
     >
       <Typography>{course?.description}</Typography>
       <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>

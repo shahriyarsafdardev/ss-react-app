@@ -1,4 +1,6 @@
 import { FormControl, MenuItem, InputLabel, Select, ListItemText, Grid } from '@material-ui/core';
+import { RootState, useSelector } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 
 export default function AllCoursesFilters({
   setSelectedFunction,
@@ -23,6 +25,18 @@ export default function AllCoursesFilters({
   seniority: String[];
   handleChangeFunction: Function;
 }) {
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
+
+  const handleFunctionChange = (value: any) => {
+    trackEvent(cohort, 'All Courses Page - Filter by Function selected', { 'Filter Name': value });
+    handleChangeFunction(value);
+  };
+
+  const handleTopicChange = (value: any) => {
+    trackEvent(cohort, 'All Courses Page - Filter by Topic selected', { 'Filter Name': value });
+    setSelectedTopic(value);
+  };
+
   return (
     <Grid container spacing={{ xs: 2.5, md: 2 }}>
       {functions.length > 0 && (
@@ -31,7 +45,7 @@ export default function AllCoursesFilters({
             <InputLabel id="function-filter">Filter by Function</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
-              onChange={(e: any) => handleChangeFunction(e.target?.value)}
+              onChange={(e: any) => handleFunctionChange(e.target?.value)}
               labelId="function-filter"
               value={selectedFunction}
               label="Filter by Function"
@@ -51,7 +65,7 @@ export default function AllCoursesFilters({
             <InputLabel id="topic-filter">Filter by Topic</InputLabel>
             <Select
               MenuProps={{ sx: { maxHeight: 500 } }}
-              onChange={(e: any) => setSelectedTopic(e.target?.value)}
+              onChange={(e: any) => handleTopicChange(e.target?.value)}
               labelId="topic-filter"
               value={selectedTopic || 'All'}
               label="Filter by Topic"

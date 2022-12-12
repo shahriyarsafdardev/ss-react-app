@@ -3,7 +3,9 @@ import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import axiosV2 from 'utils/axiosV2';
 import { Box, Container, Stack } from '@material-ui/core';
+import { trackEvent } from 'utils/eventTracking';
 import { uniq } from 'lodash';
+import { RootState, useSelector } from 'redux/store';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
@@ -17,12 +19,14 @@ export default function AllCourses() {
   const [selectedSeniority, setSelectedSeniority] = useState<any>();
   const [selectedFunction, setSelectedFunction] = useState<any>();
   const [selectedTopic, setSelectedTopic] = useState<any>();
+  const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
   const classes = useStyles();
 
   useEffect(() => {
     const getCourses = async () => {
       await axiosV2.get(`/cohorts.json?hide_duplicates=true`).then((res) => {
         setCourses(res.data.cohorts);
+        trackEvent(cohort, 'All Courses Page - Page Loaded');
         let seniorityList = res.data.cohorts
           ?.map((cohort: any) => cohort.seniority)
           ?.filter((seniority: string) => !!seniority);
