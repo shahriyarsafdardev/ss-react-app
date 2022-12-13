@@ -27,9 +27,9 @@ export default function CourseTile({ course }: { course: any }) {
     trackEvent(course, 'Curriculum Page - Cohort Tile - Selected', {
       'Course Title': course?.name
     });
-    const url = course?.wait_listed
-      ? `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`
-      : course?.registration_page_url;
+    const url = course?.preview_instructor_name
+      ? course?.registration_page_url
+      : `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`;
     window.open(url, '_blank');
   };
 

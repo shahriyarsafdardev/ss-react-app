@@ -246,7 +246,7 @@ export const CourseTileHover = ({
   handleTileClick: Function;
   course: any;
 }) => {
-  const buttonText = () => (course?.wait_listed ? 'Join the waitlist' : 'Learn more');
+  const buttonText = () => (!course?.preview_instructor_name ? 'Join the waitlist' : 'Learn more');
 
   const handleClick = () => {
     trackEvent(course, `All Courses Page - Course "${buttonText()}" button clicked`, {
