@@ -497,9 +497,7 @@ const CodeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/code/Code
 const NetworkingTab = Loadable(
   lazy(() => import('../pages/dashboard/cohorts/networking/NetworkingTab'))
 );
-const OffboardingPage = Loadable(
-  lazy(() => import('../pages/dashboard/cohorts/Home/OffboardingPage'))
-);
+const OffboardingPage = Loadable(lazy(() => import('../components/cohorts/home/OffboardingPage')));
 const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));

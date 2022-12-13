@@ -1,5 +1,14 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, Card, CircularProgress, Stack, Theme, Typography, Button } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CircularProgress,
+  Stack,
+  Theme,
+  Typography,
+  Button,
+  IconButton
+} from '@material-ui/core';
 import { uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
@@ -420,3 +429,120 @@ export function ChecklistCompletionPrompt({
     </Stack>
   );
 }
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '30%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
+export const StyledBox = styled(Stack)(({ theme }) => ({
+  background: 'linear-gradient(135.12deg, #6A2E9C 0.07%, #0D0217 100.02%)',
+  height: '100%',
+  width: '100%',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'center'
+}));
+
+export const StyledModalButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '50%',
+  minWidth: '200px',
+  margin: '20px auto 0 !important',
+  [theme.breakpoints.down('md')]: {
+    width: '80%'
+  }
+}));
+
+export const StyledImage = styled('img')(({ theme }) => ({
+  width: '55%',
+  margin: '20px auto 0 !important'
+}));
+
+export const SemiBoldText = styled(Typography)(({ theme }) => ({
+  fontSize: '18px',
+  fontWeight: 600
+}));
+
+export const OutlinedButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '100%',
+  padding: '5px'
+}));
+
+export const ThinLine = styled('div')(({ theme }) => ({
+  borderTop: '1px solid #CBD5E1',
+  width: '45%'
+}));
+
+export const ModalStyle = styled(Card)(({ theme }) => ({
+  height: '600px',
+  overflow: 'scroll',
+  color: '#212B36'
+}));
+
+export const GreyCard = styled(Stack)(({ theme }) => ({
+  height: '100px',
+  overflow: 'scroll',
+  border: '1px solid #E2E8F0',
+  boxShadow: 'none',
+  color: '#212B36',
+  borderRadius: '8px',
+  textAlign: 'left',
+  alignItems: 'center',
+  padding: '15px',
+  backgroundColor: '#fff'
+}));
+
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '50%',
+  border: '1px solid #101658'
+}));
+
+export const StyledIcon = styled(Icon)(({ theme }) => ({
+  width: '24px',
+  height: '24px',
+  color: '#101658'
+}));
+
+export const StyledStack = styled(Stack)(({ theme }) => ({
+  textAlign: 'center',
+  padding: '50px 40px',
+  width: '50%',
+  height: '100% ',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
+export const SmallImage = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  cursor: 'pointer',
+  boxShadow: '0px 0px 10px rgba(255, 255, 255, 0.35)',
+  [theme.breakpoints.down('md')]: {
+    width: '32%',
+    height: 'auto'
+  }
+}));
+
+export const OffboardingHeader = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+  color: '#fff',
+  fontSize: '28px !important',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '20px !important'
+  }
+}));
+
+export const MainImage = styled('img')(({ theme }) => ({
+  width: '75%',
+  height: 'auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    height: 'auto'
+  }
+}));
