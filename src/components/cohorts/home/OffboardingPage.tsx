@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Stack } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
+import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
 import { StyledButton, StyledBox, OffboardingHeader } from './Common';
 
-export default function OffboardingPage() {
+export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(0);
-  const [certificates, setCertificates] = useState([
-    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-1.png',
-    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-2.png',
-    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-3.png',
-    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-4.png'
-  ]);
+  const [certificates, setCertificates] = useState(cohort?.certificate_links);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
 
