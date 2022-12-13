@@ -86,21 +86,32 @@ export default function OffboardingModal({
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard>
-              <Typography sx={{ fontSize: '15px' }}>
+            <GreyCard spacing={2} sx={{ fontSize: '15px' }}>
+              <Typography>
                 I’m excited to share that I recently completed a course on Applied Causal Inference
-                taught by @Rob Donnelly through @Sphere where I learned: The motivation and basics
-                of A/B testing (e.g., causality, surprising examples, metrics, interpreting results,
-                trust and pitfalls, Twyman’s law, A/A tests) Cultural challenges, humbling results
-                (e.g., failing often, pivoting, iterating), experimentation platform, institutional
-                memory and meta-analysis, ethics Hierarchy of evidence, Expected Value of
-                Information (EVI), complementary techniques, risks in observational causal studies
-                If this course sounds useful to you and your professional development goals,
-                register using my referral link
-                https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
-                or check out https:/getsphere.com to explore more courses. #causalinference
-                #onilnecourse #ml #datascience
+                taught by <b>Rob Donnelly</b> through <b>Sphere</b> where I learned:
               </Typography>
+              <ul>
+                <li>How to use a variety of tools common in the industry</li>
+                <li>
+                  When ignoring casuality can lead to making poor decisions by learning from
+                  real-world examples
+                </li>
+                <li>The difference between causality and predictions</li>
+              </ul>
+              <Typography>
+                If this course sounds useful to you and your professional development goals,
+                register using my referral link to earn $100 to use towards the course:
+              </Typography>
+              <ul>
+                <li>
+                  <b>
+                    https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
+                  </b>
+                </li>
+                <li>Or, check out https:/getsphere.com to explore more courses.</li>
+              </ul>
+              <b>#causalinference #onilnecourse #ml #datascience</b>
             </GreyCard>
             <OutlinedButton onClick={() => handleCopy('Text above copied!!')} variant="outlined">
               Copy caption with referral link

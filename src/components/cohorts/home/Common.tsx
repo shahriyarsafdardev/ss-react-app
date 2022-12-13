@@ -492,9 +492,11 @@ export const GreyCard = styled(Stack)(({ theme }) => ({
   color: '#212B36',
   borderRadius: '8px',
   textAlign: 'left',
-  alignItems: 'center',
   padding: '15px',
-  backgroundColor: '#fff'
+  backgroundColor: '#fff',
+  ul: {
+    paddingLeft: '20px'
+  }
 }));
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
