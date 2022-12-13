@@ -3,6 +3,8 @@ import { Modal } from 'components/animate';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import baselineFileDownload from '@iconify/icons-ic/baseline-file-download';
 import baselineEmail from '@iconify/icons-ic/baseline-email';
+import copy from 'clipboard-copy';
+import { useSnackbar } from 'notistack5';
 import {
   StyledModalButton,
   StyledImage,
@@ -18,11 +20,19 @@ import {
 
 export default function OffboardingModal({
   modalState,
-  setModalState
+  setModalState,
+  activeImage
 }: {
   modalState: boolean;
   setModalState: Function;
+  activeImage: string;
 }) {
+  const { enqueueSnackbar } = useSnackbar();
+  const handleCopy = (text: string) => {
+    copy(text);
+    enqueueSnackbar('Copied to clipboard !', { variant: 'success' });
+  };
+
   return (
     <Modal
       open={modalState}
@@ -44,10 +54,7 @@ export default function OffboardingModal({
               Once they have enrolled, you will also receive $100 credit to use towards your next
               Sphere course.
             </Typography>
-            <StyledImage
-              alt="certificate-download"
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/certificate4.png"
-            />
+            <StyledImage alt="certificate-download" src={activeImage} />
             <StyledModalButton variant="contained">Share to LinkedIn</StyledModalButton>
             <Stack
               direction="row"
@@ -95,7 +102,9 @@ export default function OffboardingModal({
                 #onilnecourse #ml #datascience
               </Typography>
             </GreyCard>
-            <OutlinedButton variant="outlined">Copy caption with referral link</OutlinedButton>
+            <OutlinedButton onClick={() => handleCopy('Text above copied!!')} variant="outlined">
+              Copy caption with referral link
+            </OutlinedButton>
             <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
               <ThinLine />
               <SemiBoldText>or</SemiBoldText>
@@ -106,7 +115,16 @@ export default function OffboardingModal({
                 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
               </Typography>
             </GreyCard>
-            <OutlinedButton variant="outlined">Copy link only</OutlinedButton>
+            <OutlinedButton
+              onClick={() =>
+                handleCopy(
+                  'https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true'
+                )
+              }
+              variant="outlined"
+            >
+              Copy link only
+            </OutlinedButton>
           </StyledStack>
         </Stack>
       </ModalStyle>

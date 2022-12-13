@@ -1,5 +1,5 @@
-import react, { useState, useEffect } from 'react';
-import { Stack, Typography } from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import { Stack } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
@@ -7,8 +7,13 @@ import { StyledButton, StyledBox, OffboardingHeader } from './Common';
 
 export default function OffboardingPage() {
   const [modal, setModal] = useState(false);
-  const [activeImage, setActiveImage] = useState('certificate4');
-  const [images, setImages] = useState(['certificate1', 'certificate2', 'certificate3']);
+  const [activeCertificate, setActiveCertificate] = useState(0);
+  const [certificates, setCertificates] = useState([
+    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-1.png',
+    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-2.png',
+    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-3.png',
+    'https://sphere-public.s3.eu-west-2.amazonaws.com/certificate-4.png'
+  ]);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
 
@@ -29,9 +34,13 @@ export default function OffboardingPage() {
           }}
         />
       )}
-      <OffboardingModal modalState={modal} setModalState={setModal} />
+      <OffboardingModal
+        modalState={modal}
+        setModalState={setModal}
+        activeImage={certificates[activeCertificate]}
+      />
       <Stack
-        spacing={3}
+        spacing={{ md: 5, xs: 3 }}
         justifyContent="center"
         alignItems="center"
         width="100%"
@@ -42,10 +51,9 @@ export default function OffboardingPage() {
         </OffboardingHeader>
 
         <OffboardingCarousel
-          activeImage={activeImage}
-          setActiveImage={setActiveImage}
-          images={images}
-          setImages={setImages}
+          activeCertificate={activeCertificate}
+          setActiveCertificate={setActiveCertificate}
+          certificates={certificates}
         />
         <Stack
           direction={{ xs: 'column', md: 'row' }}

@@ -508,6 +508,13 @@ export const StyledIcon = styled(Icon)(({ theme }) => ({
   color: '#101658'
 }));
 
+export const CarouselIconButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '22px',
+  background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)',
+  width: '48px',
+  height: '48px'
+}));
+
 export const StyledStack = styled(Stack)(({ theme }) => ({
   textAlign: 'center',
   padding: '50px 40px',
@@ -545,4 +552,26 @@ export const MainImage = styled('img')(({ theme }) => ({
     width: '100%',
     height: 'auto'
   }
+}));
+
+export const DotStyle = styled('span')(({ theme }) => ({
+  width: '20px',
+  height: '20px',
+  borderRadius: '50%',
+  opacity: '0.7',
+  transition: theme.transitions.create('all', {
+    easing: theme.transitions.easing.easeInOut,
+    duration: 360
+  })
+}));
+
+export const ActiveDotStyle = styled('span')(({ theme }) => ({
+  width: '15px',
+  borderRadius: '50%',
+  height: '15px',
+  opacity: '1',
+  transition: theme.transitions.create('all', {
+    easing: theme.transitions.easing.easeInOut,
+    duration: 360
+  })
 }));
