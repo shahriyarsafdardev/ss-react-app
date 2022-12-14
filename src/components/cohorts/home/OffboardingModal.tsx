@@ -30,7 +30,7 @@ export default function OffboardingModal({
   const { enqueueSnackbar } = useSnackbar();
   const handleCopy = (text: string) => {
     copy(text);
-    enqueueSnackbar('Copied to clipboard !', { variant: 'success' });
+    enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
   };
 
   return (
