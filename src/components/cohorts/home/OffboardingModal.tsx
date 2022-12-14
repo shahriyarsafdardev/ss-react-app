@@ -7,6 +7,7 @@ import baselineFileDownload from '@iconify/icons-ic/baseline-file-download';
 import baselineEmail from '@iconify/icons-ic/baseline-email';
 import copy from 'clipboard-copy';
 import { useSnackbar } from 'notistack5';
+import useAuth from 'hooks/useAuth';
 import {
   StyledModalButton,
   StyledImage,
@@ -17,6 +18,7 @@ import {
   GreyCard,
   StyledIconButton,
   StyledIcon,
+  getCaption,
   StyledStack
 } from './Common';
 
@@ -31,7 +33,7 @@ export default function OffboardingModal({
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-
+  const { user } = useAuth();
   const handleCopy = (text: string) => {
     copy(text);
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
@@ -102,9 +104,18 @@ export default function OffboardingModal({
               sx={{ color: '#101658', marginTop: '20px' }}
             >
               <Typography variant="h6">Share via:</Typography>
-              <StyledIconButton onClick={() => handleShareViaTwitter()}>
-                <StyledIcon icon={twitterFill} />
-              </StyledIconButton>
+              <a
+                rel="noreferrer"
+                target="_blank"
+                href={`https://twitter.com/intent/tweet?url=${activeImage}&text=${getCaption(
+                  'Twitter',
+                  user?.slug
+                )}`}
+              >
+                <StyledIconButton onClick={() => handleShareViaTwitter()}>
+                  <StyledIcon icon={twitterFill} />
+                </StyledIconButton>
+              </a>
               <StyledIconButton onClick={() => handleShareViaEmail()}>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
