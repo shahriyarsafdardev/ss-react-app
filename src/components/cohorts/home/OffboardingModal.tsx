@@ -34,6 +34,7 @@ export default function OffboardingModal({
   const { enqueueSnackbar } = useSnackbar();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const { user } = useAuth();
+  const courseLink = `https://getsphere.com/cohorts/applied-causal-inference?referrer=${user?.slug}&alumni=true`;
   const handleCopy = (text: string) => {
     copy(text);
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
@@ -56,7 +57,7 @@ export default function OffboardingModal({
   };
 
   const handleCopyCaption = () => {
-    handleCopy('Text above copied!!');
+    handleCopy(getCaption('LinkedIn', user?.slug));
     sendAnalyticsData(
       'Cohort Offboarding - Share modal - "Copy caption with referral link" button clicked',
       {}
@@ -64,9 +65,7 @@ export default function OffboardingModal({
   };
 
   const handleCopyLink = () => {
-    handleCopy(
-      'https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true'
-    );
+    handleCopy(courseLink);
     sendAnalyticsData('Cohort Offboarding - Share modal - "Copy link only" button clicked', {});
   };
 
@@ -156,9 +155,7 @@ export default function OffboardingModal({
               </Typography>
               <ul>
                 <li>
-                  <b>
-                    https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
-                  </b>
+                  <b>{courseLink}</b>
                 </li>
                 <li>Or, check out https:/getsphere.com to explore more courses.</li>
               </ul>
@@ -179,9 +176,7 @@ export default function OffboardingModal({
               <ThinLine />
             </Stack>
             <GreyCard justifyContent="center">
-              <Typography sx={{ fontSize: '16px', fontWeight: 600 }}>
-                https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
-              </Typography>
+              <Typography sx={{ fontSize: '16px', fontWeight: 600 }}>{courseLink}</Typography>
             </GreyCard>
             <OutlinedButton onClick={() => handleCopyLink()} variant="outlined">
               Copy link only
