@@ -170,6 +170,30 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: '#696DC8',
     color: 'white'
   },
+  linkButton: {
+    borderRadius: '30px',
+    width: '30%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  dotStyle: {
+    width: '15px',
+    height: '15px',
+    borderRadius: '50%',
+    backgroundColor: '#FFFFFF',
+    cursor: 'pointer',
+    opacity: 0.7,
+    transition: theme.transitions.create('all', {
+      easing: theme.transitions.easing.easeInOut,
+      duration: 360
+    }),
+    '&:hover': { opacity: 1 }
+  },
+  activeDot: {
+    opacity: 1,
+    transform: 'scale(1.2)'
+  },
   completionPromptButton: {
     padding: '5px 20px',
     borderRadius: '30px',
@@ -430,14 +454,6 @@ export function ChecklistCompletionPrompt({
   );
 }
 
-export const StyledButton = styled(Button)(({ theme }) => ({
-  borderRadius: '30px',
-  width: '30%',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
-
 export const StyledBox = styled(Stack)(({ theme }) => ({
   background: 'linear-gradient(135.12deg, #6A2E9C 0.07%, #0D0217 100.02%)',
   height: '100%',
@@ -456,7 +472,6 @@ export const StyledModalButton = styled(Button)(({ theme }) => ({
     width: '80%'
   }
 }));
-
 export const StyledImage = styled('img')(({ theme }) => ({
   width: '55%',
   margin: '20px auto 0 !important'
@@ -479,24 +494,20 @@ export const ThinLine = styled('div')(({ theme }) => ({
 }));
 
 export const ModalStyle = styled(Card)(({ theme }) => ({
-  height: '600px',
+  minHeight: '600px',
   overflow: 'scroll',
   color: '#212B36'
 }));
 
 export const GreyCard = styled(Stack)(({ theme }) => ({
-  height: '100px',
+  height: '115px',
+  minHeight: '115px',
   overflow: 'scroll',
   border: '1px solid #E2E8F0',
-  boxShadow: 'none',
   color: '#212B36',
-  borderRadius: '8px',
   textAlign: 'left',
   padding: '15px',
-  backgroundColor: '#fff',
-  ul: {
-    paddingLeft: '20px'
-  }
+  backgroundColor: '#fff'
 }));
 
 export const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -514,15 +525,21 @@ export const CarouselIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: '22px',
   background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)',
   width: '48px',
-  height: '48px'
+  height: '48px',
+  opacity: 0.8,
+  transition: theme.transitions.create('opacity'),
+  '&:hover': { opacity: 1 }
 }));
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   textAlign: 'center',
-  padding: '50px 40px',
+  alignItems: 'center',
+  padding: '65px 100px',
+  overflow: 'hidden',
   width: '50%',
   height: '100% ',
   [theme.breakpoints.down('md')]: {
+    padding: '30px 25px',
     width: '100%'
   }
 }));
@@ -541,7 +558,7 @@ export const SmallImage = styled('img')(({ theme }) => ({
 export const OffboardingHeader = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
   color: '#fff',
-  fontSize: '28px !important',
+  fontSize: '26px !important',
   [theme.breakpoints.down('md')]: {
     fontSize: '20px !important'
   }
@@ -554,26 +571,4 @@ export const MainImage = styled('img')(({ theme }) => ({
     width: '100%',
     height: 'auto'
   }
-}));
-
-export const DotStyle = styled('span')(({ theme }) => ({
-  width: '20px',
-  height: '20px',
-  borderRadius: '50%',
-  opacity: '0.7',
-  transition: theme.transitions.create('all', {
-    easing: theme.transitions.easing.easeInOut,
-    duration: 360
-  })
-}));
-
-export const ActiveDotStyle = styled('span')(({ theme }) => ({
-  width: '15px',
-  borderRadius: '50%',
-  height: '15px',
-  opacity: '1',
-  transition: theme.transitions.create('all', {
-    easing: theme.transitions.easing.easeInOut,
-    duration: 360
-  })
 }));

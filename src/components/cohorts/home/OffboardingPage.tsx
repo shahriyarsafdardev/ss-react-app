@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Stack } from '@material-ui/core';
+import { Stack, Button } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
+import { Link as RouterLink } from 'react-router-dom';
+
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
-import { StyledButton, StyledBox, OffboardingHeader } from './Common';
+import { StyledBox, OffboardingHeader, useStyles } from './Common';
 
 export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [modal, setModal] = useState(false);
@@ -12,6 +14,10 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [certificates, setCertificates] = useState(cohort?.certificate_links);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
+  const classes = useStyles();
+  const sessionsLength = cohort.sessions.filter(
+    (session) => session.display_in_sessions_tab
+  ).length;
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,16 +64,23 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
           justifyContent="center"
           sx={{ maxWidth: '1200px' }}
         >
-          <StyledButton
+          <Button
+            className={classes.linkButton}
             variant="contained"
             sx={{ color: '#101658', backgroundColor: '#fff' }}
             onClick={() => setModal(!modal)}
           >
             Download and share
-          </StyledButton>
-          <StyledButton variant="outlined" sx={{ color: '#fff !important' }}>
+          </Button>
+          <Button
+            className={classes.linkButton}
+            variant="outlined"
+            to={`/cohorts/${cohort.id}/sessions?session=${sessionsLength}&student_feedback=true`}
+            component={RouterLink}
+            sx={{ color: '#fff !important' }}
+          >
             Share feedback
-          </StyledButton>
+          </Button>
         </Stack>
       </Stack>
     </StyledBox>

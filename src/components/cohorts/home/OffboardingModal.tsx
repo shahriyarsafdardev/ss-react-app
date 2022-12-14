@@ -70,9 +70,11 @@ export default function OffboardingModal({
               <StyledIconButton>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
-              <StyledIconButton>
-                <StyledIcon icon={baselineFileDownload} />
-              </StyledIconButton>
+              <a href={activeImage} download={activeImage} rel="noreferrer" target="_blank">
+                <StyledIconButton>
+                  <StyledIcon icon={baselineFileDownload} />
+                </StyledIconButton>
+              </a>
             </Stack>
           </StyledStack>
           <StyledStack
@@ -116,7 +118,13 @@ export default function OffboardingModal({
             <OutlinedButton onClick={() => handleCopy('Text above copied!!')} variant="outlined">
               Copy caption with referral link
             </OutlinedButton>
-            <Stack direction="row" justifyContent="center" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              width="100%"
+              justifyContent="center"
+              alignItems="center"
+              spacing={1}
+            >
               <ThinLine />
               <SemiBoldText>or</SemiBoldText>
               <ThinLine />

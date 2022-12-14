@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Stack, useMediaQuery } from '@material-ui/core';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import { Icon } from '@iconify/react';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import { useTheme } from '@material-ui/core/styles';
-import { SmallImage, MainImage, CarouselIconButton, DotStyle, ActiveDotStyle } from './Common';
+import { SmallImage, MainImage, CarouselIconButton, useStyles } from './Common';
 
 export default function OffboardingCarousel({
   activeCertificate,
@@ -15,6 +17,7 @@ export default function OffboardingCarousel({
   certificates: string[];
 }) {
   const theme = useTheme();
+  const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
@@ -40,7 +43,13 @@ export default function OffboardingCarousel({
         )}
       </Stack>
       {isMobile && (
-        <Stack direction="row" width="100%" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ '&.isActive': { opacity: '1 !important', transform: 'scale(1.1)' } }}
+        >
           <CarouselIconButton
             onClick={() => {
               activeCertificate === 0
@@ -50,6 +59,13 @@ export default function OffboardingCarousel({
           >
             <Icon icon={arrowIosBackFill} color="white" width="20px" height="40px" />
           </CarouselIconButton>
+          {certificates.map((img, index) => (
+            <span
+              className={`${classes.dotStyle} ${index === activeCertificate && classes.activeDot}`}
+              key={index}
+              onClick={() => setActiveCertificate(index)}
+            />
+          ))}
           <CarouselIconButton
             onClick={() => {
               activeCertificate === certificates.length - 1
