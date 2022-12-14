@@ -132,7 +132,9 @@ const Index = () => {
   return (
     <Page title="Sphere | Homepage" sx={{ width: '100%', height: '100%', minHeight: '100%' }}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {checkAllSessionsPassed() && cohort?.certificate_links?.length > 0 ? (
+        {checkAllSessionsPassed() &&
+        cohort?.code === 'ACI' &&
+        cohort?.certificate_links?.length > 0 ? (
           <OffboardingPage cohort={cohort} />
         ) : (
           homeTabSection()
