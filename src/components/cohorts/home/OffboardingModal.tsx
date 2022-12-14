@@ -42,13 +42,22 @@ export default function OffboardingModal({
 
   const handleShareToLinkedin = () => {
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share to LinkedIn" button clicked', {});
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${activeImage}`, '_blank');
   };
 
   const handleShareViaTwitter = () => {
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Twitter" button clicked', {});
+    window.open(
+      `https://twitter.com/intent/tweet?url=${activeImage}&text=${getCaption(
+        'Twitter',
+        user?.slug
+      )}`,
+      '_blank'
+    );
   };
 
   const handleShareViaEmail = () => {
+    window.open(`mailto:?body=${getCaption('Email', user?.slug)}`, '_blank');
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Email" button clicked', {});
   };
 
@@ -103,18 +112,9 @@ export default function OffboardingModal({
               sx={{ color: '#101658', marginTop: '20px' }}
             >
               <Typography variant="h6">Share via:</Typography>
-              <a
-                rel="noreferrer"
-                target="_blank"
-                href={`https://twitter.com/intent/tweet?url=${activeImage}&text=${getCaption(
-                  'Twitter',
-                  user?.slug
-                )}`}
-              >
-                <StyledIconButton onClick={() => handleShareViaTwitter()}>
-                  <StyledIcon icon={twitterFill} />
-                </StyledIconButton>
-              </a>
+              <StyledIconButton onClick={() => handleShareViaTwitter()}>
+                <StyledIcon icon={twitterFill} />
+              </StyledIconButton>
               <StyledIconButton onClick={() => handleShareViaEmail()}>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
