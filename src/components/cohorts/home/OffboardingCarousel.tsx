@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Stack, useMediaQuery } from '@material-ui/core';
+import { useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import { Icon } from '@iconify/react';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
@@ -19,6 +21,29 @@ export default function OffboardingCarousel({
   const theme = useTheme();
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
+  const handleActiveCertificate = (index: number) => {
+    sendAnalyticsData('Cohort Offboarding - Asset selected', {
+      'Asset URL': certificates[activeCertificate]
+    });
+    setActiveCertificate(index);
+  };
+
+  const handleCarouselArrows = (arrow: string) => {
+    sendAnalyticsData('Cohort Offboarding - Asset selected', {
+      'Asset URL': certificates[activeCertificate]
+    });
+    if (arrow === 'left') {
+      activeCertificate === 0
+        ? setActiveCertificate(certificates.length - 1)
+        : setActiveCertificate(activeCertificate - 1);
+    } else {
+      activeCertificate === certificates.length - 1
+        ? setActiveCertificate(0)
+        : setActiveCertificate(activeCertificate + 1);
+    }
+  };
 
   return (
     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="center">
@@ -35,9 +60,7 @@ export default function OffboardingCarousel({
                 key={index}
                 alt="certificate-download"
                 src={img}
-                onClick={() => {
-                  setActiveCertificate(index);
-                }}
+                onClick={() => handleActiveCertificate(index)}
               />
             )
         )}
@@ -50,29 +73,17 @@ export default function OffboardingCarousel({
           alignItems="center"
           sx={{ '&.isActive': { opacity: '1 !important', transform: 'scale(1.1)' } }}
         >
-          <CarouselIconButton
-            onClick={() => {
-              activeCertificate === 0
-                ? setActiveCertificate(certificates.length)
-                : setActiveCertificate(activeCertificate - 1);
-            }}
-          >
+          <CarouselIconButton onClick={() => handleCarouselArrows('left')}>
             <Icon icon={arrowIosBackFill} color="white" width="20px" height="40px" />
           </CarouselIconButton>
           {certificates.map((img, index) => (
             <span
               className={`${classes.dotStyle} ${index === activeCertificate && classes.activeDot}`}
               key={index}
-              onClick={() => setActiveCertificate(index)}
+              onClick={() => handleActiveCertificate(index)}
             />
           ))}
-          <CarouselIconButton
-            onClick={() => {
-              activeCertificate === certificates.length - 1
-                ? setActiveCertificate(0)
-                : setActiveCertificate(activeCertificate + 1);
-            }}
-          >
+          <CarouselIconButton onClick={() => handleCarouselArrows('right')}>
             <Icon icon={arrowIosForwardFill} color="white" width="20px" height="40px" />
           </CarouselIconButton>
         </Stack>

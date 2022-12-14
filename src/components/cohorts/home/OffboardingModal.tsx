@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack, Typography } from '@material-ui/core';
 import { Modal } from 'components/animate';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
@@ -28,15 +30,49 @@ export default function OffboardingModal({
   activeImage: string;
 }) {
   const { enqueueSnackbar } = useSnackbar();
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
+
   const handleCopy = (text: string) => {
     copy(text);
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
+  };
+
+  const handleShareToLinkedin = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - "Share to LinkedIn" button clicked', {});
+  };
+
+  const handleShareViaTwitter = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Twitter" button clicked', {});
+  };
+
+  const handleShareViaEmail = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Email" button clicked', {});
+  };
+
+  const handleDownload = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - "Download asset" button clicked', {});
+  };
+
+  const handleCopyCaption = () => {
+    handleCopy('Text above copied!!');
+    sendAnalyticsData(
+      'Cohort Offboarding - Share modal - "Copy caption with referral link" button clicked',
+      {}
+    );
+  };
+
+  const handleCopyLink = () => {
+    handleCopy(
+      'https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true'
+    );
+    sendAnalyticsData('Cohort Offboarding - Share modal - "Copy link only" button clicked', {});
   };
 
   return (
     <Modal
       open={modalState}
       onClose={() => {
+        sendAnalyticsData('Cohort Offboarding - Share modal - Modal Closed', {});
         setModalState(!modalState);
       }}
     >
@@ -55,7 +91,9 @@ export default function OffboardingModal({
               Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />
-            <StyledModalButton variant="contained">Share to LinkedIn</StyledModalButton>
+            <StyledModalButton variant="contained" onClick={() => handleShareToLinkedin()}>
+              Share to LinkedIn
+            </StyledModalButton>
             <Stack
               direction="row"
               justifyContent="center"
@@ -64,14 +102,14 @@ export default function OffboardingModal({
               sx={{ color: '#101658', marginTop: '20px' }}
             >
               <Typography variant="h6">Share via:</Typography>
-              <StyledIconButton>
+              <StyledIconButton onClick={() => handleShareViaTwitter()}>
                 <StyledIcon icon={twitterFill} />
               </StyledIconButton>
-              <StyledIconButton>
+              <StyledIconButton onClick={() => handleShareViaEmail()}>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
               <a href={activeImage} download={activeImage} rel="noreferrer" target="_blank">
-                <StyledIconButton>
+                <StyledIconButton onClick={() => handleDownload()}>
                   <StyledIcon icon={baselineFileDownload} />
                 </StyledIconButton>
               </a>
@@ -115,7 +153,7 @@ export default function OffboardingModal({
               </ul>
               <b>#causalinference #onilnecourse #ml #datascience</b>
             </GreyCard>
-            <OutlinedButton onClick={() => handleCopy('Text above copied!!')} variant="outlined">
+            <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
               Copy caption with referral link
             </OutlinedButton>
             <Stack
@@ -134,14 +172,7 @@ export default function OffboardingModal({
                 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true
               </Typography>
             </GreyCard>
-            <OutlinedButton
-              onClick={() =>
-                handleCopy(
-                  'https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true'
-                )
-              }
-              variant="outlined"
-            >
+            <OutlinedButton onClick={() => handleCopyLink()} variant="outlined">
               Copy link only
             </OutlinedButton>
           </StyledStack>
