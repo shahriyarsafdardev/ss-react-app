@@ -15,9 +15,9 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
-  const sessionsLength = cohort.sessions.filter(
+  const sessionsLength = cohort?.sessions?.filter(
     (session) => session.display_in_sessions_tab
-  ).length;
+  )?.length;
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
   useEffect(() => {
@@ -26,6 +26,12 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
       setConfetti(0);
     }, 3000);
   }, []);
+
+  useEffect(() => {
+    if (modal) {
+      document.body.style.overflow = 'hidden';
+    } else document.body.style.overflow = 'visible';
+  }, [modal]);
 
   const handleDownloadAndShare = () => {
     sendAnalyticsData('Cohort Offboarding - "Download and Share" button clicked', {});
@@ -78,20 +84,20 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
           <Button
             className={classes.linkButton}
             variant="contained"
-            sx={{ color: '#101658', backgroundColor: '#fff' }}
+            sx={{ color: '#101658', backgroundColor: '#fff', textTransform: 'none' }}
             onClick={() => handleDownloadAndShare()}
           >
-            Download and share
+            Download and Share
           </Button>
           <Button
             className={classes.linkButton}
             variant="outlined"
             to={`/cohorts/${cohort.id}/sessions?session=${sessionsLength}&student_feedback=true`}
             component={RouterLink}
-            sx={{ color: '#fff !important' }}
+            sx={{ color: '#fff !important', textTransform: 'none' }}
             onClick={() => handleShareFeedback()}
           >
-            Share feedback
+            Open End-of-cohort Survey
           </Button>
         </Stack>
       </Stack>

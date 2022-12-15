@@ -48,10 +48,7 @@ export default function OffboardingModal({
   const handleShareViaTwitter = () => {
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Twitter" button clicked', {});
     window.open(
-      `https://twitter.com/intent/tweet?url=${activeImage}&text=${getCaption(
-        'Twitter',
-        user?.slug
-      )}`,
+      `https://twitter.com/intent/tweet?text=${getCaption('Twitter', user?.slug, activeImage)}`,
       '_blank'
     );
   };
@@ -89,7 +86,7 @@ export default function OffboardingModal({
       <ModalStyle>
         <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" sx={{ height: '100%' }}>
           <StyledStack spacing={2} justifyContent="center">
-            <Typography variant="h3" sx={{ fontSize: '28px !important' }}>
+            <Typography variant="h3" sx={{ fontSize: '24px !important' }}>
               Share your accomplishment to give and get $100 📣
             </Typography>
             <Typography>
@@ -139,15 +136,21 @@ export default function OffboardingModal({
             <GreyCard spacing={2} sx={{ fontSize: '15px' }}>
               <Typography>
                 I’m excited to share that I recently completed a course on Applied Causal Inference
-                taught by <b>Rob Donnelly</b> through <b>Sphere</b> where I learned:
+                taught by <b>@Rob Donnelly</b> through <b>@Sphere</b> where I learned to:
               </Typography>
               <ul>
-                <li>How to use a variety of tools common in the industry</li>
                 <li>
-                  When ignoring casuality can lead to making poor decisions by learning from
-                  real-world examples
+                  Formulate valid causal inference questions from business problems and available
+                  data
                 </li>
-                <li>The difference between causality and predictions</li>
+                <li>
+                  Understand the use case and assumptions of both classic and cutting-edge causal
+                  inference methods, including double ML
+                </li>
+                <li>
+                  Leverage causal inference tools for better informed decisions about groups or
+                  individuals
+                </li>
               </ul>
               <Typography>
                 If this course sounds useful to you and your professional development goals,
@@ -157,9 +160,9 @@ export default function OffboardingModal({
                 <li>
                   <b>{courseLink}</b>
                 </li>
-                <li>Or, check out https:/getsphere.com to explore more courses.</li>
+                <li>Or, check out https://getsphere.com to explore more courses.</li>
               </ul>
-              <b>#causalinference #onilnecourse #ml #datascience</b>
+              <b>#causalinference #onlinecourse #ml #datascience</b>
             </GreyCard>
             <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
               Copy caption with referral link

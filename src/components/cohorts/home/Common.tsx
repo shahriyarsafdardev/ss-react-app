@@ -186,13 +186,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     opacity: 0.7,
     transition: theme.transitions.create('all', {
       easing: theme.transitions.easing.easeInOut,
-      duration: 360
+      duration: 200
     }),
     '&:hover': { opacity: 1 }
   },
   activeDot: {
     opacity: 1,
-    transform: 'scale(1.2)'
+    transform: 'scale(1.3)'
   },
   completionPromptButton: {
     padding: '5px 20px',
@@ -576,7 +576,7 @@ export const MainImage = styled('img')(({ theme }) => ({
   }
 }));
 
-export const getCaption = (socialMedia: string, slug: string) => {
+export const getCaption = (socialMedia: string, slug: string, image: string = '') => {
   let text = '';
   if (socialMedia === 'LinkedIn') {
     text = LINKEDIN;
@@ -587,28 +587,31 @@ export const getCaption = (socialMedia: string, slug: string) => {
   if (socialMedia === 'Email') {
     text = EMAIL;
   }
+  if (image) {
+    text = text.replace(/image_url/g, image);
+  }
   return text.replace(/firstname-lastname/g, slug);
 };
 
-export const LINKEDIN = `I'm excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned:
-  How to use a variety of causal inference tools common in the industry
-  When ignoring causality can lead to making poor decisions by learning from real-world examples
-  The difference between causality and predictions
-  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:
-  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true. 
-  Or, check out https:/getsphere.com to explore more courses.
-  #causalinference #onlinecourse #ml #datascience`;
+export const LINKEDIN = `I’m excited to share that I recently completed a course on Applied Causal Inference taught by @Rob Donnelly through @Sphere where I learned to:
+Formulate valid causal inference questions from business problems and available data
+Understand the use case and assumptions of both classic and cutting-edge causal inference methods, including double ML
+Leverage causal inference tools for better informed decisions about groups or individuals
+If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:
+https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true. 
+Or, check out https://getsphere.com to explore more courses.
+#causalinference #onlinecourse #ml #datascience`;
 
-export const TWITTER = `Just completed a course on Applied Causal Inference taught by @RobDonnelly47 through @get_sphere.
+export const TWITTER = `Just completed a course on Applied Causal Inference taught by @RobDonnelly47 through @get_sphere.%0D%0A
+image_url %0D%0A%0D%0A
+Register using my referral link to earn $100 to use towards the course!%0D%0A
+https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
+%23causalinference %23onlinecourse %23ml %23datascience`;
 
-  Register using my referral link to earn $100 to use towards the course! https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true.
-
-  #causalinference #onlinecourse #ml #datascience`;
-
-export const EMAIL = `I'm excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned:
-  How to use a variety of causal inference tools common in the industry
-  When ignoring causality can lead to making poor decisions by learning from real-world examples
-  The difference between causality and predictions
-  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:
-  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true. 
-  Or, check out https:/getsphere.com to explore more courses.`;
+export const EMAIL = `I'm excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned:%0D%0A%0D%0A
+  %E2%80%A2 How to use a variety of causal inference tools common in the industry%0D%0A
+  %E2%80%A2 When ignoring causality can lead to making poor decisions by learning from real-world examples%0D%0A
+  %E2%80%A2 The difference between causality and predictions%0D%0A%0D%0A
+If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:%0D%0A%0D%0A
+  %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A%0D%0A
+Or, check out https://getsphere.com to explore more courses.`;
