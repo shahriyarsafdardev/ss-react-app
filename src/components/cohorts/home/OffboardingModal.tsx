@@ -147,40 +147,45 @@ export default function OffboardingModal({
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard sx={{ fontSize: '15px' }} id="linkedin-caption">
-              <Typography>
-                I’m excited to share that I recently completed a course on Applied Causal Inference
-                taught by <b>@Rob Donnelly</b> through <b>@Sphere</b> where I learned to:
-              </Typography>
-              <br />
-              <ul>
-                <li>
-                  Formulate valid causal inference questions from business problems and available
-                  data
-                </li>
-                <li>
-                  Understand the use case and assumptions of both classic and cutting-edge causal
-                  inference methods, including double ML
-                </li>
-                <li>
-                  Leverage causal inference tools for better informed decisions about groups or
-                  individuals
-                </li>
-              </ul>
-              <br />
-              <Typography>
-                If this course sounds useful to you and your professional development goals,
-                register using my referral link to earn $100 to use towards the course:
-              </Typography>
-              <br />
-              <ul>
-                <li>
-                  <b>{courseLink}</b>
-                </li>
-                <li>Or, check out https://getsphere.com to explore more courses.</li>
-              </ul>
-              <br />
-              <b>#causalinference #onlinecourse #ml #datascience</b>
+            <GreyCard sx={{ fontSize: '15px' }}>
+              <div>
+                <div id="linkedin-caption">
+                  <Typography>
+                    I’m excited to share that I recently completed a course on Applied Causal
+                    Inference taught by <b>@Rob Donnelly</b> through <b>@Sphere</b> where I learned
+                    to:
+                  </Typography>
+                  <br />
+                  <ul>
+                    <li>
+                      Formulate valid causal inference questions from business problems and
+                      available data
+                    </li>
+                    <li>
+                      Understand the use case and assumptions of both classic and cutting-edge
+                      causal inference methods, including double ML
+                    </li>
+                    <li>
+                      Leverage causal inference tools for better informed decisions about groups or
+                      individuals
+                    </li>
+                  </ul>
+                  <br />
+                  <Typography>
+                    If this course sounds useful to you and your professional development goals,
+                    register using my referral link to earn $100 to use towards the course:
+                  </Typography>
+                  <br />
+                  <ul>
+                    <li>
+                      <b>{courseLink}</b>
+                    </li>
+                    <li>Or, check out https://getsphere.com to explore more courses.</li>
+                  </ul>
+                  <br />
+                  <b>#causalinference #onlinecourse #ml #datascience</b>
+                </div>
+              </div>
             </GreyCard>
             <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
               Copy caption with referral link
