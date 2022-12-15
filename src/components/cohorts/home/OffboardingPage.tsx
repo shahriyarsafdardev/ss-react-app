@@ -42,7 +42,7 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
 
   const handleShareFeedback = () => {
     setFeedbackModalState(true);
-    sendAnalyticsData('Cohort Offboarding - "Share Feedback" button clicked', {});
+    sendAnalyticsData('Cohort Offboarding - "Open End-of-cohort Survey" button clicked', {});
   };
 
   return (
