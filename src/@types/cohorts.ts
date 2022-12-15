@@ -248,6 +248,7 @@ export type Cohort = {
   resources_types: string[];
   cohort_header_name?: string;
   instructor_pronoun?: string;
+  certificate_links: string[];
 };
 
 export type CodeOnboardingItem = {

@@ -14,10 +14,10 @@ import { getSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import { firstUpcomingDate } from './Common';
-import EmptyHomeTab from '../onboarding/empty-states/EmptyHomeTab';
 import NewHomeTab from './NewHomeTab';
 import GetReadyPage from './GetReadyPage';
 import WelcomePage from './WelcomePage';
+import OffboardingPage from './OffboardingPage';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '2rem',
@@ -98,6 +98,11 @@ const Index = () => {
     cohort && trackEvent(cohort, eventName, eventData);
   };
 
+  const checkAllSessionsPassed = () =>
+    !sessions
+      .map((session) => new Date(firstUpcomingDate(session.times)) < new Date())
+      .includes(false);
+
   const displayActiveStep = () => {
     if (activeStepper === 0) {
       return <WelcomePage setActiveStepper={setActiveStepper} cohort={cohort} />;
@@ -125,9 +130,15 @@ const Index = () => {
   }
 
   return (
-    <Page title="Sphere | Homepage">
+    <Page title="Sphere | Homepage" sx={{ width: '100%', height: '100%', minHeight: '100%' }}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {homeTabSection()}
+        {checkAllSessionsPassed() &&
+        cohort?.code === 'ACI' &&
+        cohort?.certificate_links?.length > 0 ? (
+          <OffboardingPage cohort={cohort} />
+        ) : (
+          homeTabSection()
+        )}
       </AnalyticsContext.Provider>
     </Page>
   );

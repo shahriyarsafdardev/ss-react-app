@@ -1,5 +1,14 @@
 import { styled } from '@material-ui/core/styles';
-import { Box, Card, CircularProgress, Stack, Theme, Typography, Button } from '@material-ui/core';
+import {
+  Box,
+  Card,
+  CircularProgress,
+  Stack,
+  Theme,
+  Typography,
+  Button,
+  IconButton
+} from '@material-ui/core';
 import { uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
@@ -15,6 +24,7 @@ import { useDispatch } from 'redux/store';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
+import { SurveyForm } from '../sessions';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -160,6 +170,30 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: '32px',
     backgroundColor: '#696DC8',
     color: 'white'
+  },
+  linkButton: {
+    borderRadius: '30px',
+    width: '30%',
+    [theme.breakpoints.down('md')]: {
+      width: '100%'
+    }
+  },
+  dotStyle: {
+    width: '15px',
+    height: '15px',
+    borderRadius: '50%',
+    backgroundColor: '#FFFFFF',
+    cursor: 'pointer',
+    opacity: 0.7,
+    transition: theme.transitions.create('all', {
+      easing: theme.transitions.easing.easeInOut,
+      duration: 200
+    }),
+    '&:hover': { opacity: 1 }
+  },
+  activeDot: {
+    opacity: 1,
+    transform: 'scale(1.3)'
   },
   completionPromptButton: {
     padding: '5px 20px',
@@ -420,3 +454,188 @@ export function ChecklistCompletionPrompt({
     </Stack>
   );
 }
+
+export const StyledBox = styled(Stack)(({ theme }) => ({
+  background: 'linear-gradient(135.12deg, #6A2E9C 0.07%, #0D0217 100.02%)',
+  height: '100%',
+  width: '100%',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'center'
+}));
+
+export const StyledModalButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '50%',
+  minWidth: '200px',
+  margin: '20px auto 0 !important',
+  [theme.breakpoints.down('md')]: {
+    width: '80%'
+  }
+}));
+export const StyledImage = styled('img')(({ theme }) => ({
+  width: '55%',
+  margin: '20px auto 0 !important'
+}));
+
+export const SemiBoldText = styled(Typography)(({ theme }) => ({
+  fontSize: '18px',
+  fontWeight: 600
+}));
+
+export const OutlinedButton = styled(Button)(({ theme }) => ({
+  borderRadius: '30px',
+  width: '100%',
+  padding: '5px'
+}));
+
+export const ThinLine = styled('div')(({ theme }) => ({
+  borderTop: '1px solid #CBD5E1',
+  width: '45%'
+}));
+
+export const ModalStyle = styled(Card)(({ theme }) => ({
+  minHeight: '600px',
+  overflow: 'auto',
+  color: '#212B36'
+}));
+
+export const GreyCard = styled(Stack)(({ theme }) => ({
+  height: '115px',
+  minHeight: '115px',
+  overflow: 'auto',
+  border: '1px solid #E2E8F0',
+  color: '#212B36',
+  textAlign: 'left',
+  padding: '15px',
+  borderRadius: '8px',
+  backgroundColor: '#fff',
+  ul: {
+    paddingLeft: '20px'
+  }
+}));
+
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '50%',
+  border: '1px solid #101658'
+}));
+
+export const StyledIcon = styled(Icon)(({ theme }) => ({
+  width: '24px',
+  height: '24px',
+  color: '#101658'
+}));
+
+export const CarouselIconButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '22px',
+  background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)',
+  width: '48px',
+  height: '48px',
+  opacity: 0.8,
+  transition: theme.transitions.create('opacity'),
+  '&:hover': { opacity: 1 }
+}));
+
+export const StyledStack = styled(Stack)(({ theme }) => ({
+  textAlign: 'center',
+  alignItems: 'center',
+  padding: '65px 100px',
+  overflow: 'hidden',
+  width: '50%',
+  height: '100% ',
+  [theme.breakpoints.down('md')]: {
+    padding: '30px 25px',
+    width: '100%'
+  }
+}));
+
+export const SmallImage = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  cursor: 'pointer',
+  boxShadow: '0px 0px 10px rgba(255, 255, 255, 0.35)',
+  [theme.breakpoints.down('md')]: {
+    width: '32%',
+    height: 'auto'
+  }
+}));
+
+export const OffboardingHeader = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+  color: '#fff',
+  fontSize: '26px !important',
+  [theme.breakpoints.down('md')]: {
+    fontSize: '20px !important'
+  }
+}));
+
+export const MainImage = styled('img')(({ theme }) => ({
+  width: '75%',
+  height: 'auto',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    height: 'auto'
+  }
+}));
+
+export const getCaption = (socialMedia: string, slug: string) => {
+  let text = '';
+  if (socialMedia === 'LinkedIn') {
+    text = LINKEDIN;
+  }
+  if (socialMedia === 'Twitter') {
+    text = TWITTER;
+  }
+  if (socialMedia === 'Email') {
+    text = EMAIL;
+  }
+  return text.replace(/firstname-lastname/g, slug);
+};
+
+export const LINKEDIN = `I’m excited to share that I recently completed a course on Applied Causal Inference taught by @Robert Donnelly through @Sphere where I learned to:
+
+  •  Formulate valid causal inference questions from business problems and available data
+  •  Understand the use case and assumptions of both classic and cutting-edge causal inference methods, including double ML
+  •  Leverage causal inference tools for better informed decisions about groups or individuals
+
+  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:
+
+  •  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true. 
+  •  Or, check out https://getsphere.com to explore more courses.
+
+  #causalinference #onlinecourse #ml #datascience`;
+
+export const TWITTER = `Just completed a course on Applied Causal Inference taught by @RobDonnelly47 through @get_sphere.%0D%0A
+Register using my referral link to earn $100 to use towards the course!%0D%0A
+https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
+%23causalinference %23onlinecourse %23ml %23datascience`;
+
+export const EMAIL = `I'm excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned to:%0D%0A%0D%0A
+  %E2%80%A2 Formulate valid causal inference questions from business problems and available data%0D%0A
+  %E2%80%A2 Understand the use case and assumptions of both classic and cutting-edge causal inference methods including double ML%0D%0A
+  %E2%80%A2 Leverage causal inference tools for better informed decisions about groups or individuals%0D%0A%0D%0A
+If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:%0D%0A%0D%0A
+  %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
+  %E2%80%A2 Or, check out https://getsphere.com to explore more courses.`;
+
+export const SurveyModal = ({
+  state,
+  onClose,
+  onComplete,
+  session
+}: {
+  state: boolean;
+  onClose: Function;
+  onComplete: Function;
+  session: any;
+}) => (
+  <Modal open={state} onClose={() => onClose()}>
+    <SurveyForm
+      key="surveyForm"
+      onComplete={onComplete}
+      sessionId={session?.id}
+      sessionName={session?.name}
+      session={session}
+    />
+  </Modal>
+);
