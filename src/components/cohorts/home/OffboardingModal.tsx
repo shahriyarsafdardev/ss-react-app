@@ -63,7 +63,21 @@ export default function OffboardingModal({
   };
 
   const handleCopyCaption = () => {
-    handleCopy(getCaption('LinkedIn', user?.slug));
+    const caption = document.createRange();
+    const target = document.getElementById('linkedin-caption');
+
+    try {
+      if (target) {
+        caption.selectNode(target);
+        window.getSelection()?.removeAllRanges();
+        window.getSelection()?.addRange(caption);
+        document.execCommand('copy');
+        window.getSelection()?.removeAllRanges();
+      }
+    } catch (error) {
+      handleCopy(getCaption('LinkedIn', user?.slug));
+    }
+    enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
     sendAnalyticsData(
       'Cohort Offboarding - Share modal - "Copy caption with referral link" button clicked',
       {}
@@ -133,11 +147,12 @@ export default function OffboardingModal({
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard spacing={2} sx={{ fontSize: '15px' }}>
+            <GreyCard sx={{ fontSize: '15px' }} id="linkedin-caption">
               <Typography>
                 I’m excited to share that I recently completed a course on Applied Causal Inference
                 taught by <b>@Rob Donnelly</b> through <b>@Sphere</b> where I learned to:
               </Typography>
+              <br />
               <ul>
                 <li>
                   Formulate valid causal inference questions from business problems and available
@@ -152,16 +167,19 @@ export default function OffboardingModal({
                   individuals
                 </li>
               </ul>
+              <br />
               <Typography>
                 If this course sounds useful to you and your professional development goals,
                 register using my referral link to earn $100 to use towards the course:
               </Typography>
+              <br />
               <ul>
                 <li>
                   <b>{courseLink}</b>
                 </li>
                 <li>Or, check out https://getsphere.com to explore more courses.</li>
               </ul>
+              <br />
               <b>#causalinference #onlinecourse #ml #datascience</b>
             </GreyCard>
             <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
