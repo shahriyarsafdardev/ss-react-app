@@ -5,6 +5,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useDispatch } from 'redux/store';
 import { updateSessionModalState } from 'redux/slices/sessionFeedback';
 import { updateSessionFeedbackStatus } from 'redux/slices/cohort';
+import { useLocation } from 'react-router-dom';
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
@@ -21,9 +22,17 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [feedbackModalState, setFeedbackModalState] = useState(false);
   const dispatch = useDispatch();
+  const url = new URLSearchParams(useLocation().search);
+  const referrer = url.get('referrer') || '';
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
+    if (referrer === 'email') {
+      sendAnalyticsData(
+        'Email - Final Session Complete - "Download my certificate" button clicked',
+        {}
+      );
+    }
     setTimeout(() => {
       setConfetti(0);
     }, 3000);
