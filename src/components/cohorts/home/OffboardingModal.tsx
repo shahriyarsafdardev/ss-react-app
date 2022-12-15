@@ -48,7 +48,7 @@ export default function OffboardingModal({
   const handleShareViaTwitter = () => {
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Twitter" button clicked', {});
     window.open(
-      `https://twitter.com/intent/tweet?text=${getCaption('Twitter', user?.slug, activeImage)}`,
+      `https://twitter.com/intent/tweet?text=${getCaption('Twitter', user?.slug)}`,
       '_blank'
     );
   };
@@ -152,8 +152,8 @@ export default function OffboardingModal({
                 <div id="linkedin-caption">
                   <Typography>
                     I’m excited to share that I recently completed a course on Applied Causal
-                    Inference taught by <b>@Rob Donnelly</b> through <b>@Sphere</b> where I learned
-                    to:
+                    Inference taught by <b>@Robert Donnelly</b> through <b>@Sphere</b> where I
+                    learned to:
                   </Typography>
                   <br />
                   <ul>
