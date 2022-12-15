@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
-import { Link as RouterLink } from 'react-router-dom';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { useDispatch } from 'redux/store';
+import { updateSessionModalState } from 'redux/slices/sessionFeedback';
+import { updateSessionFeedbackStatus } from 'redux/slices/cohort';
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
-import { StyledBox, OffboardingHeader, useStyles } from './Common';
+import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
 export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [modal, setModal] = useState(false);
@@ -15,10 +17,10 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
-  const sessionsLength = cohort?.sessions?.filter(
-    (session) => session.display_in_sessions_tab
-  )?.length;
+  const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
+  const [feedbackModalState, setFeedbackModalState] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
@@ -39,6 +41,7 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   };
 
   const handleShareFeedback = () => {
+    setFeedbackModalState(true);
     sendAnalyticsData('Cohort Offboarding - "Share Feedback" button clicked', {});
   };
 
@@ -57,6 +60,19 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
         modalState={modal}
         setModalState={setModal}
         activeImage={certificates[activeCertificate]}
+      />
+      <SurveyModal
+        state={feedbackModalState}
+        onClose={() => {
+          setFeedbackModalState(false);
+          dispatch(updateSessionModalState(lastSession?.id || ''));
+        }}
+        onComplete={() => {
+          setFeedbackModalState(false);
+          dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
+          dispatch(updateSessionModalState(lastSession?.id || ''));
+        }}
+        session={lastSession}
       />
       <Stack
         spacing={{ md: 5, xs: 3 }}
@@ -92,8 +108,6 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
           <Button
             className={classes.linkButton}
             variant="outlined"
-            to={`/cohorts/${cohort.id}/sessions?session=${sessionsLength}&student_feedback=true`}
-            component={RouterLink}
             sx={{ color: '#fff !important', textTransform: 'none' }}
             onClick={() => handleShareFeedback()}
           >

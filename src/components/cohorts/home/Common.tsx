@@ -24,6 +24,7 @@ import { useDispatch } from 'redux/store';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
+import { SurveyForm } from '../sessions';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -615,3 +616,25 @@ export const EMAIL = `I'm excited to share that I recently completed a course on
 If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:%0D%0A%0D%0A
   %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A%0D%0A
 Or, check out https://getsphere.com to explore more courses.`;
+
+export const SurveyModal = ({
+  state,
+  onClose,
+  onComplete,
+  session
+}: {
+  state: boolean;
+  onClose: Function;
+  onComplete: Function;
+  session: any;
+}) => (
+  <Modal open={state} onClose={() => onClose()}>
+    <SurveyForm
+      key="surveyForm"
+      onComplete={onComplete}
+      sessionId={session?.id}
+      sessionName={session?.name}
+      session={session}
+    />
+  </Modal>
+);
