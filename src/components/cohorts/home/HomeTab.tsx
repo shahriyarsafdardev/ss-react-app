@@ -100,7 +100,7 @@ const Index = () => {
 
   const checkAllSessionsPassed = () =>
     !sessions
-      .map((session) => new Date(firstUpcomingDate(session.times)) < new Date())
+      .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(2, 'hour'))
       .includes(false);
 
   const displayActiveStep = () => {
