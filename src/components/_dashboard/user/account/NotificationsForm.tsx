@@ -192,6 +192,17 @@ export default function NotificationsForm({
                   >
                     Save Changes
                   </StyledLoadingButton>
+                  <Typography sx={{ fontWeight: '600', color: '#071A33' }}>
+                    Need more help? Contact us{' '}
+                    <a
+                      href="https://www.getsphere.com/pages/contact-us"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      here
+                    </a>
+                    .
+                  </Typography>
                 </Stack>
               </Card>
             </Grid>
