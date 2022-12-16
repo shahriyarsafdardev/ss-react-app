@@ -598,23 +598,23 @@ export const LINKEDIN = `I’m excited to share that I recently completed a cour
   •  Understand the use case and assumptions of both classic and cutting-edge causal inference methods, including double ML
   •  Leverage causal inference tools for better informed decisions about groups or individuals
 
-  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:
+  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards future Sphere courses:
 
-  •  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true. 
+  •  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true 
   •  Or, check out https://getsphere.com to explore more courses.
 
   #causalinference #onlinecourse #ml #datascience`;
 
 export const TWITTER = `Just completed a course on Applied Causal Inference taught by @RobDonnelly47 through @get_sphere.%0D%0A
-Register using my referral link to earn $100 to use towards the course!%0D%0A
+Register using my referral link to earn $100 to use towards future Sphere courses!%0D%0A
 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
 %23causalinference %23onlinecourse %23ml %23datascience`;
 
-export const EMAIL = `I'm excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned to:%0D%0A%0D%0A
+export const EMAIL = `I’m excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned to:%0D%0A%0D%0A
   %E2%80%A2 Formulate valid causal inference questions from business problems and available data%0D%0A
   %E2%80%A2 Understand the use case and assumptions of both classic and cutting-edge causal inference methods including double ML%0D%0A
   %E2%80%A2 Leverage causal inference tools for better informed decisions about groups or individuals%0D%0A%0D%0A
-If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards the course:%0D%0A%0D%0A
+If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards future Sphere courses:%0D%0A%0D%0A
   %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
   %E2%80%A2 Or, check out https://getsphere.com to explore more courses.`;
 

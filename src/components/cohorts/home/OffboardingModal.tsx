@@ -104,12 +104,12 @@ export default function OffboardingModal({
               Share your accomplishment to give and get $100 📣
             </Typography>
             <Typography>
-              Anyone who uses your referral link will receive $100 to use towards Applied Causal
-              Inference.
+              Anyone who uses your referral link will receive $100 to use towards future Sphere
+              courses.
             </Typography>
             <Typography>
-              Once they have enrolled, you will also receive $100 credit to use towards your next
-              Sphere course.
+              Once they have enrolled in [Applied Causal Inference], you will also receive $100
+              credit to use towards your next Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />
             <StyledModalButton variant="contained" onClick={() => handleShareToLinkedin()}>
@@ -173,7 +173,8 @@ export default function OffboardingModal({
                   <br />
                   <Typography>
                     If this course sounds useful to you and your professional development goals,
-                    register using my referral link to earn $100 to use towards the course:
+                    register using my referral link to earn $100 to use towards future Sphere
+                    course:
                   </Typography>
                   <br />
                   <ul>
