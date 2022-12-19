@@ -1,9 +1,12 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, useContext, useEffect } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
 import axios from 'utils/axios';
 import './ChannelContainer.css';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
 
 import { ChannelInner } from './ChannelInner';
@@ -41,6 +44,17 @@ type HeaderProps = ThreadHeaderProps & {
 
 const ThreadHeader: React.FC<HeaderProps> = (props) => {
   const { closeThread, setPinsOpen, thread } = props;
+  const theme = useTheme();
+  const isNarrowView = useMediaQuery(theme.breakpoints.down(960));
+  const { channel } = useChatContext<
+    TeamAttachmentType,
+    TeamChannelType,
+    TeamCommandType,
+    TeamEventType,
+    TeamMessageType,
+    TeamReactionType,
+    TeamUserType
+  >();
 
   const getReplyCount = () => {
     if (!thread?.reply_count) return '';
@@ -51,10 +65,24 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
   return (
     <div className="custom-thread-header">
       <div className="custom-thread-header__left">
-        <p className="custom-thread-header__left-title">Thread</p>
-        <p className="custom-thread-header__left-count">{getReplyCount()}</p>
+        {!isNarrowView ? (
+          <>
+            <p className="custom-thread-header__left-title">Thread</p>
+            <p className="custom-thread-header__left-count">{getReplyCount()}</p>
+            <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
+          </>
+        ) : (
+          <Box
+            onClick={(event: any) => closeThread(event)}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <span style={{ fontWeight: 600, fontSize: '16px', marginRight: '5px' }}>{'<'}</span>
+            <span style={{ textDecoration: 'underline', fontWeight: 600, fontSize: '16px' }}>
+              Back to #{channel?.data?.name}
+            </span>
+          </Box>
+        )}
       </div>
-      <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
     </div>
   );
 };
