@@ -64,14 +64,16 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
 
   return (
     <div className="custom-thread-header">
-      <div className="custom-thread-header__left">
-        {!isNarrowView ? (
-          <>
+      {!isNarrowView ? (
+        <>
+          <div className="custom-thread-header__left">
             <p className="custom-thread-header__left-title">Thread</p>
             <p className="custom-thread-header__left-count">{getReplyCount()}</p>
-            <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
-          </>
-        ) : (
+          </div>
+          <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
+        </>
+      ) : (
+        <div className="custom-thread-header__left">
           <Box
             onClick={(event: any) => closeThread(event)}
             style={{ display: 'flex', alignItems: 'center' }}
@@ -81,8 +83,8 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
               Back to #{channel?.data?.name}
             </span>
           </Box>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
