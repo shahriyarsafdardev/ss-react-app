@@ -6,6 +6,7 @@ import clockFill from '@iconify/icons-eva/clock-fill';
 import doneAllFill from '@iconify/icons-eva/done-all-fill';
 import { StreamChat, LiteralStringForUnion } from 'stream-chat';
 import { styled } from '@material-ui/core/styles';
+import CheckIcon from '@material-ui/icons/Check';
 
 // material
 import {
@@ -16,7 +17,10 @@ import {
   Divider,
   Typography,
   ListItemText,
-  ListItemButton
+  ListItemButton,
+  Stack,
+  tooltipClasses,
+  TooltipProps
 } from '@material-ui/core';
 import { Notification } from '../../@types/cohorts';
 
@@ -44,6 +48,40 @@ const UserAvatar = styled('div')(() => ({
   marginRight: '10px',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'center'
+}));
+
+const NotificationsStack = styled(Stack)(() => ({
+  backgroundColor: 'rgba(145, 158, 171, 0.16)',
+  width: 'center',
+  justifyContent: 'space-between',
+  '&:hover': {
+    backgroundColor: '#fff'
+  }
+}));
+
+const StyledCheckIcon = styled(Box)(() => ({
+  width: '35px',
+  height: '35px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '&:hover': {
+    borderRadius: '50%',
+    backgroundColor: 'rgba(0, 0, 0, 0.05);'
+  }
+}));
+
+const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    fontSize: '16px',
+    border: '1px solid #101658',
+    fontWeight: '400',
+    color: '#101658',
+    padding: '10px'
+  }
 }));
 
 const trimString = (data: string) => {
@@ -97,44 +135,76 @@ function renderContent(notification: Notification) {
   };
 }
 
-function NotificationItem({ notification, onClick }: { notification: Notification; onClick: any }) {
+function NotificationItem({
+  notification,
+  onClick,
+  handleMarkAsRead
+}: {
+  notification: Notification;
+  onClick: any;
+  handleMarkAsRead: Function;
+}) {
   const { avatar, title } = renderContent(notification);
 
   return (
-    <ListItemButton
-      to={notification.link}
-      onClick={onClick}
-      disableGutters
-      key={notification.id}
-      component={RouterLink}
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        '&:not(:last-of-type)': { mb: '1px' },
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected'
-        })
-      }}
-    >
-      <UserAvatar style={{ backgroundImage: `url(${avatar?.props.src}` }} />
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled'
-            }}
-          >
-            <Box component={Icon} icon={clockFill} sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {fToNow(notification.createdAt)}
-          </Typography>
-        }
-      />
-    </ListItemButton>
+    <NotificationsStack direction="row">
+      <ListItemButton
+        to={notification.link}
+        onClick={onClick}
+        disableGutters
+        key={notification.id}
+        component={RouterLink}
+        sx={{
+          py: 1.5,
+          px: 2.5,
+          '&:not(:last-of-type)': { mb: '1px' },
+          '&:hover': { backgroundColor: '#fff' },
+          width: '100%'
+        }}
+      >
+        <UserAvatar style={{ backgroundImage: `url(${avatar?.props.src}` }} />
+        <ListItemText
+          primary={title}
+          secondary={
+            <Typography
+              variant="caption"
+              sx={{
+                mt: 0.5,
+                display: 'flex',
+                alignItems: 'center',
+                color: 'text.disabled'
+              }}
+            >
+              <Box component={Icon} icon={clockFill} sx={{ mr: 0.5, width: 16, height: 16 }} />
+              {fToNow(notification.createdAt)}
+            </Typography>
+          }
+        />
+      </ListItemButton>
+      <Box
+        sx={{
+          width: '64px',
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer'
+        }}
+      >
+        <StyledTooltip
+          title="Mark as read"
+          placement="left"
+          arrow
+          sx={{
+            '&:hover': { backgroundColor: '#EEEFF2' },
+            backgroundColor: '#fff',
+            color: '#101658'
+          }}
+        >
+          <StyledCheckIcon onClick={() => handleMarkAsRead(notification?.channel_id)}>
+            <CheckIcon />
+          </StyledCheckIcon>
+        </StyledTooltip>
+      </Box>
+    </NotificationsStack>
   );
 }
 
@@ -247,6 +317,11 @@ export default function NotificationsPopover() {
     dispatch(addNotifications([]));
   };
 
+  const handleMarkAsRead = async (channelID: string) => {
+    const channel = await chatClient.queryChannels({ id: { $in: [channelID] } });
+    await channel[0].markRead();
+  };
+
   return (
     <>
       <MIconButton
@@ -285,7 +360,7 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
+        <Scrollbar sx={{ height: { xs: 340, sm: 'auto' }, maxHeight: '60vh !important' }}>
           <List disablePadding>
             {notifications.slice(0, 5).map((notification) => (
               <NotificationItem
@@ -294,6 +369,7 @@ export default function NotificationsPopover() {
                 onClick={() => {
                   setOpen(false);
                 }}
+                handleMarkAsRead={handleMarkAsRead}
               />
             ))}
           </List>

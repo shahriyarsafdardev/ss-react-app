@@ -7,6 +7,12 @@
   z-index: 1;
 }
 
+@media screen and (max-width: 960px) {
+  .team.str-chat .str-chat__thread {
+    padding-top: 88px;
+  }
+}
+
 .str-chat__thread-list .str-chat__message-team {
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
