@@ -1,4 +1,5 @@
 import { Stack, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import ResourceCode from './ResourceCode';
 
 function CodeList({ codeOnboardingItems }: { codeOnboardingItems: any }) {
@@ -19,4 +20,4 @@ function CodeList({ codeOnboardingItems }: { codeOnboardingItems: any }) {
   );
 }
 
-export default CodeList;
+export default memo(CodeList);

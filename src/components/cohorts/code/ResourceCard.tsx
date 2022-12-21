@@ -1,4 +1,5 @@
 import { Button, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import { CODE_PAGE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import { Cohort } from '../../../@types/cohorts';
 import { DetailsBox, ImageBox, ResourceBox, useStyles } from './Common';
@@ -47,4 +48,4 @@ function ResourceCard({
   );
 }
 
-export default ResourceCard;
+export default memo(ResourceCard);

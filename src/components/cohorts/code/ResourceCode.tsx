@@ -1,4 +1,5 @@
 import { Stack, Button, Box, Checkbox, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import { setCodeOnboardingCheckList } from 'redux/slices/cohort';
 import { dispatch } from 'redux/store';
 import { useStyles } from './Common';
@@ -55,4 +56,4 @@ function ResourceCode({
   );
 }
 
-export default ResourceCode;
+export default memo(ResourceCode);
