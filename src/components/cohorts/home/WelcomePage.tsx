@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, memo } from 'react';
 import { Typography, Stack, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -58,13 +58,13 @@ function getWindowSize() {
   return { innerWidth, innerHeight };
 }
 
-export default function WelcomePage({
+const WelcomePage = ({
   setActiveStepper,
   cohort
 }: {
   setActiveStepper: Function;
   cohort: Cohort;
-}) {
+}) => {
   const { user } = useAuth();
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
@@ -123,4 +123,6 @@ export default function WelcomePage({
       </Stack>
     </>
   );
-}
+};
+
+export default memo(WelcomePage);

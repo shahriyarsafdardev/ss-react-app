@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import moment from 'moment';
 import { Session, Cohort } from '../../../@types/cohorts';
 import { CircularLoader, firstUpcomingDate, SectionContainer } from './Common';
@@ -52,4 +52,4 @@ const CohortTimeLine = ({
   );
 };
 
-export default CohortTimeLine;
+export default memo(CohortTimeLine);
