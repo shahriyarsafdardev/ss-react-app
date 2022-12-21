@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Typography, Box, Stack, useMediaQuery, Button, useTheme } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
@@ -125,4 +125,4 @@ function ResourcesSection({
   );
 }
 
-export default ResourcesSection;
+export default memo(ResourcesSection);

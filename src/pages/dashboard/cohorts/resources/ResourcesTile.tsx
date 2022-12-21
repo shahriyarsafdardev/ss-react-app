@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, memo } from 'react';
 import { CardContent, Stack, Typography, Checkbox, useMediaQuery, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
@@ -222,4 +222,4 @@ function ResourcesTile({
   );
 }
 
-export default ResourcesTile;
+export default memo(ResourcesTile);

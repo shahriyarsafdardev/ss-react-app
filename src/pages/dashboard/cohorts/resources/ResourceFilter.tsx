@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, memo, useEffect } from 'react';
 import {
   FormControl,
   MenuItem,
@@ -23,7 +23,6 @@ import { useLocation } from 'react-router-dom';
 import ResourcesTypesFilter from './ResourcesTypesFilter';
 import { getDisplayName, AdditionalFilters } from './Common';
 import ResourcesTile from './ResourcesTile';
-import { LoadingContainer } from '../code/CodeTab';
 
 function ResourceFilter({
   types,
@@ -152,6 +151,7 @@ function ResourceFilter({
     } else {
       inputChanged(searchQuery, selectedTypes);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionState, categoryState]);
 
   const clearSearch = () => {
@@ -279,4 +279,4 @@ function ResourceFilter({
   );
 }
 
-export default ResourceFilter;
+export default memo(ResourceFilter);

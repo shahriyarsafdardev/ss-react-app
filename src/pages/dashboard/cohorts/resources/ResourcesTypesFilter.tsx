@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Stack } from '@material-ui/core';
 import {
   StyledToggleButton,
@@ -68,4 +68,4 @@ function ResourcesTypesFilter({
   );
 }
 
-export default ResourcesTypesFilter;
+export default memo(ResourcesTypesFilter);

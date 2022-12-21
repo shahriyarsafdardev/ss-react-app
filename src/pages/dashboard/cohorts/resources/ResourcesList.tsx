@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Stack } from '@material-ui/core';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import ResourcesTile from './ResourcesTile';
@@ -37,4 +37,4 @@ function ResourcesList({
   );
 }
 
-export default ResourcesList;
+export default memo(ResourcesList);
