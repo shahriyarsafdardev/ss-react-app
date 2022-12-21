@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import * as Yup from 'yup';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
@@ -73,7 +73,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function ProfileForm({
+function ProfileForm({
   onSubmit,
   showSubmitButton = true,
   userProfile,
@@ -380,3 +380,5 @@ export default function ProfileForm({
     </>
   );
 }
+
+export default memo(ProfileForm);

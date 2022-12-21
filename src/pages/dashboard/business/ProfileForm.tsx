@@ -1,37 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import * as Yup from 'yup';
-import { RootState, useSelector } from 'redux/store';
-import { Modal } from 'components/animate';
-import { CompanyInfoForm } from 'components/cohorts/onboarding/info-forms';
-import { useSnackbar } from 'notistack5';
 
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import {
-  Box,
-  Grid,
-  Card,
-  Stack,
-  TextField,
-  Typography,
-  MenuItem,
-  ListItemText,
-  FormHelperText,
-  InputLabel,
-  FormControl,
-  Select as MaterialSelect
-} from '@material-ui/core';
+import { Box, Grid, Card, Stack, TextField, Typography, FormHelperText } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
-import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from 'components/upload';
 // axios
-import axios from 'utils/axios';
-import MultiSelect from 'components/MultiSelect';
 
 interface InitialState {
   first_name: string;
@@ -55,7 +35,7 @@ const SubmitButtonBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-export default function ProfileForm({
+function ProfileForm({
   onSubmit,
   showSubmitButton = true,
   userProfile
@@ -187,3 +167,5 @@ export default function ProfileForm({
     </>
   );
 }
+
+export default memo(ProfileForm);

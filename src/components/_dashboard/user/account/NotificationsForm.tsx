@@ -15,6 +15,7 @@ import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
+import { memo } from 'react';
 
 interface InitialState {
   marketing_emails: boolean;
@@ -50,7 +51,7 @@ const OptionText = styled(Typography)(({ theme }) => ({
   }
 }));
 
-export default function NotificationsForm({
+function NotificationsForm({
   onSubmit,
   userProfile
 }: {
@@ -212,3 +213,5 @@ export default function NotificationsForm({
     </>
   );
 }
+
+export default memo(NotificationsForm);

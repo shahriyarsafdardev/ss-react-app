@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import {
@@ -36,7 +36,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function NetworkingForm({
+function NetworkingForm({
   onSubmit,
   showSubmitButton = true,
   userProfile
@@ -185,3 +185,5 @@ export default function NetworkingForm({
     </>
   );
 }
+
+export default memo(NetworkingForm);
