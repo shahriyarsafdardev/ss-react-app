@@ -1,5 +1,6 @@
 import { Box, Stack, styled, Tab, Tabs, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { memo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 
 export const TOPICS = [
@@ -239,49 +240,46 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const CourseTileHover = ({
-  handleTileClick,
-  course
-}: {
-  handleTileClick: Function;
-  course: any;
-}) => {
-  const buttonText = () => (!course?.preview_instructor_name ? 'Join the waitlist' : 'Learn more');
+export const CourseTileHover = memo(
+  ({ handleTileClick, course }: { handleTileClick: Function; course: any }) => {
+    const buttonText = () =>
+      !course?.preview_instructor_name ? 'Join the waitlist' : 'Learn more';
 
-  const handleClick = () => {
-    trackEvent(course, `All Courses Page - Course "${buttonText()}" button clicked`, {
-      'Course Name': course?.name
-    });
-    handleTileClick();
-  };
+    const handleClick = () => {
+      trackEvent(course, `All Courses Page - Course "${buttonText()}" button clicked`, {
+        'Course Name': course?.name
+      });
+      handleTileClick();
+    };
 
-  return (
-    <Stack
-      className="descriptionHover"
-      sx={{
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        opacity: 0,
-        backgroundColor: '#7474D0 !important',
-        color: '#fff',
-        width: '100%',
-        height: '100%',
-        borderRadius: '8px',
-        padding: '20px 20px 16px',
-        justifyContent: 'space-between',
-        transition: 'all .4s ease-out',
-        overflow: 'hidden'
-      }}
-      onClick={() => handleClick()}
-    >
-      <Typography>{course?.description}</Typography>
-      <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
-        {buttonText()}
-      </Typography>
-    </Stack>
-  );
-};
+    return (
+      <Stack
+        className="descriptionHover"
+        sx={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          opacity: 0,
+          backgroundColor: '#7474D0 !important',
+          color: '#fff',
+          width: '100%',
+          height: '100%',
+          borderRadius: '8px',
+          padding: '20px 20px 16px',
+          justifyContent: 'space-between',
+          transition: 'all .4s ease-out',
+          overflow: 'hidden'
+        }}
+        onClick={() => handleClick()}
+      >
+        <Typography>{course?.description}</Typography>
+        <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
+          {buttonText()}
+        </Typography>
+      </Stack>
+    );
+  }
+);
 
 export const LoadingContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',

@@ -1,5 +1,5 @@
 import Slider from 'react-slick';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
@@ -19,7 +19,7 @@ const RootStyle = styled(Box)(({ theme }) => ({
   '& .slick-center': { opacity: 1, transform: 'scale(1.1)' }
 }));
 
-export default function CoursesCarousel({
+function CoursesCarousel({
   courses,
   activeCourse,
   setActiveCourse
@@ -164,3 +164,5 @@ export default function CoursesCarousel({
     </RootStyle>
   );
 }
+
+export default memo(CoursesCarousel);

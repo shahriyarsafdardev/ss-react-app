@@ -1,14 +1,9 @@
 import { Stack, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles } from './Common';
 import CoursesList from './CoursesList';
 
-export default function CurriculumContainer({
-  courses,
-  heading
-}: {
-  courses: any;
-  heading: string;
-}) {
+function CurriculumContainer({ courses, heading }: { courses: any; heading: string }) {
   const classes = useStyles();
 
   return (
@@ -22,3 +17,5 @@ export default function CurriculumContainer({
     </Stack>
   );
 }
+
+export default memo(CurriculumContainer);

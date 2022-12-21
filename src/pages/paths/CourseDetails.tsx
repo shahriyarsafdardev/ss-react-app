@@ -1,6 +1,6 @@
 import { Stack, Typography, Button, CircularProgress, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { getCourseSessions } from 'redux/slices/path';
 import { useDispatch } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
@@ -23,7 +23,7 @@ const StyledCircularLoader = styled(Box)(({ theme }) => ({
   margin: '100px auto'
 }));
 
-export default function CourseDetails({
+function CourseDetails({
   pathSlug,
   courseData,
   nextRecommended
@@ -84,3 +84,5 @@ export default function CourseDetails({
     </Box>
   );
 }
+
+export default memo(CourseDetails);

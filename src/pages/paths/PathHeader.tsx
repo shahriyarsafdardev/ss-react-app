@@ -1,6 +1,7 @@
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { memo } from 'react';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
@@ -12,7 +13,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-export default function PathHeader({
+function PathHeader({
   pathName,
   pathDescription,
   total,
@@ -45,3 +46,5 @@ export default function PathHeader({
     </Stack>
   );
 }
+
+export default memo(PathHeader);

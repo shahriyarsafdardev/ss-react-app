@@ -1,8 +1,9 @@
 import { FormControl, MenuItem, InputLabel, Select, ListItemText, Grid } from '@material-ui/core';
+import { memo } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
 
-export default function AllCoursesFilters({
+function AllCoursesFilters({
   setSelectedFunction,
   selectedFunction,
   functions,
@@ -106,3 +107,5 @@ export default function AllCoursesFilters({
     </Grid>
   );
 }
+
+export default memo(AllCoursesFilters);

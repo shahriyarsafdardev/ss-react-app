@@ -1,8 +1,9 @@
 import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
+import { memo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { CourseTileHover, useStyles } from './Common';
 
-export default function CourseTile({ course }: { course: any }) {
+function CourseTile({ course }: { course: any }) {
   const classes = useStyles();
 
   let startTime: any = {};
@@ -88,3 +89,5 @@ export default function CourseTile({ course }: { course: any }) {
     </Grid>
   );
 }
+
+export default memo(CourseTile);

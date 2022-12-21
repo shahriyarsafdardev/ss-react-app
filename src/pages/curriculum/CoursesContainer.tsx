@@ -1,8 +1,9 @@
 import { Grid } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles } from './Common';
 import CourseTile from './CourseTile';
 
-export default function CoursesContainer({ courses }: { courses: any }) {
+function CoursesContainer({ courses }: { courses: any }) {
   const classes = useStyles();
 
   return (
@@ -13,3 +14,5 @@ export default function CoursesContainer({ courses }: { courses: any }) {
     </Grid>
   );
 }
+
+export default memo(CoursesContainer);
