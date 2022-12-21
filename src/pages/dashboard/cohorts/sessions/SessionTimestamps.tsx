@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { RootState, useSelector } from 'redux/store';
@@ -7,7 +7,7 @@ import Timestamp from './Timestamp';
 import EmptySessionTimestamps from './EmptySessionTimestamps';
 import { useStyles } from './Common';
 
-export default function SessionTimestamps({
+const SessionTimestamps = ({
   timestamps,
   handlePlayTimeStamp,
   isRecordingAvailable,
@@ -17,7 +17,7 @@ export default function SessionTimestamps({
   handlePlayTimeStamp: any;
   isRecordingAvailable: boolean;
   session: any;
-}) {
+}) => {
   const classes = useStyles();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
@@ -63,4 +63,6 @@ export default function SessionTimestamps({
       )}
     </Box>
   );
-}
+};
+
+export default memo(SessionTimestamps);

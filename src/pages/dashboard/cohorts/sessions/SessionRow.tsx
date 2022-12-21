@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useRef, useState, useContext } from 'react';
+import { useRef, useState, useContext, memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
@@ -59,7 +59,7 @@ const StyledIcon = styled('img')(() => ({
   marginRight: '15px'
 }));
 
-const InstructorOptions = ({ handleDelete }: { handleDelete: Function }) => {
+const InstructorOptions = memo(({ handleDelete }: { handleDelete: Function }) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -116,15 +116,9 @@ const InstructorOptions = ({ handleDelete }: { handleDelete: Function }) => {
       </MenuPopover>
     </Box>
   );
-};
+});
 
-export default function SessionRow({
-  session,
-  index,
-  onClick,
-  isSelected,
-  isLearner = true
-}: SessionRowProps) {
+function SessionRow({ session, index, onClick, isSelected, isLearner = true }: SessionRowProps) {
   const sessionDate = moment(firstUpcomingDate(session.times)).add(1, 'hours');
   const isPastSession = sessionDate < moment();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
@@ -178,3 +172,5 @@ export default function SessionRow({
     </ListItem>
   );
 }
+
+export default memo(SessionRow);

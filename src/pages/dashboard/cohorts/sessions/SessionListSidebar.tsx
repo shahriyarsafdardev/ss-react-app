@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Backdrop, Paper, Tooltip, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-fill';
@@ -82,11 +82,11 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1
 }));
 
-export default function SessionListSidebar({
+const SessionListSidebar = ({
   setSelectedSession,
   selectedSession,
   sessionsList
-}: SessionListSidebarProps) {
+}: SessionListSidebarProps) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (open) {
@@ -134,4 +134,6 @@ export default function SessionListSidebar({
       </StyledSettingsBox>
     </>
   );
-}
+};
+
+export default memo(SessionListSidebar);

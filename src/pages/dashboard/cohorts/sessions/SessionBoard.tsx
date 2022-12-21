@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useEffect, useState, useContext, useRef, memo } from 'react';
 import {
   Container,
   Tabs,
@@ -210,7 +210,7 @@ const CircularLoader = () => (
   </StyledCircularLoader>
 );
 
-export default function SessionBoard({ session, isLearner, isFree }: SessionBoardProps) {
+const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
   const [currentTab, setCurrentTab] = useState(0);
   const [recording, setRecording] = useState(session?.recording_urls[0]?.recording_url);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(session?.survey_completed);
@@ -252,24 +252,26 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
   }));
   const classes = useStyles();
 
-  const SurveyModal = ({
-    state,
-    onClose,
-    onComplete
-  }: {
-    state: boolean;
-    onClose: Function;
-    onComplete: Function;
-  }) => (
-    <Modal open={state} onClose={() => onClose()}>
-      <SurveyForm
-        key="surveyForm"
-        onComplete={onComplete}
-        sessionId={session?.id}
-        sessionName={session?.name}
-        session={session}
-      />
-    </Modal>
+  const SurveyModal = memo(
+    ({
+      state,
+      onClose,
+      onComplete
+    }: {
+      state: boolean;
+      onClose: Function;
+      onComplete: Function;
+    }) => (
+      <Modal open={state} onClose={() => onClose()}>
+        <SurveyForm
+          key="surveyForm"
+          onComplete={onComplete}
+          sessionId={session?.id}
+          sessionName={session?.name}
+          session={session}
+        />
+      </Modal>
+    )
   );
 
   const shouldDisplaySurveyModal = () => {
@@ -499,4 +501,6 @@ export default function SessionBoard({ session, isLearner, isFree }: SessionBoar
       </SessionsContainer>
     </Wrapper>
   );
-}
+};
+
+export default memo(SessionBoard);

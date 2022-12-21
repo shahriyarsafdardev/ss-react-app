@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 import { Button, Container, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
@@ -41,7 +41,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-export default function NewSlides({
+function NewSlides({
   pdfUrl,
   pdfDownloadable,
   onTrack,
@@ -256,3 +256,5 @@ export default function NewSlides({
     </Container>
   );
 }
+
+export default memo(NewSlides);

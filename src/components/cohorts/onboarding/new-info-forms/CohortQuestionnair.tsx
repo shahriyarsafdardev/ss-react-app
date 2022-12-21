@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import SurveyQuestions from '../SurveyQuestions';
@@ -30,11 +30,7 @@ const PictureStyle = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function CohortQuestionnair({
-  setInvitePeersModalState
-}: {
-  setInvitePeersModalState: Function;
-}) {
+function CohortQuestionnair({ setInvitePeersModalState }: { setInvitePeersModalState: Function }) {
   return (
     <StyledStack alignItems="center">
       <PictureStyle />
@@ -42,3 +38,5 @@ export default function CohortQuestionnair({
     </StyledStack>
   );
 }
+
+export default memo(CohortQuestionnair);

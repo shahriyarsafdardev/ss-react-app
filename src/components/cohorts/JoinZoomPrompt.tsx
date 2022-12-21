@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { Typography, Box, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
@@ -69,159 +69,165 @@ const useStyes = makeStyles((theme: Theme) => ({
   }
 }));
 
-const DatePreview = ({
-  sessionTimesPreview,
-  date
-}: {
-  sessionTimesPreview: string;
-  date: Date;
-}) => {
-  const classes = useStyes();
+const DatePreview = memo(
+  ({ sessionTimesPreview, date }: { sessionTimesPreview: string; date: Date }) => {
+    const classes = useStyes();
 
-  return (
-    <div data-testid="upcoming-session-placeholder">
-      <div className={classes.wrapper}>
-        <img src="/static/cohorts-home/sessions/ic_date.svg" alt="date-icon" />
-        <Typography variant="body2" color="text.secondary">
-          This session starts on the
-        </Typography>
-        <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
-        <Typography variant="body2" color="text.secondary">
-          at {sessionTimesPreview}
-        </Typography>
-      </div>
-    </div>
-  );
-};
-
-const TimerField = ({
-  text,
-  value,
-  showSeparator = false,
-  testId
-}: {
-  text: string;
-  value: number;
-  showSeparator?: boolean;
-  testId: string;
-}) => {
-  const classes = useStyes();
-  const formatted = value < 10 ? `0${value}` : value;
-
-  return (
-    <div style={{ display: 'flex' }}>
-      {showSeparator && <Typography style={{ marginTop: 'auto' }} variant="h2">{` :`}</Typography>}
-      <div className={classes.fieldBox}>
-        <Typography variant="subtitle2" color="text.secondary">
-          {text}
-        </Typography>
-
-        <Typography variant="h2" data-testid={testId}>
-          {formatted}
-        </Typography>
-      </div>
-    </div>
-  );
-};
-
-const TimerPreview = ({
-  time,
-  zoomUrl,
-  displayType,
-  clickEvent
-}: {
-  time: Date;
-  zoomUrl: string | null;
-  displayType: string;
-  clickEvent: Function;
-}) => {
-  const classes = useStyes();
-  let d = time;
-  d = new Date(d.setMinutes(d.getMinutes()));
-  const { sessionNumber } = useContext(SessionContext);
-
-  const { seconds, minutes, hours } = useTimer({
-    expiryTimestamp: d,
-    autoStart: true
-  });
-
-  return (
-    <div>
-      <div className={classes.wrapper}>
-        {displayType !== 'small' && (
-          <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
-        )}
-        <Typography variant="subtitle1" data-testid="session-start-time-text">
-          {`The ${moment(new Date(time)).format('h:mm a')} session is opening soon, come join us!`}
-        </Typography>
-        <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
-          {displayType !== 'small' && <TimerField text="Hours" value={hours} testId="hours" />}
-          <TimerField
-            text="Minutes"
-            value={minutes}
-            showSeparator={displayType !== 'small'}
-            testId="minutes"
-          />
-          <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
-        </Box>
-        {zoomUrl && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => clickEvent(sessionNumber)}
-            className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
-            target="_blank"
-            href={`${zoomUrl}`}
-            data-testid="session-invite"
-          >
-            Join Zoom
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const SessionInProgress = ({
-  zoomUrl,
-  displayType,
-  clickEvent,
-  sessionTimeValue
-}: {
-  zoomUrl: string | null;
-  displayType: string;
-  clickEvent: Function;
-  sessionTimeValue: string;
-}) => {
-  const classes = useStyes();
-  const { sessionNumber } = useContext(SessionContext);
-
-  return (
-    <div>
-      <div className={classes.wrapper}>
-        <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
-        <Box className={classes.smallContent2}>
-          <Typography variant="subtitle1" data-testid="session-time-text">
-            {`The ${moment(new Date(sessionTimeValue)).format('h:mm a')} Session is live now!`}
+    return (
+      <div data-testid="upcoming-session-placeholder">
+        <div className={classes.wrapper}>
+          <img src="/static/cohorts-home/sessions/ic_date.svg" alt="date-icon" />
+          <Typography variant="body2" color="text.secondary">
+            This session starts on the
           </Typography>
-        </Box>
-        {zoomUrl && (
-          <Button
-            className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
-            onClick={() => clickEvent(sessionNumber)}
-            target="_blank"
-            href={`${zoomUrl}`}
-            data-testid="session-invite"
-          >
-            Join Zoom
-          </Button>
-        )}
+          <Typography variant="h2">{moment(date).format('Do MMMM')}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            at {sessionTimesPreview}
+          </Typography>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
-const ExpiredSession = ({ displayType, isFree }: { displayType: string; isFree: boolean }) => {
+const TimerField = memo(
+  ({
+    text,
+    value,
+    showSeparator = false,
+    testId
+  }: {
+    text: string;
+    value: number;
+    showSeparator?: boolean;
+    testId: string;
+  }) => {
+    const classes = useStyes();
+    const formatted = value < 10 ? `0${value}` : value;
+
+    return (
+      <div style={{ display: 'flex' }}>
+        {showSeparator && (
+          <Typography style={{ marginTop: 'auto' }} variant="h2">{` :`}</Typography>
+        )}
+        <div className={classes.fieldBox}>
+          <Typography variant="subtitle2" color="text.secondary">
+            {text}
+          </Typography>
+
+          <Typography variant="h2" data-testid={testId}>
+            {formatted}
+          </Typography>
+        </div>
+      </div>
+    );
+  }
+);
+
+const TimerPreview = memo(
+  ({
+    time,
+    zoomUrl,
+    displayType,
+    clickEvent
+  }: {
+    time: Date;
+    zoomUrl: string | null;
+    displayType: string;
+    clickEvent: Function;
+  }) => {
+    const classes = useStyes();
+    let d = time;
+    d = new Date(d.setMinutes(d.getMinutes()));
+    const { sessionNumber } = useContext(SessionContext);
+
+    const { seconds, minutes, hours } = useTimer({
+      expiryTimestamp: d,
+      autoStart: true
+    });
+
+    return (
+      <div>
+        <div className={classes.wrapper}>
+          {displayType !== 'small' && (
+            <img src="/static/cohorts-home/sessions/ic_recorders.svg" alt="recorder-icon" />
+          )}
+          <Typography variant="subtitle1" data-testid="session-start-time-text">
+            {`The ${moment(new Date(time)).format(
+              'h:mm a'
+            )} session is opening soon, come join us!`}
+          </Typography>
+          <Box className={displayType === 'small' ? classes.smallTimerRow : classes.timerRow}>
+            {displayType !== 'small' && <TimerField text="Hours" value={hours} testId="hours" />}
+            <TimerField
+              text="Minutes"
+              value={minutes}
+              showSeparator={displayType !== 'small'}
+              testId="minutes"
+            />
+            <TimerField text="Seconds" value={seconds} showSeparator={true} testId="seconds" />
+          </Box>
+          {zoomUrl && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => clickEvent(sessionNumber)}
+              className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
+              target="_blank"
+              href={`${zoomUrl}`}
+              data-testid="session-invite"
+            >
+              Join Zoom
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+
+const SessionInProgress = memo(
+  ({
+    zoomUrl,
+    displayType,
+    clickEvent,
+    sessionTimeValue
+  }: {
+    zoomUrl: string | null;
+    displayType: string;
+    clickEvent: Function;
+    sessionTimeValue: string;
+  }) => {
+    const classes = useStyes();
+    const { sessionNumber } = useContext(SessionContext);
+
+    return (
+      <div>
+        <div className={classes.wrapper}>
+          <img src="/static/cohorts-home/sessions/ic_live.svg" alt="live-icon" />
+          <Box className={classes.smallContent2}>
+            <Typography variant="subtitle1" data-testid="session-time-text">
+              {`The ${moment(new Date(sessionTimeValue)).format('h:mm a')} Session is live now!`}
+            </Typography>
+          </Box>
+          {zoomUrl && (
+            <Button
+              className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
+              onClick={() => clickEvent(sessionNumber)}
+              target="_blank"
+              href={`${zoomUrl}`}
+              data-testid="session-invite"
+            >
+              Join Zoom
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+
+const ExpiredSession = memo(({ displayType, isFree }: { displayType: string; isFree: boolean }) => {
   const classes = useStyes();
 
   return (
@@ -240,7 +246,7 @@ const ExpiredSession = ({ displayType, isFree }: { displayType: string; isFree: 
       </div>
     </div>
   );
-};
+});
 
 const renderPlaceHolder = (
   displayType: string,
@@ -289,7 +295,7 @@ const renderPlaceHolder = (
   return null;
 };
 
-export default function JoinZoomPrompt({
+function JoinZoomPrompt({
   sessionTimeValue,
   sessionZoomUrl,
   sessionTimesPreview,
@@ -322,3 +328,5 @@ export default function JoinZoomPrompt({
     </div>
   );
 }
+
+export default memo(JoinZoomPrompt);

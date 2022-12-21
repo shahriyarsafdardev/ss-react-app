@@ -1,11 +1,8 @@
 import { Stack, Typography, Link, Button } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles } from './Common';
 
-export default function EmptySessionTimestamps({
-  sendAnalyticsEvent
-}: {
-  sendAnalyticsEvent: Function;
-}) {
+const EmptySessionTimestamps = ({ sendAnalyticsEvent }: { sendAnalyticsEvent: Function }) => {
   const classes = useStyles();
 
   const handleLearnMore = () => {
@@ -45,4 +42,6 @@ export default function EmptySessionTimestamps({
       </Stack>
     </Stack>
   );
-}
+};
+
+export default memo(EmptySessionTimestamps);

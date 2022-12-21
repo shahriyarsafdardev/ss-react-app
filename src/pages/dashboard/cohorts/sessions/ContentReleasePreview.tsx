@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Cohort } from '../../../../@types/cohorts';
@@ -55,7 +55,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: '30px !important'
 }));
 
-export default function ContentReleasePreview({
+function ContentReleasePreview({
   cohort,
   setInvitePeersModalState
 }: {
@@ -93,3 +93,5 @@ export default function ContentReleasePreview({
     </StyledCard>
   );
 }
+
+export default memo(ContentReleasePreview);

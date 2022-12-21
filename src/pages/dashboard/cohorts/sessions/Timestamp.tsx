@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, memo } from 'react';
 import { Box, Typography, Stack, Button, TextField } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { CohortContext } from 'contexts/CohortContext';
@@ -143,4 +143,4 @@ function Timestamp({
   );
 }
 
-export default Timestamp;
+export default memo(Timestamp);
