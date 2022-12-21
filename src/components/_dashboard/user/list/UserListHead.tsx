@@ -1,6 +1,6 @@
 // material
-import { visuallyHidden } from '@material-ui/utils';
-import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@material-ui/core';
+import { TableRow, TableCell, TableHead } from '@material-ui/core';
+import { memo } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ type UserListHeadProps = {
   onSelectAllClick?: (checked: boolean) => void;
 };
 
-export default function UserListHead({
+const UserListHead = ({
   order,
   orderBy,
   rowCount,
@@ -22,16 +22,16 @@ export default function UserListHead({
   numSelected,
   onRequestSort,
   onSelectAllClick
-}: UserListHeadProps) {
-  return (
-    <TableHead>
-      <TableRow>
-        {headLabel.map((headCell) => (
-          <TableCell key={headCell.id} align={headCell.align || 'left'}>
-            {headCell.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
+}: UserListHeadProps) => (
+  <TableHead>
+    <TableRow>
+      {headLabel.map((headCell) => (
+        <TableCell key={headCell.id} align={headCell.align || 'left'}>
+          {headCell.label}
+        </TableCell>
+      ))}
+    </TableRow>
+  </TableHead>
+);
+
+export default memo(UserListHead);

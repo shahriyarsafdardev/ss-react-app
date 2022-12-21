@@ -1,5 +1,6 @@
 import { Button, Stack, styled, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
+import { memo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { Cohort } from '../../@types/cohorts';
 
@@ -78,13 +79,13 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-export default function StudentProfilePrompt({
+const StudentProfilePrompt = ({
   setNetworkingModalState,
   cohort
 }: {
   setNetworkingModalState: Function;
   cohort: Cohort;
-}) {
+}) => {
   const { user } = useAuth();
 
   const buttonText = () =>
@@ -128,4 +129,6 @@ export default function StudentProfilePrompt({
       </StyledStack>
     </>
   );
-}
+};
+
+export default memo(StudentProfilePrompt);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 // material
 import { Grid, Table, Box, CircularProgress, TableBody, TableContainer } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: 'lookingFor', label: 'What I am looking for' }
 ];
 
-export default function AlumniProfileContainer({
+const AlumniProfileContainer = ({
   alumnis,
   loadMore,
   hasMore,
@@ -32,7 +32,7 @@ export default function AlumniProfileContainer({
   viewMode: string;
   hasMore: boolean;
   modalHandler: Function;
-}) {
+}) => {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
 
@@ -99,4 +99,6 @@ export default function AlumniProfileContainer({
       {/* </Scrollbar> */}
     </InfiniteScroll>
   );
-}
+};
+
+export default memo(AlumniProfileContainer);

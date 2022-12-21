@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
 
@@ -30,7 +30,7 @@ type UserNetworkingProfile = {
   role_description: string;
 };
 
-export default function NetworkProfileModal({
+const NetworkProfileModal = ({
   networkingModalState,
   setNetworkingModalState,
   cohort
@@ -38,7 +38,7 @@ export default function NetworkProfileModal({
   networkingModalState: boolean;
   setNetworkingModalState: Function;
   cohort: Cohort;
-}) {
+}) => {
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -187,4 +187,6 @@ export default function NetworkProfileModal({
       </Card>
     </Modal>
   );
-}
+};
+
+export default memo(NetworkProfileModal);

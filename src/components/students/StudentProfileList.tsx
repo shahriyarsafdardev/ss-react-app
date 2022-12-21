@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 // material
-import { Table, TableBody, TableContainer, TablePagination } from '@material-ui/core';
+import { Table, TableBody, TableContainer } from '@material-ui/core';
 
 import { UserListHead } from '../_dashboard/user/list';
 import Scrollbar from '../Scrollbar';
@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: 'lookingFor', label: 'What I am looking for' }
 ];
 
-export default function StudentProfileList({ students, modalHandler }: StudentProfileListProps) {
+const StudentProfileList = ({ students, modalHandler }: StudentProfileListProps) => {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -47,6 +47,7 @@ export default function StudentProfileList({ students, modalHandler }: StudentPr
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   return (
     <div>
       <Scrollbar>
@@ -76,4 +77,6 @@ export default function StudentProfileList({ students, modalHandler }: StudentPr
       </Scrollbar>
     </div>
   );
-}
+};
+
+export default memo(StudentProfileList);

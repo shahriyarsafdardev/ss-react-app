@@ -2,6 +2,7 @@ import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
+import { memo } from 'react';
 import Label from '../Label';
 
 type StudentProfileModalProps = {
@@ -73,7 +74,7 @@ const ColoredContainerMobile = styled(Box)(({ theme }) => ({
   }
 }));
 
-export default function StudentProfileModal({
+const StudentProfileModal = ({
   modalState,
   modalHandler,
   trackModalEvent,
@@ -81,7 +82,7 @@ export default function StudentProfileModal({
   dispalyChatLink,
   dispalyEmailLink,
   cohort
-}: StudentProfileModalProps) {
+}: StudentProfileModalProps) => {
   const theme = useTheme();
 
   const {
@@ -309,4 +310,6 @@ export default function StudentProfileModal({
       </StyledContainer>
     </Modal>
   );
-}
+};
+
+export default memo(StudentProfileModal);

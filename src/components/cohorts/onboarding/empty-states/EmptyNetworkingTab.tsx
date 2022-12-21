@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import { memo } from 'react';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -60,4 +61,4 @@ const EmptyNetworkingTab = ({ cohortHost }: { cohortHost: string }) => (
   </Container>
 );
 
-export default EmptyNetworkingTab;
+export default memo(EmptyNetworkingTab);

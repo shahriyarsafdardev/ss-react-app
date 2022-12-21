@@ -7,6 +7,7 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { memo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 
 const ViewSelector = styled('div')(() => ({
@@ -30,14 +31,14 @@ const FilterFormControl = styled(FormControl)(({ theme }) => ({
   }
 }));
 
-export default function StudentProfileFilters({
+const StudentProfileFilters = ({
   companies,
   selectedCompanies,
   handleCompanyChange,
   setView,
   view,
   cohort
-}: StudentProfileFiltersProps) {
+}: StudentProfileFiltersProps) => {
   const onViewSwitch = (selectedView: string) => {
     setView(selectedView);
   };
@@ -123,4 +124,6 @@ export default function StudentProfileFilters({
       </FilterFormControl>
     </ViewSelector>
   );
-}
+};
+
+export default memo(StudentProfileFilters);
