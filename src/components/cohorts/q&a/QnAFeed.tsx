@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -46,4 +46,4 @@ const QnAFeed = ({
   );
 };
 
-export default QnAFeed;
+export default memo(QnAFeed);

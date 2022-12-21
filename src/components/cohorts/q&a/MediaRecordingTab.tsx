@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -103,4 +104,4 @@ const MediaRecordingTab = ({
     </RecordingButtonsContainer>
   </>
 );
-export default MediaRecordingTab;
+export default memo(MediaRecordingTab);

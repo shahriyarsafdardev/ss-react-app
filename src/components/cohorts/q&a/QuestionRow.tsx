@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
 import { Box, Stack, Typography, Divider, Avatar } from '@material-ui/core';
@@ -32,7 +32,7 @@ const StyledQuestionRow = styled(Box)(({ theme }) => ({
   }
 }));
 
-export default function QuestionRow({
+function QuestionRow({
   question,
   addComment,
   onDeleteClick,
@@ -207,3 +207,5 @@ export default function QuestionRow({
     </StyledQuestionRow>
   );
 }
+
+export default memo(QuestionRow);

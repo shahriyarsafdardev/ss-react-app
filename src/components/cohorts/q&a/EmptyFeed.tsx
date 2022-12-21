@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 
@@ -62,4 +63,4 @@ const EmptyFeed = ({ hosts }: { hosts: string }) => (
     </StyledButton>
   </StyledFeedContainer>
 );
-export default EmptyFeed;
+export default memo(EmptyFeed);

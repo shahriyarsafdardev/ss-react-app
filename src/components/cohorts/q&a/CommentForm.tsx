@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, memo } from 'react';
 import useAuth from 'hooks/useAuth';
 import { Icon } from '@iconify/react';
 import roundSend from '@iconify/icons-ic/round-send';
@@ -74,13 +74,7 @@ const StyledForm = styled(Form)(({ theme }) => ({
   width: '100%'
 }));
 
-export default function CommentForm({
-  questionID,
-  addComment
-}: {
-  questionID: string;
-  addComment: Function;
-}) {
+function CommentForm({ questionID, addComment }: { questionID: string; addComment: Function }) {
   const { user } = useAuth();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const { enqueueSnackbar } = useSnackbar();
@@ -217,3 +211,5 @@ export default function CommentForm({
     </>
   );
 }
+
+export default memo(CommentForm);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { styled, useTheme } from '@material-ui/core/styles';
 import axios from 'utils/axios';
@@ -168,7 +168,7 @@ const MainStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function AnswerForm({
+function AnswerForm({
   onComplete,
   onClose,
   unAnswered,
@@ -224,7 +224,7 @@ export default function AnswerForm({
     setRecording(null);
   };
 
-  const RenderQuestion = ({ question }: { question: Question }) => (
+  const RenderQuestion = memo(({ question }: { question: Question }) => (
     <div
       style={{
         display: 'flex',
@@ -283,9 +283,9 @@ export default function AnswerForm({
         </Stack>
       </Box>
     </div>
-  );
+  ));
 
-  const Label = ({ value }: { value: string }) => (
+  const Label = memo(({ value }: { value: string }) => (
     <p
       style={{
         position: 'absolute',
@@ -297,7 +297,7 @@ export default function AnswerForm({
     >
       {value}
     </p>
-  );
+  ));
 
   return (
     <>
@@ -416,3 +416,5 @@ export default function AnswerForm({
     </>
   );
 }
+
+export default memo(AnswerForm);

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, memo } from 'react';
 import { Icon } from '@iconify/react';
 import cancel from '@iconify/icons-ic/cancel';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -40,7 +40,7 @@ export const CircularLoader = () => (
   </StyledCircularLoader>
 );
 
-export const DeleteOption = ({ handleDelete }: { handleDelete: Function }) => {
+export const DeleteOption = memo(({ handleDelete }: { handleDelete: Function }) => {
   const menuRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -86,4 +86,4 @@ export const DeleteOption = ({ handleDelete }: { handleDelete: Function }) => {
       </MenuPopover>
     </Box>
   );
-};
+});

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -174,26 +174,28 @@ const QuestionForm = ({
       </StyledLoadingButton>
     );
 
-  const AnswerModal = ({
-    state,
-    onClose,
-    onComplete,
-    handleSkipQuestion
-  }: {
-    state: boolean;
-    onClose: Function;
-    onComplete: Function;
-    handleSkipQuestion: Function;
-  }) => (
-    <Modal open={state} onClose={() => onClose()}>
-      <AnswerForm
-        key="answerForm"
-        onComplete={onComplete}
-        onClose={onClose}
-        unAnswered={unAnswered}
-        handleSkipQuestion={handleSkipQuestion}
-      />
-    </Modal>
+  const AnswerModal = memo(
+    ({
+      state,
+      onClose,
+      onComplete,
+      handleSkipQuestion
+    }: {
+      state: boolean;
+      onClose: Function;
+      onComplete: Function;
+      handleSkipQuestion: Function;
+    }) => (
+      <Modal open={state} onClose={() => onClose()}>
+        <AnswerForm
+          key="answerForm"
+          onComplete={onComplete}
+          onClose={onClose}
+          unAnswered={unAnswered}
+          handleSkipQuestion={handleSkipQuestion}
+        />
+      </Modal>
+    )
   );
 
   return (
@@ -316,4 +318,4 @@ const QuestionForm = ({
   );
 };
 
-export default QuestionForm;
+export default memo(QuestionForm);

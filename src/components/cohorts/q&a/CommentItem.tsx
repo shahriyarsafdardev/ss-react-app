@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -45,7 +45,7 @@ const UserAvatar = styled(Avatar)(({ theme }) => ({
   }
 }));
 
-export default function CommentItem({
+function CommentItem({
   id,
   name,
   avatarUrl,
@@ -128,3 +128,5 @@ export default function CommentItem({
     </>
   );
 }
+
+export default memo(CommentItem);
