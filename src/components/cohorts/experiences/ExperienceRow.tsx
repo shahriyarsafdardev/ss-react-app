@@ -1,4 +1,5 @@
 import { Stack, Link, TableRow, Tooltip, TableCell } from '@material-ui/core';
+import { memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { CohortExperience } from '../../../@types/cohorts';
 import { ExperienceActions } from './Common';
@@ -7,7 +8,7 @@ type ExperienceRowProps = {
   cohortExperience: CohortExperience;
 };
 
-export default function ExperienceRow({ cohortExperience }: ExperienceRowProps) {
+function ExperienceRow({ cohortExperience }: ExperienceRowProps) {
   const {
     id,
     code,
@@ -77,3 +78,5 @@ export default function ExperienceRow({ cohortExperience }: ExperienceRowProps) 
     </TableRow>
   );
 }
+
+export default memo(ExperienceRow);

@@ -15,6 +15,7 @@ import {
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { uniq } from 'lodash';
+import Page from 'components/Page';
 import { RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
 
@@ -80,7 +81,7 @@ function WaitlistForm() {
     formik;
 
   return (
-    <>
+    <Page title="Sphere | Waitlist Form">
       <br />
       <FormikProvider value={formik}>
         <StyledForm autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
@@ -163,7 +164,7 @@ function WaitlistForm() {
           </Grid>
         </StyledForm>
       </FormikProvider>
-    </>
+    </Page>
   );
 }
 

@@ -21,6 +21,7 @@ import { uniq } from 'lodash';
 import { useEffect, useState } from 'react';
 import { getSessions } from 'redux/slices/cohort';
 import LoadingScreen from 'components/LoadingScreen';
+import Page from 'components/Page';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
 import { ExampleQuestionModal, LoadingContainer } from './Common';
@@ -146,7 +147,7 @@ export default function SurveyQuestionForm() {
   }
 
   return (
-    <>
+    <Page title="Sphere | Survey Form">
       <br />
       <FormikProvider value={formik}>
         <StyledForm autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
@@ -308,6 +309,6 @@ export default function SurveyQuestionForm() {
           </Grid>
         </StyledForm>
       </FormikProvider>
-    </>
+    </Page>
   );
 }

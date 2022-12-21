@@ -1,6 +1,7 @@
 // material
 import { Table, TableBody, TableContainer } from '@material-ui/core';
 import Scrollbar from 'components/Scrollbar';
+import { memo } from 'react';
 import { CohortSale } from '../../../@types/cohorts';
 import { UserListHead } from '../../_dashboard/user/list';
 import SalesRow from './SalesRow';
@@ -14,7 +15,7 @@ const TABLE_HEAD = [
   { id: 'revenue_week', label: 'Revenue (Last Week)', align: 'center' }
 ];
 
-export default function SalesList({ cohortSales }: { cohortSales: CohortSale[] }) {
+function SalesList({ cohortSales }: { cohortSales: CohortSale[] }) {
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <Scrollbar>
@@ -39,3 +40,5 @@ export default function SalesList({ cohortSales }: { cohortSales: CohortSale[] }
     </div>
   );
 }
+
+export default memo(SalesList);
