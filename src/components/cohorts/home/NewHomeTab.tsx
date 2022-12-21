@@ -1,6 +1,6 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, memo } from 'react';
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
@@ -126,7 +126,7 @@ function NewHomeTab({
     </Button>
   );
 
-  const PreReadingData = ({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => (
+  const PreReadingData = memo(({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => (
     <StyledBox>
       <ImageBox>
         <img
@@ -177,7 +177,7 @@ function NewHomeTab({
         </Stack>
       </PreReadingStack>
     </StyledBox>
-  );
+  ));
 
   const renderSessionDetailNavigation = () => {
     const handleOpenMessaging = () => {
@@ -314,4 +314,4 @@ function NewHomeTab({
     </Container>
   );
 }
-export default NewHomeTab;
+export default memo(NewHomeTab);

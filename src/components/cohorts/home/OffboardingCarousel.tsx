@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { Stack, useMediaQuery } from '@material-ui/core';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import { Icon } from '@iconify/react';
@@ -9,7 +9,7 @@ import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import { useTheme } from '@material-ui/core/styles';
 import { SmallImage, MainImage, CarouselIconButton, useStyles } from './Common';
 
-export default function OffboardingCarousel({
+const OffboardingCarousel = ({
   activeCertificate,
   setActiveCertificate,
   certificates
@@ -17,7 +17,7 @@ export default function OffboardingCarousel({
   activeCertificate: number;
   setActiveCertificate: Function;
   certificates: string[];
-}) {
+}) => {
   const theme = useTheme();
   const classes = useStyles();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -95,4 +95,6 @@ export default function OffboardingCarousel({
       )}
     </Stack>
   );
-}
+};
+
+export default memo(OffboardingCarousel);

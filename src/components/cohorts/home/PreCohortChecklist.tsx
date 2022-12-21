@@ -1,6 +1,6 @@
 import { Box, Stack, styled, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
@@ -32,7 +32,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarded?: Function }) {
+const PreCohortChecklist = ({ setHasOnboarded }: { setHasOnboarded?: Function }) => {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -224,4 +224,6 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
       )}
     </>
   );
-}
+};
+
+export default memo(PreCohortChecklist);

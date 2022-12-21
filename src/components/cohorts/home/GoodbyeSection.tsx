@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Card, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { useNavigate } from 'react-router';
@@ -18,7 +18,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   marginTop: 'auto'
 }));
 
-export default function GoodbyeSection({ cohort }: { cohort: Cohort }) {
+const GoodbyeSection = ({ cohort }: { cohort: Cohort }) => {
   const navigate = useNavigate();
 
   return (
@@ -38,4 +38,6 @@ export default function GoodbyeSection({ cohort }: { cohort: Cohort }) {
       </Card>
     </Stack>
   );
-}
+};
+
+export default memo(GoodbyeSection);

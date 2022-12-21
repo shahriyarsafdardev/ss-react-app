@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack, Typography } from '@material-ui/core';
 import { Modal } from 'components/animate';
@@ -22,7 +22,7 @@ import {
   StyledStack
 } from './Common';
 
-export default function OffboardingModal({
+const OffboardingModal = ({
   modalState,
   setModalState,
   activeImage
@@ -30,7 +30,7 @@ export default function OffboardingModal({
   modalState: boolean;
   setModalState: Function;
   activeImage: string;
-}) {
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const { user } = useAuth();
@@ -213,4 +213,6 @@ export default function OffboardingModal({
       </ModalStyle>
     </Modal>
   );
-}
+};
+
+export default memo(OffboardingModal);

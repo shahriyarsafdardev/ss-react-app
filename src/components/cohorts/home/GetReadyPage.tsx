@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Cohort } from '../../../@types/cohorts';
@@ -41,39 +41,37 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-export default function GetReadyPage({ cohort }: { cohort: Cohort }) {
-  return (
-    <>
-      <Stack direction="column" spacing={2} width="100%">
-        <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
-          {`Get ready for ${cohort?.name}`}
-        </Typography>
-        <StyledCard>
-          <InstructorMessage spacing={2}>
-            <StyledTypography variant="h5">
-              Congratulations, you have completed the Pre-Cohort Checklist!
-            </StyledTypography>
-            <StyledTypography>
-              The Course Content and Cohort Directory will be released 2 weeks before the cohort
-              starts. In the meantime, you can:
-            </StyledTypography>
-            <StyledTypography>
-              <ul style={{ marginLeft: '17px' }}>
-                <li>Message your instructor and peers</li>
-                <li>Network with alumni</li>
-                <li>Invite your colleagues to join your cohort</li>
-              </ul>
-            </StyledTypography>
-            <Typography color="#ffffff" style={{ fontSize: '15px' }}>
-              Looking forward to seeing you soon,
-            </Typography>
-            <StyledTypography sx={{ fontWeight: 'bold' }}>
-              {cohort?.host_full_names}
-            </StyledTypography>
-          </InstructorMessage>
-          <ContentReleaseDetails />
-        </StyledCard>
-      </Stack>
-    </>
-  );
-}
+const GetReadyPage = ({ cohort }: { cohort: Cohort }) => (
+  <>
+    <Stack direction="column" spacing={2} width="100%">
+      <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
+        {`Get ready for ${cohort?.name}`}
+      </Typography>
+      <StyledCard>
+        <InstructorMessage spacing={2}>
+          <StyledTypography variant="h5">
+            Congratulations, you have completed the Pre-Cohort Checklist!
+          </StyledTypography>
+          <StyledTypography>
+            The Course Content and Cohort Directory will be released 2 weeks before the cohort
+            starts. In the meantime, you can:
+          </StyledTypography>
+          <StyledTypography>
+            <ul style={{ marginLeft: '17px' }}>
+              <li>Message your instructor and peers</li>
+              <li>Network with alumni</li>
+              <li>Invite your colleagues to join your cohort</li>
+            </ul>
+          </StyledTypography>
+          <Typography color="#ffffff" style={{ fontSize: '15px' }}>
+            Looking forward to seeing you soon,
+          </Typography>
+          <StyledTypography sx={{ fontWeight: 'bold' }}>{cohort?.host_full_names}</StyledTypography>
+        </InstructorMessage>
+        <ContentReleaseDetails />
+      </StyledCard>
+    </Stack>
+  </>
+);
+
+export default memo(GetReadyPage);

@@ -1,6 +1,6 @@
 import { Stack, styled, Card, Typography } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import InviteTeamForm from './InviteTeamForm';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -48,7 +48,7 @@ const StyledImage = styled('img')(({ theme }) => ({
   height: '150px'
 }));
 
-export default function InvitePeersModal({
+const InvitePeersModal = ({
   invitePeersModalState,
   setInvitePeersModalState,
   onFinish,
@@ -58,7 +58,7 @@ export default function InvitePeersModal({
   setInvitePeersModalState: Function;
   onFinish: Function;
   trackSegmentEvent: Function;
-}) {
+}) => {
   useEffect(() => {
     invitePeersModalState && trackSegmentEvent('Cohort Onboarding - Invite Team - Modal Opened');
   }, [invitePeersModalState]);
@@ -92,4 +92,6 @@ export default function InvitePeersModal({
       </Card>
     </Modal>
   );
-}
+};
+
+export default memo(InvitePeersModal);

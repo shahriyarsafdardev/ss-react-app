@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, memo } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -89,7 +89,7 @@ const StyledBox = styled(Box)(() => ({
 
 export type ExtraStepIconProps = Omit<StepIconProps, 'testid'> & { testid: string };
 
-function QontoStepIcon(props: ExtraStepIconProps) {
+const QontoStepIcon = memo((props: ExtraStepIconProps) => {
   const { active, completed, className, testid } = props;
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -102,7 +102,7 @@ function QontoStepIcon(props: ExtraStepIconProps) {
       )}
     </QontoStepIconRoot>
   );
-}
+});
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -135,7 +135,7 @@ const ARROW_STATES = {
 };
 const SCROLL_MOVEMENT = 400;
 
-export default function DesktopStepper({
+const DesktopStepper = ({
   cohortID,
   activeSession,
   sessions,
@@ -145,7 +145,7 @@ export default function DesktopStepper({
   activeSession: number;
   sessions: Session[];
   activeStepper: number;
-}) {
+}) => {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
   const [isRendered, setIsRenderedstate] = useState(false);
@@ -318,4 +318,6 @@ export default function DesktopStepper({
       />
     </StyledTimeline>
   );
-}
+};
+
+export default memo(DesktopStepper);

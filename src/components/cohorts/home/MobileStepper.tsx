@@ -6,7 +6,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { StepIconProps } from '@material-ui/core/StepIcon';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Session } from '../../../@types/cohorts';
 import { firstUpcomingDate, sessionName } from './Common';
 
@@ -79,7 +79,7 @@ const StyledBox = styled(Box)(() => ({
   width: '85%'
 }));
 
-function QontoStepIcon(props: StepIconProps | any) {
+const QontoStepIcon = memo((props: StepIconProps | any) => {
   const { active, completed, className, time } = props;
   return (
     <QontoStepIconRoot ownerState={{ active }} className={className}>
@@ -98,7 +98,7 @@ function QontoStepIcon(props: StepIconProps | any) {
       )}
     </QontoStepIconRoot>
   );
-}
+});
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -133,7 +133,7 @@ const displaySession = (time: string, length: string, number: number) => {
   return false;
 };
 
-export default function MobileStepper({
+const MobileStepper = ({
   cohortID,
   activeSession,
   sessions
@@ -141,7 +141,7 @@ export default function MobileStepper({
   cohortID: string;
   activeSession: number;
   sessions: Session[];
-}) {
+}) => {
   const [sessionSteps, setSessionSteps] = useState(sessions);
   const [seeMore, setSeeMore] = useState(false);
 
@@ -203,4 +203,6 @@ export default function MobileStepper({
       </Button>
     </StyledTimeline>
   );
-}
+};
+
+export default memo(MobileStepper);

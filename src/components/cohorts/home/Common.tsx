@@ -16,7 +16,7 @@ import moment from 'moment';
 import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import arrowForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import Icon from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
@@ -309,151 +309,151 @@ export const sessionName = (session: Session | undefined, defaultName: string | 
   return session?.networking_session ? 'Networking Session' : defaultName;
 };
 
-export const CalendarInstructionsModal = ({
-  calendarURL,
-  calendarInstructionsModalState,
-  setCalendarInstructionsModalState,
-  handleSubmit
-}: {
-  calendarURL: string;
-  calendarInstructionsModalState: boolean;
-  setCalendarInstructionsModalState: Function;
-  handleSubmit: Function;
-}) => {
-  const classes = useStyles();
-  const { sendAnalyticsData } = useContext(AnalyticsContext);
+export const CalendarInstructionsModal = memo(
+  ({
+    calendarURL,
+    calendarInstructionsModalState,
+    setCalendarInstructionsModalState,
+    handleSubmit
+  }: {
+    calendarURL: string;
+    calendarInstructionsModalState: boolean;
+    setCalendarInstructionsModalState: Function;
+    handleSubmit: Function;
+  }) => {
+    const classes = useStyles();
+    const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  useEffect(() => {
-    calendarInstructionsModalState &&
-      sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+    useEffect(() => {
+      calendarInstructionsModalState &&
+        sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+          'Calendar URL': calendarURL
+        });
+    }, [calendarInstructionsModalState]);
+
+    const onNeedHandler = () => {
+      sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
         'Calendar URL': calendarURL
       });
-  }, [calendarInstructionsModalState]);
+    };
 
-  const onNeedHandler = () => {
-    sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
-      'Calendar URL': calendarURL
-    });
-  };
-
-  return (
-    <Modal
-      open={calendarInstructionsModalState}
-      onClose={() => {
-        setCalendarInstructionsModalState(false);
-      }}
-      zIndex={1400}
-      className={classes.calendarInstructionsModal}
-    >
-      <Card sx={{ padding: '2rem' }}>
-        <Typography className={classes.heading}>
-          Please follow the instructions below to add the sessions to you calendar
-        </Typography>
-        <AddToCalendarInfo
-          onNextHandler={() => {
-            setCalendarInstructionsModalState(false);
-            handleSubmit();
-          }}
-          onNeedHandler={onNeedHandler}
-          inviteUrl={calendarURL}
-        />
-      </Card>
-    </Modal>
-  );
-};
-
-export const ChecklistItem = ({
-  index,
-  heading,
-  status,
-  onSubmit
-}: {
-  index: number;
-  heading: string;
-  status: string;
-  onSubmit: Function;
-}) => {
-  const classes = useStyles();
-  return (
-    <Stack
-      direction="row"
-      onClick={() => {
-        status === 'Active' && onSubmit();
-      }}
-      className={`${status === 'Active' && classes.buttonActive}`}
-      sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
-    >
-      <StyledTypography
-        className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
-          status === 'NonActive' && classes.indexNonActive
-        } ${status === 'Completed' && classes.indexCompleted}`}
+    return (
+      <Modal
+        open={calendarInstructionsModalState}
+        onClose={() => {
+          setCalendarInstructionsModalState(false);
+        }}
+        zIndex={1400}
+        className={classes.calendarInstructionsModal}
       >
-        {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
-      </StyledTypography>
-      <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
+        <Card sx={{ padding: '2rem' }}>
+          <Typography className={classes.heading}>
+            Please follow the instructions below to add the sessions to you calendar
+          </Typography>
+          <AddToCalendarInfo
+            onNextHandler={() => {
+              setCalendarInstructionsModalState(false);
+              handleSubmit();
+            }}
+            onNeedHandler={onNeedHandler}
+            inviteUrl={calendarURL}
+          />
+        </Card>
+      </Modal>
+    );
+  }
+);
+
+export const ChecklistItem = memo(
+  ({
+    index,
+    heading,
+    status,
+    onSubmit
+  }: {
+    index: number;
+    heading: string;
+    status: string;
+    onSubmit: Function;
+  }) => {
+    const classes = useStyles();
+    return (
+      <Stack
+        direction="row"
+        onClick={() => {
+          status === 'Active' && onSubmit();
+        }}
+        className={`${status === 'Active' && classes.buttonActive}`}
+        sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
+      >
         <StyledTypography
-          className={`${classes.headingActive} ${
-            status === 'NonActive' && classes.headingNonActive
-          } ${status === 'Completed' && classes.headingCompleted}`}
+          className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
+            status === 'NonActive' && classes.indexNonActive
+          } ${status === 'Completed' && classes.indexCompleted}`}
         >
-          {heading}
+          {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
         </StyledTypography>
-        <Box
-          // onClick={() => onSubmit()}
-          className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
-        >
-          <Icon icon={arrowForwardFill} width="20px" height="20px" />
-        </Box>
+        <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
+          <StyledTypography
+            className={`${classes.headingActive} ${
+              status === 'NonActive' && classes.headingNonActive
+            } ${status === 'Completed' && classes.headingCompleted}`}
+          >
+            {heading}
+          </StyledTypography>
+          <Box
+            // onClick={() => onSubmit()}
+            className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
+          >
+            <Icon icon={arrowForwardFill} width="20px" height="20px" />
+          </Box>
+        </Stack>
       </Stack>
-    </Stack>
-  );
-};
+    );
+  }
+);
 
-export function ChecklistCompletionPrompt({
-  cohort_id,
-  trackSegmentEvent
-}: {
-  cohort_id: string;
-  trackSegmentEvent: Function;
-}) {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export const ChecklistCompletionPrompt = memo(
+  ({ cohort_id, trackSegmentEvent }: { cohort_id: string; trackSegmentEvent: Function }) => {
+    const classes = useStyles();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-  const handleSubmit = (gotoHome: boolean) => {
-    if (gotoHome) {
-      trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Go to Home" Selected');
-      navigate(`/cohorts/${cohort_id}/home?active_step=1`);
-    } else {
-      trackSegmentEvent('Cohort Onboarding - Checklist - "Continue Networking" Selected');
-    }
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
-  };
+    const handleSubmit = (gotoHome: boolean) => {
+      if (gotoHome) {
+        trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Go to Home" Selected');
+        navigate(`/cohorts/${cohort_id}/home?active_step=1`);
+      } else {
+        trackSegmentEvent('Cohort Onboarding - Checklist - "Continue Networking" Selected');
+      }
+      dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
+    };
 
-  return (
-    <Stack className={classes.completionPrompt} spacing={4}>
-      <Typography textAlign="center">
-        Congratulations, you have completed the Pre-Cohort Checklist! 🎉
-      </Typography>
-      <Stack sx={{ width: '100%' }} spacing={2}>
-        <Button
-          className={classes.completionPromptButton}
-          variant="contained"
-          onClick={() => handleSubmit(true)}
-        >
-          Go to Home
-        </Button>
-        <Button
-          className={classes.completionPromptButton}
-          variant="outlined"
-          onClick={() => handleSubmit(false)}
-        >
-          Continue Networking
-        </Button>
+    return (
+      <Stack className={classes.completionPrompt} spacing={4}>
+        <Typography textAlign="center">
+          Congratulations, you have completed the Pre-Cohort Checklist! 🎉
+        </Typography>
+        <Stack sx={{ width: '100%' }} spacing={2}>
+          <Button
+            className={classes.completionPromptButton}
+            variant="contained"
+            onClick={() => handleSubmit(true)}
+          >
+            Go to Home
+          </Button>
+          <Button
+            className={classes.completionPromptButton}
+            variant="outlined"
+            onClick={() => handleSubmit(false)}
+          >
+            Continue Networking
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
-  );
-}
+    );
+  }
+);
 
 export const StyledBox = styled(Stack)(({ theme }) => ({
   background: 'linear-gradient(135.12deg, #6A2E9C 0.07%, #0D0217 100.02%)',
@@ -618,24 +618,26 @@ If this course sounds useful to you and your professional development goals, reg
   %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
   %E2%80%A2 Or, check out https://getsphere.com to explore more courses.`;
 
-export const SurveyModal = ({
-  state,
-  onClose,
-  onComplete,
-  session
-}: {
-  state: boolean;
-  onClose: Function;
-  onComplete: Function;
-  session: any;
-}) => (
-  <Modal open={state} onClose={() => onClose()}>
-    <SurveyForm
-      key="surveyForm"
-      onComplete={onComplete}
-      sessionId={session?.id}
-      sessionName={session?.name}
-      session={session}
-    />
-  </Modal>
+export const SurveyModal = memo(
+  ({
+    state,
+    onClose,
+    onComplete,
+    session
+  }: {
+    state: boolean;
+    onClose: Function;
+    onComplete: Function;
+    session: any;
+  }) => (
+    <Modal open={state} onClose={() => onClose()}>
+      <SurveyForm
+        key="surveyForm"
+        onComplete={onComplete}
+        sessionId={session?.id}
+        sessionName={session?.name}
+        session={session}
+      />
+    </Modal>
+  )
 );

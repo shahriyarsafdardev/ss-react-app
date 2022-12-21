@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -11,7 +11,7 @@ import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
-export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
+const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(1);
   const [certificates, setCertificates] = useState(cohort?.certificate_links);
@@ -126,4 +126,6 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
       </Stack>
     </StyledBox>
   );
-}
+};
+
+export default memo(OffboardingPage);
