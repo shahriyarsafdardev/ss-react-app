@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { RootState, useSelector } from 'redux/store';
@@ -27,7 +28,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function EnrollmentForm({
+function EnrollmentForm({
   enrollment,
   codes,
   onClose,
@@ -233,3 +234,5 @@ export default function EnrollmentForm({
     </>
   );
 }
+
+export default memo(EnrollmentForm);

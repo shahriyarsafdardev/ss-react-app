@@ -1,3 +1,4 @@
+import { memo } from 'react';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Popover, PopoverProps } from '@material-ui/core';
@@ -23,7 +24,7 @@ const ArrowStyle = styled('span')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function MenuPopover({ children, sx, ...other }: PopoverProps) {
+function MenuPopover({ children, sx, ...other }: PopoverProps) {
   return (
     <Popover
       anchorOrigin={{
@@ -52,3 +53,5 @@ export default function MenuPopover({ children, sx, ...other }: PopoverProps) {
     </Popover>
   );
 }
+
+export default memo(MenuPopover);

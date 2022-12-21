@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Stack, Tooltip, TableRow, TableCell, Typography, Link } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import Label from 'components/Label';
@@ -11,12 +12,7 @@ type RegistrationRowProps = {
   isAdminView?: boolean;
 };
 
-export default function RegistrationRow({
-  enrollment,
-  index,
-  codes,
-  isAdminView = false
-}: RegistrationRowProps) {
+function RegistrationRow({ enrollment, index, codes, isAdminView = false }: RegistrationRowProps) {
   const theme = useTheme();
 
   const {
@@ -128,3 +124,5 @@ export default function RegistrationRow({
     </TableRow>
   );
 }
+
+export default memo(RegistrationRow);
