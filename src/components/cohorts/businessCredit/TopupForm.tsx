@@ -15,16 +15,10 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import StripeCredits from 'pages/StripeCredits';
 
-export default function TopupForm({
-  accountID,
-  setModal
-}: {
-  accountID?: string;
-  setModal: Function;
-}) {
+function TopupForm({ accountID, setModal }: { accountID?: string; setModal: Function }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const Credit_Topup_Options = ['5000', '10000', '20000'];
@@ -146,3 +140,5 @@ export default function TopupForm({
     </Card>
   );
 }
+
+export default memo(TopupForm);

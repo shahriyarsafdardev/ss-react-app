@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { Box, Typography, Card } from '@material-ui/core';
 import { CreditObject } from '../../../@types/cohorts';
 import { useStyles } from './styles';
 import HistoryRow from './HistoryRow';
 import { EmptyStateHistory } from './EmptyStates';
 
-const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
+const CreditHistory = memo(({ historyData }: { historyData: CreditObject[] }) => {
   const classes = useStyles();
 
   return (
@@ -26,6 +27,6 @@ const CreditHistory = ({ historyData }: { historyData: CreditObject[] }) => {
       </Box>
     </Card>
   );
-};
+});
 
 export default CreditHistory;
