@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { TabsNavBar, NavbarTab } from './Common';
 
-export default function ReferralsPageNavbar({
+function ReferralsPageNavbar({
   activeTab,
   setActiveTab
 }: {
@@ -15,3 +16,5 @@ export default function ReferralsPageNavbar({
     </TabsNavBar>
   );
 }
+
+export default memo(ReferralsPageNavbar);

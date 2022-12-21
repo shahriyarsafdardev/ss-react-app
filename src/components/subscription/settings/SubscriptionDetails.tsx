@@ -1,6 +1,6 @@
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack } from '@material-ui/core';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import {
   ActiveSubscriptionDetails,
   NonActiveSubscriptionDetails,
@@ -8,7 +8,7 @@ import {
   useStyles
 } from './Common';
 
-export default function SubscriptionDetails({
+function SubscriptionDetails({
   setAddCreditModal,
   setCancelSubscriptionModal,
   accountDetails
@@ -42,3 +42,5 @@ export default function SubscriptionDetails({
     </Stack>
   );
 }
+
+export default memo(SubscriptionDetails);

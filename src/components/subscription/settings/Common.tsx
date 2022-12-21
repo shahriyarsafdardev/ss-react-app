@@ -2,6 +2,7 @@ import { Stack, styled, Typography, Theme, Button } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import moment from 'moment';
+import { memo } from 'react';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   backgroundColor: '#F6F7F8',
@@ -103,75 +104,75 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const ActiveSubscriptionDetails = ({
-  subscription,
-  accountDetails,
-  setAddCreditModal,
-  setCancelSubscriptionModal,
-  sendAnalyticsData
-}: {
-  subscription: any;
-  accountDetails: any;
-  setAddCreditModal: Function;
-  setCancelSubscriptionModal: Function;
-  sendAnalyticsData: Function;
-}) => {
-  const account = accountDetails?.account;
-  const renewalDate = moment(new Date(subscription?.next_billing_date)).format('ll').toString();
+export const ActiveSubscriptionDetails = memo(
+  ({
+    subscription,
+    accountDetails,
+    setAddCreditModal,
+    setCancelSubscriptionModal,
+    sendAnalyticsData
+  }: {
+    subscription: any;
+    accountDetails: any;
+    setAddCreditModal: Function;
+    setCancelSubscriptionModal: Function;
+    sendAnalyticsData: Function;
+  }) => {
+    const account = accountDetails?.account;
+    const renewalDate = moment(new Date(subscription?.next_billing_date)).format('ll').toString();
 
-  const handleTopUp = () => {
-    sendAnalyticsData('Balance Page - Subscription Tab - "Top up" link opened');
-    setAddCreditModal(true);
-  };
+    const handleTopUp = () => {
+      sendAnalyticsData('Balance Page - Subscription Tab - "Top up" link opened');
+      setAddCreditModal(true);
+    };
 
-  const handleCancelSubscription = () => {
-    sendAnalyticsData('Balance Page - Subscription Tab - "Cancel subscription" link opened');
-    setCancelSubscriptionModal(true);
-  };
-  return (
-    <>
-      <Stack spacing={5}>
-        <StyledHeading>Sphere Subscription</StyledHeading>
+    const handleCancelSubscription = () => {
+      sendAnalyticsData('Balance Page - Subscription Tab - "Cancel subscription" link opened');
+      setCancelSubscriptionModal(true);
+    };
+    return (
+      <>
+        <Stack spacing={5}>
+          <StyledHeading>Sphere Subscription</StyledHeading>
+          <StyledText>
+            You are on a <b>Yearly Plan</b> for ${subscription?.yearly_credit_amount} of Sphere
+            courses on a {Math.floor(accountDetails?.team_discount * 100)}% discount. You currently
+            have <b>${account?.credit_balance || 0}</b> remaining for use. Your next charge will be
+            on {renewalDate} for ${subscription?.yearly_credit_amount}
+          </StyledText>
+        </Stack>
+        <Stack direction="row" spacing={2}>
+          <StyledLink onClick={() => handleTopUp()}>Top up</StyledLink>
+          <StyledLink onClick={() => handleCancelSubscription()}>Cancel Subscription</StyledLink>
+        </Stack>
+      </>
+    );
+  }
+);
+
+export const NonActiveSubscriptionDetails = memo(
+  ({ sendAnalyticsData }: { sendAnalyticsData: Function }) => {
+    const handleOpenPricing = () => {
+      sendAnalyticsData('Balance Page - Subscription Tab - "Pricing page" link opened');
+      window.open('https://www.getsphere.com/pricing', '_blank');
+    };
+    return (
+      <>
+        <Stack spacing={1}>
+          <StyledHeading>Sphere Subscription</StyledHeading>
+          <StyledText>You currently do not have a Sphere Subscription.</StyledText>
+        </Stack>
         <StyledText>
-          You are on a <b>Yearly Plan</b> for ${subscription?.yearly_credit_amount} of Sphere
-          courses on a {Math.floor(accountDetails?.team_discount * 100)}% discount. You currently
-          have <b>${account?.credit_balance || 0}</b> remaining for use. Your next charge will be on{' '}
-          {renewalDate} for ${subscription?.yearly_credit_amount}
+          Buying annual subscriptions upfront gives your team and organization discounts on our
+          course library.
         </StyledText>
-      </Stack>
-      <Stack direction="row" spacing={2}>
-        <StyledLink onClick={() => handleTopUp()}>Top up</StyledLink>
-        <StyledLink onClick={() => handleCancelSubscription()}>Cancel Subscription</StyledLink>
-      </Stack>
-    </>
-  );
-};
-
-export const NonActiveSubscriptionDetails = ({
-  sendAnalyticsData
-}: {
-  sendAnalyticsData: Function;
-}) => {
-  const handleOpenPricing = () => {
-    sendAnalyticsData('Balance Page - Subscription Tab - "Pricing page" link opened');
-    window.open('https://www.getsphere.com/pricing', '_blank');
-  };
-  return (
-    <>
-      <Stack spacing={1}>
-        <StyledHeading>Sphere Subscription</StyledHeading>
-        <StyledText>You currently do not have a Sphere Subscription.</StyledText>
-      </Stack>
-      <StyledText>
-        Buying annual subscriptions upfront gives your team and organization discounts on our course
-        library.
-      </StyledText>
-      <StyledText>
-        To learn more and/or start a subscription, please visit our{' '}
-        <StyledLink sx={{ display: 'inline' }} onClick={() => handleOpenPricing()}>
-          Pricing page.
-        </StyledLink>
-      </StyledText>
-    </>
-  );
-};
+        <StyledText>
+          To learn more and/or start a subscription, please visit our{' '}
+          <StyledLink sx={{ display: 'inline' }} onClick={() => handleOpenPricing()}>
+            Pricing page.
+          </StyledLink>
+        </StyledText>
+      </>
+    );
+  }
+);
