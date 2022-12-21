@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   useChannelActionContext,
   useChannelStateContext,
@@ -23,7 +24,7 @@ type Props = {
   setPinsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const PinnedMessageList: React.FC<Props> = (props) => {
+export const PinnedMessageList: React.FC<Props> = memo((props) => {
   const { setPinsOpen } = props;
 
   const { closeThread } = useChannelActionContext<
@@ -64,4 +65,4 @@ export const PinnedMessageList: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

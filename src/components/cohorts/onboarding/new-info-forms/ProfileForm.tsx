@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Stack, TextField, FormControl, Typography, styled } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from 'components/upload';
@@ -33,7 +33,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   height: '48px'
 }));
 
-export default function ProfileForm({
+function ProfileForm({
   setProfileFormSubmitted,
   cohort
 }: {
@@ -178,3 +178,5 @@ export default function ProfileForm({
     </StyledStack>
   );
 }
+
+export default memo(ProfileForm);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Table, TableBody, TableContainer, TableRow, TableCell } from '@material-ui/core';
 import Scrollbar from 'components/Scrollbar';
 import UserListHead from 'components/_dashboard/user/list/UserListHead';
@@ -23,7 +24,7 @@ const InviteRow = ({ invite, id }: { invite: ReferralTypeUser; id: string }) => 
   </TableRow>
 );
 
-export default function InvitesList({ invites }: { invites: ReferralTypeUser[] }) {
+function InvitesList({ invites }: { invites: ReferralTypeUser[] }) {
   return (
     <div style={{ width: '100%' }}>
       <Scrollbar>
@@ -48,3 +49,5 @@ export default function InvitesList({ invites }: { invites: ReferralTypeUser[] }
     </div>
   );
 }
+
+export default memo(InvitesList);

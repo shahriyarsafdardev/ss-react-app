@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, memo } from 'react';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 import { MessageResponse, logChatPromiseExecution } from 'stream-chat';
 
@@ -44,15 +44,12 @@ type GiphyStateObj = {
 
 export const GiphyContext = React.createContext<GiphyStateObj>({} as GiphyStateObj);
 
-export const ChannelInner: React.FC<InnerProps> = (props) => {
-  const { pinsOpen, setIsEditing, setPinsOpen, type } = props;
+export const ChannelInner: React.FC<InnerProps> = memo((props) => {
+  const { pinsOpen, setIsEditing, setPinsOpen } = props;
 
   const [giphyState, setGiphyState] = useState(false);
-  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModalState] = useState(false);
   const [message, setMessage] = useState<MessageToSend>({});
-  const { user } = useAuth();
-  const currentUser = user;
 
   const giphyStateObj = {
     giphyState,
@@ -151,4 +148,4 @@ export const ChannelInner: React.FC<InnerProps> = (props) => {
       </div>
     </GiphyContext.Provider>
   );
-};
+});

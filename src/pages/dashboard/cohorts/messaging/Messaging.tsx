@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Box, useMediaQuery } from '@material-ui/core';
 import { useTheme, styled } from '@material-ui/core/styles';
 import { LiteralStringForUnion, StreamChat, ChannelSort } from 'stream-chat';
 import { Chat, enTranslations, Streami18n } from 'stream-chat-react';
 import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import EmptyMessagingTab from 'components/cohorts/onboarding/empty-states/EmptyMessagingTab';
 import { useLocation } from 'react-router-dom';
 import BasicProfileForm from 'components/cohorts/onboarding/new-info-forms/BasicProfileForm';
 import { RootState, useSelector, useDispatch } from '../../../../redux/store';
@@ -54,7 +53,7 @@ export type TeamUserType = { image?: string };
 
 const options = { state: true, watch: true, presence: true };
 
-export default function Messaging() {
+function Messaging() {
   const [client, setChatClient] = useState<any>(null);
   const [isMobileNavVisible, setMobileNav] = useState(false);
   const [createType, setCreateType] = useState('');
@@ -156,68 +155,64 @@ export default function Messaging() {
 
   return (
     <Page title="Sphere | Messaging" id="page">
-      {/* {cohort?.released_for_learners === true || mode === 'Instructor' ? ( */}
-      <>
-        {profileFormSubmitted ? (
-          <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-            <Box id="box">
-              <div key={cohortID} className="chat_wrapper">
-                <Chat {...{ client, i18nInstance }} theme="team light">
-                  <DesktopView>
-                    <ChannelListContainer
-                      {...{
-                        isCreating,
-                        options,
-                        setCreateType,
-                        setIsCreating,
-                        setIsEditing,
-                        cohortID,
-                        cohortUsers: enrollments || [],
-                        sort,
-                        loggedinUserID,
-                        canTrack: desktopView
-                      }}
-                    />
-                  </DesktopView>
-
-                  <ChannelContainer
+      {profileFormSubmitted ? (
+        <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+          <Box id="box">
+            <div key={cohortID} className="chat_wrapper">
+              <Chat {...{ client, i18nInstance }} theme="team light">
+                <DesktopView>
+                  <ChannelListContainer
                     {...{
-                      createType,
                       isCreating,
-                      isEditing,
+                      options,
+                      setCreateType,
                       setIsCreating,
                       setIsEditing,
                       cohortID,
-                      cohortUsers: enrollments || []
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID,
+                      canTrack: desktopView
                     }}
                   />
-                  <MobileView>
-                    <SidePanel
-                      props={{
-                        isCreating,
-                        options,
-                        setCreateType,
-                        setIsCreating,
-                        setIsEditing,
-                        cohortID,
-                        cohortUsers: enrollments || [],
-                        sort,
-                        loggedinUserID,
-                        canTrack: !desktopView
-                      }}
-                    />
-                  </MobileView>
-                </Chat>
-              </div>
-            </Box>
-          </AnalyticsContext.Provider>
-        ) : (
-          <BasicProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
-        )}
-      </>
-      {/* ) : (
-        <EmptyMessagingTab cohortHost={cohort?.host_names} />
-      )} */}
+                </DesktopView>
+
+                <ChannelContainer
+                  {...{
+                    createType,
+                    isCreating,
+                    isEditing,
+                    setIsCreating,
+                    setIsEditing,
+                    cohortID,
+                    cohortUsers: enrollments || []
+                  }}
+                />
+                <MobileView>
+                  <SidePanel
+                    props={{
+                      isCreating,
+                      options,
+                      setCreateType,
+                      setIsCreating,
+                      setIsEditing,
+                      cohortID,
+                      cohortUsers: enrollments || [],
+                      sort,
+                      loggedinUserID,
+                      canTrack: !desktopView
+                    }}
+                  />
+                </MobileView>
+              </Chat>
+            </div>
+          </Box>
+        </AnalyticsContext.Provider>
+      ) : (
+        <BasicProfileForm setProfileFormSubmitted={setProfileFormSubmitted} />
+      )}
     </Page>
   );
 }
+
+export default memo(Messaging);

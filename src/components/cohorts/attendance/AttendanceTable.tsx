@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import EmptyAttendanceTab from 'components/cohorts/onboarding/empty-states/EmptyAttendanceTab';
 
 import {
@@ -156,4 +156,4 @@ const AttendanceTable = ({
   );
 };
 
-export default AttendanceTable;
+export default memo(AttendanceTable);

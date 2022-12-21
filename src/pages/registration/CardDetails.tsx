@@ -1,7 +1,7 @@
 import axios from 'utils/axios';
 import { Grid, Card, Stack, Typography, styled } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import RegistrationPayment from 'pages/RegistrationPayment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
@@ -14,7 +14,7 @@ const CohortDetailsCard = styled(Card)(({ theme }) => ({
   marginBottom: '12px'
 }));
 
-export default function CardDetails({
+function CardDetails({
   cohort,
   enrollmentID,
   first_name,
@@ -126,3 +126,5 @@ export default function CardDetails({
     </>
   );
 }
+
+export default memo(CardDetails);

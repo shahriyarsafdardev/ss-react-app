@@ -2,10 +2,11 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Grid, Card, Stack, TextField, Typography } from '@material-ui/core';
 import TermsCheckBox from 'components/TermsCheckBox';
+import { memo } from 'react';
 import { UserType, NEW_REGISTRATION_FLOW_COHORT_CODES } from './Registration';
 import { StyledLoadingButton } from './Common';
 
-export default function UserForm({
+function UserForm({
   user,
   cohortCode,
   account,
@@ -168,3 +169,5 @@ export default function UserForm({
     </Stack>
   );
 }
+
+export default memo(UserForm);

@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, memo } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
-import axios from 'utils/axios';
 import './ChannelContainer.css';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Box, useMediaQuery, useTheme } from '@material-ui/core';
@@ -89,7 +88,7 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
   );
 };
 
-export const ChannelContainer: React.FC<Props> = (props) => {
+export const ChannelContainer: React.FC<Props> = memo((props) => {
   const { createType, isCreating, isEditing, setIsCreating, setIsEditing, cohortID, cohortUsers } =
     props;
 
@@ -212,4 +211,4 @@ export const ChannelContainer: React.FC<Props> = (props) => {
       </Channel>
     </div>
   );
-};
+});

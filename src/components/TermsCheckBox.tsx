@@ -1,6 +1,7 @@
 import { Link, Stack, Checkbox, Typography } from '@material-ui/core';
+import { memo } from 'react';
 
-export default function TermsCheckBox({ value, onChange }: { value: boolean; onChange: Function }) {
+function TermsCheckBox({ value, onChange }: { value: boolean; onChange: Function }) {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <Checkbox onChange={(e) => onChange(e.target.checked)} value={value} />
@@ -29,3 +30,5 @@ export default function TermsCheckBox({ value, onChange }: { value: boolean; onC
     </Stack>
   );
 }
+
+export default memo(TermsCheckBox);

@@ -4,7 +4,7 @@ import axios from 'utils/axios';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import * as Yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Cohort } from '../../@types/cohorts';
 import { CohortType } from './Registration';
 import InvitesList from './InvitesList';
@@ -182,4 +182,4 @@ function InvitePeersForm({
   );
 }
 
-export default InvitePeersForm;
+export default memo(InvitePeersForm);

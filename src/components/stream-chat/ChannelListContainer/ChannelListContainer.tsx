@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, memo } from 'react';
 import { ChannelList, ChannelListProps, useChatContext } from 'stream-chat-react';
 import { useLocation } from 'react-router-dom';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -45,7 +45,7 @@ const CompanyHeader = () => (
   </div>
 );
 
-export const ChannelListContainer: React.FC<Props> = (props) => {
+export const ChannelListContainer: React.FC<Props> = memo((props) => {
   const {
     options,
     setCreateType,
@@ -257,4 +257,4 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

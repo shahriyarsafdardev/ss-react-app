@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Box, Stack, Typography, Avatar } from '@material-ui/core';
 import { styled, Theme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
@@ -41,7 +41,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 
 const RONNY_COHORT_CODE = 'BBC';
 
-export default function Header({
+function Header({
   company,
   account,
   activeStep,
@@ -222,3 +222,5 @@ export default function Header({
     </StyledStack>
   );
 }
+
+export default memo(Header);

@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Typography, Stack } from '@material-ui/core';
+import { memo } from 'react';
 import { CohortType } from './Registration';
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -73,7 +74,7 @@ const StyledSpan = styled(StyledInstructorName)(({ theme }) => ({
   }
 }));
 
-export default function RegistrationNavbar({ cohort }: { cohort?: CohortType }) {
+function RegistrationNavbar({ cohort }: { cohort?: CohortType }) {
   return (
     <HeaderStyle>
       <StyledLogo
@@ -97,3 +98,5 @@ export default function RegistrationNavbar({ cohort }: { cohort?: CohortType }) 
     </HeaderStyle>
   );
 }
+
+export default memo(RegistrationNavbar);

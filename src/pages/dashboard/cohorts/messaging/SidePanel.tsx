@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Backdrop, Paper, Tooltip, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-fill';
 import bxMessage from '@iconify/icons-bx/bx-message';
 import { styled } from '@material-ui/core/styles';
 
-import { ChannelFilters } from 'stream-chat';
 import Scrollbar from '../../../../components/Scrollbar';
 import { MIconButton } from '../../../../components/@material-extend';
 import { ChannelListContainer } from '../../../../components/stream-chat/ChannelListContainer/ChannelListContainer';
@@ -86,7 +85,7 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1
 }));
 
-export default function SidePanel({ props }: SidePanelProps) {
+function SidePanel({ props }: SidePanelProps) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (open) {
@@ -124,3 +123,5 @@ export default function SidePanel({ props }: SidePanelProps) {
     </>
   );
 }
+
+export default memo(SidePanel);

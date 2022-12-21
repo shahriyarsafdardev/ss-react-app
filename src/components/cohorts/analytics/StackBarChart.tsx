@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { BaseOptionChart } from 'components/charts';
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
@@ -14,13 +15,7 @@ const ChartCard = styled(Card)(({ theme }) => ({
   }
 }));
 
-export default function StackedBarChart({
-  data_points,
-  title
-}: {
-  data_points: any;
-  title: string;
-}) {
+function StackedBarChart({ data_points, title }: { data_points: any; title: string }) {
   const CHART_DATA = data_points.data;
 
   const chartOptions = merge(BaseOptionChart(), {
@@ -50,3 +45,5 @@ export default function StackedBarChart({
     </ChartCard>
   );
 }
+
+export default memo(StackedBarChart);

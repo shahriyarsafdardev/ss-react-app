@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Stack, Typography } from '@material-ui/core';
 
@@ -32,4 +33,4 @@ const EmptyAttendanceTab = ({ imageLink }: { imageLink: string }) => (
   </StyledBox>
 );
 
-export default EmptyAttendanceTab;
+export default memo(EmptyAttendanceTab);

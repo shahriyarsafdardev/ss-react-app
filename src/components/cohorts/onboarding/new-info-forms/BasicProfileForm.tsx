@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { RootState, useSelector } from 'redux/store';
@@ -54,11 +55,7 @@ const StyledImage = styled('img')(({ theme }) => ({
   height: '200px'
 }));
 
-export default function BasicProfileForm({
-  setProfileFormSubmitted
-}: {
-  setProfileFormSubmitted: Function;
-}) {
+function BasicProfileForm({ setProfileFormSubmitted }: { setProfileFormSubmitted: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -87,3 +84,5 @@ export default function BasicProfileForm({
     </>
   );
 }
+
+export default memo(BasicProfileForm);
