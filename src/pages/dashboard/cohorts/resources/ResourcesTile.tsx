@@ -1,4 +1,4 @@
-import { useState, useContext, memo } from 'react';
+import { useState, useContext, memo, useCallback } from 'react';
 import { CardContent, Stack, Typography, Checkbox, useMediaQuery, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
@@ -51,7 +51,7 @@ function ResourcesTile({
     setChecked(!checked);
   };
 
-  const handleTileOnClick = () => {
+  const handleTileOnClick = useCallback(() => {
     if (localStorage.getItem('resources_opened_count') === '1' && isPublic) {
       showLimitModal(true);
       return;
@@ -77,7 +77,7 @@ function ResourcesTile({
       window.open(material?.action_url, '_blank');
       isPublic && localStorage.setItem('resources_opened_count', '1');
     }
-  };
+  }, []);
 
   const clipTitle = (title: String) => {
     if (!isMobile && title.length > 95) {
@@ -118,10 +118,8 @@ function ResourcesTile({
           <Stack
             direction="row"
             spacing={2}
-            sx={{
-              marginRight: '15px',
-              width: '100%'
-            }}
+            sx={{ marginRight: '15px', width: '100%' }}
+            onClick={handleTileOnClick}
           >
             {!isMobile && resourceIcon()}
             <Stack>

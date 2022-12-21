@@ -1,4 +1,4 @@
-import { useState, useContext, memo, useEffect } from 'react';
+import { useState, useContext, memo, useEffect, useCallback } from 'react';
 import {
   FormControl,
   MenuItem,
@@ -154,6 +154,14 @@ function ResourceFilter({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionState, categoryState]);
 
+  const selectMaterialType = useCallback((type: any) => {
+    selectedTypes.indexOf(type) === -1 &&
+      sendAnalyticsData('Resources Page - Filter Selected', {
+        'Selected Filter': type,
+        Source: source
+      });
+  }, []);
+
   const clearSearch = () => {
     setSearchQuery('');
     setSelectedTypes([]);
@@ -203,7 +211,7 @@ function ResourceFilter({
           handleOnChange={handleOnChange}
         />
       ) : (
-        <Stack direction="column" width="100%" spacing={2} sx={{ mb: 2 }}>
+        <>
           <FormControl sx={{ width: '100%', marginBottom: '20px' }}>
             <InputLabel id="resource-filter">Filter by Material Type</InputLabel>
             <Select
@@ -217,17 +225,7 @@ function ResourceFilter({
               sx={{ width: '100%' }}
             >
               {types.map((type: any) => (
-                <MenuItem
-                  onClick={() =>
-                    selectedTypes.indexOf(type) === -1 &&
-                    sendAnalyticsData('Resources Page - Filter Selected', {
-                      'Selected Filter': type,
-                      Source: source
-                    })
-                  }
-                  key={type}
-                  value={type}
-                >
+                <MenuItem onClick={() => selectMaterialType(type)} key={type} value={type}>
                   <Checkbox checked={selectedTypes.includes(type)} />
                   <ListItemText primary={getDisplayName(type)} />
                 </MenuItem>
@@ -239,7 +237,7 @@ function ResourceFilter({
             sessionNumber={sessionState}
             materialCategory={categoryState}
           />
-        </Stack>
+        </>
       )}
       {!loading && (
         <>

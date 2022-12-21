@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Page from 'components/Page';
 import { Container, Typography, Stack, Link } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
@@ -40,7 +40,7 @@ export default function PublicResources() {
     cohort && trackEvent(cohort, eventName, eventData);
   };
 
-  const handleShowMore = async (sessionID: string) => {
+  const handleShowMore = useCallback(async (sessionID: string) => {
     await axios
       .get(`/cohorts/${cohort_id}/resources/see_more.json?cohort_session_id=${sessionID}`)
       .then((res) => {
@@ -54,7 +54,7 @@ export default function PublicResources() {
           setResources(updated);
         }
       });
-  };
+  }, []);
 
   useEffect(() => {
     const getCohortAndResources = async () => {
