@@ -32,11 +32,7 @@ const EmptySessionTimestamps = ({ sendAnalyticsEvent }: { sendAnalyticsEvent: Fu
           </Link>{' '}
           to save timestamps during sessions.
         </Typography>
-        <Button
-          variant="outlined"
-          className={classes.styledButton}
-          onClick={() => handleLearnMore()}
-        >
+        <Button variant="outlined" className={classes.styledButton} onClick={handleLearnMore}>
           Learn More
         </Button>
       </Stack>

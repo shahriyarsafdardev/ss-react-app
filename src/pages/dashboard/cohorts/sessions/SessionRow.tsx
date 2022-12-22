@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useRef, useState, useContext, memo } from 'react';
+import { useContext, memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { firstUpcomingDate } from 'components/cohorts/home/Common';
 import moment from 'moment';
-import { Box, MenuItem, IconButton, Stack } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import MenuPopover from 'components/MenuPopover';
+import { Box, Stack } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { memoize } from 'lodash';
 import { SessionListItem } from '../../../../@types/cohorts';
 
 type SessionRowProps = {
@@ -15,7 +14,6 @@ type SessionRowProps = {
   onClick: Function;
   index: number;
   isSelected: boolean;
-  isLearner?: boolean;
 };
 
 const ListItem = styled('div')((props) => ({
@@ -53,83 +51,27 @@ const SessionCountdown = styled('div')((props) => ({
   }
 }));
 
-const StyledIcon = styled('img')(() => ({
-  width: '20px',
-  height: '20px',
-  marginRight: '15px'
-}));
-
-const InstructorOptions = memo(({ handleDelete }: { handleDelete: Function }) => {
-  const menuRef = useRef(null);
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <Box>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleOpen}
-        ref={menuRef}
-      >
-        <MoreVertIcon />
-      </IconButton>
-      <MenuPopover
-        open={open}
-        anchorEl={menuRef.current}
-        onClose={() => {
-          setOpen(false);
-        }}
-        sx={{ width: 200 }}
-      >
-        <MenuItem
-          id="comment-settings"
-          onClick={() => handleDelete()}
-          sx={{ typography: 'body2', py: 1, px: 2.5, color: 'primary' }}
-        >
-          <StyledIcon src="/static/icons/edit-oval.svg" alt="bin" />
-          Duplicate
-        </MenuItem>
-
-        <MenuItem
-          disabled
-          id="comment-settings"
-          onClick={() => handleDelete()}
-          sx={{ typography: 'body2', py: 1, px: 2.5, color: 'primary' }}
-        >
-          <StyledIcon src="/static/icons/edit-oval.svg" alt="bin" />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          id="comment-settings"
-          onClick={() => handleDelete()}
-          sx={{ typography: 'body2', py: 1, px: 2.5, color: '#FF4842' }}
-        >
-          <StyledIcon src="/static/icons/bin.svg" alt="bin" />
-          Delete
-        </MenuItem>
-      </MenuPopover>
-    </Box>
-  );
-});
-
-function SessionRow({ session, index, onClick, isSelected, isLearner = true }: SessionRowProps) {
+function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
   const sessionDate = moment(firstUpcomingDate(session.times)).add(1, 'hours');
   const isPastSession = sessionDate < moment();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const sessionTime = (date: string) => (
+  const handleSessionSelection = () => {
+    onClick(index);
+    sendAnalyticsData('Sessions Page - Session Sidebar - Session Selected', {
+      'Session ID': session?.id,
+      'Session Number': session?.number,
+      'Session Name': session?.name
+    });
+  };
+
+  const sessionTime = memoize((date: string) => (
     <span>
       {`Live ${moment(date).fromNow()}`}
       <br />
       {`${moment(date).format('DD MMMM YYYY')}`}
     </span>
-  );
+  ));
 
   return (
     <ListItem
@@ -142,17 +84,7 @@ function SessionRow({ session, index, onClick, isSelected, isLearner = true }: S
         })
       }}
     >
-      <div
-        onClick={() => {
-          onClick(index);
-          sendAnalyticsData('Sessions Page - Session Sidebar - Session Selected', {
-            'Session ID': session?.id,
-            'Session Number': session?.number,
-            'Session Name': session?.name
-          });
-        }}
-        style={{ width: '100%' }}
-      >
+      <div onClick={handleSessionSelection} style={{ width: '100%' }}>
         <Stack direction="row">
           <Box>
             <SessionDetails
@@ -160,7 +92,6 @@ function SessionRow({ session, index, onClick, isSelected, isLearner = true }: S
             >{`Session ${session.number} | ${session.length}`}</SessionDetails>
             <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
           </Box>
-          {/* {!isLearner && <InstructorOptions handleDelete={() => {}} />} */}
         </Stack>
         <SessionCountdown data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />

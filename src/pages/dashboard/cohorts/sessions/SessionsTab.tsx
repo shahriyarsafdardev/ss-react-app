@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Stack, Box } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -59,19 +59,23 @@ export default function SessionsTab() {
   const isLearner = user?.type === 'learner';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
-  const filteredSessions: Session[] = sessions?.filter(
-    (session) => session.display_in_sessions_tab === true
+
+  const filteredSessions: Session[] = useMemo(
+    () => sessions?.filter((session) => session.display_in_sessions_tab === true),
+    [sessions]
   );
 
-  if (filteredSessions && filteredSessions.length) {
-    trimmedSessionData = filteredSessions.map((session) => ({
-      id: session.id,
-      name: session.name,
-      times: session.times,
-      length: session.length,
-      number: session.number
-    }));
-  }
+  trimmedSessionData = useMemo(
+    () =>
+      filteredSessions?.map((session) => ({
+        id: session.id,
+        name: session.name,
+        times: session.times,
+        length: session.length,
+        number: session.number
+      })),
+    [filteredSessions]
+  );
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -102,7 +106,7 @@ export default function SessionsTab() {
     }
   }, [cohort]);
 
-  const setActivSession = () => {
+  const setActivSession = useCallback(() => {
     let found = false;
     filteredSessions?.forEach((session, index) => {
       const isPastSession = moment(firstUpcomingDate(session.times)).add(1, 'hours') < moment();
@@ -112,7 +116,8 @@ export default function SessionsTab() {
         found = true;
       }
     });
-  };
+  }, []);
+
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     trackEvent(cohort, eventName, eventData);
   };
@@ -170,7 +175,12 @@ export default function SessionsTab() {
 
   return (
     <CohortContext.Provider
-      value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
+      value={{
+        id: cohort?.id,
+        cohortName: cohort?.name,
+        cohortIntake: cohort?.intake,
+        cohort
+      }}
     >
       <Page title="Sphere | Sessions">
         <>

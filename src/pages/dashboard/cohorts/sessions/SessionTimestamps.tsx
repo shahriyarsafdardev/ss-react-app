@@ -1,7 +1,7 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useContext, useEffect } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
-import { RootState, useSelector } from 'redux/store';
+import { CohortContext } from 'contexts/CohortContext';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import Timestamp from './Timestamp';
 import EmptySessionTimestamps from './EmptySessionTimestamps';
@@ -19,10 +19,7 @@ const SessionTimestamps = ({
   session: any;
 }) => {
   const classes = useStyles();
-  const cohort_id = window.location.pathname.split('/')[2] || '';
-  const cohort = useSelector(
-    (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
-  );
+  const { cohort } = useContext(CohortContext);
 
   useEffect(() => {
     sendAnalyticsEvent('Sessions Page - Timestamps - Tab opened');

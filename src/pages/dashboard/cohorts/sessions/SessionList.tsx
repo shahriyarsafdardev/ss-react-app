@@ -22,7 +22,6 @@ function SessionList({ sessionsList, onClick, selectedSession, isLearner }: Sess
       <Box data-testid="sessions-list-container" id="sessions-list-container">
         {sessionsList.map((session, index) => (
           <SessionRow
-            isLearner={isLearner}
             key={session.id}
             isSelected={index === selectedSession}
             onClick={onClick}

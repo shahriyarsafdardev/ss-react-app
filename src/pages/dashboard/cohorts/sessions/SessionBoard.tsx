@@ -20,7 +20,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import ReactPlayer from 'react-player';
 import { makeStyles } from '@material-ui/styles';
-import { Summary, SurveyForm } from '../../../../components/cohorts/sessions';
+import { SurveyForm } from '../../../../components/cohorts/sessions';
 import NewSlides from '../../../../components/cohorts/sessions/NewSlides';
 import { Session } from '../../../../@types/cohorts';
 import { RootState, useDispatch, useSelector } from '../../../../redux/store';
