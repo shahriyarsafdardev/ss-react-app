@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 const Root = styled.div`
@@ -34,4 +34,4 @@ const Countdown = ({ countdownTime }) => {
   return <Root>{time !== 0 ? time : null}</Root>;
 };
 
-export default Countdown;
+export default memo(Countdown);

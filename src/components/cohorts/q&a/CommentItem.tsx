@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo } from 'react';
+import { useEffect, useRef, memo, useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -88,11 +88,14 @@ function CommentItem({
       });
   };
 
-  const handleRead = (value: boolean) => {
-    if (value && unreadNotificationID) {
-      dispatch(markAsRead('single', unreadNotificationID));
-    }
-  };
+  const handleRead = useCallback(
+    (value: boolean) => {
+      if (value && unreadNotificationID) {
+        dispatch(markAsRead('single', unreadNotificationID));
+      }
+    },
+    [dispatch, unreadNotificationID]
+  );
 
   return (
     <>

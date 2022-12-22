@@ -1,7 +1,6 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { styled, useTheme } from '@material-ui/core/styles';
-import axios from 'utils/axios';
 import moment from 'moment';
 import {
   Container,
@@ -175,12 +174,11 @@ function AnswerForm({
   handleSkipQuestion
 }: {
   onComplete: Function;
-  onClose: Function;
+  onClose: VoidFunction;
   unAnswered: Array<Question>;
   handleSkipQuestion: Function;
 }) {
   const questionsData = unAnswered;
-  const [loading, setLoading] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const totalQuestions = questionsData.length;
   const [questionID, setQuestionID] = useState('');
@@ -299,9 +297,20 @@ function AnswerForm({
     </p>
   ));
 
+  const skipQuestion = () => {
+    handleNext();
+    setAddRecording(false);
+    handleSkipQuestion(questionID);
+  };
+
+  const addRecordingButton = useCallback(
+    () => (addRecording ? handleSubmit() : setAddRecording(true)),
+    [addRecording]
+  );
+
   return (
     <>
-      {questionsData && !loading && Object.keys(questionsData).length >= 0 ? (
+      {questionsData && Object.keys(questionsData).length >= 0 ? (
         <>
           <QuestionContainer>
             <br />
@@ -350,11 +359,7 @@ function AnswerForm({
                   <StyledButton
                     className="btn-previous"
                     variant="outlined"
-                    onClick={() => {
-                      handleNext();
-                      setAddRecording(false);
-                      handleSkipQuestion(questionID);
-                    }}
+                    onClick={skipQuestion}
                     data-testid="btn-previous"
                   >
                     Skip Question
@@ -365,9 +370,7 @@ function AnswerForm({
                       variant="contained"
                       key={`${addRecording}`}
                       disabled={addRecording && !recording}
-                      onClick={() => {
-                        addRecording ? handleSubmit() : setAddRecording(true);
-                      }}
+                      onClick={addRecordingButton}
                       data-testid="btn-addRecording"
                     >
                       Add Recording
@@ -397,9 +400,7 @@ function AnswerForm({
                 <StyledButton
                   variant="contained"
                   className="btn-close"
-                  onClick={() => {
-                    onClose();
-                  }}
+                  onClick={() => onClose()}
                   data-testid="btn-close"
                 >
                   Close

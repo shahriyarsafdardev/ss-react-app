@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import { Box, Stack, Typography, Divider, Avatar } from '@material-ui/core';
+import { Box, Stack, Typography, Divider } from '@material-ui/core';
 import VisibilitySensor from 'react-visibility-sensor';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';

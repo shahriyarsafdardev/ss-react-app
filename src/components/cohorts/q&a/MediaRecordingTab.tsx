@@ -45,63 +45,62 @@ const MediaRecordingTab = ({
   questionType: string;
   onAudioRecordingComplete: Function;
   onTrack: Function;
-}) => (
-  <>
-    <RecordingButtonsContainer>
-      {isRecording && questionType === 'Video' && (
-        <VideoRecorder
-          onTrack={onTrack}
-          onClose={(value: boolean) => {
-            setIsRecording(value);
-            onVideoRecordingComplete(null);
-            setQuestionType('Text');
-          }}
-          onComplete={(response: any) => onVideoRecordingComplete(response)}
-        />
-      )}
-      {isRecording && questionType === 'Audio' && (
-        <AudioRecorder
-          onComplete={(response: any) => onAudioRecordingComplete(response)}
-          onTrack={onTrack}
-          onClose={(value: boolean) => {
-            setIsRecording(value);
-            onAudioRecordingComplete(null);
-            setQuestionType('Text');
-          }}
-        />
-      )}
-      {!isRecording && (
-        <>
-          <Typography
-            sx={{ fontWeight: 400, fontSize: 14, color: 'text.secondary', textAlign: 'center' }}
-          >
-            You can add a recording to provide context and a personal touch to your question!
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <StyledRecordingButton
-              variant="outlined"
-              startIcon={<img src="/static/cohorts-home/video-outlined.svg" alt="video-icon" />}
-              onClick={() => {
-                setQuestionType('Video');
-                setIsRecording(true);
-              }}
+}) => {
+  const handleButton = (medium: string) => {
+    setQuestionType(medium);
+    setIsRecording(true);
+  };
+
+  const recordingClose = (medium: string, value: boolean) => {
+    setIsRecording(value);
+    medium === 'Video' ? onVideoRecordingComplete(null) : onAudioRecordingComplete(null);
+    setQuestionType('Text');
+  };
+
+  return (
+    <>
+      <RecordingButtonsContainer>
+        {isRecording && questionType === 'Video' && (
+          <VideoRecorder
+            onTrack={onTrack}
+            onClose={(value: boolean) => recordingClose('Video', value)}
+            onComplete={(response: any) => onVideoRecordingComplete(response)}
+          />
+        )}
+        {isRecording && questionType === 'Audio' && (
+          <AudioRecorder
+            onComplete={(response: any) => onAudioRecordingComplete(response)}
+            onTrack={onTrack}
+            onClose={(value: boolean) => recordingClose('Audio', value)}
+          />
+        )}
+        {!isRecording && (
+          <>
+            <Typography
+              sx={{ fontWeight: 400, fontSize: 14, color: 'text.secondary', textAlign: 'center' }}
             >
-              Record Video
-            </StyledRecordingButton>
-            <StyledRecordingButton
-              variant="outlined"
-              startIcon={<img src="/static/cohorts-home/audio-outlined.svg" alt="audio-icon" />}
-              onClick={() => {
-                setQuestionType('Audio');
-                setIsRecording(true);
-              }}
-            >
-              Record Audio
-            </StyledRecordingButton>
-          </Box>
-        </>
-      )}
-    </RecordingButtonsContainer>
-  </>
-);
+              You can add a recording to provide context and a personal touch to your question!
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <StyledRecordingButton
+                variant="outlined"
+                startIcon={<img src="/static/cohorts-home/video-outlined.svg" alt="video-icon" />}
+                onClick={() => handleButton('Video')}
+              >
+                Record Video
+              </StyledRecordingButton>
+              <StyledRecordingButton
+                variant="outlined"
+                startIcon={<img src="/static/cohorts-home/audio-outlined.svg" alt="audio-icon" />}
+                onClick={() => handleButton('Audio')}
+              >
+                Record Audio
+              </StyledRecordingButton>
+            </Box>
+          </>
+        )}
+      </RecordingButtonsContainer>
+    </>
+  );
+};
 export default memo(MediaRecordingTab);

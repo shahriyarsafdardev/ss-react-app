@@ -174,6 +174,8 @@ const QuestionForm = ({
       </StyledLoadingButton>
     );
 
+  const closeAnswerModal = () => setModal(false);
+
   const AnswerModal = memo(
     ({
       state,
@@ -182,11 +184,11 @@ const QuestionForm = ({
       handleSkipQuestion
     }: {
       state: boolean;
-      onClose: Function;
+      onClose: VoidFunction;
       onComplete: Function;
       handleSkipQuestion: Function;
     }) => (
-      <Modal open={state} onClose={() => onClose()}>
+      <Modal open={state} onClose={onClose}>
         <AnswerForm
           key="answerForm"
           onComplete={onComplete}
@@ -198,13 +200,23 @@ const QuestionForm = ({
     )
   );
 
+  const trackMedia = (action: string) => sendAnalyticsData('Question Form', action);
+  const enterQuestion = () => sendAnalyticsData('Question Form', 'Started entering question');
+  const addQuestion = () => {
+    if (!showMediaSection) {
+      setQuestionType('Text');
+    }
+    if (isRecording) {
+      setIsRecording(false);
+    }
+    setMediaSection(!showMediaSection);
+  };
+
   return (
     <QuestionFormContainer id="question-box">
       <AnswerModal
         state={modalState}
-        onClose={() => {
-          setModal(false);
-        }}
+        onClose={closeAnswerModal}
         onComplete={addAnswer}
         handleSkipQuestion={handleSkipQuestion}
       />
@@ -223,7 +235,7 @@ const QuestionForm = ({
                     id="question-text-input"
                     rows={isMobile ? 2 : 1}
                     onChange={(e) => setQuestionSummary(e.target.value)}
-                    onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
+                    onFocus={enterQuestion}
                     style={{ height: '100%' }}
                     inputProps={{
                       height: '100%',
@@ -242,20 +254,12 @@ const QuestionForm = ({
                       setIsRecording={setIsRecording}
                       setQuestionType={setQuestionType}
                       questionType={questionType}
-                      onTrack={(action: string) => sendAnalyticsData('Question Form', action)}
+                      onTrack={trackMedia}
                     />
                   )}
                   <ButtonsContainer>
                     <AddQuestionButton
-                      onClick={() => {
-                        if (!showMediaSection) {
-                          setQuestionType('Text');
-                        }
-                        if (isRecording) {
-                          setIsRecording(false);
-                        }
-                        setMediaSection(!showMediaSection);
-                      }}
+                      onClick={addQuestion}
                       variant="outlined"
                       startIcon={
                         showMediaSection === true ? (

@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  OutlinedInput,
-  MenuItem
-} from '@material-ui/core';
+import { Box, FormControl, InputLabel, Select, OutlinedInput, MenuItem } from '@material-ui/core';
 import { SectionContainer } from './Common';
 
 const ITEM_HEIGHT = 48;

@@ -58,7 +58,7 @@ const EmptyFeed = ({ hosts }: { hosts: string }) => (
       topics are not restricted, your question can refer to a Session or a problem you’re facing at
       work, and will be answered by {hosts} in video format!
     </StyledPara>
-    <StyledButton onClick={() => handleClick()} variant="contained">
+    <StyledButton onClick={handleClick} variant="contained">
       ASK YOUR QUESTION
     </StyledButton>
   </StyledFeedContainer>
