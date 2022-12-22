@@ -43,6 +43,25 @@ const StudentProfileFilters = ({
     setView(selectedView);
   };
 
+  const sendAnalyticsData = (eventName: string, eventData?: any) =>
+    trackEvent(cohort, eventName, eventData);
+
+  const handleGridViewClick = () =>
+    sendAnalyticsData('Networking Page - View Toggle Selected', {
+      'Selected View': 'Grid View'
+    });
+
+  const handleListView = () =>
+    sendAnalyticsData('Networking Page - View Toggle Selected', {
+      'Selected View': 'Table View'
+    });
+
+  const handleSelectCompany = (name: string) =>
+    selectedCompanies.indexOf(name) === -1 &&
+    sendAnalyticsData('Networking Page - Company Filter Selected', {
+      'Company Name': name
+    });
+
   return (
     <ViewSelector data-testid="user-filters">
       <FilterFormControl data-testid="view-mode">
@@ -63,11 +82,7 @@ const StudentProfileFilters = ({
             value="grid"
             id="grid-view"
             data-testid="peer-grid-view"
-            onClick={() =>
-              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
-                'Selected View': 'Grid View'
-              })
-            }
+            onClick={handleGridViewClick}
           >
             Grid View
           </MenuItem>
@@ -76,11 +91,7 @@ const StudentProfileFilters = ({
             value="list"
             id="table-view"
             data-testid="peer-table-view"
-            onClick={() =>
-              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
-                'Selected View': 'Table View'
-              })
-            }
+            onClick={handleListView}
           >
             Table View
           </MenuItem>
@@ -106,12 +117,7 @@ const StudentProfileFilters = ({
               key={name}
               value={name}
               sx={{ paddingRight: 1 }}
-              onClick={() =>
-                selectedCompanies.indexOf(name) === -1 &&
-                trackEvent(cohort, 'Networking Page - Company Filter Selected', {
-                  'Company Name': name
-                })
-              }
+              onClick={() => handleSelectCompany(name)}
             >
               <Checkbox
                 checked={selectedCompanies.indexOf(name) > -1}

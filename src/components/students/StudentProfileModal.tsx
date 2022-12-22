@@ -100,16 +100,23 @@ const StudentProfileModal = ({
     discord_url,
     email
   } = modalUser;
+
+  const handleModalClose = () => {
+    trackModalEvent('Networking Page - Profile Modal - Modal Closed', modalUser);
+    modalHandler({});
+  };
+
+  const handleLinkedInClick = () =>
+    trackModalEvent('Networking Page - Profile Modal - "Connect on LinkedIn" Selected', modalUser);
+
+  const handleMessageClick = () =>
+    trackModalEvent(
+      'Networking Page - Profile Modal - "Message through Sphere" Selected',
+      modalUser
+    );
+
   return (
-    <Modal
-      className="small"
-      open={modalState}
-      onClose={() => {
-        trackModalEvent('Networking Page - Profile Modal - Modal Closed', modalUser);
-        modalHandler({});
-      }}
-      id="student-modal"
-    >
+    <Modal className="small" open={modalState} onClose={handleModalClose} id="student-modal">
       <StyledContainer>
         <Title>
           {first_name} {last_name}
@@ -257,12 +264,7 @@ const StudentProfileModal = ({
             />
             <Link
               href={linkedin_url}
-              onClick={() =>
-                trackModalEvent(
-                  'Networking Page - Profile Modal - "Connect on LinkedIn" Selected',
-                  modalUser
-                )
-              }
+              onClick={handleLinkedInClick}
               target="_blank"
               data-testid="linkedin-url"
             >
@@ -295,12 +297,7 @@ const StudentProfileModal = ({
             />
             <Link
               href={`/cohorts/${cohort?.id}/messaging?direct=true&receiver_id=${id}`}
-              onClick={() =>
-                trackModalEvent(
-                  'Networking Page - Profile Modal - "Message through Sphere" Selected',
-                  modalUser
-                )
-              }
+              onClick={handleMessageClick}
             >
               {' '}
               <Text data-testid="message-user">Message {first_name} through Sphere</Text>

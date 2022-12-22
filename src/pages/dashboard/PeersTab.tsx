@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // utils;
 import { trackEvent } from 'utils/eventTracking';
 import useAuth from 'hooks/useAuth';
@@ -61,18 +61,21 @@ export default function PeersTab() {
   const { peers } = cohort || { peers: null };
   let filteredPeers: Array<StudentProfile> = [];
 
-  const displayPeers =
-    cohort?.released_for_learners ||
-    user?.type === 'expert' ||
-    user?.type === 'admin' ||
-    user?.admin;
+  const displayPeers = useMemo(
+    () =>
+      cohort?.released_for_learners ||
+      user?.type === 'expert' ||
+      user?.type === 'admin' ||
+      user?.admin,
+    [cohort?.released_for_learners, user?.type, user?.admin]
+  );
 
   if (displayPeers && peers) {
     filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.profile_image_url);
   }
 
   useEffect(() => {
-    if (displayPeers) {
+    const getCompanies = () => {
       // get all the companies to choose from peers.
       let newCompanies = filteredPeers
         ?.map((peer) => peer.current_company.name)
@@ -89,6 +92,9 @@ export default function PeersTab() {
           modalHandler(peer);
         }
       }
+    };
+    if (displayPeers) {
+      getCompanies();
     }
   }, [peers, cohort_id]);
 
@@ -118,7 +124,7 @@ export default function PeersTab() {
     }
   }, [dispatch, cohort]);
 
-  const getAlumni = async () => {
+  const getAlumni = useCallback(async () => {
     await axios
       .get(`/cohorts/peers_in_batches.json?offset=${offset}`)
       .then((res: any) => {
@@ -145,7 +151,7 @@ export default function PeersTab() {
       .catch((err) => {
         console.log(err.message || 'Some error occurred!');
       });
-  };
+  }, []);
 
   const applyFilters = useCallback(
     (students: StudentProfile[]) => {
@@ -175,48 +181,35 @@ export default function PeersTab() {
     });
   };
 
+  const handlePeerModal = (peer: any) => {
+    modalHandler(peer);
+    trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+  };
+
   const showCardView = () =>
     !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
-        loadMore={() => getAlumni()}
+        loadMore={getAlumni}
         viewMode="grid"
         hasMore={totalCount > alumni.length}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
+        modalHandler={handlePeerModal}
       />
     ) : (
-      <StudentProfileGrid
-        students={applyFilters(filteredPeers)}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
-      />
+      <StudentProfileGrid students={applyFilters(filteredPeers)} modalHandler={handlePeerModal} />
     );
 
   const showTableView = () =>
     !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
-        loadMore={() => getAlumni()}
+        loadMore={getAlumni}
         viewMode="list"
         hasMore={totalCount > alumni.length}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
+        modalHandler={handlePeerModal}
       />
     ) : (
-      <StudentProfileList
-        students={applyFilters(filteredPeers)}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
-      />
+      <StudentProfileList students={applyFilters(filteredPeers)} modalHandler={handlePeerModal} />
     );
 
   const renderPeers = () =>

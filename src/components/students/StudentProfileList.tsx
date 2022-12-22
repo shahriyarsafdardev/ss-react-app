@@ -36,8 +36,8 @@ const StudentProfileList = ({ students, modalHandler }: StudentProfileListProps)
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = students.map((n) => n.first_name);
-      setSelected(newSelecteds);
+      const newSelected = students.map((n) => n.first_name);
+      setSelected(newSelected);
       return;
     }
     setSelected([]);

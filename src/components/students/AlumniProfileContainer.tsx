@@ -46,8 +46,8 @@ const AlumniProfileContainer = ({
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = alumnis.map((alumni) => alumni.first_name);
-      setSelected(newSelecteds);
+      const newSelected = alumnis.map((alumni) => alumni.first_name);
+      setSelected(newSelected);
       return;
     }
     setSelected([]);
