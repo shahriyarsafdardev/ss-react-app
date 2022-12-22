@@ -1,7 +1,7 @@
 {
   "env": {
     "baseUrl": "http://localhost:3000",
-    "serverUrl": "https://scholarsite-staging.herokuapp.com/api/v1"
+    "serverUrl": "https://sphere-rails-app-staging.herokuapp.com/api/v1"
   },
   "ignoreTestFiles": "*e2e*",
   "video": false,

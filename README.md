@@ -28,7 +28,7 @@ These tests will rely on a set of fixtured included within the `./fixtures/` dir
 
 ### Login
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/sign_in
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/sign_in
 
 Params: { email: string, password: string }
 
@@ -38,7 +38,7 @@ Failed response fixture: fixtures/failed_authentication.json
 
 ### Fetch User
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/fetch_user
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/fetch_user
 
 Params: {}
 
@@ -48,7 +48,7 @@ Failed response fixture: fixtures/failed_user_fetch.json
 
 ### Cohort List
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts
 
 Params: {}
 
@@ -56,7 +56,7 @@ Fixture: fixtures/cohorts_fixture.json
 
 ### Cohort Details
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid
 
 Params: {}
 
@@ -64,7 +64,7 @@ Fixture: fixtures/cohort_fixture.json
 
 ### Peers details for a Cohort
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/peers
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/peers
 
 Params: { cohort_id: uuid }
 
@@ -72,7 +72,7 @@ Fixture: fixtures/cohort_peers_fixture.json
 
 ### Cohort Session Details
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/sessions
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/sessions
 
 Params: { cohort_id: uuid }
 
@@ -80,7 +80,7 @@ Fixture: fixtures/cohort_sessions_fixture.json
 
 ### Cohort Home Details
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/home
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/home
 
 Params: { cohort_id: uuid, participant_id: uuid }
 
@@ -88,7 +88,7 @@ Fixture: fixtures/cohort_home_fixture.json
 
 ### Cohort Registration, on each step completion
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/step_completed
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/step_completed
 
 Params: { cohort_id: uuid, step_number: number, enrollment_id: uuid }
 
@@ -96,7 +96,7 @@ Fixture: N/A
 
 ### Saving a User profile details for a cohort
 
-URL: https://scholarsite-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/save_user_profile
+URL: https://https://sphere-rails-app-staging.herokuapp.com/api/v1/users/user_uuid/cohorts/cohort_uuid/onboarding/save_user_profile
 
 Params: {
 cohort_id: uuid,
