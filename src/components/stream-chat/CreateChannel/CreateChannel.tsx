@@ -1,4 +1,4 @@
-import { useContext, useState, memo } from 'react';
+import { useContext, useState, memo, useCallback } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Icon } from '@iconify/react';
@@ -90,7 +90,7 @@ export const CreateChannel: React.FC<Props> = memo((props) => {
   const enrolledUsers = cohortUsers.filter((user_id: string) => user_id !== client.userID);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const matchRegex = () => {
+  const matchRegex = useCallback(() => {
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
       enqueueSnackbar('Invalid channel name. Only A-Z, a-z, 0-9 and _- are allowed', {
         variant: 'error'
@@ -98,7 +98,8 @@ export const CreateChannel: React.FC<Props> = memo((props) => {
       return false;
     }
     return true;
-  };
+  }, [createType, channelName]);
+
   const createPublicChannel = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (!matchRegex()) {

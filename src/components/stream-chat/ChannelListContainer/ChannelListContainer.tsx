@@ -60,20 +60,23 @@ export const ChannelListContainer: React.FC<Props> = memo((props) => {
   const selectedUsers = [loggedinUserID || client.userID || '', url.get('receiver_id') || ''];
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const sendAnalytics = (channel: any) => {
-    if (channel && client && canTrack) {
-      const members = Object.values(channel?.state?.members).filter(
-        (m: any) => m?.user?.id !== client?.userID
-      );
-      const type = channel.data?.type === 'team' ? 'public' : 'private';
-      const name = type === 'public' ? `#${channel.data?.name}` : getChannelName(members);
+  const sendAnalytics = useCallback(
+    (channel: any) => {
+      if (channel && client && canTrack) {
+        const members = Object.values(channel?.state?.members).filter(
+          (m: any) => m?.user?.id !== client?.userID
+        );
+        const type = channel.data?.type === 'team' ? 'public' : 'private';
+        const name = type === 'public' ? `#${channel.data?.name}` : getChannelName(members);
 
-      sendAnalyticsData('Messaging Page - Channel Opened', {
-        'Channel Name': name,
-        'Channel Type': type
-      });
-    }
-  };
+        sendAnalyticsData('Messaging Page - Channel Opened', {
+          'Channel Name': name,
+          'Channel Type': type
+        });
+      }
+    },
+    [client, canTrack]
+  );
 
   useEffect(() => {
     const initChannel = async () => {
@@ -177,16 +180,23 @@ export const ChannelListContainer: React.FC<Props> = memo((props) => {
     return 1;
   });
 
-  const filterTeamChannels = (channels: any) =>
-    channels
-      .filter((channel: any) => channel.type === 'team' && channel.data?.team === cohortID)
-      .sort((a: any, b: any) => compareChannels(a.data?.name, b.data?.name));
+  const filterTeamChannels = useCallback(
+    (channels: any) =>
+      channels
+        .filter((channel: any) => channel.type === 'team' && channel.data?.team === cohortID)
+        .sort((a: any, b: any) => compareChannels(a.data?.name, b.data?.name)),
+    [cohortID, compareChannels]
+  );
 
-  const filterMessagingChannels = (channels: any) =>
-    channels.filter(
-      (channel: any) =>
-        channel.type === 'messaging' && (channel.data?.team === cohortID || duplicateChat(channel))
-    );
+  const filterMessagingChannels = useCallback(
+    (channels: any) =>
+      channels.filter(
+        (channel: any) =>
+          channel.type === 'messaging' &&
+          (channel.data?.team === cohortID || duplicateChat(channel))
+      ),
+    [cohortID, duplicateChat]
+  );
 
   return (
     <div className="channel-list__container">

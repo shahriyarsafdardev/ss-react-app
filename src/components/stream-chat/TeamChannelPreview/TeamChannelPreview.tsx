@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext, memo, useCallback } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useSelector } from '../../../redux/store';
@@ -21,12 +21,11 @@ type Props = ChannelPreviewUIComponentProps & {
   type: string;
 };
 
-export const getChannelName = memo((members: any) =>
+export const getChannelName = (members: any) =>
   members
     .slice(0, 2)
     .map((m: any) => m?.user?.name || m?.user?.id)
-    .join(' ')
-);
+    .join(' ');
 
 export const TeamChannelPreview: React.FC<Props> = memo((props) => {
   const { channel, setActiveChannel, setIsCreating, setIsEditing, type } = props;
@@ -113,7 +112,7 @@ export const TeamChannelPreview: React.FC<Props> = memo((props) => {
     );
   };
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     setIsCreating(false);
     setIsEditing(false);
     if (setActiveChannel) {
@@ -126,7 +125,7 @@ export const TeamChannelPreview: React.FC<Props> = memo((props) => {
         'Channel Type': type === 'team' ? 'public' : 'private'
       });
     }
-  };
+  }, [channel, client.userID, type]);
 
   return (
     <div

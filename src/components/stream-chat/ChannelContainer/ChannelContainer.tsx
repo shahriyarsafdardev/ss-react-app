@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useContext, useEffect, memo } from 'react';
+import { useState, useContext, useEffect, memo, useCallback } from 'react';
 import { Channel, useChatContext, ThreadHeaderProps } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
 import './ChannelContainer.css';
@@ -55,11 +55,11 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
     TeamUserType
   >();
 
-  const getReplyCount = () => {
+  const getReplyCount = useCallback(() => {
     if (!thread?.reply_count) return '';
     if (thread.reply_count === 1) return '1 Reply';
     return `${thread.reply_count} Replies`;
-  };
+  }, [thread?.reply_count]);
 
   return (
     <div className="custom-thread-header">
@@ -107,34 +107,40 @@ export const ChannelContainer: React.FC<Props> = memo((props) => {
   const [path, setPath] = useState<string>('');
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const validEvent = (event: string, userID: string | undefined) =>
-    ['reaction.new', 'message.new'].includes(event) && userID === client.userID;
+  const validEvent = useCallback(
+    (event: string, userID: string | undefined) =>
+      ['reaction.new', 'message.new'].includes(event) && userID === client.userID,
+    [client?.userID]
+  );
 
-  const sendAnalytics = (event: any) => {
-    if (validEvent(event.type, event?.user?.id) && channel && client) {
-      const name =
-        event.channel_type === 'team'
-          ? `#${channel.data?.name}`
-          : getChannelName(
-              Object.values(channel?.state?.members).filter(
-                ({ user }) => user?.id !== client?.userID
-              )
-            );
-      const eventData = {
-        'Channel Name': name,
-        'Message Content': event.message.text,
-        'Channel Type': event.channel_type === 'team' ? 'public' : 'private'
-      };
-      if (event.type === 'message.new') {
-        sendAnalyticsData('Messaging Page - Message Sent', eventData);
-      } else if (event.type === 'reaction.new') {
-        sendAnalyticsData('Messaging Page - Reaction Added', {
-          ...eventData,
-          'Message Sender': event.message.user.name
-        });
+  const sendAnalytics = useCallback(
+    (event: any) => {
+      if (validEvent(event.type, event?.user?.id) && channel && client) {
+        const name =
+          event.channel_type === 'team'
+            ? `#${channel.data?.name}`
+            : getChannelName(
+                Object.values(channel?.state?.members).filter(
+                  ({ user }) => user?.id !== client?.userID
+                )
+              );
+        const eventData = {
+          'Channel Name': name,
+          'Message Content': event.message.text,
+          'Channel Type': event.channel_type === 'team' ? 'public' : 'private'
+        };
+        if (event.type === 'message.new') {
+          sendAnalyticsData('Messaging Page - Message Sent', eventData);
+        } else if (event.type === 'reaction.new') {
+          sendAnalyticsData('Messaging Page - Reaction Added', {
+            ...eventData,
+            'Message Sender': event.message.user.name
+          });
+        }
       }
-    }
-  };
+    },
+    [validEvent, channel, client]
+  );
 
   useEffect(() => {
     if (channel && client) {

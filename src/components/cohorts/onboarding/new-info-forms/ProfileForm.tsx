@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 import { Stack, TextField, FormControl, Typography, styled } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { UploadAvatar } from 'components/upload';
@@ -74,7 +74,7 @@ function ProfileForm({
       });
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     const uploadData = new FormData();
     uploadData.append('first_name', infoObject.first_name);
@@ -98,7 +98,7 @@ function ProfileForm({
         enqueueSnackbar('Some error occurred!', { variant: 'error' });
         setIsSubmitting(false);
       });
-  };
+  }, [infoObject, cohort_id]);
 
   const handleDrop = (files: any) => {
     onUpdateAttribute('profile_image', {

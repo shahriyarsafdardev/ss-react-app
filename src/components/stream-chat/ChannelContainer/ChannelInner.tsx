@@ -1,4 +1,4 @@
-import React, { useContext, useState, memo } from 'react';
+import React, { useContext, useState, memo, useCallback } from 'react';
 import ConfirmationAlert from 'components/ConfirmationAlert';
 import { MessageResponse, logChatPromiseExecution } from 'stream-chat';
 
@@ -107,14 +107,14 @@ export const ChannelInner: React.FC<InnerProps> = memo((props) => {
     }
   };
 
-  const overrideSubmitHandler = (message: MessageToSend) => {
+  const overrideSubmitHandler = useCallback((message: MessageToSend) => {
     if (message.text?.includes('@everyone')) {
       setMessage(message);
       setModalState(true);
     } else {
       sendMessageHandler(message);
     }
-  };
+  }, []);
 
   return (
     <GiphyContext.Provider value={giphyStateObj}>
