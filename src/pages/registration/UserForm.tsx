@@ -154,7 +154,7 @@ function UserForm({
                     variant="contained"
                     loading={isSubmitting}
                     disabled={!isValid || ((!!account || wait_listed) && !values.acceptedTerms)}
-                    onClick={() => submitForm()}
+                    onClick={submitForm}
                     data-testid="submit-application"
                     id="btn-submit"
                   >

@@ -97,6 +97,11 @@ export default function TeamPackageInquiry() {
     }
   });
 
+  const handleShareInformation = () => {
+    handleSubmit();
+    setIsFormSubmit(true);
+  };
+
   const { values, isSubmitting, touched, errors, getFieldProps, isValid, handleSubmit } = formik;
 
   if (loading || !cohortID || !enrollmentID) {
@@ -176,17 +181,14 @@ export default function TeamPackageInquiry() {
                     <StyledLoadingButton
                       variant="contained"
                       loading={isSubmitting}
-                      onClick={() => {
-                        handleSubmit();
-                        setIsFormSubmit(true);
-                      }}
+                      onClick={handleShareInformation}
                       disabled={!isValid || values.email === '' || values.fullName === ''}
                     >
                       Share Information
                     </StyledLoadingButton>
                     <Button
                       variant="outlined"
-                      onClick={() => handleBackButton()}
+                      onClick={handleBackButton}
                       className={classes.submitButton}
                     >
                       Back

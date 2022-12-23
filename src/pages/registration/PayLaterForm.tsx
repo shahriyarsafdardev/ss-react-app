@@ -175,7 +175,7 @@ export default function PayLaterForm({
             fullWidth
             variant="outlined"
             className={classes.submitButton}
-            onClick={() => handleBackButton()}
+            onClick={handleBackButton}
           >
             Back
           </Button>

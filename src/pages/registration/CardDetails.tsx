@@ -1,7 +1,7 @@
 import axios from 'utils/axios';
 import { Grid, Card, Stack, Typography, styled } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import RegistrationPayment from 'pages/RegistrationPayment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
@@ -37,37 +37,40 @@ function CardDetails({
   const [customerID, setCustomerID] = useState('');
   const { enqueueSnackbar } = useSnackbar();
 
-  const paymentSetup = () => {
+  const paymentSetup = useCallback(() => {
     axios.get(`/enrollments/${enrollmentID}/payment_intent.json`).then((res) => {
       setClientSecret(res.data.clientSecret);
       setCustomerID(res.data.customerID);
     });
-  };
+  }, [enrollmentID]);
 
   useEffect(() => {
     trackRegistrationEvent('Cohort Registration - Payment Info Page - Page Loaded');
     paymentSetup();
   }, []);
 
-  const handleSubmit = async (paymentMethod: string) => {
-    if (enrollmentID && cohort?.id) {
-      await axios
-        .post(`/cohorts/${cohort?.id}/enrollments/${enrollmentID}/add_payment_details.json`, {
-          customerID,
-          paymentMethod
-        })
-        .then((res) => {
-          enqueueSnackbar('Card Details submitted', { variant: 'success' });
-          trackRegistrationEvent('Cohort Registration - Payment Info Page - Submitted Card');
-          setStep(4);
-        })
-        .catch((error: any) => {
-          enqueueSnackbar(error.message, { variant: 'error' });
-        });
-    } else {
-      enqueueSnackbar('Invalid user credentials', { variant: 'error' });
-    }
-  };
+  const handleSubmit = useCallback(
+    async (paymentMethod: string) => {
+      if (enrollmentID && cohort?.id) {
+        await axios
+          .post(`/cohorts/${cohort?.id}/enrollments/${enrollmentID}/add_payment_details.json`, {
+            customerID,
+            paymentMethod
+          })
+          .then((res) => {
+            enqueueSnackbar('Card Details submitted', { variant: 'success' });
+            trackRegistrationEvent('Cohort Registration - Payment Info Page - Submitted Card');
+            setStep(4);
+          })
+          .catch((error: any) => {
+            enqueueSnackbar(error.message, { variant: 'error' });
+          });
+      } else {
+        enqueueSnackbar('Invalid user credentials', { variant: 'error' });
+      }
+    },
+    [enrollmentID, customerID, cohort?.id]
+  );
 
   if (clientSecret === '') {
     return (
@@ -77,12 +80,13 @@ function CardDetails({
     );
   }
 
-  const InfoRow = ({ title, value }: { title: string; value: string }) => (
+  const InfoRow = memo(({ title, value }: { title: string; value: string }) => (
     <Stack direction={{ xs: 'column', md: 'row' }} sx={{ mb: 1 }}>
       <Typography sx={{ color: 'text.secondary', fontWeight: 'bolder' }}>{title}:&nbsp;</Typography>
       <Typography>{value}</Typography>
     </Stack>
-  );
+  ));
+
   const CohortInfo = () => (
     <CohortDetailsCard>
       <InfoRow title="Course" value={cohort?.name || ''} />

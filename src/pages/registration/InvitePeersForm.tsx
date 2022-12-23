@@ -163,7 +163,7 @@ function InvitePeersForm({
               color="primary"
               loading={isSubmitting}
               disabled={!isValid || !values.email || !values.fullName}
-              onClick={() => submitForm()}
+              onClick={submitForm}
             >
               Send Invite
             </StyledLoadingButton>

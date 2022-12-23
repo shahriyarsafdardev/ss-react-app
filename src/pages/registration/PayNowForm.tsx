@@ -182,7 +182,7 @@ export default function PayNowForm({
             fullWidth
             variant="outlined"
             className={classes.submitButton}
-            onClick={() => handleBackButton()}
+            onClick={handleBackButton}
           >
             Back
           </Button>

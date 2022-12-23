@@ -40,6 +40,7 @@ const StyledSvg = styled('svg')(({ theme }) => ({
     display: 'none'
   }
 }));
+
 const StyledStack = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {

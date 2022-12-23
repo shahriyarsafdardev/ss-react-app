@@ -138,6 +138,11 @@ export default function PersonalDetailsPage() {
     }
   });
 
+  const handleSubmit = () => {
+    submitForm();
+    setIsFormSubmit(true);
+  };
+
   const { errors, touched, getFieldProps, isSubmitting, isValid, submitForm } = formik;
 
   if (loading || !cohortID) {
@@ -235,10 +240,7 @@ export default function PersonalDetailsPage() {
                         variant="contained"
                         loading={isSubmitting}
                         disabled={!isValid}
-                        onClick={() => {
-                          submitForm();
-                          setIsFormSubmit(true);
-                        }}
+                        onClick={handleSubmit}
                         type="submit"
                         data-testid="submit-registration-form"
                         id="btn-submit"

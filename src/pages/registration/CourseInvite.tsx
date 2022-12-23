@@ -101,6 +101,11 @@ export default function CourseInvite() {
     }
   });
 
+  const handleSendInvite = () => {
+    handleSubmit();
+    setIsFormSubmit(true);
+  };
+
   const { values, isSubmitting, touched, errors, getFieldProps, setFieldValue, handleSubmit } =
     formik;
 
@@ -182,10 +187,7 @@ export default function CourseInvite() {
                       type="submit"
                       variant="contained"
                       loading={isSubmitting}
-                      onClick={() => {
-                        handleSubmit();
-                        setIsFormSubmit(true);
-                      }}
+                      onClick={handleSendInvite}
                       disabled={values.emails === ''}
                     >
                       Send Invite
