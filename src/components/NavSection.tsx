@@ -190,7 +190,7 @@ function NavItem({
               <Box
                 component={Icon}
                 icon={open ? arrowIosDownwardFill : arrowIosForwardFill}
-                sx={{ width: 16, height: 16, ml: 1 }}
+                sx={{ width: 16, height: 16, ml: 1, minWidth: 16 }}
               />
             </>
           )}
