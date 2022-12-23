@@ -4,7 +4,7 @@ import { Grid, Stack } from '@material-ui/core';
 import { KeyMetricHighlight, InfoTooltip, changeOccur } from './Common';
 import { Enrollment } from '../../../@types/cohorts';
 
-function Summary({ enrollments }: { enrollments: Enrollment[] }) {
+function Highlights({ enrollments }: { enrollments: Enrollment[] }) {
   const startOfWeek = moment().startOf('week').add(1, 'days').format('Do of MMMM');
   return (
     <Stack sx={{ margin: '0 1rem 1.2rem 1rem' }} maxWidth="xl">
@@ -143,4 +143,4 @@ function Summary({ enrollments }: { enrollments: Enrollment[] }) {
   );
 }
 
-export default memo(Summary);
+export default memo(Highlights);
