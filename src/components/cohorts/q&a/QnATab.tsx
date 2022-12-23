@@ -1,5 +1,5 @@
 import { Container, Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
@@ -33,17 +33,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
     '> div': {
       marginTop: '20px'
     }
-  }
-}));
-
-const StyledFiltersContainer = styled(Box)(({ theme }) => ({
-  width: '33%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '530px',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
   }
 }));
 
@@ -91,20 +80,16 @@ function QnATab() {
     setList([questionObject, ...list]);
   };
 
-  const handleSkipQuestion = (questionID: string) => {
-    const initMaterials = async () => {
-      try {
-        await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
-          // setList(list.filter((question) => question.id !== res.data.question_id));
-          enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
-        });
-      } catch (error) {
-        console.log(error);
-        enqueueSnackbar('Some Error Occurred', { variant: 'error' });
-      }
-    };
-    initMaterials();
-  };
+  const handleSkipQuestion = useCallback(async (questionID: string) => {
+    try {
+      await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
+        enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
+      });
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar('Some Error Occurred', { variant: 'error' });
+    }
+  }, []);
 
   const addAnswer = (questionID: string, recording: any) => {
     submitAnswer(questionID, recording, list, (list: Question[]) => setList(list));

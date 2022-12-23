@@ -75,7 +75,7 @@ function CommentItem({
     }
   }, []);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     const url = `/questions_feed/delete_comment.json?comment_id=${id}`;
     await axios
       .delete(url)
@@ -86,7 +86,7 @@ function CommentItem({
       .catch((error) => {
         enqueueSnackbar('Error in deleting comment', { variant: 'error' });
       });
-  };
+  }, [id]);
 
   const handleRead = useCallback(
     (value: boolean) => {

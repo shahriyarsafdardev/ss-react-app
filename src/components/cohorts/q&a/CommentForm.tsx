@@ -1,4 +1,4 @@
-import { useState, useRef, memo } from 'react';
+import { useState, useRef, memo, useCallback } from 'react';
 import useAuth from 'hooks/useAuth';
 import { Icon } from '@iconify/react';
 import roundSend from '@iconify/icons-ic/round-send';
@@ -117,7 +117,7 @@ function CommentForm({ questionID, addComment }: { questionID: string; addCommen
 
   const { values, handleSubmit, isSubmitting, setFieldValue, getFieldProps } = formik;
 
-  const uploadeImage = (event: any) => {
+  const uploadeImage = useCallback((event: any) => {
     if (event?.target?.files[0]) {
       setFieldValue('file', event.target.files[0]);
       setPreview(URL.createObjectURL(event.target.files[0]));
@@ -126,7 +126,8 @@ function CommentForm({ questionID, addComment }: { questionID: string; addCommen
       setPreview('');
       setFieldValue('file', null);
     }
-  };
+  }, []);
+
   return (
     <>
       <Stack

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useContext, useState, useEffect, memo } from 'react';
+import { useContext, useState, useEffect, memo, useCallback } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -154,7 +154,7 @@ const DesktopStepper = ({
   );
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const scroll = async (val: number) => {
+  const scroll = useCallback(async (val: number) => {
     const elem = document.getElementById('timeline-div');
     if (elem) {
       elem.scrollLeft += val * 130;
@@ -171,7 +171,8 @@ const DesktopStepper = ({
       }
       setArrowState(ARROW_STATES.MIDDLE);
     }
-  };
+  }, []);
+
   useEffect(() => {
     if (isRendered) {
       setActiveStep(activeSession);
@@ -191,11 +192,13 @@ const DesktopStepper = ({
     };
   }, [activeStep]);
 
-  const handleRightArrowClick = () => {
+  const handleRightArrow = () => {
+    scroll(4);
     sendAnalyticsData('Home Page - Timeline - Right Arrow Selected', {});
   };
 
-  const handleLeftArrowClick = () => {
+  const handleLeftArrow = () => {
+    scroll(-4);
     sendAnalyticsData('Home Page - Timeline - Left Arrow Selected', {});
   };
 
@@ -213,14 +216,8 @@ const DesktopStepper = ({
       <img
         data-testid="left-arrow-icon"
         src="/static/cohorts-home/left-arrow.svg"
-        onClick={() => {
-          scroll(-4);
-          handleLeftArrowClick();
-        }}
-        onKeyDown={() => {
-          scroll(-4);
-          handleLeftArrowClick();
-        }}
+        onClick={handleLeftArrow}
+        onKeyDown={handleLeftArrow}
         className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
       />
@@ -305,14 +302,8 @@ const DesktopStepper = ({
       <img
         data-testid="right-arrow-icon"
         src="/static/cohorts-home/right-arrow.svg"
-        onClick={() => {
-          scroll(4);
-          handleRightArrowClick();
-        }}
-        onKeyDown={() => {
-          scroll(4);
-          handleRightArrowClick();
-        }}
+        onClick={handleRightArrow}
+        onKeyDown={handleRightArrow}
         className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"
       />

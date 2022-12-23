@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Box, FormControl, InputLabel, Select, OutlinedInput, MenuItem } from '@material-ui/core';
+import { memoize } from 'lodash';
 import { SectionContainer } from './Common';
 
 const ITEM_HEIGHT = 48;
@@ -16,20 +17,20 @@ const MenuProps = {
 const orderOptions = ['Answer Date', 'Question Date'];
 const filterOptions = ['All', 'Answered', 'Unanswered'];
 
-const getStyles = (name: string, options: string[]) => ({
+const getStyles = memoize((name: string, options: string[]) => ({
   fontWeight: options.indexOf(name) === -1 ? 500 : 700
-});
+}));
 
 const Filters = () => {
   const [orderBy, setOrderBy] = useState([]);
   const [filterBy, setFilterBy] = useState([]);
 
-  const handleChange = (event: any, stateHandler: Function) => {
+  const handleChange = useCallback((event: any, stateHandler: Function) => {
     const {
       target: { value }
     } = event;
     stateHandler(typeof value === 'string' ? value.split(',') : value);
-  };
+  }, []);
 
   return (
     <SectionContainer className="filters">

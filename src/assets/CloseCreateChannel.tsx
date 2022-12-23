@@ -1,9 +1,11 @@
+import { memo } from 'react';
+
 type Props = {
   setIsCreating?: React.Dispatch<React.SetStateAction<boolean>>;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CloseCreateChannel = (props: Props) => {
+export const CloseCreateChannel = memo((props: Props) => {
   const { setIsCreating, setIsEditing } = props;
 
   return (
@@ -24,4 +26,4 @@ export const CloseCreateChannel = (props: Props) => {
       />
     </svg>
   );
-};
+});

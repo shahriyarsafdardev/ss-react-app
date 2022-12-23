@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, memo } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
-
 import './CreateChannel.css';
 import { Box, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -46,7 +45,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   }
 }));
 
-const ChannelNameInput: React.FC<InputProps> = (props) => {
+const ChannelNameInput: React.FC<InputProps> = memo((props) => {
   const { channelName = '', setChannelName } = props;
 
   return (
@@ -61,7 +60,7 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
       <p>Add Members</p>
     </div>
   );
-};
+});
 
 type Props = {
   createType: string;
@@ -70,7 +69,7 @@ type Props = {
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CreateChannel: React.FC<Props> = (props) => {
+export const CreateChannel: React.FC<Props> = memo((props) => {
   const { createType, setIsCreating, cohortID, cohortUsers } = props;
 
   const { client, setActiveChannel } = useChatContext<
@@ -237,4 +236,4 @@ export const CreateChannel: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

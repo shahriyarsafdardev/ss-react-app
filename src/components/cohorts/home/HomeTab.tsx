@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
@@ -29,11 +29,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const Index = () => {
   const dispatch = useDispatch();
-  const [hasQuestionSubmitted, setQuestionSubmitted] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
-  const { mode } = useSelector((state: RootState) => state.instructorView);
-  const { user } = useAuth();
   const [activeStepper, setActiveStepper] = useState(0);
   const url = new URLSearchParams(useLocation().search);
   const paramStep = url.get('active_step');
@@ -54,7 +51,6 @@ const Index = () => {
   useEffect(() => {
     if (cohort && !sessions) {
       dispatch(getSessions(cohort.id));
-      setQuestionSubmitted(cohort?.is_feedback_submitted);
     }
   }, [cohort]);
 
@@ -103,7 +99,7 @@ const Index = () => {
       .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(2, 'hour'))
       .includes(false);
 
-  const displayActiveStep = () => {
+  const displayActiveStep = useCallback(() => {
     if (activeStepper === 0) {
       return <WelcomePage setActiveStepper={setActiveStepper} cohort={cohort} />;
     }
@@ -112,7 +108,7 @@ const Index = () => {
     }
 
     return <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />;
-  };
+  }, [activeStepper, cohort, activeSession, sessions]);
 
   const homeTabSection = () => (
     <Container style={{ marginBottom: '50px' }}>

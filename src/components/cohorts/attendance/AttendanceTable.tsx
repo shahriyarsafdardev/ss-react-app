@@ -1,4 +1,5 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
+import { memoize } from 'lodash';
 import EmptyAttendanceTab from 'components/cohorts/onboarding/empty-states/EmptyAttendanceTab';
 
 import {
@@ -33,7 +34,7 @@ const StyledContainer = styled(Card)(() => ({
   minHeight: '500px'
 }));
 
-const getIcon = (status: any) => {
+const getIcon = memoize((status: any) => {
   if (status === AttendanceType.live) {
     return (
       <Tooltip arrow placement="top" title="Attended Live">
@@ -56,7 +57,7 @@ const getIcon = (status: any) => {
     );
   }
   return null;
-};
+});
 
 const AttendanceTable = ({
   attendance,
@@ -79,16 +80,19 @@ const AttendanceTable = ({
     setRows(attendance.sessionAttendanceRecords);
   }, [attendance]);
 
-  const handleSearch = (searchVal: string) => {
-    setSearch(searchVal);
-    const searchedRows = attendance.sessionAttendanceRecords.filter(
-      (item: SessionAttendanceRecord) =>
-        item.name.toLowerCase().includes(searchVal.toLowerCase()) ||
-        item.position.toLowerCase().includes(searchVal.toLowerCase())
-    );
+  const handleSearch = useCallback(
+    (searchVal: string) => {
+      setSearch(searchVal);
+      const searchedRows = attendance.sessionAttendanceRecords.filter(
+        (item: SessionAttendanceRecord) =>
+          item.name.toLowerCase().includes(searchVal.toLowerCase()) ||
+          item.position.toLowerCase().includes(searchVal.toLowerCase())
+      );
 
-    setRows(searchedRows);
-  };
+      setRows(searchedRows);
+    },
+    [attendance.sessionAttendanceRecords]
+  );
 
   return (
     <StyledContainer>

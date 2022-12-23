@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 // material
 import { Button, Card, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -22,7 +22,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-export default function ReferralCodesForm({
+function ReferralCodesForm({
   codes,
   onSubmit,
   cohortName
@@ -107,3 +107,5 @@ export default function ReferralCodesForm({
     </Card>
   );
 }
+
+export default memo(ReferralCodesForm);

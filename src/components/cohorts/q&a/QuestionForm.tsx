@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, memo } from 'react';
+import { useState, useEffect, useContext, memo, useCallback } from 'react';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -126,7 +126,7 @@ const QuestionForm = ({
     }
   }, [questionSummary.length]);
 
-  const onFormSubmitHandler = async () => {
+  const onFormSubmitHandler = useCallback(async () => {
     setSubmitting(true);
     sendAnalyticsData('Question Form', 'Submitted question');
     const questionData = new FormData();
@@ -160,7 +160,7 @@ const QuestionForm = ({
         enqueueSnackbar('Please try submitting again', { variant: 'error' });
         setSubmitting(false);
       });
-  };
+  }, [questionSummary, questionType, audioData, videoData, cohort_id]);
 
   const submitButton = () =>
     unAnswered.length > 0 && (
@@ -202,7 +202,8 @@ const QuestionForm = ({
 
   const trackMedia = (action: string) => sendAnalyticsData('Question Form', action);
   const enterQuestion = () => sendAnalyticsData('Question Form', 'Started entering question');
-  const addQuestion = () => {
+
+  const addQuestion = useCallback(() => {
     if (!showMediaSection) {
       setQuestionType('Text');
     }
@@ -210,7 +211,7 @@ const QuestionForm = ({
       setIsRecording(false);
     }
     setMediaSection(!showMediaSection);
-  };
+  }, [showMediaSection, isRecording]);
 
   return (
     <QuestionFormContainer id="question-box">

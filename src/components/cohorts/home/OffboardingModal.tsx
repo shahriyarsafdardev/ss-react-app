@@ -1,4 +1,4 @@
-import { useContext, memo } from 'react';
+import { useContext, memo, useCallback } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack, Typography } from '@material-ui/core';
 import { Modal } from 'components/animate';
@@ -89,14 +89,13 @@ const OffboardingModal = ({
     sendAnalyticsData('Cohort Offboarding - Share modal - "Copy link only" button clicked', {});
   };
 
+  const handleModalClose = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - Modal Closed', {});
+    setModalState(!modalState);
+  };
+
   return (
-    <Modal
-      open={modalState}
-      onClose={() => {
-        sendAnalyticsData('Cohort Offboarding - Share modal - Modal Closed', {});
-        setModalState(!modalState);
-      }}
-    >
+    <Modal open={modalState} onClose={handleModalClose}>
       <ModalStyle>
         <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" sx={{ height: '100%' }}>
           <StyledStack spacing={2} justifyContent="center">
@@ -112,7 +111,7 @@ const OffboardingModal = ({
               credit to use towards your next Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />
-            <StyledModalButton variant="contained" onClick={() => handleShareToLinkedin()}>
+            <StyledModalButton variant="contained" onClick={handleShareToLinkedin}>
               Share to LinkedIn
             </StyledModalButton>
             <Stack
@@ -123,14 +122,14 @@ const OffboardingModal = ({
               sx={{ color: '#101658', marginTop: '20px' }}
             >
               <Typography variant="h6">Share via:</Typography>
-              <StyledIconButton onClick={() => handleShareViaTwitter()}>
+              <StyledIconButton onClick={handleShareViaTwitter}>
                 <StyledIcon icon={twitterFill} />
               </StyledIconButton>
-              <StyledIconButton onClick={() => handleShareViaEmail()}>
+              <StyledIconButton onClick={handleShareViaEmail}>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
               <a href={activeImage} download={activeImage} rel="noreferrer" target="_blank">
-                <StyledIconButton onClick={() => handleDownload()}>
+                <StyledIconButton onClick={handleDownload}>
                   <StyledIcon icon={baselineFileDownload} />
                 </StyledIconButton>
               </a>

@@ -63,15 +63,13 @@ const InvitePeersModal = ({
     invitePeersModalState && trackSegmentEvent('Cohort Onboarding - Invite Team - Modal Opened');
   }, [invitePeersModalState]);
 
+  const handleModalClose = () => {
+    trackSegmentEvent('Cohort Onboarding - Invite Team - Modal Closed');
+    setInvitePeersModalState(false);
+  };
+
   return (
-    <Modal
-      open={invitePeersModalState}
-      onClose={() => {
-        trackSegmentEvent('Cohort Onboarding - Invite Team - Modal Closed');
-        setInvitePeersModalState(false);
-      }}
-      id="student-modal"
-    >
+    <Modal open={invitePeersModalState} onClose={handleModalClose} id="student-modal">
       <Card>
         <StyledStack>
           <InvitationMessage spacing={2}>

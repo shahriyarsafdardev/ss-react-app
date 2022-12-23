@@ -27,7 +27,7 @@ const About = () => (
       </Typography>
       <Typography style={{ fontWeight: 300, fontSize: '16px', color: '#212B36' }}>
         You can use Q&A to ask Steve questions outside of session hours. I recommend doing x, y and
-        z. Q&A remains opend after the cohort finishes so you will see questions asked from other
+        z. Q&A remains opened after the cohort finishes so you will see questions asked from other
         cohorts here as well.
       </Typography>
     </Box>

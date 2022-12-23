@@ -59,7 +59,6 @@ function Messaging() {
   const [createType, setCreateType] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const { mode } = useSelector((state: RootState) => state.instructorView);
   const theme = useTheme();
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const { user } = useAuth();

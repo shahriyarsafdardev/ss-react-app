@@ -113,6 +113,21 @@ export const TeamChannelPreview: React.FC<Props> = memo((props) => {
     );
   };
 
+  const onClick = () => {
+    setIsCreating(false);
+    setIsEditing(false);
+    if (setActiveChannel) {
+      setActiveChannel(channel);
+      const members = Object.values(channel.state.members).filter(
+        ({ user }) => user?.id !== client.userID
+      );
+      sendAnalyticsData('Messaging Page - Channel Opened', {
+        'Channel Name': type === 'team' ? `#${channel?.data?.name}` : getChannelName(members),
+        'Channel Type': type === 'team' ? 'public' : 'private'
+      });
+    }
+  };
+
   return (
     <div
       key={unreadCount}
@@ -121,20 +136,7 @@ export const TeamChannelPreview: React.FC<Props> = memo((props) => {
           ? 'channel-preview__wrapper__selected'
           : 'channel-preview__wrapper'
       }
-      onClick={() => {
-        setIsCreating(false);
-        setIsEditing(false);
-        if (setActiveChannel) {
-          setActiveChannel(channel);
-          const members = Object.values(channel.state.members).filter(
-            ({ user }) => user?.id !== client.userID
-          );
-          sendAnalyticsData('Messaging Page - Channel Opened', {
-            'Channel Name': type === 'team' ? `#${channel?.data?.name}` : getChannelName(members),
-            'Channel Type': type === 'team' ? 'public' : 'private'
-          });
-        }
-      }}
+      onClick={onClick}
       role="button"
       onKeyPress={() => {}}
       tabIndex={0}

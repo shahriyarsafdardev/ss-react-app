@@ -14,7 +14,6 @@ import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(1);
-  const [certificates, setCertificates] = useState(cohort?.certificate_links);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
@@ -24,6 +23,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const dispatch = useDispatch();
   const url = new URLSearchParams(useLocation().search);
   const referrer = url.get('referrer') || '';
+  const certificates = cohort?.certificate_links;
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
@@ -54,6 +54,17 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
     sendAnalyticsData('Cohort Offboarding - "Open End-of-cohort Survey" button clicked', {});
   };
 
+  const handleSurveyModalClose = () => {
+    setFeedbackModalState(false);
+    dispatch(updateSessionModalState(lastSession?.id || ''));
+  };
+
+  const handleSurveyModalCompleted = () => {
+    setFeedbackModalState(false);
+    dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
+    dispatch(updateSessionModalState(lastSession?.id || ''));
+  };
+
   return (
     <StyledBox>
       {displayConfetti && (
@@ -72,15 +83,8 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
       />
       <SurveyModal
         state={feedbackModalState}
-        onClose={() => {
-          setFeedbackModalState(false);
-          dispatch(updateSessionModalState(lastSession?.id || ''));
-        }}
-        onComplete={() => {
-          setFeedbackModalState(false);
-          dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
-          dispatch(updateSessionModalState(lastSession?.id || ''));
-        }}
+        onClose={handleSurveyModalClose}
+        onComplete={handleSurveyModalCompleted}
         session={lastSession}
       />
       <Stack
@@ -110,7 +114,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
             className={classes.linkButton}
             variant="contained"
             sx={{ color: '#101658', backgroundColor: '#fff', textTransform: 'none' }}
-            onClick={() => handleDownloadAndShare()}
+            onClick={handleDownloadAndShare}
           >
             Download and Share
           </Button>
@@ -118,7 +122,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
             className={classes.linkButton}
             variant="outlined"
             sx={{ color: '#fff !important', textTransform: 'none' }}
-            onClick={() => handleShareFeedback()}
+            onClick={handleShareFeedback}
           >
             Open End-of-cohort Survey
           </Button>

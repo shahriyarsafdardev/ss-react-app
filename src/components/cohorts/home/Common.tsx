@@ -9,7 +9,7 @@ import {
   Button,
   IconButton
 } from '@material-ui/core';
-import { uniq } from 'lodash';
+import { memoize, uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
 import moment from 'moment';
@@ -218,11 +218,14 @@ const getLocalTimeZone = () =>
     .split(/[(,)]+/)[1]
     .match(/\b(\w)/g)
     ?.join('');
-const formatList = (list: string[]) =>
-  list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ');
 
-export const sortedTimes = (times: string[]) =>
-  [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1));
+const formatList = memoize((list: string[]) =>
+  list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ')
+);
+
+export const sortedTimes = memoize((times: string[]) =>
+  [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1))
+);
 
 export const surveyTime = (times: string[]) =>
   sortedTimes(times).filter((time) => moment(time).add(48, 'hours') > moment())[0];
@@ -232,7 +235,7 @@ export const upcomingTimes = (times: string[]) =>
     .filter((time) => moment(time).add(2, 'hours') > moment())
     .slice(0, 2);
 
-export const firstUpcomingDate = (times: string[]) => {
+export const firstUpcomingDate = memoize((times: string[]) => {
   const sorted: string[] = sortedTimes(times);
   let firstTime = sorted[sorted.length - 1];
   const upcomings = upcomingTimes(times);
@@ -240,7 +243,7 @@ export const firstUpcomingDate = (times: string[]) => {
     [firstTime] = upcomings;
   }
   return firstTime;
-};
+});
 
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(new Date(time)).format('hh:mm a');
@@ -337,12 +340,17 @@ export const CalendarInstructionsModal = memo(
       });
     };
 
+    const handleModalClose = () => setCalendarInstructionsModalState(false);
+
+    const nextHandler = () => {
+      setCalendarInstructionsModalState(false);
+      handleSubmit();
+    };
+
     return (
       <Modal
         open={calendarInstructionsModalState}
-        onClose={() => {
-          setCalendarInstructionsModalState(false);
-        }}
+        onClose={handleModalClose}
         zIndex={1400}
         className={classes.calendarInstructionsModal}
       >
@@ -351,10 +359,7 @@ export const CalendarInstructionsModal = memo(
             Please follow the instructions below to add the sessions to you calendar
           </Typography>
           <AddToCalendarInfo
-            onNextHandler={() => {
-              setCalendarInstructionsModalState(false);
-              handleSubmit();
-            }}
+            onNextHandler={nextHandler}
             onNeedHandler={onNeedHandler}
             inviteUrl={calendarURL}
           />
@@ -377,12 +382,15 @@ export const ChecklistItem = memo(
     onSubmit: Function;
   }) => {
     const classes = useStyles();
+
+    const handleStackClick = () => {
+      status === 'Active' && onSubmit();
+    };
+
     return (
       <Stack
         direction="row"
-        onClick={() => {
-          status === 'Active' && onSubmit();
-        }}
+        onClick={handleStackClick}
         className={`${status === 'Active' && classes.buttonActive}`}
         sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
       >
@@ -429,6 +437,9 @@ export const ChecklistCompletionPrompt = memo(
       dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
     };
 
+    const handleGotoHome = () => handleSubmit(true);
+    const handleContinueNetworking = () => handleSubmit(false);
+
     return (
       <Stack className={classes.completionPrompt} spacing={4}>
         <Typography textAlign="center">
@@ -438,14 +449,14 @@ export const ChecklistCompletionPrompt = memo(
           <Button
             className={classes.completionPromptButton}
             variant="contained"
-            onClick={() => handleSubmit(true)}
+            onClick={handleGotoHome}
           >
             Go to Home
           </Button>
           <Button
             className={classes.completionPromptButton}
             variant="outlined"
-            onClick={() => handleSubmit(false)}
+            onClick={handleContinueNetworking}
           >
             Continue Networking
           </Button>

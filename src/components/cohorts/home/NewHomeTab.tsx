@@ -1,6 +1,6 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
-import { useContext, useEffect, useState, memo } from 'react';
+import { useContext, useEffect, useState, memo, useCallback, useMemo } from 'react';
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
@@ -63,31 +63,34 @@ function NewHomeTab({
     });
   };
 
-  const markAsComplete = async (sessionMaterialId: string) => {
-    await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, true));
-    sendPreReadsEvent('Home Page - Prereads - "Next Reading" Selected');
-    setCurrentStep(currentStep + 1);
-  };
+  const markAsComplete = useCallback(
+    async (sessionMaterialId: string, nextStep: number) => {
+      await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, true));
+      sendPreReadsEvent('Home Page - Prereads - "Next Reading" Selected');
+      setCurrentStep(nextStep);
+    },
+    [cohort?.id, activeSession?.id, dispatch]
+  );
 
-  const previousReading = () => {
+  const previousReading = useCallback(() => {
     setCurrentStep(currentStep - 1);
     currentStep < list.length
       ? sendPreReadsEvent('Home Page - Prereads - "Previous Reading" Selected')
       : sendSessionPreviewEvent('Home Page - Session Preview - "Previous Reading" Selected');
-  };
+  }, [currentStep, list]);
 
-  const triggerSupplementaryEvent = () => {
+  const triggerSupplementaryEvent = useCallback(() => {
     sendSessionPreviewEvent(
       'Home Page - Session Preview - "Review Supplementary Resources" Selected'
     );
-  };
+  }, []);
 
-  const markAttendance = () => {
+  const markAttendance = useCallback(() => {
     axios.post(`/cohorts/${cohort?.id}/cohort_session_attendance.json`, {
       status: 'attended_live',
       session_id: activeSession?.id
     });
-  };
+  }, [activeSession?.id, cohort?.id]);
 
   useEffect(() => {
     const materialsList =
@@ -109,7 +112,7 @@ function NewHomeTab({
       component={RouterLink}
       to={`/cohorts/${cohort.id}/sessions`}
       fullWidth
-      onClick={() => triggerSupplementaryEvent()}
+      onClick={triggerSupplementaryEvent}
     >
       Review Supplementary Resources
     </Button>
@@ -120,68 +123,79 @@ function NewHomeTab({
       fullWidth
       className={classes.homeNavigation}
       variant="outlined"
-      onClick={() => previousReading()}
+      onClick={previousReading}
     >
       Previous Reading
     </Button>
   );
 
-  const PreReadingData = memo(({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => (
-    <StyledBox>
-      <ImageBox>
-        <img
-          src={
-            sessionMaterial.thumbnail_image_url
-              ? sessionMaterial.thumbnail_image_url
-              : 'https://i.pinimg.com/736x/eb/62/3d/eb623d5675533da657fead95998004b4.jpg'
-          }
-          alt="session-prereading-img"
-          width="100%"
-        />
-      </ImageBox>
-      <Divider orientation="vertical" style={{ height: 'auto' }} />
-      <PreReadingStack>
-        <Box>
-          <PreReadingTitle data-testid="pre-reading-title">
-            Pre-Reading {sessionMaterial?.index}
-          </PreReadingTitle>
-          <PreReadingDetail data-testid="pre-reading-description">
-            {sessionMaterial.name}
-          </PreReadingDetail>
-          <PreReadingDescription data-testid="pre-reading-description">
-            {sessionMaterial.description}
-          </PreReadingDescription>
-        </Box>
-        <Stack spacing={1} className={classes.navigationButtons}>
-          <Button
-            className={classes.homeNavigation}
-            variant="contained"
-            target="_blank"
-            onClick={() => sendPreReadsEvent('Home Page - Prereads - "Open Reading" Selected')}
-            href={sessionMaterial.action_url}
-          >
-            Open
-          </Button>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-            {currentStep > 0 && <PreviousButton />}
+  const PreReadingData = memo(({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => {
+    const markReadingCompleted = () => markAsComplete(sessionMaterial.id, currentStep + 1);
+    const handleReadingOpened = () =>
+      sendPreReadsEvent('Home Page - Prereads - "Open Reading" Selected');
 
+    return (
+      <StyledBox>
+        <ImageBox>
+          <img
+            src={
+              sessionMaterial.thumbnail_image_url
+                ? sessionMaterial.thumbnail_image_url
+                : 'https://i.pinimg.com/736x/eb/62/3d/eb623d5675533da657fead95998004b4.jpg'
+            }
+            alt="session-prereading-img"
+            width="100%"
+          />
+        </ImageBox>
+        <Divider orientation="vertical" style={{ height: 'auto' }} />
+        <PreReadingStack>
+          <Box>
+            <PreReadingTitle data-testid="pre-reading-title">
+              Pre-Reading {sessionMaterial?.index}
+            </PreReadingTitle>
+            <PreReadingDetail data-testid="pre-reading-description">
+              {sessionMaterial.name}
+            </PreReadingDetail>
+            <PreReadingDescription data-testid="pre-reading-description">
+              {sessionMaterial.description}
+            </PreReadingDescription>
+          </Box>
+          <Stack spacing={1} className={classes.navigationButtons}>
             <Button
-              fullWidth
               className={classes.homeNavigation}
-              variant="outlined"
-              onClick={() => markAsComplete(sessionMaterial.id)}
+              variant="contained"
+              target="_blank"
+              onClick={handleReadingOpened}
+              href={sessionMaterial.action_url}
             >
-              Next Reading
+              Open
             </Button>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+              {currentStep > 0 && <PreviousButton />}
+
+              <Button
+                fullWidth
+                className={classes.homeNavigation}
+                variant="outlined"
+                onClick={markReadingCompleted}
+              >
+                Next Reading
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
-      </PreReadingStack>
-    </StyledBox>
-  ));
+        </PreReadingStack>
+      </StyledBox>
+    );
+  });
 
   const renderSessionDetailNavigation = () => {
     const handleOpenMessaging = () => {
       sendSessionPreviewEvent('Home Page - Session Preview - "Open Messaging" Selected');
+    };
+
+    const handleJoinSession = () => {
+      sendSessionPreviewEvent('Home Page - Session Preview - "Join Session" Selected');
+      markAttendance();
     };
 
     if (isZoomLinkVisible(activeSession)) {
@@ -191,10 +205,7 @@ function NewHomeTab({
             className={classes.homeNavigation}
             variant="contained"
             href={activeSession?.zoom_url}
-            onClick={() => {
-              sendSessionPreviewEvent('Home Page - Session Preview - "Join Session" Selected');
-              markAttendance();
-            }}
+            onClick={handleJoinSession}
           >
             Join Session
           </Button>
@@ -235,7 +246,7 @@ function NewHomeTab({
     );
   };
 
-  const cohortHostName = () => {
+  const cohortHostName = useMemo(() => {
     let hostName = cohort.host_full_name;
     if (cohort?.code === 'CS') {
       hostName = 'Matt Dixon';
@@ -244,7 +255,7 @@ function NewHomeTab({
       }
     }
     return hostName;
-  };
+  }, [activeSession, cohort]);
 
   const SessionDetailStep = () => (
     <StyledBox className={classes.message}>
@@ -254,7 +265,7 @@ function NewHomeTab({
         </PreReadingTitle>
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
-            Live with {activeSession?.networking_session ? 'your cohort' : cohortHostName()},{' '}
+            Live with {activeSession?.networking_session ? 'your cohort' : cohortHostName},{' '}
             <span>
               <strong>
                 {displayMultipleDates(activeSession?.times || [])}
@@ -280,7 +291,7 @@ function NewHomeTab({
     return <SessionDetailStep />;
   };
 
-  const selectHeading = () => {
+  const selectHeading = useCallback(() => {
     if (list.length && currentStep < list.length) {
       return `👋 Welcome ${user?.first_name}, make sure you get ready for our ${sessionName(
         activeSession,
@@ -305,7 +316,7 @@ function NewHomeTab({
       activeSession,
       `Session ${activeSession?.number}`
     )}!`;
-  };
+  }, [activeSession, currentStep]);
 
   return (
     <Container style={{ padding: '0' }}>

@@ -3,6 +3,7 @@ import writeXlsxFile from 'write-excel-file';
 import { Icon } from '@iconify/react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack5';
+import { memoize } from 'lodash';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ResetIcon from '@material-ui/icons/RestartAlt';
 import copy from 'clipboard-copy';
@@ -143,7 +144,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CompanyTooltipMessage = (enrollment: Enrollment) => {
+const CompanyTooltipMessage = memoize((enrollment: Enrollment) => {
   let header = `${enrollment.first_name} ${enrollment.last_name} enrolled`;
   if (enrollment.first_name.includes('Unknown')) {
     header = 'This user enrolled';
@@ -155,7 +156,8 @@ const CompanyTooltipMessage = (enrollment: Enrollment) => {
     return `${header} through an individual subscription`;
   }
   return `${header} through ${enrollment?.company_name} ${enrollment?.credit_account_type} subscription`;
-};
+});
+
 export const InfoTooltip = memo(
   ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
     const classes = useStyles();
@@ -173,32 +175,31 @@ export const InfoTooltip = memo(
   }
 );
 
-export const changeOccur = (
-  enrollments: any,
-  statuses: any,
-  type: string,
-  account_status: boolean
-) => {
-  const totalEnrollments =
-    statuses.length > 0
-      ? enrollments.filter(
-          (e: any) =>
-            statuses.includes(e.status) ||
-            (account_status &&
-              (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
-        )
-      : enrollments.filter((e: { status: string }) => e.status !== 'Partial Application Received');
-  const startDate = moment().startOf('week').add(1, 'days');
-  const newEnrollments = totalEnrollments.filter(
-    (e: any) => !!e[type] && moment(e[type]) >= startDate
-  );
-  const difference = newEnrollments.length;
-  return {
-    color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
-    total: totalEnrollments.length,
-    difference
-  };
-};
+export const changeOccur = memoize(
+  (enrollments: any, statuses: any, type: string, account_status: boolean) => {
+    const totalEnrollments =
+      statuses.length > 0
+        ? enrollments.filter(
+            (e: any) =>
+              statuses.includes(e.status) ||
+              (account_status &&
+                (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
+          )
+        : enrollments.filter(
+            (e: { status: string }) => e.status !== 'Partial Application Received'
+          );
+    const startDate = moment().startOf('week').add(1, 'days');
+    const newEnrollments = totalEnrollments.filter(
+      (e: any) => !!e[type] && moment(e[type]) >= startDate
+    );
+    const difference = newEnrollments.length;
+    return {
+      color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
+      total: totalEnrollments.length,
+      difference
+    };
+  }
+);
 
 export const RegistrationsHeader = memo(
   ({
@@ -300,6 +301,16 @@ export const ReferralCodeRow = memo(
     );
     const referralLink = `${cohort.registration_page_url}?referrer=${values.code}`;
 
+    const handleChange = (e: any, text: string) => {
+      setFieldValue(text, e.target.value);
+      submitForm();
+    };
+
+    const onClick = () => {
+      copy(referralLink);
+      enqueueSnackbar('Referral Link Copied', { variant: 'success' });
+    };
+
     return (
       <>
         <FormikProvider value={formik}>
@@ -315,10 +326,7 @@ export const ReferralCodeRow = memo(
                     fullWidth
                     id="code"
                     defaultValue={code.code}
-                    onChange={(e) => {
-                      setFieldValue('code', e.target.value);
-                      submitForm();
-                    }}
+                    onChange={(e) => handleChange(e, 'code')}
                     label="Referral Code"
                     error={Boolean(touched.code && errors.code)}
                     helperText={touched.code && errors.code}
@@ -331,10 +339,7 @@ export const ReferralCodeRow = memo(
                     id="referral_message"
                     label="Referral Message"
                     defaultValue={code.referral_message}
-                    onChange={(e) => {
-                      setFieldValue('referral_message', e.target.value);
-                      submitForm();
-                    }}
+                    onChange={(e) => handleChange(e, 'referral_message')}
                     error={Boolean(touched.referral_message && errors.referral_message)}
                     helperText={touched.referral_message && errors.referral_message}
                     inputProps={{
@@ -346,22 +351,14 @@ export const ReferralCodeRow = memo(
                     id="referral_notes"
                     label="Referral Notes"
                     defaultValue={code.referral_notes}
-                    onChange={(e) => {
-                      setFieldValue('referral_notes', e.target.value);
-                      submitForm();
-                    }}
+                    onChange={(e) => handleChange(e, 'referral_notes')}
                     error={Boolean(touched.referral_notes && errors.referral_notes)}
                     helperText={touched.referral_notes && errors.referral_notes}
                     inputProps={{
                       'data-testid': 'referral_notes'
                     }}
                   />
-                  <IconButton
-                    onClick={() => {
-                      copy(referralLink);
-                      enqueueSnackbar('Referral Link Copied', { variant: 'success' });
-                    }}
-                  >
+                  <IconButton onClick={onClick}>
                     <Tooltip title="Copy Referral Link" placement="top" arrow>
                       <StyledIcon src="/static/registration/Copy.svg" />
                     </Tooltip>
@@ -460,6 +457,22 @@ export const Actions = memo(
       setModalMessage(<></>);
     };
 
+    const clickSetModalMessage = (message: JSX.Element, action: string) => {
+      setModalMessage(message);
+      setAction(action);
+      setModalState(true);
+    };
+
+    const onClick = () => {
+      copy(enrollment.payment_link);
+      enqueueSnackbar('Payment Link Copied', { variant: 'success' });
+    };
+
+    const menuItemClick = () => {
+      setOpen(false);
+      setFormModalState(true);
+    };
+
     return (
       <>
         <ConfirmationAlert
@@ -500,28 +513,26 @@ export const Actions = memo(
           {enrollment.status === 'Application Received' && (
             <>
               <StyledIcon
-                onClick={() => {
-                  setModalMessage(
-                    <p>Are you sure you want to reject {enrollment.name}’s application.</p>
-                  );
-                  setAction('reject_application');
-                  setModalState(true);
-                }}
+                onClick={() =>
+                  clickSetModalMessage(
+                    <p>Are you sure you want to reject {enrollment.name}’s application.</p>,
+                    'reject_application'
+                  )
+                }
                 src="/static/registration/cross.svg"
               />
 
               <StyledIcon
-                onClick={() => {
-                  setModalMessage(
+                onClick={() =>
+                  clickSetModalMessage(
                     <p>
                       Are you sure you want to accept {enrollment.name}’s application and
                       {enrollment.card_added ? ' charge him' : ' send a payment link'} for
                       <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
-                    </p>
-                  );
-                  setAction('accept_application');
-                  setModalState(true);
-                }}
+                    </p>,
+                    'accept_application'
+                  )
+                }
                 src="/static/registration/Check.svg"
               />
             </>
@@ -545,30 +556,28 @@ export const Actions = memo(
             {enrollment.status === 'Application Received' && (
               <>
                 <MenuItem
-                  onClick={() => {
-                    setModalMessage(
+                  onClick={() =>
+                    clickSetModalMessage(
                       <p>
                         Are you sure you want to accept {enrollment.name}’s application and
                         {enrollment.card_added ? ' charge him' : ' send a payment link'} for
                         <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
-                      </p>
-                    );
-                    setAction('accept_application');
-                    setModalState(true);
-                  }}
+                      </p>,
+                      'accept_application'
+                    )
+                  }
                   sx={{ typography: 'subtitle2', color: 'primary.main', py: 1, px: 2.5 }}
                 >
                   <StyledIcon src="/static/registration/Check.svg" sx={{ mr: 1 }} />
                   Accept Application
                 </MenuItem>
                 <MenuItem
-                  onClick={() => {
-                    setModalMessage(
-                      <p>Are you sure you want to reject {enrollment.name}’s application.</p>
-                    );
-                    setAction('reject_application');
-                    setModalState(true);
-                  }}
+                  onClick={() =>
+                    clickSetModalMessage(
+                      <p>Are you sure you want to reject {enrollment.name}’s application.</p>,
+                      'reject_application'
+                    )
+                  }
                   sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
                 >
                   <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
@@ -580,16 +589,15 @@ export const Actions = memo(
               enrollment.status
             ) && (
               <MenuItem
-                onClick={() => {
-                  setModalMessage(
+                onClick={() =>
+                  clickSetModalMessage(
                     <p>
                       Are you sure you want to mark {enrollment.name}’s application as Paid and send
                       them an email welcoming them to the Sphere Portal?
-                    </p>
-                  );
-                  setAction('mark_as_paid');
-                  setModalState(true);
-                }}
+                    </p>,
+                    'mark_as_paid'
+                  )
+                }
                 sx={{ typography: 'subtitle2', color: 'text.secondary', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Success.svg" sx={{ mr: 1 }} />
@@ -603,16 +611,15 @@ export const Actions = memo(
               'Payment link opened'
             ].includes(enrollment.status) && (
               <MenuItem
-                onClick={() => {
-                  setModalMessage(
+                onClick={() =>
+                  clickSetModalMessage(
                     <p>
                       Are you sure you want to mark {enrollment.name}’s application as not
                       interested.
-                    </p>
-                  );
-                  setAction('set_not_interested');
-                  setModalState(true);
-                }}
+                    </p>,
+                    'set_not_interested'
+                  )
+                }
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Close.svg" sx={{ mr: 1 }} />
@@ -622,10 +629,7 @@ export const Actions = memo(
             {(enrollment.status === 'Application Accepted' ||
               enrollment.status === 'Payment link opened') && (
               <MenuItem
-                onClick={() => {
-                  copy(enrollment.payment_link);
-                  enqueueSnackbar('Payment Link Copied', { variant: 'success' });
-                }}
+                onClick={onClick}
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <StyledIcon src="/static/registration/Copy.svg" sx={{ mr: 1 }} />
@@ -636,16 +640,15 @@ export const Actions = memo(
               enrollment.status
             ) && (
               <MenuItem
-                onClick={() => {
-                  setModalMessage(
+                onClick={() =>
+                  clickSetModalMessage(
                     <p>
                       Are you sure you want the status of {enrollment.name}'s enrollment to
                       Application Received?
-                    </p>
-                  );
-                  setAction('reset_status');
-                  setModalState(true);
-                }}
+                    </p>,
+                    'reset_status'
+                  )
+                }
                 sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
               >
                 <ResetIcon sx={{ mr: 1 }} />
@@ -653,26 +656,22 @@ export const Actions = memo(
               </MenuItem>
             )}
             <MenuItem
-              onClick={() => {
-                setOpen(false);
-                setFormModalState(true);
-              }}
+              onClick={menuItemClick}
               sx={{ typography: 'subtitle2', color: '#637381', py: 1, px: 2.5 }}
             >
               <StyledIcon src="/static/registration/Info.svg" sx={{ mr: 1 }} />
               View Details
             </MenuItem>
             <MenuItem
-              onClick={() => {
-                setModalMessage(
+              onClick={() =>
+                clickSetModalMessage(
                   <p>
                     Are you sure you want to <span style={{ color: '#ff4842' }}>delete</span> the
                     application from {enrollment.name}: {enrollment.email}.
-                  </p>
-                );
-                setAction('delete_application');
-                setModalState(true);
-              }}
+                  </p>,
+                  'delete_application'
+                )
+              }
               sx={{ typography: 'subtitle2', color: '#FF4842', py: 1, px: 2.5 }}
             >
               <StyledIcon src="/static/registration/Trash.svg" sx={{ mr: 1 }} />
@@ -785,12 +784,14 @@ export const KeyMetricHighlight = memo(
   }
 );
 
-const classPicker = (classes: { primary: any; warning: any; success: any }, className: string) => {
-  if (className === 'primary') return classes.primary;
-  if (className === 'warning') return classes.warning;
-  if (className === 'success') return classes.success;
-  return '';
-};
+const classPicker = memoize(
+  (classes: { primary: any; warning: any; success: any }, className: string) => {
+    if (className === 'primary') return classes.primary;
+    if (className === 'warning') return classes.warning;
+    if (className === 'success') return classes.success;
+    return '';
+  }
+);
 
 export const ExportToExcel = memo(
   ({ registrations, fileName }: { registrations: any; fileName: string }) => {
@@ -1001,7 +1002,7 @@ export const ExportAlumniToExcel = memo(
   }
 );
 
-export const pickColor = (status: string) => {
+export const pickColor = memoize((status: string) => {
   if (status === 'Application Accepted') {
     return 'warning';
   }
@@ -1022,9 +1023,10 @@ export const pickColor = (status: string) => {
     return 'error';
   }
   return 'success';
-};
+});
 
-export const convertToSlug = (Text: string) =>
+export const convertToSlug = memoize((Text: string) =>
   Text.toLowerCase()
     .replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '');
+    .replace(/[^\w-]+/g, '')
+);

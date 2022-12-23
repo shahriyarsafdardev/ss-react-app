@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
 import { Navigate } from 'react-router-dom';
 import './UserList.css';
@@ -17,7 +17,7 @@ import type {
   TeamUserType
 } from '../../../pages/dashboard/cohorts/messaging/Messaging';
 
-const ListContainer: React.FC = (props) => {
+const ListContainer: React.FC = memo((props) => {
   const { children } = props;
 
   return (
@@ -30,7 +30,7 @@ const ListContainer: React.FC = (props) => {
       {children}
     </div>
   );
-};
+});
 
 type ItemProps = {
   index: number;
@@ -40,7 +40,7 @@ type ItemProps = {
   cohortID: string;
 };
 
-const UserItem: React.FC<ItemProps> = (props) => {
+const UserItem: React.FC<ItemProps> = memo((props) => {
   const { index, setSelectedUsers, user, member, cohortID } = props;
   const [navigate, setNavigate] = useState(false);
 
@@ -83,7 +83,7 @@ const UserItem: React.FC<ItemProps> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 type Props = {
   enrolledUsers: any;
@@ -93,7 +93,7 @@ type Props = {
   query: string;
 };
 
-export const UserList: React.FC<Props> = (props) => {
+export const UserList: React.FC<Props> = memo((props) => {
   const { setSelectedUsers, enrolledUsers, showMembers, admin, query } = props;
   const cohortID = window.location.pathname.split('/')[2] || '';
 
@@ -108,7 +108,6 @@ export const UserList: React.FC<Props> = (props) => {
   >();
 
   const [error, setError] = useState(false);
-  const [listEmpty, setListEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserResponse<TeamUserType>[] | undefined>();
   const [members, setMembers] = useState<any>();
@@ -145,8 +144,6 @@ export const UserList: React.FC<Props> = (props) => {
         }
         if (response.users.length) {
           setUsers(response.users);
-        } else {
-          setListEmpty(true);
         }
       } catch (event) {
         setError(true);
@@ -215,4 +212,4 @@ export const UserList: React.FC<Props> = (props) => {
       )}
     </>
   );
-};
+});
