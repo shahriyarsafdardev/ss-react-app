@@ -118,6 +118,14 @@ export default function SessionsTab() {
     });
   }, []);
 
+  if (typeof cohort === 'undefined') {
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
+  }
+
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     trackEvent(cohort, eventName, eventData);
   };
