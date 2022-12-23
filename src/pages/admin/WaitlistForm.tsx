@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack5';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -40,8 +41,10 @@ function WaitlistForm() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
   const { enqueueSnackbar } = useSnackbar();
 
-  const cohortCodes = () =>
-    uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b));
+  const cohortCodes = useMemo(
+    () => uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b)),
+    [cohorts]
+  );
 
   const WaitlistSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
@@ -131,7 +134,7 @@ function WaitlistForm() {
                         data-testid="cohortCode"
                         error={Boolean(touched.cohortCode && errors.cohortCode)}
                       >
-                        {cohortCodes().map((code, index) => (
+                        {cohortCodes.map((code: any, index: number) => (
                           <MenuItem
                             key={index}
                             value={code}

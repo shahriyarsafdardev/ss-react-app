@@ -18,7 +18,7 @@ import {
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { uniq } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getSessions } from 'redux/slices/cohort';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
@@ -123,8 +123,10 @@ export default function SurveyQuestionForm() {
     }
   }, [cohort]);
 
-  const cohortCodes = () =>
-    uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b));
+  const cohortCodes = useMemo(
+    () => uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b)),
+    [cohorts]
+  );
 
   const setIntakes = (code: string) => {
     setCurrentCode(code);
@@ -166,7 +168,7 @@ export default function SurveyQuestionForm() {
                         value={values.cohortCode}
                         error={Boolean(touched.cohortCode && errors.cohortCode)}
                       >
-                        {cohortCodes().map((code: any, index: any) => (
+                        {cohortCodes.map((code: any, index: any) => (
                           <MenuItem
                             key={index}
                             value={code}
