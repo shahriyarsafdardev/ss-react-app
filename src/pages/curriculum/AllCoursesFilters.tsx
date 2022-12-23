@@ -1,5 +1,5 @@
 import { FormControl, MenuItem, InputLabel, Select, ListItemText, Grid } from '@material-ui/core';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
 
@@ -28,15 +28,23 @@ function AllCoursesFilters({
 }) {
   const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
 
-  const handleFunctionChange = (value: any) => {
-    trackEvent(cohort, 'All Courses Page - Filter by Function selected', { 'Filter Name': value });
-    handleChangeFunction(value);
-  };
+  const handleFunctionChange = useCallback(
+    (value: any) => {
+      trackEvent(cohort, 'All Courses Page - Filter by Function selected', {
+        'Filter Name': value
+      });
+      handleChangeFunction(value);
+    },
+    [cohort]
+  );
 
-  const handleTopicChange = (value: any) => {
-    trackEvent(cohort, 'All Courses Page - Filter by Topic selected', { 'Filter Name': value });
-    setSelectedTopic(value);
-  };
+  const handleTopicChange = useCallback(
+    (value: any) => {
+      trackEvent(cohort, 'All Courses Page - Filter by Topic selected', { 'Filter Name': value });
+      setSelectedTopic(value);
+    },
+    [cohort]
+  );
 
   return (
     <Grid container spacing={{ xs: 2.5, md: 2 }}>

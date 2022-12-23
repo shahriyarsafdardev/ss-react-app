@@ -1,5 +1,5 @@
 import Slider from 'react-slick';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useCallback } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack, useMediaQuery, useTheme } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
@@ -65,11 +65,11 @@ function CoursesCarousel({
     ]
   };
 
-  const sendAnalyticsData = () => {
+  const sendAnalyticsData = useCallback(() => {
     trackEvent(courses[activeCourse], 'Path Pages - Course selected', {
       'Course Name': courses[activeCourse]?.name
     });
-  };
+  }, [activeCourse, courses]);
 
   const handlePrevious = () => {
     sendAnalyticsData();

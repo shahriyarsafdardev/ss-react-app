@@ -1,7 +1,7 @@
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
@@ -24,7 +24,7 @@ function PathHeader({
   total: any;
   complete: any;
 }) {
-  const progress = () => Math.floor((complete / total) * 100);
+  const progress = useCallback(() => Math.floor((complete / total) * 100), [complete, total]);
 
   return (
     <Stack spacing={2} sx={{ p: '0 50px 50px', width: '100%', maxWidth: '1200px' }}>

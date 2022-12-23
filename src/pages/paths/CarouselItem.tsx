@@ -2,9 +2,10 @@ import { Avatar, Stack, Typography, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
+import { memo } from 'react';
 import { useStyles } from './Common';
 
-export default function CarouselItem({
+function CarouselItem({
   course,
   index,
   setNextActive
@@ -77,3 +78,5 @@ export default function CarouselItem({
     </Stack>
   );
 }
+
+export default memo(CarouselItem);

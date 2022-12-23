@@ -49,7 +49,7 @@ export default function AllCourses() {
     };
   }, []);
 
-  const selectFilterTopics = (cohorts: any, value: string) => {
+  const selectFilterTopics = useCallback((cohorts: any, value: string) => {
     if (value.toLocaleLowerCase() === 'other') {
       setSelectedTopic(null);
       setTopics(['All']);
@@ -64,7 +64,7 @@ export default function AllCourses() {
     );
     setTopics(filteredTopics);
     setSelectedTopic(filteredTopics[0]);
-  };
+  }, []);
 
   const applyFilters = useCallback(() => {
     let filteredCourses: any = courses;
@@ -90,10 +90,13 @@ export default function AllCourses() {
     return filteredCourses;
   }, [selectedSeniority, courses, selectedFunction, selectedTopic]);
 
-  const handleChangeFunction = (value: any) => {
-    setSelectedFunction(value);
-    selectFilterTopics(courses, value);
-  };
+  const handleChangeFunction = useCallback(
+    (value: any) => {
+      setSelectedFunction(value);
+      selectFilterTopics(courses, value);
+    },
+    [courses]
+  );
 
   if (courses.length === 0) {
     return (

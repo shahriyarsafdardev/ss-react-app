@@ -1,6 +1,6 @@
 import { Stack, Typography, Button, CircularProgress, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useCallback, useMemo } from 'react';
 import { getCourseSessions } from 'redux/slices/path';
 import { useDispatch } from 'redux/store';
 import { trackEvent } from 'utils/eventTracking';
@@ -41,12 +41,27 @@ function CourseDetails({
     }
   }, []);
 
-  const handleSeeDetails = () => {
+  const handleSeeDetails = useCallback(() => {
     trackEvent(courseData, 'Path Pages - "See More Details" button clicked', {
       'Course Name': courseData?.name
     });
     window.open(courseData?.registration_page_url, '_blank');
-  };
+  }, [courseData]);
+
+  const sessionDetails = useMemo(
+    () =>
+      courseData?.sessions ? (
+        courseData?.sessions?.map(
+          (session: any) =>
+            session.summary && <SessionDetails key={session.number} sessionData={session} />
+        )
+      ) : (
+        <StyledCircularLoader>
+          <CircularProgress />
+        </StyledCircularLoader>
+      ),
+    [courseData?.sessions]
+  );
 
   return (
     <Box
@@ -71,16 +86,7 @@ function CourseDetails({
           See More Details
         </StyledButton>
       </Stack>
-      {courseData?.sessions ? (
-        courseData?.sessions?.map(
-          (session: any) =>
-            session.summary && <SessionDetails key={session.number} sessionData={session} />
-        )
-      ) : (
-        <StyledCircularLoader>
-          <CircularProgress />
-        </StyledCircularLoader>
-      )}
+      {sessionDetails}
     </Box>
   );
 }

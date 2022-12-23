@@ -14,6 +14,18 @@ export const LoadingContainer = styled(Box)(() => ({
   left: '50%'
 }));
 
+export const AlumniContainer = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  margin: '0 1rem 1rem 1rem',
+  padding: '1rem 0',
+  background: 'white',
+  borderRadius: '10px',
+  boxShadow: 'rgb(145 158 171 / 24%) 0px 0px 2px, rgb(145 158 171 / 24%) 0px 16px 32px -4px'
+}));
+
 export const AdminContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -41,11 +53,7 @@ const CopyJsonButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-export const ExampleQuestionModal = () => {
-  const [JsonModalOpen, setJsonModalOpen] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-
-  const JSON_FORMAT_EXAMPLE = `[
+const JSON_FORMAT_EXAMPLE = `[
     {
       title: 'Would you like to network with other learners in this cohort?',
       question_type: 'multiple-choice',
@@ -71,6 +79,10 @@ export const ExampleQuestionModal = () => {
       mandatory: true
     }
   ]`;
+
+export const ExampleQuestionModal = () => {
+  const [JsonModalOpen, setJsonModalOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleCopyToClipboard = () => {
     copy(JSON_FORMAT_EXAMPLE);

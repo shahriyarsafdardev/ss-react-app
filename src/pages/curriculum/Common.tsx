@@ -1,6 +1,6 @@
 import { Box, Stack, styled, Tab, Tabs, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { memo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 
 export const TOPICS = [
@@ -242,15 +242,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
 
 export const CourseTileHover = memo(
   ({ handleTileClick, course }: { handleTileClick: Function; course: any }) => {
-    const buttonText = () =>
-      !course?.preview_instructor_name ? 'Join the waitlist' : 'Learn more';
+    const buttonText = useMemo(
+      () => (!course?.preview_instructor_name ? 'Join the waitlist' : 'Learn more'),
+      [course]
+    );
 
-    const handleClick = () => {
-      trackEvent(course, `All Courses Page - Course "${buttonText()}" button clicked`, {
+    const handleClick = useCallback(() => {
+      trackEvent(course, `All Courses Page - Course "${buttonText}" button clicked`, {
         'Course Name': course?.name
       });
       handleTileClick();
-    };
+    }, [course, buttonText]);
 
     return (
       <Stack
@@ -274,7 +276,7 @@ export const CourseTileHover = memo(
       >
         <Typography>{course?.description}</Typography>
         <Typography sx={{ fontWeight: 'bold', width: '100%', borderBottom: '1px solid #fff' }}>
-          {buttonText()}
+          {buttonText}
         </Typography>
       </Stack>
     );

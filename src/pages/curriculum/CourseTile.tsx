@@ -1,5 +1,5 @@
 import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { CourseTileHover, useStyles } from './Common';
 
@@ -24,7 +24,7 @@ function CourseTile({ course }: { course: any }) {
     }
   }
 
-  const handleTileClick = () => {
+  const handleTileClick = useCallback(() => {
     trackEvent(course, 'Curriculum Page - Cohort Tile - Selected', {
       'Course Title': course?.name
     });
@@ -32,7 +32,7 @@ function CourseTile({ course }: { course: any }) {
       ? course?.registration_page_url
       : `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`;
     window.open(url, '_blank');
-  };
+  }, [course]);
 
   return (
     <Grid item xs={12} sm={6} md={4} sx={{ px: '12px !important', maxWidth: '420px !important' }}>
