@@ -1,12 +1,14 @@
-const getDaysBetweenDates = (date1: Date, date2: Date) => {
+import { memoize } from 'lodash';
+
+const getDaysBetweenDates = memoize((date1: Date, date2: Date) => {
   const days = Math.floor((date1?.getTime() - date2?.getTime()) / (1000 * 60 * 60 * 24));
   return days <= 0 ? null : days;
-};
+});
 
-const getHoursBetweenDates = (date1: Date, date2: Date) => {
+const getHoursBetweenDates = memoize((date1: Date, date2: Date) => {
   const hours = Math.floor((date1?.getTime() - date2?.getTime()) / 36e5);
   return hours <= 0 ? null : hours;
-};
+});
 
 export const sessionEventsDaysTimeline = (cohort: any) => {
   const { start_date, end_date, first_session_date, last_session_date } =
@@ -80,7 +82,7 @@ export const currentSessionEventsTimeline = (cohort: any) => {
   };
 };
 
-export const cohortInstructorEventsTimeline = (cohort: any) => {
+export const cohortInstructorEventsTimeline = memoize((cohort: any) => {
   const instructorName = cohort.host_full_name || cohort.instructor;
   const firstName = instructorName?.split(' ')[0];
   const lastName = instructorName?.split(' ')[1] || instructorName?.split(' ')[0];
@@ -88,7 +90,7 @@ export const cohortInstructorEventsTimeline = (cohort: any) => {
     'Cohort Instructor First Name': firstName,
     'Cohort Instructor Last Name': lastName
   };
-};
+});
 
 export const isSessionStarted = (eventProperties: any) => {
   const localStorageTime = localStorage.getItem(
