@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useLocation, useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
@@ -36,7 +36,7 @@ export type CompanyType = {
   logo_url: string;
 };
 
-export default function PersonalDetailsPage() {
+function PersonalDetailsPage() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -259,3 +259,5 @@ export default function PersonalDetailsPage() {
     </Page>
   );
 }
+
+export default memo(PersonalDetailsPage);

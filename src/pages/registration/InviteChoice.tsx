@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import { useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { SubmitButton, CompanyType } from './Registration';
 
 const StyledBox = styled(Stack)(({ theme }) => ({
@@ -126,4 +126,4 @@ function InviteChoice({
   );
 }
 
-export default InviteChoice;
+export default memo(InviteChoice);

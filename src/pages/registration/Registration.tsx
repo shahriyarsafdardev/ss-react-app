@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
@@ -111,7 +111,7 @@ export const NEW_REGISTRATION_FLOW_COHORT_CODES = [
 
 const RONNY_COHORT_CODE = 'BBC';
 
-export default function Registration() {
+function Registration() {
   const [activeStep, setActiveStep] = useState(1);
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
@@ -552,3 +552,5 @@ export default function Registration() {
     </>
   );
 }
+
+export default memo(Registration);

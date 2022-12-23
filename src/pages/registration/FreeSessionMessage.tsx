@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Container, Typography, Button } from '@material-ui/core';
 import Page from 'components/Page';
 import { styled } from '@material-ui/core/styles';
@@ -40,4 +40,4 @@ function FreeSessionMessage() {
   );
 }
 
-export default FreeSessionMessage;
+export default memo(FreeSessionMessage);

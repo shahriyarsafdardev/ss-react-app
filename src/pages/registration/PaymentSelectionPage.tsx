@@ -2,7 +2,7 @@ import { Stack, Typography, Avatar, useTheme, useMediaQuery } from '@material-ui
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -14,7 +14,7 @@ import {
   TeamMembershipPaymentDetails
 } from './PaymentOptionDetails';
 
-export default function PaymentSelectionPage() {
+function PaymentSelectionPage() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -128,3 +128,5 @@ export default function PaymentSelectionPage() {
     </Page>
   );
 }
+
+export default memo(PaymentSelectionPage);

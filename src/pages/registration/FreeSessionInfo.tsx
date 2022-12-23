@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Box, Typography } from '@material-ui/core';
+import React, { memo } from 'react';
+import { Container, Typography } from '@material-ui/core';
 import Page from 'components/Page';
 import { styled } from '@material-ui/core/styles';
 import { useStyles } from './styles';
@@ -36,4 +36,4 @@ function FreeSessionInfo() {
   );
 }
 
-export default FreeSessionInfo;
+export default memo(FreeSessionInfo);

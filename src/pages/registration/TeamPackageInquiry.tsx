@@ -14,13 +14,13 @@ import Page from 'components/Page';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 import { Logo, useStyles, StyledLoadingButton, LoadingContainer, SaleBanner } from './Common';
 
-export default function TeamPackageInquiry() {
+function TeamPackageInquiry() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
@@ -203,3 +203,5 @@ export default function TeamPackageInquiry() {
     </Page>
   );
 }
+
+export default memo(TeamPackageInquiry);

@@ -2,7 +2,7 @@ import { Stack, Box, Typography, useTheme, useMediaQuery, Button, Link } from '@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Page from 'components/Page';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import minusFill from '@iconify/icons-eva/minus-outline';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import Icon from '@iconify/react';
@@ -14,7 +14,7 @@ import { setSegmentUserProperties } from 'utils/eventTracking';
 import { InputAmount, LoadingContainer, Logo, useStyles, SaleBanner } from './Common';
 import PayNowForm from './PayNowForm';
 
-export default function SubscriptionPaymentPage() {
+function SubscriptionPaymentPage() {
   const classes = useStyles();
   const [customerID, setCustomerID] = useState('');
   const [clientSecret, setClientSecret] = useState('');
@@ -197,3 +197,5 @@ export default function SubscriptionPaymentPage() {
     </Page>
   );
 }
+
+export default memo(SubscriptionPaymentPage);
