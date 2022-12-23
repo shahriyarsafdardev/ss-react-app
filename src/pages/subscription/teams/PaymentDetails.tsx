@@ -1,8 +1,9 @@
 import { Stack, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { memo } from 'react';
 import { StyledTypography, SubscriptionDetails, useStyles } from './Common';
 import { Registration } from './TeamRegistration';
 
-export default function PaymentDetails({
+function PaymentDetails({
   amount,
   isSinglePayee,
   teamDiscount,
@@ -45,3 +46,5 @@ export default function PaymentDetails({
     </>
   );
 }
+
+export default memo(PaymentDetails);

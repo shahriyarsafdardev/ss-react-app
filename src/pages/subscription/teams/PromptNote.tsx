@@ -1,7 +1,8 @@
 import { Button, Stack } from '@material-ui/core';
+import { memo } from 'react';
 import { StyledTypography } from './Common';
 
-export default function PromptNote({ username, password }: { username: string; password: string }) {
+function PromptNote({ username, password }: { username: string; password: string }) {
   return (
     <Stack width="100%" display="flex" justifyContent="center" alignItems="center">
       <Stack sx={{ mb: 5 }}>
@@ -21,3 +22,5 @@ export default function PromptNote({ username, password }: { username: string; p
     </Stack>
   );
 }
+
+export default memo(PromptNote);

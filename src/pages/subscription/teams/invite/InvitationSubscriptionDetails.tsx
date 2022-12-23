@@ -1,8 +1,9 @@
 import { Box, Stack } from '@material-ui/core';
+import { memo } from 'react';
 import { StyledTypography } from '../Common';
 import { InvitationDetails } from './InvitePage';
 
-export default function InvitationSubscriptionDetails({
+function InvitationSubscriptionDetails({
   amount,
   details
 }: {
@@ -25,3 +26,5 @@ export default function InvitationSubscriptionDetails({
     </Box>
   );
 }
+
+export default memo(InvitationSubscriptionDetails);

@@ -2,7 +2,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import axios from 'utils/axios';
 import { InputLabel, Stack, TextField, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
@@ -16,7 +16,7 @@ type CardInfo = {
   email: string;
 };
 
-export default function InviteForm({
+function InviteForm({
   teamID,
   cohortID,
   creditAmount,
@@ -68,68 +68,74 @@ export default function InviteForm({
 
   const classes = useStyles();
 
-  const handleSubmit = async (event: any, name: string, email: string) => {
-    setIsSubmitting(true);
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    async (event: any, name: string, email: string) => {
+      setIsSubmitting(true);
+      event.preventDefault();
 
-    await axios
-      .get(
-        `subscriptions/teams/${teamID}/invite/user_validation.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
-      )
-      .then((res) => {
-        if (res.data.user_has_existing_subscription) {
-          setSubscriptionExist(res.data.user_has_existing_subscription);
-          setPaymentCompleted(true);
-        } else {
-          makePayment(name, email);
-        }
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
-      });
-  };
-
-  const makePayment = async (name: string, email: string) => {
-    const uploadData = new FormData();
-    uploadData.append('cohort_id', cohortID);
-    uploadData.append('name', name);
-    uploadData.append('email', email);
-    uploadData.append('subscription_amount', creditAmount);
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    const result = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: '',
-        payment_method_data: {
-          billing_details: {
-            name,
-            email
-          }
-        }
-      },
-      redirect: 'if_required'
-    });
-
-    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-      uploadData.append('stripe_customer_id', stripeCustomerID);
-      uploadData.append('payment_method', String(result.paymentIntent?.payment_method));
       await axios
-        .post(`subscriptions/teams/${teamID}/invite/subscribe.json`, uploadData)
+        .get(
+          `subscriptions/teams/${teamID}/invite/user_validation.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
+        )
         .then((res) => {
-          setPaymentCompleted && setPaymentCompleted(true);
+          if (res.data.user_has_existing_subscription) {
+            setSubscriptionExist(res.data.user_has_existing_subscription);
+            setPaymentCompleted(true);
+          } else {
+            makePayment(name, email);
+          }
         })
         .catch((err) => {
-          enqueueSnackbar(err.message, { variant: 'error' });
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
         });
-    } else {
-      enqueueSnackbar('Some error occurred!', { variant: 'error' });
-    }
-    setIsSubmitting(false);
-  };
+    },
+    [teamID, cohortID]
+  );
+
+  const makePayment = useCallback(
+    async (name: string, email: string) => {
+      const uploadData = new FormData();
+      uploadData.append('cohort_id', cohortID);
+      uploadData.append('name', name);
+      uploadData.append('email', email);
+      uploadData.append('subscription_amount', creditAmount);
+
+      if (!stripe || !elements) {
+        return;
+      }
+
+      const result = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: '',
+          payment_method_data: {
+            billing_details: {
+              name,
+              email
+            }
+          }
+        },
+        redirect: 'if_required'
+      });
+
+      if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+        uploadData.append('stripe_customer_id', stripeCustomerID);
+        uploadData.append('payment_method', String(result.paymentIntent?.payment_method));
+        await axios
+          .post(`subscriptions/teams/${teamID}/invite/subscribe.json`, uploadData)
+          .then((res) => {
+            setPaymentCompleted && setPaymentCompleted(true);
+          })
+          .catch((err) => {
+            enqueueSnackbar(err.message, { variant: 'error' });
+          });
+      } else {
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+      }
+      setIsSubmitting(false);
+    },
+    [cohortID, creditAmount, stripeCustomerID, teamID, elements, stripe]
+  );
 
   const CardSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -217,3 +223,5 @@ export default function InviteForm({
     </>
   );
 }
+
+export default memo(InviteForm);

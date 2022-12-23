@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
@@ -21,7 +21,7 @@ export type InvitationDetails = {
   team_discount: number;
 };
 
-export default function InvitePage() {
+function InvitePage() {
   const url = new URLSearchParams(useLocation().search);
   const teamID = url.get('team_id') || '';
   const amount = url.get('amount') || '';
@@ -42,29 +42,28 @@ export default function InvitePage() {
     team_discount: 0
   });
 
-  const getInvitationDetails = async () => {
-    setLoading(true);
-    await axios
-      .get(`subscriptions/teams/${teamID}/invite.json`, {
-        params: {
-          cohort_id: cohortID,
-          subscription_amount: creditAmount
-        }
-      })
-      .then((res) => {
-        setClientSecret(res.data.payment_intent.clientSecret);
-        setStripeCustomerID(res.data.payment_intent.customer_id);
-        setInvitationDetails(res.data.invitation_details);
-        setLoading(false);
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
-      });
-  };
-
   useEffect(() => {
+    const getInvitationDetails = async () => {
+      setLoading(true);
+      await axios
+        .get(`subscriptions/teams/${teamID}/invite.json`, {
+          params: {
+            cohort_id: cohortID,
+            subscription_amount: creditAmount
+          }
+        })
+        .then((res) => {
+          setClientSecret(res.data.payment_intent.clientSecret);
+          setStripeCustomerID(res.data.payment_intent.customer_id);
+          setInvitationDetails(res.data.invitation_details);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    };
     getInvitationDetails();
-  }, []);
+  }, [teamID, cohortID, creditAmount]);
 
   if (clientSecret === '' || loading) {
     return (
@@ -132,3 +131,5 @@ export default function InvitePage() {
     </PaymentRootStyle>
   );
 }
+
+export default memo(InvitePage);

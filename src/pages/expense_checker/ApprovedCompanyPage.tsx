@@ -1,10 +1,10 @@
 import { Stack, Box, Typography, Button, useTheme, useMediaQuery, Avatar } from '@material-ui/core';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles } from './Common';
 import { Company } from './ExpenseCheckerPage';
 
-export default function ApprovedCompanyPage({
+function ApprovedCompanyPage({
   handleEnroll,
   company,
   cohort
@@ -50,7 +50,7 @@ export default function ApprovedCompanyPage({
               <Button
                 variant="contained"
                 className={classes.enrollButton}
-                onClick={() => handleEnroll()}
+                onClick={() => handleEnroll}
               >
                 Enroll
               </Button>
@@ -61,3 +61,5 @@ export default function ApprovedCompanyPage({
     </PaymentRootStyle>
   );
 }
+
+export default memo(ApprovedCompanyPage);

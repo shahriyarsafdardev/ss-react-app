@@ -1,10 +1,10 @@
 import { Stack, Box, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 import { PaymentRootStyle, Logo, useStyles } from './Common';
 import { Company } from './ExpenseCheckerPage';
 
-export default function NewCompanyPage({
+function NewCompanyPage({
   handleEnroll,
   company,
   cohort
@@ -55,3 +55,5 @@ export default function NewCompanyPage({
     </PaymentRootStyle>
   );
 }
+
+export default memo(NewCompanyPage);

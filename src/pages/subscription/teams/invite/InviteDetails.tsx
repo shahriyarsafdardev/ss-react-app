@@ -1,15 +1,10 @@
 import { Stack, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import { InvitationDetails } from 'pages/subscription/teams/invite/InvitePage';
+import { memo } from 'react';
 import { StyledTypography, useStyles } from '../Common';
 import InvitationSubscriptionDetails from './InvitationSubscriptionDetails';
 
-export default function InviteDetails({
-  amount,
-  details
-}: {
-  amount: number;
-  details: InvitationDetails;
-}) {
+function InviteDetails({ amount, details }: { amount: number; details: InvitationDetails }) {
   const classes = useStyles();
   const theme = useTheme();
   const desktopView = useMediaQuery(theme.breakpoints.up('md'));
@@ -41,3 +36,5 @@ export default function InviteDetails({
     </>
   );
 }
+
+export default memo(InviteDetails);

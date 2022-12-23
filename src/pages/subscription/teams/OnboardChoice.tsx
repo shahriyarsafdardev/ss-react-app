@@ -1,7 +1,8 @@
 import { Stack } from '@material-ui/core';
 import OnboardingCard from 'components/subscription/teams/OnboardingCard';
+import { memo } from 'react';
 
-export default function OnboardingChoice({
+function OnboardingChoice({
   setStep,
   setIsSinglePayee
 }: {
@@ -39,3 +40,5 @@ export default function OnboardingChoice({
     </Stack>
   );
 }
+
+export default memo(OnboardingChoice);

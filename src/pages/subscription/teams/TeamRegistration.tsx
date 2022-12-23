@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Box, Container, Stack } from '@material-ui/core';
 import Navbar from 'components/subscription/teams/Navbar';
 import { KeyboardBackspace } from '@material-ui/icons';
@@ -43,7 +43,7 @@ export type Credentials = {
   password: string;
 };
 
-export default function TeamRegistration() {
+function TeamRegistration() {
   const classes = useStyles();
   const url = new URLSearchParams(useLocation().search);
   const email = url.get('email') || '';
@@ -100,12 +100,12 @@ export default function TeamRegistration() {
     decrease ? setActiveStep(activeStep - 1) : setActiveStep(activeStep + 1);
   };
 
-  const previousStep = () => {
+  const previousStep = useCallback(() => {
     if (activeStep === 2) {
       setTeamMembers([]);
     }
     setActiveStep(activeStep - 1);
-  };
+  }, [activeStep]);
 
   const selectComponent = () => {
     if (activeStep === 2) {
@@ -171,7 +171,7 @@ export default function TeamRegistration() {
     >
       <Navbar activeStep={activeStep} />
       {activeStep !== 1 && activeStep !== 3 && isSinglePayee && (
-        <StyledBackButton variant="outlined" onClick={() => previousStep()}>
+        <StyledBackButton variant="outlined" onClick={previousStep}>
           <KeyboardBackspace fontSize="large" />
         </StyledBackButton>
       )}
@@ -185,3 +185,5 @@ export default function TeamRegistration() {
     </RootStyle>
   );
 }
+
+export default memo(TeamRegistration);

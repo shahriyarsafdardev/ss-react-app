@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import StripePayment from './StripePayment';
 import { LoadingContainer, useStyles } from './Common';
@@ -11,7 +11,7 @@ import PaymentDetails from './PaymentDetails';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
-export default function Payment({
+function Payment({
   team,
   teamMembers,
   email,
@@ -36,21 +36,20 @@ export default function Payment({
   const [clientSecret, setClientSecret] = useState('');
   const [stripeCustomerID, setStripeCustomerID] = useState('');
 
-  const getPaymentIntent = async () => {
-    const uploadData = new FormData();
-    uploadData.append('email', email);
-    uploadData.append('team', team);
-    uploadData.append('team_members', JSON.stringify(teamMembers));
-    await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
-      setClientSecret(res.data.clientSecret);
-      setAmount(res.data.total_amount);
-      setStripeCustomerID(res.data.customer_id);
-    });
-  };
-
   useEffect(() => {
+    const getPaymentIntent = async () => {
+      const uploadData = new FormData();
+      uploadData.append('email', email);
+      uploadData.append('team', team);
+      uploadData.append('team_members', JSON.stringify(teamMembers));
+      await axios.post(`team_registrations/payment_intent.json`, uploadData).then((res) => {
+        setClientSecret(res.data.clientSecret);
+        setAmount(res.data.total_amount);
+        setStripeCustomerID(res.data.customer_id);
+      });
+    };
     getPaymentIntent();
-  }, []);
+  }, [email, team, teamMembers]);
 
   if (clientSecret === '') {
     return (
@@ -109,3 +108,5 @@ export default function Payment({
     </Stack>
   );
 }
+
+export default memo(Payment);

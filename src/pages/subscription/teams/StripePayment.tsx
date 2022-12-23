@@ -2,7 +2,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import axios from 'utils/axios';
 import { InputLabel, Stack, TextField, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import PaymentTermsCheckBox from 'components/PaymentTermsCheckBox';
@@ -10,7 +10,7 @@ import { TeamMember } from './InviteMembersForm';
 import { StyledLoadingButton, SubscriptionDetails } from './Common';
 import { Registration } from './TeamRegistration';
 
-export default function StripePayment({
+function StripePayment({
   team,
   teamMembers,
   email,
@@ -142,6 +142,8 @@ export default function StripePayment({
     setIsSubmitting(false);
   };
 
+  const handleBackButton = () => setStep && setStep(true);
+
   return (
     <>
       <InputLabel style={{ fontSize: '14.88px', color: '#475569' }}>Name on Card</InputLabel>
@@ -186,12 +188,7 @@ export default function StripePayment({
           Subscribe
         </StyledLoadingButton>
         {(shouldDisplayBackButton || creditAmount === '') && (
-          <StyledLoadingButton
-            fullWidth
-            onClick={() => setStep && setStep(true)}
-            variant="outlined"
-            size="large"
-          >
+          <StyledLoadingButton fullWidth onClick={handleBackButton} variant="outlined" size="large">
             Back
           </StyledLoadingButton>
         )}
@@ -199,3 +196,5 @@ export default function StripePayment({
     </>
   );
 }
+
+export default memo(StripePayment);
