@@ -23,12 +23,12 @@ const StyledContent = styled(Typography)(() => ({
   lineHeight: '20px'
 }));
 
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-  ({ theme, ownerState }) => ({
+const QontoStepIconRoot = styled('div')<{ ownerstate: { active?: boolean } }>(
+  ({ theme, ownerstate }) => ({
     color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
     display: 'flex',
     alignItems: 'center',
-    ...(ownerState.active && {
+    ...(ownerstate.active && {
       color: '#784af4'
     }),
     '& .QontoStepIcon-completedIcon': {
@@ -82,7 +82,7 @@ const StyledBox = styled(Box)(() => ({
 const QontoStepIcon = memo((props: StepIconProps | any) => {
   const { active, completed, className, time } = props;
   return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
+    <QontoStepIconRoot ownerstate={{ active }} className={className}>
       {!completed ? (
         <div className="QontoStepIcon-completedIcon">
           <Typography sx={{ fontSize: '13px', fontWeight: 500 }}>

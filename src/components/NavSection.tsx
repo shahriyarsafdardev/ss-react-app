@@ -301,7 +301,12 @@ export default function NavSection({ navConfig, isShow = true, ...other }: NavSe
           <ListSubheaderStyle data-testid="navbar-cohort">{navConfig.subheader}</ListSubheaderStyle>
         )}
         {navConfig.items.map((item: NavItemProps) => (
-          <NavItem key={item.title} item={item} isShow={isShow} header={navConfig.subheader} />
+          <NavItem
+            key={item.title + item.id}
+            item={item}
+            isShow={isShow}
+            header={navConfig.subheader}
+          />
         ))}
       </List>
     </Box>

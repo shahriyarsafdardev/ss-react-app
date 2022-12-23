@@ -219,6 +219,8 @@ export default function NotificationsPopover() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     const initChat = async () => {
       const client = StreamChat.getInstance<
         Record<string, unknown>,
@@ -245,13 +247,17 @@ export default function NotificationsPopover() {
           event.type !== 'user.watching.start' &&
           event.type !== 'health.check'
         ) {
-          setUnread(event.total_unread_count);
+          if (isSubscribed) {
+            setUnread(event.total_unread_count);
+          }
         }
       });
+
       const result = await client.queryChannels(
         { type: { $in: ['messaging', 'team'] }, members: { $in: [user?.id] } },
         { has_unread: -1, last_message_at: -1, updated_at: -1 }
       );
+
       const unreadChannels = result.filter((channel) => channel.state.unreadCount > 0).reverse();
       let messages: any = [];
       unreadChannels.map((channel) => {
@@ -297,11 +303,18 @@ export default function NotificationsPopover() {
       } else {
         dispatch(addNotifications([]));
       }
-      setChatClient(client);
+      if (isSubscribed) {
+        setChatClient(client);
+      }
     };
+
     if (user?.stream_token) {
       initChat();
     }
+
+    return () => {
+      isSubscribed = false;
+    };
   }, [unread]);
 
   const handleOpen = () => {

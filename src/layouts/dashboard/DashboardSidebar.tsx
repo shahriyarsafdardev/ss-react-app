@@ -7,7 +7,6 @@ import { Box, Drawer, Switch } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
 
-import { initializeReferralLink } from 'redux/slices/cohort';
 import {
   getCategories,
   getInstructorCohorts,
@@ -15,7 +14,7 @@ import {
   getLearnerCohorts,
   ShareReferralLink
 } from './Common';
-import { dispatch, RootState, useSelector } from '../../redux/store';
+import { RootState, useSelector } from '../../redux/store';
 
 // hooks
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
@@ -105,8 +104,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   const [referralEmailModal, setReferralEmailModal] = useState(false);
   const referralLink = useSelector((state: RootState) => state.cohort.referralLink);
   const cohort_id = window.location.pathname.split('/')[2] || '';
-  const uuidRegexExp =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -138,9 +135,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     }
     if (user?.type === 'learner') {
       updateInstructorViewState('Learner');
-      if (uuidRegexExp.test(cohort_id)) {
-        dispatch(initializeReferralLink(cohort_id));
-      }
     }
   }, [pathname]);
 

@@ -29,6 +29,7 @@ export default function PathsList() {
           <Grid
             direction={{ xs: 'column', sm: 'row' }}
             sx={{ width: '100%', maxWidth: '1280px', display: 'flex', margin: 'auto' }}
+            container
           >
             {paths.map((path) => (
               <Grid item xs={12} sm={6} key={path.slug} className={classes.whiteBoxGrid}>

@@ -196,6 +196,7 @@ function NewHomeTab({
     const handleJoinSession = () => {
       sendSessionPreviewEvent('Home Page - Session Preview - "Join Session" Selected');
       markAttendance();
+      window.open(activeSession?.zoom_url || '');
     };
 
     if (isZoomLinkVisible(activeSession)) {
@@ -204,7 +205,6 @@ function NewHomeTab({
           <Button
             className={classes.homeNavigation}
             variant="contained"
-            href={activeSession?.zoom_url}
             onClick={handleJoinSession}
           >
             Join Session

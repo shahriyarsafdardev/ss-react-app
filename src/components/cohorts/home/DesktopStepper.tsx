@@ -29,13 +29,13 @@ const StyledDate = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-  ({ theme, ownerState }) => ({
+const QontoStepIconRoot = styled('div')<{ ownerstate: { active?: boolean } }>(
+  ({ theme, ownerstate }) => ({
     color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
     display: 'flex',
     height: 16,
     alignItems: 'center',
-    ...(ownerState.active && {
+    ...(ownerstate.active && {
       color: theme.palette.primary.main
     }),
     '& .QontoStepIcon-completedIcon': {
@@ -92,7 +92,7 @@ export type ExtraStepIconProps = Omit<StepIconProps, 'testid'> & { testid: strin
 const QontoStepIcon = memo((props: ExtraStepIconProps) => {
   const { active, completed, className, testid } = props;
   return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
+    <QontoStepIconRoot ownerstate={{ active }} className={className}>
       {completed ? (
         <Circle className="QontoStepIcon-completedIcon" data-testid={testid} />
       ) : active ? (
