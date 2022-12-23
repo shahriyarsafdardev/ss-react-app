@@ -6,8 +6,6 @@ import { Stack, Card, TextField } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import useAuth from '../../../../hooks/useAuth';
-// utils
-import fakeRequest from '../../../../utils/fakeRequest';
 
 const StyledButton = styled(LoadingButton)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {

@@ -171,32 +171,35 @@ function ProfileForm({
     </CompanyModalContainer>
   );
 
-  const onSaveCompanyInfo = async (data: any) => {
-    setLoading(true);
-    const companyData = new FormData();
-    data?.logo_url?.image && companyData.append('company_logo_image', data?.logo_url?.image);
-    companyData.append('current_company', data?.name);
-    companyData.append('company_industries', data?.industries);
-    companyData.append('number_of_employees', data?.number_of_employees);
+  const onSaveCompanyInfo = useCallback(
+    async (data: any) => {
+      setLoading(true);
+      const companyData = new FormData();
+      data?.logo_url?.image && companyData.append('company_logo_image', data?.logo_url?.image);
+      companyData.append('current_company', data?.name);
+      companyData.append('company_industries', data?.industries);
+      companyData.append('number_of_employees', data?.number_of_employees);
 
-    await axios
-      .post('/users/update_company_profile', companyData)
-      .then((response) => {
-        if (response.status === 200) {
-          setModal(false);
-          enqueueSnackbar(response.data.message, { variant: 'success' });
-          updateProfile({ ...response.data.user });
-        } else {
-          enqueueSnackbar(response.data.message, { variant: 'error' });
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        enqueueSnackbar(err.message, { variant: 'error' });
-        setLoading(false);
-      });
-  };
+      await axios
+        .post('/users/update_company_profile', companyData)
+        .then((response) => {
+          if (response.status === 200) {
+            setModal(false);
+            enqueueSnackbar(response.data.message, { variant: 'success' });
+            updateProfile({ ...response.data.user });
+          } else {
+            enqueueSnackbar(response.data.message, { variant: 'error' });
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          enqueueSnackbar(err.message, { variant: 'error' });
+          setLoading(false);
+        });
+    },
+    [updateProfile]
+  );
 
   const companySettingsModal = () => (
     <Modal open={modal} onClose={() => setModal(false)}>

@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { capitalCase } from 'change-case';
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import { useLocation } from 'react-router-dom';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
@@ -36,6 +36,12 @@ import {
 
 const companyType = 'company';
 
+const EMAIL_EVENTS = {
+  summary: 'Email - "What you missed" Email - Messaging Opened',
+  direct: 'Email - "New Direct Message" Email - Notification Settings Opened',
+  everyone: 'Email - "@everyone Notification﻿" Email - Notification Settings Opened'
+};
+
 export default function UserAccount() {
   const { themeStretch } = useSettings();
 
@@ -44,12 +50,6 @@ export default function UserAccount() {
   const [currentTab, setCurrentTab] = useState('general');
   const url = new URLSearchParams(useLocation().search);
   const emailType = url.get('email_type');
-
-  const EMAIL_EVENTS = {
-    summary: 'Email - "What you missed" Email - Messaging Opened',
-    direct: 'Email - "New Direct Message" Email - Notification Settings Opened',
-    everyone: 'Email - "@everyone Notification﻿" Email - Notification Settings Opened'
-  };
 
   useEffect(() => {
     sendAmplitudeData(EVENT_TYPES.page_view, {
@@ -61,65 +61,71 @@ export default function UserAccount() {
     }
   }, []);
 
-  const trackEvents = (type: string) => {
-    let eventType = '';
-    if (type === 'summary') {
-      eventType = EMAIL_EVENTS.summary;
-    } else if (type === 'direct') {
-      eventType = EMAIL_EVENTS.direct;
-    } else if (type === 'everyone') {
-      eventType = EMAIL_EVENTS.everyone;
-    }
-    trackGenericEvent({}, eventType);
-  };
+  const trackEvents = useCallback(
+    (type: string) => {
+      let eventType = '';
+      if (type === 'summary') {
+        eventType = EMAIL_EVENTS.summary;
+      } else if (type === 'direct') {
+        eventType = EMAIL_EVENTS.direct;
+      } else if (type === 'everyone') {
+        eventType = EMAIL_EVENTS.everyone;
+      }
+      trackGenericEvent({}, eventType);
+    },
+    [EMAIL_EVENTS]
+  );
 
-  const getTabs = () =>
-    user?.type === companyType
-      ? [
-          {
-            value: 'general',
-            icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-            component: <BusinessAccount />
-          },
-          {
-            value: 'change_password',
-            icon: <Icon icon={roundVpnKey} width={20} height={20} />,
-            component: <AccountChangePassword />
-          },
-          {
-            value: 'delete_account',
-            icon: <Icon icon={roundDelete} width={20} height={20} />,
-            component: <></>
-          }
-        ]
-      : [
-          {
-            value: 'general',
-            icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-            component: <AccountGeneral />
-          },
-          {
-            value: 'networking',
-            icon: <Icon icon={roundPeople} width={20} height={20} />,
-            component: <AccountNetworking />
-          },
-          {
-            value: 'change_password',
-            icon: <Icon icon={roundVpnKey} width={20} height={20} />,
-            component: <AccountChangePassword />
-          },
-          {
-            value: 'email_notifications',
-            icon: <Icon icon={bellFill} width={20} height={20} />,
-            component: <AccountNotifications />
-          },
+  const getTabs = useCallback(
+    () =>
+      user?.type === companyType
+        ? [
+            {
+              value: 'general',
+              icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+              component: <BusinessAccount />
+            },
+            {
+              value: 'change_password',
+              icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+              component: <AccountChangePassword />
+            },
+            {
+              value: 'delete_account',
+              icon: <Icon icon={roundDelete} width={20} height={20} />,
+              component: <></>
+            }
+          ]
+        : [
+            {
+              value: 'general',
+              icon: <Icon icon={roundAccountBox} width={20} height={20} />,
+              component: <AccountGeneral />
+            },
+            {
+              value: 'networking',
+              icon: <Icon icon={roundPeople} width={20} height={20} />,
+              component: <AccountNetworking />
+            },
+            {
+              value: 'change_password',
+              icon: <Icon icon={roundVpnKey} width={20} height={20} />,
+              component: <AccountChangePassword />
+            },
+            {
+              value: 'email_notifications',
+              icon: <Icon icon={bellFill} width={20} height={20} />,
+              component: <AccountNotifications />
+            },
 
-          {
-            value: 'delete_account',
-            icon: <Icon icon={roundDelete} width={20} height={20} />,
-            component: <></>
-          }
-        ];
+            {
+              value: 'delete_account',
+              icon: <Icon icon={roundDelete} width={20} height={20} />,
+              component: <></>
+            }
+          ],
+    [user?.type]
+  );
 
   const ACCOUNT_TABS = getTabs();
 
