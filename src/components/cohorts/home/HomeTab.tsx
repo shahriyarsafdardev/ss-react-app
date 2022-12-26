@@ -79,7 +79,7 @@ const Index = () => {
   useEffect(() => {
     let found = false;
     sessions?.forEach((session) => {
-      if (!found && moment(firstUpcomingDate(session.times)) > moment().subtract(3, 'hour')) {
+      if (!found && moment(firstUpcomingDate(session.times)) > moment().subtract(2, 'hour')) {
         setActiveSession(session);
         found = true;
       }
