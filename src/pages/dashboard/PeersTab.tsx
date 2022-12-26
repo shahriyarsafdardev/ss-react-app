@@ -116,8 +116,8 @@ export default function PeersTab() {
 
   useEffect(() => {
     if (cohort) {
-      if (displayPeers && !peers) {
-        dispatch(getPeers(cohort_id.toString(), user?.id));
+      if (displayPeers) {
+        !peers && dispatch(getPeers(cohort_id.toString(), user?.id));
       } else {
         getAlumni();
       }
