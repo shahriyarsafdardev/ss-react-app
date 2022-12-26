@@ -219,8 +219,6 @@ export default function NotificationsPopover() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let isSubscribed = true;
-
     const initChat = async () => {
       const client = StreamChat.getInstance<
         Record<string, unknown>,
@@ -247,9 +245,7 @@ export default function NotificationsPopover() {
           event.type !== 'user.watching.start' &&
           event.type !== 'health.check'
         ) {
-          if (isSubscribed) {
-            setUnread(event.total_unread_count);
-          }
+          setUnread(event.total_unread_count);
         }
       });
 
@@ -303,18 +299,12 @@ export default function NotificationsPopover() {
       } else {
         dispatch(addNotifications([]));
       }
-      if (isSubscribed) {
-        setChatClient(client);
-      }
+      setChatClient(client);
     };
 
     if (user?.stream_token) {
       initChat();
     }
-
-    return () => {
-      isSubscribed = false;
-    };
   }, [unread]);
 
   const handleOpen = () => {
