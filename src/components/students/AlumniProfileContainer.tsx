@@ -90,7 +90,14 @@ const AlumniProfileContainer = ({
       {viewMode === 'grid' && (
         <Grid container spacing={3} id="alumni-grid-container" data-testid="alumni-grid">
           {alumnis?.map((alumni) => (
-            <Grid data-testid={`peer-card-${alumni.id}`} key={alumni.id} item xs={12} sm={4} md={3}>
+            <Grid
+              data-testid={`peer-card-${alumni?.peer_id}`}
+              key={alumni?.peer_id}
+              item
+              xs={12}
+              sm={4}
+              md={3}
+            >
               <StudentProfileCard peer={alumni} modalHandler={modalHandler} />
             </Grid>
           ))}
