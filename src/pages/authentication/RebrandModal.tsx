@@ -74,7 +74,11 @@ export default function RebrandModal() {
       >
         <StyledBox alignItems="center" justifyContent="space-between">
           <Stack width="100%" spacing={3} alignItems="center" justifyContent="center">
-            <img src="/static/rebrand.png" alt="rebrandModal" width="100%" />
+            <img
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/rebrand.png"
+              alt="rebrandModal"
+              width="100%"
+            />
             <Typography variant="h6" align="center" sx={{ my: 3, color: '#1E293B' }}>
               ScholarSite is now Sphere!
             </Typography>

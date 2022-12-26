@@ -73,7 +73,11 @@ export default function LandingHero() {
       <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
         <HeroOverlayStyle alt="overlay" src="/static/overlay.svg" variants={varFadeIn} />
 
-        <HeroImgStyle alt="hero" src="/static/home/hero.png" variants={varFadeInUp} />
+        <HeroImgStyle
+          alt="hero"
+          src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/home-hero.png"
+          variants={varFadeInUp}
+        />
 
         <Container maxWidth="lg">
           <ContentStyle>

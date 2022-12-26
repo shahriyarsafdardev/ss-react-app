@@ -17,7 +17,8 @@ import {
 
 const RootStyle = styled(motion.div)(({ theme }) => ({
   backgroundSize: 'cover',
-  backgroundImage: 'url(/static/overlay.svg), url(/static/faqs/hero.jpg)',
+  backgroundImage:
+    'url(/static/overlay.svg), url(https://sphere-public.s3.eu-west-2.amazonaws.com/assets/hero.jpg)',
   padding: theme.spacing(10, 0),
   [theme.breakpoints.up('md')]: {
     height: 560,

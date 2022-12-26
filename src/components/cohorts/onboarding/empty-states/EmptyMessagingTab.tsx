@@ -31,7 +31,7 @@ const EmptyMessagingTab = ({ cohortHost }: { cohortHost: string }) => (
     <StyledBox>
       <img
         data-testid="empty-messaging-img"
-        src="/static/cohort-empty-states/emptyMessagingState.svg"
+        src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/emptyMessagingState.svg"
         alt="empty-session"
       />
       <StyledPara data-testid="empty-messaging-information-text">

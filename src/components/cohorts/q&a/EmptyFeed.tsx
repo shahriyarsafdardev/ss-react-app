@@ -52,7 +52,11 @@ const handleClick = () => {
 
 const EmptyFeed = ({ hosts }: { hosts: string }) => (
   <StyledFeedContainer>
-    <StyledPreview data-testid="empty-Q&A-img" src="/static/empty_tabs.png" alt="empty feed" />
+    <StyledPreview
+      data-testid="empty-Q&A-img"
+      src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/empty_tabs.png"
+      alt="empty feed"
+    />
     <StyledPara data-testid="empty-Q&A-information-text">
       <b>{hosts} hasn’t received any questions yet but you could be the first to ask!</b> Potential
       topics are not restricted, your question can refer to a Session or a problem you’re facing at
