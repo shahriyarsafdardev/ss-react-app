@@ -109,7 +109,7 @@ export default function SessionsTab() {
   const setActivSession = useCallback(() => {
     let found = false;
     filteredSessions?.forEach((session, index) => {
-      const isPastSession = moment(firstUpcomingDate(session.times)).add(1, 'hours') < moment();
+      const isPastSession = moment(firstUpcomingDate(session.times)).add(2, 'hours') < moment();
       if (!found && isPastSession && session?.recording_urls.length > 0) {
         setSelectedSession(index);
       } else {

@@ -247,10 +247,12 @@ export const firstUpcomingDate = memoize((times: string[]) => {
 
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(new Date(time)).format('hh:mm a');
+  const sessionHours =
+    sessionLength?.split(' ').length === 1 ? sessionLength[0] : sessionLength.split(' ')[0];
   const sessionEndTime = moment(new Date(time))
-    .add(Number(sessionLength?.split(' ')[0]), 'hours')
+    .add(Number(sessionHours), 'hours')
     .format('hh:mm a');
-  if (moment(time).add(1, 'hours') > moment()) {
+  if (moment(time).add(2, 'hours') > moment()) {
     return `${sessionStartTime} - ${sessionEndTime} ${getLocalTimeZone()}`;
   }
   return 'Complete';

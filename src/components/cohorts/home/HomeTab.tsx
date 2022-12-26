@@ -61,8 +61,7 @@ const Index = () => {
         !onboarding_data?.onboarding_questionnaire_step_completed ||
         !onboarding_data?.onboarding_referral_step_completed ||
         !onboarding_data?.onboarding_calendar_sync_step_completed ||
-        !onboarding_data?.onboarding_networking_step_completed ||
-        !onboarding_data?.onboarding_checklist_completed
+        !onboarding_data?.onboarding_networking_step_completed
       ) {
         setActiveStepper(0);
       } else if (paramStep === '1') {

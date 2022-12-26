@@ -22,7 +22,7 @@ const CohortTimeLine = ({
     let currentSessionNumber = 0;
     let flag = true;
     sessions?.forEach((session, index) => {
-      if (moment(firstUpcomingDate(session.times)).add(1, 'hours') > moment() && flag) {
+      if (moment(firstUpcomingDate(session.times)).add(2, 'hours') > moment() && flag) {
         currentSessionNumber = index + 1;
         flag = false;
       }

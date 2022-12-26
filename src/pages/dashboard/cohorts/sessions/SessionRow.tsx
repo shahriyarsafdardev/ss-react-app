@@ -52,7 +52,7 @@ const SessionCountdown = styled('div')((props) => ({
 }));
 
 function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
-  const sessionDate = moment(firstUpcomingDate(session.times)).add(1, 'hours');
+  const sessionDate = moment(firstUpcomingDate(session.times)).add(2, 'hours');
   const isPastSession = sessionDate < moment();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
