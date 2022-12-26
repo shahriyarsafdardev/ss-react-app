@@ -116,7 +116,7 @@ function NewHomeTab({
       className={classes.homeNavigation}
       variant="outlined"
       component={RouterLink}
-      to={`/cohorts/${cohort.id}/sessions`}
+      to={`/cohorts/${cohort.id}/resources`}
       fullWidth
       onClick={triggerSupplementaryEvent}
     >
