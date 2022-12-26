@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import axios from 'utils/axios';
 // material
-import { uniq } from 'lodash';
+import { debounce, uniq } from 'lodash';
 import { Container, Box, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // redux
@@ -115,16 +115,16 @@ export default function PeersTab() {
   };
 
   useEffect(() => {
-    if (displayPeers) {
-      if (cohort && !peers) {
+    if (cohort) {
+      if (displayPeers && !peers) {
         dispatch(getPeers(cohort_id.toString(), user?.id));
+      } else {
+        getAlumni();
       }
-    } else {
-      getAlumni();
     }
   }, [dispatch, cohort]);
 
-  const getAlumni = useCallback(async () => {
+  const getAlumni = debounce(async () => {
     await axios
       .get(`/cohorts/peers_in_batches.json?offset=${offset}`)
       .then((res: any) => {
@@ -151,7 +151,7 @@ export default function PeersTab() {
       .catch((err) => {
         console.log(err.message || 'Some error occurred!');
       });
-  }, []);
+  }, 300);
 
   const applyFilters = useCallback(
     (students: StudentProfile[]) => {

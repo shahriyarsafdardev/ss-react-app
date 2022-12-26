@@ -9,6 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { ResourceContext } from 'contexts/ResourceContext';
 import { useLocation } from 'react-router-dom';
+import { debounce } from 'lodash';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -46,10 +47,10 @@ function ResourcesTile({
   const url = new URLSearchParams(useLocation().search);
   const source = url.get('source') || '';
 
-  const handleToggleRead = () => {
+  const handleToggleRead = debounce(() => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
     setChecked(!checked);
-  };
+  }, 300);
 
   const handleTileOnClick = useCallback(() => {
     if (localStorage.getItem('resources_opened_count') === '1' && isPublic) {

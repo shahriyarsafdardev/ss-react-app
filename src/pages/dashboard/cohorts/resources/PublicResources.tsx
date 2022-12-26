@@ -40,7 +40,7 @@ export default function PublicResources() {
     cohort && trackEvent(cohort, eventName, eventData);
   };
 
-  const handleShowMore = useCallback(async (sessionID: string) => {
+  const handleShowMore = async (sessionID: string) => {
     await axios
       .get(`/cohorts/${cohort_id}/resources/see_more.json?cohort_session_id=${sessionID}`)
       .then((res) => {
@@ -54,7 +54,7 @@ export default function PublicResources() {
           setResources(updated);
         }
       });
-  }, []);
+  };
 
   useEffect(() => {
     const getCohortAndResources = async () => {
