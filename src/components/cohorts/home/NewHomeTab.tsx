@@ -5,7 +5,7 @@ import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
 import { useDispatch } from '../../../redux/store';
-import { updateMaterialStatus } from '../../../redux/slices/cohort';
+import { getSessionMaterials, updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible, sessionName } from './Common';
 import { Cohort, Session, SessionMaterial } from '../../../@types/cohorts';
 
@@ -103,7 +103,13 @@ function NewHomeTab({
     } else {
       setCurrentStep(materialsList.length);
     }
-  }, [activeSession?.materials.length]);
+  }, [activeSession?.materials?.length]);
+
+  useEffect(() => {
+    if (typeof activeSession !== 'undefined' && !activeSession.materials) {
+      dispatch(getSessionMaterials(activeSession?.id, cohort.id));
+    }
+  }, [activeSession]);
 
   const SupplementaryButton = () => (
     <Button

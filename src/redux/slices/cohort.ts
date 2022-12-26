@@ -333,6 +333,22 @@ const slice = createSlice({
         }
       }
     },
+    getSessionMaterialsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetResourceIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
+
+        if (targetResourceIndex !== -1) {
+          updated[targetResourceIndex].materials = action.payload.materials;
+          state.cohorts[targetCohortIndex].sessions = updated;
+        }
+      }
+    },
     addErrors(state, action) {
       state.errors = action.payload.error;
     },
@@ -631,6 +647,19 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getSessionMaterials(sessionID: string, cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohort_sessions/${sessionID}/session_materials.json`);
+      dispatch(
+        slice.actions.getSessionMaterialsSuccess({ materials: response.data, cohortID, sessionID })
+      );
     } catch (error) {
       console.log(error);
     }
