@@ -6,7 +6,6 @@ import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
 import { useLocation } from 'react-router-dom';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';

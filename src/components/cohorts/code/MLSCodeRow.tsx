@@ -2,7 +2,6 @@ import { Box, Button } from '@material-ui/core';
 import { ContentRow, MainHeading, SubHeading } from './Common';
 
 function MLSCodeRow({ data }: { data: any }) {
-  console.log(data);
   return (
     <ContentRow>
       <Box style={{ height: '53px', width: '53px' }}>

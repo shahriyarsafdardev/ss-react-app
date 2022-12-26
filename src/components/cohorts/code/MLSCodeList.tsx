@@ -88,7 +88,7 @@ function MLSCodeList() {
   return (
     <Container>
       {MLS_CODE_DATA.map((row) => (
-        <MLSCodeRow key={row.subHeading} data={row} />
+        <MLSCodeRow key={row.mainHeading} data={row} />
       ))}
     </Container>
   );

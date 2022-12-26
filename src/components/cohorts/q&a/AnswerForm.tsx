@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useCallback, useMemo } from 'react';
+import { useEffect, useState, memo, useMemo } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { useTheme } from '@material-ui/core/styles';
 import moment from 'moment';

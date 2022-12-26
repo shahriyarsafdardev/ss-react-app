@@ -127,7 +127,7 @@ export default function PublicResources() {
                   <ResourcesSection
                     handleShowMore={(data: string) => handleShowMore(data)}
                     isPublic={true}
-                    key={index}
+                    key={resource.session_id}
                     resourceData={resource}
                     hostName={cohort?.host_full_name}
                     setState={setState}

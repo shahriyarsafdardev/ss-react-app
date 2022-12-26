@@ -177,12 +177,11 @@ const StudentProfileModal = ({
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile className="gaped">
-              {current_industry_category_selections?.length > 0 &&
-                current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
-                    {capitalCase(industry)}
-                  </Label>
-                ))}
+              {current_industry_category_selections?.map((industry: any, index: number) => (
+                <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
+                  {capitalCase(industry)}
+                </Label>
+              ))}
             </ColoredContainerMobile>
           </>
         )}
@@ -211,16 +210,15 @@ const StudentProfileModal = ({
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile className="gaped">
-              {strengths?.length > 0 &&
-                strengths?.map((strength: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="success"
-                  >
-                    {capitalCase(strength)}
-                  </Label>
-                ))}
+              {strengths?.map((strength: any, index: number) => (
+                <Label
+                  key={index}
+                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                  color="success"
+                >
+                  {capitalCase(strength)}
+                </Label>
+              ))}
             </ColoredContainerMobile>
           </>
         )}

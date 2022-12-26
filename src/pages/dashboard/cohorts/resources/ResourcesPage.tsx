@@ -95,7 +95,7 @@ export default function ResourcesPage() {
                 <ResourcesSection
                   handleShowMore={(data: string) => handleShowMore(data)}
                   isPublic={false}
-                  key={index}
+                  key={resource.session_id}
                   resourceData={resource}
                   setState={setState}
                 />

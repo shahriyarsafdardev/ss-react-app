@@ -253,7 +253,7 @@ function ResourceFilter({
             <Stack spacing={2}>
               {filteredMaterials?.map((material: any, index: any) => (
                 <ResourcesTile
-                  key={index}
+                  key={material.id}
                   isPublic={isPublic}
                   sessionID={material?.session_id}
                   material={material}

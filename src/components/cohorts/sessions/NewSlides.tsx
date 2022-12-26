@@ -22,7 +22,6 @@ import '@react-pdf-viewer/full-screen/lib/styles/index.css';
 
 import Message from '../../Message';
 import SlideShareModal from './SlideShareModal';
-import { RootState, useSelector } from '../../../redux/store';
 
 const StyledNavigation = styled(Box)(({ theme }) => ({
   padding: '0px 2px',

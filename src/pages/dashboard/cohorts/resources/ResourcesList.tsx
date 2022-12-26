@@ -25,7 +25,7 @@ function ResourcesList({
           <ResourcesTile
             isPublic={isPublic}
             hostName={hostName}
-            key={index}
+            key={material.id}
             sessionID={sessionID}
             material={material}
             sessionData={sessionData}
