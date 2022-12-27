@@ -11,6 +11,7 @@ import FullStoryScript from 'components/FullStoryScript';
 import SegmentScript from 'components/SegmentScript';
 import { setSegmentUserProperties } from 'utils/eventTracking';
 import { getReferralsCount } from 'redux/slices/referral';
+import { createBrowserHistory as createHistory } from 'history';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -36,6 +37,7 @@ require('dotenv').config({ path: '../.env' });
 declare global {
   interface Window {
     analytics: any;
+    strum: Function;
   }
 }
 
@@ -45,6 +47,16 @@ const FETCH_EVENT_DELAY = 10 * 60;
 export default function App() {
   const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
+
+  const history = createHistory();
+
+  useEffect(() => {
+    history.listen((action: any) => {
+      if (action !== 'REPLACE') {
+        window.strum('routeChange', window.location.href);
+      }
+    });
+  }, [history]);
 
   useEffect(() => {
     initAmplitude();
