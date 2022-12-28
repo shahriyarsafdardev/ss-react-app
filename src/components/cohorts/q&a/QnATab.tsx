@@ -7,6 +7,7 @@ import { EVENT_TYPES, trackQnAEvents, trackPageViewEvent } from 'utils/amplitude
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion, submitAnswer } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { debounce } from 'lodash';
 import { Question } from '../../../@types/cohorts';
 import { RootState, useSelector } from '../../../redux/store';
 import LoadingScreen from '../../LoadingScreen';
@@ -47,6 +48,8 @@ function QnATab() {
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(true);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [offset, setOffset] = useState(0);
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -64,17 +67,28 @@ function QnATab() {
 
   useEffect(() => {
     const initMaterials = async () => {
-      try {
-        const response = await axios.get(`/questions_feed.json?cohort_id=${cohort_id} `);
-        setList(response.data.questions);
+      if (cohort) {
+        setLoading(true);
+        await getQuestions([], 0);
         setLoading(false);
-      } catch (error: any) {
-        console.log(error);
-        enqueueSnackbar(error?.message, { variant: 'error' });
       }
     };
     initMaterials();
-  }, [cohort_id]);
+  }, [cohort?.code]);
+
+  const getQuestions = debounce(async (oldQuestions: Question[], offSet: number) => {
+    await axios
+      .get(`/questions_feed.json?cohort_id=${cohort_id}&offset=${offSet}`)
+      .then((res: any) => {
+        const updatedQuestions = [...oldQuestions, ...res.data.questions];
+        setList(updatedQuestions);
+        setTotalQuestions(res.data.totalQuestions);
+        setOffset(offSet + 5);
+      })
+      .catch((err) => {
+        console.log(err.message || 'Some error occurred!');
+      });
+  }, 300);
 
   const onCreateSuccess = (questionObject: Question) => {
     setList([questionObject, ...list]);
@@ -153,11 +167,13 @@ function QnATab() {
         <Container style={{ marginBottom: '50px' }}>
           <StyledBox>
             {list.length === 0 ? (
-              <EmptyFeed hosts={cohort.host_names} />
+              <EmptyFeed hosts={cohort?.host_names} />
             ) : (
               <QnAFeed
                 addComment={addComment}
                 questions={list}
+                totalQuestions={totalQuestions}
+                loadMore={() => getQuestions(list, offset)}
                 removeComment={removeComment}
                 onDeleteClick={handleDelete}
               />

@@ -186,7 +186,7 @@ function QuestionRow({
     </>
   );
   const renderComments = () =>
-    question.comments.length > 0 && (
+    question?.comments?.length > 0 && (
       <div>
         <CommentList removeComment={removeComment} post={question} />
       </div>
