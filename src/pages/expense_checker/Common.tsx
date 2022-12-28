@@ -1,6 +1,7 @@
 import { Box, styled, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import Page from 'components/Page';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   paymentData: {
@@ -78,7 +79,7 @@ export const LoadingContainer = styled(Box)(() => ({
   left: '50%'
 }));
 
-export const Logo = styled('img')(({ theme }) => ({
+export const Logo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '4%',

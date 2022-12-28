@@ -28,6 +28,7 @@ import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { styled } from '@material-ui/core/styles';
 import useAuth from 'hooks/useAuth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { UploadAvatar } from '../../../../components/upload';
 // axios
 import axios from '../../../../utils/axios';
@@ -165,7 +166,7 @@ function ProfileForm({
 
   const companyLabel = () => (
     <CompanyModalContainer>
-      <img src={userProfile?.company_image_url || ''} alt="company-logo" />
+      <LazyLoadImage src={userProfile?.company_image_url || ''} alt="company-logo" />
       {userProfile?.current_company}
       <div onClick={() => setModal(true)}>Edit</div>
     </CompanyModalContainer>

@@ -8,6 +8,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { styled } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/styles';
 import { SLIDE_EVENTS, trackGenericEvent } from 'utils/amplitude';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Message from '../../Message';
 import SlideShareModal from './SlideShareModal';
 import { RootState, useSelector } from '../../../redux/store';
@@ -414,7 +415,7 @@ export default function Slides({
           style={{ marginTop: '10px', borderRadius: '50px', padding: '9px' }}
           onClick={() => handleShareSlides()}
         >
-          <img
+          <LazyLoadImage
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/share_icon_white.svg"
             alt="share"
             style={{ marginRight: '15px', height: '21px' }}

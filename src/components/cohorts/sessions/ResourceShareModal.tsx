@@ -7,6 +7,7 @@ import { styled } from '@material-ui/core/styles';
 import Modal from 'components/animate/Modal';
 import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { StyledShareModal, StyledTypography } from './Common';
 import { SessionMaterial } from '../../../@types/cohorts';
 
@@ -19,7 +20,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '20%',
   [theme.breakpoints.down('sm')]: {
     width: '70%'

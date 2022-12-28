@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useStyles } from './Common';
 
 function CarouselItem({
@@ -57,7 +58,7 @@ function CarouselItem({
           <Stack>
             {course?.preview_instructor_logos && (
               <Box sx={{ borderTop: '1px solid #E6E6E6' }}>
-                <img
+                <LazyLoadImage
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
                   className={classes.companyLogos}

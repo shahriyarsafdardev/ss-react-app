@@ -3,6 +3,7 @@ import React, { useState, useContext, memo } from 'react';
 import { Box, Typography, Stack, Button, TextField } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { CohortContext } from 'contexts/CohortContext';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import { updateTimestamp } from '../../../../redux/slices/cohort';
 import { useDispatch } from '../../../../redux/store';
@@ -80,7 +81,7 @@ function Timestamp({
   return (
     <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={1}>
       <StyledImageContainer>
-        <img
+        <LazyLoadImage
           src={
             timestamp?.thumbnail_url ||
             'https://sphere-public.s3.eu-west-2.amazonaws.com/Default+thumbnail.png'

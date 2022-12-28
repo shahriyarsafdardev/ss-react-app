@@ -4,6 +4,7 @@ import { useContext, useEffect, useState, memo, useCallback, useMemo } from 'rea
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useAuth from 'hooks/useAuth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useDispatch } from '../../../redux/store';
 import { getSessionMaterials, updateMaterialStatus } from '../../../redux/slices/cohort';
 import { zoomTimesPreview, displayMultipleDates, isZoomLinkVisible, sessionName } from './Common';
@@ -143,7 +144,7 @@ function NewHomeTab({
     return (
       <StyledBox>
         <ImageBox>
-          <img
+          <LazyLoadImage
             src={
               sessionMaterial.thumbnail_image_url
                 ? sessionMaterial.thumbnail_image_url

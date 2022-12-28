@@ -1,3 +1,4 @@
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { styled } from '@material-ui/core/styles';
 import {
   Box,
@@ -486,7 +487,7 @@ export const StyledModalButton = styled(Button)(({ theme }) => ({
     width: '80%'
   }
 }));
-export const StyledImage = styled('img')(({ theme }) => ({
+export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '55%',
   margin: '20px auto 0 !important'
 }));
@@ -562,7 +563,7 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export const SmallImage = styled('img')(({ theme }) => ({
+export const SmallImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   height: 'auto',
   cursor: 'pointer',
@@ -582,7 +583,7 @@ export const OffboardingHeader = styled(Typography)(({ theme }) => ({
   }
 }));
 
-export const MainImage = styled('img')(({ theme }) => ({
+export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '75%',
   height: 'auto',
   [theme.breakpoints.down('md')]: {

@@ -1,4 +1,5 @@
 import { Stack, styled, Typography } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { RootState, useSelector } from 'redux/store';
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
@@ -6,7 +7,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   fontSize: '24px'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   marginBottom: '10px',
   width: '100px',
   height: 'auto'

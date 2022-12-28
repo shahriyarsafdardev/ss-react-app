@@ -1,5 +1,6 @@
 import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
 import { memo, useCallback } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { trackEvent } from 'utils/eventTracking';
 import { CourseTileHover, useStyles } from './Common';
 
@@ -72,7 +73,7 @@ function CourseTile({ course }: { course: any }) {
             )}
             {course?.preview_instructor_logos && (
               <Box sx={{ borderTop: '1px solid #E6E6E6' }}>
-                <img
+                <LazyLoadImage
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
                   style={{ margin: '20px auto 0px auto', maxHeight: '30px', maxWidth: '250px' }}

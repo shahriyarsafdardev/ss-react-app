@@ -4,6 +4,7 @@ import { Card, Avatar, Typography } from '@material-ui/core';
 
 // @types
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { StudentProfile, Company } from '../../@types/cohorts';
 
 import SvgIconStyle from '../SvgIconStyle';
@@ -34,7 +35,7 @@ const StyledCard = styled(Card)(() => ({
   height: '100%'
 }));
 
-const CoverImgStyle = styled('img')(({ theme }) => ({
+const CoverImgStyle = styled(LazyLoadImage)(({ theme }) => ({
   top: 0,
   zIndex: 8,
   width: '100%',

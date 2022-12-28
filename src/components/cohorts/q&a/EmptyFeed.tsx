@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const StyledFeedContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',
@@ -32,7 +33,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-const StyledPreview = styled('img')(({ theme }) => ({
+const StyledPreview = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   borderRadius: '14.5691px',
   objectFit: 'cover',

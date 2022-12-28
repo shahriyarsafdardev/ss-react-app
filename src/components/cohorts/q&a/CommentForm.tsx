@@ -20,6 +20,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import EmojiPicker from '../../EmojiPicker';
 
 // ----------------------------------------------------------------------
@@ -56,7 +57,7 @@ const StyledImageContainer = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start'
 }));
 
-const StyledPreview = styled('img')(({ theme }) => ({
+const StyledPreview = styled(LazyLoadImage)(({ theme }) => ({
   width: '120px',
   height: '120px',
   borderRadius: '14.5691px',

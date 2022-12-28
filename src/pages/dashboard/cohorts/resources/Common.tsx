@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Modal } from 'components/animate';
 import { trackEvent } from 'utils/eventTracking';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -45,7 +46,7 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-export const StyledImage = styled('img')(({ theme }) => ({
+export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   height: 'auto',
   width: '50px',
   minWidth: '50px',

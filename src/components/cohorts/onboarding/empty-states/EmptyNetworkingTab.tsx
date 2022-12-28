@@ -1,6 +1,7 @@
 import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -43,19 +44,19 @@ const EmptyNetworkingTab = ({ cohortHost }: { cohortHost: string }) => (
   <Container>
     <StyledBox>
       <Box data-testid="empty-networking-img">
-        <img
+        <LazyLoadImage
           src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/sample-user-1.svg"
           alt="empty-state-user"
         />
-        <img
+        <LazyLoadImage
           src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/sample-user-2.svg"
           alt="empty-state-user"
         />
-        <img
+        <LazyLoadImage
           src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/sample-user-3.svg"
           alt="empty-state-user"
         />
-        <img
+        <LazyLoadImage
           src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/sample-user-4.svg"
           alt="empty-state-user"
         />

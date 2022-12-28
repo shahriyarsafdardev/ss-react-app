@@ -3,6 +3,7 @@ import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import Page from 'components/Page';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   paymentData: {
@@ -196,7 +197,7 @@ export const LoadingContainer = styled(Box)(({ theme }) => ({
   left: '45%'
 }));
 
-export const Logo = styled('img')(({ theme }) => ({
+export const Logo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '4%',
@@ -206,7 +207,7 @@ export const Logo = styled('img')(({ theme }) => ({
   }
 }));
 
-export const BannerLogo = styled('img')(({ theme }) => ({
+export const BannerLogo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '120px',
@@ -215,7 +216,7 @@ export const BannerLogo = styled('img')(({ theme }) => ({
     display: 'none'
   }
 }));
-export const StyledCheckIcon = styled('img')(({ theme }) => ({
+export const StyledCheckIcon = styled(LazyLoadImage)(({ theme }) => ({
   width: '24px',
   height: '24px',
   marginRight: '8px'

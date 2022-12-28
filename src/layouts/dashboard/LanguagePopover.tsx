@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 // material
 import { Box, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
 // hooks
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import useLocales from '../../hooks/useLocales';
 // components
 import MenuPopover from '../../components/MenuPopover';
@@ -26,7 +27,7 @@ export default function LanguagePopover() {
           ...(open && { bgcolor: 'action.selected' })
         }}
       >
-        <img src={currentLang.icon} alt={currentLang.label} />
+        <LazyLoadImage src={currentLang.icon} alt={currentLang.label} />
       </MIconButton>
 
       <MenuPopover open={open} onClose={() => setOpen(false)} anchorEl={anchorRef.current}>

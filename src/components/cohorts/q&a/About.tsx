@@ -1,8 +1,9 @@
 import { Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { SectionContainer } from './Common';
 
-const StyledProfile = styled('img')(({ theme }) => ({
+const StyledProfile = styled(LazyLoadImage)(({ theme }) => ({
   width: '93px',
   height: '93px',
   borderRadius: '100px'

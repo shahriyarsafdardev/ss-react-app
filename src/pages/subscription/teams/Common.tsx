@@ -5,6 +5,7 @@ import { Theme } from '@material-ui/core/styles';
 
 import Page from 'components/Page';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const StyledBackButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -213,7 +214,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const Logo = styled('img')(({ theme }) => ({
+export const Logo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '4%',

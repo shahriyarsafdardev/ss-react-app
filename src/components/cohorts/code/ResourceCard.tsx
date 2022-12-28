@@ -1,5 +1,6 @@
 import { Button, Typography } from '@material-ui/core';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { CODE_PAGE_EVENTS, trackGenericEvent } from 'utils/amplitude';
 import { Cohort } from '../../../@types/cohorts';
 import { DetailsBox, ImageBox, ResourceBox, useStyles } from './Common';
@@ -42,7 +43,7 @@ function ResourceCard({
         </Button>
       </DetailsBox>
       <ImageBox>
-        <img src={imageUrl} alt="session-prereading-img" width="100%" />
+        <LazyLoadImage src={imageUrl} alt="session-prereading-img" width="100%" />
       </ImageBox>
     </ResourceBox>
   );

@@ -1,6 +1,7 @@
 import { Stack, Box } from '@material-ui/core';
 import Modal from 'components/animate/Modal';
 import { styled } from '@material-ui/core/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { StyledShareModal, StyledTypography } from './Common';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
@@ -11,7 +12,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-evenly'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   marginBottom: '3%',
   width: '45%',
   [theme.breakpoints.down('sm')]: {

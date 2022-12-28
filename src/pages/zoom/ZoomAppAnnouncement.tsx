@@ -3,6 +3,7 @@ import Modal from 'components/animate/Modal';
 import axios from 'utils/axios';
 import { useState } from 'react';
 import useAuth from 'hooks/useAuth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   height: '600px',
@@ -65,7 +66,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '350px'
 }));
 

@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { RootState, useSelector } from 'redux/store';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ProfileForm from './ProfileForm';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
@@ -50,7 +51,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   height: '200px'
 }));

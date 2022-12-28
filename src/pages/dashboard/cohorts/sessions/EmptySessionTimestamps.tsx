@@ -1,5 +1,6 @@
 import { Stack, Typography, Link, Button } from '@material-ui/core';
 import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useStyles } from './Common';
 
 const EmptySessionTimestamps = ({ sendAnalyticsEvent }: { sendAnalyticsEvent: Function }) => {
@@ -15,7 +16,7 @@ const EmptySessionTimestamps = ({ sendAnalyticsEvent }: { sendAnalyticsEvent: Fu
 
   return (
     <Stack spacing={4} direction={{ xs: 'column', md: 'row' }} className={classes.parentStack}>
-      <img
+      <LazyLoadImage
         src="https://sphere-public.s3.eu-west-2.amazonaws.com/timestamps-detail.png"
         alt="zoom details"
         className={classes.detailsImage}
