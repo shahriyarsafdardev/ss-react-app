@@ -63,7 +63,7 @@ const Index = () => {
         !onboarding_data?.onboarding_networking_step_completed
       ) {
         setActiveStepper(0);
-      } else if (paramStep === '1') {
+      } else if (new Date(cohort?.start_date) > new Date() && paramStep === '1') {
         setActiveStepper(1);
       } else {
         setActiveStepper(2);
