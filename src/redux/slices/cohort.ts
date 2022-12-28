@@ -78,6 +78,26 @@ const slice = createSlice({
         (cohort) => cohort.id === action.payload.cohort_id
       );
       if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        action.payload.sessions.forEach((payloadSession: any) => {
+          const targetSessionIndex = updated.findIndex(
+            (session) => session?.id === payloadSession?.id
+          );
+
+          if (targetSessionIndex !== -1) {
+            const oldSession = updated[targetSessionIndex];
+            updated[targetSessionIndex] = payloadSession;
+            updated[targetSessionIndex].materials = oldSession.materials;
+          }
+        });
+        state.cohorts[targetCohortIndex].sessions = updated;
+      }
+    },
+    getBriefSessionsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
@@ -647,6 +667,17 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getBriefSessions(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/sessions/brief_sessions.json`);
+      dispatch(slice.actions.getBriefSessionsSuccess(response.data));
     } catch (error) {
       console.log(error);
     }

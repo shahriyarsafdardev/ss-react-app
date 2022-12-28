@@ -9,7 +9,7 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { trackEvent } from 'utils/eventTracking';
 import { useLocation } from 'react-router-dom';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import { getSessions } from '../../../redux/slices/cohort';
+import { getBriefSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
 import { firstUpcomingDate } from './Common';
@@ -49,7 +49,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cohort && !sessions) {
-      dispatch(getSessions(cohort.id));
+      dispatch(getBriefSessions(cohort.id));
     }
   }, [cohort]);
 

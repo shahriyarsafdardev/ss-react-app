@@ -101,7 +101,7 @@ export default function SessionsTab() {
   }, [sessions]);
 
   useEffect(() => {
-    if (cohort && !sessions) {
+    if (cohort && !sessions?.[0]?.recording_urls) {
       dispatch(getSessions(cohort.id));
     }
   }, [cohort]);
@@ -110,21 +110,13 @@ export default function SessionsTab() {
     let found = false;
     filteredSessions?.forEach((session, index) => {
       const isPastSession = moment(firstUpcomingDate(session.times)).add(2, 'hours') < moment();
-      if (!found && isPastSession && session?.recording_urls.length > 0) {
+      if (!found && isPastSession && session?.recording_urls?.length > 0) {
         setSelectedSession(index);
       } else {
         found = true;
       }
     });
   }, []);
-
-  if (typeof cohort === 'undefined') {
-    return (
-      <LoadingContainer>
-        <LoadingScreen />
-      </LoadingContainer>
-    );
-  }
 
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     trackEvent(cohort, eventName, eventData);
@@ -146,6 +138,15 @@ export default function SessionsTab() {
         />
       );
     }
+
+    if (typeof cohort === 'undefined' || !sessions?.[0]?.recording_urls) {
+      return (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      );
+    }
+
     if (filteredSessions && filteredSessions.length > 0) {
       return (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
