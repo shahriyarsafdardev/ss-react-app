@@ -78,18 +78,23 @@ const slice = createSlice({
         (cohort) => cohort.id === action.payload.cohort_id
       );
       if (targetCohortIndex !== -1) {
-        const updated = state.cohorts[targetCohortIndex].sessions;
-        action.payload.sessions.forEach((payloadSession: any) => {
-          const targetSessionIndex = updated.findIndex(
-            (session) => session?.id === payloadSession?.id
-          );
+        let updated = state.cohorts[targetCohortIndex].sessions;
+        if (state.cohorts[targetCohortIndex].sessions) {
+          updated = state.cohorts[targetCohortIndex].sessions;
+          action.payload.sessions.forEach((payloadSession: any) => {
+            const targetSessionIndex = updated.findIndex(
+              (session) => session?.id === payloadSession?.id
+            );
 
-          if (targetSessionIndex !== -1) {
-            const oldSession = updated[targetSessionIndex];
-            updated[targetSessionIndex] = payloadSession;
-            updated[targetSessionIndex].materials = oldSession.materials;
-          }
-        });
+            if (targetSessionIndex !== -1) {
+              const oldSession = updated?.[targetSessionIndex];
+              updated[targetSessionIndex] = payloadSession;
+              updated[targetSessionIndex].materials = oldSession.materials;
+            }
+          });
+        } else {
+          updated = action.payload.sessions;
+        }
         state.cohorts[targetCohortIndex].sessions = updated;
       }
     },
