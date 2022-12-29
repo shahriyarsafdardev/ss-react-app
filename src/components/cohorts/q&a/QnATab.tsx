@@ -70,7 +70,6 @@ function QnATab() {
       if (cohort) {
         setLoading(true);
         await getQuestions([], 0);
-        setLoading(false);
       }
     };
     initMaterials();
@@ -84,9 +83,11 @@ function QnATab() {
         setList(updatedQuestions);
         setTotalQuestions(res.data.totalQuestions);
         setOffset(offSet + 5);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err.message || 'Some error occurred!');
+        setLoading(false);
       });
   }, 300);
 
