@@ -19,21 +19,19 @@ function ResourcesList({
   setState: Function;
 }) {
   return (
-    <>
-      <Stack spacing={2}>
-        {sessionMaterials.map((material: SessionMaterial, index: any) => (
-          <ResourcesTile
-            isPublic={isPublic}
-            hostName={hostName}
-            key={material.id}
-            sessionID={sessionID}
-            material={material}
-            sessionData={sessionData}
-            setState={setState}
-          />
-        ))}
-      </Stack>
-    </>
+    <Stack spacing={2}>
+      {sessionMaterials.map((material: SessionMaterial, index: any) => (
+        <ResourcesTile
+          isPublic={isPublic}
+          hostName={hostName}
+          key={material.id}
+          sessionID={sessionID}
+          material={material}
+          sessionData={sessionData}
+          setState={setState}
+        />
+      ))}
+    </Stack>
   );
 }
 

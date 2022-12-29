@@ -124,7 +124,10 @@ const Index = () => {
   }
 
   return (
-    <Page title="Sphere | Homepage" sx={{ width: '100%', height: '100%', minHeight: '100%' }}>
+    <Page
+      title="Sphere | Homepage"
+      sx={{ width: '100%', height: '100%', minHeight: '100%', overflow: 'hidden' }}
+    >
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
         cohort?.code === 'ACI' &&

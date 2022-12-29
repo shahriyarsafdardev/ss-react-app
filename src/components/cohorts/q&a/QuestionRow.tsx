@@ -186,11 +186,7 @@ function QuestionRow({
     </>
   );
   const renderComments = () =>
-    question?.comments?.length > 0 && (
-      <div>
-        <CommentList removeComment={removeComment} post={question} />
-      </div>
-    );
+    question?.comments?.length > 0 && <CommentList removeComment={removeComment} post={question} />;
 
   return (
     <StyledQuestionRow>

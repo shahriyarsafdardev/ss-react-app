@@ -83,7 +83,7 @@ function AnswerForm({
         alignContent: 'flex-start'
       }}
     >
-      <Box>
+      <>
         {question.question_type === 'Audio' && question.audio_url && (
           // eslint-disable-next-line jsx-a11y/media-has-caption
           <audio src={question.audio_url} controls style={{ width: '100%', marginTop: '10px' }} />
@@ -100,7 +100,7 @@ function AnswerForm({
             style={{ width: '100%', height: '150px', borderRadius: '8px', marginTop: '10px' }}
           />
         )}
-      </Box>
+      </>
       <Box
         style={{
           display: 'flex',

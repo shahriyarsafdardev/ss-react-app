@@ -232,9 +232,7 @@ function NewSlides({
           Share this slide with a friend or colleague
         </Button>
       )}
-      <div>
-        <SlideShareModal open={shareModal} onClose={setShareModal} />
-      </div>
+      <SlideShareModal open={shareModal} onClose={setShareModal} />
     </div>
   );
 

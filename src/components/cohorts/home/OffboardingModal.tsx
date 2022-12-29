@@ -1,4 +1,4 @@
-import { useContext, memo, useCallback } from 'react';
+import { useContext, memo } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack, Typography } from '@material-ui/core';
 import { Modal } from 'components/animate';

@@ -137,7 +137,7 @@ function NewHomeTab({
   );
 
   const PreReadingData = memo(({ sessionMaterial }: { sessionMaterial: SessionMaterial }) => {
-    const markReadingCompleted = () => markAsComplete(sessionMaterial.id, currentStep + 1);
+    const markReadingCompleted = () => markAsComplete(sessionMaterial?.id, currentStep + 1);
     const handleReadingOpened = () =>
       sendPreReadsEvent('Home Page - Prereads - "Open Reading" Selected');
 
@@ -146,7 +146,7 @@ function NewHomeTab({
         <ImageBox>
           <LazyLoadImage
             src={
-              sessionMaterial.thumbnail_image_url
+              sessionMaterial?.thumbnail_image_url
                 ? sessionMaterial.thumbnail_image_url
                 : 'https://i.pinimg.com/736x/eb/62/3d/eb623d5675533da657fead95998004b4.jpg'
             }
@@ -156,24 +156,24 @@ function NewHomeTab({
         </ImageBox>
         <Divider orientation="vertical" style={{ height: 'auto' }} />
         <PreReadingStack>
-          <Box>
+          <>
             <PreReadingTitle data-testid="pre-reading-title">
               Pre-Reading {sessionMaterial?.index}
             </PreReadingTitle>
             <PreReadingDetail data-testid="pre-reading-description">
-              {sessionMaterial.name}
+              {sessionMaterial?.name}
             </PreReadingDetail>
             <PreReadingDescription data-testid="pre-reading-description">
-              {sessionMaterial.description}
+              {sessionMaterial?.description}
             </PreReadingDescription>
-          </Box>
+          </>
           <Stack spacing={1} className={classes.navigationButtons}>
             <Button
               className={classes.homeNavigation}
               variant="contained"
               target="_blank"
               onClick={handleReadingOpened}
-              href={sessionMaterial.action_url}
+              href={sessionMaterial?.action_url}
             >
               Open
             </Button>
@@ -273,13 +273,11 @@ function NewHomeTab({
         <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
             Live with {activeSession?.networking_session ? 'your cohort' : cohortHostName},{' '}
-            <span>
-              <strong>
-                {displayMultipleDates(activeSession?.times || [])}
-                {', '}
-                {zoomTimes.replace(timeZone, '(local time)')}
-              </strong>
-            </span>
+            <strong>
+              {displayMultipleDates(activeSession?.times || [])}
+              {', '}
+              {zoomTimes.replace(timeZone, '(local time)')}
+            </strong>
           </PreReadingDetail>
         </Box>
         <SessionDescription innerContent={activeSession?.summary || ''} />

@@ -174,12 +174,10 @@ export default function SurveyForm({
     <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
-          <br />
           <Box width="100%" marginBottom={2}>
             <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
             <SessionTitle>Feedback Survey</SessionTitle>
           </Box>
-          <br />
           <ProgressBarContainer>
             <BorderLinearProgress variant="determinate" value={progress()} />
             <CurrentStep>

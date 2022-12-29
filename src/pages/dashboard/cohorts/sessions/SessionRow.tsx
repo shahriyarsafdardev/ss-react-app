@@ -66,11 +66,11 @@ function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
   };
 
   const sessionTime = memoize((date: string) => (
-    <span>
+    <>
       {`Live ${moment(date).fromNow()}`}
       <br />
       {`${moment(date).format('DD MMMM YYYY')}`}
-    </span>
+    </>
   ));
 
   return (
@@ -85,14 +85,10 @@ function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
       }}
     >
       <div onClick={handleSessionSelection} style={{ width: '100%' }}>
-        <Stack direction="row">
-          <Box>
-            <SessionDetails
-              data-testid={`session-list-number-${index}`}
-            >{`Session ${session.number} | ${session.length}`}</SessionDetails>
-            <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
-          </Box>
-        </Stack>
+        <SessionDetails
+          data-testid={`session-list-number-${index}`}
+        >{`Session ${session.number} | ${session.length}`}</SessionDetails>
+        <Title data-testid={`session-list-title-${index}`}>{session.name}</Title>
         <SessionCountdown data-testid={`session-list-time-container-${index}`}>
           <img src="/static/icons/ic_calendar.svg" alt="calendar-icon" style={{ marginRight: 5 }} />
           {isPastSession

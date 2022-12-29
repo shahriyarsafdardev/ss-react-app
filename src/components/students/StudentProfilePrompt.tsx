@@ -99,35 +99,33 @@ const StudentProfilePrompt = ({
   };
 
   return (
-    <>
-      <StyledStack>
-        <NetworkingMessage spacing={2}>
-          <Stack spacing={2}>
-            <BoldText>Welcome to Sphere’s network!</BoldText>
-            <StyledTypography>
-              Sphere’s network consists of of ambitious professionals from organizations across the
-              globe — from startups to blue-chips.
-            </StyledTypography>
-          </Stack>
-        </NetworkingMessage>
-        <StyledContent spacing={2}>
-          <Typography>
-            Access to the peer network for your {cohort?.name} cohort will open 2 weeks before the
-            cohort begins.
-          </Typography>
-          <Typography>
-            Until then, complete your networking profile and enjoy access to Sphere’s diverse alumni
-            network.
-          </Typography>
-          <StyledButton
-            variant={user?.networking_profile_completed ? 'outlined' : 'contained'}
-            onClick={handleButtonSubmit}
-          >
-            {buttonText()}
-          </StyledButton>
-        </StyledContent>
-      </StyledStack>
-    </>
+    <StyledStack>
+      <NetworkingMessage spacing={2}>
+        <Stack spacing={2}>
+          <BoldText>Welcome to Sphere’s network!</BoldText>
+          <StyledTypography>
+            Sphere’s network consists of of ambitious professionals from organizations across the
+            globe — from startups to blue-chips.
+          </StyledTypography>
+        </Stack>
+      </NetworkingMessage>
+      <StyledContent spacing={2}>
+        <Typography>
+          Access to the peer network for your {cohort?.name} cohort will open 2 weeks before the
+          cohort begins.
+        </Typography>
+        <Typography>
+          Until then, complete your networking profile and enjoy access to Sphere’s diverse alumni
+          network.
+        </Typography>
+        <StyledButton
+          variant={user?.networking_profile_completed ? 'outlined' : 'contained'}
+          onClick={handleButtonSubmit}
+        >
+          {buttonText()}
+        </StyledButton>
+      </StyledContent>
+    </StyledStack>
   );
 };
 
