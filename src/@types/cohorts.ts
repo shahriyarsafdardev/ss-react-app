@@ -327,7 +327,6 @@ export type Question = {
   thumbnail: string;
   user_id: string;
   user_name: string;
-  user_organisation_logo: string;
   user_slug: string;
   video_screenshot: string;
   video_url: string;
