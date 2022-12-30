@@ -197,7 +197,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                     playing={playing}
                     className={loading ? classes.hidden : classes.shown}
                     onReady={() => setLoading(false)}
-                    style={{ maxWidth: '100%' }}
+                    sx={{ maxWidth: '100%' }}
                     onStart={() => markAttendance('watched_recording')}
                     onPause={() => {
                       sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {

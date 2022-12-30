@@ -77,14 +77,14 @@ function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
     <ListItem
       id={`session-list-${index}`}
       data-testid={`session-list-${index}`}
-      style={{
+      sx={{
         padding: '10px 20px',
         ...(isSelected && {
           backgroundColor: 'rgba(77, 77, 205, 0.03)'
         })
       }}
     >
-      <div onClick={handleSessionSelection} style={{ width: '100%' }}>
+      <Box onClick={handleSessionSelection} sx={{ width: '100%' }}>
         <SessionDetails
           data-testid={`session-list-number-${index}`}
         >{`Session ${session.number} | ${session.length}`}</SessionDetails>
@@ -95,7 +95,7 @@ function SessionRow({ session, index, onClick, isSelected }: SessionRowProps) {
             ? `Recorded on ${moment(firstUpcomingDate(session.times)).format('DD MMMM YYYY')}`
             : sessionTime(firstUpcomingDate(session.times))}
         </SessionCountdown>
-      </div>
+      </Box>
     </ListItem>
   );
 }

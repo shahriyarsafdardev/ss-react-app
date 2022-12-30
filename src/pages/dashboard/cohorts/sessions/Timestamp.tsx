@@ -75,7 +75,7 @@ function Timestamp({
       </StyledImageContainer>
 
       <Box
-        style={{
+        sx={{
           borderLeft: '2px solid #E2E8F0',
           width: '0px',
           height: 'auto'
@@ -97,7 +97,7 @@ function Timestamp({
             defaultValue={description}
           />
         ) : (
-          <Typography style={{ color: '#454F5B', fontSize: '14px' }}>
+          <Typography sx={{ color: '#454F5B', fontSize: '14px' }}>
             {secondsToHms(timestamp?.timestamp || 0)}
             {` | ${timestamp?.description || 'New Timestamp'}`}
           </Typography>
