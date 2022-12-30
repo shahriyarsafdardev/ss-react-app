@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from '@material-ui/core';
+import { Box, Button, Stack, Theme } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Modal } from 'components/animate';
 import { OnboardingStepsContainer } from 'components/cohorts/onboarding/OnboardingModal';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Highlight from 'react-highlight';
 import copy from 'clipboard-copy';
 import { useSnackbar } from 'notistack5';
+import { makeStyles } from '@material-ui/styles';
 
 export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
@@ -50,6 +51,21 @@ const CopyJsonButton = styled(Button)(({ theme }) => ({
   margin: '12px 0px',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
+  }
+}));
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  headerContainer: {
+    justifyContent: 'space-between',
+    width: '-webkit-fill-available',
+    mx: 2,
+    mb: 2
+  },
+  surveyBox: {
+    mt: 3,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '16px'
   }
 }));
 

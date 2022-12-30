@@ -24,7 +24,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
-import { ExampleQuestionModal, LoadingContainer } from './Common';
+import { ExampleQuestionModal, LoadingContainer, useStyles } from './Common';
 
 interface Survey {
   cohortCode: string;
@@ -49,6 +49,7 @@ export default function SurveyQuestionForm() {
   const { enqueueSnackbar } = useSnackbar();
   const [currentCode, setCurrentCode] = useState('');
   const [intakeList, setIntakeList] = useState<any>([]);
+  const classes = useStyles();
 
   const SurveySchema = Yup.object().shape({
     cohortCode: Yup.string().required('Cohort Code is required'),
@@ -284,7 +285,7 @@ export default function SurveyQuestionForm() {
                     </Stack>
                   )}
                 </Stack>
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
+                <Box className={classes.surveyBox}>
                   {(values.sessionNumber || values.isOnboardedQuestion) && <ExampleQuestionModal />}
                   {cohort && values.sessionNumber && (
                     <Button
