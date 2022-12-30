@@ -165,7 +165,7 @@ function QnATab() {
           addAnswer={addAnswer}
           handleSkipQuestion={handleSkipQuestion}
         />
-        <Container style={{ marginBottom: '50px' }}>
+        <Container sx={{ marginBottom: '50px' }}>
           <StyledBox>
             {list.length === 0 ? (
               <EmptyFeed hosts={cohort?.host_names} />

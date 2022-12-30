@@ -112,7 +112,7 @@ function CommentItem({
                 direction={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'flex-start', sm: 'center' }}
                 justifyContent="space-between"
-                style={{ width: '100%' }}
+                sx={{ width: '100%' }}
               >
                 <Typography variant="subtitle2">{name}</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>

@@ -133,10 +133,10 @@ function CommentForm({ questionID, addComment }: { questionID: string; addCommen
     <>
       <Stack
         direction="row"
-        alignItems="center"
         sx={{
           pt: 2,
-          width: '100%'
+          width: '100%',
+          alignItems: 'center'
         }}
       >
         <UserAvatar

@@ -46,7 +46,7 @@ const Filters = () => {
             MenuProps={MenuProps}
           >
             {orderOptions.map((option) => (
-              <MenuItem key={option} value={option} style={getStyles(option, orderBy)}>
+              <MenuItem key={option} value={option} sx={getStyles(option, orderBy)}>
                 {option}
               </MenuItem>
             ))}
@@ -64,7 +64,7 @@ const Filters = () => {
             MenuProps={MenuProps}
           >
             {filterOptions.map((option) => (
-              <MenuItem key={option} value={option} style={getStyles(option, filterBy)}>
+              <MenuItem key={option} value={option} sx={getStyles(option, filterBy)}>
                 {option}
               </MenuItem>
             ))}

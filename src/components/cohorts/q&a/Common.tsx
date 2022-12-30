@@ -14,8 +14,10 @@ import {
   IconButton,
   Container,
   Stack,
-  Button
+  Button,
+  Theme
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import MenuPopover from '../../MenuPopover';
 
 export const QuestionContainer = styled(Container)(({ theme }) => ({
@@ -248,3 +250,38 @@ export const DeleteOption = memo(({ handleDelete }: { handleDelete: Function }) 
     </Box>
   );
 });
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  uploadQuestionBox: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  askerDetails: {
+    fontSize: '0.8rem',
+    fontWeight: 400,
+    color: '#212B36',
+    lineHeight: '16px',
+    marginTop: '5px'
+  },
+  aboutDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '295px'
+  },
+  questionVideo: {
+    width: '100%',
+    height: '150px',
+    borderRadius: '8px',
+    marginTop: '10px'
+  },
+  questionLabel: {
+    position: 'absolute',
+    top: '15px',
+    background: 'white',
+    fontWeight: 600,
+    padding: '0px 5px'
+  }
+}));

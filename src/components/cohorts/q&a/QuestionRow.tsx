@@ -6,7 +6,7 @@ import VisibilitySensor from 'react-visibility-sensor';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import { Question } from '../../../@types/cohorts';
-import { DeleteOption } from './Common';
+import { DeleteOption, useStyles } from './Common';
 import { markAsRead } from '../../../redux/slices/notification';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 
@@ -49,6 +49,7 @@ function QuestionRow({
 }) {
   const [isHiddenView, setView] = useState(question.answered);
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const unreadNotificationID = useSelector((state: RootState) =>
     state?.notification?.notifications.filter(
@@ -82,8 +83,8 @@ function QuestionRow({
   const renderAnswer = () => {
     if (question.answered) {
       return (
-        <Box style={{ marginTop: '10px' }}>
-          <Box style={{ width: '100%' }}>
+        <Box sx={{ marginTop: '10px' }}>
+          <Box sx={{ width: '100%' }}>
             {question.answer_video_url && (
               // eslint-disable-next-line jsx-a11y/media-has-caption
               <video
@@ -106,7 +107,7 @@ function QuestionRow({
               />
             )}
           </Box>
-          <Typography style={{ fontSize: '0.8rem', fontWeight: 400, color: '#212B36' }}>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 400, color: '#212B36' }}>
             {question?.asker_name
               ? `Answered by ${question.user_name} ${moment(question.answer_date).fromNow()}`
               : 'Some User'}
@@ -120,20 +121,12 @@ function QuestionRow({
   const renderQuestion = () => (
     <>
       <VisibilitySensor onChange={(isVisible) => handleRead(isVisible)}>
-        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Stack direction="column">
-            <Typography ref={myRef} style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
+            <Typography ref={myRef} sx={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
               {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
             </Typography>
-            <Typography
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 400,
-                color: '#212B36',
-                lineHeight: '16px',
-                marginTop: '5px'
-              }}
-            >
+            <Typography className={classes.askerDetails}>
               {question?.asker_name
                 ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
                 : 'Some User'}
@@ -158,7 +151,7 @@ function QuestionRow({
         </Box>
       </VisibilitySensor>
       {!isHiddenView && (
-        <Box style={{ width: '100%' }}>
+        <Box sx={{ width: '100%' }}>
           {question.question_type === 'Text' && question.question_text && (
             <div
               style={{ marginTop: '12px', fontWeight: 200, fontSize: '16px', lineHeight: '28px' }}

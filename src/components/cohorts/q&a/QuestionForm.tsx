@@ -8,7 +8,7 @@ import axios from 'utils/axios';
 import { isMobile } from 'react-device-detect';
 import { Modal } from 'components/animate';
 import { Question } from '../../../@types/cohorts';
-import { SectionContainer, CircularLoader } from './Common';
+import { SectionContainer, CircularLoader, useStyles } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
 import AnswerForm from './AnswerForm';
 
@@ -116,6 +116,7 @@ const QuestionForm = ({
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModal] = useState(false);
   const showAnswerForm = isHost;
+  const classes = useStyles();
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
@@ -223,7 +224,7 @@ const QuestionForm = ({
       />
       <SectionContainer className="newQuestion">
         {!submitting && (
-          <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
+          <StyledStack sx={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
             {!showAnswerForm ? (
               <>
                 <QuestionInput>
@@ -237,7 +238,7 @@ const QuestionForm = ({
                     rows={isMobile ? 2 : 1}
                     onChange={(e) => setQuestionSummary(e.target.value)}
                     onFocus={enterQuestion}
-                    style={{ height: '100%' }}
+                    sx={{ height: '100%' }}
                     inputProps={{
                       height: '100%',
                       style: {
@@ -306,11 +307,8 @@ const QuestionForm = ({
         )}
         {submitting && (
           <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
+            className={classes.uploadQuestionBox}
+            sx={{
               height: `${showMediaSection === true ? '327px' : ''}`
             }}
           >

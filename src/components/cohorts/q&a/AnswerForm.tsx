@@ -17,7 +17,8 @@ import {
   MessageBox,
   RecorderBox,
   SessionTitle,
-  MainStack
+  MainStack,
+  useStyles
 } from './Common';
 
 function AnswerForm({
@@ -40,6 +41,7 @@ function AnswerForm({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [addRecording, setAddRecording] = useState(!isMobile);
+  const classes = useStyles();
 
   useEffect(() => {
     setAddRecording(!isMobile);
@@ -97,30 +99,22 @@ function AnswerForm({
             controls
             controlsList="nodownload"
             autoPlay={false}
-            style={{ width: '100%', height: '150px', borderRadius: '8px', marginTop: '10px' }}
+            className={classes.questionVideo}
           />
         )}
       </>
       <Box
-        style={{
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start'
         }}
       >
         <Stack direction="column">
-          <Typography style={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
+          <Typography sx={{ fontSize: '1rem', fontWeight: 700, color: '#212B36' }}>
             {question?.question_summary ? `${question.question_summary}` : 'Question summary'}
           </Typography>
-          <Typography
-            style={{
-              fontSize: '0.8rem',
-              fontWeight: 400,
-              color: '#212B36',
-              lineHeight: '16px',
-              marginTop: '5px'
-            }}
-          >
+          <Typography className={classes.askerDetails}>
             {question?.asker_name
               ? `Asked by ${question.asker_name} ${moment(question.date).fromNow()}`
               : 'Some User'}
@@ -131,17 +125,7 @@ function AnswerForm({
   ));
 
   const Label = memo(({ value }: { value: string }) => (
-    <p
-      style={{
-        position: 'absolute',
-        top: '15px',
-        background: 'white',
-        fontWeight: 600,
-        padding: '0px 5px'
-      }}
-    >
-      {value}
-    </p>
+    <p className={classes.questionLabel}>{value}</p>
   ));
 
   const skipQuestion = () => {
