@@ -74,6 +74,7 @@ export default function SessionsTab() {
     } else {
       setActivSession();
     }
+    return () => setSelectedSession(0);
   }, [sessions]);
 
   useEffect(() => {
