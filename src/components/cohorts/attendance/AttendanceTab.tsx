@@ -1,4 +1,4 @@
-import { merge, memoize } from 'lodash';
+import { merge } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingScreen from 'components/LoadingScreen';
@@ -147,7 +147,7 @@ const AttendanceTab = () => {
             )}
           </Box>
         </Card>
-        <Box style={{ marginTop: '30px' }}>
+        <Box sx={{ marginTop: '30px' }}>
           <AttendanceTable displayData={displayData} attendance={cohortAttendanceRecord} />
         </Box>
       </StyledContainer>

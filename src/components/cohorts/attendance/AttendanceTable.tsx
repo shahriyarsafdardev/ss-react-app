@@ -13,7 +13,8 @@ import {
   TableContainer,
   TextField,
   Tooltip,
-  Stack
+  Stack,
+  Box
 } from '@material-ui/core';
 
 import { styled } from '@material-ui/core/styles';
@@ -98,7 +99,7 @@ const AttendanceTable = ({
     <StyledContainer>
       <CardHeader
         action={
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Stack width="100%" marginRight="24px">
               {user?.type === 'admin' && mode === 'Instructor' && (
                 <ExportAttendanceToExcel
@@ -117,7 +118,7 @@ const AttendanceTable = ({
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
             />
-          </div>
+          </Box>
         }
         title="Participant Overview"
         sx={{ mb: 3 }}
