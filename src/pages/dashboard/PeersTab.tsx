@@ -76,14 +76,10 @@ export default function PeersTab() {
 
   useEffect(() => {
     const getCompanies = () => {
-      // get all the companies to choose from peers.
-      let newCompanies = filteredPeers
-        ?.map((peer) => peer.current_company.name)
-        ?.filter((name) => !!name);
-      // make the companies array unique
-      newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
+      const newCompanies = uniq(
+        filteredPeers?.map((peer) => peer.current_company.name)?.filter((name) => !!name)
+      ).sort((a, b) => a.localeCompare(b));
       setCompanies(newCompanies);
-      // make select items for strengths
       setSelectedCompanies([]);
       const user_id = url.get('user_id');
       if (user_id && filteredPeers?.length > 0) {
@@ -99,10 +95,8 @@ export default function PeersTab() {
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (displayPeers) {
-      if (cohort && peers?.length > 0) {
-        trackEvent(cohort, 'Networking Page - Page Loaded', {});
-      }
+    if (displayPeers && cohort && peers?.length > 0) {
+      trackEvent(cohort, 'Networking Page - Page Loaded', {});
     }
   }, [cohort, peers]);
 
@@ -135,14 +129,10 @@ export default function PeersTab() {
           )
         ];
         setAlumni(updatedAlumni);
-        const newCompanies = Array.from(
-          new Set(
-            uniq(
-              updatedAlumni
-                ?.map((peer: StudentProfile) => peer.current_company.name)
-                ?.filter((name: string) => !!name)
-            )
-          )
+        const newCompanies = uniq(
+          updatedAlumni
+            ?.map((peer: StudentProfile) => peer.current_company.name)
+            ?.filter((name: string) => !!name)
         ).sort((a, b) => a.localeCompare(b));
         setCompanies(newCompanies);
         setTotalCount(res.data.total_count);

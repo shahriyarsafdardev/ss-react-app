@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Box, Typography, Card, Button } from '@material-ui/core';
-import { useStyles } from './styles';
+import { useStyles } from './Common';
 
 const Wallet = memo(
   ({

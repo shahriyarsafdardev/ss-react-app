@@ -9,7 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { ResourceContext } from 'contexts/ResourceContext';
 import { useLocation } from 'react-router-dom';
-import { debounce } from 'lodash';
+import { debounce, memoize } from 'lodash';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -48,6 +48,8 @@ function ResourcesTile({
   const url = new URLSearchParams(useLocation().search);
   const source = url.get('source') || '';
   const classes = useStyles();
+  const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
+  const isPreReading = material?.category === 'Pre-Reading';
 
   const handleToggleRead = debounce(() => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
@@ -70,8 +72,7 @@ function ResourcesTile({
       'Resource Link': material?.action_url,
       Source: source
     });
-    const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
-    const isPreReading = material?.category === 'Pre-Reading';
+
     if (isLocalLink && isPreReading && isPublic) {
       enqueueSnackbar(`You need to enroll in ${hostName}’s course to access this material`, {
         variant: 'warning'
@@ -82,15 +83,15 @@ function ResourcesTile({
     }
   }, []);
 
-  const clipTitle = (title: String) => {
-    if (!isMobile && title.length > 95) {
+  const clipTitle = memoize((mobileView: boolean, title: String) => {
+    if (!mobileView && title.length > 95) {
       return `${title.slice(0, 96)}...`;
     }
-    if (isMobile && title.length > 60) {
+    if (mobileView && title.length > 60) {
       return `${title.slice(0, 61)}...`;
     }
     return title;
-  };
+  });
 
   const resourceIcon = () => (
     <ResourceIcon>
@@ -117,15 +118,10 @@ function ResourcesTile({
             <Stack>
               <Typography
                 variant="h5"
-                sx={{
-                  color: '#222C36',
-                  fontSize: '1.1rem',
-                  mb: { xs: '15px', md: '5px' },
-                  '&:hover': { textDecoration: 'underline', cursor: 'pointer' }
-                }}
+                className={classes.resourceTitle}
                 onClick={() => handleTileOnClick()}
               >
-                {clipTitle(material.name)}
+                {clipTitle(isMobile, material.name)}
               </Typography>
               <Stack
                 direction="row"

@@ -16,8 +16,6 @@ import Page from '../../Page';
 import AttendanceTable from './AttendanceTable';
 import { AttendanceType, SessionAttendanceRecord } from '../../../@types/cohorts';
 
-// ----------------------------------------------------------------------
-
 const StyledContainer = styled(Box)(() => ({
   margin: '30px auto 100px auto',
   padding: '0 30px',

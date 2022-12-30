@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import moment from 'moment';
 import { ROOT_URL } from 'routes/paths';
 import { CreditObject } from '../../../@types/cohorts';
-import { useStyles } from './styles';
+import { useStyles } from './Common';
 
 const HistoryRow = memo(({ row }: { row: CreditObject }) => {
   const classes = useStyles();

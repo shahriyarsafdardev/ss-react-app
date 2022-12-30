@@ -3,22 +3,22 @@ import { Stack } from '@material-ui/core';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import ResourcesTile from './ResourcesTile';
 
-function ResourcesList({
-  sessionID,
-  sessionMaterials,
-  isPublic,
-  sessionData,
-  hostName,
-  setState
-}: {
-  sessionID: string;
-  sessionMaterials: any;
-  sessionData: any;
-  isPublic: boolean;
-  hostName?: string;
-  setState: Function;
-}) {
-  return (
+const ResourcesList = memo(
+  ({
+    sessionID,
+    sessionMaterials,
+    isPublic,
+    sessionData,
+    hostName,
+    setState
+  }: {
+    sessionID: string;
+    sessionMaterials: any;
+    sessionData: any;
+    isPublic: boolean;
+    hostName?: string;
+    setState: Function;
+  }) => (
     <Stack spacing={2}>
       {sessionMaterials.map((material: SessionMaterial, index: any) => (
         <ResourcesTile
@@ -32,7 +32,7 @@ function ResourcesList({
         />
       ))}
     </Stack>
-  );
-}
+  )
+);
 
-export default memo(ResourcesList);
+export default ResourcesList;

@@ -1,17 +1,8 @@
 import { memo } from 'react';
 import { Box, Card, CardHeader, Button } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
-import { EmptyStateNewEnrollments } from './EmptyStates';
 import HistoryRow from './HistoryRow';
 import { CreditObject } from '../../../@types/cohorts';
-import { useStyles } from './styles';
-
-const StyledIcon = styled('img')(() => ({
-  marginRight: 5,
-  width: 20,
-  height: 21,
-  cursor: 'pointer'
-}));
+import { EmptyStateNewEnrollments, StyledIcon, useStyles } from './Common';
 
 const NewEnrollments = memo(
   ({

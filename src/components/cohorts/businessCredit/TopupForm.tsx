@@ -62,15 +62,6 @@ function TopupForm({ accountID, setModal }: { accountID?: string; setModal: Func
             <Typography data-testid="add-credits-header" variant="h6" align="center" paragraph>
               Add Credits to Keep Saving
             </Typography>
-            {/* <Typography sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}>
-              Your Credits are used to:
-            </Typography>
-            <Typography sx={{ textAlign: 'left', px: 4 }}>
-              ✅ Unlock a 50% discount on all seats
-            </Typography>
-            <Typography sx={{ textAlign: 'left', px: 4 }}>
-              ✅ Garuantee seats in the cohort for your employees
-            </Typography> */}
           </Box>
           <Stack
             width={{ md: '40%', xs: '90%' }}

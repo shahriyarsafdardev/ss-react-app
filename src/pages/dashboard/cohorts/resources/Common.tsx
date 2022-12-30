@@ -62,6 +62,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     flexWrap: 'wrap',
     justifyContent: 'flex-start'
+  },
+  resourceTitle: {
+    color: '#222C36',
+    fontSize: '1.1rem',
+    marginBottom: '5px',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '15px'
+    }
   }
 }));
 
