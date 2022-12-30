@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { CohortContext } from 'contexts/CohortContext';

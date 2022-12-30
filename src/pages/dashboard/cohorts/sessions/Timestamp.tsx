@@ -1,29 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useContext, memo } from 'react';
+import { useState, useContext, memo } from 'react';
 import { Box, Typography, Stack, Button, TextField } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import { CohortContext } from 'contexts/CohortContext';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import { updateTimestamp } from '../../../../redux/slices/cohort';
 import { useDispatch } from '../../../../redux/store';
-import { useStyles } from './Common';
-
-const StyledStack = styled(Stack)(({ theme }) => ({
-  marginBottom: '30px',
-  justifyContent: 'space-between',
-  background: '#FAFAFC',
-  borderRadius: '8px',
-  padding: '25px 15px'
-}));
-
-const StyledImageContainer = styled(Box)(({ theme }) => ({
-  width: '30%',
-  margin: 'auto 0',
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
-  }
-}));
+import { useStyles, StyledImageContainer, StyledStack } from './Common';
 
 function Timestamp({
   timestamp,

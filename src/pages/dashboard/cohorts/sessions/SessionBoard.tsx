@@ -1,25 +1,11 @@
 import { useEffect, useState, useContext, useRef, memo } from 'react';
-import {
-  Container,
-  Tabs,
-  Tab,
-  Box,
-  Typography,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  Theme,
-  CircularProgress
-} from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { Box, Typography, InputLabel, Select, MenuItem } from '@material-ui/core';
 import axios from 'utils/axios';
 import { Modal } from 'components/animate';
 import { CohortContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { firstUpcomingDate, zoomTimesPreview } from 'components/cohorts/home/Common';
 import ReactPlayer from 'react-player';
-import { makeStyles } from '@material-ui/styles';
 import { SurveyForm } from '../../../../components/cohorts/sessions';
 import NewSlides from '../../../../components/cohorts/sessions/NewSlides';
 import { Session } from '../../../../@types/cohorts';
@@ -30,7 +16,20 @@ import { updateSessionFeedbackStatus } from '../../../../redux/slices/cohort';
 // Video Place Holder
 import JoinZoomPrompt from '../../../../components/cohorts/JoinZoomPrompt';
 import SessionTimestamps from './SessionTimestamps';
-
+import {
+  SessionTab,
+  SessionTabs,
+  FeedbackButton,
+  Wrapper,
+  SessionsBoardContainer,
+  StyledVideoPreview,
+  SessionTitle,
+  SessionNumber,
+  RecordingSlelectForm,
+  VideoPlayerWrapper,
+  CircularLoader,
+  useStyles
+} from './Common';
 // ----------------------------------------------------------------------
 
 type SessionBoardProps = {
@@ -38,177 +37,6 @@ type SessionBoardProps = {
   isLearner: boolean;
   isFree: boolean;
 };
-
-const SessionTab = styled(Tab)(({ theme }) => ({
-  color: theme.palette.text.secondary,
-  justifyContent: 'space-around',
-  marginRight: 0,
-  width: '20%',
-  '.MuiButtonBase-root .Mui-selected': {
-    fontWeight: '700'
-  }
-}));
-
-const SessionTabs = styled(Tabs)(({ theme }) => ({
-  width: '100%',
-  margin: '16px 0px 14px 0',
-  backgroundColor: '#F4F6F8',
-  borderTopLeftRadius: '10px',
-  borderTopRightRadius: '10px',
-  justifyContent: 'center',
-  overflow: 'unset !important',
-  [theme.breakpoints.down('sm')]: {
-    button: {
-      width: '30%',
-      minWidth: 60,
-      fontSize: 12
-    },
-    '.MuiTabs-flexContainer': {
-      justifyContent: 'center'
-    }
-  },
-  [theme.breakpoints.between(900, 1000)]: {
-    justifyContent: 'space-evenly',
-    paddingLeft: '10px',
-    button: {
-      width: '18%',
-      minWidth: 30,
-      fontSize: 15
-    }
-  },
-  [theme.breakpoints.between(1200, 1300)]: {
-    justifyContent: 'space-evenly',
-    paddingLeft: '10px',
-    button: {
-      width: '18%',
-      minWidth: 30,
-      fontSize: 15
-    }
-  },
-  [theme.breakpoints.between(600, 700)]: {
-    justifyContent: 'space-evenly',
-    paddingLeft: '10px',
-    button: {
-      width: '18%',
-      minWidth: 30,
-      fontSize: 15
-    }
-  },
-  '.MuiTabs-flexContainer': {
-    justifyContent: 'space-evenly'
-  },
-  button: {
-    justifyContent: 'center',
-    '&.css-pjf68w-MuiButtonBase-root-MuiTab-root': {
-      paddingTop: '15px',
-      marginRight: '0 !important'
-    },
-    color: theme.palette.text.secondary,
-    '&.Mui-selected': {
-      color: theme.palette.primary.main
-    }
-  }
-}));
-
-const FeedbackButton = styled('div')(({ theme }) => ({
-  cursor: 'pointer',
-  backgroundColor: '#D0F2FF',
-  display: 'flex',
-  padding: '20px',
-  borderRadius: '8px',
-  marginTop: '25px',
-  '.img-content': {
-    width: '40px',
-    [theme.breakpoints.down('sm')]: {
-      width: '80px'
-    }
-  }
-}));
-
-const Wrapper = styled(Container)(({ theme }) => ({
-  maxWidth: '1000px',
-  maxHeight: '100%',
-  overflowY: 'hidden',
-  [theme.breakpoints.down('sm')]: {
-    padding: '10px'
-  }
-}));
-
-const SessionsContainer = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  [theme.breakpoints.down('sm')]: {
-    padding: 0
-  }
-}));
-
-const StyledVideoPreview = styled('video')(({ theme }) => ({
-  width: '100%',
-  borderRadius: '20px'
-}));
-
-const SessionTitle = styled('span')(({ theme }) => ({
-  fontWeight: 'bolder',
-  minHeight: '50px',
-  fontSize: '1.5rem',
-  [theme.breakpoints.down('md')]: {
-    fontSize: 24
-  }
-}));
-
-const SessionNumber = styled('span')(({ theme }) => ({
-  fontWeight: 400,
-  minHeight: '50px',
-  marginRight: 1,
-  fontSize: '1.5rem',
-  [theme.breakpoints.down('md')]: {
-    fontSize: 24
-  }
-}));
-
-const RecordingSlelectForm = styled(FormControl)(({ theme }) => ({
-  marginTop: '15px',
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
-
-const StyledCircularLoader = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  padding: '25% 0'
-}));
-
-const VideoPlayerWrapper = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  paddingBottom: '56.25% !important',
-  paddingTop: '0px !important',
-  height: '0px !important',
-  overflow: 'hidden !important',
-  width: '100%',
-  maxWidth: '100%',
-  '& iframe': {
-    position: 'absolute',
-    top: '0px !important',
-    left: '0px !important',
-    width: '100% !important',
-    height: '100% !important'
-  },
-  '& div': {
-    height: '100% !important',
-    width: '100vw !important'
-  }
-}));
-
-const CircularLoader = () => (
-  <StyledCircularLoader>
-    <CircularProgress />
-  </StyledCircularLoader>
-);
 
 const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -227,7 +55,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
   );
   const videoRefVimeo = useRef<any>(null);
   const videoRefS3 = useRef<any>(null);
-
+  const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
   const handlePlayTimeStamp = (seconds: string) => {
@@ -241,16 +69,6 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-
-  const useStyles = makeStyles((theme: Theme) => ({
-    hidden: {
-      display: 'none'
-    },
-    shown: {
-      display: 'block'
-    }
-  }));
-  const classes = useStyles();
 
   const SurveyModal = memo(
     ({
@@ -359,7 +177,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
         />
       )}
 
-      <SessionsContainer>
+      <SessionsBoardContainer>
         <Box width="100%" py={2}>
           <SessionNumber data-testid="session-number">
             {`Session ${session.number} |`}{' '}
@@ -383,19 +201,16 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                     onStart={() => markAttendance('watched_recording')}
                     onPause={() => {
                       sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
-                        // ...commonProperties,
                         Timepoint: videoRefVimeo.current?.getCurrentTime()
                       });
                     }}
                     onSeek={() =>
                       sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
-                        // ...commonProperties,
                         Timepoint: videoRefVimeo.current?.getCurrentTime()
                       })
                     }
                     onPlay={() =>
                       sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
-                        // ...commonProperties,
                         Timepoint: videoRefVimeo.current?.getCurrentTime() || 0
                       })
                     }
@@ -414,19 +229,16 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                 onPlay={(e) => {
                   markAttendance('watched_recording');
                   sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
-                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
                 onPause={(e) => {
                   sendAnalyticsData('Sessions Page - Recording Player - Play Pause', {
-                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
                 onSeeked={(e) => {
                   sendAnalyticsData('Sessions Page - Recording Player - Timepoint Selected', {
-                    // ...commonProperties,
                     Timepoint: videoRefS3.current?.currentTime
                   });
                 }}
@@ -498,7 +310,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
         </SessionTabs>
 
         {tabsContent[currentTab]}
-      </SessionsContainer>
+      </SessionsBoardContainer>
     </Wrapper>
   );
 };

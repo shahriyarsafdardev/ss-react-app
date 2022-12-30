@@ -1,27 +1,5 @@
-import { Stack, styled, Typography } from '@material-ui/core';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { RootState, useSelector } from 'redux/store';
-
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  textAlign: 'center',
-  fontSize: '24px'
-}));
-
-const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
-  marginBottom: '10px',
-  width: '100px',
-  height: 'auto'
-}));
-
-const StyledStack = styled(Stack)(({ theme }) => ({
-  width: '25%',
-  margin: 'auto',
-  alignItems: 'center',
-  [theme.breakpoints.down('md')]: {
-    margin: '30px auto',
-    width: '90%'
-  }
-}));
+import { StyledTypographyContent, StyledImageContent, StyledStackContent } from './Common';
 
 export default function ContentReleaseDate() {
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -36,17 +14,17 @@ export default function ContentReleaseDate() {
   };
 
   return (
-    <StyledStack>
-      <StyledImage
+    <StyledStackContent>
+      <StyledImageContent
         src="https://sphere-public.s3.eu-west-2.amazonaws.com/content.png"
         alt="content"
       />
-      <StyledTypography fontWeight="bold">Course Content</StyledTypography>
-      <StyledTypography>will be released here in</StyledTypography>
-      <StyledTypography fontSize="64px !important" fontWeight="bold" marginTop="30px">
+      <StyledTypographyContent fontWeight="bold">Course Content</StyledTypographyContent>
+      <StyledTypographyContent>will be released here in</StyledTypographyContent>
+      <StyledTypographyContent fontSize="64px !important" fontWeight="bold" marginTop="30px">
         {getRemainingDays()}
-      </StyledTypography>
-      <StyledTypography>Days</StyledTypography>
-    </StyledStack>
+      </StyledTypographyContent>
+      <StyledTypographyContent>Days</StyledTypographyContent>
+    </StyledStackContent>
   );
 }
