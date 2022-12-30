@@ -5,7 +5,8 @@ import {
   ToggleButtonTypography,
   getDisplayName,
   getColor,
-  AdditionalFilters
+  AdditionalFilters,
+  useStyles
 } from './Common';
 
 function ResourcesTypesFilter({
@@ -21,17 +22,10 @@ function ResourcesTypesFilter({
   selectedTypes: String[];
   handleOnChange: Function;
 }) {
+  const classes = useStyles();
   return (
     <>
-      <Stack
-        direction="row"
-        sx={{
-          marginBottom: '25px',
-          width: '100%',
-          flexWrap: 'wrap'
-        }}
-        justifyContent="flex-start"
-      >
+      <Stack className={classes.filtersStack}>
         {types.map((type: any) => (
           <StyledToggleButton
             key={type}

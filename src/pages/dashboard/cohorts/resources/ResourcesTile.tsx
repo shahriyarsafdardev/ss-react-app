@@ -18,7 +18,8 @@ import {
   getColor,
   ResourceIcon,
   ResourceType,
-  ResourceDetailBox
+  ResourceDetailBox,
+  useStyles
 } from './Common';
 
 function ResourcesTile({
@@ -46,6 +47,7 @@ function ResourcesTile({
   const { enqueueSnackbar } = useSnackbar();
   const url = new URLSearchParams(useLocation().search);
   const source = url.get('source') || '';
+  const classes = useStyles();
 
   const handleToggleRead = debounce(() => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
@@ -96,18 +98,7 @@ function ResourcesTile({
         src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
       />
       <ResourceType sx={{ backgroundColor: getColor(material.material_type) }}>
-        <Typography
-          sx={{
-            color: '#ffffff',
-            fontWeight: 'bold',
-            fontSize: '10px',
-            width: '100px',
-            textAlign: 'center',
-            wordBreak: 'break-word'
-          }}
-        >
-          {material.material_type}
-        </Typography>
+        <Typography className={classes.resourceText}>{material.material_type}</Typography>
       </ResourceType>
     </ResourceIcon>
   );
@@ -145,29 +136,13 @@ function ResourcesTile({
                 <ResourceDetailBox>
                   <Stack direction="row" spacing={{ xs: 1, md: 2 }}>
                     <Typography
-                      sx={{
-                        fontSize: '13px',
-                        px: 1,
-                        py: 0.2,
-                        backgroundColor: '#F6F7F8',
-                        borderRadius: '5px',
-                        color: '#334155',
-                        cursor: 'pointer'
-                      }}
+                      className={classes.styledTypography}
                       onClick={() => setState(sessionData?.session_number, 'number')}
                     >
                       Session {sessionData?.session_number}
                     </Typography>
                     <Typography
-                      sx={{
-                        fontSize: '13px',
-                        px: 1,
-                        py: 0.2,
-                        backgroundColor: '#F6F7F8',
-                        borderRadius: '5px',
-                        color: '#334155',
-                        cursor: 'pointer'
-                      }}
+                      className={classes.styledTypography}
                       onClick={() => setState(material?.category, 'string')}
                     >
                       {material?.category}
@@ -195,7 +170,7 @@ function ResourcesTile({
             >
               <Checkbox
                 checked={checked}
-                sx={{ height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' }}
+                className={classes.checkbox}
                 icon={
                   <Icon
                     icon={checkCircleFilled}

@@ -9,11 +9,13 @@ import {
   tooltipClasses,
   Card,
   Stack,
-  Button
+  Button,
+  Theme
 } from '@material-ui/core';
 import { Modal } from 'components/animate';
 import { trackEvent } from 'utils/eventTracking';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { makeStyles } from '@material-ui/styles';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -35,6 +37,33 @@ export const getDisplayName = (type: String) => {
       return type;
   }
 };
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  styledTypography: {
+    fontSize: '13px',
+    px: 1,
+    py: 0.2,
+    backgroundColor: '#F6F7F8',
+    borderRadius: '5px',
+    color: '#334155'
+  },
+  resourceText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: '10px',
+    width: '100px',
+    textAlign: 'center',
+    wordBreak: 'break-word'
+  },
+  checkbox: { height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' },
+  filtersStack: {
+    flexDirection: 'row',
+    marginBottom: '25px',
+    width: '100%',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start'
+  }
+}));
 
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
