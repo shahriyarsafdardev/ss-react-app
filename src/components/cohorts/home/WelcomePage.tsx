@@ -93,7 +93,7 @@ const WelcomePage = ({
         />
       )}
       <Stack key={cohort?.id} direction="column" spacing={2} width="100%">
-        <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
+        <Typography sx={{ fontSize: '32px', fontWeight: 'bold' }}>
           {hasOnboarded ? `Get ready for ${cohort?.name}` : `Welcome, ${user?.first_name}`}
         </Typography>
         <StyledCard>
@@ -101,7 +101,7 @@ const WelcomePage = ({
             <StyledTypography>Hi {user?.first_name},</StyledTypography>
             <WelcomeMessage innerContent={cohort?.instructor_message || ''} />
             <Stack>
-              <Typography color="#ffffff" style={{ fontSize: '15px' }}>
+              <Typography color="#ffffff" sx={{ fontSize: '15px' }}>
                 Looking forward to seeing you soon,
               </Typography>
               <StyledTypography>{cohort?.host_full_names}</StyledTypography>

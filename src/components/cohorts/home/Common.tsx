@@ -32,6 +32,9 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
   borderRadius: '16px',
   padding: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   '&.timeline': {
     height: '150px',
     [theme.breakpoints.down('sm')]: {
@@ -203,6 +206,44 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('lg')]: {
       padding: '5px 10px'
     }
+  },
+  homePage: {
+    width: '100%',
+    height: '100%',
+    minHeight: '100%',
+    overflow: 'hidden'
+  },
+  checklistItemStack: {
+    padding: '10px 0px',
+    alignItems: 'center',
+    borderTop: '1px solid #edf5f5'
+  },
+  circularProgressbarText: {
+    fontSize: '24px',
+    fontWeight: 600,
+    dominantBaseline: 'central',
+    textAnchor: 'middle'
+  },
+  socialShareStack: {
+    color: '#101658',
+    marginTop: '20px',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  offboardingPageContainer: {
+    maxWidth: '1200px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    p: { md: '50px', sm: '25px', xs: '16px' }
+  },
+  sessionDescriptionBox: {
+    fontWeight: 400,
+    fontSize: '14px',
+    height: 'auto',
+    lineHeight: '28px',
+    padding: '0px 5px 15px 0px',
+    marginRight: '4px'
   }
 }));
 
@@ -394,15 +435,14 @@ export const ChecklistItem = memo(
       <Stack
         direction="row"
         onClick={handleStackClick}
-        className={`${status === 'Active' && classes.buttonActive}`}
-        sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
+        className={`${classes.checklistItemStack} ${status === 'Active' && classes.buttonActive}`}
       >
         <StyledTypography
           className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
             status === 'NonActive' && classes.indexNonActive
           } ${status === 'Completed' && classes.indexCompleted}`}
         >
-          {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
+          {status === 'Completed' ? <DoneIcon sx={{ fontSize: '1.3rem' }} /> : index}
         </StyledTypography>
         <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
           <StyledTypography
@@ -524,6 +564,7 @@ export const GreyCard = styled(Stack)(({ theme }) => ({
   padding: '15px',
   borderRadius: '8px',
   backgroundColor: '#fff',
+  fontSize: '15px',
   ul: {
     paddingLeft: '20px'
   }
@@ -557,6 +598,8 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
   overflow: 'hidden',
   width: '50%',
   height: '100% ',
+  backgroundColor: '#FAFAFC',
+  justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
     padding: '30px 25px',
     width: '100%'

@@ -142,7 +142,7 @@ export default function PreReadingRow({
               <Typography
                 variant="subtitle1"
                 color="primary"
-                style={{ backgroundColor: '#ffff', padding: '1rem 3rem', borderRadius: '10px' }}
+                sx={{ backgroundColor: '#ffff', padding: '1rem 3rem', borderRadius: '10px' }}
               >
                 Loading Pdf...
               </Typography>

@@ -44,7 +44,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 const GetReadyPage = ({ cohort }: { cohort: Cohort }) => (
   <>
     <Stack direction="column" spacing={2} width="100%">
-      <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
+      <Typography sx={{ fontSize: '32px', fontWeight: 'bold' }}>
         {`Get ready for ${cohort?.name}`}
       </Typography>
       <StyledCard>
@@ -63,7 +63,7 @@ const GetReadyPage = ({ cohort }: { cohort: Cohort }) => (
               <li>Invite your colleagues to join your cohort</li>
             </ul>
           </StyledTypography>
-          <Typography color="#ffffff" style={{ fontSize: '15px' }}>
+          <Typography sx={{ color: '#ffffff', fontSize: '15px' }}>
             Looking forward to seeing you soon,
           </Typography>
           <StyledTypography sx={{ fontWeight: 'bold' }}>{cohort?.host_full_names}</StyledTypography>

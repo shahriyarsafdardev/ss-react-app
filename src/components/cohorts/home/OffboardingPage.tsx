@@ -87,13 +87,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         onComplete={handleSurveyModalCompleted}
         session={lastSession}
       />
-      <Stack
-        spacing={{ md: 5, xs: 3 }}
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
-        sx={{ maxWidth: '1200px', p: { md: '50px', sm: '25px', xs: '16px' } }}
-      >
+      <Stack spacing={{ md: 5, xs: 3 }} className={classes.offboardingPageContainer}>
         <OffboardingHeader variant="h3">
           Congratulations, you have completed Applied Causal Inference! 🎉
         </OffboardingHeader>

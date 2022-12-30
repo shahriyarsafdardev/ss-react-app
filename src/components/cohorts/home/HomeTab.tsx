@@ -12,7 +12,7 @@ import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getBriefSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
-import { firstUpcomingDate } from './Common';
+import { firstUpcomingDate, useStyles } from './Common';
 import NewHomeTab from './NewHomeTab';
 import GetReadyPage from './GetReadyPage';
 import WelcomePage from './WelcomePage';
@@ -39,6 +39,7 @@ const Index = () => {
   );
   const { sessions } = cohort || [];
   const { onboarding_data } = cohort || {};
+  const classes = useStyles();
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -109,7 +110,7 @@ const Index = () => {
   }, [activeStepper, cohort, activeSession, sessions]);
 
   const homeTabSection = () => (
-    <Container style={{ marginBottom: '50px' }}>
+    <Container sx={{ marginBottom: '50px' }}>
       <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
       <StyledBox>{displayActiveStep()}</StyledBox>
     </Container>
@@ -124,10 +125,7 @@ const Index = () => {
   }
 
   return (
-    <Page
-      title="Sphere | Homepage"
-      sx={{ width: '100%', height: '100%', minHeight: '100%', overflow: 'hidden' }}
-    >
+    <Page title="Sphere | Homepage" className={classes.homePage}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
         cohort?.code === 'ACI' &&

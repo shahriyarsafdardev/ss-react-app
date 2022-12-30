@@ -154,7 +154,7 @@ function NewHomeTab({
             width="100%"
           />
         </ImageBox>
-        <Divider orientation="vertical" style={{ height: 'auto' }} />
+        <Divider orientation="vertical" sx={{ height: 'auto' }} />
         <PreReadingStack>
           <>
             <PreReadingTitle data-testid="pre-reading-title">
@@ -208,7 +208,7 @@ function NewHomeTab({
 
     if (isZoomLinkVisible(activeSession)) {
       return (
-        <Stack spacing={1} style={{ marginTop: '30px' }}>
+        <Stack spacing={1} sx={{ marginTop: '30px' }}>
           <Button
             className={classes.homeNavigation}
             variant="contained"
@@ -234,7 +234,7 @@ function NewHomeTab({
     }
 
     return (
-      <Stack spacing={1} style={{ marginTop: '30px' }}>
+      <Stack spacing={1} sx={{ marginTop: '30px' }}>
         <Button
           className={classes.homeNavigation}
           variant="contained"
@@ -266,11 +266,11 @@ function NewHomeTab({
 
   const SessionDetailStep = () => (
     <StyledBox className={classes.message}>
-      <DescriptionBox style={{ width: '100%' }}>
+      <DescriptionBox>
         <PreReadingTitle data-testid="pre-reading-title">
           {sessionName(activeSession, `Session ${activeSession?.number}: ${activeSession?.name}`)}
         </PreReadingTitle>
-        <Box style={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'stretch', margin: '12px 0px' }}>
           <PreReadingDetail data-testid="pre-reading-description">
             Live with {activeSession?.networking_session ? 'your cohort' : cohortHostName},{' '}
             <strong>
@@ -324,7 +324,7 @@ function NewHomeTab({
   }, [activeSession, currentStep]);
 
   return (
-    <Container style={{ padding: '0' }}>
+    <Container sx={{ padding: '0' }}>
       <HomePageTitle data-testid="home-title">{selectHeading()}</HomePageTitle>
       {selectStep()}
     </Container>

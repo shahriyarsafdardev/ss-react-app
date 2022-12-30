@@ -226,7 +226,7 @@ const DesktopStepper = ({
           activeStep={activeStepper === 0 || activeStepper === 1 ? activeStepper : activeSession}
           alternativeLabel
           connector={<ColorlibConnector data-testid="cohort-timeline-connector" />}
-          style={{ marginTop: '10px' }}
+          sx={{ marginTop: '10px' }}
         >
           <Step key={99} sx={{ minWidth: '180px' }}>
             <StepLabel

@@ -67,11 +67,8 @@ export const ImageBox = styled(Box)(({ theme }) => ({
 }));
 
 export const DescriptionBox = styled(Box)(({ theme }) => ({
-  width: '50%',
-  position: 'relative',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
+  width: '100%',
+  position: 'relative'
 }));
 
 export const PreReadingStack = styled(Stack)(({ theme }) => ({

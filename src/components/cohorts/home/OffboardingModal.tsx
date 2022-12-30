@@ -19,7 +19,8 @@ import {
   StyledIconButton,
   StyledIcon,
   getCaption,
-  StyledStack
+  StyledStack,
+  useStyles
 } from './Common';
 
 const OffboardingModal = ({
@@ -35,6 +36,8 @@ const OffboardingModal = ({
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const { user } = useAuth();
   const courseLink = `https://getsphere.com/cohorts/applied-causal-inference?referrer=${user?.slug}&alumni=true`;
+  const classes = useStyles();
+
   const handleCopy = (text: string) => {
     copy(text);
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
@@ -97,7 +100,10 @@ const OffboardingModal = ({
   return (
     <Modal open={modalState} onClose={handleModalClose}>
       <ModalStyle>
-        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" sx={{ height: '100%' }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{ height: '100%', alignItems: 'center' }}
+        >
           <StyledStack spacing={2} justifyContent="center">
             <Typography variant="h3" sx={{ fontSize: '24px !important' }}>
               Share your accomplishment to give and get $100 📣
@@ -114,13 +120,7 @@ const OffboardingModal = ({
             <StyledModalButton variant="contained" onClick={handleShareToLinkedin}>
               Share to LinkedIn
             </StyledModalButton>
-            <Stack
-              direction="row"
-              justifyContent="center"
-              spacing={3}
-              alignItems="center"
-              sx={{ color: '#101658', marginTop: '20px' }}
-            >
+            <Stack spacing={3} direction="row" className={classes.socialShareStack}>
               <Typography variant="h6">Share via:</Typography>
               <StyledIconButton onClick={handleShareViaTwitter}>
                 <StyledIcon icon={twitterFill} />
@@ -135,18 +135,11 @@ const OffboardingModal = ({
               </a>
             </Stack>
           </StyledStack>
-          <StyledStack
-            sx={{
-              backgroundColor: '#FAFAFC',
-              height: '100%'
-            }}
-            spacing={3}
-            justifyContent="center"
-          >
+          <StyledStack spacing={3}>
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard sx={{ fontSize: '15px' }}>
+            <GreyCard>
               <div>
                 <div id="linkedin-caption">
                   <Typography>

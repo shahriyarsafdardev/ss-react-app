@@ -61,6 +61,7 @@ const QontoStepIconRoot = styled('div')<{ ownerstate: { active?: boolean } }>(
 const StyledTimeline = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
+  flexDirection: 'column',
   overflowY: 'auto',
   justifyContent: 'space-between',
   [theme.breakpoints.up('sm')]: {
@@ -165,7 +166,7 @@ const MobileStepper = ({
   }, [sessions]);
 
   return (
-    <StyledTimeline sx={{ display: 'flex', flexDirection: 'column' }}>
+    <StyledTimeline>
       <StyledBox>
         <Stepper
           activeStep={activeSession}

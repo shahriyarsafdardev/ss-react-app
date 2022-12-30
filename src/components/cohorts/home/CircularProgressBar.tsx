@@ -1,3 +1,5 @@
+import { useStyles } from './Common';
+
 const CircularProgressbar = ({
   strokeWidth,
   completedSteps,
@@ -8,6 +10,7 @@ const CircularProgressbar = ({
   totalSteps: number;
 }) => {
   const radius = 50 - strokeWidth / 2;
+  const classes = useStyles();
   const pathDescription = `
       M 50,50 m 0,-${radius}
       a ${radius},${radius} 0 1 1 0,${2 * radius}
@@ -47,17 +50,7 @@ const CircularProgressbar = ({
         }}
       />
 
-      <text
-        className="CircularProgressbar-text"
-        x={50}
-        y={50}
-        style={{
-          fontSize: '24px',
-          fontWeight: 600,
-          dominantBaseline: 'central',
-          textAnchor: 'middle'
-        }}
-      >
+      <text className={`${classes.circularProgressbarText} CircularProgressbar-text`} x={50} y={50}>
         {`${completedSteps}/${totalSteps}`}
       </text>
     </svg>

@@ -178,7 +178,7 @@ const PreCohortChecklist = ({ setHasOnboarded }: { setHasOnboarded?: Function })
             Pre-Cohort Checklist
             {current_tab !== 'home' && <ExpandMore id="expand-more-icon" />}
           </StyledTypography>
-          <Box id="checklist-content" style={{ display: 'block' }}>
+          <Box id="checklist-content" sx={{ display: 'block' }}>
             <ChecklistCompletionPrompt
               cohort_id={cohort_id}
               trackSegmentEvent={trackSegmentEvent}
