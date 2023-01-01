@@ -109,7 +109,7 @@ export default function TeamPackageInquiry() {
 
   return (
     <Page height="100vh" width="100%" title="Sphere ">
-      <SaleBanner />
+      {/* <SaleBanner /> */}
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere_blue.svg" alt="logo" />
       <Stack
         direction={{ xs: 'column', md: 'row' }}
@@ -144,10 +144,10 @@ export default function TeamPackageInquiry() {
             If you provide the contact details of your team lead / training rep we will get in touch
             to share more information.
           </Typography>
-          <Typography className={classes.whiteFridayText}>
+          {/* <Typography className={classes.whiteFridayText}>
             As part of our End of Year Deal you will also recieve an additional $w00 on your account
             which you can use towards your next Sphere course.
-          </Typography>
+          </Typography> */}
         </Stack>
         <Stack
           justifyContent="center"
