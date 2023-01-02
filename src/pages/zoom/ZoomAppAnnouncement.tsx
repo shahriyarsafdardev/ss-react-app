@@ -51,7 +51,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-const StyledDescription = styled(Typography)(({ theme }) => ({
+const StyledDescription = styled('div')(({ theme }) => ({
   fontSize: '16px',
   textAlign: 'left',
   color: theme.palette.text.secondary
@@ -87,13 +87,12 @@ export default function ZoomAppAnnouncement({ openModal }: { openModal: boolean 
     setLoading(true);
     if (user && !user.opened_announcement) {
       axios.post('/users/opened_announcement.json').then(() => {
-        setOpen(false);
-        updateProfile({ ...newUser, opened_announcement: true });
         setLoading(false);
+        updateProfile({ ...newUser, opened_announcement: true });
       });
     } else {
-      setOpen(false);
       setLoading(false);
+      setOpen(false);
     }
   };
 
