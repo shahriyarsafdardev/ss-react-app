@@ -51,6 +51,7 @@ function PersonalDetailsPage() {
   const source = url.get('source') || '';
   const referrerDomain = url.get('referrer_domain') || '';
   const couponCode = url.get('referrer') || '';
+  const credit_account_id = url.get('credit_account') || '';
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email is invalid').required('Email is required'),
@@ -110,7 +111,8 @@ function PersonalDetailsPage() {
           linkedin_url: values?.linkedin_url,
           source,
           referrer_domain: referrerDomain,
-          coupon_code: couponCode
+          coupon_code: couponCode,
+          account_id: credit_account_id
         })
         .then((res) => {
           cohort?.wait_listed && setFormSubmitted(true);
