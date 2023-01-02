@@ -24,7 +24,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
-import { ExampleQuestionModal, LoadingContainer, useStyles } from './Common';
+import { ExampleQuestionModal, LoadingContainer, useStyles, comparatorFuntion } from './Common';
 
 interface Survey {
   cohortCode: string;
@@ -135,7 +135,7 @@ export default function SurveyQuestionForm() {
       setIntakeList(
         uniq(
           cohorts.filter((cohort) => cohort.code === code).map((cohort) => cohort.intake_name)
-        ).sort((a, b) => a.localeCompare(b))
+        ).sort(comparatorFuntion)
       );
     } else {
       setIntakeList([]);

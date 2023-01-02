@@ -43,7 +43,7 @@ function RegistrationsTab() {
           enrollments={enrollments.slice(0, limit)}
           isAdminView={true}
         />
-        {limit !== enrollments.length && (
+        {limit < enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
         )}
       </AdminContainer>
