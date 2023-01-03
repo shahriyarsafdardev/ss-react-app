@@ -191,6 +191,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                 {loading && <CircularLoader />}
                 <VideoPlayerWrapper>
                   <ReactPlayer
+                    key={`${loading}`}
                     controls={true}
                     url={recording}
                     ref={videoRefVimeo}
