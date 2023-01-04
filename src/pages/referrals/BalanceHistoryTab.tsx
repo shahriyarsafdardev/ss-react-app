@@ -1,5 +1,5 @@
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import {
   Box,
   Stack,
@@ -18,27 +18,29 @@ import useAuth from 'hooks/useAuth';
 import { ReferralHistory } from '../../@types/referral';
 import { getBackgroundColor, getColor } from './Common';
 
-const BillRow = ({ key, balanceHistory }: { key: number; balanceHistory: ReferralHistory }) => (
-  <TableRow hover key={key} tabIndex={-1}>
-    <TableCell style={{ width: '15%' }} align="left">
-      {moment(new Date(balanceHistory?.date)).format('ll').toString()}
-    </TableCell>
-    <TableCell style={{ width: '20%' }}>
-      <Box
-        sx={{
-          backgroundColor: getBackgroundColor(balanceHistory.status),
-          color: getColor(balanceHistory.status),
-          width: 'fit-content',
-          padding: '2px 5px',
-          borderRadius: '6px',
-          fontWeight: 'bold'
-        }}
-      >
-        {balanceHistory.status}
-      </Box>
-    </TableCell>
-    <TableCell style={{ width: '65%' }}>{balanceHistory.description}</TableCell>
-  </TableRow>
+const BillRow = memo(
+  ({ key, balanceHistory }: { key: number; balanceHistory: ReferralHistory }) => (
+    <TableRow hover key={key} tabIndex={-1}>
+      <TableCell style={{ width: '15%' }} align="left">
+        {moment(new Date(balanceHistory?.date)).format('ll').toString()}
+      </TableCell>
+      <TableCell style={{ width: '20%' }}>
+        <Box
+          sx={{
+            backgroundColor: getBackgroundColor(balanceHistory.status),
+            color: getColor(balanceHistory.status),
+            width: 'fit-content',
+            padding: '2px 5px',
+            borderRadius: '6px',
+            fontWeight: 'bold'
+          }}
+        >
+          {balanceHistory.status}
+        </Box>
+      </TableCell>
+      <TableCell style={{ width: '65%' }}>{balanceHistory.description}</TableCell>
+    </TableRow>
+  )
 );
 
 export default function BalanceHistoryTab() {

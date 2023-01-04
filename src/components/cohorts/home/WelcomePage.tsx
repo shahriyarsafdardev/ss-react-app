@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, memo } from 'react';
 import { Typography, Stack, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -58,13 +58,13 @@ function getWindowSize() {
   return { innerWidth, innerHeight };
 }
 
-export default function WelcomePage({
+const WelcomePage = ({
   setActiveStepper,
   cohort
 }: {
   setActiveStepper: Function;
   cohort: Cohort;
-}) {
+}) => {
   const { user } = useAuth();
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
@@ -93,7 +93,7 @@ export default function WelcomePage({
         />
       )}
       <Stack key={cohort?.id} direction="column" spacing={2} width="100%">
-        <Typography style={{ fontSize: '32px', fontWeight: 'bold' }}>
+        <Typography sx={{ fontSize: '32px', fontWeight: 'bold' }}>
           {hasOnboarded ? `Get ready for ${cohort?.name}` : `Welcome, ${user?.first_name}`}
         </Typography>
         <StyledCard>
@@ -101,7 +101,7 @@ export default function WelcomePage({
             <StyledTypography>Hi {user?.first_name},</StyledTypography>
             <WelcomeMessage innerContent={cohort?.instructor_message || ''} />
             <Stack>
-              <Typography color="#ffffff" style={{ fontSize: '15px' }}>
+              <Typography color="#ffffff" sx={{ fontSize: '15px' }}>
                 Looking forward to seeing you soon,
               </Typography>
               <StyledTypography>{cohort?.host_full_names}</StyledTypography>
@@ -123,4 +123,6 @@ export default function WelcomePage({
       </Stack>
     </>
   );
-}
+};
+
+export default memo(WelcomePage);

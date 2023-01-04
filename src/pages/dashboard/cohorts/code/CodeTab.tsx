@@ -69,7 +69,7 @@ export default function CodeTab() {
 
   return (
     <CohortContext.Provider
-      value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
+      value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake, cohort }}
     >
       <Page title="Sphere | Code">
         <Container style={{ marginBottom: '50px' }}>

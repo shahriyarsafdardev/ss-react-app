@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Stack, Box } from '@material-ui/core';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@material-ui/core/styles';
 import LoadingScreen from 'components/LoadingScreen';
 import { CohortContext, SessionContext } from 'contexts/CohortContext';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -19,29 +17,8 @@ import Page from '../../../../components/Page';
 import SessionBoard from './SessionBoard';
 import SessionList from './SessionList';
 import ContentReleasePreview from './ContentReleasePreview';
+import { SessionsContainer, SessionListDesktopContainer, LoadingContainer } from './Common';
 // ----------------------------------------------------------------------
-
-const SessionsContainer = styled(Stack)(({ theme }) => ({
-  marginBottom: '50px',
-  borderTop: '1px solid #E5E5E5',
-  [theme.breakpoints.down('sm')]: {
-    display: 'block'
-  }
-}));
-
-const SessionListDesktopContainer = styled(Box)(({ theme }) => ({
-  width: '280px !important',
-  borderRight: '1px solid #E5E5E5',
-  [theme.breakpoints.down('md')]: {
-    display: 'none'
-  }
-}));
-
-const LoadingContainer = styled(Box)(() => ({
-  position: 'absolute',
-  top: '50%',
-  left: '50%'
-}));
 
 export default function SessionsTab() {
   const dispatch = useDispatch();
@@ -50,6 +27,7 @@ export default function SessionsTab() {
   const [invitePeersModalState, setInvitePeersModalState] = useState(false);
   const { mode } = useSelector((state: RootState) => state.instructorView);
   const navigate = useNavigate();
+  const params = new URLSearchParams(window.location.search);
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -59,31 +37,33 @@ export default function SessionsTab() {
   const isLearner = user?.type === 'learner';
   const { sessions } = cohort || [];
   let trimmedSessionData: SessionListItem[] = [];
-  const filteredSessions: Session[] = sessions?.filter(
-    (session) => session.display_in_sessions_tab === true
+
+  const filteredSessions: Session[] = useMemo(
+    () => sessions?.filter((session) => session.display_in_sessions_tab === true),
+    [sessions]
   );
 
-  if (filteredSessions && filteredSessions.length) {
-    trimmedSessionData = filteredSessions.map((session) => ({
-      id: session.id,
-      name: session.name,
-      times: session.times,
-      length: session.length,
-      number: session.number
-    }));
-  }
+  trimmedSessionData = useMemo(
+    () =>
+      filteredSessions?.map((session) => ({
+        id: session.id,
+        name: session.name,
+        times: session.times,
+        length: session.length,
+        number: session.number
+      })),
+    [filteredSessions]
+  );
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
       sendAnalyticsData('Sessions Page - Page Loaded', {});
       setAnalyticsSent(true);
     }
-  }, [cohort]);
+  }, [cohort?.id]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let sessionNumber = Number(params.get('session'));
-    sessionNumber--;
+    const sessionNumber = Number(params.get('session')) - 1;
     if (
       filteredSessions &&
       sessionNumber &&
@@ -94,28 +74,40 @@ export default function SessionsTab() {
     } else {
       setActivSession();
     }
+    return () => setSelectedSession(0);
   }, [sessions]);
 
   useEffect(() => {
-    if (cohort && !sessions) {
+    if (cohort && !sessions?.[0]?.recording_urls) {
       dispatch(getSessions(cohort.id));
     }
   }, [cohort]);
 
-  const setActivSession = () => {
+  const setActivSession = useCallback(() => {
     let found = false;
     filteredSessions?.forEach((session, index) => {
-      const isPastSession = moment(firstUpcomingDate(session.times)).add(1, 'hours') < moment();
-      if (!found && isPastSession && session?.recording_urls.length > 0) {
+      const isPastSession = moment(firstUpcomingDate(session.times)).add(2, 'hours') < moment();
+      if (!found && isPastSession && session?.recording_urls?.length > 0) {
         setSelectedSession(index);
       } else {
         found = true;
       }
     });
-  };
-  const sendAnalyticsData = (eventName: string, eventData: any) => {
-    trackEvent(cohort, eventName, eventData);
-  };
+  }, [filteredSessions]);
+
+  const sendAnalyticsData = useCallback(
+    (eventName: string, eventData: any) => {
+      trackEvent(cohort, eventName, eventData);
+    },
+    [cohort]
+  );
+
+  const finishInvite = useCallback(() => {
+    dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
+    navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
+    setInvitePeersModalState(false);
+    sendAnalyticsData('Cohort Onboarding - Invite Team - "Finish" Selected', {});
+  }, [cohort_id, dispatch]);
 
   const cohortSessions = () => {
     if (!cohort?.onboarding_data?.onboarding_questionnaire_step_completed && mode === 'Learner') {
@@ -133,6 +125,15 @@ export default function SessionsTab() {
         />
       );
     }
+
+    if (typeof cohort === 'undefined' || !sessions?.[0]?.recording_urls) {
+      return (
+        <LoadingContainer>
+          <LoadingScreen />
+        </LoadingContainer>
+      );
+    }
+
     if (filteredSessions && filteredSessions.length > 0) {
       return (
         <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
@@ -170,19 +171,19 @@ export default function SessionsTab() {
 
   return (
     <CohortContext.Provider
-      value={{ id: cohort?.id, cohortName: cohort?.name, cohortIntake: cohort?.intake }}
+      value={{
+        id: cohort?.id,
+        cohortName: cohort?.name,
+        cohortIntake: cohort?.intake,
+        cohort
+      }}
     >
       <Page title="Sphere | Sessions">
         <>
           <InvitePeersModal
             invitePeersModalState={invitePeersModalState}
             setInvitePeersModalState={setInvitePeersModalState}
-            onFinish={() => {
-              dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
-              navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
-              setInvitePeersModalState(false);
-              sendAnalyticsData('Cohort Onboarding - Invite Team - "Finish" Selected', {});
-            }}
+            onFinish={finishInvite}
             trackSegmentEvent={sendAnalyticsData}
           />
           {cohortSessions()}

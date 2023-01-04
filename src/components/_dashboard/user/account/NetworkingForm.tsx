@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
 import {
@@ -36,7 +36,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function NetworkingForm({
+function NetworkingForm({
   onSubmit,
   showSubmitButton = true,
   userProfile
@@ -53,7 +53,6 @@ export default function NetworkingForm({
   };
 }) {
   const [strengths, setStrengths] = useState<string[]>();
-  const [interests, setInterests] = useState<string[]>([]);
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -77,7 +76,6 @@ export default function NetworkingForm({
       .then((res) => res.data)
       .then((payload) => {
         payload?.strengths && setStrengths(payload.strengths);
-        payload?.interests && setInterests(payload.interests);
       });
   }, []);
 
@@ -185,3 +183,5 @@ export default function NetworkingForm({
     </>
   );
 }
+
+export default memo(NetworkingForm);

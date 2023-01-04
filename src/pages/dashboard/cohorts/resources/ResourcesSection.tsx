@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Typography, Box, Stack, useMediaQuery, Button, useTheme } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
@@ -24,14 +24,14 @@ function ResourcesSection({
   const [more, setMore] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const progress = () => {
+  const progress = useCallback(() => {
     if (resourceData.session_materials_count === 0) {
       return 0;
     }
     return Math.floor(
       (resourceData.completed_session_materials_count / resourceData.session_materials_count) * 100
     );
-  };
+  }, [resourceData?.session_materials_count, resourceData?.completed_session_materials_count]);
 
   const showMore = async () => {
     if (resourceData?.session_materials_count !== resourceData?.materials?.length) {
@@ -125,4 +125,4 @@ function ResourcesSection({
   );
 }
 
-export default ResourcesSection;
+export default memo(ResourcesSection);

@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import infoFill from '@iconify/icons-eva/info-fill';
 // material
 import {
@@ -23,7 +23,7 @@ type PaymentNewCardFormProps = {
   onCancel: VoidFunction;
 };
 
-export default function PaymentNewCardForm({ formik, onCancel }: PaymentNewCardFormProps) {
+function PaymentNewCardForm({ formik, onCancel }: PaymentNewCardFormProps) {
   const [isOpen, setIsOpen] = useState<HTMLButtonElement | null>(null);
   const { values, resetForm, getFieldProps } = formik;
 
@@ -119,3 +119,5 @@ export default function PaymentNewCardForm({ formik, onCancel }: PaymentNewCardF
     </>
   );
 }
+
+export default memo(PaymentNewCardForm);

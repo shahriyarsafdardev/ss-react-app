@@ -1,9 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, memo, useCallback } from 'react';
 import { useChatContext } from 'stream-chat-react';
 import { v4 as uuidv4 } from 'uuid';
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
-
 import './CreateChannel.css';
 import { Box, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -46,7 +45,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   }
 }));
 
-const ChannelNameInput: React.FC<InputProps> = (props) => {
+const ChannelNameInput: React.FC<InputProps> = memo((props) => {
   const { channelName = '', setChannelName } = props;
 
   return (
@@ -61,7 +60,7 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
       <p>Add Members</p>
     </div>
   );
-};
+});
 
 type Props = {
   createType: string;
@@ -70,7 +69,7 @@ type Props = {
   setIsCreating: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CreateChannel: React.FC<Props> = (props) => {
+export const CreateChannel: React.FC<Props> = memo((props) => {
   const { createType, setIsCreating, cohortID, cohortUsers } = props;
 
   const { client, setActiveChannel } = useChatContext<
@@ -91,7 +90,7 @@ export const CreateChannel: React.FC<Props> = (props) => {
   const enrolledUsers = cohortUsers.filter((user_id: string) => user_id !== client.userID);
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const matchRegex = () => {
+  const matchRegex = useCallback(() => {
     if (createType === 'team' && !regexForChannelName.test(channelName)) {
       enqueueSnackbar('Invalid channel name. Only A-Z, a-z, 0-9 and _- are allowed', {
         variant: 'error'
@@ -99,7 +98,8 @@ export const CreateChannel: React.FC<Props> = (props) => {
       return false;
     }
     return true;
-  };
+  }, [createType, channelName]);
+
   const createPublicChannel = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (!matchRegex()) {
@@ -237,4 +237,4 @@ export const CreateChannel: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

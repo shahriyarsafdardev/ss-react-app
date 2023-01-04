@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, memo, useCallback } from 'react';
 import { CardContent, Stack, Typography, Checkbox, useMediaQuery, Box } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import checkCircleFilled from '@iconify/icons-ant-design/check-circle-filled';
@@ -9,6 +9,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack5';
 import { ResourceContext } from 'contexts/ResourceContext';
 import { useLocation } from 'react-router-dom';
+import { debounce, memoize } from 'lodash';
 import { SessionMaterial } from '../../../../@types/cohorts';
 import {
   StyledImage,
@@ -17,7 +18,8 @@ import {
   getColor,
   ResourceIcon,
   ResourceType,
-  ResourceDetailBox
+  ResourceDetailBox,
+  useStyles
 } from './Common';
 
 function ResourcesTile({
@@ -45,13 +47,16 @@ function ResourcesTile({
   const { enqueueSnackbar } = useSnackbar();
   const url = new URLSearchParams(useLocation().search);
   const source = url.get('source') || '';
+  const classes = useStyles();
+  const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
+  const isPreReading = material?.category === 'Pre-Reading';
 
-  const handleToggleRead = () => {
+  const handleToggleRead = debounce(() => {
     dispatch(markReadingCompleted(cohortID, sessionID, material?.id, !checked));
     setChecked(!checked);
-  };
+  }, 300);
 
-  const handleTileOnClick = () => {
+  const handleTileOnClick = useCallback(() => {
     if (localStorage.getItem('resources_opened_count') === '1' && isPublic) {
       showLimitModal(true);
       return;
@@ -67,8 +72,7 @@ function ResourcesTile({
       'Resource Link': material?.action_url,
       Source: source
     });
-    const isLocalLink = material?.action_url?.includes('s3.eu-west-2.amazonaws.com');
-    const isPreReading = material?.category === 'Pre-Reading';
+
     if (isLocalLink && isPreReading && isPublic) {
       enqueueSnackbar(`You need to enroll in ${hostName}’s course to access this material`, {
         variant: 'warning'
@@ -77,17 +81,17 @@ function ResourcesTile({
       window.open(material?.action_url, '_blank');
       isPublic && localStorage.setItem('resources_opened_count', '1');
     }
-  };
+  }, [isPublic, isLocalLink, isPreReading, material, sessionData, hostName]);
 
-  const clipTitle = (title: String) => {
-    if (!isMobile && title.length > 95) {
+  const clipTitle = memoize((mobileView: boolean, title: String) => {
+    if (!mobileView && title.length > 95) {
       return `${title.slice(0, 96)}...`;
     }
-    if (isMobile && title.length > 60) {
+    if (mobileView && title.length > 60) {
       return `${title.slice(0, 61)}...`;
     }
     return title;
-  };
+  });
 
   const resourceIcon = () => (
     <ResourceIcon>
@@ -95,18 +99,7 @@ function ResourcesTile({
         src={`https://sphere-public.s3.eu-west-2.amazonaws.com/${material.material_type}.png`}
       />
       <ResourceType sx={{ backgroundColor: getColor(material.material_type) }}>
-        <Typography
-          sx={{
-            color: '#ffffff',
-            fontWeight: 'bold',
-            fontSize: '10px',
-            width: '100px',
-            textAlign: 'center',
-            wordBreak: 'break-word'
-          }}
-        >
-          {material.material_type}
-        </Typography>
+        <Typography className={classes.resourceText}>{material.material_type}</Typography>
       </ResourceType>
     </ResourceIcon>
   );
@@ -118,24 +111,17 @@ function ResourcesTile({
           <Stack
             direction="row"
             spacing={2}
-            sx={{
-              marginRight: '15px',
-              width: '100%'
-            }}
+            sx={{ marginRight: '15px', width: '100%' }}
+            onClick={handleTileOnClick}
           >
             {!isMobile && resourceIcon()}
             <Stack>
               <Typography
                 variant="h5"
-                sx={{
-                  color: '#222C36',
-                  fontSize: '1.1rem',
-                  mb: { xs: '15px', md: '5px' },
-                  '&:hover': { textDecoration: 'underline', cursor: 'pointer' }
-                }}
+                className={classes.resourceTitle}
                 onClick={() => handleTileOnClick()}
               >
-                {clipTitle(material.name)}
+                {clipTitle(isMobile, material.name)}
               </Typography>
               <Stack
                 direction="row"
@@ -146,29 +132,13 @@ function ResourcesTile({
                 <ResourceDetailBox>
                   <Stack direction="row" spacing={{ xs: 1, md: 2 }}>
                     <Typography
-                      sx={{
-                        fontSize: '13px',
-                        px: 1,
-                        py: 0.2,
-                        backgroundColor: '#F6F7F8',
-                        borderRadius: '5px',
-                        color: '#334155',
-                        cursor: 'pointer'
-                      }}
+                      className={classes.styledTypography}
                       onClick={() => setState(sessionData?.session_number, 'number')}
                     >
                       Session {sessionData?.session_number}
                     </Typography>
                     <Typography
-                      sx={{
-                        fontSize: '13px',
-                        px: 1,
-                        py: 0.2,
-                        backgroundColor: '#F6F7F8',
-                        borderRadius: '5px',
-                        color: '#334155',
-                        cursor: 'pointer'
-                      }}
+                      className={classes.styledTypography}
                       onClick={() => setState(material?.category, 'string')}
                     >
                       {material?.category}
@@ -196,7 +166,7 @@ function ResourcesTile({
             >
               <Checkbox
                 checked={checked}
-                sx={{ height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' }}
+                className={classes.checkbox}
                 icon={
                   <Icon
                     icon={checkCircleFilled}
@@ -222,4 +192,4 @@ function ResourcesTile({
   );
 }
 
-export default ResourcesTile;
+export default memo(ResourcesTile);

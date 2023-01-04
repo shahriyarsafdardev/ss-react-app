@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 const Text = styled.div`
@@ -58,4 +58,4 @@ const Timer = ({ timeLimit }) => {
   );
 };
 
-export default Timer;
+export default memo(Timer);

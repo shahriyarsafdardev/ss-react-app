@@ -1,9 +1,11 @@
+import { memo } from 'react';
+
 type Props = {
   closeThread?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   setPinsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CloseThreadIcon = (props: Props) => {
+export const CloseThreadIcon = memo((props: Props) => {
   const { closeThread, setPinsOpen } = props;
 
   return (
@@ -38,4 +40,4 @@ export const CloseThreadIcon = (props: Props) => {
       </svg>
     </div>
   );
-};
+});

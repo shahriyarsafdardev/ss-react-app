@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Divider, Typography, Stack } from '@material-ui/core';
 
@@ -22,7 +23,7 @@ const StyledLabel = styled('p')(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-export default function PaymentSummary({ payment }: { payment: any }) {
+function PaymentSummary({ payment }: { payment: any }) {
   return (
     <RootStyle>
       <Typography variant="h6" sx={{ mb: 3 }}>
@@ -65,3 +66,5 @@ export default function PaymentSummary({ payment }: { payment: any }) {
     </RootStyle>
   );
 }
+
+export default memo(PaymentSummary);

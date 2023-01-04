@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Container = styled('div')(() => ({
   display: 'flex',
@@ -29,9 +30,9 @@ const StyledPara = styled('p')(() => ({
 const EmptyMessagingTab = ({ cohortHost }: { cohortHost: string }) => (
   <Container>
     <StyledBox>
-      <img
+      <LazyLoadImage
         data-testid="empty-messaging-img"
-        src="/static/cohort-empty-states/emptyMessagingState.svg"
+        src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/emptyMessagingState.svg"
         alt="empty-session"
       />
       <StyledPara data-testid="empty-messaging-information-text">

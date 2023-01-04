@@ -77,7 +77,11 @@ export default function Login() {
       </Helmet>
       <MHidden width="mdDown">
         <SectionStyle>
-          <img src="/static/sphere_home.png" alt="login" style={{ width: '700px' }} />
+          <img
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/sphere_home.png"
+            alt="login"
+            style={{ width: '700px' }}
+          />
         </SectionStyle>
       </MHidden>
 

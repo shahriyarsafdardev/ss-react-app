@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { Button } from '@material-ui/core';
 import './SaveOptions.css';
 
-const SaveOptions = ({ onSaveClick, onRedoClick, onExitClick }) => (
+const SaveOptions = memo(({ onSaveClick, onRedoClick, onExitClick }) => (
   <div className="questions-answers-save-options">
     <Button
       variant="outlined"
@@ -18,6 +19,6 @@ const SaveOptions = ({ onSaveClick, onRedoClick, onExitClick }) => (
       Start new Recording{' '}
     </Button>
   </div>
-);
+));
 
 export default SaveOptions;

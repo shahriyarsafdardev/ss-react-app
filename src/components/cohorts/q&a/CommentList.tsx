@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import useAuth from 'hooks/useAuth';
 // material
 import { Stack } from '@material-ui/core';
@@ -12,7 +13,7 @@ type CommentListProps = {
   removeComment: Function;
 };
 
-export default function CommentList({ post, removeComment }: CommentListProps) {
+function CommentList({ post, removeComment }: CommentListProps) {
   const { comments } = post;
   const { user } = useAuth();
   return (
@@ -33,3 +34,5 @@ export default function CommentList({ post, removeComment }: CommentListProps) {
     </Stack>
   );
 }
+
+export default memo(CommentList);

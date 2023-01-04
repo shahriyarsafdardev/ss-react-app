@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 // material
 import { Grid, Table, Box, CircularProgress, TableBody, TableContainer } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: 'lookingFor', label: 'What I am looking for' }
 ];
 
-export default function AlumniProfileContainer({
+const AlumniProfileContainer = ({
   alumnis,
   loadMore,
   hasMore,
@@ -32,7 +32,7 @@ export default function AlumniProfileContainer({
   viewMode: string;
   hasMore: boolean;
   modalHandler: Function;
-}) {
+}) => {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [orderBy, setOrderBy] = useState('name');
 
@@ -46,8 +46,8 @@ export default function AlumniProfileContainer({
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const newSelecteds = alumnis.map((alumni) => alumni.first_name);
-      setSelected(newSelecteds);
+      const newSelected = alumnis.map((alumni) => alumni.first_name);
+      setSelected(newSelected);
       return;
     }
     setSelected([]);
@@ -90,7 +90,14 @@ export default function AlumniProfileContainer({
       {viewMode === 'grid' && (
         <Grid container spacing={3} id="alumni-grid-container" data-testid="alumni-grid">
           {alumnis?.map((alumni) => (
-            <Grid data-testid={`peer-card-${alumni.id}`} key={alumni.id} item xs={12} sm={4} md={3}>
+            <Grid
+              data-testid={`peer-card-${alumni?.peer_id}`}
+              key={alumni?.peer_id}
+              item
+              xs={12}
+              sm={4}
+              md={3}
+            >
               <StudentProfileCard peer={alumni} modalHandler={modalHandler} />
             </Grid>
           ))}
@@ -99,4 +106,6 @@ export default function AlumniProfileContainer({
       {/* </Scrollbar> */}
     </InfiniteScroll>
   );
-}
+};
+
+export default memo(AlumniProfileContainer);

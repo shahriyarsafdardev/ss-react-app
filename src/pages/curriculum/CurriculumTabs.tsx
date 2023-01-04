@@ -1,7 +1,8 @@
 import { Button, Stack, useMediaQuery, useTheme } from '@material-ui/core';
+import { memo } from 'react';
 import { TOPICS, CurriculumTab, CurriculumTabsNavBar, useStyles } from './Common';
 
-export default function CurriculumTabs({
+function CurriculumTabs({
   currentTab,
   setActiveTab
 }: {
@@ -52,3 +53,5 @@ export default function CurriculumTabs({
     </Stack>
   );
 }
+
+export default memo(CurriculumTabs);

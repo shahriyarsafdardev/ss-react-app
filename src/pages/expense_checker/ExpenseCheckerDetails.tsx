@@ -1,7 +1,8 @@
 import { Stack, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles } from './Common';
 
-export default function ExpenseCheckerDetails() {
+function ExpenseCheckerDetails() {
   const classes = useStyles();
 
   return (
@@ -17,3 +18,5 @@ export default function ExpenseCheckerDetails() {
     </>
   );
 }
+
+export default memo(ExpenseCheckerDetails);

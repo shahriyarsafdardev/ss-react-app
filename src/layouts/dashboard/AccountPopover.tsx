@@ -11,6 +11,7 @@ import { resetStore } from 'redux/rootReducer';
 import { alpha } from '@material-ui/core/styles';
 import { Button, Box, Divider, MenuItem, Typography, styled } from '@material-ui/core';
 // routes
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
@@ -35,7 +36,7 @@ const MENU_OPTIONS = [
   }
 ];
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   marginRight: 16,
   width: 24,
   height: 24

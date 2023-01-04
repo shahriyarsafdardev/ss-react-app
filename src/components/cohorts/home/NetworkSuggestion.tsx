@@ -85,22 +85,18 @@ const NetworkSuggestion = ({
   };
 
   return (
-    <SectionContainer
-      data-testid="network-suggestion-card"
-      className="card-3"
-      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
-    >
+    <SectionContainer data-testid="network-suggestion-card" className="card-3">
       {random_peers ? (
         <>
           <Box
             data-testid="greeting-text"
-            style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
+            sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
           >
             <Box>
-              <Typography style={{ fontSize: '18px' }}>
+              <Typography sx={{ fontSize: '18px' }}>
                 👋 Say hi to some of your <b style={{ fontWeight: 'bold' }}>peers</b>
               </Typography>
-              <Typography style={{ fontSize: '14px', color: 'text.light' }}>
+              <Typography sx={{ fontSize: '14px', color: 'text.light' }}>
                 Here are a few who are interested in growing their network
               </Typography>
             </Box>
@@ -115,7 +111,7 @@ const NetworkSuggestion = ({
               alt="left arrow"
               style={{ cursor: 'pointer' }}
             />
-            <Card style={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
+            <Card sx={{ margin: '0 10px', boxShadow: 'none', borderRadius: '10px' }}>
               <Slider ref={carouselRef} {...settings}>
                 {random_peers?.map((peer) => (
                   <PeerCard

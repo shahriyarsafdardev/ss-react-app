@@ -78,6 +78,31 @@ const slice = createSlice({
         (cohort) => cohort.id === action.payload.cohort_id
       );
       if (targetCohortIndex !== -1) {
+        let updated = state.cohorts[targetCohortIndex].sessions;
+        if (state.cohorts[targetCohortIndex].sessions) {
+          updated = state.cohorts[targetCohortIndex].sessions;
+          action.payload.sessions.forEach((payloadSession: any) => {
+            const targetSessionIndex = updated.findIndex(
+              (session) => session?.id === payloadSession?.id
+            );
+
+            if (targetSessionIndex !== -1) {
+              const oldSession = updated?.[targetSessionIndex];
+              updated[targetSessionIndex] = payloadSession;
+              updated[targetSessionIndex].materials = oldSession.materials;
+            }
+          });
+        } else {
+          updated = action.payload.sessions;
+        }
+        state.cohorts[targetCohortIndex].sessions = updated;
+      }
+    },
+    getBriefSessionsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohort_id
+      );
+      if (targetCohortIndex !== -1) {
         const updated: Cohort = state.cohorts[targetCohortIndex];
         state.cohorts[targetCohortIndex] = { ...updated, sessions: action.payload.sessions };
       }
@@ -329,6 +354,22 @@ const slice = createSlice({
 
         if (targetSessionIndex !== -1) {
           updated[targetSessionIndex].survey_completed = true;
+          state.cohorts[targetCohortIndex].sessions = updated;
+        }
+      }
+    },
+    getSessionMaterialsSuccess(state, action) {
+      const targetCohortIndex = state.cohorts.findIndex(
+        (cohort) => cohort.id === action.payload.cohortID
+      );
+      if (targetCohortIndex !== -1) {
+        const updated = state.cohorts[targetCohortIndex].sessions;
+        const targetResourceIndex = updated.findIndex(
+          (session) => session.id === action.payload.sessionID
+        );
+
+        if (targetResourceIndex !== -1) {
+          updated[targetResourceIndex].materials = action.payload.materials;
           state.cohorts[targetCohortIndex].sessions = updated;
         }
       }
@@ -631,6 +672,30 @@ export function getSessions(cohortID: string) {
     try {
       const response = await axios.get(`/cohorts/${cohortID}/sessions.json`);
       dispatch(slice.actions.getSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getBriefSessions(cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohorts/${cohortID}/sessions/brief_sessions.json`);
+      dispatch(slice.actions.getBriefSessionsSuccess(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function getSessionMaterials(sessionID: string, cohortID: string) {
+  return async () => {
+    try {
+      const response = await axios.get(`/cohort_sessions/${sessionID}/session_materials.json`);
+      dispatch(
+        slice.actions.getSessionMaterialsSuccess({ materials: response.data, cohortID, sessionID })
+      );
     } catch (error) {
       console.log(error);
     }

@@ -3,6 +3,8 @@ import { styled } from '@material-ui/core/styles';
 import { Card, Avatar, Typography } from '@material-ui/core';
 
 // @types
+import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { StudentProfile, Company } from '../../@types/cohorts';
 
 import SvgIconStyle from '../SvgIconStyle';
@@ -33,7 +35,7 @@ const StyledCard = styled(Card)(() => ({
   height: '100%'
 }));
 
-const CoverImgStyle = styled('img')(({ theme }) => ({
+const CoverImgStyle = styled(LazyLoadImage)(({ theme }) => ({
   top: 0,
   zIndex: 8,
   width: '100%',
@@ -56,7 +58,7 @@ type StudentProfileCardProps = {
   modalHandler: any;
 };
 
-export default function StudentProfileCard({ peer, modalHandler }: StudentProfileCardProps) {
+const StudentProfileCard = ({ peer, modalHandler }: StudentProfileCardProps) => {
   const { first_name, last_name, current_company, profile_image_url, current_position } = peer;
 
   const onClickHandler = () => {
@@ -127,4 +129,6 @@ export default function StudentProfileCard({ peer, modalHandler }: StudentProfil
       </Typography>
     </StyledCard>
   );
-}
+};
+
+export default memo(StudentProfileCard);

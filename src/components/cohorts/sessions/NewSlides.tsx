@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 import { Button, Container, Box, Typography } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { toolbarPlugin } from '@react-pdf-viewer/toolbar';
@@ -22,7 +22,6 @@ import '@react-pdf-viewer/full-screen/lib/styles/index.css';
 
 import Message from '../../Message';
 import SlideShareModal from './SlideShareModal';
-import { RootState, useSelector } from '../../../redux/store';
 
 const StyledNavigation = styled(Box)(({ theme }) => ({
   padding: '0px 2px',
@@ -41,7 +40,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-export default function NewSlides({
+function NewSlides({
   pdfUrl,
   pdfDownloadable,
   onTrack,
@@ -233,9 +232,7 @@ export default function NewSlides({
           Share this slide with a friend or colleague
         </Button>
       )}
-      <div>
-        <SlideShareModal open={shareModal} onClose={setShareModal} />
-      </div>
+      <SlideShareModal open={shareModal} onClose={setShareModal} />
     </div>
   );
 
@@ -256,3 +253,5 @@ export default function NewSlides({
     </Container>
   );
 }
+
+export default memo(NewSlides);

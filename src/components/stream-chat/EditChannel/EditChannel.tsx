@@ -1,13 +1,8 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useChatContext } from 'stream-chat-react';
-
 import './EditChannel.css';
-import type { ChannelFilters } from 'stream-chat';
-
 import { UserList } from '../CreateChannel/UserList';
-
 import { CloseCreateChannel } from '../../../assets';
-
 import type {
   TeamAttachmentType,
   TeamChannelType,
@@ -25,7 +20,7 @@ type InputProps = {
   setChannelName: (value: React.SetStateAction<string>) => void;
 };
 
-const ChannelNameInput: React.FC<InputProps> = (props) => {
+const ChannelNameInput: React.FC<InputProps> = memo((props) => {
   const { channelName = '', setChannelName } = props;
 
   const handleChange = (event: { preventDefault: () => void; target: { value: string } }) => {
@@ -40,14 +35,14 @@ const ChannelNameInput: React.FC<InputProps> = (props) => {
       <p>Channel Members</p>
     </div>
   );
-};
+});
 
 type Props = {
   cohortUsers: any;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const EditChannel: React.FC<Props> = (props) => {
+export const EditChannel: React.FC<Props> = memo((props) => {
   const { setIsEditing, cohortUsers } = props;
   const { user } = useAuth();
 
@@ -116,4 +111,4 @@ export const EditChannel: React.FC<Props> = (props) => {
       )}
     </div>
   );
-};
+});

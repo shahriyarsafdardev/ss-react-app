@@ -2,6 +2,8 @@ import { Box, styled, Theme, Input, Stack, Typography } from '@material-ui/core'
 import { LoadingButton } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import Page from 'components/Page';
+import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   paymentData: {
@@ -195,7 +197,7 @@ export const LoadingContainer = styled(Box)(({ theme }) => ({
   left: '45%'
 }));
 
-export const Logo = styled('img')(({ theme }) => ({
+export const Logo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '4%',
@@ -205,7 +207,7 @@ export const Logo = styled('img')(({ theme }) => ({
   }
 }));
 
-export const BannerLogo = styled('img')(({ theme }) => ({
+export const BannerLogo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '120px',
@@ -214,7 +216,7 @@ export const BannerLogo = styled('img')(({ theme }) => ({
     display: 'none'
   }
 }));
-export const StyledCheckIcon = styled('img')(({ theme }) => ({
+export const StyledCheckIcon = styled(LazyLoadImage)(({ theme }) => ({
   width: '24px',
   height: '24px',
   marginRight: '8px'
@@ -243,38 +245,32 @@ export const PaymentRootStyle = styled(Page)(({ theme }) => ({
   }
 }));
 
-export const InputAmount = ({
-  amount,
-  onChange,
-  minValue
-}: {
-  amount: number;
-  onChange: Function;
-  minValue: number;
-}) => (
-  <Stack direction="row" justifyContent="center" spacing={1}>
-    <Typography variant="h4">$</Typography>
-    <Input
-      disableUnderline
-      size="small"
-      value={amount}
-      onChange={(e) => onChange(e?.target?.value)}
-      onBlur={(e) =>
-        onChange(parseInt(e?.target?.value, 10) < minValue ? minValue : e?.target?.value)
-      }
-      inputProps={{ min: minValue, type: 'number' }}
-      sx={{
-        typography: 'h4',
-        '& input': {
-          p: 0,
-          color: '#fff',
-          textAlign: 'center',
-          width: `${amount?.toString()?.length + 1}ch`
+export const InputAmount = memo(
+  ({ amount, onChange, minValue }: { amount: number; onChange: Function; minValue: number }) => (
+    <Stack direction="row" justifyContent="center" spacing={1}>
+      <Typography variant="h4">$</Typography>
+      <Input
+        disableUnderline
+        size="small"
+        value={amount}
+        onChange={(e) => onChange(e?.target?.value)}
+        onBlur={(e) =>
+          onChange(parseInt(e?.target?.value, 10) < minValue ? minValue : e?.target?.value)
         }
-      }}
-    />
-    <Typography variant="h4">USD</Typography>
-  </Stack>
+        inputProps={{ min: minValue, type: 'number' }}
+        sx={{
+          typography: 'h4',
+          '& input': {
+            p: 0,
+            color: '#fff',
+            textAlign: 'center',
+            width: `${amount?.toString()?.length + 1}ch`
+          }
+        }}
+      />
+      <Typography variant="h4">USD</Typography>
+    </Stack>
+  )
 );
 
 export function SaleBanner() {

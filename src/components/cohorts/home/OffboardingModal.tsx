@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack, Typography } from '@material-ui/core';
 import { Modal } from 'components/animate';
@@ -19,10 +19,11 @@ import {
   StyledIconButton,
   StyledIcon,
   getCaption,
-  StyledStack
+  StyledStack,
+  useStyles
 } from './Common';
 
-export default function OffboardingModal({
+const OffboardingModal = ({
   modalState,
   setModalState,
   activeImage
@@ -30,11 +31,13 @@ export default function OffboardingModal({
   modalState: boolean;
   setModalState: Function;
   activeImage: string;
-}) {
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const { user } = useAuth();
   const courseLink = `https://getsphere.com/cohorts/applied-causal-inference?referrer=${user?.slug}&alumni=true`;
+  const classes = useStyles();
+
   const handleCopy = (text: string) => {
     copy(text);
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
@@ -89,16 +92,18 @@ export default function OffboardingModal({
     sendAnalyticsData('Cohort Offboarding - Share modal - "Copy link only" button clicked', {});
   };
 
+  const handleModalClose = () => {
+    sendAnalyticsData('Cohort Offboarding - Share modal - Modal Closed', {});
+    setModalState(!modalState);
+  };
+
   return (
-    <Modal
-      open={modalState}
-      onClose={() => {
-        sendAnalyticsData('Cohort Offboarding - Share modal - Modal Closed', {});
-        setModalState(!modalState);
-      }}
-    >
+    <Modal open={modalState} onClose={handleModalClose}>
       <ModalStyle>
-        <Stack direction={{ xs: 'column', md: 'row' }} alignItems="center" sx={{ height: '100%' }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{ height: '100%', alignItems: 'center' }}
+        >
           <StyledStack spacing={2} justifyContent="center">
             <Typography variant="h3" sx={{ fontSize: '24px !important' }}>
               Share your accomplishment to give and get $100 📣
@@ -112,42 +117,29 @@ export default function OffboardingModal({
               credit to use towards your next Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />
-            <StyledModalButton variant="contained" onClick={() => handleShareToLinkedin()}>
+            <StyledModalButton variant="contained" onClick={handleShareToLinkedin}>
               Share to LinkedIn
             </StyledModalButton>
-            <Stack
-              direction="row"
-              justifyContent="center"
-              spacing={3}
-              alignItems="center"
-              sx={{ color: '#101658', marginTop: '20px' }}
-            >
+            <Stack spacing={3} direction="row" className={classes.socialShareStack}>
               <Typography variant="h6">Share via:</Typography>
-              <StyledIconButton onClick={() => handleShareViaTwitter()}>
+              <StyledIconButton onClick={handleShareViaTwitter}>
                 <StyledIcon icon={twitterFill} />
               </StyledIconButton>
-              <StyledIconButton onClick={() => handleShareViaEmail()}>
+              <StyledIconButton onClick={handleShareViaEmail}>
                 <StyledIcon icon={baselineEmail} />
               </StyledIconButton>
               <a href={activeImage} download={activeImage} rel="noreferrer" target="_blank">
-                <StyledIconButton onClick={() => handleDownload()}>
+                <StyledIconButton onClick={handleDownload}>
                   <StyledIcon icon={baselineFileDownload} />
                 </StyledIconButton>
               </a>
             </Stack>
           </StyledStack>
-          <StyledStack
-            sx={{
-              backgroundColor: '#FAFAFC',
-              height: '100%'
-            }}
-            spacing={3}
-            justifyContent="center"
-          >
+          <StyledStack spacing={3}>
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard sx={{ fontSize: '15px' }}>
+            <GreyCard>
               <div>
                 <div id="linkedin-caption">
                   <Typography>
@@ -213,4 +205,6 @@ export default function OffboardingModal({
       </ModalStyle>
     </Modal>
   );
-}
+};
+
+export default memo(OffboardingModal);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Stack, Container } from '@material-ui/core';
 import Page from 'components/Page';
 import { getPathData } from 'redux/slices/path';
@@ -43,6 +43,11 @@ export default function PathsTab() {
     }
   }, [courses?.length]);
 
+  const findComplete = useMemo(
+    () => courses?.filter((course) => course.is_complete).length,
+    [courses]
+  );
+
   if (typeof courses === 'undefined' || loading || courses?.length === 0) {
     return (
       <Container sx={{ position: 'relative', height: '100%' }}>
@@ -60,7 +65,7 @@ export default function PathsTab() {
           pathName={path?.name}
           pathDescription={path?.description || ''}
           total={courses?.length}
-          complete={courses?.filter((course) => course.is_complete).length}
+          complete={findComplete}
         />
         <CoursesCarousel
           courses={courses}

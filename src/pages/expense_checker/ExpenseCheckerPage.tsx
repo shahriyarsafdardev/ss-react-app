@@ -1,6 +1,6 @@
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Box, useMediaQuery, useTheme } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
@@ -16,7 +16,7 @@ export type Company = {
   logo_url: string;
 };
 
-export default function ExpenseCheckerPage() {
+function ExpenseCheckerPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const classes = useStyles();
@@ -34,27 +34,26 @@ export default function ExpenseCheckerPage() {
   });
   const [cohort, setCohort] = useState<any>();
 
-  const getCompanies = async () => {
-    setLoading(true);
-    await axios
-      .get(`companies/companies.json`, {
-        params: {
-          cohort_id: cohortID
-        }
-      })
-      .then((res) => {
-        setCompanies(res?.data?.companies);
-        setCohort(res?.data?.cohort);
-        setLoading(false);
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
-      });
-  };
-
   useEffect(() => {
+    const getCompanies = async () => {
+      setLoading(true);
+      await axios
+        .get(`companies/companies.json`, {
+          params: {
+            cohort_id: cohortID
+          }
+        })
+        .then((res) => {
+          setCompanies(res?.data?.companies);
+          setCohort(res?.data?.cohort);
+          setLoading(false);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    };
     getCompanies();
-  }, []);
+  }, [cohortID]);
 
   useEffect(() => {
     cohort &&
@@ -65,7 +64,7 @@ export default function ExpenseCheckerPage() {
       });
   }, [cohort, window.analytics?.ready]);
 
-  const handleEnroll = () => {
+  const handleEnroll = useCallback(() => {
     const eventName = companyExist
       ? 'L&D Approval Checker - Approved Company - "Enroll" Selected'
       : 'L&D Approval Checker - New Company - "Enroll" Selected';
@@ -73,7 +72,8 @@ export default function ExpenseCheckerPage() {
       Company: selectedCompany?.name
     });
     navigate(`/registration?cohort_id=${cohortID}`);
-  };
+  }, [companyExist, selectedCompany, cohortID]);
+
   if (companies?.length === 0 || loading || cohortID === '' || !cohort) {
     return (
       <LoadingContainer>
@@ -118,3 +118,5 @@ export default function ExpenseCheckerPage() {
     </PaymentRootStyle>
   );
 }
+
+export default memo(ExpenseCheckerPage);

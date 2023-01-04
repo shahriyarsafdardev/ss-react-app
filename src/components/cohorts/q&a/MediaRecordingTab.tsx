@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import VideoRecorder from 'components/media-recorders/VideoRecorder';
 import { Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
@@ -44,17 +45,24 @@ const MediaRecordingTab = ({
   questionType: string;
   onAudioRecordingComplete: Function;
   onTrack: Function;
-}) => (
-  <>
+}) => {
+  const handleButton = useCallback((medium: string) => {
+    setQuestionType(medium);
+    setIsRecording(true);
+  }, []);
+
+  const recordingClose = useCallback((medium: string, value: boolean) => {
+    setIsRecording(value);
+    medium === 'Video' ? onVideoRecordingComplete(null) : onAudioRecordingComplete(null);
+    setQuestionType('Text');
+  }, []);
+
+  return (
     <RecordingButtonsContainer>
       {isRecording && questionType === 'Video' && (
         <VideoRecorder
           onTrack={onTrack}
-          onClose={(value: boolean) => {
-            setIsRecording(value);
-            onVideoRecordingComplete(null);
-            setQuestionType('Text');
-          }}
+          onClose={(value: boolean) => recordingClose('Video', value)}
           onComplete={(response: any) => onVideoRecordingComplete(response)}
         />
       )}
@@ -62,11 +70,7 @@ const MediaRecordingTab = ({
         <AudioRecorder
           onComplete={(response: any) => onAudioRecordingComplete(response)}
           onTrack={onTrack}
-          onClose={(value: boolean) => {
-            setIsRecording(value);
-            onAudioRecordingComplete(null);
-            setQuestionType('Text');
-          }}
+          onClose={(value: boolean) => recordingClose('Audio', value)}
         />
       )}
       {!isRecording && (
@@ -80,20 +84,14 @@ const MediaRecordingTab = ({
             <StyledRecordingButton
               variant="outlined"
               startIcon={<img src="/static/cohorts-home/video-outlined.svg" alt="video-icon" />}
-              onClick={() => {
-                setQuestionType('Video');
-                setIsRecording(true);
-              }}
+              onClick={() => handleButton('Video')}
             >
               Record Video
             </StyledRecordingButton>
             <StyledRecordingButton
               variant="outlined"
               startIcon={<img src="/static/cohorts-home/audio-outlined.svg" alt="audio-icon" />}
-              onClick={() => {
-                setQuestionType('Audio');
-                setIsRecording(true);
-              }}
+              onClick={() => handleButton('Audio')}
             >
               Record Audio
             </StyledRecordingButton>
@@ -101,6 +99,6 @@ const MediaRecordingTab = ({
         </>
       )}
     </RecordingButtonsContainer>
-  </>
-);
-export default MediaRecordingTab;
+  );
+};
+export default memo(MediaRecordingTab);

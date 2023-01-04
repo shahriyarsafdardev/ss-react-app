@@ -1,7 +1,8 @@
 import { Stack } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles, Logo, StyledTypography } from '../teams/Common';
 
-export default function PaymentPrompt({ topup }: { topup: boolean }) {
+function PaymentPrompt({ topup }: { topup: boolean }) {
   const styles = useStyles();
 
   return (
@@ -16,3 +17,5 @@ export default function PaymentPrompt({ topup }: { topup: boolean }) {
     </Stack>
   );
 }
+
+export default memo(PaymentPrompt);

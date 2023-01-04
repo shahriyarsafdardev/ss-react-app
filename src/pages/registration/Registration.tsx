@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
@@ -111,7 +111,7 @@ export const NEW_REGISTRATION_FLOW_COHORT_CODES = [
 
 const RONNY_COHORT_CODE = 'BBC';
 
-export default function Registration() {
+function Registration() {
   const [activeStep, setActiveStep] = useState(1);
   const url = new URLSearchParams(useLocation().search);
   const cohort_id = url.get('cohort_id') || '';
@@ -158,101 +158,113 @@ export default function Registration() {
     amplitude_events_timeline: null
   });
 
-  const trackRegistrationEvent = (eventType: string, params?: any) => {
-    const eventData = {
-      Referrer: referrer_code,
-      Source: ref_source,
-      'Cohort Price': cohort.price || 0,
-      ...params
-    };
-    trackEvent(cohort, eventType, eventData);
-  };
+  const trackRegistrationEvent = useCallback(
+    (eventType: string, params?: any) => {
+      const eventData = {
+        Referrer: referrer_code,
+        Source: ref_source,
+        'Cohort Price': cohort.price || 0,
+        ...params
+      };
+      trackEvent(cohort, eventType, eventData);
+    },
+    [cohort]
+  );
 
-  const createCompleteEnrollment = async (email: string, values?: any) => {
-    await axios
-      .post(`/cohorts/${cohort_id}/enrollments.json`, {
-        email,
-        coupon_code: user?.referrer,
-        account_id: credit_account_id,
-        source: ref_source,
-        referrer_domain
-      })
-      .then((res) => {
-        if (res.data.user) {
-          setUser({
-            ...user,
-            ...res.data.user
-          });
-          !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
-            setSegmentUserProperties(res.data.user);
-        }
-        if (res.data.company) {
-          setCompany({
-            ...res.data.company
-          });
-        }
-        if (res.data.user.alumni_event) {
-          setAlumniEvent(true);
-        }
-        if (res.data.user.wait_listed) {
-          setWaitListed(true);
-        }
-        if (res.data.user.pre_release) {
-          setPreRelease(true);
-        }
+  const createEnrollment = useCallback(
+    async (values: any, user: UserType) => {
+      values = values?.full_name
+        ? {
+            ...values,
+            first_name: values.full_name.split(' ')?.[0] || '',
+            last_name: values.full_name.split(' ')?.[1] || values.full_name.split(' ')?.[0]
+          }
+        : values;
 
-        NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
-          values &&
-          createEnrollment(values, res.data?.user);
-
-        setAccount(res.data.account);
-        setLoading(false);
-        setTimeout(() => {
-          setConfetti(0);
-        }, 3000);
-      })
-      .catch((error) => {
-        enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
-      });
-  };
-
-  const createEnrollment = async (values: any, user: UserType) => {
-    values = values?.full_name
-      ? {
-          ...values,
-          first_name: values.full_name.split(' ')?.[0] || '',
-          last_name: values.full_name.split(' ')?.[1] || values.full_name.split(' ')?.[0]
-        }
-      : values;
-
-    if (user.enrollment_id && cohort?.id) {
-      try {
-        await axios
-          .post(`/cohorts/${cohort?.id}/enrollments/${user.enrollment_id}/update_profile.json`, {
-            ...values
-          })
-          .then((res) => {
-            const updatedUser = res.data.user;
-            enqueueSnackbar('Application Submitted', { variant: 'success' });
-            updateUserData({ ...user, ...values, slug: updatedUser?.slug });
-            if (!isAuthenticated) {
-              setSegmentUserProperties(updatedUser);
-            }
-            trackRegistrationEvent('Cohort Registration - Personal Info Page - Details Submitted', {
-              'Registrant First Name': values.first_name,
-              'Registrant Last Name': values.last_name,
-              'Registrant LinkedIn URL': values.linkedin_url,
-              'Registrant Email': user.email
+      if (user.enrollment_id && cohort?.id) {
+        try {
+          await axios
+            .post(`/cohorts/${cohort?.id}/enrollments/${user.enrollment_id}/update_profile.json`, {
+              ...values
+            })
+            .then((res) => {
+              const updatedUser = res.data.user;
+              enqueueSnackbar('Application Submitted', { variant: 'success' });
+              updateUserData({ ...user, ...values, slug: updatedUser?.slug });
+              if (!isAuthenticated) {
+                setSegmentUserProperties(updatedUser);
+              }
+              trackRegistrationEvent(
+                'Cohort Registration - Personal Info Page - Details Submitted',
+                {
+                  'Registrant First Name': values.first_name,
+                  'Registrant Last Name': values.last_name,
+                  'Registrant LinkedIn URL': values.linkedin_url,
+                  'Registrant Email': user.email
+                }
+              );
             });
-          });
-      } catch (error) {
-        enqueueSnackbar('Application Failed', { variant: 'error' });
-        console.log(error);
+        } catch (error) {
+          enqueueSnackbar('Application Failed', { variant: 'error' });
+          console.log(error);
+        }
+      } else {
+        enqueueSnackbar('Invalid page URL', { variant: 'error' });
       }
-    } else {
-      enqueueSnackbar('Invalid page URL', { variant: 'error' });
-    }
-  };
+    },
+    [cohort, user]
+  );
+
+  const createCompleteEnrollment = useCallback(
+    async (email: string, values?: any) => {
+      await axios
+        .post(`/cohorts/${cohort_id}/enrollments.json`, {
+          email,
+          coupon_code: user?.referrer,
+          account_id: credit_account_id,
+          source: ref_source,
+          referrer_domain
+        })
+        .then((res) => {
+          if (res.data.user) {
+            setUser({
+              ...user,
+              ...res.data.user
+            });
+            !NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+              setSegmentUserProperties(res.data.user);
+          }
+          if (res.data.company) {
+            setCompany({
+              ...res.data.company
+            });
+          }
+          if (res.data.user.alumni_event) {
+            setAlumniEvent(true);
+          }
+          if (res.data.user.wait_listed) {
+            setWaitListed(true);
+          }
+          if (res.data.user.pre_release) {
+            setPreRelease(true);
+          }
+
+          NEW_REGISTRATION_FLOW_COHORT_CODES.includes(cohort?.code) &&
+            values &&
+            createEnrollment(values, res.data?.user);
+
+          setAccount(res.data.account);
+          setLoading(false);
+          setTimeout(() => {
+            setConfetti(0);
+          }, 3000);
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
+        });
+    },
+    [user, cohort, createEnrollment]
+  );
 
   useEffect(() => {
     function handleWindowResize() {
@@ -275,20 +287,20 @@ export default function Registration() {
     setActiveStep(activeStep - 1);
   };
 
-  const selectStep = () => {
+  const selectStep = useCallback(() => {
     if (account || wait_listed) {
       setActiveStep(4);
     } else {
       setActiveStep(3);
     }
-  };
+  }, [account, wait_listed]);
 
   const updateUserData = async (data: any) => {
     setUser({ ...data });
     setActiveStep(2);
   };
 
-  const setFormHeadings = () => {
+  const setFormHeadings = useCallback(() => {
     let payLaterMessage =
       'If you choose to pay later, you will be emailed a payment link. You will have 72 hours to lock in your price and seat. If you are unable to complete the payment within 72 hours:';
 
@@ -298,7 +310,7 @@ export default function Registration() {
     }
 
     return { payLaterMessage };
-  };
+  }, [pre_release]);
 
   useEffect(() => {
     if (cohort_id) {
@@ -351,7 +363,7 @@ export default function Registration() {
     }
   }, [loading, window.analytics?.user]);
 
-  const subHeading = () => {
+  const subHeading = useCallback(() => {
     if (cohort?.code === RONNY_COHORT_CODE) {
       return 'You will receive an email shortly documenting your next steps!';
     }
@@ -363,9 +375,9 @@ export default function Registration() {
       return `We’ve sent your application to a ${company?.name} representative for review and will be in touch with next steps!`;
     }
     return 'You will shortly receive an email documenting your application outcome and next steps!';
-  };
+  }, [cohort?.code, pre_release, wait_listed, company, account]);
 
-  const lastStepMainHeading = () => {
+  const lastStepMainHeading = useCallback(() => {
     if (cohort?.code === RONNY_COHORT_CODE) {
       return '🎉 Congratulations, your seat is secured!';
     }
@@ -374,16 +386,21 @@ export default function Registration() {
       return '🎉 Congratulations, you’ve joined the waitlist';
     }
     return '🎉 Congratulations, you’ve completed your application!';
-  };
+  }, [cohort?.code, wait_listed, pre_release]);
 
   const displayStep = () => {
     const { payLaterMessage } = setFormHeadings();
+
+    const handleExploreMoreSelected = () =>
+      trackRegistrationEvent(
+        "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected"
+      );
 
     if (activeStep === 2) {
       return (
         <>
           <InvitePeersForm
-            onContinue={() => selectStep()}
+            onContinue={selectStep}
             enrollmentId={user?.enrollment_id || ''}
             cohort={cohort}
             referrer_code={user.slug}
@@ -454,11 +471,7 @@ export default function Registration() {
           </Box>
           <Button
             href="https://www.getsphere.com/#upcoming-cohorts-slider"
-            onClick={() =>
-              trackRegistrationEvent(
-                "Cohort Registration - Confirmation Page - 'Explore more cohorts' Selected"
-              )
-            }
+            onClick={handleExploreMoreSelected}
             variant="contained"
             color="primary"
             data-testid="explore-btn"
@@ -524,7 +537,7 @@ export default function Registration() {
         )}
         <RegistrationNavbar cohort={cohort} />
         {[2, 3].includes(activeStep) && (
-          <StyledBackButton variant="outlined" onClick={() => previousStep()}>
+          <StyledBackButton variant="outlined" onClick={previousStep}>
             <KeyboardBackspace fontSize="large" />
           </StyledBackButton>
         )}
@@ -539,3 +552,5 @@ export default function Registration() {
     </>
   );
 }
+
+export default memo(Registration);

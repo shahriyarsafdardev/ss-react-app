@@ -1,28 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useContext } from 'react';
+import { useState, useContext, memo } from 'react';
 import { Box, Typography, Stack, Button, TextField } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
 import { CohortContext } from 'contexts/CohortContext';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { SessionTimestamp } from '../../../../@types/cohorts';
 import { updateTimestamp } from '../../../../redux/slices/cohort';
 import { useDispatch } from '../../../../redux/store';
-import { useStyles } from './Common';
-
-const StyledStack = styled(Stack)(({ theme }) => ({
-  marginBottom: '30px',
-  justifyContent: 'space-between',
-  background: '#FAFAFC',
-  borderRadius: '8px',
-  padding: '25px 15px'
-}));
-
-const StyledImageContainer = styled(Box)(({ theme }) => ({
-  width: '30%',
-  margin: 'auto 0',
-  [theme.breakpoints.down('sm')]: {
-    width: '100%'
-  }
-}));
+import { useStyles, StyledImageContainer, StyledStack } from './Common';
 
 function Timestamp({
   timestamp,
@@ -80,7 +64,7 @@ function Timestamp({
   return (
     <StyledStack direction={{ xs: 'column', md: 'row' }} spacing={1}>
       <StyledImageContainer>
-        <img
+        <LazyLoadImage
           src={
             timestamp?.thumbnail_url ||
             'https://sphere-public.s3.eu-west-2.amazonaws.com/Default+thumbnail.png'
@@ -91,7 +75,7 @@ function Timestamp({
       </StyledImageContainer>
 
       <Box
-        style={{
+        sx={{
           borderLeft: '2px solid #E2E8F0',
           width: '0px',
           height: 'auto'
@@ -113,7 +97,7 @@ function Timestamp({
             defaultValue={description}
           />
         ) : (
-          <Typography style={{ color: '#454F5B', fontSize: '14px' }}>
+          <Typography sx={{ color: '#454F5B', fontSize: '14px' }}>
             {secondsToHms(timestamp?.timestamp || 0)}
             {` | ${timestamp?.description || 'New Timestamp'}`}
           </Typography>
@@ -143,4 +127,4 @@ function Timestamp({
   );
 }
 
-export default Timestamp;
+export default memo(Timestamp);

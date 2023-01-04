@@ -1,3 +1,4 @@
+import { memo } from 'react';
 // material
 import { Table, TableBody, TableContainer } from '@material-ui/core';
 import Scrollbar from 'components/Scrollbar';
@@ -22,7 +23,7 @@ const TABLE_HEAD = [
   { id: 'actions', label: 'Actions', align: 'center' }
 ];
 
-export default function RegistrationsList({
+function RegistrationsList({
   enrollments,
   codes = [],
   isAdminView = false
@@ -61,3 +62,5 @@ export default function RegistrationsList({
     </div>
   );
 }
+
+export default memo(RegistrationsList);

@@ -1,6 +1,7 @@
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { useEffect } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate } from 'react-router';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
@@ -60,7 +61,7 @@ const Heading = styled(Typography)(({ theme }) => ({
   marginTop: '50px !important'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '123px',
   height: '136px'
 }));

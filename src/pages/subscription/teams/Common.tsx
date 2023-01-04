@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 
 import Page from 'components/Page';
+import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const StyledBackButton = styled(Button)(({ theme }) => ({
   position: 'absolute',
@@ -212,7 +214,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export const Logo = styled('img')(({ theme }) => ({
+export const Logo = styled(LazyLoadImage)(({ theme }) => ({
   width: '9%',
   position: 'absolute',
   top: '4%',
@@ -222,14 +224,8 @@ export const Logo = styled('img')(({ theme }) => ({
   }
 }));
 
-export function SubscriptionDetails({
-  isSinglePayee,
-  teamDiscount
-}: {
-  isSinglePayee: boolean;
-  teamDiscount: number;
-}) {
-  return (
+export const SubscriptionDetails = memo(
+  ({ isSinglePayee, teamDiscount }: { isSinglePayee: boolean; teamDiscount: number }) => (
     <Box sx={{ mt: 4, maxWidth: '650px' }}>
       <Stack spacing={3}>
         <>
@@ -265,5 +261,5 @@ export function SubscriptionDetails({
         </>
       </Stack>
     </Box>
-  );
-}
+  )
+);

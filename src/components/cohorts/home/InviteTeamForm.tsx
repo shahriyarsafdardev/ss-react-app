@@ -5,6 +5,7 @@ import axios from 'utils/axios';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import useAuth from 'hooks/useAuth';
+import { memo } from 'react';
 
 export type ReferralTypeUser = {
   email: string;
@@ -42,13 +43,13 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function InviteTeamForm({
+const InviteTeamForm = ({
   handleSubmit,
   trackSegmentEvent
 }: {
   handleSubmit: Function;
   trackSegmentEvent: Function;
-}) {
+}) => {
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const cohortID = window.location.pathname.split('/')[2] || '';
@@ -144,4 +145,6 @@ export default function InviteTeamForm({
       </Button>
     </ParentStack>
   );
-}
+};
+
+export default memo(InviteTeamForm);

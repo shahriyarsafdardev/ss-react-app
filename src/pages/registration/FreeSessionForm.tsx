@@ -1,23 +1,13 @@
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import {
-  Box,
-  Grid,
-  Card,
-  Stack,
-  TextField,
-  FormControl,
-  MenuItem,
-  ListItemText,
-  InputLabel,
-  Select as MaterialSelect
-} from '@material-ui/core';
+import { Box, Grid, Card, Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
+import { memo } from 'react';
 import { useStyles } from './styles';
 
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -27,13 +17,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function FreeSessionForm({
-  email,
-  cohort_id
-}: {
-  email: string;
-  cohort_id: string;
-}) {
+function FreeSessionForm({ email, cohort_id }: { email: string; cohort_id: string }) {
   const classes = useStyles();
 
   const UpdateUserSchema = Yup.object().shape({
@@ -150,3 +134,5 @@ export default function FreeSessionForm({
     </>
   );
 }
+
+export default memo(FreeSessionForm);

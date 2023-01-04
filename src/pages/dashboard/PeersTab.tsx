@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // utils;
 import { trackEvent } from 'utils/eventTracking';
 import useAuth from 'hooks/useAuth';
@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import axios from 'utils/axios';
 // material
-import { uniq } from 'lodash';
+import { debounce, uniq } from 'lodash';
 import { Container, Box, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 // redux
@@ -61,26 +61,25 @@ export default function PeersTab() {
   const { peers } = cohort || { peers: null };
   let filteredPeers: Array<StudentProfile> = [];
 
-  const displayPeers =
-    cohort?.released_for_learners ||
-    user?.type === 'expert' ||
-    user?.type === 'admin' ||
-    user?.admin;
+  const displayPeers = useMemo(
+    () =>
+      cohort?.released_for_learners ||
+      user?.type === 'expert' ||
+      user?.type === 'admin' ||
+      user?.admin,
+    [cohort?.released_for_learners, user?.type, user?.admin]
+  );
 
   if (displayPeers && peers) {
     filteredPeers = peers.filter((peer) => peer.type === 'learner' && peer.profile_image_url);
   }
 
   useEffect(() => {
-    if (displayPeers) {
-      // get all the companies to choose from peers.
-      let newCompanies = filteredPeers
-        ?.map((peer) => peer.current_company.name)
-        ?.filter((name) => !!name);
-      // make the companies array unique
-      newCompanies = Array.from(new Set(newCompanies)).sort((a, b) => a.localeCompare(b));
+    const getCompanies = () => {
+      const newCompanies = uniq(
+        filteredPeers?.map((peer) => peer.current_company.name)?.filter((name) => !!name)
+      ).sort((a, b) => a.localeCompare(b));
       setCompanies(newCompanies);
-      // make select items for strengths
       setSelectedCompanies([]);
       const user_id = url.get('user_id');
       if (user_id && filteredPeers?.length > 0) {
@@ -89,14 +88,15 @@ export default function PeersTab() {
           modalHandler(peer);
         }
       }
+    };
+    if (displayPeers) {
+      getCompanies();
     }
   }, [peers, cohort_id]);
 
   useEffect(() => {
-    if (displayPeers) {
-      if (cohort && peers?.length > 0) {
-        trackEvent(cohort, 'Networking Page - Page Loaded', {});
-      }
+    if (displayPeers && cohort && peers?.length > 0) {
+      trackEvent(cohort, 'Networking Page - Page Loaded', {});
     }
   }, [cohort, peers]);
 
@@ -109,16 +109,16 @@ export default function PeersTab() {
   };
 
   useEffect(() => {
-    if (displayPeers) {
-      if (cohort && !peers) {
-        dispatch(getPeers(cohort_id.toString(), user?.id));
+    if (cohort) {
+      if (displayPeers) {
+        !peers && dispatch(getPeers(cohort_id.toString(), user?.id));
+      } else {
+        getAlumni();
       }
-    } else {
-      getAlumni();
     }
   }, [dispatch, cohort]);
 
-  const getAlumni = async () => {
+  const getAlumni = debounce(async () => {
     await axios
       .get(`/cohorts/peers_in_batches.json?offset=${offset}`)
       .then((res: any) => {
@@ -129,14 +129,10 @@ export default function PeersTab() {
           )
         ];
         setAlumni(updatedAlumni);
-        const newCompanies = Array.from(
-          new Set(
-            uniq(
-              updatedAlumni
-                ?.map((peer: StudentProfile) => peer.current_company.name)
-                ?.filter((name: string) => !!name)
-            )
-          )
+        const newCompanies = uniq(
+          updatedAlumni
+            ?.map((peer: StudentProfile) => peer.current_company.name)
+            ?.filter((name: string) => !!name)
         ).sort((a, b) => a.localeCompare(b));
         setCompanies(newCompanies);
         setTotalCount(res.data.total_count);
@@ -145,7 +141,7 @@ export default function PeersTab() {
       .catch((err) => {
         console.log(err.message || 'Some error occurred!');
       });
-  };
+  }, 300);
 
   const applyFilters = useCallback(
     (students: StudentProfile[]) => {
@@ -175,48 +171,35 @@ export default function PeersTab() {
     });
   };
 
+  const handlePeerModal = (peer: any) => {
+    modalHandler(peer);
+    trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
+  };
+
   const showCardView = () =>
     !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
-        loadMore={() => getAlumni()}
+        loadMore={getAlumni}
         viewMode="grid"
         hasMore={totalCount > alumni.length}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
+        modalHandler={handlePeerModal}
       />
     ) : (
-      <StudentProfileGrid
-        students={applyFilters(filteredPeers)}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
-      />
+      <StudentProfileGrid students={applyFilters(filteredPeers)} modalHandler={handlePeerModal} />
     );
 
   const showTableView = () =>
     !displayPeers ? (
       <AlumniProfileContainer
         alumnis={applyFilters(alumni)}
-        loadMore={() => getAlumni()}
+        loadMore={getAlumni}
         viewMode="list"
         hasMore={totalCount > alumni.length}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
+        modalHandler={handlePeerModal}
       />
     ) : (
-      <StudentProfileList
-        students={applyFilters(filteredPeers)}
-        modalHandler={(peer: any) => {
-          modalHandler(peer);
-          trackModalEvent('Networking Page - Profile Modal - Modal Opened', peer);
-        }}
-      />
+      <StudentProfileList students={applyFilters(filteredPeers)} modalHandler={handlePeerModal} />
     );
 
   const renderPeers = () =>

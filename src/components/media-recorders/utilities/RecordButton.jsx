@@ -1,4 +1,5 @@
 import { styled } from '@material-ui/core/styles';
+import { memo } from 'react';
 
 const RecWrapper = styled('div')(() => ({
   display: 'flex',
@@ -50,7 +51,7 @@ const Button = styled('button')(() => ({
   }
 }));
 
-const RecordButton = ({ t, ...props }) => (
+const RecordButton = memo(({ t, ...props }) => (
   <RecWrapper>
     <ButtonBorder>
       <Button {...props} />
@@ -61,6 +62,6 @@ const RecordButton = ({ t, ...props }) => (
       {t('WHEN READY')}
     </Instructions>
   </RecWrapper>
-);
+));
 
 export default RecordButton;

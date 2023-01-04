@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Page from 'components/Page';
 import { Container } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
@@ -6,12 +6,9 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useSettings from 'hooks/useSettings';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
-
 import { getCohortResources, getCohortSessionResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-
 import LoadingScreen from 'components/LoadingScreen';
-
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
 import { LoadingContainer } from '../code/CodeTab';
@@ -30,9 +27,17 @@ export default function ResourcesPage() {
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const { resources, resources_types } = cohort || [];
-  const clearData = () => {
-    setIsSearch(false);
-  };
+
+  useEffect(() => {
+    cohort?.id && sendAnalyticsData('Resources Page - Page Loaded', { Source: source });
+
+    if (cohort && (!resources || !resources_types)) {
+      dispatch(getCohortResources(cohort_id));
+    }
+    return () => {
+      setIsSearch(false);
+    };
+  }, [cohort?.id]);
 
   const sendAnalyticsData = (eventName: string, eventData: any) => {
     cohort && trackEvent(cohort, eventName, eventData);
@@ -42,20 +47,7 @@ export default function ResourcesPage() {
     dispatch(getCohortSessionResources(cohort_id, sessionID));
   };
 
-  useEffect(() => {
-    cohort?.id && sendAnalyticsData('Resources Page - Page Loaded', { Source: source });
-  }, [cohort?.id]);
-
-  useEffect(() => {
-    if (cohort && (!resources || !resources_types)) {
-      dispatch(getCohortResources(cohort_id));
-    }
-    return () => {
-      clearData();
-    };
-  }, [cohort?.id]);
-
-  if (resources === undefined || resources?.length === 0) {
+  if (typeof resources === 'undefined' || resources?.length === 0) {
     return (
       <LoadingContainer>
         <LoadingScreen />
@@ -95,7 +87,7 @@ export default function ResourcesPage() {
                 <ResourcesSection
                   handleShowMore={(data: string) => handleShowMore(data)}
                   isPublic={false}
-                  key={index}
+                  key={resource.session_id}
                   resourceData={resource}
                   setState={setState}
                 />

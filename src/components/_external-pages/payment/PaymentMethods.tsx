@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 // material
@@ -74,7 +74,7 @@ type PaymentMethodsProps = {
   formik: PaymentFormikProps;
 };
 
-export default function PaymentMethods({ formik }: PaymentMethodsProps) {
+function PaymentMethods({ formik }: PaymentMethodsProps) {
   const [show, setShow] = useState(false);
   const { values, getFieldProps } = formik;
 
@@ -167,3 +167,5 @@ export default function PaymentMethods({ formik }: PaymentMethodsProps) {
     </RootStyle>
   );
 }
+
+export default memo(PaymentMethods);

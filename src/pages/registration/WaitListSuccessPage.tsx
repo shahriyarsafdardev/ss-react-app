@@ -1,7 +1,8 @@
 import { Stack, Typography, useTheme, useMediaQuery } from '@material-ui/core';
+import { memo } from 'react';
 import { Logo, useStyles } from './Common';
 
-export default function WaitListSuccessPage() {
+function WaitListSuccessPage() {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -35,3 +36,5 @@ export default function WaitListSuccessPage() {
     </>
   );
 }
+
+export default memo(WaitListSuccessPage);

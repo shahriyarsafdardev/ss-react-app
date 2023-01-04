@@ -248,10 +248,12 @@ export default function NotificationsPopover() {
           setUnread(event.total_unread_count);
         }
       });
+
       const result = await client.queryChannels(
         { type: { $in: ['messaging', 'team'] }, members: { $in: [user?.id] } },
         { has_unread: -1, last_message_at: -1, updated_at: -1 }
       );
+
       const unreadChannels = result.filter((channel) => channel.state.unreadCount > 0).reverse();
       let messages: any = [];
       unreadChannels.map((channel) => {
@@ -299,6 +301,7 @@ export default function NotificationsPopover() {
       }
       setChatClient(client);
     };
+
     if (user?.stream_token) {
       initChat();
     }

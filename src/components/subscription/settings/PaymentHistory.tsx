@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import UserListHead from 'components/_dashboard/user/list/UserListHead';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { BillHistory } from '../../../@types/cohorts';
 import { StyledHeading } from './Common';
 
@@ -46,7 +46,7 @@ const BillRow = ({ key, billHistory }: { key: number; billHistory: BillHistory }
   );
 };
 
-export default function PaymentHistory({ transactions }: { transactions: BillHistory[] }) {
+function PaymentHistory({ transactions }: { transactions: BillHistory[] }) {
   const TABLE_HEAD = [
     { id: 'date', label: 'Date' },
     { id: 'description', label: 'Description', align: 'center' },
@@ -80,3 +80,5 @@ export default function PaymentHistory({ transactions }: { transactions: BillHis
     </>
   );
 }
+
+export default memo(PaymentHistory);

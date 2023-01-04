@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingScreen from 'components/LoadingScreen';
 import { EVENT_TYPES, trackPageViewEvent } from 'utils/amplitude';
@@ -14,13 +14,7 @@ import EmptyAttendanceTab from 'components/cohorts/onboarding/empty-states/Empty
 import { BaseOptionChart } from '../../charts';
 import Page from '../../Page';
 import AttendanceTable from './AttendanceTable';
-import {
-  CohortAttendanceRecord,
-  AttendanceType,
-  SessionAttendanceRecord
-} from '../../../@types/cohorts';
-
-// ----------------------------------------------------------------------
+import { AttendanceType, SessionAttendanceRecord } from '../../../@types/cohorts';
 
 const StyledContainer = styled(Box)(() => ({
   margin: '30px auto 100px auto',
@@ -48,11 +42,14 @@ const AttendanceTab = () => {
         ?.cohortAttendanceRecord
   );
 
-  const cohortAttendanceRecord = {
-    totalSessions: cohortSessionAttendance?.totalSessions || 0,
-    sessionNames: cohortSessionAttendance?.sessionNames || [],
-    sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
-  };
+  const cohortAttendanceRecord = useMemo(
+    () => ({
+      totalSessions: cohortSessionAttendance?.totalSessions || 0,
+      sessionNames: cohortSessionAttendance?.sessionNames || [],
+      sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
+    }),
+    [cohortSessionAttendance]
+  );
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -72,21 +69,24 @@ const AttendanceTab = () => {
     getData();
   }, [cohort_id]);
 
-  const getAttendanceFrequency = (types: string[]) => {
-    const totalStudents = cohortAttendanceRecord.sessionAttendanceRecords.length;
-    if (totalStudents === 0) {
-      return Array(10).fill(0);
-    }
-    return [...Array(cohortAttendanceRecord.totalSessions)].map((x, i) =>
-      (
-        (cohortAttendanceRecord.sessionAttendanceRecords?.filter((datum: SessionAttendanceRecord) =>
-          types.includes(datum.attendanceData[i])
-        ).length /
-          totalStudents) *
-        100
-      ).toFixed(2)
-    );
-  };
+  const getAttendanceFrequency = useCallback(
+    (types: string[]) => {
+      const totalStudents = cohortAttendanceRecord.sessionAttendanceRecords.length;
+      if (totalStudents === 0) {
+        return Array(10).fill(0);
+      }
+      return [...Array(cohortAttendanceRecord.totalSessions)].map((x, i) =>
+        (
+          (cohortAttendanceRecord.sessionAttendanceRecords?.filter(
+            (datum: SessionAttendanceRecord) => types.includes(datum.attendanceData[i])
+          ).length /
+            totalStudents) *
+          100
+        ).toFixed(2)
+      );
+    },
+    [cohortAttendanceRecord]
+  );
 
   const CHART_DATA = {
     data: [
@@ -148,7 +148,7 @@ const AttendanceTab = () => {
             )}
           </Box>
         </Card>
-        <Box style={{ marginTop: '30px' }}>
+        <Box sx={{ marginTop: '30px' }}>
           <AttendanceTable displayData={displayData} attendance={cohortAttendanceRecord} />
         </Box>
       </StyledContainer>

@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useLocation, useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
@@ -36,7 +36,7 @@ export type CompanyType = {
   logo_url: string;
 };
 
-export default function PersonalDetailsPage() {
+function PersonalDetailsPage() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -51,6 +51,7 @@ export default function PersonalDetailsPage() {
   const source = url.get('source') || '';
   const referrerDomain = url.get('referrer_domain') || '';
   const couponCode = url.get('referrer') || '';
+  const credit_account_id = url.get('credit_account') || '';
 
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email is invalid').required('Email is required'),
@@ -110,7 +111,8 @@ export default function PersonalDetailsPage() {
           linkedin_url: values?.linkedin_url,
           source,
           referrer_domain: referrerDomain,
-          coupon_code: couponCode
+          coupon_code: couponCode,
+          account_id: credit_account_id
         })
         .then((res) => {
           cohort?.wait_listed && setFormSubmitted(true);
@@ -137,6 +139,11 @@ export default function PersonalDetailsPage() {
         });
     }
   });
+
+  const handleSubmit = () => {
+    submitForm();
+    setIsFormSubmit(true);
+  };
 
   const { errors, touched, getFieldProps, isSubmitting, isValid, submitForm } = formik;
 
@@ -235,10 +242,7 @@ export default function PersonalDetailsPage() {
                         variant="contained"
                         loading={isSubmitting}
                         disabled={!isValid}
-                        onClick={() => {
-                          submitForm();
-                          setIsFormSubmit(true);
-                        }}
+                        onClick={handleSubmit}
                         type="submit"
                         data-testid="submit-registration-form"
                         id="btn-submit"
@@ -257,3 +261,5 @@ export default function PersonalDetailsPage() {
     </Page>
   );
 }
+
+export default memo(PersonalDetailsPage);

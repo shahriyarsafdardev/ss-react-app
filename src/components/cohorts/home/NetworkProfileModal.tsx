@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
 
@@ -30,7 +30,7 @@ type UserNetworkingProfile = {
   role_description: string;
 };
 
-export default function NetworkProfileModal({
+const NetworkProfileModal = ({
   networkingModalState,
   setNetworkingModalState,
   cohort
@@ -38,7 +38,7 @@ export default function NetworkProfileModal({
   networkingModalState: boolean;
   setNetworkingModalState: Function;
   cohort: Cohort;
-}) {
+}) => {
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,12 +50,15 @@ export default function NetworkProfileModal({
     networkingModalState && trackEvent(cohort, 'Networking - Profile Form - Modal Opened');
   }, [networkingModalState]);
 
-  const fillUserValues = () => ({
-    preferred_pronoun: user?.preferred_pronoun || '',
-    linkedin_url: user?.linkedin_url || '',
-    industries: user?.current_role_category_selections || [],
-    role_description: user?.bio_text || ''
-  });
+  const fillUserValues = useCallback(
+    () => ({
+      preferred_pronoun: user?.preferred_pronoun || '',
+      linkedin_url: user?.linkedin_url || '',
+      industries: user?.current_role_category_selections || [],
+      role_description: user?.bio_text || ''
+    }),
+    [user]
+  );
 
   const [infoObject, setInfoObject] = useState<UserNetworkingProfile>(fillUserValues());
 
@@ -65,7 +68,7 @@ export default function NetworkProfileModal({
     setInfoObject(tempInfo);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     trackEvent(cohort, 'Networking - Profile Form - "Save" Selected');
     const uploadData = new FormData();
@@ -85,17 +88,15 @@ export default function NetworkProfileModal({
         enqueueSnackbar('Some error occurred!', { variant: 'error' });
         setIsSubmitting(false);
       });
+  }, [infoObject, user, cohort]);
+
+  const handleModalClose = () => {
+    trackEvent(cohort, 'Networking - Profile Form - Modal Closed');
+    setNetworkingModalState(false);
   };
 
   return (
-    <Modal
-      open={networkingModalState}
-      onClose={() => {
-        trackEvent(cohort, 'Networking - Profile Form - Modal Closed');
-        setNetworkingModalState(false);
-      }}
-      id="student-modal"
-    >
+    <Modal open={networkingModalState} onClose={handleModalClose} id="student-modal">
       <Card sx={{ height: 1 }} className={classes.mainCard}>
         <Stack spacing={{ xs: 2, md: 3 }}>
           <Stack>
@@ -187,4 +188,6 @@ export default function NetworkProfileModal({
       </Card>
     </Modal>
   );
-}
+};
+
+export default memo(NetworkProfileModal);

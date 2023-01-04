@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo, useCallback } from 'react';
 import { useSnackbar } from 'notistack5';
 import axios from 'utils/axios';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -45,7 +45,7 @@ const UserAvatar = styled(Avatar)(({ theme }) => ({
   }
 }));
 
-export default function CommentItem({
+function CommentItem({
   id,
   name,
   avatarUrl,
@@ -75,7 +75,7 @@ export default function CommentItem({
     }
   }, []);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     const url = `/questions_feed/delete_comment.json?comment_id=${id}`;
     await axios
       .delete(url)
@@ -86,13 +86,16 @@ export default function CommentItem({
       .catch((error) => {
         enqueueSnackbar('Error in deleting comment', { variant: 'error' });
       });
-  };
+  }, [id]);
 
-  const handleRead = (value: boolean) => {
-    if (value && unreadNotificationID) {
-      dispatch(markAsRead('single', unreadNotificationID));
-    }
-  };
+  const handleRead = useCallback(
+    (value: boolean) => {
+      if (value && unreadNotificationID) {
+        dispatch(markAsRead('single', unreadNotificationID));
+      }
+    },
+    [dispatch, unreadNotificationID]
+  );
 
   return (
     <>
@@ -109,7 +112,7 @@ export default function CommentItem({
                 direction={{ xs: 'column', sm: 'row' }}
                 alignItems={{ xs: 'flex-start', sm: 'center' }}
                 justifyContent="space-between"
-                style={{ width: '100%' }}
+                sx={{ width: '100%' }}
               >
                 <Typography variant="subtitle2">{name}</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
@@ -128,3 +131,5 @@ export default function CommentItem({
     </>
   );
 }
+
+export default memo(CommentItem);

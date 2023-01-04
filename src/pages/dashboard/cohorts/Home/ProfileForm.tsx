@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 import * as Yup from 'yup';
 import { RootState, useSelector } from 'redux/store';
 import { Modal } from 'components/animate';
@@ -28,6 +28,7 @@ import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { styled } from '@material-ui/core/styles';
 import useAuth from 'hooks/useAuth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { UploadAvatar } from '../../../../components/upload';
 // axios
 import axios from '../../../../utils/axios';
@@ -73,7 +74,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function ProfileForm({
+function ProfileForm({
   onSubmit,
   showSubmitButton = true,
   userProfile,
@@ -165,38 +166,41 @@ export default function ProfileForm({
 
   const companyLabel = () => (
     <CompanyModalContainer>
-      <img src={userProfile?.company_image_url || ''} alt="company-logo" />
+      <LazyLoadImage src={userProfile?.company_image_url || ''} alt="company-logo" />
       {userProfile?.current_company}
       <div onClick={() => setModal(true)}>Edit</div>
     </CompanyModalContainer>
   );
 
-  const onSaveCompanyInfo = async (data: any) => {
-    setLoading(true);
-    const companyData = new FormData();
-    data?.logo_url?.image && companyData.append('company_logo_image', data?.logo_url?.image);
-    companyData.append('current_company', data?.name);
-    companyData.append('company_industries', data?.industries);
-    companyData.append('number_of_employees', data?.number_of_employees);
+  const onSaveCompanyInfo = useCallback(
+    async (data: any) => {
+      setLoading(true);
+      const companyData = new FormData();
+      data?.logo_url?.image && companyData.append('company_logo_image', data?.logo_url?.image);
+      companyData.append('current_company', data?.name);
+      companyData.append('company_industries', data?.industries);
+      companyData.append('number_of_employees', data?.number_of_employees);
 
-    await axios
-      .post('/users/update_company_profile', companyData)
-      .then((response) => {
-        if (response.status === 200) {
-          setModal(false);
-          enqueueSnackbar(response.data.message, { variant: 'success' });
-          updateProfile({ ...response.data.user });
-        } else {
-          enqueueSnackbar(response.data.message, { variant: 'error' });
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        enqueueSnackbar(err.message, { variant: 'error' });
-        setLoading(false);
-      });
-  };
+      await axios
+        .post('/users/update_company_profile', companyData)
+        .then((response) => {
+          if (response.status === 200) {
+            setModal(false);
+            enqueueSnackbar(response.data.message, { variant: 'success' });
+            updateProfile({ ...response.data.user });
+          } else {
+            enqueueSnackbar(response.data.message, { variant: 'error' });
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          enqueueSnackbar(err.message, { variant: 'error' });
+          setLoading(false);
+        });
+    },
+    [updateProfile]
+  );
 
   const companySettingsModal = () => (
     <Modal open={modal} onClose={() => setModal(false)}>
@@ -380,3 +384,5 @@ export default function ProfileForm({
     </>
   );
 }
+
+export default memo(ProfileForm);

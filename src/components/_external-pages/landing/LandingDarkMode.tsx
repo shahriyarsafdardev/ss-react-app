@@ -76,7 +76,10 @@ export default function LandingDarkMode() {
 
           <Grid item xs={12} md={7} sx={{ position: 'relative' }}>
             <MotionInView threshold={0.5} variants={varFadeInUp}>
-              <img alt="light mode" src="/static/home/lightmode.png" />
+              <img
+                alt="light mode"
+                src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/home-lightmode.png"
+              />
             </MotionInView>
 
             <MotionInView
@@ -84,7 +87,10 @@ export default function LandingDarkMode() {
               variants={varFadeInDown}
               sx={{ top: 0, left: 0, position: 'absolute' }}
             >
-              <img alt="dark mode" src="/static/home/darkmode.png" />
+              <img
+                alt="dark mode"
+                src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/home-darkmode.png"
+              />
             </MotionInView>
           </Grid>
         </Grid>

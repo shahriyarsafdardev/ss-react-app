@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import { Stack, Typography } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const StyledBox = styled(Stack)(({ theme }) => ({
   width: '100%',
@@ -24,7 +26,7 @@ const StyledPara = styled('p')(() => ({
 
 const EmptyAttendanceTab = ({ imageLink }: { imageLink: string }) => (
   <StyledBox flexDirection="column" justifyContent="center">
-    <img src={imageLink} alt="empty-session" />
+    <LazyLoadImage src={imageLink} alt="empty-session" />
     <Typography align="center" color="primary" variant="h5" sx={{ mt: 3 }}>
       Available soon!
     </Typography>
@@ -32,4 +34,4 @@ const EmptyAttendanceTab = ({ imageLink }: { imageLink: string }) => (
   </StyledBox>
 );
 
-export default EmptyAttendanceTab;
+export default memo(EmptyAttendanceTab);

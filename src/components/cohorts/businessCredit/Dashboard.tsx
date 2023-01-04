@@ -7,7 +7,7 @@ import { Modal } from 'components/animate';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 import TopupForm from './TopupForm';
-import { useStyles } from './styles';
+import { useStyles } from './Common';
 import MyWallet from './Wallet';
 import CreditHistory from './CreditHistory';
 import NewEnrollments from './NewEnrollments';

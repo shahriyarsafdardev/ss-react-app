@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Button, Stack } from '@material-ui/core';
+import { useState, memo } from 'react';
+import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { updateReferralCodes } from 'redux/slices/cohort';
 import { Modal } from 'components/animate';
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ReferralCodesModal({
+function ReferralCodesModal({
   codes,
   cohortID,
   cohortName
@@ -63,3 +63,5 @@ export default function ReferralCodesModal({
     </>
   );
 }
+
+export default memo(ReferralCodesModal);

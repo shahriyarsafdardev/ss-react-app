@@ -4,14 +4,14 @@ import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosV2 from 'utils/axiosV2';
 import { setSegmentUserProperties } from 'utils/eventTracking';
 import { LoadingContainer, Logo, useStyles } from './Common';
 import PayLaterForm from './PayLaterForm';
 
-export default function CoursePaymentPage() {
+function CoursePaymentPage() {
   const classes = useStyles();
   const [clientSecret, setClientSecret] = useState('');
   const [customerID, setCustomerID] = useState('');
@@ -158,3 +158,5 @@ export default function CoursePaymentPage() {
     </Page>
   );
 }
+
+export default memo(CoursePaymentPage);

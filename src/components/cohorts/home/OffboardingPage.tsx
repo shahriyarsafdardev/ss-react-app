@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -11,10 +11,9 @@ import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
-export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
+const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(1);
-  const [certificates, setCertificates] = useState(cohort?.certificate_links);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
@@ -24,6 +23,7 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
   const dispatch = useDispatch();
   const url = new URLSearchParams(useLocation().search);
   const referrer = url.get('referrer') || '';
+  const certificates = cohort?.certificate_links;
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
@@ -54,6 +54,17 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
     sendAnalyticsData('Cohort Offboarding - "Open End-of-cohort Survey" button clicked', {});
   };
 
+  const handleSurveyModalClose = () => {
+    setFeedbackModalState(false);
+    dispatch(updateSessionModalState(lastSession?.id || ''));
+  };
+
+  const handleSurveyModalCompleted = () => {
+    setFeedbackModalState(false);
+    dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
+    dispatch(updateSessionModalState(lastSession?.id || ''));
+  };
+
   return (
     <StyledBox>
       {displayConfetti && (
@@ -72,23 +83,14 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
       />
       <SurveyModal
         state={feedbackModalState}
-        onClose={() => {
-          setFeedbackModalState(false);
-          dispatch(updateSessionModalState(lastSession?.id || ''));
-        }}
-        onComplete={() => {
-          setFeedbackModalState(false);
-          dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
-          dispatch(updateSessionModalState(lastSession?.id || ''));
-        }}
+        onClose={handleSurveyModalClose}
+        onComplete={handleSurveyModalCompleted}
         session={lastSession}
       />
       <Stack
         spacing={{ md: 5, xs: 3 }}
-        justifyContent="center"
-        alignItems="center"
-        width="100%"
-        sx={{ maxWidth: '1200px', p: { md: '50px', sm: '25px', xs: '16px' } }}
+        padding={{ md: '50px', sm: '25px', xs: '16px' }}
+        className={classes.offboardingPageContainer}
       >
         <OffboardingHeader variant="h3">
           Congratulations, you have completed Applied Causal Inference! 🎉
@@ -107,10 +109,9 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
           sx={{ maxWidth: '1200px' }}
         >
           <Button
-            className={classes.linkButton}
+            className={`${classes.linkButton} ${classes.downloadButton}`}
             variant="contained"
-            sx={{ color: '#101658', backgroundColor: '#fff', textTransform: 'none' }}
-            onClick={() => handleDownloadAndShare()}
+            onClick={handleDownloadAndShare}
           >
             Download and Share
           </Button>
@@ -118,7 +119,7 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
             className={classes.linkButton}
             variant="outlined"
             sx={{ color: '#fff !important', textTransform: 'none' }}
-            onClick={() => handleShareFeedback()}
+            onClick={handleShareFeedback}
           >
             Open End-of-cohort Survey
           </Button>
@@ -126,4 +127,6 @@ export default function OffboardingPage({ cohort }: { cohort: Cohort }) {
       </Stack>
     </StyledBox>
   );
-}
+};
+
+export default memo(OffboardingPage);

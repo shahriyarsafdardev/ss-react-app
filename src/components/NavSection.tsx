@@ -82,19 +82,6 @@ const ListItemIconStyle = styled(ListItemIcon)({
   alignItems: 'center',
   justifyContent: 'center'
 });
-
-const ListItemCount = styled(ListItemText)({
-  background: '#12125C',
-  color: 'white',
-  borderRadius: '2px',
-  padding: '0 5px',
-  minWidth: '24px',
-  minHeight: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '12px'
-});
 // ----------------------------------------------------------------------
 
 type NavItemProps = {
@@ -301,7 +288,12 @@ export default function NavSection({ navConfig, isShow = true, ...other }: NavSe
           <ListSubheaderStyle data-testid="navbar-cohort">{navConfig.subheader}</ListSubheaderStyle>
         )}
         {navConfig.items.map((item: NavItemProps) => (
-          <NavItem key={item.title} item={item} isShow={isShow} header={navConfig.subheader} />
+          <NavItem
+            key={item.title + item.id}
+            item={item}
+            isShow={isShow}
+            header={navConfig.subheader}
+          />
         ))}
       </List>
     </Box>

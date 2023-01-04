@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, memo, useCallback } from 'react';
 import { TextField, Box, Button, Typography } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -8,7 +8,7 @@ import axios from 'utils/axios';
 import { isMobile } from 'react-device-detect';
 import { Modal } from 'components/animate';
 import { Question } from '../../../@types/cohorts';
-import { SectionContainer, CircularLoader } from './Common';
+import { SectionContainer, CircularLoader, useStyles } from './Common';
 import MediaRecordingTab from './MediaRecordingTab';
 import AnswerForm from './AnswerForm';
 
@@ -116,6 +116,7 @@ const QuestionForm = ({
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [modalState, setModal] = useState(false);
   const showAnswerForm = isHost;
+  const classes = useStyles();
 
   useEffect(() => {
     const elem = document.getElementById('question-text-input');
@@ -126,7 +127,7 @@ const QuestionForm = ({
     }
   }, [questionSummary.length]);
 
-  const onFormSubmitHandler = async () => {
+  const onFormSubmitHandler = useCallback(async () => {
     setSubmitting(true);
     sendAnalyticsData('Question Form', 'Submitted question');
     const questionData = new FormData();
@@ -160,7 +161,7 @@ const QuestionForm = ({
         enqueueSnackbar('Please try submitting again', { variant: 'error' });
         setSubmitting(false);
       });
-  };
+  }, [questionSummary, questionType, audioData, videoData, cohort_id]);
 
   const submitButton = () =>
     unAnswered.length > 0 && (
@@ -174,41 +175,56 @@ const QuestionForm = ({
       </StyledLoadingButton>
     );
 
-  const AnswerModal = ({
-    state,
-    onClose,
-    onComplete,
-    handleSkipQuestion
-  }: {
-    state: boolean;
-    onClose: Function;
-    onComplete: Function;
-    handleSkipQuestion: Function;
-  }) => (
-    <Modal open={state} onClose={() => onClose()}>
-      <AnswerForm
-        key="answerForm"
-        onComplete={onComplete}
-        onClose={onClose}
-        unAnswered={unAnswered}
-        handleSkipQuestion={handleSkipQuestion}
-      />
-    </Modal>
+  const closeAnswerModal = () => setModal(false);
+
+  const AnswerModal = memo(
+    ({
+      state,
+      onClose,
+      onComplete,
+      handleSkipQuestion
+    }: {
+      state: boolean;
+      onClose: VoidFunction;
+      onComplete: Function;
+      handleSkipQuestion: Function;
+    }) => (
+      <Modal open={state} onClose={onClose}>
+        <AnswerForm
+          key="answerForm"
+          onComplete={onComplete}
+          onClose={onClose}
+          unAnswered={unAnswered}
+          handleSkipQuestion={handleSkipQuestion}
+        />
+      </Modal>
+    )
   );
+
+  const trackMedia = (action: string) => sendAnalyticsData('Question Form', action);
+  const enterQuestion = () => sendAnalyticsData('Question Form', 'Started entering question');
+
+  const addQuestion = useCallback(() => {
+    if (!showMediaSection) {
+      setQuestionType('Text');
+    }
+    if (isRecording) {
+      setIsRecording(false);
+    }
+    setMediaSection(!showMediaSection);
+  }, [showMediaSection, isRecording]);
 
   return (
     <QuestionFormContainer id="question-box">
       <AnswerModal
         state={modalState}
-        onClose={() => {
-          setModal(false);
-        }}
+        onClose={closeAnswerModal}
         onComplete={addAnswer}
         handleSkipQuestion={handleSkipQuestion}
       />
       <SectionContainer className="newQuestion">
         {!submitting && (
-          <StyledStack style={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
+          <StyledStack sx={{ alignItems: `${showMediaSection === true ? 'unset' : 'center'}` }}>
             {!showAnswerForm ? (
               <>
                 <QuestionInput>
@@ -221,8 +237,8 @@ const QuestionForm = ({
                     id="question-text-input"
                     rows={isMobile ? 2 : 1}
                     onChange={(e) => setQuestionSummary(e.target.value)}
-                    onFocus={() => sendAnalyticsData('Question Form', 'Started entering question')}
-                    style={{ height: '100%' }}
+                    onFocus={enterQuestion}
+                    sx={{ height: '100%' }}
                     inputProps={{
                       height: '100%',
                       style: {
@@ -240,20 +256,12 @@ const QuestionForm = ({
                       setIsRecording={setIsRecording}
                       setQuestionType={setQuestionType}
                       questionType={questionType}
-                      onTrack={(action: string) => sendAnalyticsData('Question Form', action)}
+                      onTrack={trackMedia}
                     />
                   )}
                   <ButtonsContainer>
                     <AddQuestionButton
-                      onClick={() => {
-                        if (!showMediaSection) {
-                          setQuestionType('Text');
-                        }
-                        if (isRecording) {
-                          setIsRecording(false);
-                        }
-                        setMediaSection(!showMediaSection);
-                      }}
+                      onClick={addQuestion}
                       variant="outlined"
                       startIcon={
                         showMediaSection === true ? (
@@ -299,11 +307,8 @@ const QuestionForm = ({
         )}
         {submitting && (
           <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
+            className={classes.uploadQuestionBox}
+            sx={{
               height: `${showMediaSection === true ? '327px' : ''}`
             }}
           >
@@ -316,4 +321,4 @@ const QuestionForm = ({
   );
 };
 
-export default QuestionForm;
+export default memo(QuestionForm);

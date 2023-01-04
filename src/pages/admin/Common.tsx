@@ -1,17 +1,32 @@
-import { Box, Button, Stack } from '@material-ui/core';
+import { Box, Button, Stack, Theme, IconButton, IconButtonProps } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
-import { Modal } from 'components/animate';
+import { Modal, ButtonAnimate } from 'components/animate';
 import { OnboardingStepsContainer } from 'components/cohorts/onboarding/OnboardingModal';
 import { StyledContainer } from 'components/cohorts/sessions/SurveyForm';
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import Highlight from 'react-highlight';
 import copy from 'clipboard-copy';
 import { useSnackbar } from 'notistack5';
+import { makeStyles } from '@material-ui/styles';
+import closeFill from '@iconify/icons-eva/close-fill';
+import { Icon } from '@iconify/react';
 
 export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
   top: '50%',
   left: '50%'
+}));
+
+export const AlumniContainer = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  margin: '0 1rem 1rem 1rem',
+  padding: '1rem 0',
+  background: 'white',
+  borderRadius: '10px',
+  boxShadow: 'rgb(145 158 171 / 24%) 0px 0px 2px, rgb(145 158 171 / 24%) 0px 16px 32px -4px'
 }));
 
 export const AdminContainer = styled(Box)(() => ({
@@ -41,11 +56,22 @@ const CopyJsonButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-export const ExampleQuestionModal = () => {
-  const [JsonModalOpen, setJsonModalOpen] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+export const useStyles = makeStyles((theme: Theme) => ({
+  headerContainer: {
+    justifyContent: 'space-between',
+    width: '-webkit-fill-available',
+    mx: 2,
+    mb: 2
+  },
+  surveyBox: {
+    marginTop: '24px',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '16px'
+  }
+}));
 
-  const JSON_FORMAT_EXAMPLE = `[
+const JSON_FORMAT_EXAMPLE = `[
     {
       title: 'Would you like to network with other learners in this cohort?',
       question_type: 'multiple-choice',
@@ -72,9 +98,46 @@ export const ExampleQuestionModal = () => {
     }
   ]`;
 
+const MIconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  ({ children, ...other }, ref) => (
+    <ButtonAnimate>
+      <IconButton ref={ref} {...other}>
+        {children}
+      </IconButton>
+    </ButtonAnimate>
+  )
+);
+
+export const comparatorFuntion = (intake1: string, intake2: string) => {
+  if (intake1 === 'Waitlist') {
+    return -1;
+  }
+  if (intake2 === 'Waitlist') {
+    return 1;
+  }
+  if (intake1 === 'TBD') {
+    return -1;
+  }
+  if (intake2 === 'TBD') {
+    return 1;
+  }
+  return new Date(intake2) > new Date(intake1) ? 1 : -1;
+};
+
+export const ExampleQuestionModal = () => {
+  const [JsonModalOpen, setJsonModalOpen] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const handleCopyToClipboard = () => {
     copy(JSON_FORMAT_EXAMPLE);
-    enqueueSnackbar('Copied to clipboard !', { variant: 'success' });
+    enqueueSnackbar('Copied to clipboard !', {
+      variant: 'success',
+      action: (key) => (
+        <MIconButton size="small" onClick={() => closeSnackbar(key)}>
+          <Icon icon={closeFill} />
+        </MIconButton>
+      )
+    });
   };
 
   return (

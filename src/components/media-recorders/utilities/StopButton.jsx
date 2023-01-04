@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { memo } from 'react';
 
 const Button = styled.button`
   background: ${(props) => props.backgroundColor};
@@ -28,10 +29,10 @@ Button.defaultProps = {
   backgroundColor: 'white'
 };
 
-const StopButton = (props) => (
+const StopButton = memo((props) => (
   <Border>
     <Button {...props} />
   </Border>
-);
+));
 
 export default StopButton;

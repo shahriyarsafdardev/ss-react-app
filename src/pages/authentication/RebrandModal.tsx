@@ -6,6 +6,7 @@ import useAuth from 'hooks/useAuth';
 import { useSnackbar } from 'notistack5';
 import { styled, Theme } from '@material-ui/core/styles';
 import { CircularProgress, Typography, Stack, Button } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const useStyles = makeStyles((theme: Theme) => ({
   rebrandModal: {
@@ -74,7 +75,11 @@ export default function RebrandModal() {
       >
         <StyledBox alignItems="center" justifyContent="space-between">
           <Stack width="100%" spacing={3} alignItems="center" justifyContent="center">
-            <img src="/static/rebrand.png" alt="rebrandModal" width="100%" />
+            <LazyLoadImage
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/rebrand.png"
+              alt="rebrandModal"
+              width="100%"
+            />
             <Typography variant="h6" align="center" sx={{ my: 3, color: '#1E293B' }}>
               ScholarSite is now Sphere!
             </Typography>

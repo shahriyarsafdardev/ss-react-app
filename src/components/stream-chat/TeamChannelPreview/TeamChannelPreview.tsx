@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo, useCallback } from 'react';
 import { Avatar, ChannelPreviewUIComponentProps, useChatContext } from 'stream-chat-react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { RootState, useSelector } from '../../../redux/store';
@@ -27,7 +27,7 @@ export const getChannelName = (members: any) =>
     .map((m: any) => m?.user?.name || m?.user?.id)
     .join(' ');
 
-export const TeamChannelPreview: React.FC<Props> = (props) => {
+export const TeamChannelPreview: React.FC<Props> = memo((props) => {
   const { channel, setActiveChannel, setIsCreating, setIsEditing, type } = props;
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
@@ -112,6 +112,21 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
     );
   };
 
+  const onClick = useCallback(() => {
+    setIsCreating(false);
+    setIsEditing(false);
+    if (setActiveChannel) {
+      setActiveChannel(channel);
+      const members = Object.values(channel.state.members).filter(
+        ({ user }) => user?.id !== client.userID
+      );
+      sendAnalyticsData('Messaging Page - Channel Opened', {
+        'Channel Name': type === 'team' ? `#${channel?.data?.name}` : getChannelName(members),
+        'Channel Type': type === 'team' ? 'public' : 'private'
+      });
+    }
+  }, [channel, client.userID, type]);
+
   return (
     <div
       key={unreadCount}
@@ -120,20 +135,7 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
           ? 'channel-preview__wrapper__selected'
           : 'channel-preview__wrapper'
       }
-      onClick={() => {
-        setIsCreating(false);
-        setIsEditing(false);
-        if (setActiveChannel) {
-          setActiveChannel(channel);
-          const members = Object.values(channel.state.members).filter(
-            ({ user }) => user?.id !== client.userID
-          );
-          sendAnalyticsData('Messaging Page - Channel Opened', {
-            'Channel Name': type === 'team' ? `#${channel?.data?.name}` : getChannelName(members),
-            'Channel Type': type === 'team' ? 'public' : 'private'
-          });
-        }
-      }}
+      onClick={onClick}
       role="button"
       onKeyPress={() => {}}
       tabIndex={0}
@@ -141,4 +143,4 @@ export const TeamChannelPreview: React.FC<Props> = (props) => {
       {type === 'team' ? <ChannelPreview /> : <DirectPreview />}
     </div>
   );
-};
+});

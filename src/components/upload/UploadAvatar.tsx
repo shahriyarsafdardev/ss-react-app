@@ -1,5 +1,5 @@
 import { isString } from 'lodash';
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 import { Icon } from '@iconify/react';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
@@ -70,7 +70,7 @@ interface UploadAvatarProps extends DropzoneOptions {
   sx?: SxProps<Theme>;
 }
 
-export default function UploadAvatar({ error, file, caption, sx, ...other }: UploadAvatarProps) {
+function UploadAvatar({ error, file, caption, sx, ...other }: UploadAvatarProps) {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
     ...other
@@ -154,3 +154,5 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }: Upl
     </>
   );
 }
+
+export default memo(UploadAvatar);

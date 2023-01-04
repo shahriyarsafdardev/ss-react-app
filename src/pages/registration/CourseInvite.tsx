@@ -12,14 +12,14 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
 import axiosV2 from 'utils/axiosV2';
 import Page from 'components/Page';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import LoadingScreen from 'components/LoadingScreen';
 import { setSegmentUserProperties, trackEvent } from 'utils/eventTracking';
 
 import { Logo, useStyles, StyledLoadingButton, LoadingContainer } from './Common';
 
-export default function CourseInvite() {
+function CourseInvite() {
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const theme = useTheme();
@@ -100,6 +100,11 @@ export default function CourseInvite() {
         });
     }
   });
+
+  const handleSendInvite = () => {
+    handleSubmit();
+    setIsFormSubmit(true);
+  };
 
   const { values, isSubmitting, touched, errors, getFieldProps, setFieldValue, handleSubmit } =
     formik;
@@ -182,10 +187,7 @@ export default function CourseInvite() {
                       type="submit"
                       variant="contained"
                       loading={isSubmitting}
-                      onClick={() => {
-                        handleSubmit();
-                        setIsFormSubmit(true);
-                      }}
+                      onClick={handleSendInvite}
                       disabled={values.emails === ''}
                     >
                       Send Invite
@@ -200,3 +202,5 @@ export default function CourseInvite() {
     </Page>
   );
 }
+
+export default memo(CourseInvite);

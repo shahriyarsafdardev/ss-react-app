@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import { memo } from 'react';
 import SessionRow from './SessionRow';
 import { SessionListItem } from '../../../../@types/cohorts';
 
@@ -15,18 +16,12 @@ const ListContainer = styled('div')((props) => ({
   minWidth: '280px'
 }));
 
-export default function SessionList({
-  sessionsList,
-  onClick,
-  selectedSession,
-  isLearner
-}: SessionListProps) {
+function SessionList({ sessionsList, onClick, selectedSession, isLearner }: SessionListProps) {
   return (
     <ListContainer>
       <Box data-testid="sessions-list-container" id="sessions-list-container">
         {sessionsList.map((session, index) => (
           <SessionRow
-            isLearner={isLearner}
             key={session.id}
             isSelected={index === selectedSession}
             onClick={onClick}
@@ -38,3 +33,5 @@ export default function SessionList({
     </ListContainer>
   );
 }
+
+export default memo(SessionList);

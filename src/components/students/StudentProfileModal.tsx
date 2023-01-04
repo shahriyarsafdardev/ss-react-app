@@ -2,6 +2,7 @@ import { Modal } from 'components/animate';
 import { styled, useTheme } from '@material-ui/core/styles';
 import { Box, Typography, Link } from '@material-ui/core';
 import { capitalCase } from 'change-case';
+import { memo } from 'react';
 import Label from '../Label';
 
 type StudentProfileModalProps = {
@@ -73,7 +74,7 @@ const ColoredContainerMobile = styled(Box)(({ theme }) => ({
   }
 }));
 
-export default function StudentProfileModal({
+const StudentProfileModal = ({
   modalState,
   modalHandler,
   trackModalEvent,
@@ -81,7 +82,7 @@ export default function StudentProfileModal({
   dispalyChatLink,
   dispalyEmailLink,
   cohort
-}: StudentProfileModalProps) {
+}: StudentProfileModalProps) => {
   const theme = useTheme();
 
   const {
@@ -99,16 +100,23 @@ export default function StudentProfileModal({
     discord_url,
     email
   } = modalUser;
+
+  const handleModalClose = () => {
+    trackModalEvent('Networking Page - Profile Modal - Modal Closed', modalUser);
+    modalHandler({});
+  };
+
+  const handleLinkedInClick = () =>
+    trackModalEvent('Networking Page - Profile Modal - "Connect on LinkedIn" Selected', modalUser);
+
+  const handleMessageClick = () =>
+    trackModalEvent(
+      'Networking Page - Profile Modal - "Message through Sphere" Selected',
+      modalUser
+    );
+
   return (
-    <Modal
-      className="small"
-      open={modalState}
-      onClose={() => {
-        trackModalEvent('Networking Page - Profile Modal - Modal Closed', modalUser);
-        modalHandler({});
-      }}
-      id="student-modal"
-    >
+    <Modal className="small" open={modalState} onClose={handleModalClose} id="student-modal">
       <StyledContainer>
         <Title>
           {first_name} {last_name}
@@ -169,12 +177,11 @@ export default function StudentProfileModal({
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile className="gaped">
-              {current_industry_category_selections?.length > 0 &&
-                current_industry_category_selections?.map((industry: any, index: number) => (
-                  <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
-                    {capitalCase(industry)}
-                  </Label>
-                ))}
+              {current_industry_category_selections?.map((industry: any, index: number) => (
+                <Label key={index} variant="ghost" color="primary" testId={`industry-${index}`}>
+                  {capitalCase(industry)}
+                </Label>
+              ))}
             </ColoredContainerMobile>
           </>
         )}
@@ -203,16 +210,15 @@ export default function StudentProfileModal({
               </ColoredContainer>
             </StyledRow>
             <ColoredContainerMobile className="gaped">
-              {strengths?.length > 0 &&
-                strengths?.map((strength: any, index: number) => (
-                  <Label
-                    key={index}
-                    variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-                    color="success"
-                  >
-                    {capitalCase(strength)}
-                  </Label>
-                ))}
+              {strengths?.map((strength: any, index: number) => (
+                <Label
+                  key={index}
+                  variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+                  color="success"
+                >
+                  {capitalCase(strength)}
+                </Label>
+              ))}
             </ColoredContainerMobile>
           </>
         )}
@@ -256,12 +262,7 @@ export default function StudentProfileModal({
             />
             <Link
               href={linkedin_url}
-              onClick={() =>
-                trackModalEvent(
-                  'Networking Page - Profile Modal - "Connect on LinkedIn" Selected',
-                  modalUser
-                )
-              }
+              onClick={handleLinkedInClick}
               target="_blank"
               data-testid="linkedin-url"
             >
@@ -294,12 +295,7 @@ export default function StudentProfileModal({
             />
             <Link
               href={`/cohorts/${cohort?.id}/messaging?direct=true&receiver_id=${id}`}
-              onClick={() =>
-                trackModalEvent(
-                  'Networking Page - Profile Modal - "Message through Sphere" Selected',
-                  modalUser
-                )
-              }
+              onClick={handleMessageClick}
             >
               {' '}
               <Text data-testid="message-user">Message {first_name} through Sphere</Text>
@@ -309,4 +305,6 @@ export default function StudentProfileModal({
       </StyledContainer>
     </Modal>
   );
-}
+};
+
+export default memo(StudentProfileModal);

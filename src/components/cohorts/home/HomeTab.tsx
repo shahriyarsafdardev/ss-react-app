@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Container, Box } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
@@ -6,14 +6,13 @@ import moment from 'moment';
 import { LoadingContainer } from 'pages/admin/Common';
 import LoadingScreen from 'components/LoadingScreen';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
 import { useLocation } from 'react-router-dom';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
-import { getSessions } from '../../../redux/slices/cohort';
+import { getBriefSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import CohortTimeLine from './CohortTimeLine';
-import { firstUpcomingDate } from './Common';
+import { firstUpcomingDate, useStyles } from './Common';
 import NewHomeTab from './NewHomeTab';
 import GetReadyPage from './GetReadyPage';
 import WelcomePage from './WelcomePage';
@@ -29,11 +28,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const Index = () => {
   const dispatch = useDispatch();
-  const [hasQuestionSubmitted, setQuestionSubmitted] = useState(true);
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
-  const { mode } = useSelector((state: RootState) => state.instructorView);
-  const { user } = useAuth();
   const [activeStepper, setActiveStepper] = useState(0);
   const url = new URLSearchParams(useLocation().search);
   const paramStep = url.get('active_step');
@@ -43,6 +39,7 @@ const Index = () => {
   );
   const { sessions } = cohort || [];
   const { onboarding_data } = cohort || {};
+  const classes = useStyles();
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -53,8 +50,7 @@ const Index = () => {
 
   useEffect(() => {
     if (cohort && !sessions) {
-      dispatch(getSessions(cohort.id));
-      setQuestionSubmitted(cohort?.is_feedback_submitted);
+      dispatch(getBriefSessions(cohort.id));
     }
   }, [cohort]);
 
@@ -65,11 +61,10 @@ const Index = () => {
         !onboarding_data?.onboarding_questionnaire_step_completed ||
         !onboarding_data?.onboarding_referral_step_completed ||
         !onboarding_data?.onboarding_calendar_sync_step_completed ||
-        !onboarding_data?.onboarding_networking_step_completed ||
-        !onboarding_data?.onboarding_checklist_completed
+        !onboarding_data?.onboarding_networking_step_completed
       ) {
         setActiveStepper(0);
-      } else if (paramStep === '1') {
+      } else if (new Date(cohort?.start_date) > new Date() && paramStep === '1') {
         setActiveStepper(1);
       } else {
         setActiveStepper(2);
@@ -84,7 +79,7 @@ const Index = () => {
   useEffect(() => {
     let found = false;
     sessions?.forEach((session) => {
-      if (!found && moment(firstUpcomingDate(session.times)) > moment().subtract(3, 'hour')) {
+      if (!found && moment(firstUpcomingDate(session.times)) > moment().subtract(2, 'hour')) {
         setActiveSession(session);
         found = true;
       }
@@ -103,7 +98,7 @@ const Index = () => {
       .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(2, 'hour'))
       .includes(false);
 
-  const displayActiveStep = () => {
+  const displayActiveStep = useCallback(() => {
     if (activeStepper === 0) {
       return <WelcomePage setActiveStepper={setActiveStepper} cohort={cohort} />;
     }
@@ -112,10 +107,10 @@ const Index = () => {
     }
 
     return <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />;
-  };
+  }, [activeStepper, cohort, activeSession, sessions]);
 
   const homeTabSection = () => (
-    <Container style={{ marginBottom: '50px' }}>
+    <Container sx={{ marginBottom: '50px' }}>
       <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
       <StyledBox>{displayActiveStep()}</StyledBox>
     </Container>
@@ -130,7 +125,7 @@ const Index = () => {
   }
 
   return (
-    <Page title="Sphere | Homepage" sx={{ width: '100%', height: '100%', minHeight: '100%' }}>
+    <Page title="Sphere | Homepage" className={classes.homePage}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
         cohort?.code === 'ACI' &&

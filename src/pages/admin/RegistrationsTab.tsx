@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Box } from '@material-ui/core';
-import { styled } from '@material-ui/core/styles';
+import { useEffect, useState, memo } from 'react';
 import Page from 'components/Page';
 import LoadingScreen from 'components/LoadingScreen';
 import { useDispatch, RootState, useSelector } from 'redux/store';
@@ -13,7 +11,7 @@ import Highlights from '../../components/cohorts/registrations/Highlights';
 import RegistrationsList from '../../components/cohorts/registrations/RegistrationsList';
 import { AdminContainer, LoadingContainer } from './Common';
 
-export default function RegistrationsTab() {
+function RegistrationsTab() {
   const [limit, setLimit] = useState(10);
   const dispatch = useDispatch();
   const enrollments = useSelector((state: RootState) => state.adminRegistrations.enrollments);
@@ -45,10 +43,12 @@ export default function RegistrationsTab() {
           enrollments={enrollments.slice(0, limit)}
           isAdminView={true}
         />
-        {limit !== enrollments.length && (
+        {limit < enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
         )}
       </AdminContainer>
     </Page>
   );
 }
+
+export default memo(RegistrationsTab);

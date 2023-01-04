@@ -1,7 +1,8 @@
 import { Stack } from '@material-ui/core';
+import { memo } from 'react';
 import { useStyles, Logo, StyledTypography } from '../Common';
 
-export default function SuccessPage({ subscriptionExist }: { subscriptionExist: boolean }) {
+function SuccessPage({ subscriptionExist }: { subscriptionExist: boolean }) {
   const styles = useStyles();
 
   return (
@@ -18,3 +19,5 @@ export default function SuccessPage({ subscriptionExist }: { subscriptionExist: 
     </Stack>
   );
 }
+
+export default memo(SuccessPage);

@@ -1,6 +1,7 @@
 import { Stack, Avatar, TableRow, TableCell, Typography, Box } from '@material-ui/core';
 import { useTheme, styled } from '@material-ui/core/styles';
 import { capitalCase } from 'change-case';
+import { memo } from 'react';
 import { StudentProfile } from '../../@types/cohorts';
 import Label from '../Label';
 
@@ -35,7 +36,7 @@ const trimArray = (data: any) => {
   return { data: '', other: 0 };
 };
 
-export default function StudentProfileRow({ row, index, modalHandler }: StudentProfileRowProps) {
+const StudentProfileRow = ({ row, index, modalHandler }: StudentProfileRowProps) => {
   const theme = useTheme();
 
   const {
@@ -118,4 +119,6 @@ export default function StudentProfileRow({ row, index, modalHandler }: StudentP
       </StyledTableCell>
     </TableRow>
   );
-}
+};
+
+export default memo(StudentProfileRow);

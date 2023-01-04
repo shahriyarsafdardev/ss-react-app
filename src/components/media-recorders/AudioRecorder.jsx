@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Box, IconButton, Button } from '@material-ui/core';
 import Timer from './Timer';
 
@@ -138,4 +138,4 @@ const AudioRecorder = ({ onComplete, onClose, onTrack }) => {
   );
 };
 
-export default AudioRecorder;
+export default memo(AudioRecorder);

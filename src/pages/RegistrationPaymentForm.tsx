@@ -1,5 +1,5 @@
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useSnackbar } from 'notistack5';
 import {
   InputLabel,
@@ -39,7 +39,7 @@ const StyledButton = styled(LoadingButton)(({ theme }) => ({
   }
 }));
 
-export default function RegistrationPaymentForm({
+function RegistrationPaymentForm({
   clientSecret,
   cohortCode,
   payLaterMessage,
@@ -235,3 +235,5 @@ export default function RegistrationPaymentForm({
     </>
   );
 }
+
+export default memo(RegistrationPaymentForm);

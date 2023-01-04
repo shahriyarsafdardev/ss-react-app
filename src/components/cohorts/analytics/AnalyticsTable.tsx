@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo } from 'react';
 import {
   Card,
   Table,
@@ -65,4 +65,4 @@ function AnalyticsTable({ rows }: { rows: any }) {
   );
 }
 
-export default AnalyticsTable;
+export default memo(AnalyticsTable);

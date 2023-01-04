@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import { Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const StyledFeedContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',
@@ -31,7 +33,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-const StyledPreview = styled('img')(({ theme }) => ({
+const StyledPreview = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   borderRadius: '14.5691px',
   objectFit: 'cover',
@@ -51,15 +53,19 @@ const handleClick = () => {
 
 const EmptyFeed = ({ hosts }: { hosts: string }) => (
   <StyledFeedContainer>
-    <StyledPreview data-testid="empty-Q&A-img" src="/static/empty_tabs.png" alt="empty feed" />
+    <StyledPreview
+      data-testid="empty-Q&A-img"
+      src="https://sphere-public.s3.eu-west-2.amazonaws.com/assets/empty_tabs.png"
+      alt="empty feed"
+    />
     <StyledPara data-testid="empty-Q&A-information-text">
       <b>{hosts} hasn’t received any questions yet but you could be the first to ask!</b> Potential
       topics are not restricted, your question can refer to a Session or a problem you’re facing at
       work, and will be answered by {hosts} in video format!
     </StyledPara>
-    <StyledButton onClick={() => handleClick()} variant="contained">
+    <StyledButton onClick={handleClick} variant="contained">
       ASK YOUR QUESTION
     </StyledButton>
   </StyledFeedContainer>
 );
-export default EmptyFeed;
+export default memo(EmptyFeed);

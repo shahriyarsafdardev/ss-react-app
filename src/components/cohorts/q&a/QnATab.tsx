@@ -1,5 +1,5 @@
 import { Container, Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Page from 'components/Page';
 import axios from 'utils/axios';
@@ -7,6 +7,7 @@ import { EVENT_TYPES, trackQnAEvents, trackPageViewEvent } from 'utils/amplitude
 import { useSnackbar } from 'notistack5';
 import { deleteQuestion, submitAnswer } from 'utils/requests';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { debounce } from 'lodash';
 import { Question } from '../../../@types/cohorts';
 import { RootState, useSelector } from '../../../redux/store';
 import LoadingScreen from '../../LoadingScreen';
@@ -36,17 +37,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StyledFiltersContainer = styled(Box)(({ theme }) => ({
-  width: '33%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '530px',
-  [theme.breakpoints.down('md')]: {
-    width: '100%'
-  }
-}));
-
 const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
   top: '50%',
@@ -58,6 +48,8 @@ function QnATab() {
   const [list, setList] = useState<Question[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(true);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [offset, setOffset] = useState(0);
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
@@ -75,36 +67,44 @@ function QnATab() {
 
   useEffect(() => {
     const initMaterials = async () => {
-      try {
-        const response = await axios.get(`/questions_feed.json?cohort_id=${cohort_id} `);
-        setList(response.data.questions);
-        setLoading(false);
-      } catch (error: any) {
-        console.log(error);
-        enqueueSnackbar(error?.message, { variant: 'error' });
+      if (cohort) {
+        setLoading(true);
+        await getQuestions([], 0);
       }
     };
     initMaterials();
-  }, [cohort_id]);
+  }, [cohort?.code]);
+
+  const getQuestions = debounce(async (oldQuestions: Question[], offSet: number) => {
+    await axios
+      .get(`/questions_feed.json?cohort_id=${cohort_id}&offset=${offSet}`)
+      .then((res: any) => {
+        const updatedQuestions = [...oldQuestions, ...res.data.questions];
+        setList(updatedQuestions);
+        setTotalQuestions(res.data.totalQuestions);
+        setOffset(offSet + 5);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.message || 'Some error occurred!');
+        setLoading(false);
+      });
+  }, 300);
 
   const onCreateSuccess = (questionObject: Question) => {
     setList([questionObject, ...list]);
   };
 
-  const handleSkipQuestion = (questionID: string) => {
-    const initMaterials = async () => {
-      try {
-        await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
-          // setList(list.filter((question) => question.id !== res.data.question_id));
-          enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
-        });
-      } catch (error) {
-        console.log(error);
-        enqueueSnackbar('Some Error Occurred', { variant: 'error' });
-      }
-    };
-    initMaterials();
-  };
+  const handleSkipQuestion = useCallback(async (questionID: string) => {
+    try {
+      await axios.post(`/questions_feed/${questionID}/skip_question.json`).then((res: any) => {
+        enqueueSnackbar('Question Skipped Successfully', { variant: 'success' });
+      });
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar('Some Error Occurred', { variant: 'error' });
+    }
+  }, []);
 
   const addAnswer = (questionID: string, recording: any) => {
     submitAnswer(questionID, recording, list, (list: Question[]) => setList(list));
@@ -165,14 +165,16 @@ function QnATab() {
           addAnswer={addAnswer}
           handleSkipQuestion={handleSkipQuestion}
         />
-        <Container style={{ marginBottom: '50px' }}>
+        <Container sx={{ marginBottom: '50px' }}>
           <StyledBox>
             {list.length === 0 ? (
-              <EmptyFeed hosts={cohort.host_names} />
+              <EmptyFeed hosts={cohort?.host_names} />
             ) : (
               <QnAFeed
                 addComment={addComment}
                 questions={list}
+                totalQuestions={totalQuestions}
+                loadMore={() => getQuestions(list, offset)}
                 removeComment={removeComment}
                 onDeleteClick={handleDelete}
               />

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Grid } from '@material-ui/core';
@@ -5,7 +6,7 @@ import RegistrationPaymentForm from './RegistrationPaymentForm';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY || '');
 
-export default function RegistrationPayment({
+function RegistrationPayment({
   clientSecret,
   cohortCode,
   payLaterMessage,
@@ -68,3 +69,5 @@ export default function RegistrationPayment({
     </Grid>
   );
 }
+
+export default memo(RegistrationPayment);

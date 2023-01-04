@@ -1,11 +1,9 @@
 import { Stack, Typography, Link, Button } from '@material-ui/core';
+import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useStyles } from './Common';
 
-export default function EmptySessionTimestamps({
-  sendAnalyticsEvent
-}: {
-  sendAnalyticsEvent: Function;
-}) {
+const EmptySessionTimestamps = ({ sendAnalyticsEvent }: { sendAnalyticsEvent: Function }) => {
   const classes = useStyles();
 
   const handleLearnMore = () => {
@@ -18,7 +16,7 @@ export default function EmptySessionTimestamps({
 
   return (
     <Stack spacing={4} direction={{ xs: 'column', md: 'row' }} className={classes.parentStack}>
-      <img
+      <LazyLoadImage
         src="https://sphere-public.s3.eu-west-2.amazonaws.com/timestamps-detail.png"
         alt="zoom details"
         className={classes.detailsImage}
@@ -35,14 +33,12 @@ export default function EmptySessionTimestamps({
           </Link>{' '}
           to save timestamps during sessions.
         </Typography>
-        <Button
-          variant="outlined"
-          className={classes.styledButton}
-          onClick={() => handleLearnMore()}
-        >
+        <Button variant="outlined" className={classes.styledButton} onClick={handleLearnMore}>
           Learn More
         </Button>
       </Stack>
     </Stack>
   );
-}
+};
+
+export default memo(EmptySessionTimestamps);

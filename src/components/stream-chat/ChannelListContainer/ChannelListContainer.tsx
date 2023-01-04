@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useCallback, memo } from 'react';
 import { ChannelList, ChannelListProps, useChatContext } from 'stream-chat-react';
 import { useLocation } from 'react-router-dom';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import './ChannelListContainer.css';
 import type { ChannelFilters } from 'stream-chat';
+import { memoize } from 'lodash';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview, getChannelName } from '../TeamChannelPreview/TeamChannelPreview';
-
-import { SideBarLogo } from '../../../assets';
 import type {
   TeamAttachmentType,
   TeamChannelType,
@@ -29,23 +28,7 @@ type Props = Omit<ChannelListProps, 'filters'> & {
   cohortUsers: any;
 };
 
-const SideBar = () => (
-  <div className="channel-list__sidebar">
-    <div className="channel-list__sidebar__icon1">
-      <div className="icon1__inner">
-        <SideBarLogo />
-      </div>
-    </div>
-  </div>
-);
-
-const CompanyHeader = () => (
-  <div className="channel-list__header">
-    <p className="channel-list__header__text">Sphere</p>
-  </div>
-);
-
-export const ChannelListContainer: React.FC<Props> = (props) => {
+export const ChannelListContainer: React.FC<Props> = memo((props) => {
   const {
     options,
     setCreateType,
@@ -74,27 +57,26 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     TeamReactionType,
     TeamUserType
   >();
-  const [selectedUsers, setSelectedUsers] = useState<string[] | undefined>([
-    loggedinUserID || client.userID || '',
-    url.get('receiver_id') || ''
-  ]);
-
+  const selectedUsers = [loggedinUserID || client.userID || '', url.get('receiver_id') || ''];
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const sendAnalytics = (channel: any) => {
-    if (channel && client && canTrack) {
-      const members = Object.values(channel?.state?.members).filter(
-        (m: any) => m?.user?.id !== client?.userID
-      );
-      const type = channel.data?.type === 'team' ? 'public' : 'private';
-      const name = type === 'public' ? `#${channel.data?.name}` : getChannelName(members);
+  const sendAnalytics = useCallback(
+    (channel: any) => {
+      if (channel && client && canTrack) {
+        const members = Object.values(channel?.state?.members).filter(
+          (m: any) => m?.user?.id !== client?.userID
+        );
+        const type = channel.data?.type === 'team' ? 'public' : 'private';
+        const name = type === 'public' ? `#${channel.data?.name}` : getChannelName(members);
 
-      sendAnalyticsData('Messaging Page - Channel Opened', {
-        'Channel Name': name,
-        'Channel Type': type
-      });
-    }
-  };
+        sendAnalyticsData('Messaging Page - Channel Opened', {
+          'Channel Name': name,
+          'Channel Type': type
+        });
+      }
+    },
+    [client, canTrack]
+  );
 
   useEffect(() => {
     const initChannel = async () => {
@@ -142,13 +124,16 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     initChannel();
   }, [url.get('channel_id'), url.get('message'), url.get('receiver_id')]);
 
-  const duplicateChat = (channel: any) => {
-    if (channel?.data?.member_count === 2) {
-      const userIDs = Object.values(channel.state.members).map((member: any) => member?.user_id);
-      return cohortUsers.includes(userIDs[0]) || cohortUsers.includes(userIDs[1]);
-    }
-    return false;
-  };
+  const duplicateChat = useCallback(
+    (channel: any) => {
+      if (channel?.data?.member_count === 2) {
+        const userIDs = Object.values(channel.state.members).map((member: any) => member?.user_id);
+        return cohortUsers.includes(userIDs[0]) || cohortUsers.includes(userIDs[1]);
+      }
+      return false;
+    },
+    [cohortUsers]
+  );
 
   const order = [
     'session-discussion',
@@ -177,7 +162,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
     'group-20'
   ];
 
-  const compareChannels = (a?: string, b?: string) => {
+  const compareChannels = memoize((a?: string, b?: string) => {
     const indexA = order.findIndex((group) => group === a);
     const indexB = order.findIndex((group) => group === b);
     if (indexA === -1 && indexB === -1) {
@@ -193,20 +178,31 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
       return -1;
     }
     return 1;
-  };
+  });
+
+  const filterTeamChannels = useCallback(
+    (channels: any) =>
+      channels
+        .filter((channel: any) => channel.type === 'team' && channel.data?.team === cohortID)
+        .sort((a: any, b: any) => compareChannels(a.data?.name, b.data?.name)),
+    [cohortID, compareChannels]
+  );
+
+  const filterMessagingChannels = useCallback(
+    (channels: any) =>
+      channels.filter(
+        (channel: any) =>
+          channel.type === 'messaging' &&
+          (channel.data?.team === cohortID || duplicateChat(channel))
+      ),
+    [cohortID, duplicateChat]
+  );
 
   return (
     <div className="channel-list__container">
-      {/* <SideBar /> */}
       <div className="channel-list__list__wrapper">
-        {/* <CompanyHeader /> */}
-        {/* <ChannelSearch {...{ cohortID, cohortUsers }} /> */}
         <ChannelList
-          channelRenderFilterFn={(channels) =>
-            channels
-              .filter((channel) => channel.type === 'team' && channel.data?.team === cohortID)
-              .sort((a, b) => compareChannels(a.data?.name, b.data?.name))
-          }
+          channelRenderFilterFn={(channels) => filterTeamChannels(channels)}
           filters={filters[0]}
           options={options}
           sort={sort}
@@ -228,13 +224,7 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
           )}
         />
         <ChannelList
-          channelRenderFilterFn={(channels) =>
-            channels.filter(
-              (channel) =>
-                channel.type === 'messaging' &&
-                (channel.data?.team === cohortID || duplicateChat(channel))
-            )
-          }
+          channelRenderFilterFn={(channels) => filterMessagingChannels(channels)}
           filters={filters[1]}
           options={options}
           setActiveChannelOnMount={false}
@@ -257,4 +247,4 @@ export const ChannelListContainer: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

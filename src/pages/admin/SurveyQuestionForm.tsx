@@ -18,12 +18,13 @@ import {
 import { styled } from '@material-ui/core/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { uniq } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getSessions } from 'redux/slices/cohort';
 import LoadingScreen from 'components/LoadingScreen';
+import Page from 'components/Page';
 import { dispatch, RootState, useSelector } from '../../redux/store';
 import axios from '../../utils/axios';
-import { ExampleQuestionModal, LoadingContainer } from './Common';
+import { ExampleQuestionModal, LoadingContainer, useStyles, comparatorFuntion } from './Common';
 
 interface Survey {
   cohortCode: string;
@@ -48,6 +49,7 @@ export default function SurveyQuestionForm() {
   const { enqueueSnackbar } = useSnackbar();
   const [currentCode, setCurrentCode] = useState('');
   const [intakeList, setIntakeList] = useState<any>([]);
+  const classes = useStyles();
 
   const SurveySchema = Yup.object().shape({
     cohortCode: Yup.string().required('Cohort Code is required'),
@@ -122,8 +124,10 @@ export default function SurveyQuestionForm() {
     }
   }, [cohort]);
 
-  const cohortCodes = () =>
-    uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b));
+  const cohortCodes = useMemo(
+    () => uniq(cohorts.map((cohort) => cohort.code)).sort((a, b) => a.localeCompare(b)),
+    [cohorts]
+  );
 
   const setIntakes = (code: string) => {
     setCurrentCode(code);
@@ -131,7 +135,7 @@ export default function SurveyQuestionForm() {
       setIntakeList(
         uniq(
           cohorts.filter((cohort) => cohort.code === code).map((cohort) => cohort.intake_name)
-        ).sort((a, b) => a.localeCompare(b))
+        ).sort(comparatorFuntion)
       );
     } else {
       setIntakeList([]);
@@ -146,7 +150,7 @@ export default function SurveyQuestionForm() {
   }
 
   return (
-    <>
+    <Page title="Sphere | Survey Form">
       <br />
       <FormikProvider value={formik}>
         <StyledForm autoComplete="off" id="profile-form" noValidate onSubmit={handleSubmit}>
@@ -165,7 +169,7 @@ export default function SurveyQuestionForm() {
                         value={values.cohortCode}
                         error={Boolean(touched.cohortCode && errors.cohortCode)}
                       >
-                        {cohortCodes().map((code: any, index: any) => (
+                        {cohortCodes.map((code: any, index: any) => (
                           <MenuItem
                             key={index}
                             value={code}
@@ -281,7 +285,7 @@ export default function SurveyQuestionForm() {
                     </Stack>
                   )}
                 </Stack>
-                <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end', gap: '16px' }}>
+                <Box className={classes.surveyBox}>
                   {(values.sessionNumber || values.isOnboardedQuestion) && <ExampleQuestionModal />}
                   {cohort && values.sessionNumber && (
                     <Button
@@ -308,6 +312,6 @@ export default function SurveyQuestionForm() {
           </Grid>
         </StyledForm>
       </FormikProvider>
-    </>
+    </Page>
   );
 }

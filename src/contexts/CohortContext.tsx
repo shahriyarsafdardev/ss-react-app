@@ -4,10 +4,12 @@ const defaultCohortValue: {
   id: string;
   cohortName: string;
   cohortIntake: number | null;
+  cohort: any | null;
 } = {
   id: '',
   cohortName: '',
-  cohortIntake: null
+  cohortIntake: null,
+  cohort: {}
 };
 export const CohortContext = createContext(defaultCohortValue);
 

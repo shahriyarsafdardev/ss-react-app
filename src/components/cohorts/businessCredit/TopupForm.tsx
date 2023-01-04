@@ -15,16 +15,10 @@ import {
   Select as MaterialSelect
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import StripeCredits from 'pages/StripeCredits';
 
-export default function TopupForm({
-  accountID,
-  setModal
-}: {
-  accountID?: string;
-  setModal: Function;
-}) {
+function TopupForm({ accountID, setModal }: { accountID?: string; setModal: Function }) {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const Credit_Topup_Options = ['5000', '10000', '20000'];
@@ -68,15 +62,6 @@ export default function TopupForm({
             <Typography data-testid="add-credits-header" variant="h6" align="center" paragraph>
               Add Credits to Keep Saving
             </Typography>
-            {/* <Typography sx={{ textAlign: 'center', marginBottom: '1rem', px: 3.5 }}>
-              Your Credits are used to:
-            </Typography>
-            <Typography sx={{ textAlign: 'left', px: 4 }}>
-              ✅ Unlock a 50% discount on all seats
-            </Typography>
-            <Typography sx={{ textAlign: 'left', px: 4 }}>
-              ✅ Garuantee seats in the cohort for your employees
-            </Typography> */}
           </Box>
           <Stack
             width={{ md: '40%', xs: '90%' }}
@@ -146,3 +131,5 @@ export default function TopupForm({
     </Card>
   );
 }
+
+export default memo(TopupForm);

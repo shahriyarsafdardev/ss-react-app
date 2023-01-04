@@ -1,3 +1,4 @@
+import { memo, useEffect } from 'react';
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { styled } from '@material-ui/core/styles';
 import {
@@ -8,11 +9,13 @@ import {
   tooltipClasses,
   Card,
   Stack,
-  Button
+  Button,
+  Theme
 } from '@material-ui/core';
 import { Modal } from 'components/animate';
 import { trackEvent } from 'utils/eventTracking';
-import { useEffect } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { makeStyles } from '@material-ui/styles';
 
 export const getDisplayName = (type: String) => {
   switch (type) {
@@ -35,6 +38,41 @@ export const getDisplayName = (type: String) => {
   }
 };
 
+export const useStyles = makeStyles((theme: Theme) => ({
+  styledTypography: {
+    fontSize: '13px',
+    px: 1,
+    py: 0.2,
+    backgroundColor: '#F6F7F8',
+    borderRadius: '5px',
+    color: '#334155'
+  },
+  resourceText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: '10px',
+    width: '100px',
+    textAlign: 'center',
+    wordBreak: 'break-word'
+  },
+  checkbox: { height: '50px', width: '50px', minHeight: '50px', minWidth: '50px' },
+  filtersStack: {
+    flexDirection: 'row',
+    marginBottom: '25px',
+    width: '100%',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start'
+  },
+  resourceTitle: {
+    color: '#222C36',
+    fontSize: '1.1rem',
+    marginBottom: '5px',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: '15px'
+    }
+  }
+}));
+
 export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   width: '100%',
   height: 4,
@@ -45,7 +83,7 @@ export const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   }
 }));
 
-export const StyledImage = styled('img')(({ theme }) => ({
+export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   height: 'auto',
   width: '50px',
   minWidth: '50px',
@@ -184,63 +222,65 @@ export const ModalCard = styled(Card)(({ theme }) => ({
   }
 }));
 
-export const ReachedLimitModal = ({
-  open,
-  shouldOpen,
-  hostName,
-  cohortRegistrationURL,
-  cohort
-}: {
-  open: boolean;
-  shouldOpen: Function;
-  hostName: string;
-  cohortRegistrationURL: string;
-  cohort: any;
-}) => {
-  useEffect(() => {
-    open && trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Opened');
-  }, [open]);
+export const ReachedLimitModal = memo(
+  ({
+    open,
+    shouldOpen,
+    hostName,
+    cohortRegistrationURL,
+    cohort
+  }: {
+    open: boolean;
+    shouldOpen: Function;
+    hostName: string;
+    cohortRegistrationURL: string;
+    cohort: any;
+  }) => {
+    useEffect(() => {
+      open && trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Opened');
+    }, [open]);
 
-  const handleViewCourses = () => {
-    trackEvent(cohort, 'Resources Page - Monthly Limit Modal - "View Course Details" Selected');
-    window.open(`${cohortRegistrationURL}?source=Sphere-Outbound-Resources-Page`, '_blank');
-  };
+    const handleViewCourses = () => {
+      trackEvent(cohort, 'Resources Page - Monthly Limit Modal - "View Course Details" Selected');
+      window.open(`${cohortRegistrationURL}?source=Sphere-Outbound-Resources-Page`, '_blank');
+    };
 
-  return (
-    <StyledModal
-      open={open}
-      onClose={() => {
-        trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Closed');
-        shouldOpen(false);
-      }}
-      zIndex={1400}
-    >
-      <ModalCard>
-        <Stack spacing={8}>
-          <Stack spacing={3}>
-            <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
-              You’ve reached your monthly resource limit
-            </Typography>
-            <Typography sx={{ textAlign: 'center' }}>
-              Signup to {hostName}’s course to receive unlimited access
-            </Typography>
+    return (
+      <StyledModal
+        open={open}
+        onClose={() => {
+          trackEvent(cohort, 'Resources Page - Monthly Limit Modal - Modal Closed');
+          shouldOpen(false);
+        }}
+        zIndex={1400}
+      >
+        <ModalCard>
+          <Stack spacing={8}>
+            <Stack spacing={3}>
+              <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '20px' }}>
+                You've reached your monthly resource limit
+              </Typography>
+              <Typography sx={{ textAlign: 'center' }}>
+                Signup to {hostName}'s course to receive unlimited access
+              </Typography>
+            </Stack>
+            <Button
+              variant="contained"
+              sx={{
+                borderRadius: '4px',
+                height: '48px',
+                background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
+              }}
+              onClick={() => handleViewCourses()}
+            >
+              View Course Details
+            </Button>
           </Stack>
-          <Button
-            variant="contained"
-            sx={{
-              borderRadius: '4px',
-              height: '48px',
-              background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)'
-            }}
-            onClick={() => handleViewCourses()}
-          >
-            View Course Details
-          </Button>
-        </Stack>
-      </ModalCard>
-    </StyledModal>
-  );
-};
+        </ModalCard>
+      </StyledModal>
+    );
+  }
+);
 
 export function AdditionalFilters({
   materialCategory,

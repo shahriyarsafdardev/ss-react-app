@@ -2,11 +2,11 @@ import { FormControl, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import MUICreatableSelect from 'components/MUICreatableSelect';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import axios from 'utils/axios';
 import { trackEvent } from 'utils/eventTracking';
 
-export default function ExpenseCheckerForm({
+function ExpenseCheckerForm({
   companies,
   setStatusApproved,
   setCompanyExist,
@@ -23,7 +23,7 @@ export default function ExpenseCheckerForm({
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const checkApprovalStatus = async () => {
+  const checkApprovalStatus = useCallback(async () => {
     if (company === '') {
       enqueueSnackbar('No company selected!', { variant: 'error' });
       return;
@@ -50,7 +50,7 @@ export default function ExpenseCheckerForm({
       .catch((err) => {
         enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
       });
-  };
+  }, [company, cohort]);
 
   return (
     <Stack sx={{ backgroundColor: '#fff', padding: '24px', borderRadius: '16px' }} spacing={3}>
@@ -73,3 +73,5 @@ export default function ExpenseCheckerForm({
     </Stack>
   );
 }
+
+export default memo(ExpenseCheckerForm);

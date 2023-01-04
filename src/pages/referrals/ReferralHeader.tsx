@@ -1,11 +1,11 @@
 import { Card, Typography, Stack, Link } from '@material-ui/core';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { RootState, useSelector } from 'redux/store';
 import { useStyles } from './Common';
 import CurrentCreditAmount from './CurrentCreditAmount';
 
-export default function ReferralHeader({ setActiveTab }: { setActiveTab: Function }) {
+function ReferralHeader({ setActiveTab }: { setActiveTab: Function }) {
   const classes = useStyles();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const accountDetails = useSelector((state: RootState) => state.subscription.subscription_detail);
@@ -49,3 +49,5 @@ export default function ReferralHeader({ setActiveTab }: { setActiveTab: Functio
     </Card>
   );
 }
+
+export default memo(ReferralHeader);

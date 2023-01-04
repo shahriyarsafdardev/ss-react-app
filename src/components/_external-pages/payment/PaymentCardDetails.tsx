@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { styled } from '@material-ui/core/styles';
 import axios from 'utils/axios';
 import { Stack } from '@material-ui/core';
@@ -13,7 +14,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   }
 }));
 
-export default function PaymentCardDetails({
+function PaymentCardDetails({
   linkID,
   onSuccess,
   onFailure,
@@ -46,3 +47,5 @@ export default function PaymentCardDetails({
     </RootStyle>
   );
 }
+
+export default memo(PaymentCardDetails);

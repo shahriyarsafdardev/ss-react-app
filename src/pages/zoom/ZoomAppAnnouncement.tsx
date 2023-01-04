@@ -3,6 +3,7 @@ import Modal from 'components/animate/Modal';
 import axios from 'utils/axios';
 import { useState } from 'react';
 import useAuth from 'hooks/useAuth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
   height: '600px',
@@ -50,7 +51,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-const StyledDescription = styled(Typography)(({ theme }) => ({
+const StyledDescription = styled('div')(({ theme }) => ({
   fontSize: '16px',
   textAlign: 'left',
   color: theme.palette.text.secondary
@@ -65,7 +66,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '350px'
 }));
 
@@ -86,13 +87,12 @@ export default function ZoomAppAnnouncement({ openModal }: { openModal: boolean 
     setLoading(true);
     if (user && !user.opened_announcement) {
       axios.post('/users/opened_announcement.json').then(() => {
-        setOpen(false);
-        updateProfile({ ...newUser, opened_announcement: true });
         setLoading(false);
+        updateProfile({ ...newUser, opened_announcement: true });
       });
     } else {
-      setOpen(false);
       setLoading(false);
+      setOpen(false);
     }
   };
 

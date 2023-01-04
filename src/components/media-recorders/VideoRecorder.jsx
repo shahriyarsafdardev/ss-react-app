@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import VideoRecorder from 'react-video-recorder';
 import { Box } from '@material-ui/core';
 import styled from 'styled-components';
@@ -68,6 +69,11 @@ const Controls =
     onStopReplaying,
     onConfirm
   }) => {
+    const saveOptions = () => {
+      onStopReplaying();
+      setFile(null);
+    };
+
     const renderContent = () => {
       if (
         (!isInlineRecordingSupported && !isVideoInputSupported) ||
@@ -79,14 +85,7 @@ const Controls =
       }
 
       if (isReplayingVideo) {
-        return (
-          <SaveOptions
-            onRedoClick={() => {
-              onStopReplaying();
-              setFile(null);
-            }}
-          />
-        );
+        return <SaveOptions onRedoClick={saveOptions} />;
       }
 
       if (isRecording) {
@@ -126,33 +125,37 @@ const Controls =
     );
   };
 
-const CustomVideoRecorder = ({ onComplete, onClose, onTrack }) => (
-  <Box style={{ height: '200px' }}>
-    <div className="question-video-recorder-screen">
-      <div className="question-recorder-wrapper">
-        {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
-        <img
-          src="/static/cross-white.svg"
-          alt="cross"
-          onClick={() => onClose(false)}
-          onKeyDown={() => {}}
-          style={{ position: 'absolute', top: 10, right: 10, zIndex: 200, cursor: 'pointer' }}
-        />
-        <VideoRecorder
-          isOnInitially
-          showReplayControls
-          isFlipped={true}
-          replayVideoAutoplayAndLoopOff
-          onRecordingComplete={(videoBlob) => {
-            onComplete(new File([videoBlob], 'question.webm', { type: 'video/webm' }));
-          }}
-          onStartRecording={() => onTrack('Started recording video question')}
-          renderActions={Controls(onComplete)}
-          renderUnsupportedView={notSupportMessage}
-        />
-      </div>
-    </div>
-  </Box>
-);
+const CustomVideoRecorder = ({ onComplete, onClose, onTrack }) => {
+  const completeRecording = (videoBlob) => {
+    onComplete(new File([videoBlob], 'question.webm', { type: 'video/webm' }));
+  };
 
-export default CustomVideoRecorder;
+  return (
+    <Box style={{ height: '200px' }}>
+      <div className="question-video-recorder-screen">
+        <div className="question-recorder-wrapper">
+          {/*  eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+          <img
+            src="/static/cross-white.svg"
+            alt="cross"
+            onClick={() => onClose(false)}
+            onKeyDown={() => {}}
+            style={{ position: 'absolute', top: 10, right: 10, zIndex: 200, cursor: 'pointer' }}
+          />
+          <VideoRecorder
+            isOnInitially
+            showReplayControls
+            isFlipped={true}
+            replayVideoAutoplayAndLoopOff
+            onRecordingComplete={completeRecording}
+            onStartRecording={() => onTrack('Started recording video question')}
+            renderActions={Controls(onComplete)}
+            renderUnsupportedView={notSupportMessage}
+          />
+        </div>
+      </div>
+    </Box>
+  );
+};
+
+export default memo(CustomVideoRecorder);

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { Stack } from '@material-ui/core';
 import { Icon } from '@iconify/react';
@@ -6,11 +6,7 @@ import iconEdit from '@iconify/icons-ic/edit';
 import CardDetails from './CardDetails';
 import { StyledHeading, useStyles, StyledText } from './Common';
 
-export default function PaymentDetails({
-  setPaymentMethodModal
-}: {
-  setPaymentMethodModal: Function;
-}) {
+function PaymentDetails({ setPaymentMethodModal }: { setPaymentMethodModal: Function }) {
   const classes = useStyles();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
@@ -38,3 +34,5 @@ export default function PaymentDetails({
     </>
   );
 }
+
+export default memo(PaymentDetails);

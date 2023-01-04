@@ -7,6 +7,7 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { memo } from 'react';
 import { trackEvent } from 'utils/eventTracking';
 
 const ViewSelector = styled('div')(() => ({
@@ -30,17 +31,36 @@ const FilterFormControl = styled(FormControl)(({ theme }) => ({
   }
 }));
 
-export default function StudentProfileFilters({
+const StudentProfileFilters = ({
   companies,
   selectedCompanies,
   handleCompanyChange,
   setView,
   view,
   cohort
-}: StudentProfileFiltersProps) {
+}: StudentProfileFiltersProps) => {
   const onViewSwitch = (selectedView: string) => {
     setView(selectedView);
   };
+
+  const sendAnalyticsData = (eventName: string, eventData?: any) =>
+    trackEvent(cohort, eventName, eventData);
+
+  const handleGridViewClick = () =>
+    sendAnalyticsData('Networking Page - View Toggle Selected', {
+      'Selected View': 'Grid View'
+    });
+
+  const handleListView = () =>
+    sendAnalyticsData('Networking Page - View Toggle Selected', {
+      'Selected View': 'Table View'
+    });
+
+  const handleSelectCompany = (name: string) =>
+    selectedCompanies.indexOf(name) === -1 &&
+    sendAnalyticsData('Networking Page - Company Filter Selected', {
+      'Company Name': name
+    });
 
   return (
     <ViewSelector data-testid="user-filters">
@@ -62,11 +82,7 @@ export default function StudentProfileFilters({
             value="grid"
             id="grid-view"
             data-testid="peer-grid-view"
-            onClick={() =>
-              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
-                'Selected View': 'Grid View'
-              })
-            }
+            onClick={handleGridViewClick}
           >
             Grid View
           </MenuItem>
@@ -75,11 +91,7 @@ export default function StudentProfileFilters({
             value="list"
             id="table-view"
             data-testid="peer-table-view"
-            onClick={() =>
-              trackEvent(cohort, 'Networking Page - View Toggle Selected', {
-                'Selected View': 'Table View'
-              })
-            }
+            onClick={handleListView}
           >
             Table View
           </MenuItem>
@@ -105,12 +117,7 @@ export default function StudentProfileFilters({
               key={name}
               value={name}
               sx={{ paddingRight: 1 }}
-              onClick={() =>
-                selectedCompanies.indexOf(name) === -1 &&
-                trackEvent(cohort, 'Networking Page - Company Filter Selected', {
-                  'Company Name': name
-                })
-              }
+              onClick={() => handleSelectCompany(name)}
             >
               <Checkbox
                 checked={selectedCompanies.indexOf(name) > -1}
@@ -123,4 +130,6 @@ export default function StudentProfileFilters({
       </FilterFormControl>
     </ViewSelector>
   );
-}
+};
+
+export default memo(StudentProfileFilters);

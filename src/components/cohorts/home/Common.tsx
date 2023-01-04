@@ -1,3 +1,4 @@
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { styled } from '@material-ui/core/styles';
 import {
   Box,
@@ -9,14 +10,14 @@ import {
   Button,
   IconButton
 } from '@material-ui/core';
-import { uniq } from 'lodash';
+import { memoize, uniq } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
 import moment from 'moment';
 import { Modal } from 'components/animate';
 import { makeStyles } from '@material-ui/styles';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import { useContext, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import arrowForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import Icon from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +32,9 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   boxShadow: '0px 0px 4px rgba(145, 158, 171, 0.24), 0px 24px 48px rgba(145, 158, 171, 0.24)',
   borderRadius: '16px',
   padding: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   '&.timeline': {
     height: '150px',
     [theme.breakpoints.down('sm')]: {
@@ -178,6 +182,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '100%'
     }
   },
+  downloadButton: {
+    color: '#101658',
+    backgroundColor: '#fff',
+    textTransform: 'none',
+    '&:hover': {
+      color: '#fff'
+    }
+  },
   dotStyle: {
     width: '15px',
     height: '15px',
@@ -202,6 +214,43 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('lg')]: {
       padding: '5px 10px'
     }
+  },
+  homePage: {
+    width: '100%',
+    height: '100%',
+    minHeight: '100%',
+    overflow: 'hidden'
+  },
+  checklistItemStack: {
+    padding: '10px 0px',
+    alignItems: 'center',
+    borderTop: '1px solid #edf5f5'
+  },
+  circularProgressbarText: {
+    fontSize: '24px',
+    fontWeight: 600,
+    dominantBaseline: 'central',
+    textAnchor: 'middle'
+  },
+  socialShareStack: {
+    color: '#101658',
+    marginTop: '20px',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  offboardingPageContainer: {
+    maxWidth: '1200px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
+  },
+  sessionDescriptionBox: {
+    fontWeight: 400,
+    fontSize: '14px',
+    height: 'auto',
+    lineHeight: '28px',
+    padding: '0px 5px 15px 0px',
+    marginRight: '4px'
   }
 }));
 
@@ -218,11 +267,14 @@ const getLocalTimeZone = () =>
     .split(/[(,)]+/)[1]
     .match(/\b(\w)/g)
     ?.join('');
-const formatList = (list: string[]) =>
-  list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ');
 
-export const sortedTimes = (times: string[]) =>
-  [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1));
+const formatList = memoize((list: string[]) =>
+  list.length > 2 ? [list.slice(0, -1).join(', '), list.slice(-1)].join(' or ') : list.join(' or ')
+);
+
+export const sortedTimes = memoize((times: string[]) =>
+  [...times].sort((a, b) => (moment(a) < moment(b) ? -1 : 1))
+);
 
 export const surveyTime = (times: string[]) =>
   sortedTimes(times).filter((time) => moment(time).add(48, 'hours') > moment())[0];
@@ -232,7 +284,7 @@ export const upcomingTimes = (times: string[]) =>
     .filter((time) => moment(time).add(2, 'hours') > moment())
     .slice(0, 2);
 
-export const firstUpcomingDate = (times: string[]) => {
+export const firstUpcomingDate = memoize((times: string[]) => {
   const sorted: string[] = sortedTimes(times);
   let firstTime = sorted[sorted.length - 1];
   const upcomings = upcomingTimes(times);
@@ -240,14 +292,16 @@ export const firstUpcomingDate = (times: string[]) => {
     [firstTime] = upcomings;
   }
   return firstTime;
-};
+});
 
 export const formatTime = (time: string, sessionLength: string) => {
   const sessionStartTime = moment(new Date(time)).format('hh:mm a');
+  const sessionHours =
+    sessionLength?.split(' ').length === 1 ? sessionLength[0] : sessionLength.split(' ')[0];
   const sessionEndTime = moment(new Date(time))
-    .add(Number(sessionLength?.split(' ')[0]), 'hours')
+    .add(Number(sessionHours), 'hours')
     .format('hh:mm a');
-  if (moment(time).add(1, 'hours') > moment()) {
+  if (moment(time).add(2, 'hours') > moment()) {
     return `${sessionStartTime} - ${sessionEndTime} ${getLocalTimeZone()}`;
   }
   return 'Complete';
@@ -309,151 +363,158 @@ export const sessionName = (session: Session | undefined, defaultName: string | 
   return session?.networking_session ? 'Networking Session' : defaultName;
 };
 
-export const CalendarInstructionsModal = ({
-  calendarURL,
-  calendarInstructionsModalState,
-  setCalendarInstructionsModalState,
-  handleSubmit
-}: {
-  calendarURL: string;
-  calendarInstructionsModalState: boolean;
-  setCalendarInstructionsModalState: Function;
-  handleSubmit: Function;
-}) => {
-  const classes = useStyles();
-  const { sendAnalyticsData } = useContext(AnalyticsContext);
+export const CalendarInstructionsModal = memo(
+  ({
+    calendarURL,
+    calendarInstructionsModalState,
+    setCalendarInstructionsModalState,
+    handleSubmit
+  }: {
+    calendarURL: string;
+    calendarInstructionsModalState: boolean;
+    setCalendarInstructionsModalState: Function;
+    handleSubmit: Function;
+  }) => {
+    const classes = useStyles();
+    const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  useEffect(() => {
-    calendarInstructionsModalState &&
-      sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+    useEffect(() => {
+      calendarInstructionsModalState &&
+        sendAnalyticsData('Cohort Onboarding - Calendar Modal - Page Loaded', {
+          'Calendar URL': calendarURL
+        });
+    }, [calendarInstructionsModalState]);
+
+    const onNeedHandler = () => {
+      sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
         'Calendar URL': calendarURL
       });
-  }, [calendarInstructionsModalState]);
+    };
 
-  const onNeedHandler = () => {
-    sendAnalyticsData('Cohort Onboarding - Calendar Modal - "I need help" Selected', {
-      'Calendar URL': calendarURL
-    });
-  };
+    const handleModalClose = () => setCalendarInstructionsModalState(false);
 
-  return (
-    <Modal
-      open={calendarInstructionsModalState}
-      onClose={() => {
-        setCalendarInstructionsModalState(false);
-      }}
-      zIndex={1400}
-      className={classes.calendarInstructionsModal}
-    >
-      <Card sx={{ padding: '2rem' }}>
-        <Typography className={classes.heading}>
-          Please follow the instructions below to add the sessions to you calendar
-        </Typography>
-        <AddToCalendarInfo
-          onNextHandler={() => {
-            setCalendarInstructionsModalState(false);
-            handleSubmit();
-          }}
-          onNeedHandler={onNeedHandler}
-          inviteUrl={calendarURL}
-        />
-      </Card>
-    </Modal>
-  );
-};
+    const nextHandler = () => {
+      setCalendarInstructionsModalState(false);
+      handleSubmit();
+    };
 
-export const ChecklistItem = ({
-  index,
-  heading,
-  status,
-  onSubmit
-}: {
-  index: number;
-  heading: string;
-  status: string;
-  onSubmit: Function;
-}) => {
-  const classes = useStyles();
-  return (
-    <Stack
-      direction="row"
-      onClick={() => {
-        status === 'Active' && onSubmit();
-      }}
-      className={`${status === 'Active' && classes.buttonActive}`}
-      sx={{ padding: '10px 0px', alignItems: 'center', borderTop: '1px solid #edf5f5' }}
-    >
-      <StyledTypography
-        className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
-          status === 'NonActive' && classes.indexNonActive
-        } ${status === 'Completed' && classes.indexCompleted}`}
+    return (
+      <Modal
+        open={calendarInstructionsModalState}
+        onClose={handleModalClose}
+        zIndex={1400}
+        className={classes.calendarInstructionsModal}
       >
-        {status === 'Completed' ? <DoneIcon style={{ fontSize: '1.3rem' }} /> : index}
-      </StyledTypography>
-      <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
+        <Card sx={{ padding: '2rem' }}>
+          <Typography className={classes.heading}>
+            Please follow the instructions below to add the sessions to you calendar
+          </Typography>
+          <AddToCalendarInfo
+            onNextHandler={nextHandler}
+            onNeedHandler={onNeedHandler}
+            inviteUrl={calendarURL}
+          />
+        </Card>
+      </Modal>
+    );
+  }
+);
+
+export const ChecklistItem = memo(
+  ({
+    index,
+    heading,
+    status,
+    onSubmit
+  }: {
+    index: number;
+    heading: string;
+    status: string;
+    onSubmit: Function;
+  }) => {
+    const classes = useStyles();
+
+    const handleStackClick = () => {
+      status === 'Active' && onSubmit();
+    };
+
+    return (
+      <Stack
+        direction="row"
+        onClick={handleStackClick}
+        className={`${classes.checklistItemStack} ${status === 'Active' && classes.buttonActive}`}
+      >
         <StyledTypography
-          className={`${classes.headingActive} ${
-            status === 'NonActive' && classes.headingNonActive
-          } ${status === 'Completed' && classes.headingCompleted}`}
+          className={`${classes.index} ${status === 'Active' && classes.indexActive} ${
+            status === 'NonActive' && classes.indexNonActive
+          } ${status === 'Completed' && classes.indexCompleted}`}
         >
-          {heading}
+          {status === 'Completed' ? <DoneIcon sx={{ fontSize: '1.3rem' }} /> : index}
         </StyledTypography>
-        <Box
-          // onClick={() => onSubmit()}
-          className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
-        >
-          <Icon icon={arrowForwardFill} width="20px" height="20px" />
-        </Box>
+        <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center">
+          <StyledTypography
+            className={`${classes.headingActive} ${
+              status === 'NonActive' && classes.headingNonActive
+            } ${status === 'Completed' && classes.headingCompleted}`}
+          >
+            {heading}
+          </StyledTypography>
+          <Box
+            // onClick={() => onSubmit()}
+            className={`${classes.buttonActive} ${status !== 'Active' && classes.buttonNonActive}`}
+          >
+            <Icon icon={arrowForwardFill} width="20px" height="20px" />
+          </Box>
+        </Stack>
       </Stack>
-    </Stack>
-  );
-};
+    );
+  }
+);
 
-export function ChecklistCompletionPrompt({
-  cohort_id,
-  trackSegmentEvent
-}: {
-  cohort_id: string;
-  trackSegmentEvent: Function;
-}) {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export const ChecklistCompletionPrompt = memo(
+  ({ cohort_id, trackSegmentEvent }: { cohort_id: string; trackSegmentEvent: Function }) => {
+    const classes = useStyles();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-  const handleSubmit = (gotoHome: boolean) => {
-    if (gotoHome) {
-      trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Go to Home" Selected');
-      navigate(`/cohorts/${cohort_id}/home?active_step=1`);
-    } else {
-      trackSegmentEvent('Cohort Onboarding - Checklist - "Continue Networking" Selected');
-    }
-    dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
-  };
+    const handleSubmit = (gotoHome: boolean) => {
+      if (gotoHome) {
+        trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Go to Home" Selected');
+        navigate(`/cohorts/${cohort_id}/home?active_step=1`);
+      } else {
+        trackSegmentEvent('Cohort Onboarding - Checklist - "Continue Networking" Selected');
+      }
+      dispatch(markOnboardingStep(cohort_id, 'onboarding_checklist_completed'));
+    };
 
-  return (
-    <Stack className={classes.completionPrompt} spacing={4}>
-      <Typography textAlign="center">
-        Congratulations, you have completed the Pre-Cohort Checklist! 🎉
-      </Typography>
-      <Stack sx={{ width: '100%' }} spacing={2}>
-        <Button
-          className={classes.completionPromptButton}
-          variant="contained"
-          onClick={() => handleSubmit(true)}
-        >
-          Go to Home
-        </Button>
-        <Button
-          className={classes.completionPromptButton}
-          variant="outlined"
-          onClick={() => handleSubmit(false)}
-        >
-          Continue Networking
-        </Button>
+    const handleGotoHome = () => handleSubmit(true);
+    const handleContinueNetworking = () => handleSubmit(false);
+
+    return (
+      <Stack className={classes.completionPrompt} spacing={4}>
+        <Typography textAlign="center">
+          Congratulations, you have completed the Pre-Cohort Checklist! 🎉
+        </Typography>
+        <Stack sx={{ width: '100%' }} spacing={2}>
+          <Button
+            className={classes.completionPromptButton}
+            variant="contained"
+            onClick={handleGotoHome}
+          >
+            Go to Home
+          </Button>
+          <Button
+            className={classes.completionPromptButton}
+            variant="outlined"
+            onClick={handleContinueNetworking}
+          >
+            Continue Networking
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
-  );
-}
+    );
+  }
+);
 
 export const StyledBox = styled(Stack)(({ theme }) => ({
   background: 'linear-gradient(135.12deg, #6A2E9C 0.07%, #0D0217 100.02%)',
@@ -473,7 +534,7 @@ export const StyledModalButton = styled(Button)(({ theme }) => ({
     width: '80%'
   }
 }));
-export const StyledImage = styled('img')(({ theme }) => ({
+export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '55%',
   margin: '20px auto 0 !important'
 }));
@@ -510,6 +571,7 @@ export const GreyCard = styled(Stack)(({ theme }) => ({
   padding: '15px',
   borderRadius: '8px',
   backgroundColor: '#fff',
+  fontSize: '15px',
   ul: {
     paddingLeft: '20px'
   }
@@ -543,13 +605,15 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
   overflow: 'hidden',
   width: '50%',
   height: '100% ',
+  backgroundColor: '#FAFAFC',
+  justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    padding: '30px 25px',
+    padding: '32px 16px',
     width: '100%'
   }
 }));
 
-export const SmallImage = styled('img')(({ theme }) => ({
+export const SmallImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   height: 'auto',
   cursor: 'pointer',
@@ -569,7 +633,7 @@ export const OffboardingHeader = styled(Typography)(({ theme }) => ({
   }
 }));
 
-export const MainImage = styled('img')(({ theme }) => ({
+export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '75%',
   height: 'auto',
   [theme.breakpoints.down('md')]: {
@@ -618,24 +682,26 @@ If this course sounds useful to you and your professional development goals, reg
   %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
   %E2%80%A2 Or, check out https://getsphere.com to explore more courses.`;
 
-export const SurveyModal = ({
-  state,
-  onClose,
-  onComplete,
-  session
-}: {
-  state: boolean;
-  onClose: Function;
-  onComplete: Function;
-  session: any;
-}) => (
-  <Modal open={state} onClose={() => onClose()}>
-    <SurveyForm
-      key="surveyForm"
-      onComplete={onComplete}
-      sessionId={session?.id}
-      sessionName={session?.name}
-      session={session}
-    />
-  </Modal>
+export const SurveyModal = memo(
+  ({
+    state,
+    onClose,
+    onComplete,
+    session
+  }: {
+    state: boolean;
+    onClose: Function;
+    onComplete: Function;
+    session: any;
+  }) => (
+    <Modal open={state} onClose={() => onClose()}>
+      <SurveyForm
+        key="surveyForm"
+        onComplete={onComplete}
+        sessionId={session?.id}
+        sessionName={session?.name}
+        session={session}
+      />
+    </Modal>
+  )
 );

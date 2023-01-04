@@ -91,7 +91,7 @@ export default function RegistrationsTab() {
           isAdminView={false}
         />
         <RegistrationsList codes={referral_codes} enrollments={enrollments.slice(0, limit)} />
-        {limit !== enrollments.length && (
+        {limit < enrollments.length && (
           <RegistrationsFooter handleClick={() => setLimit(enrollments.length)} />
         )}
       </RegistrationsContainer>

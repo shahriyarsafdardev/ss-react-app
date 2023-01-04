@@ -1,6 +1,6 @@
 import { Box, styled, Stack } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack5';
 import { LoadingButton } from '@material-ui/lab';
 import { useDispatch } from 'react-redux';
@@ -182,4 +182,4 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
   );
 }
 
-export default SurveyQuestions;
+export default memo(SurveyQuestions);

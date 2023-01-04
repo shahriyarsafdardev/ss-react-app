@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import { useEffect } from 'react';
-import { SubmitButton, CompanyType, UserType, CohortType } from './Registration';
+import { memo, useCallback, useEffect } from 'react';
+import { SubmitButton, CompanyType } from './Registration';
 
 const StyledBox = styled(Stack)(({ theme }) => ({
   borderRadius: '16px',
@@ -70,17 +70,17 @@ function InviteChoice({
     trackRegistrationEvent('Cohort Registration - Refer Colleagues Page - Page Loaded');
   }, []);
 
-  const submitLearnAlone = () => {
+  const submitLearnAlone = useCallback(() => {
     trackRegistrationEvent('Cohort Registration - Refer Colleagues Page - ‘Learn Alone’ Selected');
     selectStep();
-  };
+  }, [selectStep]);
 
-  const submitInviteColleagues = () => {
+  const submitInviteColleagues = useCallback(() => {
     trackRegistrationEvent(
       'Cohort Registration - Refer Colleagues Page - ‘Invite Colleagues’ Selected'
     );
     setStep(3);
-  };
+  }, [setStep]);
 
   return (
     <Stack
@@ -126,4 +126,4 @@ function InviteChoice({
   );
 }
 
-export default InviteChoice;
+export default memo(InviteChoice);

@@ -2,6 +2,7 @@ import { Theme } from '@material-ui/core/styles';
 import { Stack, Typography, Button, Card, styled } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { LoadingButton } from '@material-ui/lab';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const StyledStack = styled(Stack)(({ theme }) => ({
   width: '100%',
@@ -40,7 +41,7 @@ export const HeaderStyle = styled('header')(({ theme }) => ({
   }
 }));
 
-export const StyledLogo = styled('img')(({ theme }) => ({
+export const StyledLogo = styled(LazyLoadImage)(({ theme }) => ({
   width: '130px',
   position: 'absolute',
   [theme.breakpoints.down('md')]: {

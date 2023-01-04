@@ -2,7 +2,7 @@ import { Stack, Box, Typography, useTheme, useMediaQuery, Button, Link } from '@
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Page from 'components/Page';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import minusFill from '@iconify/icons-eva/minus-outline';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import Icon from '@iconify/react';
@@ -14,7 +14,7 @@ import { setSegmentUserProperties } from 'utils/eventTracking';
 import { InputAmount, LoadingContainer, Logo, useStyles, SaleBanner } from './Common';
 import PayNowForm from './PayNowForm';
 
-export default function SubscriptionPaymentPage() {
+function SubscriptionPaymentPage() {
   const classes = useStyles();
   const [customerID, setCustomerID] = useState('');
   const [clientSecret, setClientSecret] = useState('');
@@ -69,12 +69,19 @@ export default function SubscriptionPaymentPage() {
     }
   }, [registrantEmail]);
 
-  const handleAmountChange = (amount: string) => {
+  const handleAmountChange = useCallback((amount: string) => {
     if (amount === '') {
       amount = '0';
     }
     setAmount(parseInt(amount, 10));
-  };
+  }, []);
+
+  const handleAmountDecrease = () =>
+    setAmount(
+      amount - 100 < Math.floor(cohort?.price * 0.95)
+        ? Math.floor(cohort?.price * 0.95)
+        : amount - 100
+    );
 
   if (loading || !clientSecret || !customerID || !enrollmentID || !cohortID) {
     return (
@@ -101,13 +108,7 @@ export default function SubscriptionPaymentPage() {
               <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
                 <Button
                   className={classes.counterButton}
-                  onClick={() =>
-                    setAmount(
-                      amount - 100 < Math.floor(cohort?.price * 0.95)
-                        ? Math.floor(cohort?.price * 0.95)
-                        : amount - 100
-                    )
-                  }
+                  onClick={handleAmountDecrease}
                   disabled={amount <= Math.floor(cohort?.price * 0.95)}
                 >
                   <Icon icon={minusFill} style={{ width: '100%', height: '100%' }} />
@@ -196,3 +197,5 @@ export default function SubscriptionPaymentPage() {
     </Page>
   );
 }
+
+export default memo(SubscriptionPaymentPage);

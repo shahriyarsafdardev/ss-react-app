@@ -1,12 +1,12 @@
 import { Box, Button } from '@material-ui/core';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { ContentRow, MainHeading, SubHeading } from './Common';
 
 function MLSCodeRow({ data }: { data: any }) {
-  console.log(data);
   return (
     <ContentRow>
       <Box style={{ height: '53px', width: '53px' }}>
-        <img src={data.imgURL} alt="session-logo" height="100%" width="100%" />
+        <LazyLoadImage src={data.imgURL} alt="session-logo" height="100%" width="100%" />
       </Box>
       <Box style={{ width: '90%' }}>
         <SubHeading>{data.subHeading}</SubHeading>

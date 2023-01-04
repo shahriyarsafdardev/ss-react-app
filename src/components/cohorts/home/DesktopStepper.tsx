@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, memo, useCallback } from 'react';
 import { Box, Typography, StepConnector, stepConnectorClasses } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { styled } from '@material-ui/core/styles';
@@ -29,13 +29,13 @@ const StyledDate = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary
 }));
 
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
-  ({ theme, ownerState }) => ({
+const QontoStepIconRoot = styled('div')<{ ownerstate: { active?: boolean } }>(
+  ({ theme, ownerstate }) => ({
     color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
     display: 'flex',
     height: 16,
     alignItems: 'center',
-    ...(ownerState.active && {
+    ...(ownerstate.active && {
       color: theme.palette.primary.main
     }),
     '& .QontoStepIcon-completedIcon': {
@@ -89,10 +89,10 @@ const StyledBox = styled(Box)(() => ({
 
 export type ExtraStepIconProps = Omit<StepIconProps, 'testid'> & { testid: string };
 
-function QontoStepIcon(props: ExtraStepIconProps) {
+const QontoStepIcon = memo((props: ExtraStepIconProps) => {
   const { active, completed, className, testid } = props;
   return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
+    <QontoStepIconRoot ownerstate={{ active }} className={className}>
       {completed ? (
         <Circle className="QontoStepIcon-completedIcon" data-testid={testid} />
       ) : active ? (
@@ -102,7 +102,7 @@ function QontoStepIcon(props: ExtraStepIconProps) {
       )}
     </QontoStepIconRoot>
   );
-}
+});
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -135,7 +135,7 @@ const ARROW_STATES = {
 };
 const SCROLL_MOVEMENT = 400;
 
-export default function DesktopStepper({
+const DesktopStepper = ({
   cohortID,
   activeSession,
   sessions,
@@ -145,7 +145,7 @@ export default function DesktopStepper({
   activeSession: number;
   sessions: Session[];
   activeStepper: number;
-}) {
+}) => {
   const [arrowState, setArrowState] = useState(ARROW_STATES.NO_LEFT);
   const [activeStep, setActiveStep] = useState(0);
   const [isRendered, setIsRenderedstate] = useState(false);
@@ -154,7 +154,7 @@ export default function DesktopStepper({
   );
   const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const scroll = async (val: number) => {
+  const scroll = useCallback(async (val: number) => {
     const elem = document.getElementById('timeline-div');
     if (elem) {
       elem.scrollLeft += val * 130;
@@ -171,7 +171,8 @@ export default function DesktopStepper({
       }
       setArrowState(ARROW_STATES.MIDDLE);
     }
-  };
+  }, []);
+
   useEffect(() => {
     if (isRendered) {
       setActiveStep(activeSession);
@@ -191,11 +192,13 @@ export default function DesktopStepper({
     };
   }, [activeStep]);
 
-  const handleRightArrowClick = () => {
+  const handleRightArrow = () => {
+    scroll(4);
     sendAnalyticsData('Home Page - Timeline - Right Arrow Selected', {});
   };
 
-  const handleLeftArrowClick = () => {
+  const handleLeftArrow = () => {
+    scroll(-4);
     sendAnalyticsData('Home Page - Timeline - Left Arrow Selected', {});
   };
 
@@ -213,14 +216,8 @@ export default function DesktopStepper({
       <img
         data-testid="left-arrow-icon"
         src="/static/cohorts-home/left-arrow.svg"
-        onClick={() => {
-          scroll(-4);
-          handleLeftArrowClick();
-        }}
-        onKeyDown={() => {
-          scroll(-4);
-          handleLeftArrowClick();
-        }}
+        onClick={handleLeftArrow}
+        onKeyDown={handleLeftArrow}
         className={arrowState === ARROW_STATES.NO_LEFT ? 'disabled' : 'active'}
         alt="left arrow"
       />
@@ -229,7 +226,7 @@ export default function DesktopStepper({
           activeStep={activeStepper === 0 || activeStepper === 1 ? activeStepper : activeSession}
           alternativeLabel
           connector={<ColorlibConnector data-testid="cohort-timeline-connector" />}
-          style={{ marginTop: '10px' }}
+          sx={{ marginTop: '10px' }}
         >
           <Step key={99} sx={{ minWidth: '180px' }}>
             <StepLabel
@@ -251,7 +248,7 @@ export default function DesktopStepper({
           </Step>
           {sessions &&
             sessions?.map((session) => (
-              <Step key={session.number} sx={{ minWidth: '180px' }}>
+              <Step key={session.name} sx={{ minWidth: '180px' }}>
                 <StepLabel
                   StepIconComponent={(props) => (
                     <QontoStepIcon {...props} testid={`timeline-step-icon-${session?.number}`} />
@@ -305,17 +302,13 @@ export default function DesktopStepper({
       <img
         data-testid="right-arrow-icon"
         src="/static/cohorts-home/right-arrow.svg"
-        onClick={() => {
-          scroll(4);
-          handleRightArrowClick();
-        }}
-        onKeyDown={() => {
-          scroll(4);
-          handleRightArrowClick();
-        }}
+        onClick={handleRightArrow}
+        onKeyDown={handleRightArrow}
         className={arrowState === ARROW_STATES.NO_right ? 'disabled' : 'active'}
         alt="right arrow"
       />
     </StyledTimeline>
   );
-}
+};
+
+export default memo(DesktopStepper);

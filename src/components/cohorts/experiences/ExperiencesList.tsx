@@ -1,6 +1,7 @@
 // material
 import { Table, TableBody, TableContainer } from '@material-ui/core';
 import _ from 'lodash';
+import { memo } from 'react';
 import Scrollbar from '../../Scrollbar';
 import { CohortExperience } from '../../../@types/cohorts';
 import { UserListHead } from '../../_dashboard/user/list';
@@ -15,11 +16,7 @@ const TABLE_HEAD = [
   { id: 'more', label: 'More', align: 'center' }
 ];
 
-export default function ExperiencesList({
-  cohortExperiences
-}: {
-  cohortExperiences: CohortExperience[];
-}) {
+function ExperiencesList({ cohortExperiences }: { cohortExperiences: CohortExperience[] }) {
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <Scrollbar>
@@ -44,3 +41,5 @@ export default function ExperiencesList({
     </div>
   );
 }
+
+export default memo(ExperiencesList);

@@ -47,12 +47,6 @@ export type Alumni = {
   mailing_list: boolean;
 };
 
-type Tag = {
-  name: string;
-  color: LabelColor;
-};
-
-type LabelColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 export type SurveyContent = {
   question_type: string;
   title: string;
@@ -327,7 +321,6 @@ export type Question = {
   thumbnail: string;
   user_id: string;
   user_name: string;
-  user_organisation_logo: string;
   user_slug: string;
   video_screenshot: string;
   video_url: string;

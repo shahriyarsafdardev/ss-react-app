@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import { Box } from '@material-ui/core';
 import moment from 'moment';
 import { ROOT_URL } from 'routes/paths';
 import { CreditObject } from '../../../@types/cohorts';
-import { useStyles } from './styles';
+import { useStyles } from './Common';
 
-const HistoryRow = ({ row }: { row: CreditObject }) => {
+const HistoryRow = memo(({ row }: { row: CreditObject }) => {
   const classes = useStyles();
 
   if (row.type === 'cohort') {
@@ -77,6 +78,6 @@ const HistoryRow = ({ row }: { row: CreditObject }) => {
     );
   }
   return null;
-};
+});
 
 export default HistoryRow;

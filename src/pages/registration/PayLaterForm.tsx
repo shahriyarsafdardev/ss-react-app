@@ -1,6 +1,6 @@
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button, InputLabel, Stack, TextField, Theme } from '@material-ui/core';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import * as Yup from 'yup';
 import { FormikProvider, useFormik } from 'formik';
@@ -15,7 +15,7 @@ type CardInfo = {
   name: string;
 };
 
-export default function PayLaterForm({
+function PayLaterForm({
   cohortID,
   enrollmentID,
   customerID,
@@ -175,7 +175,7 @@ export default function PayLaterForm({
             fullWidth
             variant="outlined"
             className={classes.submitButton}
-            onClick={() => handleBackButton()}
+            onClick={handleBackButton}
           >
             Back
           </Button>
@@ -184,3 +184,5 @@ export default function PayLaterForm({
     </>
   );
 }
+
+export default memo(PayLaterForm);

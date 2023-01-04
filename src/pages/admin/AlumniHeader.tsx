@@ -1,8 +1,8 @@
-import React from 'react';
 import { Stack, TextField, Typography } from '@material-ui/core';
 import { ExportAlumniToExcel } from 'components/cohorts/registrations/Common';
 import moment from 'moment';
 import { Alumni } from '../../@types/cohorts';
+import { useStyles } from './Common';
 
 function AlumniHeader({
   alumnies,
@@ -14,14 +14,10 @@ function AlumniHeader({
   search: string;
 }) {
   const fileName = `${moment().format()}-Alumni Data`;
+  const classes = useStyles();
 
   return (
-    <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      justifyContent="space-between"
-      width="-webkit-fill-available"
-      sx={{ mx: 2, mb: 2 }}
-    >
+    <Stack direction={{ xs: 'column', md: 'row' }} className={classes.headerContainer}>
       <Typography variant="h5">Alumni List</Typography>
       <Stack
         direction={{ xs: 'column', md: 'row' }}

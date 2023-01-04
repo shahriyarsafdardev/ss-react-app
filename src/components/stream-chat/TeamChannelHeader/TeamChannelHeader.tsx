@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import {
   Avatar,
   useChannelActionContext,
@@ -27,7 +27,7 @@ type Props = {
   setPinsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const TeamChannelHeader: React.FC<Props> = (props) => {
+export const TeamChannelHeader: React.FC<Props> = memo((props) => {
   const { setIsEditing, setPinsOpen } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
@@ -185,4 +185,4 @@ export const TeamChannelHeader: React.FC<Props> = (props) => {
       </div>
     </div>
   );
-};
+});

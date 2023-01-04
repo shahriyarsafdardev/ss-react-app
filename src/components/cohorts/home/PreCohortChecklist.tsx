@@ -1,6 +1,6 @@
 import { Box, Stack, styled, Typography } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { markOnboardingStep } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
@@ -32,7 +32,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarded?: Function }) {
+const PreCohortChecklist = ({ setHasOnboarded }: { setHasOnboarded?: Function }) => {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -48,21 +48,24 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
   const current_url = window.location.pathname.split('/');
   const current_tab = current_url[current_url.length - 1];
 
-  const toggleCheckList = (event: any) => {
-    event.target.classList.toggle('active');
-    if (content && icon) {
-      icon.style.transitionDuration = '0.3s';
-      icon.style.transitionProperty = 'transform';
-      content.style.animation = 'in 1000ms ease both';
-      if (content.style.display === 'block') {
-        content.style.display = 'none';
-        icon.style.transform = 'rotate(180deg)';
-      } else {
-        content.style.display = 'block';
-        icon.style.transform = 'rotate(0deg)';
+  const toggleCheckList = useCallback(
+    (event: any) => {
+      event.target.classList.toggle('active');
+      if (content && icon) {
+        icon.style.transitionDuration = '0.3s';
+        icon.style.transitionProperty = 'transform';
+        content.style.animation = 'in 1000ms ease both';
+        if (content.style.display === 'block') {
+          content.style.display = 'none';
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          content.style.display = 'block';
+          icon.style.transform = 'rotate(0deg)';
+        }
       }
-    }
-  };
+    },
+    [content, icon]
+  );
 
   useEffect(() => {
     stepStatus();
@@ -105,56 +108,59 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
     }
   };
 
-  const getActiveStatus = (step: number) => {
-    let status = '';
-    if (step === activeStep) {
-      status = 'Active';
-    } else if (step < activeStep) {
-      status = 'Completed';
-    } else {
-      status = 'NonActive';
-    }
-    return status;
-  };
+  const getActiveStatus = useCallback(
+    (step: number) => {
+      let status = '';
+      if (step === activeStep) {
+        status = 'Active';
+      } else if (step < activeStep) {
+        status = 'Completed';
+      } else {
+        status = 'NonActive';
+      }
+      return status;
+    },
+    [activeStep]
+  );
 
   const trackSegmentEvent = (eventName: string, eventData?: any) => {
     trackEvent(cohort, eventName, eventData);
   };
 
-  const handleCompletedMessageStep = () => {
+  const handleCompletedMessageStep = useCallback(() => {
     trackSegmentEvent('Cohort Onboarding - Checklist - "Introduce yourself" Selected');
     navigate(`/cohorts/${cohort_id}/messaging`);
     user?.basic_profile_completed &&
       dispatch(markOnboardingStep(cohort_id, 'onboarding_messaging_step_completed'));
-  };
+  }, [user?.basic_profile_completed, dispatch, cohort_id]);
 
-  const handleShareGoalsStep = () => {
+  const handleShareGoalsStep = useCallback(() => {
     trackSegmentEvent('Cohort Onboarding - Checklist - "Share your Goals" Selected');
     navigate(`/cohorts/${cohort_id}/sessions`);
-  };
+  }, [cohort_id]);
 
-  const handleInviteTeamStep = () => {
+  const handleInviteTeamStep = useCallback(() => {
     trackSegmentEvent('Cohort Onboarding - Checklist - "Invite Your Team" Selected');
     setInvitePeersModalState(true);
-  };
+  }, []);
 
-  const handleCompletedInviteTeamStep = () => {
+  const handleCompletedInviteTeamStep = useCallback(() => {
     dispatch(markOnboardingStep(cohort_id, 'onboarding_referral_step_completed'));
     navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
     setInvitePeersModalState(false);
     trackSegmentEvent('Cohort Onboarding - Invite Team - "Finish" Selected');
-  };
+  }, [cohort_id, dispatch]);
 
-  const handleCalendarSyncStep = () => {
+  const handleCalendarSyncStep = useCallback(() => {
     trackSegmentEvent('Cohort Onboarding - Checklist - "Sync Calendar" Selected');
     navigate(`/cohorts/${cohort_id}/onboarding-calendar-instructions`);
-  };
+  }, [cohort_id, dispatch]);
 
-  const handleCompletedNetworkingStep = () => {
+  const handleCompletedNetworkingStep = useCallback(() => {
     trackSegmentEvent('Cohort Onboarding - Pre Cohort Checklist - "Explore Networking" Selected');
     navigate(`/cohorts/${cohort_id}/peers`);
     dispatch(markOnboardingStep(cohort_id, 'onboarding_networking_step_completed'));
-  };
+  }, [cohort_id, dispatch]);
 
   return (
     <>
@@ -172,7 +178,7 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
             Pre-Cohort Checklist
             {current_tab !== 'home' && <ExpandMore id="expand-more-icon" />}
           </StyledTypography>
-          <Box id="checklist-content" style={{ display: 'block' }}>
+          <Box id="checklist-content" sx={{ display: 'block' }}>
             <ChecklistCompletionPrompt
               cohort_id={cohort_id}
               trackSegmentEvent={trackSegmentEvent}
@@ -224,4 +230,6 @@ export default function PreCohortChecklist({ setHasOnboarded }: { setHasOnboarde
       )}
     </>
   );
-}
+};
+
+export default memo(PreCohortChecklist);

@@ -1,8 +1,10 @@
 import { Avatar, Grid, Stack, Typography, Box } from '@material-ui/core';
+import { memo, useCallback } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { trackEvent } from 'utils/eventTracking';
 import { CourseTileHover, useStyles } from './Common';
 
-export default function CourseTile({ course }: { course: any }) {
+function CourseTile({ course }: { course: any }) {
   const classes = useStyles();
 
   let startTime: any = {};
@@ -23,7 +25,7 @@ export default function CourseTile({ course }: { course: any }) {
     }
   }
 
-  const handleTileClick = () => {
+  const handleTileClick = useCallback(() => {
     trackEvent(course, 'Curriculum Page - Cohort Tile - Selected', {
       'Course Title': course?.name
     });
@@ -31,7 +33,7 @@ export default function CourseTile({ course }: { course: any }) {
       ? course?.registration_page_url
       : `https://portal.getsphere.com/registration/personal-details?cohort_id=${course?.id}`;
     window.open(url, '_blank');
-  };
+  }, [course]);
 
   return (
     <Grid item xs={12} sm={6} md={4} sx={{ px: '12px !important', maxWidth: '420px !important' }}>
@@ -71,7 +73,7 @@ export default function CourseTile({ course }: { course: any }) {
             )}
             {course?.preview_instructor_logos && (
               <Box sx={{ borderTop: '1px solid #E6E6E6' }}>
-                <img
+                <LazyLoadImage
                   src={course?.preview_instructor_logos}
                   alt="instructor-companies"
                   style={{ margin: '20px auto 0px auto', maxHeight: '30px', maxWidth: '250px' }}
@@ -88,3 +90,5 @@ export default function CourseTile({ course }: { course: any }) {
     </Grid>
   );
 }
+
+export default memo(CourseTile);

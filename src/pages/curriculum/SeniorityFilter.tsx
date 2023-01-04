@@ -6,8 +6,9 @@ import {
   Checkbox,
   ListItemText
 } from '@material-ui/core';
+import { memo } from 'react';
 
-export default function SeniorityFilter({
+function SeniorityFilter({
   types,
   selectedTypes,
   handleOnChange
@@ -39,3 +40,5 @@ export default function SeniorityFilter({
     </FormControl>
   );
 }
+
+export default memo(SeniorityFilter);

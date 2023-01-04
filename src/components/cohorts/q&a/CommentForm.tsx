@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, memo, useCallback } from 'react';
 import useAuth from 'hooks/useAuth';
 import { Icon } from '@iconify/react';
 import roundSend from '@iconify/icons-ic/round-send';
@@ -20,6 +20,7 @@ import {
   CircularProgress
 } from '@material-ui/core';
 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import EmojiPicker from '../../EmojiPicker';
 
 // ----------------------------------------------------------------------
@@ -56,7 +57,7 @@ const StyledImageContainer = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start'
 }));
 
-const StyledPreview = styled('img')(({ theme }) => ({
+const StyledPreview = styled(LazyLoadImage)(({ theme }) => ({
   width: '120px',
   height: '120px',
   borderRadius: '14.5691px',
@@ -74,13 +75,7 @@ const StyledForm = styled(Form)(({ theme }) => ({
   width: '100%'
 }));
 
-export default function CommentForm({
-  questionID,
-  addComment
-}: {
-  questionID: string;
-  addComment: Function;
-}) {
+function CommentForm({ questionID, addComment }: { questionID: string; addComment: Function }) {
   const { user } = useAuth();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const { enqueueSnackbar } = useSnackbar();
@@ -123,7 +118,7 @@ export default function CommentForm({
 
   const { values, handleSubmit, isSubmitting, setFieldValue, getFieldProps } = formik;
 
-  const uploadeImage = (event: any) => {
+  const uploadeImage = useCallback((event: any) => {
     if (event?.target?.files[0]) {
       setFieldValue('file', event.target.files[0]);
       setPreview(URL.createObjectURL(event.target.files[0]));
@@ -132,15 +127,16 @@ export default function CommentForm({
       setPreview('');
       setFieldValue('file', null);
     }
-  };
+  }, []);
+
   return (
     <>
       <Stack
         direction="row"
-        alignItems="center"
         sx={{
           pt: 2,
-          width: '100%'
+          width: '100%',
+          alignItems: 'center'
         }}
       >
         <UserAvatar
@@ -217,3 +213,5 @@ export default function CommentForm({
     </>
   );
 }
+
+export default memo(CommentForm);

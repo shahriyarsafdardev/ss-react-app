@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, memo, useRef } from 'react';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { MenuItem, IconButton, Link } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
@@ -21,7 +21,7 @@ const StyledButton = styled(LoadingButton)(() => ({
   }
 }));
 
-export const ExcelDownload = ({ experience }: { experience: CohortExperience }) => {
+export const ExcelDownload = memo(({ experience }: { experience: CohortExperience }) => {
   const fileName = `${moment().format()}-${experience.name} Feedback Data`;
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
@@ -99,54 +99,50 @@ export const ExcelDownload = ({ experience }: { experience: CohortExperience }) 
       Download Feedback
     </StyledButton>
   );
-};
+});
 
-export const ExperienceActions = ({
-  id,
-  experience
-}: {
-  id: string;
-  experience: CohortExperience;
-}) => {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef(null);
+export const ExperienceActions = memo(
+  ({ id, experience }: { id: string; experience: CohortExperience }) => {
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
 
-  const handleOpen = () => {
-    setOpen(!open);
-  };
+    const handleOpen = () => {
+      setOpen(!open);
+    };
 
-  return (
-    <>
-      <MenuPopover
-        open={open}
-        anchorEl={menuRef.current}
-        onClose={() => {
-          setOpen(false);
-        }}
-      >
-        <MenuItem>
-          <ExcelDownload experience={experience} />
-        </MenuItem>
-        <MenuItem>
-          <Link
-            component={RouterLink}
-            to={`/cohorts/${id}/attendance`}
-            color="#071A33"
-            sx={{ typography: 'subtitle2' }}
-          >
-            Attendance Sheet
-          </Link>
-        </MenuItem>
-      </MenuPopover>
-      <IconButton
-        aria-label="more"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleOpen}
-        ref={menuRef}
-      >
-        <MoreVertIcon />
-      </IconButton>
-    </>
-  );
-};
+    return (
+      <>
+        <MenuPopover
+          open={open}
+          anchorEl={menuRef.current}
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
+          <MenuItem>
+            <ExcelDownload experience={experience} />
+          </MenuItem>
+          <MenuItem>
+            <Link
+              component={RouterLink}
+              to={`/cohorts/${id}/attendance`}
+              color="#071A33"
+              sx={{ typography: 'subtitle2' }}
+            >
+              Attendance Sheet
+            </Link>
+          </MenuItem>
+        </MenuPopover>
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={handleOpen}
+          ref={menuRef}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </>
+    );
+  }
+);

@@ -1,5 +1,6 @@
 import { styled } from '@material-ui/core/styles';
 import { Box, Stack, Button, Container, Typography } from '@material-ui/core';
+import { memo } from 'react';
 import Page from '../../components/Page';
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -11,7 +12,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
   display: 'flex'
 }));
 
-export default function AlumniRegistration() {
+function AlumniRegistration() {
   return (
     <RootStyle title="Sphere Cohort Registration">
       <Container maxWidth="lg">
@@ -44,3 +45,5 @@ export default function AlumniRegistration() {
     </RootStyle>
   );
 }
+
+export default memo(AlumniRegistration);

@@ -28,9 +28,21 @@ export default function PublicResources() {
   const url = new URLSearchParams(useLocation().search);
   const source = url.get('source') || '';
 
-  const clearData = () => {
-    setIsSearch(false);
-  };
+  useEffect(() => {
+    const getCohortAndResources = async () => {
+      await axios.get(`/cohorts/${cohort_id}/resources/public_resources.json`).then((res) => {
+        setCohort(res.data.cohort);
+        trackEvent(res?.data?.cohort, 'Resources Page - Page Loaded', { Source: source });
+        setResources(res.data.resources);
+        setResourcesTypes(res.data.resources_types);
+      });
+    };
+    !!cohort_id && getCohortAndResources();
+
+    return () => {
+      setIsSearch(false);
+    };
+  }, [cohort_id]);
 
   const setState = (value: any, type: string) => {
     type === 'string' ? setCategory(value) : setSession(value);
@@ -55,22 +67,6 @@ export default function PublicResources() {
         }
       });
   };
-
-  useEffect(() => {
-    const getCohortAndResources = async () => {
-      await axios.get(`/cohorts/${cohort_id}/resources/public_resources.json`).then((res) => {
-        setCohort(res.data.cohort);
-        trackEvent(res?.data?.cohort, 'Resources Page - Page Loaded', { Source: source });
-        setResources(res.data.resources);
-        setResourcesTypes(res.data.resources_types);
-      });
-    };
-    !!cohort_id && getCohortAndResources();
-
-    return () => {
-      clearData();
-    };
-  }, [cohort_id]);
 
   if (!cohort || resources.length === 0) {
     return (
@@ -127,7 +123,7 @@ export default function PublicResources() {
                   <ResourcesSection
                     handleShowMore={(data: string) => handleShowMore(data)}
                     isPublic={true}
-                    key={index}
+                    key={resource.session_id}
                     resourceData={resource}
                     hostName={cohort?.host_full_name}
                     setState={setState}

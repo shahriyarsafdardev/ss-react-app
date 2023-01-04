@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Grid, Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { RootState, useSelector } from 'redux/store';
@@ -11,12 +12,15 @@ export default function PathsList() {
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const cohort = useSelector((state: RootState) => state?.cohort?.cohorts[0]);
 
-  const navigateToPath = (slug: string, name: string) => {
-    trackEvent(cohort, 'All Courses Page - Path "Learn More" button clicked', {
-      'Path Name': name
-    });
-    navigate(`${PATH_DASHBOARD.coursePaths.root(slug)}`);
-  };
+  const navigateToPath = useCallback(
+    (slug: string, name: string) => {
+      trackEvent(cohort, 'All Courses Page - Path "Learn More" button clicked', {
+        'Path Name': name
+      });
+      navigate(`${PATH_DASHBOARD.coursePaths.root(slug)}`);
+    },
+    [cohort]
+  );
 
   return (
     <>
@@ -25,6 +29,7 @@ export default function PathsList() {
           <Grid
             direction={{ xs: 'column', sm: 'row' }}
             sx={{ width: '100%', maxWidth: '1280px', display: 'flex', margin: 'auto' }}
+            container
           >
             {paths.map((path) => (
               <Grid item xs={12} sm={6} key={path.slug} className={classes.whiteBoxGrid}>

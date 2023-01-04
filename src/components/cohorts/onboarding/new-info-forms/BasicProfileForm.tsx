@@ -1,6 +1,8 @@
+import { memo } from 'react';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { RootState, useSelector } from 'redux/store';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ProfileForm from './ProfileForm';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
@@ -49,16 +51,12 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-const StyledImage = styled('img')(({ theme }) => ({
+const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
   height: '200px'
 }));
 
-export default function BasicProfileForm({
-  setProfileFormSubmitted
-}: {
-  setProfileFormSubmitted: Function;
-}) {
+function BasicProfileForm({ setProfileFormSubmitted }: { setProfileFormSubmitted: Function }) {
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
@@ -87,3 +85,5 @@ export default function BasicProfileForm({
     </>
   );
 }
+
+export default memo(BasicProfileForm);

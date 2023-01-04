@@ -13,7 +13,8 @@ import {
   firstUpcomingDate,
   SectionContainer,
   zoomTimesPreview,
-  isZoomLinkVisible
+  isZoomLinkVisible,
+  useStyles
 } from './Common';
 import PreReadingRow from './PreReadingRow';
 import CircularProgressbar from './CircularProgressBar';
@@ -42,6 +43,7 @@ const SessionPrereading = ({
   const url_source = url.get('source') || '';
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   const onMark = async (sessionMaterialId: string, value: boolean) => {
     await dispatch(updateMaterialStatus(cohort?.id, activeSession?.id, sessionMaterialId, value));
@@ -54,17 +56,9 @@ const SessionPrereading = ({
 
   const sessionDescription = (innerContent: string) => (
     <Box
-      className="ql-editor"
+      className={`${classes.sessionDescriptionBox} ql-editor`}
       data-testid="session-description"
       dangerouslySetInnerHTML={{ __html: innerContent }}
-      style={{
-        fontWeight: 400,
-        fontSize: '14px',
-        height: 'auto',
-        lineHeight: '28px',
-        padding: '0px 5px 15px 0px',
-        marginRight: '4px'
-      }}
     />
   );
   const preReadingsCompleted = () => list.filter((item) => item.complete === false).length === 0;
@@ -77,12 +71,12 @@ const SessionPrereading = ({
             <>
               <Box
                 data-testid="to-do-header"
-                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
+                sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}
               >
                 {preReadingsCompleted() ? (
                   <>
                     <Box>
-                      <Typography color="text.primary" style={{ fontSize: '18px' }}>
+                      <Typography color="text.primary" sx={{ fontSize: '18px' }}>
                         🎉 You’re all ready to go for{activeSession.custom_name ? ' our ' : ' '}
                         <b>{activeSession.custom_name || `Session ${activeSession?.number}`}</b>
                       </Typography>
@@ -101,7 +95,7 @@ const SessionPrereading = ({
                 ) : (
                   <>
                     <Box>
-                      <Typography color="text.primary" style={{ fontSize: '18px' }}>
+                      <Typography color="text.primary" sx={{ fontSize: '18px' }}>
                         Get Ready for{activeSession.custom_name ? ' our ' : ' '}
                         <b>{activeSession.custom_name || `Session ${activeSession?.number}`}</b>
                       </Typography>
@@ -161,7 +155,7 @@ const SessionPrereading = ({
             </>
           ) : (
             <Box
-              style={{
+              sx={{
                 height: '80%',
                 overflowY: 'scroll'
               }}

@@ -1,5 +1,7 @@
 import { styled } from '@material-ui/core/styles';
 import { Typography, Stack } from '@material-ui/core';
+import { memo } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { CohortType } from './Registration';
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -21,7 +23,7 @@ const HeaderStyle = styled('header')(({ theme }) => ({
   }
 }));
 
-const StyledLogo = styled('img')(({ theme }) => ({
+const StyledLogo = styled(LazyLoadImage)(({ theme }) => ({
   width: '130px',
   position: 'absolute',
   [theme.breakpoints.down('md')]: {
@@ -39,6 +41,7 @@ const StyledSvg = styled('svg')(({ theme }) => ({
     display: 'none'
   }
 }));
+
 const StyledStack = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
   [theme.breakpoints.down('md')]: {
@@ -73,7 +76,7 @@ const StyledSpan = styled(StyledInstructorName)(({ theme }) => ({
   }
 }));
 
-export default function RegistrationNavbar({ cohort }: { cohort?: CohortType }) {
+function RegistrationNavbar({ cohort }: { cohort?: CohortType }) {
   return (
     <HeaderStyle>
       <StyledLogo
@@ -97,3 +100,5 @@ export default function RegistrationNavbar({ cohort }: { cohort?: CohortType }) 
     </HeaderStyle>
   );
 }
+
+export default memo(RegistrationNavbar);

@@ -1,6 +1,7 @@
 import { Typography, Card } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { StyledCheckBox, StyledText } from '../home/MarkCheckbox';
 
 export const StyledShareModal = styled(Card)(() => ({
@@ -36,7 +37,7 @@ export function ShareReading({
       }}
       style={{ justifyContent: 'center' }}
     >
-      <img
+      <LazyLoadImage
         src="https://sphere-public.s3.eu-west-2.amazonaws.com/share_icon.svg"
         alt="share"
         style={{ marginBottom: '5px' }}

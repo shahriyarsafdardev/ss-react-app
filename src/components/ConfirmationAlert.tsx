@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -46,4 +47,4 @@ const ConfirmationAlert = ({
   </Dialog>
 );
 
-export default ConfirmationAlert;
+export default memo(ConfirmationAlert);

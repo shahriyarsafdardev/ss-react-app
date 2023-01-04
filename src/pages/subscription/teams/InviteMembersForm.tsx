@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useSnackbar } from 'notistack5';
+import { memo } from 'react';
 import axios from 'utils/axios';
 import { trackEvent } from 'utils/eventTracking';
 import * as Yup from 'yup';
@@ -150,7 +151,7 @@ function InviteMembersForm({
               color="primary"
               loading={isSubmitting}
               disabled={!isValid || !values.email || !values.fullName || !values.courseID}
-              onClick={() => submitForm()}
+              onClick={submitForm}
             >
               {buttonText()}
             </StyledLoadingButton>
@@ -178,4 +179,4 @@ function InviteMembersForm({
   );
 }
 
-export default InviteMembersForm;
+export default memo(InviteMembersForm);

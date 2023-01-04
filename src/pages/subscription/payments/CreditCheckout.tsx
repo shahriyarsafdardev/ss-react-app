@@ -2,7 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import LoadingScreen from 'components/LoadingScreen';
 import { Stack, Box } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import axios from 'utils/axios';
 import { useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack5';
@@ -13,7 +13,6 @@ import {
   Logo,
   PaymentRootStyle,
   StyledDetailsStack,
-  StyledLoadingButton,
   StyledTypography,
   HeadingTypography,
   useStyles
@@ -32,7 +31,7 @@ export type CheckoutDetails = {
   next_billing_date: string;
 };
 
-export default function CreditCheckout() {
+function CreditCheckout() {
   const url = new URLSearchParams(useLocation().search);
   const teamID = url.get('team_id') || '';
   const amount = url.get('amount') || '';
@@ -63,7 +62,25 @@ export default function CreditCheckout() {
     lead_user_name: ''
   });
 
-  const getCheckoutDetails = async () => {
+  const getRegistrationDetails = useCallback(
+    async (teamName: string) => {
+      axios
+        .get(`team_registrations/get_registration_details.json`, {
+          params: { email, cohort_id: cohortID, team_name: teamName }
+        })
+        .then((res) => {
+          setRegistration(res.data);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', {
+            variant: 'error'
+          });
+        });
+    },
+    [email, cohortID]
+  );
+
+  const getCheckoutDetails = useCallback(async () => {
     await axios
       .get(`team_registrations/get_checkout_details.json`, {
         params: {
@@ -92,22 +109,7 @@ export default function CreditCheckout() {
           getRegistrationDetails(res.data.team_name);
         }
       });
-  };
-
-  const getRegistrationDetails = async (teamName: string) => {
-    axios
-      .get(`team_registrations/get_registration_details.json`, {
-        params: { email, cohort_id: cohortID, team_name: teamName }
-      })
-      .then((res) => {
-        setRegistration(res.data);
-      })
-      .catch((err) => {
-        enqueueSnackbar(err.message || 'Some error occurred!', {
-          variant: 'error'
-        });
-      });
-  };
+  }, [teamID, cohortID, creditAmount, email, getRegistrationDetails]);
 
   useEffect(() => {
     setLoading(true);
@@ -287,3 +289,5 @@ export default function CreditCheckout() {
     </PaymentRootStyle>
   );
 }
+
+export default memo(CreditCheckout);
