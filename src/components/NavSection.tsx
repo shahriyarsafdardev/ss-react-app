@@ -82,19 +82,6 @@ const ListItemIconStyle = styled(ListItemIcon)({
   alignItems: 'center',
   justifyContent: 'center'
 });
-
-const ListItemCount = styled(ListItemText)({
-  background: '#12125C',
-  color: 'white',
-  borderRadius: '2px',
-  padding: '0 5px',
-  minWidth: '24px',
-  minHeight: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '12px'
-});
 // ----------------------------------------------------------------------
 
 type NavItemProps = {

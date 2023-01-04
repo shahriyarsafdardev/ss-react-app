@@ -1,18 +1,7 @@
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import {
-  Box,
-  Grid,
-  Card,
-  Stack,
-  TextField,
-  FormControl,
-  MenuItem,
-  ListItemText,
-  InputLabel,
-  Select as MaterialSelect
-} from '@material-ui/core';
+import { Box, Grid, Card, Stack, TextField } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 
 // hooks
@@ -55,7 +44,7 @@ export default function AlumniForm({
     }
   });
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps, values } = formik;
+  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   return (
     <>

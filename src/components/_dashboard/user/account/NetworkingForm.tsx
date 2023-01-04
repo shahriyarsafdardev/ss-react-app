@@ -53,7 +53,6 @@ function NetworkingForm({
   };
 }) {
   const [strengths, setStrengths] = useState<string[]>();
-  const [interests, setInterests] = useState<string[]>([]);
 
   const formik = useFormik<InitialState>({
     enableReinitialize: true,
@@ -77,7 +76,6 @@ function NetworkingForm({
       .then((res) => res.data)
       .then((payload) => {
         payload?.strengths && setStrengths(payload.strengths);
-        payload?.interests && setInterests(payload.interests);
       });
   }, []);
 
