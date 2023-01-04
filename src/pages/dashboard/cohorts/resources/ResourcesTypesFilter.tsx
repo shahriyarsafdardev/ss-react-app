@@ -1,13 +1,23 @@
 import React from 'react';
 import { Stack } from '@material-ui/core';
-import { StyledToggleButton, ToggleButtonTypography, getDisplayName, getColor } from './Common';
+import {
+  StyledToggleButton,
+  ToggleButtonTypography,
+  getDisplayName,
+  getColor,
+  AdditionalFilters
+} from './Common';
 
 function ResourcesTypesFilter({
   types,
   selectedTypes,
+  materialCategory,
+  sessionNumber,
   handleOnChange
 }: {
   types: String[];
+  materialCategory: String;
+  sessionNumber: Number | null;
   selectedTypes: String[];
   handleOnChange: Function;
 }) {
@@ -48,6 +58,11 @@ function ResourcesTypesFilter({
             </ToggleButtonTypography>
           </StyledToggleButton>
         ))}
+        <AdditionalFilters
+          handleOnChange={handleOnChange}
+          sessionNumber={sessionNumber}
+          materialCategory={materialCategory}
+        />
       </Stack>
     </>
   );

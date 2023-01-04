@@ -25,13 +25,15 @@ function ResourcesTile({
   material,
   isPublic,
   sessionData,
-  hostName
+  hostName,
+  setState
 }: {
   sessionID: string;
   material: SessionMaterial;
   sessionData: any;
   isPublic: boolean;
   hostName?: string;
+  setState: Function;
 }) {
   const cohortID = window.location.pathname.split('/')[2] || '';
   const [checked, setChecked] = useState(material?.complete);
@@ -116,14 +118,22 @@ function ResourcesTile({
           <Stack
             direction="row"
             spacing={2}
-            sx={{ marginRight: '15px', width: '100%' }}
-            onClick={() => handleTileOnClick()}
+            sx={{
+              marginRight: '15px',
+              width: '100%'
+            }}
           >
             {!isMobile && resourceIcon()}
             <Stack>
               <Typography
                 variant="h5"
-                sx={{ color: '#222C36', fontSize: '1.1rem', mb: { xs: '15px', md: '5px' } }}
+                sx={{
+                  color: '#222C36',
+                  fontSize: '1.1rem',
+                  mb: { xs: '15px', md: '5px' },
+                  '&:hover': { textDecoration: 'underline', cursor: 'pointer' }
+                }}
+                onClick={() => handleTileOnClick()}
               >
                 {clipTitle(material.name)}
               </Typography>
@@ -142,25 +152,33 @@ function ResourcesTile({
                         py: 0.2,
                         backgroundColor: '#F6F7F8',
                         borderRadius: '5px',
-                        color: '#334155'
+                        color: '#334155',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => {
+                        console.log('SESSION!');
+                        setState(sessionData?.session_number, 'number');
                       }}
                     >
                       Session {sessionData?.session_number}
                     </Typography>
-                    {material.category === 'Pre-Reading' && (
-                      <Typography
-                        sx={{
-                          fontSize: '13px',
-                          px: 1,
-                          py: 0.2,
-                          backgroundColor: '#F6F7F8',
-                          borderRadius: '5px',
-                          color: '#334155'
-                        }}
-                      >
-                        Pre-Reading
-                      </Typography>
-                    )}
+                    <Typography
+                      sx={{
+                        fontSize: '13px',
+                        px: 1,
+                        py: 0.2,
+                        backgroundColor: '#F6F7F8',
+                        borderRadius: '5px',
+                        color: '#334155',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => {
+                        console.log('CATEGORY!');
+                        setState(material?.category, 'string');
+                      }}
+                    >
+                      {material?.category}
+                    </Typography>
                   </Stack>
                   <Typography
                     variant="subtitle2"

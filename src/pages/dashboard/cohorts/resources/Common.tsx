@@ -88,8 +88,7 @@ export const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
   boxShadow: 'none',
   '&:hover': {
-    boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)',
-    cursor: 'pointer'
+    boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)'
   }
 }));
 
@@ -242,3 +241,66 @@ export const ReachedLimitModal = ({
     </StyledModal>
   );
 };
+
+export function AdditionalFilters({
+  materialCategory,
+  sessionNumber,
+  handleOnChange
+}: {
+  materialCategory: String;
+  sessionNumber: Number | null;
+  handleOnChange: Function;
+}) {
+  return (
+    <>
+      {sessionNumber && (
+        <StyledToggleButton
+          value={`Session ${sessionNumber}`}
+          selected={true}
+          onChange={() => handleOnChange('', 'sessionNumber')}
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: '#F1F1FB',
+              '& .toggleText': {
+                color: '#334155 !important'
+              }
+            },
+            ':hover': {
+              backgroundColor: '#F1F1FB',
+              '& .toggleText': {
+                color: '#334155 !important'
+              }
+            }
+          }}
+        >
+          <ToggleButtonTypography className="toggleText">
+            {`Session ${sessionNumber}`}
+          </ToggleButtonTypography>
+        </StyledToggleButton>
+      )}
+      {materialCategory && (
+        <StyledToggleButton
+          value={materialCategory}
+          selected={true}
+          onChange={() => handleOnChange('', 'materialCategory')}
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: '#F1F1FB',
+              '& .toggleText': {
+                color: '#334155 !important'
+              }
+            },
+            ':hover': {
+              backgroundColor: '#F1F1FB',
+              '& .toggleText': {
+                color: '#334155 !important'
+              }
+            }
+          }}
+        >
+          <ToggleButtonTypography className="toggleText">{materialCategory}</ToggleButtonTypography>
+        </StyledToggleButton>
+      )}
+    </>
+  );
+}

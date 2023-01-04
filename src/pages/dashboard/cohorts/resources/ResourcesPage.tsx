@@ -18,6 +18,8 @@ import { LoadingContainer } from '../code/CodeTab';
 
 export default function ResourcesPage() {
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [category, setCategory] = useState('');
+  const [session, setSession] = useState<number | null>(null);
   const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -61,6 +63,10 @@ export default function ResourcesPage() {
     );
   }
 
+  const setState = (value: any, type: string) => {
+    type === 'string' ? setCategory(value) : setSession(value);
+  };
+
   return (
     <Page title="Sphere | Resources">
       <Helmet>
@@ -76,7 +82,10 @@ export default function ResourcesPage() {
             isPublic={false}
             types={resources_types}
             isSearch={isSearch}
+            setState={setState}
             setIsSearch={setIsSearch}
+            categoryState={category}
+            sessionState={session}
           />
           {!isSearch && (
             <>
@@ -86,6 +95,7 @@ export default function ResourcesPage() {
                   isPublic={false}
                   key={index}
                   resourceData={resource}
+                  setState={setState}
                 />
               ))}
             </>

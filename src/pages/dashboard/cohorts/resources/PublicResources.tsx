@@ -17,6 +17,8 @@ import { ReachedLimitModal } from './Common';
 
 export default function PublicResources() {
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [category, setCategory] = useState('');
+  const [session, setSession] = useState<number | null>(null);
   const { themeStretch } = useSettings();
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const [cohort, setCohort] = useState<Cohort>();
@@ -28,6 +30,10 @@ export default function PublicResources() {
 
   const clearData = () => {
     setIsSearch(false);
+  };
+
+  const setState = (value: any, type: string) => {
+    type === 'string' ? setCategory(value) : setSession(value);
   };
 
   const sendAnalyticsData = (eventName: string, eventData: any) => {
@@ -109,6 +115,9 @@ export default function PublicResources() {
               types={resources_types}
               isSearch={isSearch}
               setIsSearch={setIsSearch}
+              setState={setState}
+              categoryState={category}
+              sessionState={session}
             />
             {!isSearch && (
               <>
@@ -119,6 +128,7 @@ export default function PublicResources() {
                     key={index}
                     resourceData={resource}
                     hostName={cohort?.host_full_name}
+                    setState={setState}
                   />
                 ))}
               </>

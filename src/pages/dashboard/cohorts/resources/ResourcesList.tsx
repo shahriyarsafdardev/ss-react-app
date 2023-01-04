@@ -8,13 +8,15 @@ function ResourcesList({
   sessionMaterials,
   isPublic,
   sessionData,
-  hostName
+  hostName,
+  setState
 }: {
   sessionID: string;
   sessionMaterials: any;
   sessionData: any;
   isPublic: boolean;
   hostName?: string;
+  setState: Function;
 }) {
   return (
     <>
@@ -27,6 +29,7 @@ function ResourcesList({
             sessionID={sessionID}
             material={material}
             sessionData={sessionData}
+            setState={setState}
           />
         ))}
       </Stack>

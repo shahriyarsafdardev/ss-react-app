@@ -11,12 +11,14 @@ function ResourcesSection({
   resourceData,
   handleShowMore,
   isPublic,
-  hostName
+  hostName,
+  setState
 }: {
   resourceData: SessionResource;
   handleShowMore: Function;
   isPublic: boolean;
   hostName?: string;
+  setState: Function;
 }) {
   const theme = useTheme();
   const [more, setMore] = useState(false);
@@ -116,6 +118,7 @@ function ResourcesSection({
         sessionMaterials={
           more === false ? resourceData.materials.slice(0, 3) : resourceData.materials
         }
+        setState={setState}
       />
       {!isDesktop && resourceData.session_materials_count > 3 && <ShowMoreButton />}
     </Box>
