@@ -108,12 +108,7 @@ function ResourcesTile({
     <StyledCard variant="outlined">
       <CardContent sx={{ padding: '20px !important' }}>
         <Stack direction="row" justifyContent="space-between">
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ marginRight: '15px', width: '100%' }}
-            onClick={handleTileOnClick}
-          >
+          <Stack direction="row" spacing={2} sx={{ marginRight: '15px', width: '100%' }}>
             {!isMobile && resourceIcon()}
             <Stack>
               <Typography
