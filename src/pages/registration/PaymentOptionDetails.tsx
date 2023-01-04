@@ -87,7 +87,39 @@ export const IndividualMembershipPaymentDetails = memo(
             Starting at ${Math.floor(price * 0.95)} per year
           </Typography>
         </Stack>
-        {/* <Stack direction="row" alignItems="flex-start">
+        <Stack className={classes.optionsStack} spacing={1}>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>Access to {hostName}’s course</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>Access to Alumni events</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>5% discount on all Sphere courses</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>
+              ${Math.floor(price)} of Sphere Credits per year, which you can use to purchase your
+              next course
+            </Typography>
+          </Stack>
+          {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
@@ -96,6 +128,14 @@ export const IndividualMembershipPaymentDetails = memo(
             End of Year Deal: $200 towards your next Sphere course
           </Typography>
         </Stack> */}
+        </Stack>
+        <Button
+          variant="contained"
+          className={`${classes.submitButton} ${classes.paymentOptionButton}`}
+          onClick={handleSubscriptionPaymentSelected}
+        >
+          Select
+        </Button>
       </Stack>
     );
   }
@@ -132,14 +172,38 @@ export const TeamMembershipPaymentDetails = memo(
             Flexible for your team
           </Typography>
         </Stack>
-        <Stack direction="row" alignItems="flex-start">
-          <StyledCheckIcon
-            src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-            alt="check icon"
-          />
-          <Typography>10%+ discount on all Sphere courses for your team</Typography>
-        </Stack>
-        {/* <Stack direction="row" alignItems="flex-start">
+        <Stack className={classes.optionsStack} spacing={1}>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>Access to {hostName}’s course</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>Access to Alumni events</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>
+              Get a free course of your choosing if you successfully refer your team
+            </Typography>
+          </Stack>
+          <Stack direction="row" alignItems="flex-start">
+            <StyledCheckIcon
+              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+              alt="check icon"
+            />
+            <Typography>10%+ discount on all Sphere courses for your team</Typography>
+          </Stack>
+          {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
             alt="check icon"
@@ -148,6 +212,14 @@ export const TeamMembershipPaymentDetails = memo(
             End of Year Deal: $200 towards your next Sphere course
           </Typography>
         </Stack> */}
+        </Stack>
+        <Button
+          variant="contained"
+          className={`${classes.submitButton} ${classes.paymentOptionButton}`}
+          onClick={handleTeamPackageSelected}
+        >
+          Select
+        </Button>
       </Stack>
     );
   }
