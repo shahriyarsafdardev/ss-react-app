@@ -45,7 +45,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     py: 0.2,
     backgroundColor: '#F6F7F8',
     borderRadius: '5px',
-    color: '#334155'
+    color: '#334155',
+    cursor: 'pointer'
   },
   resourceText: {
     color: '#ffffff',
@@ -67,6 +68,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     color: '#222C36',
     fontSize: '1.1rem',
     marginBottom: '5px',
+    cursor: 'pointer',
     [theme.breakpoints.down('md')]: {
       marginBottom: '15px'
     }
