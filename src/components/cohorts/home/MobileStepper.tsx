@@ -174,7 +174,7 @@ const MobileStepper = ({
           connector={<ColorlibConnector />}
         >
           {sessionSteps?.map((step, index) => (
-            <Step key={step.number} sx={{ minHeight: '50px' }}>
+            <Step key={step.name} sx={{ minHeight: '50px' }}>
               <StepLabel
                 StepIconComponent={(props: StepIconProps) => (
                   <QontoStepIcon {...props} time={firstUpcomingDate(step.times)} key={step.times} />

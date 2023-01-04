@@ -248,7 +248,7 @@ const DesktopStepper = ({
           </Step>
           {sessions &&
             sessions?.map((session) => (
-              <Step key={session.number} sx={{ minWidth: '180px' }}>
+              <Step key={session.name} sx={{ minWidth: '180px' }}>
                 <StepLabel
                   StepIconComponent={(props) => (
                     <QontoStepIcon {...props} testid={`timeline-step-icon-${session?.number}`} />

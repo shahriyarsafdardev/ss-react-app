@@ -88,7 +88,7 @@ const NetworkProfileModal = ({
         enqueueSnackbar('Some error occurred!', { variant: 'error' });
         setIsSubmitting(false);
       });
-  }, [infoObject, user]);
+  }, [infoObject, user, cohort]);
 
   const handleModalClose = () => {
     trackEvent(cohort, 'Networking - Profile Form - Modal Closed');

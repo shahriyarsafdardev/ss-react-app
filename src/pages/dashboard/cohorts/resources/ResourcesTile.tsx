@@ -81,7 +81,7 @@ function ResourcesTile({
       window.open(material?.action_url, '_blank');
       isPublic && localStorage.setItem('resources_opened_count', '1');
     }
-  }, []);
+  }, [isPublic, isLocalLink, isPreReading, material, sessionData, hostName]);
 
   const clipTitle = memoize((mobileView: boolean, title: String) => {
     if (!mobileView && title.length > 95) {

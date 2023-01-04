@@ -61,20 +61,17 @@ export default function UserAccount() {
     }
   }, []);
 
-  const trackEvents = useCallback(
-    (type: string) => {
-      let eventType = '';
-      if (type === 'summary') {
-        eventType = EMAIL_EVENTS.summary;
-      } else if (type === 'direct') {
-        eventType = EMAIL_EVENTS.direct;
-      } else if (type === 'everyone') {
-        eventType = EMAIL_EVENTS.everyone;
-      }
-      trackGenericEvent({}, eventType);
-    },
-    [EMAIL_EVENTS]
-  );
+  const trackEvents = useCallback((type: string) => {
+    let eventType = '';
+    if (type === 'summary') {
+      eventType = EMAIL_EVENTS.summary;
+    } else if (type === 'direct') {
+      eventType = EMAIL_EVENTS.direct;
+    } else if (type === 'everyone') {
+      eventType = EMAIL_EVENTS.everyone;
+    }
+    trackGenericEvent({}, eventType);
+  }, []);
 
   const getTabs = useCallback(
     () =>

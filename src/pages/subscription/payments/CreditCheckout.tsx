@@ -62,6 +62,24 @@ function CreditCheckout() {
     lead_user_name: ''
   });
 
+  const getRegistrationDetails = useCallback(
+    async (teamName: string) => {
+      axios
+        .get(`team_registrations/get_registration_details.json`, {
+          params: { email, cohort_id: cohortID, team_name: teamName }
+        })
+        .then((res) => {
+          setRegistration(res.data);
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', {
+            variant: 'error'
+          });
+        });
+    },
+    [email, cohortID]
+  );
+
   const getCheckoutDetails = useCallback(async () => {
     await axios
       .get(`team_registrations/get_checkout_details.json`, {
@@ -91,25 +109,7 @@ function CreditCheckout() {
           getRegistrationDetails(res.data.team_name);
         }
       });
-  }, [teamID, cohortID, creditAmount, email]);
-
-  const getRegistrationDetails = useCallback(
-    async (teamName: string) => {
-      axios
-        .get(`team_registrations/get_registration_details.json`, {
-          params: { email, cohort_id: cohortID, team_name: teamName }
-        })
-        .then((res) => {
-          setRegistration(res.data);
-        })
-        .catch((err) => {
-          enqueueSnackbar(err.message || 'Some error occurred!', {
-            variant: 'error'
-          });
-        });
-    },
-    [email, cohortID]
-  );
+  }, [teamID, cohortID, creditAmount, email, getRegistrationDetails]);
 
   useEffect(() => {
     setLoading(true);

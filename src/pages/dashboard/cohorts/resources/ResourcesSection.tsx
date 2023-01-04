@@ -31,7 +31,7 @@ function ResourcesSection({
     return Math.floor(
       (resourceData.completed_session_materials_count / resourceData.session_materials_count) * 100
     );
-  }, []);
+  }, [resourceData?.session_materials_count, resourceData?.completed_session_materials_count]);
 
   const showMore = async () => {
     if (resourceData?.session_materials_count !== resourceData?.materials?.length) {

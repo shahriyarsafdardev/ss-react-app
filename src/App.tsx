@@ -74,7 +74,7 @@ export default function App() {
     return () => {
       clearInterval(fetchCohortsTimeline);
     };
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated, user]);
 
   return (
     <ThemeConfig>

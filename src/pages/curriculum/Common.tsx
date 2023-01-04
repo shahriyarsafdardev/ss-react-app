@@ -252,7 +252,7 @@ export const CourseTileHover = memo(
         'Course Name': course?.name
       });
       handleTileClick();
-    }, [course, buttonText]);
+    }, [course, buttonText, handleTileClick]);
 
     return (
       <Stack

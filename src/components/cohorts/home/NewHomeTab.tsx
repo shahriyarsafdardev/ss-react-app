@@ -104,13 +104,13 @@ function NewHomeTab({
     } else {
       setCurrentStep(materialsList.length);
     }
-  }, [activeSession?.materials?.length]);
+  }, [activeSession?.materials]);
 
   useEffect(() => {
     if (typeof activeSession !== 'undefined' && !activeSession.materials) {
       dispatch(getSessionMaterials(activeSession?.id, cohort.id));
     }
-  }, [activeSession]);
+  }, [activeSession, cohort?.id]);
 
   const SupplementaryButton = () => (
     <Button
@@ -321,7 +321,7 @@ function NewHomeTab({
       activeSession,
       `Session ${activeSession?.number}`
     )}!`;
-  }, [activeSession, currentStep]);
+  }, [activeSession, currentStep, list?.length, user?.first_name]);
 
   return (
     <Container sx={{ padding: '0' }}>

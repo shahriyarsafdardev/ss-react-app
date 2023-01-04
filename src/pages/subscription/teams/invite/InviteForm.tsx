@@ -68,30 +68,6 @@ function InviteForm({
 
   const classes = useStyles();
 
-  const handleSubmit = useCallback(
-    async (event: any, name: string, email: string) => {
-      setIsSubmitting(true);
-      event.preventDefault();
-
-      await axios
-        .get(
-          `subscriptions/teams/${teamID}/invite/user_validation.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
-        )
-        .then((res) => {
-          if (res.data.user_has_existing_subscription) {
-            setSubscriptionExist(res.data.user_has_existing_subscription);
-            setPaymentCompleted(true);
-          } else {
-            makePayment(name, email);
-          }
-        })
-        .catch((err) => {
-          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
-        });
-    },
-    [teamID, cohortID]
-  );
-
   const makePayment = useCallback(
     async (name: string, email: string) => {
       const uploadData = new FormData();
@@ -135,6 +111,30 @@ function InviteForm({
       setIsSubmitting(false);
     },
     [cohortID, creditAmount, stripeCustomerID, teamID, elements, stripe]
+  );
+
+  const handleSubmit = useCallback(
+    async (event: any, name: string, email: string) => {
+      setIsSubmitting(true);
+      event.preventDefault();
+
+      await axios
+        .get(
+          `subscriptions/teams/${teamID}/invite/user_validation.json?team_id=${teamID}&cohort_id=${cohortID}&email=${email}`
+        )
+        .then((res) => {
+          if (res.data.user_has_existing_subscription) {
+            setSubscriptionExist(res.data.user_has_existing_subscription);
+            setPaymentCompleted(true);
+          } else {
+            makePayment(name, email);
+          }
+        })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    },
+    [teamID, cohortID, makePayment]
   );
 
   const CardSchema = Yup.object().shape({

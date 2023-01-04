@@ -171,6 +171,50 @@ function Registration() {
     [cohort]
   );
 
+  const createEnrollment = useCallback(
+    async (values: any, user: UserType) => {
+      values = values?.full_name
+        ? {
+            ...values,
+            first_name: values.full_name.split(' ')?.[0] || '',
+            last_name: values.full_name.split(' ')?.[1] || values.full_name.split(' ')?.[0]
+          }
+        : values;
+
+      if (user.enrollment_id && cohort?.id) {
+        try {
+          await axios
+            .post(`/cohorts/${cohort?.id}/enrollments/${user.enrollment_id}/update_profile.json`, {
+              ...values
+            })
+            .then((res) => {
+              const updatedUser = res.data.user;
+              enqueueSnackbar('Application Submitted', { variant: 'success' });
+              updateUserData({ ...user, ...values, slug: updatedUser?.slug });
+              if (!isAuthenticated) {
+                setSegmentUserProperties(updatedUser);
+              }
+              trackRegistrationEvent(
+                'Cohort Registration - Personal Info Page - Details Submitted',
+                {
+                  'Registrant First Name': values.first_name,
+                  'Registrant Last Name': values.last_name,
+                  'Registrant LinkedIn URL': values.linkedin_url,
+                  'Registrant Email': user.email
+                }
+              );
+            });
+        } catch (error) {
+          enqueueSnackbar('Application Failed', { variant: 'error' });
+          console.log(error);
+        }
+      } else {
+        enqueueSnackbar('Invalid page URL', { variant: 'error' });
+      }
+    },
+    [cohort, user]
+  );
+
   const createCompleteEnrollment = useCallback(
     async (email: string, values?: any) => {
       await axios
@@ -219,51 +263,7 @@ function Registration() {
           enqueueSnackbar(error.message || 'Error in registration', { variant: 'error' });
         });
     },
-    [user, cohort]
-  );
-
-  const createEnrollment = useCallback(
-    async (values: any, user: UserType) => {
-      values = values?.full_name
-        ? {
-            ...values,
-            first_name: values.full_name.split(' ')?.[0] || '',
-            last_name: values.full_name.split(' ')?.[1] || values.full_name.split(' ')?.[0]
-          }
-        : values;
-
-      if (user.enrollment_id && cohort?.id) {
-        try {
-          await axios
-            .post(`/cohorts/${cohort?.id}/enrollments/${user.enrollment_id}/update_profile.json`, {
-              ...values
-            })
-            .then((res) => {
-              const updatedUser = res.data.user;
-              enqueueSnackbar('Application Submitted', { variant: 'success' });
-              updateUserData({ ...user, ...values, slug: updatedUser?.slug });
-              if (!isAuthenticated) {
-                setSegmentUserProperties(updatedUser);
-              }
-              trackRegistrationEvent(
-                'Cohort Registration - Personal Info Page - Details Submitted',
-                {
-                  'Registrant First Name': values.first_name,
-                  'Registrant Last Name': values.last_name,
-                  'Registrant LinkedIn URL': values.linkedin_url,
-                  'Registrant Email': user.email
-                }
-              );
-            });
-        } catch (error) {
-          enqueueSnackbar('Application Failed', { variant: 'error' });
-          console.log(error);
-        }
-      } else {
-        enqueueSnackbar('Invalid page URL', { variant: 'error' });
-      }
-    },
-    [cohort, user]
+    [user, cohort, createEnrollment]
   );
 
   useEffect(() => {

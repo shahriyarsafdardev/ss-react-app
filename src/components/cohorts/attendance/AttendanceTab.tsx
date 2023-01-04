@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import LoadingScreen from 'components/LoadingScreen';
 import { EVENT_TYPES, trackPageViewEvent } from 'utils/amplitude';
@@ -42,11 +42,14 @@ const AttendanceTab = () => {
         ?.cohortAttendanceRecord
   );
 
-  const cohortAttendanceRecord = {
-    totalSessions: cohortSessionAttendance?.totalSessions || 0,
-    sessionNames: cohortSessionAttendance?.sessionNames || [],
-    sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
-  };
+  const cohortAttendanceRecord = useMemo(
+    () => ({
+      totalSessions: cohortSessionAttendance?.totalSessions || 0,
+      sessionNames: cohortSessionAttendance?.sessionNames || [],
+      sessionAttendanceRecords: cohortSessionAttendance?.sessionAttendanceRecords || []
+    }),
+    [cohortSessionAttendance]
+  );
 
   useEffect(() => {
     if (cohort && !analyticsSent) {

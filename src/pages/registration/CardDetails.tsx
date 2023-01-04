@@ -69,7 +69,7 @@ function CardDetails({
         enqueueSnackbar('Invalid user credentials', { variant: 'error' });
       }
     },
-    [enrollmentID, customerID, cohort?.id]
+    [enrollmentID, customerID, cohort?.id, setStep]
   );
 
   if (clientSecret === '') {
