@@ -182,6 +182,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
       width: '100%'
     }
   },
+  downloadButton: {
+    color: '#101658',
+    backgroundColor: '#fff',
+    textTransform: 'none',
+    '&:hover': {
+      color: '#fff'
+    }
+  },
   dotStyle: {
     width: '15px',
     height: '15px',
@@ -234,8 +242,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '1200px',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    p: { md: '50px', sm: '25px', xs: '16px' }
+    width: '100%'
   },
   sessionDescriptionBox: {
     fontWeight: 400,
@@ -601,7 +608,7 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
   backgroundColor: '#FAFAFC',
   justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    padding: '30px 25px',
+    padding: '32px 16px',
     width: '100%'
   }
 }));

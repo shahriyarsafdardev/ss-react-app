@@ -87,7 +87,11 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         onComplete={handleSurveyModalCompleted}
         session={lastSession}
       />
-      <Stack spacing={{ md: 5, xs: 3 }} className={classes.offboardingPageContainer}>
+      <Stack
+        spacing={{ md: 5, xs: 3 }}
+        padding={{ md: '50px', sm: '25px', xs: '16px' }}
+        className={classes.offboardingPageContainer}
+      >
         <OffboardingHeader variant="h3">
           Congratulations, you have completed Applied Causal Inference! 🎉
         </OffboardingHeader>
@@ -105,9 +109,8 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
           sx={{ maxWidth: '1200px' }}
         >
           <Button
-            className={classes.linkButton}
+            className={`${classes.linkButton} ${classes.downloadButton}`}
             variant="contained"
-            sx={{ color: '#101658', backgroundColor: '#fff', textTransform: 'none' }}
             onClick={handleDownloadAndShare}
           >
             Download and Share
