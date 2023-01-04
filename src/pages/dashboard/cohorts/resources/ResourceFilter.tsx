@@ -250,7 +250,7 @@ function ResourceFilter({
             </Typography>
           )}
           {isSearch && filteredMaterials?.length !== 0 && (
-            <Stack spacing={2}>
+            <Stack spacing={2} sx={{ paddingBottom: '32px' }}>
               {filteredMaterials?.map((material: any, index: any) => (
                 <ResourcesTile
                   key={material.id}
