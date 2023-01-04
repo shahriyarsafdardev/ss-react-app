@@ -155,10 +155,7 @@ function ResourcesTile({
                         color: '#334155',
                         cursor: 'pointer'
                       }}
-                      onClick={() => {
-                        console.log('SESSION!');
-                        setState(sessionData?.session_number, 'number');
-                      }}
+                      onClick={() => setState(sessionData?.session_number, 'number')}
                     >
                       Session {sessionData?.session_number}
                     </Typography>
@@ -172,10 +169,7 @@ function ResourcesTile({
                         color: '#334155',
                         cursor: 'pointer'
                       }}
-                      onClick={() => {
-                        console.log('CATEGORY!');
-                        setState(material?.category, 'string');
-                      }}
+                      onClick={() => setState(material?.category, 'string')}
                     >
                       {material?.category}
                     </Typography>

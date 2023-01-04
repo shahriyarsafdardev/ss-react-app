@@ -32,7 +32,9 @@ function ResourceFilter({
   isPublic,
   setState,
   categoryState,
-  sessionState
+  sessionState,
+  setSession,
+  setCategory
 }: {
   types: String[];
   isSearch: boolean;
@@ -41,6 +43,8 @@ function ResourceFilter({
   setState: Function;
   categoryState: string;
   sessionState: number | null;
+  setSession: Function;
+  setCategory: Function;
 }) {
   const theme = useTheme();
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -154,6 +158,8 @@ function ResourceFilter({
     setSearchQuery('');
     setSelectedTypes([]);
     setIsSearch(false);
+    setSession(null);
+    setCategory('');
   };
 
   return (

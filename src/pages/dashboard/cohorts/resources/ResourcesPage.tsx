@@ -86,6 +86,8 @@ export default function ResourcesPage() {
             setIsSearch={setIsSearch}
             categoryState={category}
             sessionState={session}
+            setSession={setSession}
+            setCategory={setCategory}
           />
           {!isSearch && (
             <>

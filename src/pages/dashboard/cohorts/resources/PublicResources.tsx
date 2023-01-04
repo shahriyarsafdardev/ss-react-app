@@ -118,6 +118,8 @@ export default function PublicResources() {
               setState={setState}
               categoryState={category}
               sessionState={session}
+              setSession={setSession}
+              setCategory={setCategory}
             />
             {!isSearch && (
               <>
