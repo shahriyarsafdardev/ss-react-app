@@ -12,6 +12,9 @@ import SegmentScript from 'components/SegmentScript';
 import { setSegmentUserProperties } from 'utils/eventTracking';
 import { getReferralsCount } from 'redux/slices/referral';
 import { createBrowserHistory as createHistory } from 'history';
+import axios from 'utils/axios';
+import { useNavigate } from 'react-router-dom';
+import { setSession } from 'utils/jwt';
 import Router from './routes';
 // theme
 import ThemeConfig from './theme';
@@ -27,7 +30,7 @@ import NotistackProvider from './components/NotistackProvider';
 import ThemePrimaryColor from './components/ThemePrimaryColor';
 import ThemeLocalization from './components/ThemeLocalization';
 import { useDispatch } from './redux/store';
-import { getCohorts, getCohortsTimeline } from './redux/slices/cohort';
+import { setCohorts, getCohortsTimeline } from './redux/slices/cohort';
 import { getPaths } from './redux/slices/path';
 
 require('dotenv').config({ path: '../.env' });
@@ -47,8 +50,20 @@ const FETCH_EVENT_DELAY = 10 * 60;
 export default function App() {
   const { isInitialized, isAuthenticated, user } = useAuth();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const history = createHistory();
+
+  const getAllCohorts = () => {
+    const accessToken = window.localStorage.getItem('accessToken');
+    setSession(accessToken);
+    axios.get('/cohorts.json').then((res) => {
+      if (res.data.cohorts.length === 0) {
+        navigate('/all-courses');
+      } else {
+        dispatch(setCohorts(res.data.cohorts));
+      }
+    });
+  };
 
   useEffect(() => {
     history.listen((action: any) => {
@@ -62,7 +77,7 @@ export default function App() {
     initAmplitude();
     let fetchCohortsTimeline: NodeJS.Timer;
     if (isAuthenticated) {
-      dispatch(getCohorts());
+      getAllCohorts();
       dispatch(getPaths());
       dispatch(getReferralsCount());
       fetchCohortsTimeline = setInterval(() => {

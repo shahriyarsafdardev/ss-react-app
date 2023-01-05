@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { groupByIntake } from 'layouts/dashboard/Common';
 import { dispatch } from '../store';
-import { Cohort, Enrollment, OnboardingData, ReferralCode } from '../../@types/cohorts';
+import { Cohort, Enrollment, ReferralCode } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
 
 // utils
@@ -397,6 +397,16 @@ export function getCohorts() {
       setAuthorizationToken();
       const response = await axios.get('/cohorts.json');
       dispatch(slice.actions.getCohortsSuccess(response.data.cohorts));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function setCohorts(cohorts: Cohort[]) {
+  return async () => {
+    try {
+      dispatch(slice.actions.getCohortsSuccess(cohorts));
     } catch (error) {
       console.log(error);
     }
