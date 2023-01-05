@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const CompanyTooltipMessage = memoize((enrollment: Enrollment) => {
+const CompanyTooltipMessage = (enrollment: Enrollment) => {
   let header = `${enrollment.first_name} ${enrollment.last_name} enrolled`;
   if (enrollment.first_name.includes('Unknown')) {
     header = 'This user enrolled';
@@ -156,7 +156,7 @@ const CompanyTooltipMessage = memoize((enrollment: Enrollment) => {
     return `${header} through an individual subscription`;
   }
   return `${header} through ${enrollment?.company_name} ${enrollment?.credit_account_type} subscription`;
-});
+};
 
 export const InfoTooltip = memo(
   ({ title, leftAlign = false }: { title?: any; leftAlign?: Boolean }) => {
@@ -175,31 +175,32 @@ export const InfoTooltip = memo(
   }
 );
 
-export const changeOccur = memoize(
-  (enrollments: any, statuses: any, type: string, account_status: boolean) => {
-    const totalEnrollments =
-      statuses.length > 0
-        ? enrollments.filter(
-            (e: any) =>
-              statuses.includes(e.status) ||
-              (account_status &&
-                (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
-          )
-        : enrollments.filter(
-            (e: { status: string }) => e.status !== 'Partial Application Received'
-          );
-    const startDate = moment().startOf('week').add(1, 'days');
-    const newEnrollments = totalEnrollments.filter(
-      (e: any) => !!e[type] && moment(e[type]) >= startDate
-    );
-    const difference = newEnrollments.length;
-    return {
-      color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
-      total: totalEnrollments.length,
-      difference
-    };
-  }
-);
+export const changeOccur = (
+  enrollments: any,
+  statuses: any,
+  type: string,
+  account_status: boolean
+) => {
+  const totalEnrollments =
+    statuses.length > 0
+      ? enrollments.filter(
+          (e: any) =>
+            statuses.includes(e.status) ||
+            (account_status &&
+              (e.status.split(' ')[0] === 'Awaiting' || e.status.split(' ')[1] === 'Approval'))
+        )
+      : enrollments.filter((e: { status: string }) => e.status !== 'Partial Application Received');
+  const startDate = moment().startOf('week').add(1, 'days');
+  const newEnrollments = totalEnrollments.filter(
+    (e: any) => !!e[type] && moment(e[type]) >= startDate
+  );
+  const difference = newEnrollments.length;
+  return {
+    color: pickColor(statuses.length > 0 ? statuses[0] : 'Application Received'),
+    total: totalEnrollments.length,
+    difference
+  };
+};
 
 export const RegistrationsHeader = memo(
   ({
@@ -784,14 +785,12 @@ export const KeyMetricHighlight = memo(
   }
 );
 
-const classPicker = memoize(
-  (classes: { primary: any; warning: any; success: any }, className: string) => {
-    if (className === 'primary') return classes.primary;
-    if (className === 'warning') return classes.warning;
-    if (className === 'success') return classes.success;
-    return '';
-  }
-);
+const classPicker = (classes: { primary: any; warning: any; success: any }, className: string) => {
+  if (className === 'primary') return classes.primary;
+  if (className === 'warning') return classes.warning;
+  if (className === 'success') return classes.success;
+  return '';
+};
 
 export const ExportToExcel = memo(
   ({ registrations, fileName }: { registrations: any; fileName: string }) => {
