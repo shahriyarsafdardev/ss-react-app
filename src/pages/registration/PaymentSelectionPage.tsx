@@ -22,6 +22,7 @@ function PaymentSelectionPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
+  const paymentLinkOpened = url.get('link_opened') || '';
   const [loading, setLoading] = useState(false);
   const [cohort, setCohort] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
@@ -37,6 +38,14 @@ function PaymentSelectionPage() {
           setLoading(false);
           setSegmentUserProperties(res?.data?.user);
         })
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
+        });
+    }
+    if (paymentLinkOpened !== 'false') {
+      axiosV2
+        .post(`enrollments/${enrollmentID}/payment_opened.json`)
+        .then((res) => {})
         .catch((err) => {
           enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
         });
