@@ -60,7 +60,8 @@ import EnrollmentForm from './EnrollmentForm';
 
 const StyledIcon = styled('img')(() => ({
   width: 24,
-  height: 24
+  height: 24,
+  cursor: 'pointer'
 }));
 
 const StyledStack = styled(Stack)(({ theme }) => ({
