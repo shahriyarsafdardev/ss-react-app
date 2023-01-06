@@ -7,9 +7,11 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Alert } from '@material-ui/core';
+import { Stack, TextField, IconButton, InputAdornment, Alert, Link } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
+import { Link as RouterLink } from 'react-router-dom';
+import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
@@ -63,10 +65,10 @@ export default function RegisterForm() {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+        enqueueSnackbar(error.message, { variant: 'error' });
         if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.message });
           setSubmitting(false);
         }
       }
@@ -127,6 +129,9 @@ export default function RegisterForm() {
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
+          <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.login}>
+            Already have an account?
+          </Link>
 
           <LoadingButton
             fullWidth

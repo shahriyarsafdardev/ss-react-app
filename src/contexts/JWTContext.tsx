@@ -209,7 +209,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await axios.post('/users/register', {
       email,
       password,
       firstName,

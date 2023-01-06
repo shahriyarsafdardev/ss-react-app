@@ -24,7 +24,7 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 
 //
-import { sidebarConfig, learnerSidebarConfig } from './SidebarConfig';
+import { sidebarConfig, learnerSidebarConfig, communitySidebarConfig } from './SidebarConfig';
 import adminToolsConfig from './AdminToolsConfig';
 import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
 
@@ -157,6 +157,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         {user?.type === 'admin' && (
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
         )}
+
+        <NavSection navConfig={communitySidebarConfig} isShow={!isCollapse} />
 
         {mode === 'Learner' && (
           <>

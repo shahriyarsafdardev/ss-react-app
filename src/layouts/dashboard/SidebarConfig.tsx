@@ -41,6 +41,27 @@ export const sidebarConfig = {
   ]
 };
 
+export const communitySidebarConfig = {
+  subheader: 'Community',
+  items: [
+    {
+      title: 'Events',
+      path: PATH_DASHBOARD.general.events,
+      icon: ICONS.contact
+    },
+    {
+      title: 'Messaging',
+      path: PATH_DASHBOARD.general.messaging,
+      icon: ICONS.contact
+    },
+    {
+      title: 'Contact Us',
+      path: PATH_DASHBOARD.general.contactUs,
+      icon: ICONS.contact
+    }
+  ]
+};
+
 export const learnerSidebarConfig = (paths: Path[]) => {
   const object = {
     subheader: 'your learning journey',

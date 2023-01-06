@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 // layouts
 import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
+import PublicDashboardLayout from '../layouts/public-dashboard';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import SphereNavbarLayout from '../layouts/SphereNavbarLayout';
@@ -80,7 +81,15 @@ export default function Router() {
         { path: 'verify', element: <VerifyCode /> }
       ]
     },
-
+    {
+      path: 'community',
+      element: <PublicDashboardLayout />,
+      children: [
+        { path: '/contact-us', element: <PublicContactUs /> },
+        { path: '/messaging', element: <PublicMessaging /> },
+        { path: '/events', element: <PublicMessaging /> }
+      ]
+    },
     // Dashboard Routes
     {
       path: '/',
@@ -98,6 +107,8 @@ export default function Router() {
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
+        { path: '/messaging', element: <PublicMessaging /> },
+        { path: '/events', element: <PublicMessaging /> },
         {
           path: '/monthly-registrations',
           element: (
@@ -503,6 +514,8 @@ const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));
 const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
+const PublicContactUs = Loadable(lazy(() => import('../pages/public/PublicContactUS')));
+const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
 const PathsTab = Loadable(lazy(() => import('../pages/paths/PathsTab')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
