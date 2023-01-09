@@ -69,7 +69,7 @@ export const PATH_DASHBOARD = {
     messaging: path(ROOTS_DASHBOARD, 'messaging')
   },
   community: {
-    events: path(ROOTS_DASHBOARD, 'community/events'),
+    events: path(ROOTS_DASHBOARD, '/community/events'),
     messaging: path(ROOTS_DASHBOARD, '/community/messaging'),
     publicContactUs: path(ROOTS_DASHBOARD, '/community/contact-us')
   },

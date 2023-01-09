@@ -87,7 +87,7 @@ export default function Router() {
       children: [
         { path: '/contact-us', element: <PublicContactUs /> },
         { path: '/messaging', element: <PublicMessaging /> },
-        { path: '/events', element: <PublicMessaging /> }
+        { path: '/events', element: <EventsTab /> }
       ]
     },
     // Dashboard Routes
@@ -108,7 +108,7 @@ export default function Router() {
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
         { path: '/messaging', element: <PublicMessaging /> },
-        { path: '/events', element: <PublicMessaging /> },
+        { path: '/events', element: <EventsTab /> },
         {
           path: '/monthly-registrations',
           element: (
@@ -516,6 +516,7 @@ const Contact = Loadable(lazy(() => import('../pages/Contact')));
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const PublicContactUs = Loadable(lazy(() => import('../pages/public/PublicContactUS')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
+const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
 const PathsTab = Loadable(lazy(() => import('../pages/paths/PathsTab')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
