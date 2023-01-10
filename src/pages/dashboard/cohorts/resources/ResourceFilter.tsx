@@ -20,6 +20,7 @@ import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import LoadingScreen from 'components/LoadingScreen';
 import { useLocation } from 'react-router-dom';
+import axiosV2 from 'utils/axiosV2';
 import ResourcesTypesFilter from './ResourcesTypesFilter';
 import { getDisplayName, AdditionalFilters } from './Common';
 import ResourcesTile from './ResourcesTile';
@@ -122,7 +123,7 @@ function ResourceFilter({
 
     const newTimer = setTimeout(async () => {
       setLoading(true);
-      await axios
+      await axiosV2
         .get(
           `/cohorts/${cohort_id}/resources/search.json?search_query=${query}&selected_types=${types?.join(
             ','

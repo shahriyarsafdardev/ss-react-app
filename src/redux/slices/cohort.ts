@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { groupByIntake } from 'layouts/dashboard/Common';
+import axiosV2 from 'utils/axiosV2';
 import { dispatch } from '../store';
 import { Cohort, Enrollment, ReferralCode } from '../../@types/cohorts';
 import { setSession } from '../../utils/jwt';
@@ -481,7 +482,7 @@ export function markReadingCompleted(
 ) {
   return async () => {
     try {
-      await axios
+      await axiosV2
         .post(`/cohorts/${cohortID}/resources/mark_reading.json`, {
           id: materialID,
           marked
@@ -644,7 +645,7 @@ export function getEnrollments(cohortID: string) {
 export function getCohortResources(cohortID: string) {
   return async () => {
     try {
-      const response = await axios.get(`/cohorts/${cohortID}/resources.json`);
+      const response = await axiosV2.get(`/cohorts/${cohortID}/resources.json`);
       dispatch(
         slice.actions.getCohortResourcesSuccess({
           resources: response.data.resources,
@@ -661,7 +662,7 @@ export function getCohortResources(cohortID: string) {
 export function getCohortSessionResources(cohortID: string, sessionID: string) {
   return async () => {
     try {
-      const response = await axios.get(
+      const response = await axiosV2.get(
         `/cohorts/${cohortID}/resources/see_more.json?cohort_session_id=${sessionID}`
       );
       dispatch(

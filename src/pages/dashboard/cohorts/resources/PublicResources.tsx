@@ -6,9 +6,9 @@ import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useSettings from 'hooks/useSettings';
 
 import LoadingScreen from 'components/LoadingScreen';
-import axios from 'utils/axios';
 import { ResourceContext } from 'contexts/ResourceContext';
 import { useLocation } from 'react-router-dom';
+import axiosV2 from 'utils/axiosV2';
 import { SessionResource, Cohort } from '../../../../@types/cohorts';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
@@ -30,7 +30,7 @@ export default function PublicResources() {
 
   useEffect(() => {
     const getCohortAndResources = async () => {
-      await axios.get(`/cohorts/${cohort_id}/resources/public_resources.json`).then((res) => {
+      await axiosV2.get(`/cohorts/${cohort_id}/resources/public_resources.json`).then((res) => {
         setCohort(res.data.cohort);
         trackEvent(res?.data?.cohort, 'Resources Page - Page Loaded', { Source: source });
         setResources(res.data.resources);
@@ -53,7 +53,7 @@ export default function PublicResources() {
   };
 
   const handleShowMore = async (sessionID: string) => {
-    await axios
+    await axiosV2
       .get(`/cohorts/${cohort_id}/resources/see_more.json?cohort_session_id=${sessionID}`)
       .then((res) => {
         const updated = resources;
