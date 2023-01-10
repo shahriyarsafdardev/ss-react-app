@@ -2,64 +2,23 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { Box, Stack, IconButton } from '@material-ui/core';
 // hooks
 import { useEffect, useState } from 'react';
 import useAuth from 'hooks/useAuth';
 import ZoopAppAnnouncementPopover from 'pages/zoom/ZoopAppAnnouncementPopover';
+import {
+  COLLAPSE_WIDTH,
+  CompanyLogo,
+  HeadText,
+  NavbarRootStyle,
+  ToolbarStyle
+} from 'layouts/Common';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
-
-// ----------------------------------------------------------------------
-
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 102;
-const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
-
-const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: 'none',
-  backdropFilter: 'blur(6px)',
-  WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-  backgroundColor: alpha(theme.palette.background.default, 0.72),
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${DRAWER_WIDTH}px)`
-  }
-}));
-
-const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  minHeight: APPBAR_MOBILE,
-  [theme.breakpoints.up('lg')]: {
-    minHeight: APPBAR_DESKTOP,
-    padding: theme.spacing(0, 5)
-  }
-}));
-
-const CompanyLogo = styled(Box)(({ theme }) => ({
-  margin: '2rem 0 0 2rem',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-    margin: '0'
-  }
-}));
-
-const HeadText = styled(Typography)(({ theme }) => ({
-  fontSize: '1.25rem',
-  textTransform: 'capitalize',
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '1rem'
-  },
-  [theme.breakpoints.down(345)]: {
-    fontSize: '13px !important'
-  },
-  [theme.breakpoints.down(301)]: {
-    fontSize: '10px !important'
-  }
-}));
 
 // ----------------------------------------------------------------------
 
@@ -77,6 +36,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     ...pathSlugs,
     'messaging',
     'home',
+    'events',
     'registrations',
     'cohort_sales',
     'cohort_experiences',
@@ -154,7 +114,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             <img data-testid="company-logo" src="/static/sphere_with_logo.svg" alt="logo" />
           </CompanyLogo>
         )}
-        <RootStyle
+        <NavbarRootStyle
           sx={{
             ...(isCollapse && {
               width: { lg: `${TOP_NAVBAR_WIDTH}` }
@@ -186,7 +146,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               <AccountPopover />
             </Stack>
           </ToolbarStyle>
-        </RootStyle>
+        </NavbarRootStyle>
       </Box>
     </Box>
   );

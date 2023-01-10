@@ -2,21 +2,12 @@ import { Stack, Typography } from '@material-ui/core';
 import { StyledCard } from './Common';
 import EventTime from './EventTime';
 
-export default function EventCard({
-  event,
-  openModal,
-  setEvent
-}: {
-  event: any;
-  openModal: Function;
-  setEvent: Function;
-}) {
+export default function EventCard({ event, setEvent }: { event: any; setEvent: Function }) {
   return (
     <StyledCard
       variant="outlined"
       onClick={() => {
         setEvent(event);
-        openModal(true);
       }}
     >
       <Stack

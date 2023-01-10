@@ -1,19 +1,23 @@
-import Modal from 'components/animate/Modal';
-import { Typography, Stack } from '@material-ui/core';
+import { Typography, Stack, Button } from '@material-ui/core';
 import { StyledModal, Event, StyledButton } from './Common';
 import EventTime from './EventTime';
 
 export default function EventModal({
-  state,
-  setState,
+  setEvent,
   event
 }: {
-  state: boolean;
-  setState: Function;
+  setEvent: Function;
   event: Event | null;
 }) {
   return (
-    <Modal open={state} onClose={() => setState(false)}>
+    <>
+      <Button
+        sx={{ marginBottom: '20px', width: 'fit-content' }}
+        variant="text"
+        onClick={() => setEvent({})}
+      >
+        {'< Back to all Events'}
+      </Button>
       <StyledModal>
         <Stack textAlign="center" spacing={3}>
           <Typography variant="h4">{event?.name}</Typography>
@@ -25,6 +29,6 @@ export default function EventModal({
           </Stack>
         </Stack>
       </StyledModal>
-    </Modal>
+    </>
   );
 }

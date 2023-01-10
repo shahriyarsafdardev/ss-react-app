@@ -8,8 +8,7 @@ import { Event, LoadingContainer } from './Common';
 import { RootState, useSelector, useDispatch } from '../../redux/store';
 
 export default function EventsTab() {
-  const [modalState, setModalState] = useState(false);
-  const [eventDetails, setEventDetails] = useState<Event | null>(null);
+  const [eventDetails, setEventDetails] = useState<Event | any>({});
   const dispatch = useDispatch();
   const { events } = useSelector((state: RootState) => state?.event);
 
@@ -27,15 +26,15 @@ export default function EventsTab() {
 
   return (
     <Container sx={{ paddingBottom: '100px' }}>
-      <EventModal state={modalState} setState={setModalState} event={eventDetails} />
-      {events.map((event) => (
-        <EventCard
-          key={event.name}
-          event={event}
-          openModal={setModalState}
-          setEvent={setEventDetails}
-        />
-      ))}
+      {Object.keys(eventDetails).length > 0 ? (
+        <EventModal setEvent={setEventDetails} event={eventDetails} />
+      ) : (
+        <>
+          {events.map((event) => (
+            <EventCard key={event.name} event={event} setEvent={setEventDetails} />
+          ))}
+        </>
+      )}
     </Container>
   );
 }

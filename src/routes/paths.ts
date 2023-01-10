@@ -59,19 +59,16 @@ export const PATH_DASHBOARD = {
   general: {
     app: path(ROOTS_DASHBOARD, '/'),
     discover: path(ROOTS_DASHBOARD, '/discover'),
-    contactUs: path(ROOTS_DASHBOARD, '/contact-us'),
     allCourses: path(ROOTS_DASHBOARD, '/all-courses'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics'),
     banking: path(ROOTS_DASHBOARD, '/banking'),
-    booking: path(ROOTS_DASHBOARD, '/booking'),
-    events: path(ROOTS_DASHBOARD, 'events'),
-    messaging: path(ROOTS_DASHBOARD, 'messaging')
+    booking: path(ROOTS_DASHBOARD, '/booking')
   },
   community: {
-    events: path(ROOTS_DASHBOARD, '/community/events'),
-    messaging: path(ROOTS_DASHBOARD, '/community/messaging'),
-    publicContactUs: path(ROOTS_DASHBOARD, '/community/contact-us')
+    events: path(ROOTS_DASHBOARD, '/events'),
+    messaging: path(ROOTS_DASHBOARD, '/messaging'),
+    contactUs: path(ROOTS_DASHBOARD, '/contact-us')
   },
   mail: {
     root: path(ROOTS_DASHBOARD, '/mail'),

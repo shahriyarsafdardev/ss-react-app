@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // material
-import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Drawer } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
+import { Drawer } from '@material-ui/core';
 
 // hooks
+import { communitySidebarConfig, SidebarRootStyle, LogoContainer } from 'layouts/Common';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import Scrollbar from '../../components/Scrollbar';
@@ -12,26 +13,10 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 
 //
-import { communitySidebarConfig } from './SidebarConfig';
-
-// ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
-
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    flexShrink: 0,
-    transition: theme.transitions.create('width', {
-      duration: theme.transitions.duration.complex
-    })
-  }
-}));
-
-const LogoContainer = styled(Box)(({ theme }) => ({
-  padding: '2.5rem',
-  display: 'flex'
-}));
+// ----------------------------------------------------------------------
 
 type DashboardSidebarProps = {
   isOpenSidebar: boolean;
@@ -74,7 +59,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   );
 
   return (
-    <RootStyle
+    <SidebarRootStyle
       sx={{
         width: {
           lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH
@@ -122,6 +107,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           {renderContent}
         </Drawer>
       </MHidden>
-    </RootStyle>
+    </SidebarRootStyle>
   );
 }

@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // material
-import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Drawer, Switch } from '@material-ui/core';
+import { alpha } from '@material-ui/core/styles';
+import { Drawer, Switch } from '@material-ui/core';
 // redux
 import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
 
+import {
+  learnerSidebarConfig,
+  communitySidebarConfig,
+  SidebarRootStyle,
+  LogoContainer,
+  StyledBox,
+  ViewSwitcherStyle,
+  SwitcherButtonContainer,
+  LabelStyled,
+  ReferralStyledBox,
+  ViewReferralLinks
+} from 'layouts/Common';
 import {
   getCategories,
   getInstructorCohorts,
@@ -24,7 +36,6 @@ import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 
 //
-import { sidebarConfig, learnerSidebarConfig, communitySidebarConfig } from './SidebarConfig';
 import adminToolsConfig from './AdminToolsConfig';
 import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
 
@@ -32,63 +43,6 @@ import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
-
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    flexShrink: 0,
-    transition: theme.transitions.create('width', {
-      duration: theme.transitions.duration.complex
-    })
-  }
-}));
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  padding: '25px'
-}));
-
-const ReferralStyledBox = styled(Box)(({ theme }) => ({
-  height: '500px',
-  [theme.breakpoints.down('md')]: {
-    height: '700px'
-  }
-}));
-
-const LabelStyled = styled('label')(({ theme }) => ({
-  fontSize: '16px',
-  fontWeight: 700,
-  lineHeight: '20px',
-  '&.blue': {
-    color: theme.palette.primary.main
-  },
-  '&.gray': {
-    color: theme.palette.text.primary
-  }
-}));
-
-const SwitcherButtonContainer = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-around',
-  alignItems: 'center',
-  marginTop: '10px'
-}));
-
-const ViewSwitcherStyle = styled('div')(({ theme }) => ({
-  padding: 18,
-  fontSize: 14,
-  fontWeight: 400,
-  lineHeight: '24px',
-  background: '#F1F1FB',
-  borderRadius: 8
-}));
-
-const ViewReferralLinks = styled(ViewSwitcherStyle)(({ theme }) => ({
-  margin: '30px 20px'
-}));
-
-const LogoContainer = styled(Box)(({ theme }) => ({
-  padding: '2.5rem',
-  display: 'flex'
-}));
 
 type DashboardSidebarProps = {
   isOpenSidebar: boolean;
@@ -190,10 +144,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               isShow={!isCollapse}
             />
           ))}
-
-        {(mode !== 'Learner' || user?.type === 'admin') && (
-          <NavSection navConfig={sidebarConfig} isShow={!isCollapse} />
-        )}
         {user?.type !== 'learner' && (
           <StyledBox>
             <ViewSwitcherStyle>
@@ -235,7 +185,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
   );
 
   return (
-    <RootStyle
+    <SidebarRootStyle
       sx={{
         width: {
           lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH
@@ -283,6 +233,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           {renderContent}
         </Drawer>
       </MHidden>
-    </RootStyle>
+    </SidebarRootStyle>
   );
 }
