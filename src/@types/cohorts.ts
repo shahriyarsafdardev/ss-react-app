@@ -205,6 +205,7 @@ export type OnboardingData = {
   onboarding_questionnaire_step_completed: boolean;
   onboarding_calendar_sync_step_completed: boolean;
   onboarding_checklist_completed: boolean;
+  onboarding_is_any_question_unanswered: boolean;
 };
 
 export type Cohort = {
