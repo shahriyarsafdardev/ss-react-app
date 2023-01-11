@@ -1,7 +1,9 @@
 import { styled } from '@material-ui/core/styles';
 import { Card, Stack, Button, Box } from '@material-ui/core';
+import Icon from '@iconify/react';
 
 export type Event = {
+  id: string;
   name: string;
   time: string;
   description: string;
@@ -16,6 +18,12 @@ export const StyledCard = styled(Card)(({ theme }) => ({
     boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)',
     cursor: 'pointer'
   }
+}));
+
+export const StyledIcon = styled(Icon)(({ theme }) => ({
+  width: '24px',
+  height: '24px',
+  color: '#101658'
 }));
 
 export const StyledTime = styled(Stack)(({ theme }) => ({
