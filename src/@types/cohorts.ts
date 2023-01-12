@@ -231,6 +231,7 @@ export type Cohort = {
   calendar_invite_url: string;
   referral_codes: ReferralCode[];
   start_date: string;
+  end_date: string;
   analytics: any;
   alumni_event: boolean;
   registration_page_url: string;
