@@ -30,7 +30,7 @@ export default function RedirectToCohort() {
 
       if (user.type === 'learner' || mode === 'Learner') {
         if (upcomingCohort.alumni_event) navigationUrl = `/cohorts/${upcomingCohort.id}/peers`;
-        else if (new Date(upcomingCohort.end_date) < new Date())
+        else if (upcomingCohort.end_date && new Date(upcomingCohort.end_date) < new Date())
           navigationUrl = `/cohorts/${upcomingCohort.id}/sessions`;
         else navigationUrl = `/cohorts/${upcomingCohort.id}/home`;
       } else if (user.type === 'expert') {
