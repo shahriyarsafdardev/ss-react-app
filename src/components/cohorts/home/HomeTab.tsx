@@ -119,10 +119,13 @@ const Index = () => {
 
   const homeTabSection = () => (
     <>
-      <CohortSurveyModal
-        surveyModalState={surveyModalState}
-        setSurveyModalState={setSurveyModalState}
-      />
+      {surveyModalState && (
+        <CohortSurveyModal
+          surveyModalState={surveyModalState}
+          setSurveyModalState={setSurveyModalState}
+          cohort={cohort}
+        />
+      )}
       <Container sx={{ marginBottom: '50px' }}>
         <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
         <StyledBox>{displayActiveStep()}</StyledBox>

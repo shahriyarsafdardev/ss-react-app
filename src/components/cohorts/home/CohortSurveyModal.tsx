@@ -7,7 +7,8 @@ import { LoadingButton } from '@material-ui/lab';
 
 import LinearProgress, { linearProgressClasses } from '@material-ui/core/LinearProgress';
 import { Modal } from 'components/animate';
-import { Session } from '../../../@types/cohorts';
+import { useDispatch } from 'redux/store';
+import { updateOnboardingData } from 'redux/slices/cohort';
 
 import useAuth from '../../../hooks/useAuth';
 
@@ -97,10 +98,12 @@ export const SessionNumber = styled('span')(({ theme }) => ({
 
 export default function CohortSurveyModal({
   surveyModalState,
-  setSurveyModalState
+  setSurveyModalState,
+  cohort
 }: {
   surveyModalState: boolean;
   setSurveyModalState: Function;
+  cohort: any;
 }) {
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
@@ -110,14 +113,20 @@ export default function CohortSurveyModal({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const totalQuestions = surveyData.length;
   const [questionID, setQuestionID] = useState('');
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   axios.get(`/cohort_sessions/${sessionId}/survey_questions.json`).then((res) => {
-  //     setSurveyData(res.data);
-  //     setLoading(false);
-  //   });
-  // }, [sessionId]);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/cohorts/${cohort?.id}/unanswered_onboarding_questions.json`)
+      .then((res) => {
+        setSurveyData(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+      });
+  }, [cohort?.id]);
 
   useEffect(() => {
     if (surveyData.length > 0) {
@@ -132,25 +141,30 @@ export default function CohortSurveyModal({
     setResponse(newResponses);
   };
 
-  // const submitResponse = () => {
-  //   setLoading(true);
-
-  //   axios
-  //     .post(`/cohort_sessions/${sessionId}/submit_survey_responses.json`, {
-  //       response,
-  //       current_user_id: user?.id
-  //     })
-  //     .then((res) => {
-  //       setLoading(false);
-  //       enqueueSnackbar(res.data.message, { variant: 'success' });
-  //       onComplete();
-  //     })
-  //     .catch((err) => {
-  //       setLoading(false);
-  //       enqueueSnackbar('Some error occurred!', { variant: 'error' });
-  //       onComplete();
-  //     });
-  // };
+  const submitResponse = () => {
+    setLoading(true);
+    axios
+      .post(`/cohorts/${cohort?.id}/submit_survey_responses.json`, {
+        response,
+        current_user_id: user?.id
+      })
+      .then((res) => {
+        setLoading(false);
+        enqueueSnackbar(res.data.message, { variant: 'success' });
+        setSurveyModalState(false);
+        dispatch(
+          updateOnboardingData(cohort?.id, {
+            ...cohort?.onboarding_data,
+            onboarding_is_any_question_unanswered: false
+          })
+        );
+      })
+      .catch((err) => {
+        setLoading(false);
+        enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        setSurveyModalState(false);
+      });
+  };
 
   const progress = () => {
     if (totalQuestions > 0) {
@@ -161,7 +175,7 @@ export default function CohortSurveyModal({
 
   const handleNext = () => {
     if (currentQuestion + 1 === totalQuestions) {
-      // submitResponse();
+      submitResponse();
       return;
     }
     setCurrentQuestion(currentQuestion + 1);
@@ -205,7 +219,7 @@ export default function CohortSurveyModal({
                 variant="contained"
                 onClick={handleNext}
                 disabled={
-                  surveyData[currentQuestion].mandatory === true &&
+                  surveyData[currentQuestion]?.mandatory === true &&
                   [undefined, ''].includes(response[questionID])
                 }
                 data-testid="btn-next"
