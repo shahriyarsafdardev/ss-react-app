@@ -19,11 +19,11 @@ import SurveyRow from '../sessions/SurveyRow';
 export const StyledContainer = styled(Container)(() => ({
   backgroundColor: 'white',
   borderRadius: '25px',
-  padding: '20px 10px'
+  padding: '40px 10px'
 }));
 
 export const QuestionContainer = styled(Container)(({ theme }) => ({
-  minHeight: '72vh',
+  minHeight: '60vh',
   position: 'relative'
 }));
 
@@ -181,14 +181,23 @@ export default function CohortSurveyModal({
     setCurrentQuestion(currentQuestion + 1);
   };
 
+  const shouldDisableSubmitButton = () => {
+    const question = surveyData[currentQuestion];
+    const res = response[surveyData[currentQuestion]?.id];
+    const isDisabled = question?.mandatory && [undefined, ''].includes(res);
+    if (question?.question_type === 'session-outcome-matrix' && res !== undefined) {
+      return isDisabled && JSON.parse(res).flat() !== question?.options?.outcomes?.length * 2;
+    }
+    return isDisabled;
+  };
+
   return (
     <Modal open={surveyModalState} onClose={() => setSurveyModalState(false)}>
       <StyledContainer>
         {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
-          <QuestionContainer key={questionID}>
+          <QuestionContainer key={`${currentQuestion} ${questionID}`}>
             <Box width="100%" marginBottom={2}>
-              <SessionNumber>Session 1 | </SessionNumber>
-              <SessionTitle>Feedback Survey</SessionTitle>
+              <SessionTitle>Just a few more questions</SessionTitle>
             </Box>
             <ProgressBarContainer>
               <BorderLinearProgress variant="determinate" value={progress()} />
@@ -199,7 +208,7 @@ export default function CohortSurveyModal({
             {surveyData[currentQuestion] && (
               <SurveyRow
                 item={surveyData[currentQuestion]}
-                submitted_answer={response[questionID]}
+                submitted_answer={response[surveyData[currentQuestion]?.id]}
                 onChange={(answer: string) => {
                   setQuestionResponse(answer, questionID);
                 }}

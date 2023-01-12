@@ -95,6 +95,12 @@ const JSON_FORMAT_EXAMPLE = `[
       question_type: 'text-input',
       options: { placeholder: 'Enter here' },
       mandatory: true
+    },
+    {
+      title: 'How effective are you currently at doing each of the following actions and how important are they to you?',
+      question_type: 'session-outcome-matrix',
+      options: { outcomes: ['Outcome 1. Outcome 1. Outcome 1. Outcome 1. Outcome 1.', 'Outcome 2. Outcome 2. Outcome 2. Outcome 2. Outcome 2.']},
+      mandatory: true
     }
   ]`;
 

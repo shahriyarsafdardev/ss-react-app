@@ -15,6 +15,7 @@ import {
 import MultiSelect from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
+import MatrixSelect from './MatrixSelect';
 
 type SurveyRowProps = {
   item: SurveyContent;
@@ -83,7 +84,8 @@ const ANSWER_TYPES = {
   CREATE_MULTI_SELECT: 'create-multi-select',
   SLIDER: 'slider',
   STAR_RATING: 'star-rating',
-  MULTIPLE_SELECT: 'multiple-select'
+  MULTIPLE_SELECT: 'multiple-select',
+  MATRIX_SELECT: 'session-outcome-matrix'
 };
 
 function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
@@ -289,6 +291,15 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
           values={submitted_answer ? submitted_answer.split(',') : []}
           onChange={(e: any) => onChange(_.toString(e))}
           maxLimit={item.maxLimit}
+        />
+      );
+    }
+    if (item.question_type === ANSWER_TYPES.MATRIX_SELECT) {
+      return (
+        <MatrixSelect
+          options={item.options?.outcomes}
+          onChange={onChange}
+          submitted_answer={submitted_answer}
         />
       );
     }
