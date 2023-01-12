@@ -141,7 +141,7 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
             {surveyData[currentQuestion] && (
               <SurveyRow
                 item={surveyData[currentQuestion]}
-                submitted_answer={response[questionID]}
+                submitted_answer={response[surveyData[currentQuestion]?.id]}
                 onChange={(answer: string) => {
                   setQuestionResponse(answer, questionID);
                 }}

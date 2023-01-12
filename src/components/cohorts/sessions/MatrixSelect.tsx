@@ -51,7 +51,7 @@ export default function MatrixSelect({
     answerIndex: number;
   }) => (
     <RadioGroup
-      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}
+      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'nowrap' }}
       onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
       defaultValue={answers[outcomeIndex][answerIndex]}
     >
