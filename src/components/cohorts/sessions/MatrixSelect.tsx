@@ -9,10 +9,13 @@ import {
   Stack,
   RadioGroup,
   FormControlLabel,
-  Radio
+  Radio,
+  useTheme,
+  useMediaQuery
 } from '@material-ui/core';
 
 import React, { memo } from 'react';
+import { StyledNote, StyledTableCell } from './Common';
 
 export default function MatrixSelect({
   options,
@@ -23,6 +26,8 @@ export default function MatrixSelect({
   onChange: Function;
   submitted_answer: string;
 }) {
+  const theme = useTheme();
+  const isSmallDesktop = useMediaQuery(theme.breakpoints.down(1400));
   let answers: string[][] = Array.from(Array(options?.length), () => []);
   if (submitted_answer !== undefined) {
     answers = JSON.parse(submitted_answer);
@@ -66,9 +71,7 @@ export default function MatrixSelect({
   const OptionRow = memo(
     ({ key, outcomeIndex, option }: { key: number; outcomeIndex: number; option: string }) => (
       <TableRow hover key={key} tabIndex={-1} sx={{ padding: '24px 0px' }}>
-        <TableCell style={{ width: '33%' }} align="left">
-          {option}
-        </TableCell>
+        <StyledTableCell align="left">{option}</StyledTableCell>
         <TableCell style={{ width: '33%' }}>
           <RadioGroupRating outcomeIndex={outcomeIndex} answerIndex={0} />
         </TableCell>
@@ -80,35 +83,40 @@ export default function MatrixSelect({
   );
 
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {TABLE_HEAD.map((headCell) => (
-              <TableCell
-                key={headCell.id}
-                align="center"
-                sx={{ backgroundColor: 'rgba(77, 77, 205, 0.08)' }}
-              >
-                <Stack spacing={1}>
-                  <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#000' }}>
-                    {headCell.label}
-                  </Typography>
-                  <Typography sx={{ fontWeight: 400, fontSize: '14px', color: '#637381' }}>
-                    {headCell.description}
-                  </Typography>
-                </Stack>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody id="sales-list-container" data-test-id="billing-history-table">
-          {options &&
-            options?.map((option: string, index) => (
-              <OptionRow key={index} outcomeIndex={index} option={option} />
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {isSmallDesktop && (
+        <StyledNote>Note: Please scroll to the right to see all questions.</StyledNote>
+      )}
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {TABLE_HEAD.map((headCell) => (
+                <TableCell
+                  key={headCell.id}
+                  align="center"
+                  sx={{ backgroundColor: 'rgba(77, 77, 205, 0.08)' }}
+                >
+                  <Stack spacing={1}>
+                    <Typography sx={{ fontWeight: 600, fontSize: '14px', color: '#000' }}>
+                      {headCell.label}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 400, fontSize: '14px', color: '#637381' }}>
+                      {headCell.description}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody id="sales-list-container" data-test-id="billing-history-table">
+            {options &&
+              options?.map((option: string, index) => (
+                <OptionRow key={index} outcomeIndex={index} option={option} />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

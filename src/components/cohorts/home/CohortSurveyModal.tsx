@@ -23,8 +23,11 @@ export const StyledContainer = styled(Container)(() => ({
 }));
 
 export const QuestionContainer = styled(Container)(({ theme }) => ({
-  minHeight: '60vh',
-  position: 'relative'
+  minHeight: '56vh',
+  position: 'relative',
+  [theme.breakpoints.down('md')]: {
+    padding: '0px !important'
+  }
 }));
 
 export const ProgressBarContainer = styled(Box)(() => ({
@@ -184,9 +187,12 @@ export default function CohortSurveyModal({
   const shouldDisableSubmitButton = () => {
     const question = surveyData[currentQuestion];
     const res = response[surveyData[currentQuestion]?.id];
-    const isDisabled = question?.mandatory && [undefined, ''].includes(res);
+    let isDisabled = question?.mandatory && [undefined, ''].includes(res);
     if (question?.question_type === 'session-outcome-matrix' && res !== undefined) {
-      return isDisabled && JSON.parse(res).flat() !== question?.options?.outcomes?.length * 2;
+      isDisabled =
+        isDisabled ||
+        JSON.parse(res)?.flat()?.filter(Boolean)?.length !==
+          question?.options?.outcomes?.length * 2;
     }
     return isDisabled;
   };
@@ -196,25 +202,26 @@ export default function CohortSurveyModal({
       <StyledContainer>
         {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
           <QuestionContainer key={`${currentQuestion} ${questionID}`}>
-            <Box width="100%" marginBottom={2}>
-              <SessionTitle>Just a few more questions</SessionTitle>
+            <Box paddingBottom={{ xs: '100px', md: '50px' }}>
+              <Box width="100%" marginBottom={2}>
+                <SessionTitle>Just a few more questions</SessionTitle>
+              </Box>
+              <ProgressBarContainer>
+                <BorderLinearProgress variant="determinate" value={progress()} />
+                <CurrentStep>
+                  {currentQuestion + 1}/{totalQuestions}
+                </CurrentStep>
+              </ProgressBarContainer>
+              {surveyData[currentQuestion] && (
+                <SurveyRow
+                  item={surveyData[currentQuestion]}
+                  submitted_answer={response[surveyData[currentQuestion]?.id]}
+                  onChange={(answer: string) => {
+                    setQuestionResponse(answer, questionID);
+                  }}
+                />
+              )}
             </Box>
-            <ProgressBarContainer>
-              <BorderLinearProgress variant="determinate" value={progress()} />
-              <CurrentStep>
-                {currentQuestion + 1}/{totalQuestions}
-              </CurrentStep>
-            </ProgressBarContainer>
-            {surveyData[currentQuestion] && (
-              <SurveyRow
-                item={surveyData[currentQuestion]}
-                submitted_answer={response[surveyData[currentQuestion]?.id]}
-                onChange={(answer: string) => {
-                  setQuestionResponse(answer, questionID);
-                }}
-              />
-            )}
-
             <ButtonsContainer>
               <StyledButton
                 variant="outlined"
@@ -227,10 +234,7 @@ export default function CohortSurveyModal({
               <StyledButton
                 variant="contained"
                 onClick={handleNext}
-                disabled={
-                  surveyData[currentQuestion]?.mandatory === true &&
-                  [undefined, ''].includes(response[questionID])
-                }
+                disabled={shouldDisableSubmitButton()}
                 data-testid="btn-next"
               >
                 {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}

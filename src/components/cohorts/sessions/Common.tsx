@@ -1,4 +1,4 @@
-import { Typography, Card } from '@material-ui/core';
+import { Typography, Card, TableCell } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import { styled } from '@material-ui/core/styles';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -20,6 +20,22 @@ export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '100%'
   }
+}));
+
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  width: '33%',
+  minWidth: '200px',
+  [theme.breakpoints.down('md')]: {
+    minWidth: '180px'
+  }
+}));
+
+export const StyledNote = styled(Typography)(({ theme }) => ({
+  fontSize: '16px',
+  lineHeight: '22px',
+  color: '#000',
+  fontWeight: 700,
+  marginBottom: '24px'
 }));
 
 export function ShareReading({
