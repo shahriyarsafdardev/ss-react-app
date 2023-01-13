@@ -42,7 +42,11 @@ export default function Payment() {
         .get(endpoint)
         .then((res) => {
           setLink(res.data);
-          setLoading(false);
+          if (isUserPayment) {
+            window.location.href = `/registration/payment-options?cohort_id=${res.data?.cohort_id}&enrollment_id=${res.data?.enrollment_id}`;
+          } else {
+            setLoading(false);
+          }
         })
         .catch((error: any) => {
           enqueueSnackbar(error.message, { variant: 'error' });
