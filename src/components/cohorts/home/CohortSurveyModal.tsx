@@ -16,10 +16,13 @@ import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import SurveyRow from '../sessions/SurveyRow';
 
-export const StyledContainer = styled(Container)(() => ({
+export const StyledContainer = styled(Container)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '25px',
-  padding: '40px 10px'
+  padding: '40px 10px',
+  [theme.breakpoints.down('md')]: {
+    padding: '40px 25px'
+  }
 }));
 
 export const QuestionContainer = styled(Container)(({ theme }) => ({
@@ -75,8 +78,7 @@ export const ButtonsContainer = styled(Box)(({ theme }) => ({
 
   [theme.breakpoints.down('md')]: {
     display: 'flex',
-    flexDirection: 'column',
-    padding: '0 15px'
+    flexDirection: 'column'
   }
 }));
 

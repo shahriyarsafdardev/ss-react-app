@@ -14,10 +14,13 @@ import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import SurveyRow from './SurveyRow';
 
-export const StyledContainer = styled(Container)(() => ({
+export const StyledContainer = styled(Container)(({ theme }) => ({
   backgroundColor: 'white',
   borderRadius: '25px',
-  padding: '20px 10px'
+  padding: '20px 10px',
+  [theme.breakpoints.down('md')]: {
+    padding: '20px 25px'
+  }
 }));
 
 export const QuestionContainer = styled(Container)(({ theme }) => ({

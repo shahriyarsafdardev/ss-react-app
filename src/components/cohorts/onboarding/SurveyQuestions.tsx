@@ -35,8 +35,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('md')]: {
     display: 'flex',
-    flexDirection: 'column',
-    padding: '0 15px'
+    flexDirection: 'column'
   }
 }));
 
