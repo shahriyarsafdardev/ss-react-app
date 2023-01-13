@@ -17,6 +17,7 @@ import NewHomeTab from './NewHomeTab';
 import GetReadyPage from './GetReadyPage';
 import WelcomePage from './WelcomePage';
 import OffboardingPage from './OffboardingPage';
+import CohortSurveyModal from './CohortSurveyModal';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: '2rem',
@@ -31,6 +32,7 @@ const Index = () => {
   const [activeSession, setActiveSession] = useState<Session | undefined>(undefined);
   const [analyticsSent, setAnalyticsSent] = useState(false);
   const [activeStepper, setActiveStepper] = useState(0);
+  const [surveyModalState, setSurveyModalState] = useState(false);
   const url = new URLSearchParams(useLocation().search);
   const paramStep = url.get('active_step');
   const cohort_id = window.location.pathname.split('/')[2] || '';
@@ -56,6 +58,12 @@ const Index = () => {
 
   useEffect(() => {
     if (cohort) {
+      if (
+        onboarding_data?.onboarding_questionnaire_step_completed &&
+        onboarding_data?.onboarding_is_any_question_unanswered
+      ) {
+        setSurveyModalState(true);
+      }
       if (
         !onboarding_data?.onboarding_messaging_step_completed ||
         !onboarding_data?.onboarding_questionnaire_step_completed ||
@@ -110,10 +118,19 @@ const Index = () => {
   }, [activeStepper, cohort, activeSession, sessions]);
 
   const homeTabSection = () => (
-    <Container sx={{ marginBottom: '50px' }}>
-      <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
-      <StyledBox>{displayActiveStep()}</StyledBox>
-    </Container>
+    <>
+      {surveyModalState && (
+        <CohortSurveyModal
+          surveyModalState={surveyModalState}
+          setSurveyModalState={setSurveyModalState}
+          cohort={cohort}
+        />
+      )}
+      <Container sx={{ marginBottom: '50px' }}>
+        <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
+        <StyledBox>{displayActiveStep()}</StyledBox>
+      </Container>
+    </>
   );
 
   if (!cohort || typeof sessions === 'undefined') {

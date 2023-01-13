@@ -35,8 +35,7 @@ const ButtonsContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.down('md')]: {
     display: 'flex',
-    flexDirection: 'column',
-    padding: '0 15px'
+    flexDirection: 'column'
   }
 }));
 
@@ -122,8 +121,21 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
     setCurrentQuestion(currentQuestion - 1);
   };
 
+  const shouldDisableSubmitButton = () => {
+    const question = surveyData[currentQuestion];
+    const res = response[surveyData[currentQuestion]?.id];
+    let isDisabled = question?.mandatory && [undefined, ''].includes(res);
+    if (question?.question_type === 'session-outcome-matrix' && res !== undefined) {
+      isDisabled =
+        isDisabled ||
+        JSON.parse(res)?.flat()?.filter(Boolean)?.length !==
+          question?.options?.outcomes?.length * 2;
+    }
+    return isDisabled;
+  };
+
   return (
-    <Stack width={{ xs: '100%', md: '80%' }}>
+    <Stack width={{ xs: '100%', md: '80%' }} sx={{ height: '100%', overflow: 'auto' }}>
       {surveyData && !loading && Object.keys(surveyData).length > 0 ? (
         <StyledContainer>
           <Box key={questionID}>
@@ -141,7 +153,7 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
             {surveyData[currentQuestion] && (
               <SurveyRow
                 item={surveyData[currentQuestion]}
-                submitted_answer={response[questionID]}
+                submitted_answer={response[surveyData[currentQuestion]?.id]}
                 onChange={(answer: string) => {
                   setQuestionResponse(answer, questionID);
                 }}
@@ -162,10 +174,7 @@ function SurveyQuestions({ setInvitePeersModalState }: { setInvitePeersModalStat
                 variant="contained"
                 onClick={handleNext}
                 sx={{ ml: { xs: 0, md: 2 } }}
-                disabled={
-                  surveyData[currentQuestion].mandatory === true &&
-                  response[questionID] === undefined
-                }
+                disabled={shouldDisableSubmitButton()}
                 data-testid="btn-next"
               >
                 {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
