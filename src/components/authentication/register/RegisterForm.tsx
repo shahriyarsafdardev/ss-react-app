@@ -7,7 +7,16 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Alert, Link } from '@material-ui/core';
+import {
+  Stack,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+  Alert,
+  Link,
+  Box
+} from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { Link as RouterLink } from 'react-router-dom';
@@ -22,8 +31,8 @@ import { MIconButton } from '../../@material-extend';
 type InitialValues = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  confirmPassword: string;
   afterSubmit?: string;
 };
 
@@ -34,26 +43,25 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('New Password is required'),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
   });
 
   const formik = useFormik<InitialValues>({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      fullName: '',
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await register(values.email, values.password, values.firstName, values.lastName);
+        await register(values.email, values.password, values.fullName);
         enqueueSnackbar('Register success', {
           variant: 'success',
           action: (key) => (
@@ -80,68 +88,92 @@ export default function RegisterForm() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
+        <Stack spacing={4} alignItems="center">
+          <div style={{ textAlign: 'center' }}>
+            <Typography variant="h5">Looks like you’re not logged into Sphere!</Typography>
+            <Typography variant="h5">
+              Please create an account or log in to add this event to your calendar.
+            </Typography>
+          </div>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
-
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
-              label="First name"
-              {...getFieldProps('firstName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
+              label="Full Name"
+              {...getFieldProps('fullName')}
+              error={Boolean(touched.fullName && errors.fullName)}
+              helperText={touched.fullName && errors.fullName}
             />
 
             <TextField
               fullWidth
-              label="Last name"
-              {...getFieldProps('lastName')}
-              error={Boolean(touched.lastName && errors.lastName)}
-              helperText={touched.lastName && errors.lastName}
+              autoComplete="username"
+              type="email"
+              label="Email"
+              {...getFieldProps('email')}
+              error={Boolean(touched.email && errors.email)}
+              helperText={touched.email && errors.email}
             />
           </Stack>
-
-          <TextField
-            fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-          />
-
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
-          />
-          <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.login}>
-            Already have an account?
-          </Link>
-
+          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              fullWidth
+              autoComplete="on"
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              {...getFieldProps('password')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                      <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+              error={Boolean(touched.password && errors.password)}
+              helperText={touched.password && errors.password}
+            />
+            <TextField
+              {...getFieldProps('confirmPassword')}
+              fullWidth
+              autoComplete="on"
+              type={showPassword ? 'text' : 'password'}
+              label="Confirm Password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                      <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+              helperText={touched.confirmPassword && errors.confirmPassword}
+            />
+          </Stack>
           <LoadingButton
             fullWidth
             size="large"
             type="submit"
             variant="contained"
             loading={isSubmitting}
+            sx={{ borderRadius: '35px' }}
           >
             Register
           </LoadingButton>
+          <Box>
+            Already have an account?&nbsp;
+            <Link
+              component={RouterLink}
+              variant="subtitle2"
+              to={PATH_AUTH.login}
+              sx={{ textDecoration: 'underline' }}
+            >
+              Sign in here
+            </Link>
+          </Box>
         </Stack>
       </Form>
     </FormikProvider>

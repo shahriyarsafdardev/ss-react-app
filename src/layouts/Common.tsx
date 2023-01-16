@@ -151,17 +151,12 @@ const ICONS = {
 };
 
 export const communitySidebarConfig = {
-  subheader: 'Community',
+  subheader: 'Data & ML Community',
   items: [
     {
       title: 'Events',
       path: PATH_DASHBOARD.community.events,
-      icon: ICONS.contact
-    },
-    {
-      title: 'Messaging',
-      path: PATH_DASHBOARD.community.messaging,
-      icon: ICONS.contact
+      icon: ICONS.calendar
     },
     {
       title: 'Contact Us',

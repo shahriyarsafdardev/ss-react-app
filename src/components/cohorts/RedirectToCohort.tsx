@@ -53,7 +53,7 @@ export default function RedirectToCohort() {
       return <LoadingScreen />;
     }
   } else {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to="/events" replace />;
   }
 
   return <Navigate to={navigationUrl} replace />;
