@@ -42,6 +42,12 @@ const Index = () => {
   const { sessions } = cohort || [];
   const { onboarding_data } = cohort || {};
   const classes = useStyles();
+  const onboardingCompleted =
+    onboarding_data?.onboarding_messaging_step_completed &&
+    onboarding_data?.onboarding_questionnaire_step_completed &&
+    onboarding_data?.onboarding_referral_step_completed &&
+    onboarding_data?.onboarding_calendar_sync_step_completed &&
+    onboarding_data?.onboarding_networking_step_completed;
 
   useEffect(() => {
     if (cohort && !analyticsSent) {
@@ -64,13 +70,7 @@ const Index = () => {
       ) {
         setSurveyModalState(true);
       }
-      if (
-        !onboarding_data?.onboarding_messaging_step_completed ||
-        !onboarding_data?.onboarding_questionnaire_step_completed ||
-        !onboarding_data?.onboarding_referral_step_completed ||
-        !onboarding_data?.onboarding_calendar_sync_step_completed ||
-        !onboarding_data?.onboarding_networking_step_completed
-      ) {
+      if (!onboardingCompleted) {
         setActiveStepper(0);
       } else if (new Date(cohort?.start_date) > new Date() && paramStep === '1') {
         setActiveStepper(1);
@@ -145,6 +145,7 @@ const Index = () => {
     <Page title="Sphere | Homepage" className={classes.homePage}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
+        onboardingCompleted &&
         cohort?.code === 'ACI' &&
         cohort?.certificate_links?.length > 0 ? (
           <OffboardingPage cohort={cohort} />
