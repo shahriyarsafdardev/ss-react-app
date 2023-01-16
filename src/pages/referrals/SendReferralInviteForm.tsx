@@ -7,9 +7,12 @@ import axiosV2 from 'utils/axiosV2';
 import { useSnackbar } from 'notistack5';
 import { RootState, useDispatch, useSelector } from 'redux/store';
 import { updateTotalReferralsCount } from 'redux/slices/referral';
+import copy from 'clipboard-copy';
+import useAuth from 'hooks/useAuth';
 import { useStyles, StyledLoadingButton } from './Common';
 
 export default function SendReferralInviteForm() {
+  const { user } = useAuth();
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -19,6 +22,16 @@ export default function SendReferralInviteForm() {
   const ValidationSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
+
+  const referralLink = () =>
+    cohort?.registration_page_url
+      ? `${cohort?.registration_page_url}/referrer=${user?.slug}`
+      : 'https://www.getsphere.com';
+
+  const handleCopyReferralLink = () => {
+    copy(referralLink());
+    enqueueSnackbar('Copied to clipboard!', { variant: 'success' });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -54,34 +67,49 @@ export default function SendReferralInviteForm() {
   const { values, isSubmitting, touched, errors, getFieldProps, isValid, handleSubmit } = formik;
 
   return (
-    <Card className={classes.formCard}>
-      <FormikProvider value={formik}>
-        <Form>
-          <Stack alignItems="center" direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField
-              label="Email"
-              fullWidth
-              {...getFieldProps('email')}
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
-            />
-            <StyledLoadingButton
-              data-testid="purchase-button"
-              type="submit"
-              variant="contained"
-              color="primary"
-              loading={isSubmitting}
-              disabled={!isValid || !values.email}
-              onClick={() => {
-                handleSubmit();
-                setIsFormSubmit(true);
-              }}
-            >
-              Send referral
-            </StyledLoadingButton>
-          </Stack>
-        </Form>
-      </FormikProvider>
-    </Card>
+    <>
+      <Card className={classes.formCard}>
+        <Stack alignItems="center" direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          <TextField fullWidth value={referralLink()} />
+          <StyledLoadingButton
+            data-testid="copy-referral-link-button"
+            variant="contained"
+            color="primary"
+            onClick={handleCopyReferralLink}
+          >
+            Copy link
+          </StyledLoadingButton>
+        </Stack>
+      </Card>
+      <Card className={classes.formCard}>
+        <FormikProvider value={formik}>
+          <Form>
+            <Stack alignItems="center" direction={{ xs: 'column', md: 'row' }} spacing={2}>
+              <TextField
+                label="Email"
+                fullWidth
+                {...getFieldProps('email')}
+                error={Boolean(touched.email && errors.email)}
+                helperText={touched.email && errors.email}
+              />
+              <StyledLoadingButton
+                data-testid="submit-referral-form-button"
+                type="submit"
+                variant="contained"
+                color="primary"
+                loading={isSubmitting}
+                disabled={!isValid || !values.email}
+                onClick={() => {
+                  handleSubmit();
+                  setIsFormSubmit(true);
+                }}
+              >
+                Send referral
+              </StyledLoadingButton>
+            </Stack>
+          </Form>
+        </FormikProvider>
+      </Card>
+    </>
   );
 }

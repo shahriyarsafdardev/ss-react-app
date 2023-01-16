@@ -12,6 +12,7 @@ import ReferralHeader from './ReferralHeader';
 import ReferralsTab from './ReferralsTab';
 import BalanceHistoryTab from './BalanceHistoryTab';
 import ReferralsPageNavbar from './ReferralsPageNavbar';
+import FAQsTab from './FAQsTab';
 
 export default function ReferralsPage() {
   const { themeStretch } = useSettings();
@@ -39,6 +40,9 @@ export default function ReferralsPage() {
     }
     if (activeTab === 2) {
       return <BalanceHistoryTab />;
+    }
+    if (activeTab === 3) {
+      return <FAQsTab />;
     }
     return <ReferralsTab />;
   };
