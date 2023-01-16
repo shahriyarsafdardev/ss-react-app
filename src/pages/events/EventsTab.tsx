@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Container, Grid } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { useLocation } from 'react-router-dom';
 import { getEvents, getAllEvents } from 'redux/slices/event';
 import Page from 'components/Page';
 import { Event } from '../../@types/events';
-import EventCard from './EventCard';
 import EventDetails from './EventDetails';
 import { LoadingContainer } from './Common';
 import { RootState, useSelector, useDispatch } from '../../redux/store';
@@ -25,11 +24,11 @@ export default function EventsTab() {
   }, []);
 
   useEffect(() => {
-    if (defaultEventID && (upcomingEvents.length > 0 || pastEvents.length > 0)) {
-      let targetEvent = upcomingEvents.filter((event: Event) => event.id === defaultEventID)[0];
+    if (defaultEventID && (upcomingEvents?.length > 0 || pastEvents?.length > 0)) {
+      let targetEvent = upcomingEvents?.filter((event: Event) => event.id === defaultEventID)[0];
       if (!targetEvent) {
         // eslint-disable-next-line prefer-destructuring
-        targetEvent = pastEvents.filter((event: Event) => event.id === defaultEventID)[0];
+        targetEvent = pastEvents?.filter((event: Event) => event.id === defaultEventID)[0];
       }
       setEventDetails(targetEvent);
     } else {
@@ -41,7 +40,7 @@ export default function EventsTab() {
     dispatch(getAllEvents(category));
   };
 
-  if (!upcomingEvents.length && !pastEvents.length) {
+  if (!upcomingEvents?.length && !pastEvents?.length) {
     return (
       <LoadingContainer>
         <LoadingScreen />

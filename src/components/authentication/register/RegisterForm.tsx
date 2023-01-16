@@ -36,7 +36,7 @@ type InitialValues = {
   afterSubmit?: string;
 };
 
-export default function RegisterForm() {
+export default function RegisterForm({ setFormType }: { setFormType: Function }) {
   const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -70,6 +70,7 @@ export default function RegisterForm() {
             </MIconButton>
           )
         });
+        setFormType('registrationSuccess');
         if (isMountedRef.current) {
           setSubmitting(false);
         }

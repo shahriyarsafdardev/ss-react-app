@@ -7,7 +7,6 @@ import { atcb_action } from 'add-to-calendar-button';
 import moment from 'moment';
 import ReactPlayer from 'react-player';
 import { RegisterForm } from 'components/authentication/register';
-
 import {
   Typography,
   Stack,
@@ -32,6 +31,7 @@ import {
   EventHosts,
   formatTime,
   StyledDetailsImage,
+  ModalText,
   CALENDAR,
   PUBLIC,
   PLATEFORM
@@ -41,7 +41,7 @@ import MenuPopover from '../../components/MenuPopover';
 export default function EventDetails({ setEvent, event }: { setEvent: Function; event: Event }) {
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  const { isAuthenticated, user } = useAuth();
+  const { setIsAuthenticated, user } = useAuth();
   const [modalState, setModalState] = useState(false);
   const [formType, setFormType] = useState('');
   const menuRef = useRef(null);
@@ -88,7 +88,7 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
   };
 
   const handleFreeInvite = () => {
-    if (isAuthenticated) {
+    if (user?.type) {
       setOpen(true);
     } else {
       setFormType('register');
@@ -96,7 +96,7 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
     }
   };
   const handleAddToCalendar = (e: any) => {
-    if (isAuthenticated) {
+    if (user?.type) {
       e.preventDefault();
       atcb_action(CalendarEvent);
     } else {
@@ -105,16 +105,27 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
     }
   };
 
+  const registrationSuccess = () => {
+    setModalState(false);
+    setIsAuthenticated();
+  };
+
   const getModalForm = () => {
     switch (formType) {
       case 'register':
-        return <RegisterForm />;
+        return <RegisterForm setFormType={setFormType} />;
       case 'registrationSuccess':
         return (
-          <p>
-            Your information has been saved! Now, you can add Sphere’s events to your calendar and
-            share them with friends or colleagues.
-          </p>
+          <Stack textAlign="center" spacing={4}>
+            <ModalText>Your information has been saved!</ModalText>
+            <ModalText>
+              Now, you can add Sphere’s events to your calendar and share them with friends or
+              colleagues.
+            </ModalText>
+            <StyledButton variant="contained" onClick={registrationSuccess}>
+              Continue
+            </StyledButton>
+          </Stack>
         );
       default:
         return <></>;

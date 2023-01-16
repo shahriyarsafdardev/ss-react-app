@@ -32,6 +32,7 @@ export type JWTContextType = {
   updateProfile: (user: ParticipantProfile) => void;
   changePassword: (password: string) => Promise<void>;
   updatePassword: (password: string, reset_password_token: string | null) => Promise<void>;
+  setIsAuthenticated: () => void;
 };
 
 export type FirebaseContextType = {

@@ -10,9 +10,7 @@ export default function PublicMessaging() {
       title="Sphere | Messaging"
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
-      <Card sx={{ width: '70%', margin: 'auto', padding: '50px' }}>
-        {!isAuthenticated && <RegisterForm />}
-      </Card>
+      <Card sx={{ width: '70%', margin: 'auto', padding: '50px' }} />
     </Page>
   );
 }

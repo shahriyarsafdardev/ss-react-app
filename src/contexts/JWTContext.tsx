@@ -18,7 +18,8 @@ enum Types {
   Initial = 'INITIALIZE',
   Login = 'LOGIN',
   Logout = 'LOGOUT',
-  Register = 'REGISTER'
+  Register = 'REGISTER',
+  Authenticate = 'AUTHENTICATE'
 }
 
 type JWTAuthPayload = {
@@ -33,6 +34,7 @@ type JWTAuthPayload = {
   [Types.Register]: {
     user: AuthUser;
   };
+  [Types.Authenticate]: { isAuthenticated: boolean };
 };
 
 export type JWTActions = ActionMap<JWTAuthPayload>[keyof ActionMap<JWTAuthPayload>];
@@ -86,8 +88,13 @@ const JWTReducer = (state: AuthState, action: JWTActions) => {
       };
       return {
         ...state,
-        isAuthenticated: true,
         user: newUser
+      };
+
+    case 'AUTHENTICATE':
+      return {
+        ...state,
+        isAuthenticated: true
       };
 
     default:
@@ -267,6 +274,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const setIsAuthenticated = () =>
+    dispatch({
+      type: Types.Authenticate,
+      payload: {
+        isAuthenticated: true
+        // user
+      }
+    });
+
   return (
     <AuthContext.Provider
       value={{
@@ -278,7 +294,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
         resetPassword,
         updateProfile,
         changePassword,
-        updatePassword
+        updatePassword,
+        setIsAuthenticated
       }}
     >
       {children}

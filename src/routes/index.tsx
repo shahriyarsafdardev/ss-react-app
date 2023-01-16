@@ -64,14 +64,14 @@ export default function Router() {
             </GuestGuard>
           )
         },
-        {
-          path: 'register',
-          element: (
-            <GuestGuard>
-              <Register />
-            </GuestGuard>
-          )
-        },
+        // {
+        //   path: 'register',
+        //   element: (
+        //     <GuestGuard>
+        //       <Register />
+        //     </GuestGuard>
+        //   )
+        // },
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'first-login', element: <ResetUserPassword /> },
         { path: 'unlock-user', element: <UnlockUser /> },

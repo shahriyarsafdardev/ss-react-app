@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Stack, Grid, Typography, Button, useMediaQuery, useTheme } from '@material-ui/core';
-import LoadingScreen from 'components/LoadingScreen';
-import { useLocation } from 'react-router-dom';
-import { getEvents } from 'redux/slices/event';
 import { Icon } from '@iconify/react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';

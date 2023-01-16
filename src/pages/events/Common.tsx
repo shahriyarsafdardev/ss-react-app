@@ -86,6 +86,12 @@ export const CardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 900
 }));
 
+export const ModalText = styled(Typography)(({ theme }) => ({
+  color: '#212B36',
+  fontSize: '18px',
+  fontWeight: 700
+}));
+
 export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ ha zz');
 
 export const EventHosts = ({ hosts }: { hosts: EventHost[] }) => (
