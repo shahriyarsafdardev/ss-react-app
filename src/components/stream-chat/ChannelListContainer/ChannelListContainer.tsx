@@ -162,7 +162,7 @@ export const ChannelListContainer: React.FC<Props> = memo((props) => {
     'group-20'
   ];
 
-  const compareChannels = memoize((a?: string, b?: string) => {
+  const compareChannels = (a?: string, b?: string) => {
     const indexA = order.findIndex((group) => group === a);
     const indexB = order.findIndex((group) => group === b);
     if (indexA === -1 && indexB === -1) {
@@ -178,15 +178,12 @@ export const ChannelListContainer: React.FC<Props> = memo((props) => {
       return -1;
     }
     return 1;
-  });
+  };
 
-  const filterTeamChannels = useCallback(
-    (channels: any) =>
-      channels
-        .filter((channel: any) => channel.type === 'team' && channel.data?.team === cohortID)
-        .sort((a: any, b: any) => compareChannels(a.data?.name, b.data?.name)),
-    [cohortID, compareChannels]
-  );
+  const filterTeamChannels = (channels: any) =>
+    channels
+      .filter((channel: any) => channel.type === 'team' && channel.data?.team === cohortID)
+      .sort((a: any, b: any) => compareChannels(a.data?.name, b.data?.name));
 
   const filterMessagingChannels = useCallback(
     (channels: any) =>
