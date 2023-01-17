@@ -20,6 +20,7 @@ export type Event = {
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
+  height: '100%',
   boxShadow: 'none',
   '&:hover': {
     boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)',
