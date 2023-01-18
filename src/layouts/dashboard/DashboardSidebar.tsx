@@ -112,7 +112,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
         )}
 
-        <NavSection navConfig={communitySidebarConfig} isShow={!isCollapse} />
+        <NavSection navConfig={communitySidebarConfig[0]} isShow={!isCollapse} />
 
         {mode === 'Learner' && (
           <>

@@ -52,7 +52,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         </LogoContainer>
 
         <>
-          <NavSection navConfig={communitySidebarConfig} isShow={!isCollapse} />
+          <NavSection navConfig={communitySidebarConfig[0]} isShow={!isCollapse} />
+          <NavSection navConfig={communitySidebarConfig[1]} isShow={!isCollapse} />
         </>
       </Scrollbar>
     </>

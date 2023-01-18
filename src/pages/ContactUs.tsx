@@ -45,7 +45,7 @@ export default function ContactUs() {
   const [modalState, modalHandler] = useState({});
   const [cohort, setCohort] = useState({});
   const [displayChatLink, setDisplayChatLink] = useState(false);
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, isAuthenticated } = useAuth();
   const newUser: any = { ...user };
   const { mode } = useSelector((state: RootState) => state.instructorView);
 
@@ -204,7 +204,7 @@ export default function ContactUs() {
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <StyledBox>
           <Typography variant="h3">Contact Us</Typography>
-          {mode === 'Instructor' && (
+          {isAuthenticated && mode === 'Instructor' && (
             <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
               Walkthrough
             </Button>

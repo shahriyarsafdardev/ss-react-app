@@ -4,8 +4,6 @@ import { Helmet } from 'react-helmet-async';
 // layouts
 import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
 import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
-import PublicDashboardLayout from '../layouts/public-dashboard';
-import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/MainLayout';
 import SphereNavbarLayout from '../layouts/SphereNavbarLayout';
@@ -87,7 +85,8 @@ export default function Router() {
         { path: '/', element: <RedirectToCohort /> },
         { path: '/contact-us', element: <ContactUs /> },
         { path: '/messaging', element: <PublicMessaging /> },
-        { path: '/events', element: <EventsTab /> }
+        { path: '/events', element: <EventsTab /> },
+        { path: '/suggest-course', element: <SuggestCourse /> }
       ]
     },
     {
@@ -351,6 +350,7 @@ const RegistrationsTab = Loadable(
 const AttendanceTab = Loadable(lazy(() => import('components/cohorts/attendance/AttendanceTab')));
 const QnA = Loadable(lazy(() => import('components/cohorts/q&a/QnATab')));
 const SessionsTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/sessions/SessionsTab')));
+const SuggestCourse = Loadable(lazy(() => import('../pages/suggest/SuggestCourse')));
 const CodeTab = Loadable(lazy(() => import('../pages/dashboard/cohorts/code/CodeTab')));
 const NetworkingTab = Loadable(
   lazy(() => import('../pages/dashboard/cohorts/networking/NetworkingTab'))
@@ -360,7 +360,6 @@ const ReferralsPage = Loadable(lazy(() => import('../pages/referrals/ReferralsPa
 
 // Main
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
-const PublicContactUs = Loadable(lazy(() => import('../pages/public/PublicContactUS')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));

@@ -147,28 +147,46 @@ const ICONS = {
   cohorts: getIcon('ic_cohorts'),
   contact: getIcon('ic_contact'),
   bookshelf: getIcon('ic_bookshelf'),
-  bellChart: getIcon('ic_bell_curve_chart')
+  bellChart: getIcon('ic_bell_curve_chart'),
+  sunlightBulb: getIcon('sunlight_bulb')
 };
 
-export const communitySidebarConfig = {
-  subheader: 'Data & ML Community',
-  items: [
-    {
-      title: 'Events',
-      path: PATH_DASHBOARD.community.events,
-      icon: ICONS.calendar
-    },
-    {
-      title: 'Contact Us',
-      path: PATH_DASHBOARD.community.contactUs,
-      icon: ICONS.contact
-    }
-  ]
-};
+export const communitySidebarConfig = [
+  {
+    subheader: 'Data & ML Community',
+    items: [
+      {
+        title: 'Events',
+        path: PATH_DASHBOARD.community.events,
+        icon: ICONS.calendar
+      },
+      {
+        title: 'Contact Us',
+        path: PATH_DASHBOARD.community.contactUs,
+        icon: ICONS.contact
+      }
+    ]
+  },
+  {
+    subheader: 'courses',
+    items: [
+      {
+        title: 'all courses',
+        path: PATH_DASHBOARD.general.allCourses,
+        icon: ICONS.bookshelf
+      },
+      {
+        title: 'suggest a course',
+        path: PATH_DASHBOARD.community.suggestCourse,
+        icon: ICONS.sunlightBulb
+      }
+    ]
+  }
+];
 
 export const learnerSidebarConfig = (paths: Path[]) => {
   const object = {
-    subheader: 'your learning journey',
+    subheader: 'courses',
     items: [
       {
         title: 'all courses',
