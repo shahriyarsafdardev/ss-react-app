@@ -9,9 +9,12 @@ import EventDetails from './EventDetails';
 import { LoadingContainer } from './Common';
 import { RootState, useSelector, useDispatch } from '../../redux/store';
 import EventSection from './EventSection';
+import UpcomingEvents from './UpcomingEvents';
+import EventFilters from './EventFilters';
 
 export default function EventsTab() {
   const [eventDetails, setEventDetails] = useState<Event | any>({});
+  const [selectedFilters, setSelectedFilters] = useState([]);
   const dispatch = useDispatch();
   const { upcomingEvents, pastEvents, totalUpcomingEvents, totalPastEvents } = useSelector(
     (state: RootState) => state?.event
@@ -55,8 +58,12 @@ export default function EventsTab() {
           <EventDetails key={eventDetails?.id} setEvent={setEventDetails} event={eventDetails} />
         ) : (
           <>
+            <EventFilters
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+            />
             {totalUpcomingEvents > 0 && (
-              <EventSection
+              <UpcomingEvents
                 events={upcomingEvents}
                 category="Upcoming Events"
                 totalEvents={totalUpcomingEvents}

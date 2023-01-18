@@ -6,6 +6,7 @@ export type Event = {
   thumbnail_url: string;
   recording_url: string;
   hosts: EventHost[];
+  access_type: string;
 };
 
 export type EventHost = {

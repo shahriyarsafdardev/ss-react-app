@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Stack, Grid, Typography, Button, useMediaQuery, useTheme } from '@material-ui/core';
-import { Icon } from '@iconify/react';
-import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
-import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
+import { Stack, Grid } from '@material-ui/core';
 import EventCard from './EventCard';
+import ShowMoreButton from './ShowMoreButton';
+import { SectionTitle } from './Common';
 
 export default function EventSection({
   events,
@@ -19,8 +18,6 @@ export default function EventSection({
   handleShowMore: Function;
 }) {
   const [more, setMore] = useState(false);
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const showMore = async () => {
     if (totalEvents !== events.length) {
@@ -29,48 +26,10 @@ export default function EventSection({
     setMore(!more);
   };
 
-  const ShowMoreButton = () => (
-    <Button
-      sx={{ minWidth: { xs: '100%', md: '200px' }, mt: { xs: '20px', md: 'auto' } }}
-      variant="text"
-      onClick={showMore}
-    >
-      {more ? (
-        <>
-          <Typography>Show Less</Typography>
-          <Icon
-            style={{ marginLeft: '5px' }}
-            key={String(more)}
-            icon={arrowIosUpwardFill}
-            width={20}
-            height={20}
-          />
-        </>
-      ) : (
-        <>
-          <Typography>Show {totalEvents - 3} More</Typography>
-          <Icon
-            style={{ marginLeft: '5px' }}
-            key={String(more)}
-            icon={arrowIosDownwardFill}
-            width={20}
-            height={20}
-          />
-        </>
-      )}
-    </Button>
-  );
-
   return (
     <Stack sx={{ mb: 3 }}>
-      <Stack direction="row" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h5" sx={{ color: '#000', fontWeight: 900 }}>
-          {category}
-        </Typography>
-
-        {isDesktop && totalEvents > 3 && <ShowMoreButton />}
-      </Stack>
-      <Grid container spacing={3}>
+      <SectionTitle>{category}</SectionTitle>
+      <Grid container spacing={3} sx={{ marginTop: '20px' }}>
         {more
           ? events.map((event: any) => (
               <Grid item key={event.name} xs={12} sm={6} md={4}>
@@ -83,7 +42,9 @@ export default function EventSection({
               </Grid>
             ))}
       </Grid>
-      {!isDesktop && totalEvents > 3 && <ShowMoreButton />}
+      {totalEvents > 3 && (
+        <ShowMoreButton showMore={showMore} more={more} remainingEvents={totalEvents - 3} />
+      )}
     </Stack>
   );
 }

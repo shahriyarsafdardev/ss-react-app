@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core/styles';
-import { Card, Stack, Button, Avatar, Box, Typography } from '@material-ui/core';
+import { Card, Stack, Button, Avatar, Box, Typography, ToggleButton } from '@material-ui/core';
 import Icon from '@iconify/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
@@ -22,6 +22,7 @@ export const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
   height: '100%',
   boxShadow: 'none',
+  border: '1px solid #E2E8F0',
   '&:hover': {
     boxShadow: '0px 2px 9px rgba(7, 26, 51, 0.1)',
     cursor: 'pointer'
@@ -34,10 +35,16 @@ export const StyledModal = styled(Modal)(({ theme }) => ({
   margin: 'auto'
 }));
 
-export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
+export const StyledImage = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '180px'
 }));
+
+export const TileImage = styled(Box)(({ theme }) => ({
+  width: '25%',
+  height: '100%'
+}));
+
 export const StyledDetailsImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '50%',
   height: 'auto',
@@ -93,7 +100,50 @@ export const ModalText = styled(Typography)(({ theme }) => ({
   fontWeight: 700
 }));
 
+export const SectionTitle = styled(Typography)(({ theme }) => ({
+  color: '#222C36',
+  fontWeight: 900,
+  marginTop: '20px',
+  fontSize: '24px'
+}));
+
+export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+  backgroundColor: 'rgba(225, 228, 231, 0.3)',
+  padding: '10px 18px',
+  border: 'none',
+  borderRadius: '10px !important',
+  marginLeft: '0 !important',
+  marginRight: '15px',
+  marginTop: '10px',
+  textTransform: 'none'
+}));
+
 export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ ha zz');
+
+export const getAccessText = (accessType: string) => {
+  if (accessType === 'public') {
+    return (
+      <Stack direction="row" spacing={2} alignItems="left">
+        {PUBLIC}
+        <CardText>Open to Everyone</CardText>
+      </Stack>
+    );
+  }
+  if (accessType === 'alumni') {
+    return (
+      <Stack direction="row" spacing={2} alignItems="baseline">
+        {LOCK}
+        <CardText>Open to Sphere alumni only</CardText>
+      </Stack>
+    );
+  }
+  return (
+    <Stack direction="row" spacing={2} alignItems="baseline">
+      {LOCK}
+      <CardText>Open to learners enrolled in {accessType}</CardText>
+    </Stack>
+  );
+};
 
 export const EventHosts = ({ hosts }: { hosts: EventHost[] }) => (
   <Stack sx={{ mb: 2 }} spacing={2}>
