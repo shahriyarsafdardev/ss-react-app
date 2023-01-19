@@ -4,6 +4,16 @@ import { memo, useContext } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { StyledCheckIcon, useStyles } from './Common';
 
+const PlanPointStack = ({ description }: { description: string }) => (
+  <Stack direction="row" alignItems="flex-start">
+    <StyledCheckIcon
+      src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
+      alt="check icon"
+    />
+    <Typography>{description}</Typography>
+  </Stack>
+);
+
 export const OneTimePaymentDetails = memo(
   ({
     cohortID,
@@ -28,19 +38,11 @@ export const OneTimePaymentDetails = memo(
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
         <Stack>
-          <Typography fontWeight="bold">One Time Payment</Typography>
-          <Typography fontSize="14px" color="#828282">
-            ${Math.floor(price)}
-          </Typography>
+          <Typography className={classes.planOptionHead}>One Time Payment</Typography>
+          <Typography className={classes.planPriceDetails}>${Math.floor(price)}</Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>Access to {hostName}’s course</Typography>
-          </Stack>
+          <PlanPointStack description={`Access to ${hostName}'s course`} />
         </Stack>
         <Button
           variant="contained"
@@ -82,43 +84,20 @@ export const IndividualMembershipPaymentDetails = memo(
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
         <Stack>
-          <Typography fontWeight="bold">Individual Subscription</Typography>
-          <Typography fontSize="14px" color="#828282">
+          <Typography className={classes.planOptionHead}>Individual Subscriptions</Typography>
+          <Typography className={classes.planPriceDetails}>
             Starting at ${Math.floor(price * 0.95)} per year
           </Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>Access to {hostName}’s course</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>Access to Alumni events</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>5% discount on all Sphere courses</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>
-              ${Math.floor(price)} of Sphere Credits per year, which you can use to purchase your
-              next course
-            </Typography>
-          </Stack>
+          <PlanPointStack description="5% discount on all courses" />
+          <PlanPointStack description={`Access to ${hostName}'s course`} />
+          <PlanPointStack
+            description={`$${Math.floor(
+              price * 0.95
+            )} of Sphere Credits per year, which you can use to purchase your next course`}
+          />
+          <PlanPointStack description="Access to exclusive alumni events" />
           {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
@@ -154,55 +133,28 @@ export const TeamMembershipPaymentDetails = memo(
     enrollmentID: string;
   }) => {
     const classes = useStyles();
-    const navigate = useNavigate();
     const { sendAnalyticsData } = useContext(AnalyticsContext);
 
     const handleTeamPackageSelected = () => {
       sendAnalyticsData('Cohort Registration - Payment Choice - Team Package Selected', {});
-      navigate(
-        `/registration/team-package-inquiry?cohort_id=${cohortID}&enrollment_id=${enrollmentID}`
-      );
+      window.open('https://www.getsphere.com/pages/subscriptions', '_blank');
     };
 
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
         <Stack>
-          <Typography fontWeight="bold">Team Subscription</Typography>
-          <Typography fontSize="14px" color="#828282">
-            Flexible for your team
-          </Typography>
+          <Typography className={classes.planOptionHead}>Team Subscriptions</Typography>
+          <Typography className={classes.planPriceDetails}>Flexible for your team</Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>Access to {hostName}’s course</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>Access to Alumni events</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>
-              Get a free course of your choosing if you successfully refer your team
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="flex-start">
-            <StyledCheckIcon
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
-              alt="check icon"
-            />
-            <Typography>10%+ discount on all Sphere courses for your team</Typography>
-          </Stack>
+          <PlanPointStack description="15%+ discounts on all courses" />
+          <PlanPointStack description="Access to live sessions" />
+          <PlanPointStack description="Ongoing access to course materials and alumni community" />
+          <PlanPointStack description="Access to exclusive alumni events" />
+          <PlanPointStack description="Request topics for curriculum" />
+          <Typography className={classes.planPriceDetails}>
+            If you get your team to sign up for a subscription you’ll receive a free course
+          </Typography>
           {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
