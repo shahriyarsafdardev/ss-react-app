@@ -22,7 +22,7 @@ import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 import { VideoPlayerWrapper, StyledVideoPreview } from '../dashboard/cohorts/sessions/Common';
 import { Event } from '../../@types/events';
-
+import './styles.css';
 import {
   StyledButton,
   StyledModal,
@@ -63,6 +63,7 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
     timeZone: 'America/Los_Angeles',
     iCalFileName: event?.name
   };
+
   const getCaption = (media: string) =>
     `${event?.name}%0D%0A%0D%0A${
       media === 'Twitter' && event?.description && event?.description?.length > 120
@@ -254,7 +255,12 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
             <StyledButton onClick={(e) => handleAddToCalendar(e)} variant="outlined">
               Add to your calendar
             </StyledButton>
-            <StyledButton variant="contained" ref={menuRef} onClick={handleFreeInvite}>
+            <StyledButton
+              variant="contained"
+              ref={menuRef}
+              onClick={handleFreeInvite}
+              sx={{ backgroundColor: '#754AA9' }}
+            >
               Share free invite
             </StyledButton>
           </Stack>

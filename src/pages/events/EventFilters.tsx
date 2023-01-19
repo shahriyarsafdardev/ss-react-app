@@ -1,5 +1,5 @@
 import { Stack } from '@material-ui/core';
-import { StyledToggleButton, PUBLIC, LOCK } from './Common';
+import { StyledToggleButton, PUBLIC, LOCK, ToggleButtonText } from './Common';
 
 export default function EventFilters({
   selectedFilters,
@@ -27,7 +27,7 @@ export default function EventFilters({
         onChange={() => handleOnChange('public')}
         value="public"
       >
-        {PUBLIC} Open to everyone
+        <ToggleButtonText>{PUBLIC} Open to everyone</ToggleButtonText>
       </StyledToggleButton>
       <StyledToggleButton
         key="alumni"
@@ -35,7 +35,7 @@ export default function EventFilters({
         onChange={() => handleOnChange('alumni')}
         value="alumni"
       >
-        {LOCK} Open to Sphere alumni only
+        <ToggleButtonText>{LOCK} Open to Sphere alumni only</ToggleButtonText>
       </StyledToggleButton>
     </Stack>
   );

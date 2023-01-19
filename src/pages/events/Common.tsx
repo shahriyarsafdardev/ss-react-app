@@ -57,7 +57,7 @@ export const StyledDetailsImage = styled(LazyLoadImage)(({ theme }) => ({
 export const StyledIcon = styled(Icon)(({ theme }) => ({
   width: '24px',
   height: '24px',
-  color: '#101658'
+  color: '#754AA9'
 }));
 
 export const StyledTime = styled(Stack)(({ theme }) => ({
@@ -116,6 +116,11 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   marginRight: '15px',
   marginTop: '10px',
   textTransform: 'none'
+}));
+
+export const ToggleButtonText = styled(Typography)(({ theme }) => ({
+  color: '#334155',
+  fontSize: '14px'
 }));
 
 export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ ha zz');
