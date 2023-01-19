@@ -42,8 +42,7 @@ export const OneTimePaymentDetails = memo(
           <Typography className={classes.planPriceDetails}>${Math.floor(price)}</Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
-          <PlanPointStack description="Access to live sessions" />
-          <PlanPointStack description="Lifetime access to course materials and community" />
+          <PlanPointStack description={`Access to ${hostName}'s course`} />
         </Stack>
         <Button
           variant="contained"
@@ -92,8 +91,12 @@ export const IndividualMembershipPaymentDetails = memo(
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
           <PlanPointStack description="5% discount on all courses" />
-          <PlanPointStack description="Access to live sessions" />
-          <PlanPointStack description="Lifetime access to course materials and community" />
+          <PlanPointStack description={`Access to ${hostName}'s course`} />
+          <PlanPointStack
+            description={`$${Math.floor(
+              price * 0.95
+            )} of Sphere Credits per year, which you can use to purchase your next course`}
+          />
           <PlanPointStack description="Access to exclusive alumni events" />
           {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
