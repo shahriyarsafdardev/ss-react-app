@@ -150,7 +150,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   optionsStack: {
-    marginBottom: '40px !important',
+    marginBottom: '24px !important',
     [theme.breakpoints.down('md')]: {
       marginBottom: '15px !important'
     }
@@ -188,6 +188,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent'
     }
+  },
+  planPriceDetails: {
+    color: '#4D4DCD',
+    fontWeight: 600
+  },
+  planOptionHead: {
+    fontWeight: 'bold',
+    fontSize: '20px'
   }
 }));
 

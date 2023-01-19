@@ -75,11 +75,11 @@ function PaymentSelectionPage() {
         <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
         <Stack
           className={`${classes.purpleBackground} ${classes.paymentStack} ${classes.wrapperPaymentStack}`}
-          spacing={4}
+          spacing={company?.name ? 2 : 4}
           justifyContent="center"
           alignItems="center"
-          padding={{ xs: '10px', md: '50px', lg: '112px' }}
-          paddingBottom="80px !important"
+          padding={{ xs: '10px', md: '50px', lg: company?.name ? '80px 112px' : '112px' }}
+          paddingBottom={company?.name ? '56px !important' : '80px !important'}
         >
           {company?.logo_url && (
             <Avatar
@@ -97,7 +97,7 @@ function PaymentSelectionPage() {
           <Typography
             textAlign="center"
             className={classes.whiteFont}
-            width={{ xs: '100%', md: '80%', lg: '65%' }}
+            width={{ xs: '100%', md: '80%', lg: company?.name ? '70%' : '65%' }}
           >
             {company?.name
               ? `${company?.name} has already approved Sphere courses as an L&D expense for teams and
@@ -111,7 +111,7 @@ function PaymentSelectionPage() {
             spacing={3}
             justifyContent="space-around"
             alignItems={`${!isDesktop && 'center'}`}
-            marginTop={`${isDesktop && '50px'}`}
+            marginTop={`${isDesktop && '40px !important'}`}
           >
             <OneTimePaymentDetails
               cohortID={cohortID}
