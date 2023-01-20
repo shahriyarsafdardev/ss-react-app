@@ -20,6 +20,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [feedbackModalState, setFeedbackModalState] = useState(false);
+  const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
   const url = new URLSearchParams(useLocation().search);
   const referrer = url.get('referrer') || '';
@@ -60,7 +61,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   };
 
   const handleSurveyModalCompleted = () => {
-    setFeedbackModalState(false);
+    setHasCompletedFeedback(true);
     dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
     dispatch(updateSessionModalState(lastSession?.id || ''));
   };
@@ -82,6 +83,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         activeImage={certificates[activeCertificate]}
       />
       <SurveyModal
+        hasCompletedFeedback={hasCompletedFeedback}
         state={feedbackModalState}
         onClose={handleSurveyModalClose}
         onComplete={handleSurveyModalCompleted}
