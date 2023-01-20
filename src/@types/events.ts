@@ -7,6 +7,8 @@ export type Event = {
   recording_url: string;
   hosts: EventHost[];
   access_type: string;
+  is_registered: boolean;
+  cohort_id: string | null;
 };
 
 export type EventHost = {

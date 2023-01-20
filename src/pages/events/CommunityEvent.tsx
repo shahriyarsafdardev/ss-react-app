@@ -3,6 +3,8 @@ import baselineEmail from '@iconify/icons-ic/baseline-email';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import copyFill from '@iconify/icons-eva/copy-fill';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { PATH_AUTH } from 'routes/paths';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { atcb_action } from 'add-to-calendar-button';
@@ -17,6 +19,8 @@ import {
   useMediaQuery,
   Grid,
   useTheme,
+  Box,
+  Link,
   MenuItem
 } from '@material-ui/core';
 import copy from 'clipboard-copy';
@@ -54,9 +58,6 @@ export default function CommuityEvent() {
   const eventID = window.location.pathname.split('/')[2] || '';
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
-  const { setIsAuthenticated, user } = useAuth();
-  const [modalState, setModalState] = useState(false);
-  const [formType, setFormType] = useState('');
   const menuRef = useRef(null);
   const pageURL = `${window.location.origin}/events?event=${event?.id}`;
   const eventDate = moment(event?.time).format('YYYY-MM-DD');
@@ -64,6 +65,11 @@ export default function CommuityEvent() {
   const eventEndTime = moment(event?.time).add(2, 'hours').format('HH:mm');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [eventDetails, setEventDetails] = useState<Event | any>({});
+  const { isAuthenticated, setIsAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+  const [modalState, setModalState] = useState(false);
+  const [formType, setFormType] = useState('');
 
   const CalendarEvent = {
     name: event?.name,
@@ -91,6 +97,104 @@ export default function CommuityEvent() {
       setEvent(null);
     };
   }, [eventID]);
+
+  const registrationSuccess = () => {
+    setModalState(false);
+    setIsAuthenticated();
+  };
+
+  const handleEventClick = (event: Event) => {
+    if (event.access_type === 'public') {
+      navigate(`/events/${event.id}`);
+    } else if (event.access_type === 'alumni') {
+      setEventDetails(event);
+      setFormType('alumni');
+      setModalState(true);
+    } else if (event.is_registered && isAuthenticated) {
+      navigate(`/cohorts/${event.cohort_id}/sessions`);
+    } else {
+      setEventDetails(event);
+
+      setFormType('learner');
+      setModalState(true);
+    }
+  };
+
+  const getModalForm = () => {
+    switch (formType) {
+      case 'register':
+        return <RegisterForm setFormType={setFormType} />;
+      case 'registrationSuccess':
+        return (
+          <Stack textAlign="center" spacing={4}>
+            <ModalText>Your information has been saved!</ModalText>
+            <ModalText>
+              Now, you can add Sphere’s events to your calendar and share them with friends or
+              colleagues.
+            </ModalText>
+            <StyledButton variant="contained" onClick={registrationSuccess}>
+              Continue
+            </StyledButton>
+          </Stack>
+        );
+      case 'alumni':
+        return (
+          <Stack textAlign="center" spacing={4}>
+            <ModalText>{eventDetails.name} is only open to Sphere alumni.</ModalText>
+            <Typography>
+              Explore Sphere’s courses to learn more about becoming a member of Sphere’s exclusive
+              community of learners.
+            </Typography>
+            <StyledButton variant="outlined" onClick={() => {}}>
+              Explore Sphere Courses
+            </StyledButton>
+            {!isAuthenticated && (
+              <Box>
+                Are you a Sphere alum?&nbsp;
+                <Link
+                  component={RouterLink}
+                  variant="subtitle2"
+                  to={PATH_AUTH.login}
+                  sx={{ textDecoration: 'underline' }}
+                >
+                  Sign in here
+                </Link>
+              </Box>
+            )}
+          </Stack>
+        );
+      case 'learner':
+        return (
+          <Stack textAlign="center" spacing={4}>
+            <ModalText>
+              {eventDetails.name} is only open to learners enrolled in {eventDetails.access_type}
+            </ModalText>
+            <Typography>
+              Sphere’s courses provide access to extensive curricula and resources curated by
+              world-class instructors who are leaders in their industries.
+            </Typography>
+            <StyledButton variant="outlined" onClick={() => {}}>
+              Explore Sphere Courses
+            </StyledButton>
+            {!isAuthenticated && (
+              <Box>
+                Are you enrolled in this cohort?&nbsp;
+                <Link
+                  component={RouterLink}
+                  variant="subtitle2"
+                  to={PATH_AUTH.login}
+                  sx={{ textDecoration: 'underline' }}
+                >
+                  Sign in here
+                </Link>
+              </Box>
+            )}
+          </Stack>
+        );
+      default:
+        return <></>;
+    }
+  };
 
   const getCaption = (media: string) =>
     `${event?.name}%0D%0A%0D%0A${
@@ -131,33 +235,6 @@ export default function CommuityEvent() {
     } else {
       setFormType('register');
       setModalState(true);
-    }
-  };
-
-  const registrationSuccess = () => {
-    setModalState(false);
-    setIsAuthenticated();
-  };
-
-  const getModalForm = () => {
-    switch (formType) {
-      case 'register':
-        return <RegisterForm setFormType={setFormType} />;
-      case 'registrationSuccess':
-        return (
-          <Stack textAlign="center" spacing={4}>
-            <ModalText>Your information has been saved!</ModalText>
-            <ModalText>
-              Now, you can add Sphere’s events to your calendar and share them with friends or
-              colleagues.
-            </ModalText>
-            <StyledButton variant="contained" onClick={registrationSuccess}>
-              Continue
-            </StyledButton>
-          </Stack>
-        );
-      default:
-        return <></>;
     }
   };
 
@@ -262,7 +339,7 @@ export default function CommuityEvent() {
             <Grid container spacing={3} sx={{ marginTop: '20px' }}>
               {upcomingEvents.map((event: any) => (
                 <Grid key={event.name} item xs={12} md={6}>
-                  <EventCard event={event} setEvent={setEvent} />
+                  <EventCard event={event} setEvent={handleEventClick} />
                 </Grid>
               ))}
             </Grid>
