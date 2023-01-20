@@ -11,6 +11,7 @@ import { RootState, useSelector, useDispatch } from '../../redux/store';
 import EventSection from './EventSection';
 import UpcomingEvents from './UpcomingEvents';
 import EventFilters from './EventFilters';
+import EventsHeaderSection from './EventsHeaderSection';
 
 export default function EventsTab() {
   const [eventDetails, setEventDetails] = useState<Event | any>({});
@@ -58,6 +59,7 @@ export default function EventsTab() {
           <EventDetails key={eventDetails?.id} setEvent={setEventDetails} event={eventDetails} />
         ) : (
           <>
+            <EventsHeaderSection />
             <EventFilters
               selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
