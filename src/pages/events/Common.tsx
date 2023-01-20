@@ -35,14 +35,19 @@ export const StyledModal = styled(Modal)(({ theme }) => ({
   margin: 'auto'
 }));
 
-export const StyledImage = styled(Box)(({ theme }) => ({
+export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '100%',
-  height: '180px'
+  height: 'auto',
+  aspectRatio: '37/21'
 }));
 
-export const TileImage = styled(Box)(({ theme }) => ({
+export const TileImage = styled(LazyLoadImage)(({ theme }) => ({
   width: '25%',
-  height: '100%'
+  height: 'auto',
+  aspectRatio: '37/21',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
 }));
 
 export const StyledDetailsImage = styled(LazyLoadImage)(({ theme }) => ({

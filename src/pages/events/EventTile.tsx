@@ -11,18 +11,8 @@ function EventTile({ event, setEvent }: { event: any; setEvent: Function }) {
         setEvent(event);
       }}
     >
-      <Stack height="100%" direction="row">
-        <TileImage
-          key={event.thumbnail_url}
-          sx={{
-            backgroundImage: `url(${
-              event.thumbnail_url ||
-              'https://sphere-public.s3.eu-west-2.amazonaws.com/Default+thumbnail.png'
-            })`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
+      <Stack height="100%" direction={{ xs: 'column', md: 'row' }}>
+        <TileImage key={event.thumbnail_url} src={event.thumbnail_url} alt="thumbnail" />
         <EventText event={event} />
       </Stack>
     </StyledCard>

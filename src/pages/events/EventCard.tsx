@@ -9,17 +9,7 @@ export default function EventCard({ event, setEvent }: { event: any; setEvent: F
         setEvent(event);
       }}
     >
-      <StyledImage
-        key={event.thumbnail_url}
-        sx={{
-          backgroundImage: `url(${
-            event.thumbnail_url ||
-            'https://sphere-public.s3.eu-west-2.amazonaws.com/Default+thumbnail.png'
-          })`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      />
+      <StyledImage key={event.thumbnail_url} src={event.thumbnail_url} alt="thumbnail" />
       <EventText event={event} />
     </StyledCard>
   );
