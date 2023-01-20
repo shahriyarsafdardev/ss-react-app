@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import baselineEmail from '@iconify/icons-ic/baseline-email';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
@@ -12,17 +13,7 @@ import moment from 'moment';
 import axiosV2 from 'utils/axiosV2';
 import ReactPlayer from 'react-player';
 import { RegisterForm } from 'components/authentication/register';
-import {
-  Typography,
-  Stack,
-  Card,
-  useMediaQuery,
-  Grid,
-  useTheme,
-  Box,
-  Link,
-  MenuItem
-} from '@material-ui/core';
+import { Typography, Stack, Card, Grid, Box, Link, MenuItem } from '@material-ui/core';
 import copy from 'clipboard-copy';
 import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
@@ -34,14 +25,7 @@ import {
   StyledButton,
   StyledModal,
   StyledIcon,
-  DeatilsText,
-  EventHosts,
-  formatTime,
-  StyledDetailsImage,
-  ModalText,
-  CALENDAR,
-  PUBLIC,
-  PLATEFORM
+  ModalText
 } from './Common';
 import EventCard from './EventCard';
 import { Event } from '../../@types/events';
@@ -63,13 +47,12 @@ export default function CommuityEvent() {
   const eventDate = moment(event?.time).format('YYYY-MM-DD');
   const eventStartTime = moment(event?.time).format('HH:mm');
   const eventEndTime = moment(event?.time).add(2, 'hours').format('HH:mm');
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const [modalState, setModalState] = useState(false);
   const [formType, setFormType] = useState('');
+  const url = new URLSearchParams(useLocation().search);
 
   const CalendarEvent = {
     name: event?.name,
@@ -195,6 +178,17 @@ export default function CommuityEvent() {
         return <></>;
     }
   };
+  useEffect(() => {
+    const eventData = window.localStorage.getItem(eventID);
+    const data = {
+      source: url.get('source') || '',
+      referrer_domain: document.referrer || '',
+      referrer: url.get('referrer') || ''
+    };
+    if (!eventData) {
+      window.localStorage.setItem(`${eventID}`, JSON.stringify(data));
+    }
+  }, []);
 
   const getCaption = (media: string) =>
     `${event?.name}%0D%0A%0D%0A${
@@ -228,10 +222,38 @@ export default function CommuityEvent() {
       setModalState(true);
     }
   };
+
+  const registerForEvent = async (e: string) => {
+    if (e !== 'Close') {
+      const data: any = window.localStorage.getItem(eventID);
+      let eventData: any = '';
+      if (data) {
+        eventData = JSON.parse(data);
+      }
+      await axiosV2
+        .post('/event_enrollments.json', {
+          event_id: event?.id,
+          source: eventData?.source || '',
+          referrer: eventData?.referrer || '',
+          referrer_domain: eventData?.referrer_domain || ''
+        })
+        .then((res) => {
+          window.localStorage.removeItem(eventID);
+        })
+        .catch((err) => {});
+    }
+  };
+
   const handleAddToCalendar = (e: any) => {
     if (user?.type) {
       e.preventDefault();
       atcb_action(CalendarEvent);
+      const buttons = document.querySelectorAll('.atcb-list-item');
+      buttons.forEach((button) => {
+        button?.addEventListener('click', (e: any) => {
+          registerForEvent(e?.target.innerText);
+        });
+      });
     } else {
       setFormType('register');
       setModalState(true);
