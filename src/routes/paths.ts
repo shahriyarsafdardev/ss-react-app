@@ -67,6 +67,7 @@ export const PATH_DASHBOARD = {
   },
   community: {
     events: path(ROOTS_DASHBOARD, '/events'),
+    event: (eventID: string) => path(ROOTS_DASHBOARD, `/events/${eventID}`),
     messaging: path(ROOTS_DASHBOARD, '/messaging'),
     contactUs: path(ROOTS_DASHBOARD, '/contact-us'),
     suggestCourse: path(ROOTS_DASHBOARD, '/suggest-course')

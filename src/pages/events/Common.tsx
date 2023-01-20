@@ -108,7 +108,6 @@ export const ModalText = styled(Typography)(({ theme }) => ({
 export const SectionTitle = styled(Typography)(({ theme }) => ({
   color: '#222C36',
   fontWeight: 900,
-  marginTop: '20px',
   fontSize: '24px'
 }));
 

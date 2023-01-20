@@ -85,7 +85,11 @@ export default function Router() {
         { path: '/', element: <RedirectToCohort /> },
         { path: '/contact-us', element: <ContactUs /> },
         { path: '/messaging', element: <PublicMessaging /> },
-        { path: '/events', element: <EventsTab /> },
+        {
+          path: '/events',
+          element: <EventsTab />
+        },
+        { path: '/events/:eventID', element: <CommunityEvent /> },
         { path: '/suggest-course', element: <SuggestCourse /> }
       ]
     },
@@ -362,6 +366,7 @@ const ReferralsPage = Loadable(lazy(() => import('../pages/referrals/ReferralsPa
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
+const CommunityEvent = Loadable(lazy(() => import('../pages/events/CommunityEvent')));
 const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
 const PathsTab = Loadable(lazy(() => import('../pages/paths/PathsTab')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));

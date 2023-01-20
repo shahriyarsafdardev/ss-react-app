@@ -45,7 +45,7 @@ export default function EventDetails({ setEvent, event }: { setEvent: Function; 
   const [modalState, setModalState] = useState(false);
   const [formType, setFormType] = useState('');
   const menuRef = useRef(null);
-  const pageURL = `${window.location.origin}/events?event=${event.id}`;
+  const pageURL = `${window.location.origin}/events/${event.id}`;
   const eventDate = moment(event.time).format('YYYY-MM-DD');
   const eventStartTime = moment(event.time).format('HH:mm');
   const eventEndTime = moment(event.time).add(2, 'hours').format('HH:mm');
