@@ -4,16 +4,14 @@ import baselineEmail from '@iconify/icons-ic/baseline-email';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import copyFill from '@iconify/icons-eva/copy-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { PATH_AUTH } from 'routes/paths';
+import { useNavigate } from 'react-router-dom';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { atcb_action } from 'add-to-calendar-button';
 import moment from 'moment';
 import axiosV2 from 'utils/axiosV2';
 import ReactPlayer from 'react-player';
-import { RegisterForm } from 'components/authentication/register';
-import { Typography, Stack, Card, Grid, Box, Link, MenuItem } from '@material-ui/core';
+import { Typography, Stack, Card, Grid, MenuItem } from '@material-ui/core';
 import copy from 'clipboard-copy';
 import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
@@ -24,15 +22,13 @@ import {
   LoadingContainer,
   StyledButton,
   StyledModal,
-  StyledIcon,
-  ModalText
+  ModalForm,
+  StyledIcon
 } from './Common';
 import EventCard from './EventCard';
 import { Event } from '../../@types/events';
 import { VideoPlayerWrapper, StyledVideoPreview } from '../dashboard/cohorts/sessions/Common';
-
 import './styles.css';
-
 import MenuPopover from '../../components/MenuPopover';
 
 export default function CommuityEvent() {
@@ -97,87 +93,11 @@ export default function CommuityEvent() {
       navigate(`/cohorts/${event.cohort_id}/sessions`);
     } else {
       setEventDetails(event);
-
       setFormType('learner');
       setModalState(true);
     }
   };
 
-  const getModalForm = () => {
-    switch (formType) {
-      case 'register':
-        return <RegisterForm setFormType={setFormType} />;
-      case 'registrationSuccess':
-        return (
-          <Stack textAlign="center" spacing={4}>
-            <ModalText>Your information has been saved!</ModalText>
-            <ModalText>
-              Now, you can add Sphere’s events to your calendar and share them with friends or
-              colleagues.
-            </ModalText>
-            <StyledButton variant="contained" onClick={registrationSuccess}>
-              Continue
-            </StyledButton>
-          </Stack>
-        );
-      case 'alumni':
-        return (
-          <Stack textAlign="center" spacing={4}>
-            <ModalText>{eventDetails.name} is only open to Sphere alumni.</ModalText>
-            <Typography>
-              Explore Sphere’s courses to learn more about becoming a member of Sphere’s exclusive
-              community of learners.
-            </Typography>
-            <StyledButton variant="outlined" onClick={() => {}}>
-              Explore Sphere Courses
-            </StyledButton>
-            {!isAuthenticated && (
-              <Box>
-                Are you a Sphere alum?&nbsp;
-                <Link
-                  component={RouterLink}
-                  variant="subtitle2"
-                  to={PATH_AUTH.login}
-                  sx={{ textDecoration: 'underline' }}
-                >
-                  Sign in here
-                </Link>
-              </Box>
-            )}
-          </Stack>
-        );
-      case 'learner':
-        return (
-          <Stack textAlign="center" spacing={4}>
-            <ModalText>
-              {eventDetails.name} is only open to learners enrolled in {eventDetails.access_type}
-            </ModalText>
-            <Typography>
-              Sphere’s courses provide access to extensive curricula and resources curated by
-              world-class instructors who are leaders in their industries.
-            </Typography>
-            <StyledButton variant="outlined" onClick={() => {}}>
-              Explore Sphere Courses
-            </StyledButton>
-            {!isAuthenticated && (
-              <Box>
-                Are you enrolled in this cohort?&nbsp;
-                <Link
-                  component={RouterLink}
-                  variant="subtitle2"
-                  to={PATH_AUTH.login}
-                  sx={{ textDecoration: 'underline' }}
-                >
-                  Sign in here
-                </Link>
-              </Box>
-            )}
-          </Stack>
-        );
-      default:
-        return <></>;
-    }
-  };
   useEffect(() => {
     const eventData = window.localStorage.getItem(eventID);
     const data = {
@@ -273,11 +193,21 @@ export default function CommuityEvent() {
       <StyledModal
         open={modalState}
         onClose={() => {
+          setEventDetails({});
+          setFormType('');
           setModalState(false);
         }}
         zIndex={1400}
       >
-        <Card sx={{ p: { xs: 3, md: 10 }, height: 1, overflow: 'visible' }}>{getModalForm()}</Card>
+        <Card sx={{ p: { xs: 3, md: 10 }, height: 1, overflow: 'visible' }}>
+          <ModalForm
+            formType={formType}
+            eventDetails={eventDetails}
+            isAuthenticated={isAuthenticated}
+            registrationSuccess={registrationSuccess}
+            setFormType={setFormType}
+          />
+        </Card>
       </StyledModal>
       <MenuPopover
         open={open}

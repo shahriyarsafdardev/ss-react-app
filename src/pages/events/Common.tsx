@@ -1,9 +1,21 @@
 import { styled } from '@material-ui/core/styles';
-import { Card, Stack, Button, Avatar, Box, Typography, ToggleButton } from '@material-ui/core';
+import {
+  Card,
+  Stack,
+  Button,
+  Avatar,
+  Box,
+  Link,
+  Typography,
+  ToggleButton
+} from '@material-ui/core';
 import Icon from '@iconify/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
 import { Modal } from 'components/animate';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { RegisterForm } from 'components/authentication/register';
+import { PATH_AUTH } from 'routes/paths';
 import { EventHost } from '../../@types/events';
 
 export const CALENDAR = '🗓️';
@@ -170,3 +182,92 @@ export const EventHosts = ({ hosts }: { hosts: EventHost[] }) => (
     ))}
   </Stack>
 );
+
+export const ModalForm = ({
+  formType,
+  eventDetails,
+  isAuthenticated,
+  registrationSuccess,
+  setFormType
+}: {
+  formType: string;
+  eventDetails: any;
+  isAuthenticated: boolean;
+  setFormType: Function;
+  registrationSuccess: Function;
+}) => {
+  if (formType === 'register') {
+    return <RegisterForm setFormType={setFormType} />;
+  }
+  if (formType === 'registrationSuccess') {
+    return (
+      <Stack textAlign="center" spacing={4}>
+        <ModalText>Your information has been saved!</ModalText>
+        <ModalText>
+          Now, you can add Sphere’s events to your calendar and share them with friends or
+          colleagues.
+        </ModalText>
+        <StyledButton variant="contained" onClick={() => registrationSuccess()}>
+          Continue
+        </StyledButton>
+      </Stack>
+    );
+  }
+  if (formType === 'alumni') {
+    return (
+      <Stack textAlign="center" spacing={4}>
+        <ModalText>{eventDetails.name} is only open to Sphere alumni.</ModalText>
+        <Typography>
+          Explore Sphere’s courses to learn more about becoming a member of Sphere’s exclusive
+          community of learners.
+        </Typography>
+        <StyledButton variant="outlined" onClick={() => {}}>
+          Explore Sphere Courses
+        </StyledButton>
+        {!isAuthenticated && (
+          <Box>
+            Are you a Sphere alum?&nbsp;
+            <Link
+              component={RouterLink}
+              variant="subtitle2"
+              to={PATH_AUTH.login}
+              sx={{ textDecoration: 'underline' }}
+            >
+              Sign in here
+            </Link>
+          </Box>
+        )}
+      </Stack>
+    );
+  }
+  if (formType === 'learner') {
+    return (
+      <Stack textAlign="center" spacing={4}>
+        <ModalText>
+          {eventDetails.name} is only open to learners enrolled in {eventDetails.access_type}
+        </ModalText>
+        <Typography>
+          Sphere’s courses provide access to extensive curricula and resources curated by
+          world-class instructors who are leaders in their industries.
+        </Typography>
+        <StyledButton variant="outlined" onClick={() => {}}>
+          Explore Sphere Courses
+        </StyledButton>
+        {!isAuthenticated && (
+          <Box>
+            Are you enrolled in this cohort?&nbsp;
+            <Link
+              component={RouterLink}
+              variant="subtitle2"
+              to={PATH_AUTH.login}
+              sx={{ textDecoration: 'underline' }}
+            >
+              Sign in here
+            </Link>
+          </Box>
+        )}
+      </Stack>
+    );
+  }
+  return <></>;
+};
