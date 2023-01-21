@@ -131,7 +131,7 @@ export default function EventsTab() {
       >
         <Card sx={{ p: { xs: 3, md: 10 }, height: 1, overflow: 'visible' }}>{getModalForm()}</Card>
       </StyledModal>
-      <Container key={eventDetails?.id} sx={{ paddingBottom: '100px' }}>
+      <Container sx={{ paddingBottom: '100px' }}>
         <EventsHeaderSection />
         <EventFilters selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
         {totalUpcomingEvents > 0 && (
