@@ -111,5 +111,11 @@ export function setCommunityEvent(eventID: string, eventName: string) {
 }
 
 export function resetCommunityEvent() {
-  dispatch(slice.actions.removeCommunityEvent());
+  return async () => {
+    try {
+      dispatch(slice.actions.removeCommunityEvent());
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }

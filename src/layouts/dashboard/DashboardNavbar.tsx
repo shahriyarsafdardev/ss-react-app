@@ -19,6 +19,7 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 import { MHidden } from '../../components/@material-extend';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
+import EventNavbar from '../main/EventNavbar';
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +58,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   ];
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
+  const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -121,12 +123,20 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             })
           }}
         >
-          <ToolbarStyle>
+          <ToolbarStyle
+            sx={{
+              ...(communityEvent.id !== '' && {
+                padding: '0 40px 0 0 !important'
+              })
+            }}
+          >
             <MHidden width="lgUp">
               <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
                 <Icon icon={menu2Fill} />
               </IconButton>
             </MHidden>
+
+            {communityEvent.id !== '' && <EventNavbar eventName={communityEvent.name} />}
 
             {currentTab && (
               <HeadText

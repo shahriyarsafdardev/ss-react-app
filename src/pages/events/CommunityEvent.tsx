@@ -17,7 +17,7 @@ import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from 'routes/paths';
-import { updateEventProperties, setCommunityEvent } from 'redux/slices/event';
+import { updateEventProperties, setCommunityEvent, resetCommunityEvent } from 'redux/slices/event';
 import { useDispatch } from 'redux/store';
 import EventName from './EventName';
 import {
@@ -81,7 +81,7 @@ export default function CommuityEvent() {
 
     return () => {
       setEvent(null);
-      // resetCommunityEvent();
+      dispatch(resetCommunityEvent());
     };
   }, [eventID]);
 

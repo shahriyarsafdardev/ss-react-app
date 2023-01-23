@@ -10,7 +10,7 @@ import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
-
+import EventNavbar from '../main/EventNavbar';
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
@@ -24,6 +24,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
   const visibleHeaders = [...pathSlugs, 'messaging', 'events', 'contact-us'];
+  const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -57,12 +58,20 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             })
           }}
         >
-          <ToolbarStyle>
+          <ToolbarStyle
+            sx={{
+              ...(communityEvent.id !== '' && {
+                padding: '0 !important'
+              })
+            }}
+          >
             <MHidden width="lgUp">
               <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
                 <Icon icon={menu2Fill} />
               </IconButton>
             </MHidden>
+
+            {communityEvent.id !== '' && <EventNavbar eventName={communityEvent.name} />}
 
             {currentTab && (
               <HeadText
