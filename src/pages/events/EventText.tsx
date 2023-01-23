@@ -10,9 +10,9 @@ export default function EventText({ event }: { event: any }) {
           {CALENDAR}&nbsp;&nbsp;
           <CardText>{formatTime(event.time)}</CardText>
         </Stack>
-        <Stack direction="row" spacing={2} alignItems="baseline">
+        <Stack direction="row" spacing={2} alignItems="baseline" width="100%">
           {event?.is_registered ? (
-            <Stack direction="row" justifyContent="space-between">
+            <Stack direction="row" justifyContent="space-between" width="100%">
               <Stack direction="row" spacing={2} alignItems="baseline">
                 {getAccessText(event.access_type)}
               </Stack>
