@@ -89,6 +89,7 @@ export default function Router() {
           path: '/events',
           element: <EventsTab />
         },
+        { path: '/all-courses', element: <AllCourses /> },
         { path: '/events/:eventID', element: <CommunityEvent /> },
         { path: '/suggest-course', element: <SuggestCourse /> }
       ]

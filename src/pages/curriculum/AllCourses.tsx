@@ -6,6 +6,7 @@ import { Box, Container, Stack } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { uniq } from 'lodash';
 import { RootState, useSelector } from 'redux/store';
+import useAuth from 'hooks/useAuth';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
@@ -16,6 +17,7 @@ export default function AllCourses() {
   const [seniority, setSeniority] = useState<string[]>([]);
   const [functions, setFunctions] = useState<string[]>([]);
   const [topics, setTopics] = useState<any[]>([]);
+  const { isAuthenticated } = useAuth();
   const [selectedSeniority, setSelectedSeniority] = useState<any>();
   const [selectedFunction, setSelectedFunction] = useState<any>();
   const [selectedTopic, setSelectedTopic] = useState<any>();
@@ -110,7 +112,7 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere Courses">
-      <PathsList />
+      {isAuthenticated && <PathsList />}
       <Box paddingX={{ xs: '20px', md: '40px' }} marginY={{ xs: '20px', md: '30px' }}>
         <AllCoursesFilters
           key={`${topics.length} ${functions.length}`}
