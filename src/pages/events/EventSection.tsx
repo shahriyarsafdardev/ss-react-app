@@ -26,7 +26,7 @@ export default function EventSection({
   const [formType, setFormType] = useState('');
 
   const showMore = async () => {
-    if (totalEvents !== events.length) {
+    if (totalEvents !== events.events.length) {
       await handleShowMore();
     }
     setMore(!more);
@@ -73,20 +73,18 @@ export default function EventSection({
         <SectionTitle>{category}</SectionTitle>
         <Grid container spacing={3} sx={{ marginTop: '20px' }}>
           {more
-            ? events.map((event: any) => (
+            ? events.events.map((event: any) => (
                 <Grid item key={event.name} xs={12} sm={12} md={4}>
                   <EventCard event={event} setEvent={handleEventClick} />
                 </Grid>
               ))
-            : events.slice(0, 3).map((event: any) => (
+            : events.events.slice(0, 3).map((event: any) => (
                 <Grid item key={event.name} xs={12} sm={12} md={4}>
                   <EventCard event={event} setEvent={handleEventClick} />
                 </Grid>
               ))}
         </Grid>
-        {totalEvents > 3 && (
-          <ShowMoreButton showMore={showMore} more={more} remainingEvents={totalEvents - 3} />
-        )}
+        <ShowMoreButton showMore={showMore} more={more} remainingEvents={events.eventsLength - 3} />
       </Stack>
     </>
   );

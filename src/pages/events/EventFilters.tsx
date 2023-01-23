@@ -3,24 +3,13 @@ import { StyledToggleButton, PUBLIC, LOCK, ToggleButtonText } from './Common';
 
 export default function EventFilters({
   selectedFilters,
-  setSelectedFilters
+  handleOnChange
 }: {
   selectedFilters: String[];
-  setSelectedFilters: Function;
+  handleOnChange: Function;
 }) {
-  const handleOnChange = (filter: string) => {
-    let filters = [];
-    if (selectedFilters.includes(filter)) {
-      filters = selectedFilters.filter((f) => f !== filter);
-      setSelectedFilters(filters);
-    } else {
-      filters = [...selectedFilters, filter];
-      setSelectedFilters(filters);
-    }
-  };
-
   return (
-    <Stack direction="row">
+    <Stack direction="row" py="24px">
       <StyledToggleButton
         key="public"
         selected={selectedFilters.includes('public')}
