@@ -215,11 +215,19 @@ function AuthProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const register = async (email: string, password: string, fullName: string) => {
+  const register = async (
+    email: string,
+    password: string,
+    fullName: string,
+    role: string,
+    company: string
+  ) => {
     const response = await axios.post('/users/register', {
       email,
       password,
-      fullName
+      fullName,
+      role,
+      current_company: company
     });
     const { accessToken, user } = response.data;
 

@@ -13,13 +13,17 @@ type InitialValues = {
   fullName: string;
   suggestion: string;
   afterSubmit?: string;
+  title: string;
+  company: string;
 };
 
 export default function SuggestCourse({ setFormType }: { setFormType: Function }) {
   const RegisterSchema = Yup.object().shape({
     fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    suggestion: Yup.string().required('Suggestion is required')
+    suggestion: Yup.string().required('Suggestion is required'),
+    title: Yup.string().required('Title is required'),
+    company: Yup.string().required('Company name is required')
   });
 
   const { isAuthenticated } = useAuth();
@@ -28,7 +32,9 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
     initialValues: {
       fullName: '',
       email: '',
-      suggestion: ''
+      suggestion: '',
+      title: '',
+      company: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {}
@@ -53,23 +59,42 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
             <Stack spacing={4} alignItems="center">
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               {!isAuthenticated && (
-                <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                  <TextField
-                    fullWidth
-                    label="Full Name"
-                    {...getFieldProps('fullName')}
-                    error={Boolean(touched.fullName && errors.fullName)}
-                    helperText={touched.fullName && errors.fullName}
-                  />
+                <>
+                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <TextField
+                      fullWidth
+                      label="Full Name"
+                      {...getFieldProps('fullName')}
+                      error={Boolean(touched.fullName && errors.fullName)}
+                      helperText={touched.fullName && errors.fullName}
+                    />
 
-                  <TextField
-                    fullWidth
-                    label="Email"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                </Stack>
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      {...getFieldProps('email')}
+                      error={Boolean(touched.email && errors.email)}
+                      helperText={touched.email && errors.email}
+                    />
+                  </Stack>
+                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                    <TextField
+                      fullWidth
+                      label="Title"
+                      {...getFieldProps('title')}
+                      error={Boolean(touched.title && errors.title)}
+                      helperText={touched.title && errors.title}
+                    />
+
+                    <TextField
+                      fullWidth
+                      label="Company"
+                      {...getFieldProps('company')}
+                      error={Boolean(touched.company && errors.company)}
+                      helperText={touched.company && errors.company}
+                    />
+                  </Stack>
+                </>
               )}
               <TextField
                 fullWidth

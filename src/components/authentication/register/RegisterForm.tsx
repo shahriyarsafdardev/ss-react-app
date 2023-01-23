@@ -1,11 +1,13 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import MUICreatableSelect from 'components/MUICreatableSelect';
+import axios from 'utils/axios';
 // material
 import {
   Stack,
@@ -15,7 +17,8 @@ import {
   InputAdornment,
   Alert,
   Link,
-  Box
+  Box,
+  FormControl
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
@@ -34,6 +37,15 @@ type InitialValues = {
   fullName: string;
   confirmPassword: string;
   afterSubmit?: string;
+  role: string;
+  company: string;
+};
+
+type CompanyData = {
+  name: string;
+  logo_url: string;
+  number_of_employees: string;
+  industries: string[];
 };
 
 export default function RegisterForm({ setFormType }: { setFormType: Function }) {
@@ -41,27 +53,42 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
+  const [companies, setCompanies] = useState<CompanyData[]>([]);
 
   const RegisterSchema = Yup.object().shape({
     fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name required'),
+    role: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Role is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters')
       .required('New Password is required'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+    confirmPassword: Yup.string()
+      .required('Please retype your password.')
+      .oneOf([Yup.ref('password')], 'Your passwords do not match.')
   });
+
+  useEffect(() => {
+    axios
+      .get('/cohorts/select_fields_data.json')
+      .then((res) => res.data)
+      .then((payload) => {
+        payload?.companies && setCompanies(payload.companies);
+      });
+  }, []);
 
   const formik = useFormik<InitialValues>({
     initialValues: {
       fullName: '',
       email: '',
       password: '',
+      role: '',
+      company: '',
       confirmPassword: ''
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await register(values.email, values.password, values.fullName);
+        await register(values.email, values.password, values.fullName, values.role, values.company);
         enqueueSnackbar('Register success', {
           variant: 'success',
           action: (key) => (
@@ -84,7 +111,16 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    values,
+    setFieldValue,
+    isValid
+  } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -115,6 +151,23 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
               error={Boolean(touched.email && errors.email)}
               helperText={touched.email && errors.email}
             />
+          </Stack>
+          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <TextField
+              label="Role"
+              fullWidth
+              {...getFieldProps('role')}
+              error={Boolean(touched.role && errors.role)}
+              helperText={touched.role && errors.role}
+            />
+            <FormControl data-testid="company-name" fullWidth>
+              <MUICreatableSelect
+                options={companies?.map((company: CompanyData) => company.name)}
+                value={values.company || ''}
+                onChange={(value: any) => setFieldValue('company', value)}
+                label="Company"
+              />
+            </FormControl>
           </Stack>
           <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
@@ -160,6 +213,7 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
             type="submit"
             variant="contained"
             loading={isSubmitting}
+            disabled={!isValid}
             sx={{ borderRadius: '35px' }}
           >
             Register
