@@ -51,9 +51,7 @@ export default function CommuityEvent() {
   const url = new URLSearchParams(useLocation().search);
 
   const pageURL = () =>
-    event?.recording_url
-      ? event.recording_url
-      : `${window.location.origin}/events?event=${event?.id}`;
+    event?.recording_url ? event.recording_url : `${window.location.origin}/events/${event?.id}`;
 
   const CalendarEvent = {
     name: event?.name,
