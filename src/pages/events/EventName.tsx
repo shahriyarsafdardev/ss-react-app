@@ -17,7 +17,7 @@ const StyledCard = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const InstructorMessage = styled(Stack)(({ theme }) => ({
+const EventNameText = styled(Stack)(({ theme }) => ({
   backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome_background.png')`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
@@ -27,7 +27,7 @@ const InstructorMessage = styled(Stack)(({ theme }) => ({
   width: '50%',
   justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    padding: '30px',
+    padding: '60px 30px 30px',
     width: '100%',
     backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
     backgroundPosition: 'top center',
@@ -50,9 +50,16 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 const EventName = ({ event }: { event: Event }) => (
   <>
     <StyledCard>
-      <InstructorMessage spacing={2}>
+      {event?.is_registered && (
+        <img
+          src="https://sphere-public.s3.eu-west-2.amazonaws.com/registered-event.svg"
+          alt="event check"
+          style={{ position: 'absolute', top: '20px' }}
+        />
+      )}
+      <EventNameText spacing={2}>
         <StyledTypography>{event.name}</StyledTypography>
-      </InstructorMessage>
+      </EventNameText>
       <Stack
         direction="column"
         justifyContent="center"

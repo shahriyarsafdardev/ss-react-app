@@ -35,6 +35,18 @@ const slice = createSlice({
         state.pastEvents = action.payload.data.events;
         state.totalPastEvents = action.payload.data.total_events;
       }
+    },
+    updateEvent(state, action) {
+      const targetEventIndex = state.upcomingEvents.findIndex(
+        (event) => event.id === action.payload.eventID
+      );
+      if (targetEventIndex !== -1) {
+        const updated: Event = state.upcomingEvents[targetEventIndex];
+        state.upcomingEvents[targetEventIndex] = {
+          ...updated,
+          ...action.payload.properties
+        };
+      }
     }
   }
 });
@@ -57,6 +69,16 @@ export function getAllEvents(category: string) {
     try {
       const response = await axiosV2.get(`/events/all_events.json?type=${category}`);
       dispatch(slice.actions.getAllEventsSuccess({ category, data: response?.data }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function updateEventProperties(eventID: string, eventProperties: any) {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateEvent({ eventID, properties: eventProperties }));
     } catch (error) {
       console.log(error);
     }

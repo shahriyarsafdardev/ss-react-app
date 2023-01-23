@@ -17,6 +17,8 @@ import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from 'routes/paths';
+import { updateEventProperties } from 'redux/slices/event';
+import { useDispatch } from 'redux/store';
 import EventName from './EventName';
 import {
   SectionTitle,
@@ -49,6 +51,7 @@ export default function CommuityEvent() {
   const [modalState, setModalState] = useState(false);
   const [formType, setFormType] = useState('');
   const url = new URLSearchParams(useLocation().search);
+  const dispatch = useDispatch();
 
   const pageURL = () =>
     event?.recording_url ? event.recording_url : `${window.location.origin}/events/${event?.id}`;
@@ -153,6 +156,10 @@ export default function CommuityEvent() {
       if (data) {
         eventData = JSON.parse(data);
       }
+      if (event?.is_registered) {
+        enqueueSnackbar("You're already enrolled!", { variant: 'warning' });
+        return;
+      }
       await axiosV2
         .post('/event_enrollments.json', {
           event_id: event?.id,
@@ -162,6 +169,13 @@ export default function CommuityEvent() {
         })
         .then((res) => {
           window.localStorage.removeItem(eventID);
+          const updatedEvent: any = {
+            ...event,
+            is_registered: true
+          };
+          setEvent(updatedEvent);
+          dispatch(updateEventProperties(eventID, { is_registered: true }));
+          enqueueSnackbar('Enrolled in Event Successfully!', { variant: 'success' });
         })
         .catch((err) => {});
     }
@@ -302,6 +316,13 @@ export default function CommuityEvent() {
                   sx={{ color: '#754AA9' }}
                 >
                   Add to your calendar
+                  {event?.is_registered && (
+                    <img
+                      src="/static/icons/note-check.svg"
+                      alt="event check"
+                      style={{ marginLeft: '8px', width: '21px' }}
+                    />
+                  )}
                 </StyledButton>
                 <StyledButton
                   variant="contained"
