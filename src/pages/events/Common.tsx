@@ -131,7 +131,10 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   marginLeft: '0 !important',
   marginRight: '15px',
   marginTop: '10px',
-  textTransform: 'none'
+  textTransform: 'none',
+  '&.Mui-selected': {
+    backgroundColor: 'lightgrey'
+  }
 }));
 
 export const ToggleButtonText = styled(Typography)(({ theme }) => ({
