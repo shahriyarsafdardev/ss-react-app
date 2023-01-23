@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { Typography, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Event } from '../../@types/events';
-import { EventHosts, DeatilsText, formatTime, CALENDAR, PUBLIC, PLATEFORM } from './Common';
+import { EventHosts, DeatilsText, formatTime, getAccessText, CALENDAR, PLATEFORM } from './Common';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '340px',
@@ -67,14 +67,20 @@ const EventName = ({ event }: { event: Event }) => (
             {CALENDAR}&nbsp;&nbsp;
             <DeatilsText>{formatTime(event?.time)}</DeatilsText>
           </Stack>
-          <Stack direction="row" spacing={2} alignItems="left">
-            {PUBLIC}&nbsp;&nbsp;
-            <DeatilsText>Open to Everyone</DeatilsText>
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="left"
+            sx={{ '& .accessText': { fontSize: '16px !important', fontWeight: '700 !important' } }}
+          >
+            {getAccessText(event?.access_type)}
           </Stack>
-          <Stack direction="row" spacing={2} alignItems="left">
-            {PLATEFORM}&nbsp;&nbsp;
-            <DeatilsText>Via Zoom</DeatilsText>
-          </Stack>
+          {event.location && (
+            <Stack direction="row" spacing={2} alignItems="left">
+              {PLATEFORM}&nbsp;&nbsp;
+              <DeatilsText>{event.location}</DeatilsText>
+            </Stack>
+          )}
         </Stack>
       </Stack>
     </StyledCard>

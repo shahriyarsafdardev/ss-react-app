@@ -7,10 +7,12 @@ export default function EventText({ event }: { event: any }) {
       <CardTitle>{event.name}</CardTitle>
       <Stack>
         <Stack direction="row" spacing={2} alignItems="baseline">
-          {CALENDAR}
+          {CALENDAR}&nbsp;&nbsp;
           <CardText>{formatTime(event.time)}</CardText>
         </Stack>
-        {getAccessText(event.access_type)}
+        <Stack direction="row" spacing={2} alignItems="baseline">
+          {getAccessText(event.access_type)}
+        </Stack>
       </Stack>
     </Stack>
   );

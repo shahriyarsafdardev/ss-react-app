@@ -1,21 +1,22 @@
 import { useRef, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import baselineEmail from '@iconify/icons-ic/baseline-email';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import copyFill from '@iconify/icons-eva/copy-fill';
-import { useNavigate } from 'react-router-dom';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { atcb_action } from 'add-to-calendar-button';
 import moment from 'moment';
 import axiosV2 from 'utils/axiosV2';
 import ReactPlayer from 'react-player';
-import { Typography, Stack, Card, Grid, MenuItem } from '@material-ui/core';
+import { Typography, Stack, Card, Grid, MenuItem, Button } from '@material-ui/core';
 import copy from 'clipboard-copy';
 import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
+import { PATH_DASHBOARD } from 'routes/paths';
 import EventName from './EventName';
 import {
   SectionTitle,
@@ -39,7 +40,6 @@ export default function CommuityEvent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-  const pageURL = `${window.location.origin}/events?event=${event?.id}`;
   const eventDate = moment(event?.time).format('YYYY-MM-DD');
   const eventStartTime = moment(event?.time).format('HH:mm');
   const eventEndTime = moment(event?.time).add(2, 'hours').format('HH:mm');
@@ -49,6 +49,11 @@ export default function CommuityEvent() {
   const [modalState, setModalState] = useState(false);
   const [formType, setFormType] = useState('');
   const url = new URLSearchParams(useLocation().search);
+
+  const pageURL = () =>
+    event?.recording_url
+      ? event.recording_url
+      : `${window.location.origin}/events?event=${event?.id}`;
 
   const CalendarEvent = {
     name: event?.name,
@@ -115,15 +120,15 @@ export default function CommuityEvent() {
       media === 'Twitter' && event?.description && event?.description?.length > 120
         ? `${event?.description?.slice(0, 120)}...`
         : event?.description
-    }%0D%0A%0D%0A${pageURL}`;
+    }%0D%0A%0D%0A${pageURL()}`;
 
   const copyHandler = () => {
-    copy(pageURL);
+    copy(pageURL());
     enqueueSnackbar('Invite link copied to clipboard', { variant: 'success' });
   };
 
   const handleShareToLinkedin = () => {
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${pageURL}`, '_blank');
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${pageURL()}`, '_blank');
   };
 
   const handleShareViaTwitter = () => {
@@ -135,7 +140,7 @@ export default function CommuityEvent() {
   };
 
   const handleFreeInvite = () => {
-    if (user?.type) {
+    if (user?.type || isAuthenticated) {
       setOpen(true);
     } else {
       setFormType('register');
@@ -272,17 +277,44 @@ export default function CommuityEvent() {
         <Card sx={{ width: '100%', p: '40px' }}>
           <Typography sx={{ mb: 3 }}>{event.description}</Typography>
           <Stack width="100%" direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 2 }}>
-            <StyledButton onClick={(e) => handleAddToCalendar(e)} variant="outlined">
-              Add to your calendar
-            </StyledButton>
-            <StyledButton
-              variant="contained"
-              ref={menuRef}
-              onClick={handleFreeInvite}
-              sx={{ backgroundColor: '#754AA9' }}
-            >
-              Share free invite
-            </StyledButton>
+            {event.recording_url ? (
+              <>
+                <StyledButton
+                  variant="contained"
+                  ref={menuRef}
+                  onClick={handleFreeInvite}
+                  sx={{ backgroundColor: '#754AA9' }}
+                >
+                  Share Recording Link
+                </StyledButton>
+                <Button
+                  component={RouterLink}
+                  to={PATH_DASHBOARD.community.events}
+                  variant="outlined"
+                  sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+                >
+                  Back to All Events
+                </Button>
+              </>
+            ) : (
+              <>
+                <StyledButton
+                  onClick={(e) => handleAddToCalendar(e)}
+                  variant="outlined"
+                  sx={{ color: '#754AA9' }}
+                >
+                  Add to your calendar
+                </StyledButton>
+                <StyledButton
+                  variant="contained"
+                  ref={menuRef}
+                  onClick={handleFreeInvite}
+                  sx={{ backgroundColor: '#754AA9' }}
+                >
+                  Share free invite
+                </StyledButton>
+              </>
+            )}
           </Stack>
         </Card>
         {upcomingEvents.length > 0 && (

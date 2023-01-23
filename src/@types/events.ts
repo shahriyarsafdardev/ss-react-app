@@ -3,6 +3,7 @@ export type Event = {
   name: string;
   description: string;
   time: string;
+  location: string;
   thumbnail_url: string;
   recording_url: string;
   hosts: EventHost[];

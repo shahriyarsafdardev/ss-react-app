@@ -96,9 +96,9 @@ export const LoadingContainer = styled(Box)(() => ({
 
 export const CardText = styled(Typography)(({ theme }) => ({
   color: '#000',
-  fontSize: '14px',
-  marginLeft: '10px'
+  fontSize: '14px'
 }));
+
 export const DeatilsText = styled(Typography)(({ theme }) => ({
   color: '#000',
   fontSize: '16px',
@@ -144,25 +144,25 @@ export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D
 export const getAccessText = (accessType: string) => {
   if (accessType === 'public') {
     return (
-      <Stack direction="row" spacing={2} alignItems="left">
-        {PUBLIC}
-        <CardText>Open to Everyone</CardText>
-      </Stack>
+      <>
+        {PUBLIC}&nbsp;&nbsp;
+        <CardText className="accessText">Open to Everyone</CardText>
+      </>
     );
   }
   if (accessType === 'alumni') {
     return (
-      <Stack direction="row" spacing={2} alignItems="baseline">
-        {LOCK}
-        <CardText>Open to Sphere alumni only</CardText>
-      </Stack>
+      <>
+        {LOCK}&nbsp;&nbsp;
+        <CardText className="accessText">Open to Sphere alumni only</CardText>
+      </>
     );
   }
   return (
-    <Stack direction="row" spacing={2} alignItems="baseline">
-      {LOCK}
-      <CardText>Open to learners enrolled in {accessType}</CardText>
-    </Stack>
+    <>
+      {LOCK}&nbsp;&nbsp;
+      <CardText className="accessText">Open to learners enrolled in {accessType}</CardText>
+    </>
   );
 };
 
