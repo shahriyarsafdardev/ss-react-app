@@ -17,7 +17,7 @@ import 'add-to-calendar-button/assets/css/atcb.css';
 import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from 'routes/paths';
-import { updateEventProperties } from 'redux/slices/event';
+import { updateEventProperties, setCommunityEvent } from 'redux/slices/event';
 import { useDispatch } from 'redux/store';
 import EventName from './EventName';
 import {
@@ -73,6 +73,7 @@ export default function CommuityEvent() {
       await axiosV2.get(`/events/${eventID}.json`).then((res) => {
         setEvent(res.data.event);
         setUpcomingEvents(res.data.upcoming_events);
+        dispatch(setCommunityEvent(eventID, res.data.event.name));
         setLoading(false);
       });
     };
@@ -80,6 +81,7 @@ export default function CommuityEvent() {
 
     return () => {
       setEvent(null);
+      // resetCommunityEvent();
     };
   }, [eventID]);
 

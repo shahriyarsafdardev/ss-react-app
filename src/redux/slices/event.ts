@@ -8,13 +8,21 @@ type EventState = {
   totalUpcomingEvents: number;
   pastEvents: Event[];
   totalPastEvents: number;
+  communityEvent: {
+    id: string;
+    name: string;
+  };
 };
 
 const initialState: EventState = {
   upcomingEvents: [],
   totalUpcomingEvents: 0,
   pastEvents: [],
-  totalPastEvents: 0
+  totalPastEvents: 0,
+  communityEvent: {
+    id: '',
+    name: ''
+  }
 };
 
 const slice = createSlice({
@@ -47,6 +55,13 @@ const slice = createSlice({
           ...action.payload.properties
         };
       }
+    },
+    updateCommunityEvent(state, action) {
+      state.communityEvent = { ...action.payload };
+    },
+    removeCommunityEvent(state) {
+      state.communityEvent.id = '';
+      state.communityEvent.name = '';
     }
   }
 });
@@ -83,4 +98,18 @@ export function updateEventProperties(eventID: string, eventProperties: any) {
       console.log(error);
     }
   };
+}
+
+export function setCommunityEvent(eventID: string, eventName: string) {
+  return async () => {
+    try {
+      dispatch(slice.actions.updateCommunityEvent({ id: eventID, name: eventName }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+
+export function resetCommunityEvent() {
+  dispatch(slice.actions.removeCommunityEvent());
 }
