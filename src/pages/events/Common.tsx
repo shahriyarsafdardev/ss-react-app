@@ -9,11 +9,12 @@ import {
   Typography,
   ToggleButton
 } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import Icon from '@iconify/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
 import { Modal } from 'components/animate';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
 import { RegisterForm } from 'components/authentication/register';
 import { PATH_AUTH } from 'routes/paths';
 import { EventHost } from '../../@types/events';
@@ -224,9 +225,14 @@ export const ModalForm = ({
           Explore Sphere’s courses to learn more about becoming a member of Sphere’s exclusive
           community of learners.
         </Typography>
-        <StyledButton variant="outlined" onClick={() => {}}>
+        <Button
+          component={RouterLink}
+          to="/all-courses"
+          variant="outlined"
+          sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+        >
           Explore Sphere Courses
-        </StyledButton>
+        </Button>
         {!isAuthenticated && (
           <Box>
             Are you a Sphere alum?&nbsp;
@@ -253,9 +259,14 @@ export const ModalForm = ({
           Sphere’s courses provide access to extensive curricula and resources curated by
           world-class instructors who are leaders in their industries.
         </Typography>
-        <StyledButton variant="outlined" onClick={() => {}}>
+        <Button
+          component={RouterLink}
+          to="/all-courses"
+          variant="outlined"
+          sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+        >
           Explore Sphere Courses
-        </StyledButton>
+        </Button>
         {!isAuthenticated && (
           <Box>
             Are you enrolled in this cohort?&nbsp;
