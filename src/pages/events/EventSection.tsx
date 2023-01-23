@@ -40,7 +40,7 @@ export default function EventSection({
       setFormType('alumni');
       setModalState(true);
     } else if (event.is_registered && isAuthenticated) {
-      navigate(`/cohorts/${event.cohort_id}/sessions`);
+      navigate(`/cohorts/${event.cohort_id}/sessions?session_id=${event?.id}`);
     } else {
       setEventDetails(event);
       setFormType('learner');
