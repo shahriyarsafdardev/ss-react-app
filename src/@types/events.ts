@@ -11,6 +11,7 @@ export type Event = {
   is_registered: boolean;
   cohort_id: string | null;
   zoom_url?: string;
+  cohort_link?: string;
 };
 
 export type EventHost = {

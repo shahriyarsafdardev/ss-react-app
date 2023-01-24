@@ -85,19 +85,7 @@ const EventName = ({ event }: { event: Event }) => (
           {event.location && (
             <Stack direction="row" spacing={2} alignItems="left">
               {PLATEFORM}&nbsp;&nbsp;
-              <Link
-                target="_blank"
-                href={event.zoom_url}
-                sx={{
-                  color: '#101658',
-                  fontWeight: 700,
-                  fontSize: '16px',
-                  textDecoration: 'underline',
-                  cursor: 'pointer'
-                }}
-              >
-                {event.location}
-              </Link>
+              <DeatilsText>{event.location}</DeatilsText>
             </Stack>
           )}
         </Stack>

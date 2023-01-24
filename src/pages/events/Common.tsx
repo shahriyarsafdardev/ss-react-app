@@ -95,6 +95,7 @@ export const StyledTime = styled(Stack)(({ theme }) => ({
 
 export const StyledButton = styled(Button)(({ theme }) => ({
   width: '100%',
+  height: '46px',
   borderRadius: '30px'
 }));
 
@@ -283,12 +284,17 @@ export const ModalForm = ({
           component={RouterLink}
           to="/all-courses"
           variant="outlined"
-          sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+          sx={{ height: '46px', width: '100%', borderRadius: '30px', color: '#754AA9' }}
         >
           Explore Sphere Courses
         </Button>
         {!isAuthenticated && (
-          <Box>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            width="100%"
+            alignItems="center"
+            sx={{ m: 'auto' }}
+          >
             Are you a Sphere alum?&nbsp;
             <Link
               component={RouterLink}
@@ -301,7 +307,7 @@ export const ModalForm = ({
             >
               Sign in here
             </Link>
-          </Box>
+          </Stack>
         )}
       </Stack>
     );
@@ -313,7 +319,7 @@ export const ModalForm = ({
           {eventDetails.name} is only open to learners enrolled in&nbsp;
           <Link
             variant="subtitle2"
-            href="https://www.getsphere.com/"
+            href={eventDetails.cohort_link}
             target="_blank"
             sx={{ fontSize: '18px', fontWeight: 700, textDecoration: 'underline' }}
           >
@@ -328,7 +334,7 @@ export const ModalForm = ({
           component={RouterLink}
           to="/all-courses"
           variant="outlined"
-          sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+          sx={{ height: '46px', width: '100%', borderRadius: '30px', color: '#754AA9' }}
           onClick={() => {
             trackModalEvents(
               'All Events Page - Learner only modal - "Explore Sphere Courses" Button Selected'
@@ -338,7 +344,13 @@ export const ModalForm = ({
           Explore Sphere Courses
         </Button>
         {!isAuthenticated && (
-          <Box>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ m: 'auto' }}
+          >
             Are you enrolled in this cohort?&nbsp;
             <Link
               component={RouterLink}
@@ -351,7 +363,7 @@ export const ModalForm = ({
             >
               Sign in here
             </Link>
-          </Box>
+          </Stack>
         )}
       </Stack>
     );

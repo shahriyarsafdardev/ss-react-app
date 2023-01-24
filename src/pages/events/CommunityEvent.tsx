@@ -144,7 +144,7 @@ export default function CommuityEvent() {
       media === 'Twitter' && event?.description && event?.description?.length > 120
         ? `${event?.description?.slice(0, 120)}...`
         : event?.description
-    }%0D%0A%0D%0A${event?.zoom_url}%0D%0A%0D%0A${pageURL()}`;
+    }%0D%0A%0D%0A${pageURL()}`;
 
   const copyHandler = () => {
     copy(pageURL());

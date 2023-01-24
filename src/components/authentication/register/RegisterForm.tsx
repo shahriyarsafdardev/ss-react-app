@@ -220,7 +220,13 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
           >
             Register
           </LoadingButton>
-          <Box>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            width="100%"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ m: 'auto' }}
+          >
             Already have an account?&nbsp;
             <Link
               component={RouterLink}
@@ -231,7 +237,7 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
             >
               Sign in here
             </Link>
-          </Box>
+          </Stack>
         </Stack>
       </Form>
     </FormikProvider>
