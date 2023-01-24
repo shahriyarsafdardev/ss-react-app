@@ -3,7 +3,7 @@ import { Container } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { getEvents, getAllEvents } from 'redux/slices/event';
 import Page from 'components/Page';
-import { LoadingContainer } from './Common';
+import { LoadingContainer, StyledImage } from './Common';
 import { RootState, useSelector, useDispatch } from '../../redux/store';
 import EventSection from './EventSection';
 import UpcomingEvents from './UpcomingEvents';
@@ -71,7 +71,16 @@ export default function EventsTab() {
   return (
     <Page title="Sphere | Events">
       <Container sx={{ paddingBottom: '100px' }}>
-        <EventsHeaderSection />
+        <img
+          src="https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner.png"
+          alt="events-banner"
+          style={{
+            width: '100%',
+            border: '1px solid #E2E8F0',
+            height: 'auto',
+            borderRadius: '20px'
+          }}
+        />
         <EventFilters selectedFilters={selectedFilters} handleOnChange={handleFilterOnChange} />
         {totalUpcomingEvents > 0 && (
           <UpcomingEvents

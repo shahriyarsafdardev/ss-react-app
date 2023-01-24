@@ -45,7 +45,15 @@ export const StyledCard = styled(Card)(({ theme }) => ({
 export const StyledModal = styled(Modal)(({ theme }) => ({
   width: '60% !important',
   minWidth: '600px',
-  margin: 'auto'
+  margin: 'auto',
+  [theme.breakpoints.down('md')]: {
+    width: '90% !important',
+    minWidth: '90%'
+  },
+  [theme.breakpoints.down('md')]: {
+    width: '95% !important',
+    minWidth: '95%'
+  }
 }));
 
 export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
@@ -253,7 +261,15 @@ export const ModalForm = ({
     return (
       <Stack textAlign="center" spacing={4}>
         <ModalText>
-          {eventDetails.name} is only open to learners enrolled in {eventDetails.access_type}
+          {eventDetails.name} is only open to learners enrolled in&nbsp;
+          <Link
+            variant="subtitle2"
+            href="https://www.getsphere.com/"
+            target="_blank"
+            sx={{ fontSize: '18px', fontWeight: 700, textDecoration: 'underline' }}
+          >
+            {eventDetails.access_type}
+          </Link>
         </ModalText>
         <Typography>
           Sphere’s courses provide access to extensive curricula and resources curated by

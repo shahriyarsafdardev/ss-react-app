@@ -123,7 +123,7 @@ export default function CommuityEvent() {
       media === 'Twitter' && event?.description && event?.description?.length > 120
         ? `${event?.description?.slice(0, 120)}...`
         : event?.description
-    }%0D%0A%0D%0A${pageURL()}`;
+    }%0D%0A%0D%0A${event?.zoom_url}%0D%0A%0D%0A${pageURL()}`;
 
   const copyHandler = () => {
     copy(pageURL());
@@ -288,7 +288,7 @@ export default function CommuityEvent() {
             )}
           </>
         )}
-        <Card sx={{ width: '100%', p: '40px' }}>
+        <Card sx={{ width: '100%', p: { md: '40px', xs: '20px' } }}>
           <Typography sx={{ mb: 3 }}>{event.description}</Typography>
           <Stack width="100%" direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 2 }}>
             {event.recording_url ? (

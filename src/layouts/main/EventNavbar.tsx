@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom';
 import { Link, Typography, Stack, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 
@@ -12,7 +13,8 @@ export default function EventNavbar({ eventName }: { eventName: string }) {
         justifyContent="center"
       >
         <Link
-          href={`${window.location.origin}/events`}
+          component={RouterLink}
+          to="/events"
           sx={{ color: '#101658', fontWeight: 700, fontSize: '20px', px: '30px' }}
         >
           All Sphere Events

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Typography, Stack } from '@material-ui/core';
+import { Typography, Link, Stack } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { Event } from '../../@types/events';
 import { EventHosts, DeatilsText, formatTime, getAccessText, CALENDAR, PLATEFORM } from './Common';
@@ -66,10 +66,10 @@ const EventName = ({ event }: { event: Event }) => (
         alignItems="flex-start"
         spacing={2}
         width={{ xs: '100%', md: '50%' }}
-        sx={{ p: '20px 40px' }}
+        sx={{ p: { md: '20px 40px', xs: '20px' } }}
       >
         {event?.hosts?.length > 0 && <EventHosts hosts={event.hosts.slice(0, 2)} />}
-        <Stack width="50%">
+        <Stack width={{ xs: '100%', md: '50%' }}>
           <Stack direction="row" spacing={2} alignItems="left">
             {CALENDAR}&nbsp;&nbsp;
             <DeatilsText>{formatTime(event?.time)}</DeatilsText>
@@ -85,7 +85,19 @@ const EventName = ({ event }: { event: Event }) => (
           {event.location && (
             <Stack direction="row" spacing={2} alignItems="left">
               {PLATEFORM}&nbsp;&nbsp;
-              <DeatilsText>{event.location}</DeatilsText>
+              <Link
+                target="_blank"
+                href={event.zoom_url}
+                sx={{
+                  color: '#101658',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+              >
+                {event.location}
+              </Link>
             </Stack>
           )}
         </Stack>

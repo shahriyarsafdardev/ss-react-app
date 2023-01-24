@@ -10,6 +10,7 @@ export type Event = {
   access_type: string;
   is_registered: boolean;
   cohort_id: string | null;
+  zoom_url?: string;
 };
 
 export type EventHost = {
