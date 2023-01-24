@@ -17,7 +17,6 @@ import {
   InputAdornment,
   Alert,
   Link,
-  Box,
   FormControl
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
@@ -135,79 +134,81 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
             </Typography>
           </div>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
-          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              label="Full Name"
-              {...getFieldProps('fullName')}
-              error={Boolean(touched.fullName && errors.fullName)}
-              helperText={touched.fullName && errors.fullName}
-            />
-
-            <TextField
-              fullWidth
-              autoComplete="username"
-              type="email"
-              label="Email"
-              {...getFieldProps('email')}
-              error={Boolean(touched.email && errors.email)}
-              helperText={touched.email && errors.email}
-            />
-          </Stack>
-          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              label="Role"
-              fullWidth
-              {...getFieldProps('role')}
-              error={Boolean(touched.role && errors.role)}
-              helperText={touched.role && errors.role}
-            />
-            <FormControl data-testid="company-name" fullWidth>
-              <MUICreatableSelect
-                options={companies?.map((company: CompanyData) => company.name)}
-                value={values.company || ''}
-                onChange={(value: any) => setFieldValue('company', value)}
-                label="Company"
+          <Stack spacing={2} width="100%">
+            <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField
+                fullWidth
+                label="Full Name"
+                {...getFieldProps('fullName')}
+                error={Boolean(touched.fullName && errors.fullName)}
+                helperText={touched.fullName && errors.fullName}
               />
-            </FormControl>
-          </Stack>
-          <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <TextField
-              fullWidth
-              autoComplete="on"
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-              {...getFieldProps('password')}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                      <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-              error={Boolean(touched.password && errors.password)}
-              helperText={touched.password && errors.password}
-            />
-            <TextField
-              {...getFieldProps('confirmPassword')}
-              fullWidth
-              autoComplete="on"
-              type={showPassword ? 'text' : 'password'}
-              label="Confirm Password"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                      <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-              helperText={touched.confirmPassword && errors.confirmPassword}
-            />
+
+              <TextField
+                fullWidth
+                autoComplete="username"
+                type="email"
+                label="Email"
+                {...getFieldProps('email')}
+                error={Boolean(touched.email && errors.email)}
+                helperText={touched.email && errors.email}
+              />
+            </Stack>
+            <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField
+                label="Role"
+                fullWidth
+                {...getFieldProps('role')}
+                error={Boolean(touched.role && errors.role)}
+                helperText={touched.role && errors.role}
+              />
+              <FormControl data-testid="company-name" fullWidth>
+                <MUICreatableSelect
+                  options={companies?.map((company: CompanyData) => company.name)}
+                  value={values.company || ''}
+                  onChange={(value: any) => setFieldValue('company', value)}
+                  label="Company"
+                />
+              </FormControl>
+            </Stack>
+            <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField
+                fullWidth
+                autoComplete="on"
+                type={showPassword ? 'text' : 'password'}
+                label="Password"
+                {...getFieldProps('password')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                        <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                error={Boolean(touched.password && errors.password)}
+                helperText={touched.password && errors.password}
+              />
+              <TextField
+                {...getFieldProps('confirmPassword')}
+                fullWidth
+                autoComplete="on"
+                type={showPassword ? 'text' : 'password'}
+                label="Confirm Password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                        <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+                error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                helperText={touched.confirmPassword && errors.confirmPassword}
+              />
+            </Stack>
           </Stack>
           <LoadingButton
             fullWidth

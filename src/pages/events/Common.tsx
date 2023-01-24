@@ -112,8 +112,7 @@ export const CardText = styled(Typography)(({ theme }) => ({
 
 export const DeatilsText = styled(Typography)(({ theme }) => ({
   color: '#000',
-  fontSize: '16px',
-  fontWeight: 700
+  fontSize: '16px'
 }));
 
 export const CardTitle = styled(Typography)(({ theme }) => ({
@@ -153,7 +152,14 @@ export const ToggleButtonText = styled(Typography)(({ theme }) => ({
   fontSize: '14px'
 }));
 
-export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ ha zz');
+export const getLocalTimeZone = () =>
+  new Date()
+    .toString()
+    .split(/[(,)]+/)[1]
+    .match(/\b(\w)/g)
+    ?.join('');
+
+export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ h:mm a z');
 
 export const getAccessText = (accessType: string) => {
   if (accessType === 'public') {

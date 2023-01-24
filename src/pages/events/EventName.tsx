@@ -1,8 +1,17 @@
 import { memo } from 'react';
-import { Typography, Link, Stack } from '@material-ui/core';
+import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import moment from 'moment';
 import { Event } from '../../@types/events';
-import { EventHosts, DeatilsText, formatTime, getAccessText, CALENDAR, PLATEFORM } from './Common';
+import {
+  EventHosts,
+  DeatilsText,
+  formatTime,
+  getAccessText,
+  CALENDAR,
+  PLATEFORM,
+  getLocalTimeZone
+} from './Common';
 
 const StyledCard = styled(Stack)(({ theme }) => ({
   height: '340px',
@@ -47,51 +56,72 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-const EventName = ({ event }: { event: Event }) => (
-  <>
-    <StyledCard>
-      {event?.is_registered && (
-        <img
-          src="https://sphere-public.s3.eu-west-2.amazonaws.com/registered-event.svg"
-          alt="event check"
-          style={{ position: 'absolute', top: '20px' }}
-        />
-      )}
-      <EventNameText spacing={2}>
-        <StyledTypography>{event.name}</StyledTypography>
-      </EventNameText>
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="flex-start"
-        spacing={2}
-        width={{ xs: '100%', md: '50%' }}
-        sx={{ p: { md: '20px 40px', xs: '20px' } }}
-      >
-        {event?.hosts?.length > 0 && <EventHosts hosts={event.hosts.slice(0, 2)} />}
-        <Stack width={{ xs: '100%', md: '50%' }}>
-          <Stack direction="row" spacing={2} alignItems="left">
-            {CALENDAR}&nbsp;&nbsp;
-            <DeatilsText>{formatTime(event?.time)}</DeatilsText>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={2}
-            alignItems="left"
-            sx={{ '& .accessText': { fontSize: '16px !important', fontWeight: '700 !important' } }}
-          >
-            {getAccessText(event?.access_type)}
-          </Stack>
-          {event.location && (
+const EventName = ({ event }: { event: Event }) => {
+  const showButton =
+    moment(event?.time).subtract(15, 'minutes') <= moment() &&
+    moment() <= moment(event?.time).add(2, 'hours');
+
+  return (
+    <>
+      <StyledCard>
+        {event?.is_registered && (
+          <img
+            src="https://sphere-public.s3.eu-west-2.amazonaws.com/registered-event.svg"
+            alt="event check"
+            style={{ position: 'absolute', top: '20px' }}
+          />
+        )}
+        <EventNameText spacing={2}>
+          <StyledTypography>{event.name}</StyledTypography>
+        </EventNameText>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="flex-start"
+          spacing={3}
+          width={{ xs: '100%', md: '50%' }}
+          sx={{ p: { md: '20px 40px', xs: '20px' } }}
+        >
+          {event?.hosts?.length > 0 && <EventHosts hosts={event.hosts.slice(0, 2)} />}
+          <Stack width={{ xs: '100%', md: '100%' }}>
             <Stack direction="row" spacing={2} alignItems="left">
-              {PLATEFORM}&nbsp;&nbsp;
-              <DeatilsText>{event.location}</DeatilsText>
+              {CALENDAR}&nbsp;&nbsp;
+              <DeatilsText sx={{ fontWeight: 700 }}>{`${formatTime(
+                event?.time
+              )} ${getLocalTimeZone()}`}</DeatilsText>
             </Stack>
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems="left"
+              sx={{
+                '& .accessText': { fontSize: '16px !important' }
+              }}
+              width="100%"
+            >
+              {getAccessText(event?.access_type)}
+            </Stack>
+            {event.location && (
+              <Stack direction="row" spacing={2} alignItems="left">
+                {PLATEFORM}&nbsp;&nbsp;
+                <DeatilsText>{event.location}</DeatilsText>
+              </Stack>
+            )}
+          </Stack>
+          {showButton && event?.zoom_url && (
+            <Button
+              variant="outlined"
+              href={event?.zoom_url}
+              target="_blank"
+              sx={{ width: '100%', height: '46px', borderRadius: '30px' }}
+            >
+              Join Event
+            </Button>
           )}
         </Stack>
-      </Stack>
-    </StyledCard>
-  </>
-);
+      </StyledCard>
+    </>
+  );
+};
 
 export default memo(EventName);

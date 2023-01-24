@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Container } from '@material-ui/core';
+import { Container, useMediaQuery } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
+import { useTheme } from '@material-ui/core/styles';
 import { getEvents, getAllEvents } from 'redux/slices/event';
 import Page from 'components/Page';
 import { trackEvent } from 'utils/eventTracking';
@@ -14,6 +15,8 @@ import EventSection from './EventSection';
 export default function EventsTab() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { upcomingEvents, pastEvents, totalUpcomingEvents, totalPastEvents } = useSelector(
     (state: RootState) => state?.event
   );
@@ -76,13 +79,15 @@ export default function EventsTab() {
     <Page title="Sphere | Events">
       <Container sx={{ paddingBottom: '100px' }}>
         <img
-          src="https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner.png"
+          src={`https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner${
+            isMobile ? '-Mobile' : ''
+          }.png`}
           alt="events-banner"
           style={{
             width: '100%',
             border: '1px solid #E2E8F0',
             height: 'auto',
-            borderRadius: '20px'
+            borderRadius: '16px'
           }}
         />
         <EventFilters selectedFilters={selectedFilters} handleOnChange={handleFilterOnChange} />
