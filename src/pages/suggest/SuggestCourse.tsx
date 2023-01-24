@@ -18,15 +18,31 @@ type InitialValues = {
 };
 
 export default function SuggestCourse({ setFormType }: { setFormType: Function }) {
-  const RegisterSchema = Yup.object().shape({
-    fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name required'),
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    suggestion: Yup.string().required('Suggestion is required'),
-    title: Yup.string().required('Title is required'),
-    company: Yup.string().required('Company name is required')
-  });
-
   const { isAuthenticated } = useAuth();
+
+  const RegisterSchema = Yup.object().shape({
+    suggestion: Yup.string().required('Suggestion is required'),
+    fullName: Yup.string().when([], {
+      is: () => !isAuthenticated,
+      then: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Full name required'),
+      otherwise: Yup.string().notRequired()
+    }),
+    email: Yup.string().when([], {
+      is: () => !isAuthenticated,
+      then: Yup.string().email('Email must be a valid email address').required('Email is required'),
+      otherwise: Yup.string().notRequired()
+    }),
+    title: Yup.string().when([], {
+      is: () => !isAuthenticated,
+      then: Yup.string().required('Title is required'),
+      otherwise: Yup.string().notRequired()
+    }),
+    company: Yup.string().when([], {
+      is: () => !isAuthenticated,
+      then: Yup.string().required('Company name is required'),
+      otherwise: Yup.string().notRequired()
+    })
+  });
 
   const formik = useFormik<InitialValues>({
     initialValues: {
@@ -56,11 +72,11 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
                 professional development needs.
               </Typography>
             </Stack>
-            <Stack spacing={4} alignItems="center">
+            <Stack spacing={3} alignItems="center">
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               {!isAuthenticated && (
                 <>
-                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={3}>
                     <TextField
                       fullWidth
                       label="Full Name"
@@ -77,7 +93,7 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
                       helperText={touched.email && errors.email}
                     />
                   </Stack>
-                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <Stack width="100%" direction={{ xs: 'column', sm: 'row' }} spacing={3}>
                     <TextField
                       fullWidth
                       label="Title"

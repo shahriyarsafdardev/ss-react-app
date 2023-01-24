@@ -8,7 +8,6 @@ import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
 
 import {
-  learnerSidebarConfig,
   communitySidebarConfig,
   SidebarRootStyle,
   LogoContainer,
@@ -21,9 +20,8 @@ import {
 } from 'layouts/Common';
 import {
   getCategories,
+  getSortedLearnerCohorts,
   getInstructorCohorts,
-  groupByIntake,
-  getLearnerCohorts,
   ShareReferralLink
 } from './Common';
 import { RootState, useSelector } from '../../redux/store';
@@ -37,7 +35,7 @@ import { MHidden } from '../../components/@material-extend';
 
 //
 import adminToolsConfig from './AdminToolsConfig';
-import { learnerCohortsConfig, instructorCohortsConfig } from './cohortsConfig';
+import { instructorCohortsConfig, learnerCohortsConfigV2 } from './cohortsConfig';
 
 // ----------------------------------------------------------------------
 
@@ -116,23 +114,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
 
         {mode === 'Learner' && (
           <>
-            {user?.type !== 'admin' && (
-              <NavSection
-                navConfig={learnerSidebarConfig(paths.filter((path) => path.is_enrolled))}
-                isShow={!isCollapse}
-              />
-            )}
-            {groupByIntake(cohorts).map((intakeCategory: string) => (
-              <NavSection
-                data-testid="member-sidebar"
-                key={intakeCategory || 'With no intake Name'}
-                navConfig={learnerCohortsConfig(
-                  getLearnerCohorts(cohorts, intakeCategory),
-                  intakeCategory || 'With no intake Name'
-                )}
-                isShow={!isCollapse}
-              />
-            ))}
+            <NavSection
+              data-testid="member-sidebar"
+              navConfig={learnerCohortsConfigV2(
+                getSortedLearnerCohorts(cohorts),
+                paths.filter((path) => path.is_enrolled)
+              )}
+              isShow={!isCollapse}
+            />
           </>
         )}
         {mode === 'Instructor' &&
