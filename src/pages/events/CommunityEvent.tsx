@@ -252,7 +252,10 @@ export default function CommuityEvent() {
   }
 
   return (
-    <Page title={`Event | ${event?.name}`} sx={{ maxWidth: '1200px', m: 'auto' }}>
+    <Page
+      title={`Event | ${event?.name}`}
+      sx={{ maxWidth: '1200px', m: 'auto', marginTop: { xs: '20px', md: 'auto' } }}
+    >
       <StyledModal
         open={modalState}
         onClose={() => {
