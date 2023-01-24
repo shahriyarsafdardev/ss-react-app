@@ -84,19 +84,14 @@ export const IndividualMembershipPaymentDetails = memo(
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
         <Stack>
-          <Typography className={classes.planOptionHead}>Individual Subscriptions</Typography>
+          <Typography className={classes.planOptionHead}>Individual Subscription</Typography>
           <Typography className={classes.planPriceDetails}>
-            Starting at ${Math.floor(price * 0.95)} per year
+            Starting at ${Math.floor(price * 0.95)} per year (~1 course)
           </Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
-          <PlanPointStack description="5% discount on all courses" />
           <PlanPointStack description={`Access to ${hostName}'s course`} />
-          <PlanPointStack
-            description={`$${Math.floor(
-              price * 0.95
-            )} of Sphere Credits per year, which you can use to purchase your next course`}
-          />
+          <PlanPointStack description="5% discount on all courses" />
           <PlanPointStack description="Access to exclusive alumni events" />
           {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
@@ -137,24 +132,23 @@ export const TeamMembershipPaymentDetails = memo(
 
     const handleTeamPackageSelected = () => {
       sendAnalyticsData('Cohort Registration - Payment Choice - Team Package Selected', {});
-      window.open('https://www.getsphere.com/pages/subscriptions', '_blank');
+      window.open('https://calendly.com/d/zhg-vsj-qmc/meeting-with-sphere', '_blank');
     };
 
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
         <Stack>
-          <Typography className={classes.planOptionHead}>Team Subscriptions</Typography>
-          <Typography className={classes.planPriceDetails}>Flexible for your team</Typography>
+          <Typography className={classes.planOptionHead}>Team Subscription</Typography>
+          <Typography className={classes.planPriceDetails}>
+            Build your custom training plan
+          </Typography>
         </Stack>
         <Stack className={classes.optionsStack} spacing={1}>
+          <PlanPointStack description="Individual Subscriptions for all team members" />
           <PlanPointStack description="15%+ discounts on all courses" />
-          <PlanPointStack description="Access to live sessions" />
-          <PlanPointStack description="Ongoing access to course materials and alumni community" />
-          <PlanPointStack description="Access to exclusive alumni events" />
+          <PlanPointStack description="Request topics for your business needs" />
+          <PlanPointStack description="Get this, or any other course, free if your team subscribes" />
           <PlanPointStack description="Request topics for curriculum" />
-          <Typography className={classes.planPriceDetails}>
-            If you get your team to sign up for a subscription you’ll receive a free course
-          </Typography>
           {/* <Stack direction="row" alignItems="flex-start">
           <StyledCheckIcon
             src="https://sphere-public.s3.eu-west-2.amazonaws.com/check-box-icon.png"
@@ -170,7 +164,7 @@ export const TeamMembershipPaymentDetails = memo(
           className={`${classes.submitButton} ${classes.paymentOptionButton}`}
           onClick={handleTeamPackageSelected}
         >
-          Select
+          Talk To Sphere
         </Button>
       </Stack>
     );
