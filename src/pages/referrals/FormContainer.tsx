@@ -13,11 +13,11 @@ export default function FormContainer() {
         Give $100, Get $100
       </Typography>
       <Typography sx={{ mb: '5px' }}>
-        Invite a friend or colleague to Sphere and they will receive $100 to use towards{' '}
-        {cohort?.name || 'a course'}.
+        Invite a friend or colleague to {cohort?.name || 'sphere'}.
       </Typography>
       <Typography>
-        Once they have enrolled, you will also receive $100 credit to use towards Sphere courses.
+        Once they have enrolled, you will both receive $100 credit to use towards future Sphere
+        courses.
       </Typography>
       <SendReferralInviteForm />
     </Card>

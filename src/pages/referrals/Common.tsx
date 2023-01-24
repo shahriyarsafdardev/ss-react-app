@@ -64,8 +64,88 @@ export const useStyles = makeStyles((theme: Theme) => ({
     padding: '40px',
     textAlign: 'center',
     border: 'solid 1px rgba(145, 158, 171, 0.5)'
+  },
+  faqQuestion: {
+    color: '#000',
+    fontSize: '18px',
+    fontWeight: 'bold'
+  },
+  faqAnswer: {
+    color: '#000',
+    marginLeft: '48px'
+  },
+  faqHeading: {
+    fontWeight: 700,
+    color: '#000',
+    fontSize: '22px'
+  },
+  accordionContainer: {
+    backgroundColor: '#FAFAFC',
+    border: '1px solid #E2E8F0',
+    borderRadius: '10px',
+    marginBottom: '16px',
+    paddingRight: '10px',
+    '&:before': {
+      display: 'none'
+    }
   }
 }));
+
+export const FAQs = [
+  {
+    id: '1',
+    question: 'How do I use the credit?',
+    answer: (
+      <>
+        Your balance will automatically be applied when you register for your next Sphere course. If
+        you are having issues, please contact us{' '}
+        <a href="https://www.getsphere.com/pages/contact-us" target="_blank" rel="noreferrer">
+          here
+        </a>
+        .
+      </>
+    )
+  },
+  {
+    id: '2',
+    question: 'When can I use the credit?',
+    answer: 'You can use the credit at any time; it does not expire.'
+  },
+  {
+    id: '3',
+    question: 'When do I receive the credit?',
+    answer:
+      'If you have sent a referral, you will receive the credit as soon as your colleague has paid for the course you referred them to. If you are registering for a course using a referral, you will receive the credit as soon as you have paid for the course.'
+  },
+  {
+    id: '4',
+    question: 'Who can I refer to earn credit?',
+    answer: 'You can refer anyone you think would benefit from Sphere’s courses.'
+  },
+  {
+    id: '5',
+    question: 'How can I tell if a someone has used my referral link?',
+    answer: 'You can check the Balance History tab to see if someone has used your referral link.'
+  },
+  {
+    id: '6',
+    question: 'Is there a limit to the number of credits I can earn?',
+    answer: 'Nope!'
+  },
+  {
+    id: '7',
+    question: 'Where can I reach out if my question wasn’t answered here?',
+    answer: (
+      <>
+        If you have any additional questions, please contact us{' '}
+        <a href="https://www.getsphere.com/pages/contact-us" target="_blank" rel="noreferrer">
+          here
+        </a>
+        .
+      </>
+    )
+  }
+];
 
 export const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   marginTop: '8px',
