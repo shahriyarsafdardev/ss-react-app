@@ -19,6 +19,7 @@ import useAuth from 'hooks/useAuth';
 import { PATH_DASHBOARD } from 'routes/paths';
 import { updateEventProperties, setCommunityEvent, resetCommunityEvent } from 'redux/slices/event';
 import { useDispatch } from 'redux/store';
+import { trackEvent } from 'utils/eventTracking';
 import EventName from './EventName';
 import {
   SectionTitle,
@@ -26,7 +27,9 @@ import {
   StyledButton,
   StyledModal,
   ModalForm,
-  StyledIcon
+  StyledIcon,
+  communityEventProperties,
+  additionalCommunityEventProperties
 } from './Common';
 import EventCard from './EventCard';
 import { Event } from '../../@types/events';
@@ -86,6 +89,7 @@ export default function CommuityEvent() {
   }, [eventID]);
 
   const registrationSuccess = () => {
+    trackEvent(null, 'Event Page - Login modal - "Continue" Selected');
     setModalState(false);
     setIsAuthenticated();
   };
@@ -104,7 +108,24 @@ export default function CommuityEvent() {
       setFormType('learner');
       setModalState(true);
     }
+    trackEvent(
+      null,
+      'Event Page - More Upcoming Events - Event Selected',
+      communityEventProperties
+    );
   };
+
+  const trackEventPageEvents = (eventName: string, eventProperties?: any) => {
+    trackEvent(null, eventName, {
+      ...communityEventProperties(event),
+      ...additionalCommunityEventProperties(event),
+      ...eventProperties
+    });
+  };
+
+  useEffect(() => {
+    event?.name && trackEventPageEvents('Event Page - Page Loaded');
+  }, [event?.name]);
 
   useEffect(() => {
     const eventData = window.localStorage.getItem(eventID);
@@ -128,21 +149,40 @@ export default function CommuityEvent() {
   const copyHandler = () => {
     copy(pageURL());
     enqueueSnackbar('Invite link copied to clipboard', { variant: 'success' });
+    trackEventPageEvents(
+      event?.recording_url ? 'Event Page - Recording Link Shared' : 'Event Page - Invite Shared',
+      { 'Share Platform': 'Clipboard' }
+    );
   };
 
   const handleShareToLinkedin = () => {
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${pageURL()}`, '_blank');
+    trackEventPageEvents(
+      event?.recording_url ? 'Event Page - Recording Link Shared' : 'Event Page - Invite Shared',
+      { 'Share Platform': 'LinkedIn' }
+    );
   };
 
   const handleShareViaTwitter = () => {
     window.open(`https://twitter.com/intent/tweet?text=${getCaption('Twitter')}`, '_blank');
+    trackEventPageEvents(
+      event?.recording_url ? 'Event Page - Recording Link Shared' : 'Event Page - Invite Shared',
+      { 'Share Platform': 'Twitter' }
+    );
   };
 
   const handleShareViaEmail = () => {
     window.open(`mailto:?body=${getCaption('Email')}`, '_blank');
+    trackEventPageEvents(
+      event?.recording_url ? 'Event Page - Recording Link Shared' : 'Event Page - Invite Shared',
+      { 'Share Platform': 'Email' }
+    );
   };
 
   const handleFreeInvite = () => {
+    event?.recording_url
+      ? trackEventPageEvents('Event Page - "Share recording link" Button Selected')
+      : trackEventPageEvents('Event Page - "Share free invite" Button Selected');
     if (user?.type || isAuthenticated) {
       setOpen(true);
     } else {
@@ -184,6 +224,7 @@ export default function CommuityEvent() {
   };
 
   const handleAddToCalendar = (e: any) => {
+    trackEventPageEvents('Event Page - "Add to your calendar" Button Selected');
     if (user?.type) {
       e.preventDefault();
       atcb_action(CalendarEvent);
@@ -191,6 +232,9 @@ export default function CommuityEvent() {
       buttons.forEach((button) => {
         button?.addEventListener('click', (e: any) => {
           registerForEvent(e?.target.innerText);
+          trackEventPageEvents('Event Page - Add to your calendar', {
+            'Calendar Type': e?.target.innerText
+          });
         });
       });
     } else {
@@ -212,6 +256,15 @@ export default function CommuityEvent() {
       <StyledModal
         open={modalState}
         onClose={() => {
+          if (['learner', 'alumni'].includes(formType)) {
+            trackEvent(
+              null,
+              `All Events Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
+              communityEventProperties(eventDetails)
+            );
+          } else if (formType === 'register') {
+            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+          }
           setEventDetails({});
           setFormType('');
           setModalState(false);
@@ -270,7 +323,12 @@ export default function CommuityEvent() {
           <>
             {event.recording_url?.includes('vimeo') ? (
               <VideoPlayerWrapper>
-                <ReactPlayer controls={true} url={event.recording_url} sx={{ maxWidth: '100%' }} />
+                <ReactPlayer
+                  controls={true}
+                  url={event.recording_url}
+                  sx={{ maxWidth: '100%' }}
+                  onPlay={() => trackEventPageEvents('Event Page - Recording Played')}
+                />
               </VideoPlayerWrapper>
             ) : (
               <StyledVideoPreview

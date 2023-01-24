@@ -2,8 +2,9 @@ import { useState, memo } from 'react';
 import { Stack, Grid, Card } from '@material-ui/core';
 import useAuth from 'hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { trackEvent } from 'utils/eventTracking';
 import EventCard from './EventCard';
-import { SectionTitle, StyledModal, ModalForm } from './Common';
+import { SectionTitle, StyledModal, ModalForm, communityEventProperties } from './Common';
 import ShowMoreButton from './ShowMoreButton';
 import { Event } from '../../@types/events';
 import EventTile from './EventTile';
@@ -31,6 +32,7 @@ function UpcomingEvents({
       await handleShowMore();
     }
     setMore(!more);
+    trackEvent(null, 'All Events Page - Show More Events');
   };
 
   const handleEventClick = (event: Event) => {
@@ -47,6 +49,7 @@ function UpcomingEvents({
       setFormType('learner');
       setModalState(true);
     }
+    trackEvent(null, 'All Events Page - Event Selected', communityEventProperties(event));
   };
 
   return (
@@ -54,6 +57,13 @@ function UpcomingEvents({
       <StyledModal
         open={modalState}
         onClose={() => {
+          if (['learner', 'alumni'].includes(formType)) {
+            trackEvent(
+              null,
+              `All Events Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
+              communityEventProperties(eventDetails)
+            );
+          }
           setEventDetails({});
           setFormType('');
           setModalState(false);

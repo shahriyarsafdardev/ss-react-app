@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack5';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -23,6 +23,7 @@ import {
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import { Link as RouterLink } from 'react-router-dom';
+import { trackEvent } from 'utils/eventTracking';
 import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -73,6 +74,7 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
       .then((res) => res.data)
       .then((payload) => {
         payload?.companies && setCompanies(payload.companies);
+        trackEvent(null, 'Event Page - Login modal - Opened');
       });
   }, []);
 
@@ -225,6 +227,7 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
               variant="subtitle2"
               to={PATH_AUTH.login}
               sx={{ textDecoration: 'underline' }}
+              onClick={() => trackEvent(null, 'Event Page - Login Modal - Sign In Link Selected')}
             >
               Sign in here
             </Link>

@@ -109,11 +109,5 @@ export const isSessionStarted = (eventProperties: any) => {
 };
 
 export const emptyCohortGenericProperties = {
-  'Cohort ID': 'none',
-  'Cohort Code': 'none',
-  'Cohort Intake': 'none',
-  'Cohort Intake Number': 'none',
-  'Cohort Name': 'none',
-  'Cohort Instructor First Name': 'none',
-  'Cohort Instructor Last Name': 'none'
+  Cohort: 'none'
 };

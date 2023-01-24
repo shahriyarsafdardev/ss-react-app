@@ -3,13 +3,13 @@ import { Container } from '@material-ui/core';
 import LoadingScreen from 'components/LoadingScreen';
 import { getEvents, getAllEvents } from 'redux/slices/event';
 import Page from 'components/Page';
-import { LoadingContainer, StyledImage } from './Common';
+import { trackEvent } from 'utils/eventTracking';
+import { LoadingContainer } from './Common';
 import { RootState, useSelector, useDispatch } from '../../redux/store';
-import EventSection from './EventSection';
 import UpcomingEvents from './UpcomingEvents';
 import EventFilters from './EventFilters';
-import EventsHeaderSection from './EventsHeaderSection';
 import { Event } from '../../@types/events';
+import EventSection from './EventSection';
 
 export default function EventsTab() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -20,6 +20,7 @@ export default function EventsTab() {
 
   useEffect(() => {
     dispatch(getEvents());
+    trackEvent(null, 'All Events Page - Page Loaded');
   }, []);
 
   const handleShowMore = async (category: string) => {
@@ -42,6 +43,9 @@ export default function EventsTab() {
       updatedFilters = [...selectedFilters, filter];
       setSelectedFilters(updatedFilters);
     }
+    trackEvent(null, 'All Events Page - Filter Selected', {
+      'Filter Name': JSON.stringify(updatedFilters)
+    });
   };
 
   const filterEvents = useCallback(

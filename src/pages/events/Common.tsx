@@ -14,9 +14,10 @@ import Icon from '@iconify/react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
 import { Modal } from 'components/animate';
-
 import { RegisterForm } from 'components/authentication/register';
 import { PATH_AUTH } from 'routes/paths';
+import { trackEvent } from 'utils/eventTracking';
+import { useEffect } from 'react';
 import { EventHost } from '../../@types/events';
 
 export const CALENDAR = '🗓️';
@@ -195,6 +196,41 @@ export const EventHosts = ({ hosts }: { hosts: EventHost[] }) => (
   </Stack>
 );
 
+export const communityEventProperties = (event: any) => ({
+  'Event Type': eventType(event?.access_type),
+  'Event Title': event.name,
+  'Event Hosts': JSON.stringify(event.hosts.map((host: any) => host?.name)),
+  'Event Date': new Date(event.time),
+  'Event Time': new Date(event.time).toLocaleTimeString(),
+  'Event Permissions': event.access_type,
+  'Event Location': event.location
+});
+
+export const additionalCommunityEventProperties = (event: any) => {
+  const eventData = localStorage.getItem(event.id);
+  const { source, referrer, referrer_domain } = JSON.parse(eventData || '');
+  let hoursBeforeEvent = null;
+  let hoursAfterEvent = null;
+  const currentTime = new Date();
+  const eventTime = new Date(event.time);
+  if (currentTime > eventTime) {
+    hoursAfterEvent = Math.floor((currentTime.getTime() - eventTime.getTime()) / 36e5);
+  } else {
+    hoursBeforeEvent = Math.floor((eventTime.getTime() - currentTime.getTime()) / 36e5);
+  }
+
+  return {
+    'Hours Before Event Starts': hoursBeforeEvent,
+    'Hours After Event Finished': hoursAfterEvent,
+    Source: source,
+    Referrer: referrer,
+    'Referrer Domain': referrer_domain
+  };
+};
+
+export const eventType = (eventAccessType: any) =>
+  ['alumni', 'public'].includes(eventAccessType) ? 'Event' : 'Session';
+
 export const ModalForm = ({
   formType,
   eventDetails,
@@ -205,9 +241,19 @@ export const ModalForm = ({
   formType: string;
   eventDetails: any;
   isAuthenticated: boolean;
-  setFormType: Function;
   registrationSuccess: Function;
+  setFormType: Function;
 }) => {
+  const trackModalEvents = (eventName: string) => {
+    if (['learner', 'alumni'].includes(formType)) {
+      trackEvent(null, eventName, communityEventProperties(eventDetails));
+    }
+  };
+
+  useEffect(() => {
+    trackModalEvents(`All Events Page - ${formType.toUpperCase()} only modal - Opened`);
+  }, []);
+
   if (formType === 'register') {
     return <RegisterForm setFormType={setFormType} />;
   }
@@ -249,6 +295,9 @@ export const ModalForm = ({
               variant="subtitle2"
               to={PATH_AUTH.login}
               sx={{ textDecoration: 'underline' }}
+              onClick={() =>
+                trackModalEvents('All Events Page - Alumni only modal - Sign In Link Selected')
+              }
             >
               Sign in here
             </Link>
@@ -280,6 +329,11 @@ export const ModalForm = ({
           to="/all-courses"
           variant="outlined"
           sx={{ width: '100%', borderRadius: '30px', color: '#754AA9' }}
+          onClick={() => {
+            trackModalEvents(
+              'All Events Page - Learner only modal - "Explore Sphere Courses" Button Selected'
+            );
+          }}
         >
           Explore Sphere Courses
         </Button>
@@ -291,6 +345,9 @@ export const ModalForm = ({
               variant="subtitle2"
               to={PATH_AUTH.login}
               sx={{ textDecoration: 'underline' }}
+              onClick={() =>
+                trackModalEvents('All Events Page - Learners only modal - Sign In Link Selected')
+              }
             >
               Sign in here
             </Link>
