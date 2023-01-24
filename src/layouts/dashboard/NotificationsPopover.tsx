@@ -18,9 +18,7 @@ import {
   Typography,
   ListItemText,
   ListItemButton,
-  Stack,
-  tooltipClasses,
-  TooltipProps
+  Stack
 } from '@material-ui/core';
 import { Notification } from '../../@types/cohorts';
 
@@ -56,31 +54,6 @@ const NotificationsStack = styled(Stack)(() => ({
   justifyContent: 'space-between',
   '&:hover': {
     backgroundColor: '#fff'
-  }
-}));
-
-const StyledCheckIcon = styled(Box)(() => ({
-  width: '35px',
-  height: '35px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  '&:hover': {
-    borderRadius: '50%',
-    backgroundColor: 'rgba(0, 0, 0, 0.05);'
-  }
-}));
-
-const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette.common.white,
-    fontSize: '16px',
-    border: '1px solid #101658',
-    fontWeight: '400',
-    color: '#101658',
-    padding: '10px'
   }
 }));
 
@@ -189,20 +162,11 @@ function NotificationItem({
           cursor: 'pointer'
         }}
       >
-        <StyledTooltip
-          title="Mark as read"
-          placement="left"
-          arrow
-          sx={{
-            '&:hover': { backgroundColor: '#EEEFF2' },
-            backgroundColor: '#fff',
-            color: '#101658'
-          }}
-        >
-          <StyledCheckIcon onClick={() => handleMarkAsRead(notification?.channel_id)}>
-            <CheckIcon />
-          </StyledCheckIcon>
-        </StyledTooltip>
+        <Tooltip title=" Mark as read" arrow>
+          <MIconButton color="primary" onClick={() => handleMarkAsRead(notification?.channel_id)}>
+            <CheckIcon sx={{ width: '20px', height: '20px' }} />
+          </MIconButton>
+        </Tooltip>
       </Box>
     </NotificationsStack>
   );
@@ -353,7 +317,7 @@ export default function NotificationsPopover() {
           </Box>
 
           {notifications.length > 0 && (
-            <Tooltip title=" Mark all as read">
+            <Tooltip title=" Mark all as read" arrow>
               <MIconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </MIconButton>

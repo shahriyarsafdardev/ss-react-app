@@ -75,10 +75,16 @@ const ThreadHeader: React.FC<HeaderProps> = (props) => {
         <div className="custom-thread-header__left">
           <Box
             onClick={(event: any) => closeThread(event)}
-            style={{ display: 'flex', alignItems: 'center' }}
+            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >
             <span style={{ fontWeight: 600, fontSize: '16px', marginRight: '5px' }}>{'<'}</span>
-            <span style={{ textDecoration: 'underline', fontWeight: 600, fontSize: '16px' }}>
+            <span
+              style={{
+                textDecoration: 'underline',
+                fontWeight: 600,
+                fontSize: '16px'
+              }}
+            >
               Back to #{channel?.data?.name}
             </span>
           </Box>
