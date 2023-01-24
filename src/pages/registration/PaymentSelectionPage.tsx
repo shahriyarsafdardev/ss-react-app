@@ -101,7 +101,7 @@ function PaymentSelectionPage() {
           >
             {company?.name
               ? `${company?.name} has already approved Sphere courses as an L&D expense for teams and
-          individuals at ${company?.name}. We provide an invoice for expense purposes. You can get a
+          individuals at ${company?.name}. You can get a
           full refund up to 72 hours before the date of the first session.`
               : 'We provide an invoice for expense purposes. You can get a full refund up to 72 hours before the date of the first session.'}
           </Typography>
