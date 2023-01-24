@@ -4,7 +4,9 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { Stack, TextField, Typography, Alert, Container } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 import Page from 'components/Page';
+import { useSnackbar } from 'notistack5';
 import useAuth from 'hooks/useAuth';
+import { trackEvent } from 'utils/eventTracking';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +20,8 @@ type InitialValues = {
 };
 
 export default function SuggestCourse({ setFormType }: { setFormType: Function }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const RegisterSchema = Yup.object().shape({
     suggestion: Yup.string().required('Suggestion is required'),
@@ -53,7 +56,17 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
       company: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {}
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+      trackEvent(null, 'Suggest A Course - Form Submitted', {
+        'Full Name': isAuthenticated ? `${user?.first_name} ${user?.last_name}` : values.fullName,
+        Email: isAuthenticated ? user?.email : values.email,
+        Title: isAuthenticated ? user?.current_position : values.title,
+        Company: isAuthenticated ? user?.current_company : values.company,
+        Suggestion: values.suggestion
+      });
+      resetForm();
+      enqueueSnackbar('Suggestion Submitted', { variant: 'success' });
+    }
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, isValid } = formik;
