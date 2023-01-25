@@ -1,4 +1,4 @@
-import { Stack } from '@material-ui/core';
+import { Stack, Typography } from '@material-ui/core';
 import { StyledToggleButton, PUBLIC, LOCK, ToggleButtonText } from './Common';
 
 export default function EventFilters({
@@ -9,7 +9,8 @@ export default function EventFilters({
   handleOnChange: Function;
 }) {
   return (
-    <Stack direction="row" py="24px">
+    <Stack direction={{ xs: 'column', md: 'row' }} my="30px" alignItems="center" spacing={2}>
+      <Typography sx={{ color: '#101658', fontWeight: 700 }}>Filter by: </Typography>
       <StyledToggleButton
         key="public"
         selected={selectedFilters.includes('public')}
