@@ -60,7 +60,7 @@ export default function CommuityEvent() {
     if (isAuthenticated) {
       return `?referrer=${user?.slug}`;
     }
-    return '';
+    return '?referrer=logged-out-sharer';
   };
 
   const pageURL = () =>
@@ -145,6 +145,14 @@ export default function CommuityEvent() {
     };
     if (!eventData) {
       window.localStorage.setItem(`${eventID}`, JSON.stringify(data));
+    } else {
+      const newEventData: any = JSON.parse(eventData);
+      const newData = {
+        source: newEventData?.source || url.get('source') || '',
+        referrer_domain: newEventData?.referrer_domain || document.referrer || '',
+        referrer: newEventData?.referrer || url.get('referrer') || ''
+      };
+      window.localStorage.setItem(`${eventID}`, JSON.stringify(newData));
     }
   }, []);
 
