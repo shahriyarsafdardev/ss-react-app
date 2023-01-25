@@ -128,7 +128,7 @@ export default function SuggestCourse({ setFormType }: { setFormType: Function }
               <TextField
                 fullWidth
                 multiline
-                label="Tell us about your course idea"
+                label="Tell us about course topics that would be valuable to you and your business"
                 rows={4}
                 {...getFieldProps('suggestion')}
                 error={Boolean(touched.suggestion && errors.suggestion)}

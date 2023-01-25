@@ -88,8 +88,7 @@ export default function ContactUs() {
         name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
-      },
-      discord_url: 'https://discordapp.com/users/875140709898928130'
+      }
     },
     {
       id: '1214f562-ebde-42cb-9bfa-653abb7e74f7',
@@ -110,8 +109,7 @@ export default function ContactUs() {
         name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
-      },
-      discord_url: 'https://discordapp.com/users/811400748020662284'
+      }
     },
     {
       id: 'd5781c7f-ff3b-4d5e-9e53-d4cb7e40b68f',
@@ -119,7 +117,7 @@ export default function ContactUs() {
       last_name: 'Higgins',
       current_position: 'Cohort Operations Manager',
       email: 'leah@getsphere.com',
-      phone: '+1 315 521 6341',
+      phone: '',
       profile_image_url: 'https://sphere-public.s3.eu-west-2.amazonaws.com/assets/leah.png',
       city: 'New York',
       country: 'America',
