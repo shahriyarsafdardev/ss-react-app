@@ -16,7 +16,7 @@ export default function EventFilters({
         onChange={() => handleOnChange('public')}
         value="public"
       >
-        <ToggleButtonText>{PUBLIC} Open to everyone</ToggleButtonText>
+        <ToggleButtonText>{PUBLIC}&nbsp;&nbsp;Open to everyone</ToggleButtonText>
       </StyledToggleButton>
       <StyledToggleButton
         key="alumni"
@@ -24,7 +24,7 @@ export default function EventFilters({
         onChange={() => handleOnChange('alumni')}
         value="alumni"
       >
-        <ToggleButtonText>{LOCK} Open to Sphere alumni only</ToggleButtonText>
+        <ToggleButtonText>{LOCK}&nbsp;&nbsp;Open to Sphere alumni only</ToggleButtonText>
       </StyledToggleButton>
     </Stack>
   );

@@ -21,7 +21,7 @@ const CODE_TAB_COHORTS = ['HPT', 'MLS'];
 export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any) => {
   const cohorts = rawCohorts?.sort((a: any, b: any) => (a.name > b.name ? 1 : -1)) || [];
   const mainObject = {
-    subheader: 'Course',
+    subheader: 'Courses',
     items: cohorts?.map((cohort: any) => {
       const object: any = {
         id: cohort.id,
@@ -129,17 +129,12 @@ export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any) => {
     icon: ICONS.bookshelf
   };
 
-  const suggestCourse = {
-    title: 'suggest a course',
-    path: PATH_DASHBOARD.community.suggestCourse,
-    icon: ICONS.sunlightBulb
-  };
   const paths_link = paths.map((path: any) => ({
     title: path.name,
     path: PATH_DASHBOARD.coursePaths.root(path.slug),
     icon: ICONS.bellChart
   }));
-  mainObject.items = [...paths_link, object, ...mainObject.items, suggestCourse];
+  mainObject.items = [...paths_link, object, ...mainObject.items];
   return mainObject;
 };
 

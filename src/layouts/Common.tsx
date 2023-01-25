@@ -164,6 +164,11 @@ export const communitySidebarConfig = [
         title: 'Contact Us',
         path: PATH_DASHBOARD.community.contactUs,
         icon: ICONS.contact
+      },
+      {
+        title: 'suggest a course',
+        path: PATH_DASHBOARD.community.suggestCourse,
+        icon: ICONS.sunlightBulb
       }
     ]
   },
@@ -174,11 +179,6 @@ export const communitySidebarConfig = [
         title: 'all courses',
         path: PATH_DASHBOARD.general.allCourses,
         icon: ICONS.bookshelf
-      },
-      {
-        title: 'suggest a course',
-        path: PATH_DASHBOARD.community.suggestCourse,
-        icon: ICONS.sunlightBulb
       }
     ]
   }

@@ -215,7 +215,15 @@ export const communityEventProperties = (event: any) => ({
 
 export const additionalCommunityEventProperties = (event: any) => {
   const eventData = localStorage.getItem(event.id);
-  const { source, referrer, referrer_domain } = JSON.parse(eventData || '');
+  let source = '';
+  let referrer = '';
+  let referrer_domain = '';
+  if (eventData) {
+    const paramsData = JSON.parse(eventData);
+    source = paramsData.source;
+    referrer = paramsData.referrer;
+    referrer_domain = paramsData.referrer_domain;
+  }
   let hoursBeforeEvent = null;
   let hoursAfterEvent = null;
   const currentTime = new Date();
@@ -299,6 +307,7 @@ export const ModalForm = ({
             direction={{ xs: 'column', md: 'row' }}
             width="100%"
             alignItems="center"
+            justifyContent="center"
             sx={{ m: 'auto' }}
           >
             Are you a Sphere alum?&nbsp;

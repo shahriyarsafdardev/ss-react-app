@@ -56,8 +56,17 @@ export default function CommuityEvent() {
   const url = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
 
+  const urlParams = () => {
+    if (isAuthenticated) {
+      return `?referrer=${user?.slug}`;
+    }
+    return '';
+  };
+
   const pageURL = () =>
-    event?.recording_url ? event.recording_url : `${window.location.origin}/events/${event?.id}`;
+    event?.recording_url
+      ? event.recording_url
+      : `${window.location.origin}/events/${event?.id}${urlParams()}`;
 
   const CalendarEvent = {
     name: event?.name,
@@ -183,12 +192,7 @@ export default function CommuityEvent() {
     event?.recording_url
       ? trackEventPageEvents('Event Page - "Share recording link" Button Selected')
       : trackEventPageEvents('Event Page - "Share free invite" Button Selected');
-    if (user?.type || isAuthenticated) {
-      setOpen(true);
-    } else {
-      setFormType('register');
-      setModalState(true);
-    }
+    setOpen(true);
   };
 
   const registerForEvent = async (e: string) => {

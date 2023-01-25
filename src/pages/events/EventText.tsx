@@ -1,5 +1,12 @@
 import { Stack } from '@material-ui/core';
-import { CardText, CardTitle, formatTime, getAccessText, CALENDAR } from './Common';
+import {
+  CardText,
+  CardTitle,
+  formatTime,
+  getAccessText,
+  CALENDAR,
+  getLocalTimeZone
+} from './Common';
 
 export default function EventText({ event }: { event: any }) {
   return (
@@ -8,7 +15,9 @@ export default function EventText({ event }: { event: any }) {
       <Stack>
         <Stack direction="row" spacing={2} alignItems="baseline">
           {CALENDAR}&nbsp;&nbsp;
-          <CardText>{formatTime(event.time)}</CardText>
+          <CardText>
+            {formatTime(event.time)} {getLocalTimeZone()}
+          </CardText>
         </Stack>
         <Stack direction="row" spacing={2} alignItems="baseline" width="100%">
           {event?.is_registered ? (
