@@ -3,6 +3,7 @@ import { Container, Grid, Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
 import useAuth from 'hooks/useAuth';
+import ContactUsBanner from 'components/contact-us/ContactUsBanner';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 import { RootState, useSelector } from '../redux/store';
@@ -45,7 +46,7 @@ export default function ContactUs() {
   const [modalState, modalHandler] = useState({});
   const [cohort, setCohort] = useState({});
   const [displayChatLink, setDisplayChatLink] = useState(false);
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, isAuthenticated } = useAuth();
   const newUser: any = { ...user };
   const { mode } = useSelector((state: RootState) => state.instructorView);
 
@@ -88,8 +89,7 @@ export default function ContactUs() {
         name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
-      },
-      discord_url: 'https://discordapp.com/users/875140709898928130'
+      }
     },
     {
       id: '1214f562-ebde-42cb-9bfa-653abb7e74f7',
@@ -110,8 +110,7 @@ export default function ContactUs() {
         name: 'Sphere',
         logo_url: '/static/contact/companyLogo.svg',
         number_of_employees: '1000-2000'
-      },
-      discord_url: 'https://discordapp.com/users/811400748020662284'
+      }
     },
     {
       id: 'd5781c7f-ff3b-4d5e-9e53-d4cb7e40b68f',
@@ -119,7 +118,7 @@ export default function ContactUs() {
       last_name: 'Higgins',
       current_position: 'Cohort Operations Manager',
       email: 'leah@getsphere.com',
-      phone: '+1 315 521 6341',
+      phone: '',
       profile_image_url: 'https://sphere-public.s3.eu-west-2.amazonaws.com/assets/leah.png',
       city: 'New York',
       country: 'America',
@@ -156,19 +155,19 @@ export default function ContactUs() {
       }
     },
     {
-      id: '0cb1b1b8-d661-495c-a1a6-31690b159995',
-      first_name: 'Alec',
-      last_name: 'Goldstein',
-      current_position: 'Growth Marketing Manager',
-      email: 'alec@getsphere.com',
+      id: '9f1ddd02-9c73-459e-b141-8765c1316d62',
+      first_name: 'Natalie',
+      last_name: 'Cone',
+      current_position: 'Head of Community',
+      email: 'natalie@getsphere.com',
       phone: '',
-      profile_image_url: 'https://sphere-public.s3.eu-west-2.amazonaws.com/assets/alec.png',
+      profile_image_url: 'https://sphere-public.s3.eu-west-2.amazonaws.com/assets/natalie.jpeg',
       city: 'New York',
       country: 'America',
       is_managing_team: true,
       matchings: [],
       opted_in_for_matching_suggestions: false,
-      linkedin_url: 'https://www.linkedin.com/in/alec-goldstein',
+      linkedin_url: 'https://www.linkedin.com/in/natalie-cone-she-her-pmp-2364b7154/',
       current_company: {
         id: '',
         name: 'Sphere',
@@ -200,17 +199,16 @@ export default function ContactUs() {
   ];
 
   return (
-    <Page title="Sphere | Contact Us">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
+    <Page title="Sphere | Contact Us" sx={{ backgroundColor: '#F8FAFC', height: '100%' }}>
+      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ paddingTop: '30px' }}>
         <StyledBox>
-          <Typography variant="h3">Contact Us</Typography>
-          {mode === 'Instructor' && (
+          {isAuthenticated && mode === 'Instructor' && (
             <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
               Walkthrough
             </Button>
           )}
         </StyledBox>
-        <ContactNote />
+        <ContactUsBanner />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}

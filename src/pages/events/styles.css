@@ -1,0 +1,32 @@
+.atcb-text {
+  line-height: 1.5;
+  font-size: 1rem;
+  font-family: Public Sans, sans-serif;
+  font-weight: 400;
+  margin-left: 16px !important;
+}
+
+.atcb-icon {
+  color: #754aa9 !important;
+  width: 24px;
+  height: 24px;
+  margin-right: 0;
+}
+
+.atcb-list-item {
+  padding: 16px;
+  border: none;
+  background-color: #fff;
+}
+
+.atcb-modal {
+  background: white !important;
+}
+
+.atcb-list-item:hover {
+  background-color: rgba(145, 158, 171, 0.08) !important;
+}
+
+#atcb-bgoverlay {
+  background: linear-gradient(75deg, rgba(22, 28, 36, 0.48) 0%, rgb(22, 28, 36) 100%);
+}

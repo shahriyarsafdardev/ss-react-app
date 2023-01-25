@@ -57,6 +57,9 @@ export const getLearnerCohorts = (cohorts: Cohort[], category: string) =>
     .filter((item) => item.intake_name === category)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
+export const getSortedLearnerCohorts = (cohorts: Cohort[]) =>
+  [...cohorts].sort((a, b) => (a.name > b.name ? 1 : -1));
+
 const ContentContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   display: 'flex',

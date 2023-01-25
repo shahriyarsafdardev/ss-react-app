@@ -5,7 +5,7 @@ import { RootState, useSelector } from '../../redux/store';
 
 export default function RedirectToCohort() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
-  const { user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const isOnboarded = (user_onboarding_data: any) =>
@@ -16,7 +16,7 @@ export default function RedirectToCohort() {
     user_onboarding_data?.onboarding_networking_step_completed;
 
   let navigationUrl = '/';
-  if (user) {
+  if (isAuthenticated && user) {
     if (user.new_user) {
       navigationUrl = `/auth/first-login`;
     } else if (user.type === 'company') {
@@ -53,7 +53,7 @@ export default function RedirectToCohort() {
       return <LoadingScreen />;
     }
   } else {
-    return <LoadingScreen />;
+    return <Navigate to="/events" replace />;
   }
 
   return <Navigate to={navigationUrl} replace />;

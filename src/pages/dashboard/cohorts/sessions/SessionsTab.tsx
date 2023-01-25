@@ -64,7 +64,11 @@ export default function SessionsTab() {
 
   useEffect(() => {
     const sessionNumber = Number(params.get('session')) - 1;
-    if (
+    const sessionID = params.get('session_id') || '';
+    const targetIndex = filteredSessions?.findIndex((s) => s.id === sessionID);
+    if (filteredSessions && targetIndex >= 0 && targetIndex < filteredSessions.length) {
+      setSelectedSession(targetIndex);
+    } else if (
       filteredSessions &&
       sessionNumber &&
       sessionNumber >= 0 &&

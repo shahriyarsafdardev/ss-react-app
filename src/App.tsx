@@ -58,7 +58,9 @@ export default function App() {
     setSession(accessToken);
     axios.get('/cohorts.json').then((res) => {
       if (res.data.cohorts.length === 0) {
-        navigate('/all-courses');
+        if (window.location.pathname.split('/')[1] !== 'events') {
+          navigate('/all-courses');
+        }
       } else {
         dispatch(setCohorts(res.data.cohorts));
       }
@@ -74,22 +76,27 @@ export default function App() {
   }, [history]);
 
   useEffect(() => {
+    if (isAuthenticated) {
+      setSegmentUserProperties(user);
+    }
+  }, [user, isAuthenticated]);
+
+  useEffect(() => {
     initAmplitude();
     let fetchCohortsTimeline: NodeJS.Timer;
+    dispatch(getPaths());
     if (isAuthenticated) {
       getAllCohorts();
-      dispatch(getPaths());
       dispatch(getReferralsCount());
       fetchCohortsTimeline = setInterval(() => {
         dispatch(getCohortsTimeline());
       }, FETCH_EVENT_DELAY * 1000);
-      setSegmentUserProperties(user);
     }
 
     return () => {
       clearInterval(fetchCohortsTimeline);
     };
-  }, [dispatch, isAuthenticated, user]);
+  }, [dispatch, isAuthenticated]);
 
   return (
     <ThemeConfig>

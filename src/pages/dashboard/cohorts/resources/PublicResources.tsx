@@ -4,7 +4,6 @@ import { Container, Typography, Stack, Link } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import useSettings from 'hooks/useSettings';
-
 import LoadingScreen from 'components/LoadingScreen';
 import axios from 'utils/axios';
 import { ResourceContext } from 'contexts/ResourceContext';

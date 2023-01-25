@@ -26,12 +26,19 @@ export type JWTContextType = {
   user: AuthUser;
   method: 'jwt';
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    fullName: string,
+    role: string,
+    company: string
+  ) => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => void;
   updateProfile: (user: ParticipantProfile) => void;
   changePassword: (password: string) => Promise<void>;
   updatePassword: (password: string, reset_password_token: string | null) => Promise<void>;
+  setIsAuthenticated: () => void;
 };
 
 export type FirebaseContextType = {

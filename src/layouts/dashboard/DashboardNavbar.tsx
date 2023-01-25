@@ -2,64 +2,24 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { alpha, styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { Box, Stack, IconButton } from '@material-ui/core';
 // hooks
 import { useEffect, useState } from 'react';
 import useAuth from 'hooks/useAuth';
 import ZoopAppAnnouncementPopover from 'pages/zoom/ZoopAppAnnouncementPopover';
+import {
+  COLLAPSE_WIDTH,
+  CompanyLogo,
+  HeadText,
+  NavbarRootStyle,
+  ToolbarStyle
+} from 'layouts/Common';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
-
-// ----------------------------------------------------------------------
-
-const DRAWER_WIDTH = 280;
-const COLLAPSE_WIDTH = 102;
-const APPBAR_MOBILE = 64;
-const APPBAR_DESKTOP = 92;
-
-const RootStyle = styled(AppBar)(({ theme }) => ({
-  boxShadow: 'none',
-  backdropFilter: 'blur(6px)',
-  WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
-  backgroundColor: alpha(theme.palette.background.default, 0.72),
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${DRAWER_WIDTH}px)`
-  }
-}));
-
-const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  minHeight: APPBAR_MOBILE,
-  [theme.breakpoints.up('lg')]: {
-    minHeight: APPBAR_DESKTOP,
-    padding: theme.spacing(0, 5)
-  }
-}));
-
-const CompanyLogo = styled(Box)(({ theme }) => ({
-  margin: '2rem 0 0 2rem',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-    margin: '0'
-  }
-}));
-
-const HeadText = styled(Typography)(({ theme }) => ({
-  fontSize: '1.25rem',
-  textTransform: 'capitalize',
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '1rem'
-  },
-  [theme.breakpoints.down(345)]: {
-    fontSize: '13px !important'
-  },
-  [theme.breakpoints.down(301)]: {
-    fontSize: '10px !important'
-  }
-}));
+import EventNavbar from '../main/EventNavbar';
 
 // ----------------------------------------------------------------------
 
@@ -73,10 +33,13 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
+  const pathTabs = window.location.pathname.split('/');
+
   const visibleHeaders = [
     ...pathSlugs,
     'messaging',
     'home',
+    'events',
     'registrations',
     'cohort_sales',
     'cohort_experiences',
@@ -93,10 +56,13 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'code',
     'onboarding-calendar-instructions',
     'referrals',
-    'all-courses'
+    'all-courses',
+    'contact-us'
   ];
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
+  const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
+  const displayEventsNanbar = communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -130,6 +96,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Recordings & Slides');
         } else if (section === 'all-courses') {
           setCurrentTab('All Courses');
+        } else if (section === 'contact-us') {
+          setCurrentTab('Contact Us');
         } else if (pathSlugs.includes(section)) {
           setCurrentTab(pathName(section));
         } else {
@@ -154,19 +122,27 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             <img data-testid="company-logo" src="/static/sphere_with_logo.svg" alt="logo" />
           </CompanyLogo>
         )}
-        <RootStyle
+        <NavbarRootStyle
           sx={{
             ...(isCollapse && {
               width: { lg: `${TOP_NAVBAR_WIDTH}` }
             })
           }}
         >
-          <ToolbarStyle>
+          <ToolbarStyle
+            sx={{
+              ...(displayEventsNanbar && {
+                padding: '0 40px 0 0 !important'
+              })
+            }}
+          >
             <MHidden width="lgUp">
               <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
                 <Icon icon={menu2Fill} />
               </IconButton>
             </MHidden>
+
+            {displayEventsNanbar && <EventNavbar eventName={communityEvent.name} />}
 
             {currentTab && (
               <HeadText
@@ -186,7 +162,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               <AccountPopover />
             </Stack>
           </ToolbarStyle>
-        </RootStyle>
+        </NavbarRootStyle>
       </Box>
     </Box>
   );
