@@ -54,7 +54,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'code',
     'onboarding-calendar-instructions',
     'referrals',
-    'all-courses'
+    'all-courses',
+    'contact-us'
   ];
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
@@ -92,6 +93,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Recordings & Slides');
         } else if (section === 'all-courses') {
           setCurrentTab('All Courses');
+        } else if (section === 'contact-us') {
+          setCurrentTab('Contact Us');
         } else if (pathSlugs.includes(section)) {
           setCurrentTab(pathName(section));
         } else {

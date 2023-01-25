@@ -3,6 +3,7 @@ import { Container, Grid, Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
 import useAuth from 'hooks/useAuth';
+import ContactUsBanner from 'components/contact-us/ContactUsBanner';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 import { RootState, useSelector } from '../redux/store';
@@ -199,16 +200,18 @@ export default function ContactUs() {
 
   return (
     <Page title="Sphere | Contact Us">
-      <Container maxWidth={themeStretch ? false : 'lg'}>
+      <Container
+        maxWidth={themeStretch ? false : 'lg'}
+        sx={{ backgroundColor: '#F8FAFC', paddingTop: '30px' }}
+      >
         <StyledBox>
-          <Typography variant="h3">Contact Us</Typography>
           {isAuthenticated && mode === 'Instructor' && (
             <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
               Walkthrough
             </Button>
           )}
         </StyledBox>
-        <ContactNote />
+        <ContactUsBanner />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
