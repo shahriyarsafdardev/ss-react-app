@@ -33,6 +33,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
+  const pathTabs = window.location.pathname.split('/');
+
   const visibleHeaders = [
     ...pathSlugs,
     'messaging',
@@ -139,7 +141,9 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               </IconButton>
             </MHidden>
 
-            {communityEvent.id !== '' && <EventNavbar eventName={communityEvent.name} />}
+            {communityEvent.id !== '' && pathTabs[0] === 'events' && !!pathTabs[1] && (
+              <EventNavbar eventName={communityEvent.name} />
+            )}
 
             {currentTab && (
               <HeadText

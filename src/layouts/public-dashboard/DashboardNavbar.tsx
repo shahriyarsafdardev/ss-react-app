@@ -3,10 +3,9 @@ import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { Box, IconButton } from '@material-ui/core';
-import { COLLAPSE_WIDTH, HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
+import { HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
 // hooks
 import { useEffect, useState } from 'react';
-import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
@@ -19,12 +18,12 @@ type DashboardNavbarProps = {
 
 export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
-  const { user } = useAuth();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
   const visibleHeaders = [...pathSlugs, 'messaging', 'events', 'contact-us'];
   const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
+  const pathTabs = window.location.pathname.split('/');
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -43,10 +42,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     }
   }, [window.location.href, pathSlugs]);
 
-  let TOP_NAVBAR_WIDTH = '100%';
-  if (user?.type! === 'company') {
-    TOP_NAVBAR_WIDTH = `calc(100% - ${COLLAPSE_WIDTH}px)`;
-  }
+  const TOP_NAVBAR_WIDTH = '100%';
 
   return (
     <Box>
@@ -61,7 +57,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           <ToolbarStyle
             sx={{
               ...(communityEvent.id !== '' && {
-                padding: '0 !important'
+                padding: '0 40px !important'
               })
             }}
           >
@@ -71,7 +67,9 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               </IconButton>
             </MHidden>
 
-            {communityEvent.id !== '' && <EventNavbar eventName={communityEvent.name} />}
+            {communityEvent.id !== '' && pathTabs[0] === 'events' && !!pathTabs[1] && (
+              <EventNavbar eventName={communityEvent.name} />
+            )}
 
             {currentTab && (
               <HeadText
