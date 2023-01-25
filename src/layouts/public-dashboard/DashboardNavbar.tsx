@@ -21,7 +21,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
-  const visibleHeaders = [...pathSlugs, 'messaging', 'events', 'contact-us'];
+  const visibleHeaders = [...pathSlugs, 'messaging', 'events', 'contact-us', 'all-courses'];
   const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
   const pathTabs = window.location.pathname.split('/');
   const displayEventsNanbar = communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
@@ -32,7 +32,9 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
     if (tab.length > 3) {
       if (visibleHeaders.includes(section)) {
-        if (section === 'contact-us') {
+        if (section === 'all-courses') {
+          setCurrentTab('All Courses');
+        } else if (section === 'contact-us') {
           setCurrentTab('Contact Us');
         } else {
           setCurrentTab(section);

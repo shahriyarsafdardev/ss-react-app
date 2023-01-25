@@ -7,7 +7,8 @@ import {
   Box,
   Link,
   Typography,
-  ToggleButton
+  ToggleButton,
+  Theme
 } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import Icon from '@iconify/react';
@@ -18,6 +19,7 @@ import { RegisterForm } from 'components/authentication/register';
 import { PATH_AUTH } from 'routes/paths';
 import { trackEvent } from 'utils/eventTracking';
 import { useEffect } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import { EventHost } from '../../@types/events';
 
 export const CALENDAR = '🗓️';
@@ -31,6 +33,15 @@ export type Event = {
   time: string;
   description: string;
 };
+
+export const useStyles = makeStyles((theme: Theme) => ({
+  oneLineText: {
+    display: '-webkit-box',
+    overflow: 'hidden',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 1
+  }
+}));
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
@@ -64,11 +75,11 @@ export const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
 }));
 
 export const TileImage = styled(LazyLoadImage)(({ theme }) => ({
-  width: '25%',
-  height: 'auto',
+  height: '160px',
   aspectRatio: '37/21',
   [theme.breakpoints.down('md')]: {
-    width: '100%'
+    width: '100%',
+    height: 'auto'
   }
 }));
 

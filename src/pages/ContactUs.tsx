@@ -3,43 +3,17 @@ import { Container, Grid, Box, Typography, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
 import useAuth from 'hooks/useAuth';
-import ContactUsBanner from 'components/contact-us/ContactUsBanner';
+import BookDemoBanner from 'components/BookDemoBanner';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 import { RootState, useSelector } from '../redux/store';
 
-const ContactInfoNote = styled('div')(({ theme }) => ({
-  backgroundColor: '#D0F2FF',
-  display: 'flex',
-  padding: '10px',
-  borderRadius: '8px',
-  margin: '25px 0',
-  '.img-content': {
-    width: '40px',
-    [theme.breakpoints.down('sm')]: {
-      width: '80px'
-    }
-  }
-}));
 const StyledGrid = styled(Grid)(({ theme }) => ({
   marginBottom: '15px',
   [theme.breakpoints.down('sm')]: {
     display: 'block'
   }
 }));
-
-const ContactNote = () => (
-  <ContactInfoNote>
-    <Box className="img-content">
-      <img src="/static/icons/navbar/ic_sun.svg" alt="" />
-    </Box>
-    <Box className="text-content">
-      <Typography>
-        Please don’t hesitate to contact the Sphere support team - we’d love to hear from you!
-      </Typography>
-    </Box>
-  </ContactInfoNote>
-);
 
 export default function ContactUs() {
   const { themeStretch } = useSettings();
@@ -208,7 +182,7 @@ export default function ContactUs() {
             </Button>
           )}
         </StyledBox>
-        <ContactUsBanner />
+        <BookDemoBanner />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
           modalHandler={modalHandler}
