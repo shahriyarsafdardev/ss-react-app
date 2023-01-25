@@ -7,6 +7,7 @@ import { trackEvent } from 'utils/eventTracking';
 import { uniq } from 'lodash';
 import { RootState, useSelector } from 'redux/store';
 import useAuth from 'hooks/useAuth';
+import BookDemoBanner from 'components/BookDemoBanner';
 import { useStyles, LoadingContainer } from './Common';
 import CoursesContainer from './CoursesContainer';
 import AllCoursesFilters from './AllCoursesFilters';
@@ -112,7 +113,7 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere Courses">
-      {isAuthenticated && <PathsList />}
+      <BookDemoBanner />
       <Box paddingX={{ xs: '20px', md: '40px' }} marginY={{ xs: '20px', md: '30px' }}>
         <AllCoursesFilters
           key={`${topics.length} ${functions.length}`}
@@ -131,6 +132,7 @@ export default function AllCourses() {
       <Stack className={`${classes.purpleBackground} ${classes.coursesGrid}`}>
         <CoursesContainer courses={applyFilters()} />
       </Stack>
+      <PathsList />
     </Page>
   );
 }

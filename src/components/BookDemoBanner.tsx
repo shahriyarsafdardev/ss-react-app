@@ -71,7 +71,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   color: '#ffffff'
 }));
 
-const ContactUsBanner = () => {
+const BookDemoBanner = () => {
   const handleDemoButton = () => {
     window.open('https://calendly.com/d/zhg-vsj-qmc/meeting-with-sphere', '_blank');
   };
@@ -95,4 +95,4 @@ const ContactUsBanner = () => {
   );
 };
 
-export default ContactUsBanner;
+export default BookDemoBanner;

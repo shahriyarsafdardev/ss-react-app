@@ -183,12 +183,12 @@ export const communitySidebarConfigCourses = (paths: any) => {
   return {
     subheader: 'courses',
     items: [
-      ...pathsLinks,
       {
         title: 'all courses',
         path: PATH_DASHBOARD.general.allCourses,
         icon: ICONS.bookshelf
-      }
+      },
+      ...pathsLinks
     ]
   };
 };
