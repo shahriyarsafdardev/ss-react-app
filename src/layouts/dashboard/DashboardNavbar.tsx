@@ -141,7 +141,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               </IconButton>
             </MHidden>
 
-            {communityEvent.id !== '' && pathTabs[0] === 'events' && !!pathTabs[1] && (
+            {communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2] && (
               <EventNavbar eventName={communityEvent.name} />
             )}
 
