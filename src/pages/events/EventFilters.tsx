@@ -9,7 +9,12 @@ export default function EventFilters({
   handleOnChange: Function;
 }) {
   return (
-    <Stack direction={{ xs: 'column', md: 'row' }} my="30px" alignItems="center" spacing={2}>
+    <Stack
+      direction={{ xs: 'column', sm: 'row' }}
+      my="30px"
+      alignItems={{ xs: 'left', sm: 'center' }}
+      spacing={2}
+    >
       <Typography sx={{ color: '#101658', fontWeight: 700 }}>Filter by: </Typography>
       <StyledToggleButton
         key="public"

@@ -148,7 +148,8 @@ const ICONS = {
   contact: getIcon('ic_contact'),
   bookshelf: getIcon('ic_bookshelf'),
   bellChart: getIcon('ic_bell_curve_chart'),
-  sunlightBulb: getIcon('sunlight_bulb')
+  sunlightBulb: getIcon('sunlight_bulb'),
+  information: getIcon('ic_information')
 };
 
 export const communitySidebarConfig = [
@@ -161,14 +162,14 @@ export const communitySidebarConfig = [
         icon: ICONS.calendar
       },
       {
-        title: 'Contact Us',
-        path: PATH_DASHBOARD.community.contactUs,
-        icon: ICONS.contact
-      },
-      {
         title: 'suggest a course',
         path: PATH_DASHBOARD.community.suggestCourse,
         icon: ICONS.sunlightBulb
+      },
+      {
+        title: 'Contact Us',
+        path: PATH_DASHBOARD.community.contactUs,
+        icon: ICONS.information
       }
     ]
   },

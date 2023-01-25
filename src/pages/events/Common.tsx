@@ -140,9 +140,19 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   borderRadius: '10px !important',
   color: '#334155',
   textTransform: 'none',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  },
   '&.Mui-selected': {
     backgroundColor: '#101658',
-    color: '#ffffff !important'
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#8088e0'
+    }
+  },
+  '&:hover': {
+    backgroundColor: '#8088e0',
+    color: '#fff'
   }
 }));
 

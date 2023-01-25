@@ -76,20 +76,19 @@ export default function EventsTab() {
   }
 
   return (
-    <Page title="Sphere | Events">
+    <Page title="Sphere | Events" sx={{ backgroundColor: '#F8FAFC' }}>
+      <img
+        src={`https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner${
+          isMobile ? '-Mobile' : ''
+        }.png`}
+        alt="events-banner"
+        style={{
+          width: '100%',
+          borderTop: '1px solid #E2E8F0',
+          height: 'auto'
+        }}
+      />
       <Container sx={{ paddingBottom: '100px' }}>
-        <img
-          src={`https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner${
-            isMobile ? '-Mobile' : ''
-          }.png`}
-          alt="events-banner"
-          style={{
-            width: '100%',
-            border: '1px solid #E2E8F0',
-            height: 'auto',
-            borderRadius: '16px'
-          }}
-        />
         <EventFilters selectedFilters={selectedFilters} handleOnChange={handleFilterOnChange} />
         {totalUpcomingEvents > 0 && (
           <UpcomingEvents
