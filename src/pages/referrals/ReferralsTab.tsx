@@ -10,6 +10,14 @@ export default function ReferralsTab() {
 
   useEffect(() => {
     cohort && sendAnalyticsData('Balance Page - Referrals Tab - Tab opened');
+    const timer = setTimeout(() => {
+      if (window.location.href.includes('#referral-invite-form')) {
+        const element = document.getElementById('referral-invite-form');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [cohort]);
 
   return (

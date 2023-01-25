@@ -26,6 +26,7 @@ import { markOnboardingStep } from 'redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
 import { AddToCalendarInfo } from '../onboarding/new-info-forms';
 import { SurveyForm } from '../sessions';
+import SurveyCompletionMessage from './SurveyCompletionMessage';
 
 export const SectionContainer = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
@@ -684,24 +685,30 @@ If this course sounds useful to you and your professional development goals, reg
 
 export const SurveyModal = memo(
   ({
+    hasCompletedFeedback,
     state,
     onClose,
     onComplete,
     session
   }: {
+    hasCompletedFeedback: boolean;
     state: boolean;
     onClose: Function;
     onComplete: Function;
     session: any;
   }) => (
     <Modal open={state} onClose={() => onClose()}>
-      <SurveyForm
-        key="surveyForm"
-        onComplete={onComplete}
-        sessionId={session?.id}
-        sessionName={session?.name}
-        session={session}
-      />
+      {hasCompletedFeedback ? (
+        <SurveyCompletionMessage />
+      ) : (
+        <SurveyForm
+          key="surveyForm"
+          onComplete={onComplete}
+          sessionId={session?.id}
+          sessionName={session?.name}
+          session={session}
+        />
+      )}
     </Modal>
   )
 );
