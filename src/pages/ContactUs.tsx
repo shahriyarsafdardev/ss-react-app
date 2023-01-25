@@ -199,11 +199,8 @@ export default function ContactUs() {
   ];
 
   return (
-    <Page title="Sphere | Contact Us">
-      <Container
-        maxWidth={themeStretch ? false : 'lg'}
-        sx={{ backgroundColor: '#F8FAFC', paddingTop: '30px' }}
-      >
+    <Page title="Sphere | Contact Us" sx={{ backgroundColor: '#F8FAFC', height: '100%' }}>
+      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ paddingTop: '30px' }}>
         <StyledBox>
           {isAuthenticated && mode === 'Instructor' && (
             <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
