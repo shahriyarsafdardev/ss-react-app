@@ -30,7 +30,6 @@ const ContactUsMessage = styled(Stack)(({ theme }) => ({
   borderRadius: '16px',
   justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    width: '60%',
     padding: '40px'
   },
   [theme.breakpoints.down('sm')]: {
@@ -42,13 +41,11 @@ const ContactUsMessage = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const StyledButtonStack = styled(Button)(({ theme }) => ({
+const StyledButtonStack = styled(Stack)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   width: '50%',
-  backgroundColor: '#fff !important',
-  borderRadius: '16px',
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     width: '100%'
   }
 }));

@@ -8,7 +8,7 @@ import useAuth from 'hooks/useAuth';
 import { updateInstructorViewState } from 'redux/slices/viewMode';
 
 import {
-  communitySidebarConfig,
+  communitySidebarConfigEvents,
   SidebarRootStyle,
   LogoContainer,
   StyledBox,
@@ -16,7 +16,8 @@ import {
   SwitcherButtonContainer,
   LabelStyled,
   ReferralStyledBox,
-  ViewReferralLinks
+  ViewReferralLinks,
+  filteredPaths
 } from 'layouts/Common';
 import {
   getCategories,
@@ -110,7 +111,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />
         )}
 
-        <NavSection navConfig={communitySidebarConfig[0]} isShow={!isCollapse} />
+        <NavSection navConfig={communitySidebarConfigEvents()} isShow={!isCollapse} />
 
         {mode === 'Learner' && (
           <>
@@ -118,7 +119,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               data-testid="member-sidebar"
               navConfig={learnerCohortsConfigV2(
                 getSortedLearnerCohorts(cohorts),
-                paths.filter((path) => path.is_enrolled)
+                filteredPaths(paths)
               )}
               isShow={!isCollapse}
             />

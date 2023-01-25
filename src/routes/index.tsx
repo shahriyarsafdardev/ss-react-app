@@ -91,7 +91,11 @@ export default function Router() {
         },
         { path: '/all-courses', element: <AllCourses /> },
         { path: '/events/:eventID', element: <CommunityEvent /> },
-        { path: '/suggest-course', element: <SuggestCourse /> }
+        { path: '/suggest-course', element: <SuggestCourse /> },
+        {
+          path: 'paths/:pathSlug',
+          children: [{ path: '/', element: <PathsTab /> }]
+        }
       ]
     },
     {

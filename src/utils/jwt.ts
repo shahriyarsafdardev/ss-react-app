@@ -40,6 +40,7 @@ const setSession = (accessToken: string | null) => {
   } else {
     localStorage.removeItem('accessToken');
     delete axios.defaults.headers.common.Authorization;
+    delete axiosV2.defaults.headers.common.Authorization;
   }
 };
 

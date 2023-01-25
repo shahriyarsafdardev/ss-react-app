@@ -152,38 +152,46 @@ const ICONS = {
   information: getIcon('ic_information')
 };
 
-export const communitySidebarConfig = [
-  {
-    subheader: 'Data & ML Community',
-    items: [
-      {
-        title: 'Events',
-        path: PATH_DASHBOARD.community.events,
-        icon: ICONS.calendar
-      },
-      {
-        title: 'suggest a course',
-        path: PATH_DASHBOARD.community.suggestCourse,
-        icon: ICONS.sunlightBulb
-      },
-      {
-        title: 'Contact Us',
-        path: PATH_DASHBOARD.community.contactUs,
-        icon: ICONS.information
-      }
-    ]
-  },
-  {
+export const communitySidebarConfigEvents = () => ({
+  subheader: 'Data & ML Community',
+  items: [
+    {
+      title: 'Events',
+      path: PATH_DASHBOARD.community.events,
+      icon: ICONS.calendar
+    },
+    {
+      title: 'suggest a course',
+      path: PATH_DASHBOARD.community.suggestCourse,
+      icon: ICONS.sunlightBulb
+    },
+    {
+      title: 'Contact Us',
+      path: PATH_DASHBOARD.community.contactUs,
+      icon: ICONS.information
+    }
+  ]
+});
+
+export const communitySidebarConfigCourses = (paths: any) => {
+  const pathsLinks = filteredPaths(paths).map((path: any) => ({
+    title: path.name,
+    path: PATH_DASHBOARD.coursePaths.root(path.slug),
+    icon: ICONS.bellChart
+  }));
+
+  return {
     subheader: 'courses',
     items: [
+      ...pathsLinks,
       {
         title: 'all courses',
         path: PATH_DASHBOARD.general.allCourses,
         icon: ICONS.bookshelf
       }
     ]
-  }
-];
+  };
+};
 
 export const learnerSidebarConfig = (paths: Path[]) => {
   const object = {
@@ -203,4 +211,9 @@ export const learnerSidebarConfig = (paths: Path[]) => {
   }));
   object.items = [...paths_link, ...object.items];
   return object;
+};
+
+export const filteredPaths = (paths: any) => {
+  const filtered = paths.filter((path: any) => path?.is_enrolled);
+  return filtered.length === 0 ? paths.slice(0, 2) : filtered.slice(0, 2);
 };

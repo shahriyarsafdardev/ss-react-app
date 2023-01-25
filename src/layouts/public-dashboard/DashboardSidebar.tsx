@@ -5,7 +5,13 @@ import { alpha } from '@material-ui/core/styles';
 import { Drawer } from '@material-ui/core';
 
 // hooks
-import { communitySidebarConfig, SidebarRootStyle, LogoContainer } from 'layouts/Common';
+import {
+  communitySidebarConfigCourses,
+  communitySidebarConfigEvents,
+  SidebarRootStyle,
+  LogoContainer
+} from 'layouts/Common';
+import { RootState, useSelector } from 'redux/store';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import Scrollbar from '../../components/Scrollbar';
@@ -25,6 +31,7 @@ type DashboardSidebarProps = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: DashboardSidebarProps) {
   const { pathname } = useLocation();
+  const paths = useSelector((state: RootState) => state?.path?.paths);
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -52,8 +59,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         </LogoContainer>
 
         <>
-          <NavSection navConfig={communitySidebarConfig[0]} isShow={!isCollapse} />
-          <NavSection navConfig={communitySidebarConfig[1]} isShow={!isCollapse} />
+          <NavSection navConfig={communitySidebarConfigEvents()} isShow={!isCollapse} />
+          <NavSection navConfig={communitySidebarConfigCourses(paths)} isShow={!isCollapse} />
         </>
       </Scrollbar>
     </>
