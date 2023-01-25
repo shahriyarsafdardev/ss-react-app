@@ -31,20 +31,6 @@ const DesktopStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const MobileStack = styled(Stack)(({ theme }) => ({
-  backgroundImage: `url('https://sphere-public.s3.eu-west-2.amazonaws.com/welcome-bg-mbl.png')`,
-  backgroundSize: '100%',
-  borderRadius: '0px 0px 16px 16px',
-  width: '100%',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  position: 'relative',
-  overflow: 'hidden',
-  [theme.breakpoints.up('md')]: {
-    display: 'none'
-  }
-}));
-
 const CompletionMessage = styled(Stack)(({ theme }) => ({
   padding: '50px 104px',
   justifyContent: 'center',
@@ -135,35 +121,6 @@ export default function SurveyCompletionMessage() {
               />
             </Stack>
           </DesktopStack>
-          <MobileStack>
-            <Stack direction="row" spacing={2} justifyContent="center" height="320px">
-              <StyledImage
-                src="https://sphere-public.s3.eu-west-2.amazonaws.com/learner-3.svg"
-                alt="test image"
-                style={{ top: '0', left: '-12px', height: '115px', width: '115px' }}
-              />
-              <StyledImage
-                src="https://sphere-public.s3.eu-west-2.amazonaws.com/learner-4.svg"
-                alt="test image"
-                style={{ top: '40%', left: '15px', height: '115px', width: '115px' }}
-              />
-              <StyledImage
-                src="https://sphere-public.s3.eu-west-2.amazonaws.com/learner-1.svg"
-                alt="test image"
-                style={{ top: '-6px', right: '30%', height: '115px', width: '115px' }}
-              />
-              <StyledImage
-                src="https://sphere-public.s3.eu-west-2.amazonaws.com/learner-2.svg"
-                alt="test image"
-                style={{ top: '90px', right: '-16px', height: '115px', width: '115px' }}
-              />
-            </Stack>
-            <StyledImage
-              src="https://sphere-public.s3.eu-west-2.amazonaws.com/learner-5.svg"
-              alt="test image"
-              style={{ bottom: '-18px', right: '25%', height: '115px', width: '115px' }}
-            />
-          </MobileStack>
         </StyledCard>
       </Stack>
     </>
