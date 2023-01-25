@@ -62,6 +62,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
   const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
+  const displayEventsNanbar = communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -130,7 +131,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         >
           <ToolbarStyle
             sx={{
-              ...(communityEvent.id !== '' && {
+              ...(displayEventsNanbar && {
                 padding: '0 40px 0 0 !important'
               })
             }}
@@ -141,9 +142,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
               </IconButton>
             </MHidden>
 
-            {communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2] && (
-              <EventNavbar eventName={communityEvent.name} />
-            )}
+            {displayEventsNanbar && <EventNavbar eventName={communityEvent.name} />}
 
             {currentTab && (
               <HeadText
