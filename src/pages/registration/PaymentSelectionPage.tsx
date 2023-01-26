@@ -78,7 +78,7 @@ function PaymentSelectionPage() {
           spacing={company?.name ? 2 : 4}
           justifyContent="center"
           alignItems="center"
-          padding={{ xs: '10px', md: '50px', lg: company?.name ? '80px 112px' : '112px' }}
+          padding={{ xs: '10px', md: '50px', lg: company?.name ? '60px 112px' : '112px' }}
           paddingBottom={company?.name ? '56px !important' : '80px !important'}
         >
           {company?.logo_url && (

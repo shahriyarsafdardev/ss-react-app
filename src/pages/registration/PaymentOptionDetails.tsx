@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@material-ui/core';
+import { Box, Button, Stack, Typography } from '@material-ui/core';
 import { useNavigate } from 'react-router';
 import { memo, useContext } from 'react';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -37,7 +37,7 @@ export const OneTimePaymentDetails = memo(
 
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
-        <Stack>
+        <Stack marginTop="28px">
           <Typography className={classes.planOptionHead}>One Time Payment</Typography>
           <Typography className={classes.planPriceDetails}>${Math.floor(price)}</Typography>
         </Stack>
@@ -83,7 +83,10 @@ export const IndividualMembershipPaymentDetails = memo(
 
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
-        <Stack>
+        <Box className={classes.mostPopularBanner}>
+          <Typography className={classes.mostPopularBannerText}>MOST POPULAR</Typography>
+        </Box>
+        <Stack marginTop="28px">
           <Typography className={classes.planOptionHead}>Individual Subscription</Typography>
           <Typography className={classes.planPriceDetails}>
             Starting at ${Math.floor(price * 0.95)} per year (~1 course)
@@ -137,7 +140,7 @@ export const TeamMembershipPaymentDetails = memo(
 
     return (
       <Stack className={classes.whiteStackCard} spacing={3}>
-        <Stack>
+        <Stack marginTop="28px">
           <Typography className={classes.planOptionHead}>Team Subscription</Typography>
           <Typography className={classes.planPriceDetails}>
             Build your custom training plan

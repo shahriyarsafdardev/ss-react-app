@@ -145,6 +145,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '16px',
     width: '30%',
     color: '#000',
+    position: 'relative',
     [theme.breakpoints.down('md')]: {
       width: '95%'
     }
@@ -196,6 +197,22 @@ export const useStyles = makeStyles((theme: Theme) => ({
   planOptionHead: {
     fontWeight: 'bold',
     fontSize: '20px'
+  },
+  mostPopularBanner: {
+    width: '100%',
+    backgroundColor: '#12125C',
+    borderRadius: '15px 15px 0px 0px',
+    color: '#fff',
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  mostPopularBannerText: {
+    fontSize: '14px',
+    fontWeight: 600,
+    letterSpacing: '5px',
+    textAlign: 'center',
+    padding: '11px'
   }
 }));
 
