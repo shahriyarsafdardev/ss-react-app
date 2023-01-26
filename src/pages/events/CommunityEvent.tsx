@@ -45,9 +45,11 @@ export default function CommuityEvent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-  const eventDate = moment(event?.time).format('YYYY-MM-DD');
-  const eventStartTime = moment(event?.time).format('HH:mm');
-  const eventEndTime = moment(event?.time).add(2, 'hours').format('HH:mm');
+  const eventDate = moment(event?.time);
+  const startDate = eventDate.format('YYYY-MM-DD');
+  const endDate = eventDate.add(2, 'hours').format('YYYY-MM-DD');
+  const startTime = eventDate.format('HH:mm');
+  const endTime = eventDate.add(2, 'hours').format('HH:mm');
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const navigate = useNavigate();
@@ -71,10 +73,10 @@ export default function CommuityEvent() {
   const CalendarEvent = {
     name: event?.name,
     description: event?.description,
-    startDate: eventDate,
-    endDate: eventDate,
-    startTime: eventStartTime,
-    endTime: eventEndTime,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
     options: ['Apple', 'Google', 'iCal', 'Microsoft365', 'Outlook.com', 'Yahoo'],
     timeZone: 'America/Los_Angeles',
     iCalFileName: event?.name
