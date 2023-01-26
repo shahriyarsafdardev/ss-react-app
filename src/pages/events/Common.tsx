@@ -265,6 +265,16 @@ export const additionalCommunityEventProperties = (event: any) => {
 export const eventType = (eventAccessType: any) =>
   ['alumni', 'public'].includes(eventAccessType) ? 'Event' : 'Session';
 
+export const convertToPST = (time: string | undefined) => {
+  const localDate = new Date();
+  const eventDate = moment(
+    new Date(time || localDate).toLocaleString('en-US', {
+      timeZone: 'America/Los_Angeles'
+    })
+  );
+  return eventDate;
+};
+
 export const ModalForm = ({
   formType,
   eventDetails,

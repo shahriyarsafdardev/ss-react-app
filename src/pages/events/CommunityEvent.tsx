@@ -8,7 +8,6 @@ import copyFill from '@iconify/icons-eva/copy-fill';
 import LoadingScreen from 'components/LoadingScreen';
 import Page from 'components/Page';
 import { atcb_action } from 'add-to-calendar-button';
-import moment from 'moment';
 import axiosV2 from 'utils/axiosV2';
 import ReactPlayer from 'react-player';
 import { Typography, Stack, Card, Grid, MenuItem, Button } from '@material-ui/core';
@@ -29,7 +28,8 @@ import {
   ModalForm,
   StyledIcon,
   communityEventProperties,
-  additionalCommunityEventProperties
+  additionalCommunityEventProperties,
+  convertToPST
 } from './Common';
 import EventCard from './EventCard';
 import { Event } from '../../@types/events';
@@ -45,11 +45,12 @@ export default function CommuityEvent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-  const eventDate = moment(event?.time);
+  const eventDate = convertToPST(event?.time);
+  const eventTime = convertToPST(event?.time);
   const startDate = eventDate.format('YYYY-MM-DD');
   const endDate = eventDate.add(2, 'hours').format('YYYY-MM-DD');
-  const startTime = eventDate.format('HH:mm');
-  const endTime = eventDate.add(2, 'hours').format('HH:mm');
+  const startTime = eventTime.format('HH:mm');
+  const endTime = eventTime.add(2, 'hours').format('HH:mm');
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const navigate = useNavigate();
@@ -84,12 +85,15 @@ export default function CommuityEvent() {
 
   useEffect(() => {
     const getEvent = async () => {
-      await axiosV2.get(`/events/${eventID}.json`).then((res) => {
-        setEvent(res.data.event);
-        setUpcomingEvents(res.data.upcoming_events);
-        dispatch(setCommunityEvent(eventID, res.data.event.name));
-        setLoading(false);
-      });
+      await axiosV2
+        .get(`/events/${eventID}.json`)
+        .then((res) => {
+          setEvent(res.data.event);
+          setUpcomingEvents(res.data.upcoming_events);
+          dispatch(setCommunityEvent(eventID, res.data.event.name));
+          setLoading(false);
+        })
+        .catch((error) => enqueueSnackbar(error.error, { variant: 'error' }));
     };
     !!eventID && getEvent();
 
