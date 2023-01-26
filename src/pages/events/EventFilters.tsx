@@ -5,7 +5,7 @@ export default function EventFilters({
   selectedFilters,
   handleOnChange
 }: {
-  selectedFilters: String[];
+  selectedFilters: string;
   handleOnChange: Function;
 }) {
   return (
@@ -18,16 +18,16 @@ export default function EventFilters({
       <Typography sx={{ color: '#101658', fontWeight: 700 }}>Filter by: </Typography>
       <StyledToggleButton
         key="public"
-        selected={selectedFilters.includes('public')}
-        onChange={() => handleOnChange('public')}
+        selected={selectedFilters === 'public'}
+        onChange={() => handleOnChange(selectedFilters === 'public' ? '' : 'public')}
         value="public"
       >
         <ToggleButtonText>{PUBLIC}&nbsp;&nbsp;Open to everyone</ToggleButtonText>
       </StyledToggleButton>
       <StyledToggleButton
         key="alumni"
-        selected={selectedFilters.includes('alumni')}
-        onChange={() => handleOnChange('alumni')}
+        selected={selectedFilters === 'alumni'}
+        onChange={() => handleOnChange(selectedFilters === 'alumni' ? '' : 'alumni')}
         value="alumni"
       >
         <ToggleButtonText>{LOCK}&nbsp;&nbsp;Open to Sphere alumni only</ToggleButtonText>

@@ -1,7 +1,7 @@
 import { alpha, styled } from '@material-ui/core/styles';
 // routes
 import { AppBar, Box, Toolbar, Typography } from '@material-ui/core';
-import { PATH_DASHBOARD } from '../routes/paths';
+import { PATH_AUTH, PATH_DASHBOARD } from '../routes/paths';
 // components
 import SvgIconStyle from '../components/SvgIconStyle';
 import { Path } from '../@types/course';
@@ -149,7 +149,8 @@ const ICONS = {
   bookshelf: getIcon('ic_bookshelf'),
   bellChart: getIcon('ic_bell_curve_chart'),
   sunlightBulb: getIcon('sunlight_bulb'),
-  information: getIcon('ic_information')
+  information: getIcon('ic_information'),
+  lock: getIcon('ic_lock')
 };
 
 export const communitySidebarConfigEvents = () => ({
@@ -183,6 +184,11 @@ export const communitySidebarConfigCourses = (paths: any) => {
   return {
     subheader: 'courses',
     items: [
+      {
+        title: 'login',
+        path: PATH_AUTH.login,
+        icon: ICONS.lock
+      },
       {
         title: 'all courses',
         path: PATH_DASHBOARD.general.allCourses,

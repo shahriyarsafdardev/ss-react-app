@@ -220,7 +220,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: '100%',
     minHeight: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      paddingTop: '10px'
+    }
   },
   checklistItemStack: {
     padding: '10px 0px',

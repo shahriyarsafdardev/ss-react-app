@@ -13,7 +13,7 @@ import { Event } from '../../@types/events';
 import EventSection from './EventSection';
 
 export default function EventsTab() {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<string>('');
   const dispatch = useDispatch();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -31,38 +31,33 @@ export default function EventsTab() {
   };
 
   const handleFilterOnChange = async (filter: string) => {
-    let updatedFilters = [];
-    if (pastEvents.length < totalPastEvents) {
+    if (pastEvents.length < totalPastEvents && filter) {
       await handleShowMore('past');
     }
-    if (upcomingEvents.length < totalUpcomingEvents) {
+    if (upcomingEvents.length < totalUpcomingEvents && filter) {
       await handleShowMore('upcoming');
     }
-
-    if (selectedFilters.includes(filter)) {
-      updatedFilters = selectedFilters.filter((f) => f !== filter);
-      setSelectedFilters(updatedFilters);
-    } else {
-      updatedFilters = [...selectedFilters, filter];
-      setSelectedFilters(updatedFilters);
-    }
-    trackEvent(null, 'All Events Page - Filter Selected', {
-      'Filter Name': JSON.stringify(updatedFilters)
-    });
+    setSelectedFilters(filter);
+    !!filter &&
+      trackEvent(null, 'All Events Page - Filter Selected', {
+        'Filter Name': filter
+      });
   };
 
   const filterEvents = useCallback(
     (events: Event[], category: string) => {
-      if (selectedFilters.length > 0) {
-        const filteredEvents = events.filter((event: Event) =>
-          selectedFilters.includes(event.access_type)
+      if (!selectedFilters) {
+        const eventsCount = category === 'upcoming' ? totalUpcomingEvents : totalPastEvents;
+        return { events, eventsLength: eventsCount };
+      }
+      if (selectedFilters === 'public') {
+        const filteredEvents = events.filter(
+          (event: Event) => selectedFilters === event.access_type
         );
-
         return { events: filteredEvents, eventsLength: filteredEvents.length };
       }
-
-      const eventsCount = category === 'upcoming' ? totalUpcomingEvents : totalPastEvents;
-      return { events, eventsLength: eventsCount };
+      const filteredEvents = events.filter((event: Event) => event.access_type !== 'public');
+      return { events: filteredEvents, eventsLength: filteredEvents.length };
     },
     [selectedFilters, totalUpcomingEvents, totalPastEvents]
   );
@@ -76,7 +71,7 @@ export default function EventsTab() {
   }
 
   return (
-    <Page title="Sphere | Events" sx={{ backgroundColor: '#F8FAFC' }}>
+    <Page title="Sphere | Events" sx={{ backgroundColor: '#F8FAFC', marginTop: '-24px' }}>
       <img
         src={`https://sphere-public.s3.eu-west-2.amazonaws.com/Events-Banner${
           isMobile ? '-Mobile' : ''
