@@ -15,12 +15,14 @@ import {
 import MultiSelect from '../../MultiSelect';
 // types
 import { SurveyContent } from '../../../@types/cohorts';
-import MatrixSelect from './MatrixSelect';
+import OnboardingMatrixSelect from './OnboardingMatrixSelect';
+import OffboardingMatrixSelect from './OffboardingMatrixSelect';
 
 type SurveyRowProps = {
   item: SurveyContent;
   onChange: Function;
   submitted_answer: string | any;
+  offboardingAnswerFound?: boolean;
 };
 
 type RadioButtonsProps = {
@@ -85,7 +87,8 @@ const ANSWER_TYPES = {
   SLIDER: 'slider',
   STAR_RATING: 'star-rating',
   MULTIPLE_SELECT: 'multiple-select',
-  MATRIX_SELECT: 'session-outcome-matrix'
+  ONBOARDING_MATRIX_SELECT: 'onboarding-outcome-matrix',
+  OFFBOARDING_MATRIX_SELECT: 'offboarding-outcome-matrix'
 };
 
 function TextInput({ submitted_answer, onChange, item }: TextInputProps) {
@@ -241,7 +244,12 @@ function StarRating({ submitted_answer, onChange }: StarRatingProps) {
   );
 }
 
-export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
+export default function SurveyRow({
+  item,
+  onChange,
+  submitted_answer,
+  offboardingAnswerFound
+}: SurveyRowProps) {
   const [text, setText] = useState(item.submitted_answer || '');
 
   useEffect(() => {
@@ -294,12 +302,22 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
         />
       );
     }
-    if (item.question_type === ANSWER_TYPES.MATRIX_SELECT) {
+    if (item.question_type === ANSWER_TYPES.ONBOARDING_MATRIX_SELECT) {
       return (
-        <MatrixSelect
+        <OnboardingMatrixSelect
           options={item.options?.outcomes}
           onChange={onChange}
           submitted_answer={submitted_answer}
+        />
+      );
+    }
+    if (item.question_type === ANSWER_TYPES.OFFBOARDING_MATRIX_SELECT) {
+      return (
+        <OffboardingMatrixSelect
+          options={item.options?.outcomes}
+          onChange={onChange}
+          submitted_answer={submitted_answer}
+          offboardingAnswerFound={offboardingAnswerFound || false}
         />
       );
     }

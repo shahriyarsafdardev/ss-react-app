@@ -17,14 +17,16 @@ import {
 import React, { memo } from 'react';
 import { StyledNote, StyledTableCell } from './Common';
 
-export default function MatrixSelect({
+export default function OffboardingMatrixSelect({
   options,
   onChange,
-  submitted_answer
+  submitted_answer,
+  offboardingAnswerFound
 }: {
   options: string[];
   onChange: Function;
   submitted_answer: string;
+  offboardingAnswerFound: boolean;
 }) {
   const theme = useTheme();
   const isSmallDesktop = useMediaQuery(theme.breakpoints.down(1400));
@@ -40,10 +42,14 @@ export default function MatrixSelect({
 
   const TABLE_HEAD = [
     { id: 'session-outcome', label: 'Session Outcome', description: '' },
-    { id: 'effectiveness', label: 'Effectiveness', description: '(1 = novice, 5 = master)' },
     {
-      id: 'importance',
-      label: 'Importance',
+      id: 'Your-response-before-the-cohort-started',
+      label: 'Your response before the cohort started',
+      description: '(1 = novice, 5 = master)'
+    },
+    {
+      id: 'how-you-feel-now',
+      label: 'How you feel now',
       description: '(1 = not important, 5 = very important)'
     }
   ];
@@ -54,19 +60,27 @@ export default function MatrixSelect({
   }: {
     outcomeIndex: number;
     answerIndex: number;
-  }) => (
-    <RadioGroup
-      sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'nowrap' }}
-      onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
-      defaultValue={answers[outcomeIndex][answerIndex]}
-    >
-      <FormControlLabel control={<Radio />} value="1" label="1" />
-      <FormControlLabel control={<Radio />} value="2" label="2" />
-      <FormControlLabel control={<Radio />} value="3" label="3" />
-      <FormControlLabel control={<Radio />} value="4" label="4" />
-      <FormControlLabel control={<Radio />} value="5" label="5" />
-    </RadioGroup>
-  );
+  }) => {
+    const isDisabled = () => answerIndex === 0 && offboardingAnswerFound;
+
+    return (
+      <RadioGroup
+        sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'nowrap' }}
+        onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
+        defaultValue={answers[outcomeIndex][answerIndex]}
+      >
+        {[...Array(5)].map((x, i) => (
+          <FormControlLabel
+            control={<Radio />}
+            value={`${i + 1}`}
+            label={`${i + 1}`}
+            disabled={isDisabled()}
+            key={i}
+          />
+        ))}
+      </RadioGroup>
+    );
+  };
 
   const OptionRow = memo(
     ({ key, outcomeIndex, option }: { key: number; outcomeIndex: number; option: string }) => (

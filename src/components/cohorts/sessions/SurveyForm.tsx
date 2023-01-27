@@ -116,6 +116,7 @@ export default function SurveyForm({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const totalQuestions = surveyData.length;
   const [questionID, setQuestionID] = useState('');
+  const [offboardingAnswerFound, setOffboardingAnswerFound] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -131,6 +132,31 @@ export default function SurveyForm({
       setQuestionID(question.id);
     }
   }, [setCurrentQuestion, currentQuestion, surveyData]);
+
+  useEffect(() => {
+    if (surveyData.length > 0) {
+      const offboardingQuestionID = surveyData.filter(
+        (q: any) => q?.question_type === 'offboarding-outcome-matrix'
+      )?.[0]?.id;
+      if (offboardingQuestionID) {
+        setLoading(true);
+        axios
+          .get(`/cohort_sessions/${sessionId}/onboarding_question_answers.json`, {
+            params: {
+              current_user_id: user?.id
+            }
+          })
+          .then((res) => {
+            const newResponses = { ...response };
+            newResponses[offboardingQuestionID] = res?.data?.answer;
+            setResponse(newResponses);
+            setLoading(false);
+            if (res?.data?.answer) setOffboardingAnswerFound(true);
+          })
+          .catch((err) => setLoading(false));
+      }
+    }
+  }, [surveyData]);
 
   const setQuestionResponse = (value: string, question_id: string) => {
     const newResponses = { ...response };
@@ -173,29 +199,45 @@ export default function SurveyForm({
     setCurrentQuestion(currentQuestion + 1);
   };
 
+  const shouldDisableSubmitButton = () => {
+    const question = surveyData[currentQuestion];
+    const res = response[surveyData[currentQuestion]?.id];
+    let isDisabled = question?.mandatory && [undefined, ''].includes(res);
+    if (question?.question_type === 'offboarding-outcome-matrix' && res !== undefined) {
+      isDisabled =
+        isDisabled ||
+        JSON.parse(res)?.flat()?.filter(Boolean)?.length !==
+          question?.options?.outcomes?.length * 2;
+    }
+    return isDisabled;
+  };
+
   return (
     <StyledContainer>
       {surveyData && !loading && Object.keys(surveyData).length >= 0 ? (
         <QuestionContainer key={questionID}>
-          <Box width="100%" marginBottom={2}>
-            <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
-            <SessionTitle>Feedback Survey</SessionTitle>
+          <Box paddingBottom={{ xs: '100px', md: '50px' }}>
+            <Box width="100%" marginBottom={2}>
+              <SessionNumber>{`Session ${session?.number} |`} </SessionNumber>
+              <SessionTitle>Feedback Survey</SessionTitle>
+            </Box>
+            <ProgressBarContainer>
+              <BorderLinearProgress variant="determinate" value={progress()} />
+              <CurrentStep>
+                {currentQuestion + 1}/{totalQuestions}
+              </CurrentStep>
+            </ProgressBarContainer>
+            {surveyData[currentQuestion] && (
+              <SurveyRow
+                item={surveyData[currentQuestion]}
+                submitted_answer={response[surveyData[currentQuestion]?.id]}
+                onChange={(answer: string) => {
+                  setQuestionResponse(answer, questionID);
+                }}
+                offboardingAnswerFound={offboardingAnswerFound}
+              />
+            )}
           </Box>
-          <ProgressBarContainer>
-            <BorderLinearProgress variant="determinate" value={progress()} />
-            <CurrentStep>
-              {currentQuestion + 1}/{totalQuestions}
-            </CurrentStep>
-          </ProgressBarContainer>
-          {surveyData[currentQuestion] && (
-            <SurveyRow
-              item={surveyData[currentQuestion]}
-              submitted_answer={response[questionID]}
-              onChange={(answer: string) => {
-                setQuestionResponse(answer, questionID);
-              }}
-            />
-          )}
 
           <ButtonsContainer>
             <StyledButton
@@ -209,10 +251,7 @@ export default function SurveyForm({
             <StyledButton
               variant="contained"
               onClick={handleNext}
-              disabled={
-                surveyData[currentQuestion].mandatory === true &&
-                [undefined, ''].includes(response[questionID])
-              }
+              disabled={shouldDisableSubmitButton()}
               data-testid="btn-next"
             >
               {currentQuestion + 1 === totalQuestions ? 'Submit' : 'Next Question'}
