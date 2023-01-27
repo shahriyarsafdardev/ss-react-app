@@ -22,6 +22,7 @@ type SurveyRowProps = {
   item: SurveyContent;
   onChange: Function;
   submitted_answer: string | any;
+  offboardingAnswerFound?: boolean;
 };
 
 type RadioButtonsProps = {
@@ -243,7 +244,12 @@ function StarRating({ submitted_answer, onChange }: StarRatingProps) {
   );
 }
 
-export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRowProps) {
+export default function SurveyRow({
+  item,
+  onChange,
+  submitted_answer,
+  offboardingAnswerFound
+}: SurveyRowProps) {
   const [text, setText] = useState(item.submitted_answer || '');
 
   useEffect(() => {
@@ -311,6 +317,7 @@ export default function SurveyRow({ item, onChange, submitted_answer }: SurveyRo
           options={item.options?.outcomes}
           onChange={onChange}
           submitted_answer={submitted_answer}
+          offboardingAnswerFound={offboardingAnswerFound || false}
         />
       );
     }
