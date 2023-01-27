@@ -98,7 +98,7 @@ const JSON_FORMAT_EXAMPLE = `[
     },
     {
       title: 'How effective are you currently at doing each of the following actions and how important are they to you?',
-      question_type: 'session-outcome-matrix',
+      question_type: 'onboarding-outcome-matrix',
       options: { outcomes: ['Determine whether your business problems can/should be cast as a forecasting problem', 'Solve forecasting problems with just a handful of time series (individual time-series)', 'Solve forecasting problems with a large set of time series (aggregate, sets)', 'Solve forecasting problems with dependency structures', 'Anticipate the unexpected/ what’s around the corner for more accurate forecasting']},
       mandatory: true
     }

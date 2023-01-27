@@ -190,7 +190,7 @@ export default function CohortSurveyModal({
     const question = surveyData[currentQuestion];
     const res = response[surveyData[currentQuestion]?.id];
     let isDisabled = question?.mandatory && [undefined, ''].includes(res);
-    if (question?.question_type === 'session-outcome-matrix' && res !== undefined) {
+    if (question?.question_type === 'onboarding-outcome-matrix' && res !== undefined) {
       isDisabled =
         isDisabled ||
         JSON.parse(res)?.flat()?.filter(Boolean)?.length !==

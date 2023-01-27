@@ -17,7 +17,7 @@ import {
 import React, { memo } from 'react';
 import { StyledNote, StyledTableCell } from './Common';
 
-export default function MatrixSelect({
+export default function OnboardingMatrixSelect({
   options,
   onChange,
   submitted_answer
