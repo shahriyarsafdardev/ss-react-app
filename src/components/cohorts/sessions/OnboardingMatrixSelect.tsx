@@ -60,11 +60,9 @@ export default function OnboardingMatrixSelect({
       onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
       defaultValue={answers[outcomeIndex][answerIndex]}
     >
-      <FormControlLabel control={<Radio />} value="1" label="1" />
-      <FormControlLabel control={<Radio />} value="2" label="2" />
-      <FormControlLabel control={<Radio />} value="3" label="3" />
-      <FormControlLabel control={<Radio />} value="4" label="4" />
-      <FormControlLabel control={<Radio />} value="5" label="5" />
+      {[...Array(5)].map((x, i) => (
+        <FormControlLabel control={<Radio />} value={`${i + 1}`} label={`${i + 1}`} key={i} />
+      ))}
     </RadioGroup>
   );
 
