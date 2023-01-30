@@ -14,7 +14,13 @@ const OffboardingCarousel = ({
   const classes = useStyles();
 
   return (
-    <Stack direction={{ xs: 'column', md: 'row' }} width="100%" spacing={2} justifyContent="center">
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      width="100%"
+      spacing={{ xs: 3, md: 7 }}
+      justifyContent="center"
+      alignItems="center"
+    >
       <MainImage
         className={`${activeCertificate === 0 && classes.activeCertificate}`}
         alt="certificate-download"

@@ -257,9 +257,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginRight: '4px'
   },
   activeCertificate: {
-    padding: '8px',
-    border: '3px solid white',
-    boxShadow: '0px 0px 15px #fff'
+    boxShadow: '0px 0px 25px #fff',
+    transform: 'scale(1.1)',
+    transition: 'opacity 0.5s',
+    opacity: 1,
+    [theme.breakpoints.down('md')]: {
+      transform: 'scale(1.05)'
+    }
   }
 }));
 
@@ -622,11 +626,12 @@ export const OffboardingHeader = styled(Typography)(({ theme }) => ({
 }));
 
 export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
-  width: '50%',
+  width: '45%',
   height: 'auto',
   cursor: 'pointer',
+  opacity: 0.8,
   [theme.breakpoints.down('md')]: {
-    width: '100%',
+    width: '95%',
     height: 'auto'
   }
 }));

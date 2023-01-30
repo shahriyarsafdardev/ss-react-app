@@ -91,7 +91,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         session={lastSession}
       />
       <Stack
-        spacing={{ md: 5, xs: 3 }}
+        spacing={{ md: 5, xs: 4 }}
         padding={{ md: '50px', sm: '25px', xs: '16px' }}
         className={classes.offboardingPageContainer}
       >
