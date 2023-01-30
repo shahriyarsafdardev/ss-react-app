@@ -6,6 +6,7 @@ import { useDispatch } from 'redux/store';
 import { updateSessionModalState } from 'redux/slices/sessionFeedback';
 import { updateSessionFeedbackStatus } from 'redux/slices/cohort';
 import { useLocation } from 'react-router-dom';
+import { startCase } from 'lodash';
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
@@ -95,7 +96,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         className={classes.offboardingPageContainer}
       >
         <OffboardingHeader variant="h3">
-          Congratulations, you have completed Applied Causal Inference! 🎉
+          Congratulations, you have completed {startCase(cohort?.name)}! 🎉
         </OffboardingHeader>
 
         <OffboardingCarousel
