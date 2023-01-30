@@ -13,7 +13,7 @@ import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
 const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const [modal, setModal] = useState(false);
-  const [activeCertificate, setActiveCertificate] = useState(1);
+  const [activeCertificate, setActiveCertificate] = useState(0);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();

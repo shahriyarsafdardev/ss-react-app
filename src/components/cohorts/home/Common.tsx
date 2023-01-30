@@ -255,6 +255,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     lineHeight: '28px',
     padding: '0px 5px 15px 0px',
     marginRight: '4px'
+  },
+  activeCertificate: {
+    padding: '8px',
+    border: '3px solid white',
+    boxShadow: '0px 0px 15px #fff'
   }
 }));
 
@@ -592,16 +597,6 @@ export const StyledIcon = styled(Icon)(({ theme }) => ({
   color: '#101658'
 }));
 
-export const CarouselIconButton = styled(IconButton)(({ theme }) => ({
-  borderRadius: '22px',
-  background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%)',
-  width: '48px',
-  height: '48px',
-  opacity: 0.8,
-  transition: theme.transitions.create('opacity'),
-  '&:hover': { opacity: 1 }
-}));
-
 export const StyledStack = styled(Stack)(({ theme }) => ({
   textAlign: 'center',
   alignItems: 'center',
@@ -617,17 +612,6 @@ export const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export const SmallImage = styled(LazyLoadImage)(({ theme }) => ({
-  width: '100%',
-  height: 'auto',
-  cursor: 'pointer',
-  boxShadow: '0px 0px 10px rgba(255, 255, 255, 0.35)',
-  [theme.breakpoints.down('md')]: {
-    width: '32%',
-    height: 'auto'
-  }
-}));
-
 export const OffboardingHeader = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
   color: '#fff',
@@ -638,8 +622,9 @@ export const OffboardingHeader = styled(Typography)(({ theme }) => ({
 }));
 
 export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
-  width: '75%',
+  width: '50%',
   height: 'auto',
+  cursor: 'pointer',
   [theme.breakpoints.down('md')]: {
     width: '100%',
     height: 'auto'

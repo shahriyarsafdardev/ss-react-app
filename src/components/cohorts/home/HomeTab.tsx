@@ -146,7 +146,6 @@ const Index = () => {
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
         onboardingCompleted &&
-        cohort?.code === 'ACI' &&
         cohort?.certificate_links?.length > 0 ? (
           <OffboardingPage cohort={cohort} />
         ) : (
