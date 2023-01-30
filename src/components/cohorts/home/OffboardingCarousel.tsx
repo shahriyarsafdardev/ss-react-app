@@ -13,7 +13,7 @@ const OffboardingCarousel = ({
 }) => {
   const classes = useStyles();
 
-  return (
+  return certificates.length > 1 ? (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
       width="100%"
@@ -34,6 +34,12 @@ const OffboardingCarousel = ({
         onClick={() => setActiveCertificate(1)}
       />
     </Stack>
+  ) : (
+    <MainImage
+      className={`${classes.activeCertificate} ${classes.onlyCertificate}`}
+      alt="certificate-download"
+      src={certificates[0]}
+    />
   );
 };
 

@@ -264,6 +264,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       transform: 'scale(1.05)'
     }
+  },
+  onlyCertificate: {
+    width: '75%'
   }
 }));
 
