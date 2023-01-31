@@ -103,6 +103,7 @@ const Index = () => {
 
   const checkAllSessionsPassed = () =>
     !sessions
+      .filter((session) => Number.isInteger(session.number))
       .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(1, 'hour'))
       .includes(false);
 
