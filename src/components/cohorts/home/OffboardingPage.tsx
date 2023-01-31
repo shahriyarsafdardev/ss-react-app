@@ -12,6 +12,9 @@ import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
 const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
+  const url = new URLSearchParams(useLocation().search);
+  const referrer = url.get('referrer') || '';
+  const shouldOpenModal = url.get('open_eoc_survey') || '';
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(1);
   const [displayConfetti, setDisplayConfetti] = useState(true);
@@ -19,11 +22,9 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const classes = useStyles();
   const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-  const [feedbackModalState, setFeedbackModalState] = useState(false);
+  const [feedbackModalState, setFeedbackModalState] = useState(shouldOpenModal === 'true');
   const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
-  const url = new URLSearchParams(useLocation().search);
-  const referrer = url.get('referrer') || '';
   const certificates = cohort?.certificate_links;
 
   useEffect(() => {
