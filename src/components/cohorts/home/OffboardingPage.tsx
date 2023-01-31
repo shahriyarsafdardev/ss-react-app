@@ -6,24 +6,28 @@ import { useDispatch } from 'redux/store';
 import { updateSessionModalState } from 'redux/slices/sessionFeedback';
 import { updateSessionFeedbackStatus } from 'redux/slices/cohort';
 import { useLocation } from 'react-router-dom';
+import { startCase } from 'lodash';
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
 const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
+  const url = new URLSearchParams(useLocation().search);
+  const referrer = url.get('referrer') || '';
+  const shouldOpenModal = url.get('open_eoc_survey') || '';
   const [modal, setModal] = useState(false);
-  const [activeCertificate, setActiveCertificate] = useState(1);
+  const [activeCertificate, setActiveCertificate] = useState(0);
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
   const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-  const [feedbackModalState, setFeedbackModalState] = useState(false);
+  const [feedbackModalState, setFeedbackModalState] = useState(
+    !lastSession?.survey_completed && shouldOpenModal === 'true'
+  );
   const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
-  const url = new URLSearchParams(useLocation().search);
-  const referrer = url.get('referrer') || '';
   const certificates = cohort?.certificate_links;
 
   useEffect(() => {
@@ -90,12 +94,12 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         session={lastSession}
       />
       <Stack
-        spacing={{ md: 5, xs: 3 }}
+        spacing={{ md: 5, xs: 4 }}
         padding={{ md: '50px', sm: '25px', xs: '16px' }}
         className={classes.offboardingPageContainer}
       >
         <OffboardingHeader variant="h3">
-          Congratulations, you have completed Applied Causal Inference! 🎉
+          Congratulations, you have completed {startCase(cohort?.name)}! 🎉
         </OffboardingHeader>
 
         <OffboardingCarousel
@@ -117,14 +121,16 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
           >
             Download and Share
           </Button>
-          <Button
-            className={classes.linkButton}
-            variant="outlined"
-            sx={{ color: '#fff !important', textTransform: 'none' }}
-            onClick={handleShareFeedback}
-          >
-            Open End-of-cohort Survey
-          </Button>
+          {!lastSession?.survey_completed && (
+            <Button
+              className={classes.linkButton}
+              variant="outlined"
+              sx={{ color: '#fff !important', textTransform: 'none' }}
+              onClick={handleShareFeedback}
+            >
+              Open End-of-cohort Survey
+            </Button>
+          )}
         </Stack>
       </Stack>
     </StyledBox>

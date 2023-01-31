@@ -103,7 +103,8 @@ const Index = () => {
 
   const checkAllSessionsPassed = () =>
     !sessions
-      .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(2, 'hour'))
+      .filter((session) => Number.isInteger(session.number))
+      .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(1, 'hour'))
       .includes(false);
 
   const displayActiveStep = useCallback(() => {
@@ -146,7 +147,6 @@ const Index = () => {
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
         {checkAllSessionsPassed() &&
         onboardingCompleted &&
-        cohort?.code === 'ACI' &&
         cohort?.certificate_links?.length > 0 ? (
           <OffboardingPage cohort={cohort} />
         ) : (

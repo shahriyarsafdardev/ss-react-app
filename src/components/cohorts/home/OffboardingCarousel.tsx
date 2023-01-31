@@ -1,13 +1,6 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Stack, useMediaQuery } from '@material-ui/core';
-import { memo, useContext } from 'react';
-import { AnalyticsContext } from 'contexts/AnalyticsContext';
-import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
-import { Icon } from '@iconify/react';
-import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
-import { useTheme } from '@material-ui/core/styles';
-import { SmallImage, MainImage, CarouselIconButton, useStyles } from './Common';
+import { Stack } from '@material-ui/core';
+import { memo } from 'react';
+import { MainImage, useStyles } from './Common';
 
 const OffboardingCarousel = ({
   activeCertificate,
@@ -18,82 +11,35 @@ const OffboardingCarousel = ({
   setActiveCertificate: Function;
   certificates: string[];
 }) => {
-  const theme = useTheme();
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { sendAnalyticsData } = useContext(AnalyticsContext);
 
-  const handleActiveCertificate = (index: number) => {
-    sendAnalyticsData('Cohort Offboarding - Asset selected', {
-      'Asset URL': certificates[activeCertificate]
-    });
-    setActiveCertificate(index);
-  };
-
-  const handleCarouselArrows = (arrow: string) => {
-    sendAnalyticsData('Cohort Offboarding - Asset selected', {
-      'Asset URL': certificates[activeCertificate]
-    });
-    if (arrow === 'left') {
-      activeCertificate === 0
-        ? setActiveCertificate(certificates.length - 1)
-        : setActiveCertificate(activeCertificate - 1);
-    } else {
-      activeCertificate === certificates.length - 1
-        ? setActiveCertificate(0)
-        : setActiveCertificate(activeCertificate + 1);
-    }
-  };
-
-  return (
+  return certificates.length > 1 ? (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
-      width={{ md: '70%', xs: '100%' }}
-      spacing={2}
+      width="100%"
+      spacing={{ xs: 3, md: 7 }}
       justifyContent="center"
+      alignItems="center"
     >
-      <MainImage alt="certificate-download" src={certificates[activeCertificate]} />
-      <Stack
-        width={{ md: '25%', xs: '100%' }}
-        justifyContent="space-between"
-        direction={{ xs: 'row', md: 'column' }}
-      >
-        {certificates.map(
-          (img, index) =>
-            index !== activeCertificate && (
-              <SmallImage
-                key={index}
-                alt="certificate-download"
-                src={img}
-                onClick={() => handleActiveCertificate(index)}
-              />
-            )
-        )}
-      </Stack>
-      {isMobile && (
-        <Stack
-          direction="row"
-          width="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ '&.isActive': { opacity: '1 !important', transform: 'scale(1.1)' } }}
-        >
-          <CarouselIconButton onClick={() => handleCarouselArrows('left')}>
-            <Icon icon={arrowIosBackFill} color="white" width="20px" height="40px" />
-          </CarouselIconButton>
-          {certificates.map((img, index) => (
-            <span
-              className={`${classes.dotStyle} ${index === activeCertificate && classes.activeDot}`}
-              key={index}
-              onClick={() => handleActiveCertificate(index)}
-            />
-          ))}
-          <CarouselIconButton onClick={() => handleCarouselArrows('right')}>
-            <Icon icon={arrowIosForwardFill} color="white" width="20px" height="40px" />
-          </CarouselIconButton>
-        </Stack>
-      )}
+      <MainImage
+        className={`${activeCertificate === 0 && classes.activeCertificate}`}
+        alt="certificate-download"
+        src={certificates[0]}
+        onClick={() => setActiveCertificate(0)}
+      />
+      <MainImage
+        className={`${activeCertificate === 1 && classes.activeCertificate}`}
+        alt="certificate-download"
+        src={certificates[1]}
+        onClick={() => setActiveCertificate(1)}
+      />
     </Stack>
+  ) : (
+    <MainImage
+      className={`${classes.activeCertificate} ${classes.onlyCertificate}`}
+      alt="certificate-download"
+      src={certificates[0]}
+    />
   );
 };
 

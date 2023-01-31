@@ -36,14 +36,9 @@ export default function RedirectToCohort() {
       }
 
       if (user.type === 'learner' || mode === 'Learner') {
-        if (upcomingCohort.alumni_event) navigationUrl = `/cohorts/${upcomingCohort.id}/peers`;
-        else if (
-          upcomingCohort.end_date &&
-          new Date(upcomingCohort.end_date) < new Date() &&
-          isOnboarded(upcomingCohort?.onboarding_data)
-        )
-          navigationUrl = `/cohorts/${upcomingCohort.id}/sessions`;
-        else navigationUrl = `/cohorts/${upcomingCohort.id}/home`;
+        navigationUrl = upcomingCohort.alumni_event
+          ? `/cohorts/${upcomingCohort.id}/peers`
+          : `/cohorts/${upcomingCohort.id}/home`;
       } else if (user.type === 'expert') {
         navigationUrl = `/cohorts/${upcomingCohort.id}/registrations`;
       } else {
