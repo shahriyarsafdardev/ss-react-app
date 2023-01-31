@@ -103,7 +103,7 @@ const Index = () => {
 
   const checkAllSessionsPassed = () =>
     !sessions
-      .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(2, 'hour'))
+      .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(1, 'hour'))
       .includes(false);
 
   const displayActiveStep = useCallback(() => {
