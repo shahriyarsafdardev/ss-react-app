@@ -49,7 +49,7 @@ export default function OffboardingMatrixSelect({
     },
     {
       id: 'how-you-feel-now',
-      label: 'How you feel now',
+      label: 'How you feel now?',
       description: '(1 = not important, 5 = very important)'
     }
   ];
