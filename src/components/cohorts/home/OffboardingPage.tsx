@@ -23,7 +23,9 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const classes = useStyles();
   const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-  const [feedbackModalState, setFeedbackModalState] = useState(shouldOpenModal === 'true');
+  const [feedbackModalState, setFeedbackModalState] = useState(
+    !lastSession?.survey_completed && shouldOpenModal === 'true'
+  );
   const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
   const certificates = cohort?.certificate_links;
@@ -119,14 +121,16 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
           >
             Download and Share
           </Button>
-          <Button
-            className={classes.linkButton}
-            variant="outlined"
-            sx={{ color: '#fff !important', textTransform: 'none' }}
-            onClick={handleShareFeedback}
-          >
-            Open End-of-cohort Survey
-          </Button>
+          {!lastSession?.survey_completed && (
+            <Button
+              className={classes.linkButton}
+              variant="outlined"
+              sx={{ color: '#fff !important', textTransform: 'none' }}
+              onClick={handleShareFeedback}
+            >
+              Open End-of-cohort Survey
+            </Button>
+          )}
         </Stack>
       </Stack>
     </StyledBox>
