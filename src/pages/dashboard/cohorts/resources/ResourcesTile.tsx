@@ -18,7 +18,6 @@ import {
   getColor,
   ResourceIcon,
   ResourceType,
-  ResourceDetailBox,
   useStyles
 } from './Common';
 
@@ -124,7 +123,7 @@ function ResourcesTile({
                 spacing={{ xs: 1, md: 2 }}
               >
                 {isMobile && resourceIcon()}
-                <ResourceDetailBox>
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
                   <Stack direction="row" spacing={{ xs: 1, md: 2 }}>
                     <Typography
                       className={classes.styledTypography}
@@ -141,13 +140,18 @@ function ResourcesTile({
                   </Stack>
                   <Typography
                     variant="subtitle2"
-                    sx={{ color: '#a9a9a9', marginLeft: { xs: 0, md: '15px' } }}
+                    sx={{
+                      color: '#a9a9a9',
+                      marginLeft: { xs: 0, md: '15px' },
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: 1
+                    }}
                   >
-                    {material.info_text?.length > 130
-                      ? `${material.info_text?.slice(0, 131)}...`
-                      : material.info_text}
+                    {material.info_text}
                   </Typography>
-                </ResourceDetailBox>
+                </Stack>
               </Stack>
             </Stack>
           </Stack>

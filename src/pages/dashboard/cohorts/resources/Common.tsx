@@ -41,12 +41,13 @@ export const getDisplayName = (type: String) => {
 export const useStyles = makeStyles((theme: Theme) => ({
   styledTypography: {
     fontSize: '13px',
-    px: 1,
-    py: 0.2,
+    padding: '2px 10px',
     backgroundColor: '#F6F7F8',
     borderRadius: '5px',
     color: '#334155',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    textAlign: 'center',
+    whiteSpace: 'nowrap'
   },
   resourceText: {
     color: '#ffffff',
@@ -197,14 +198,6 @@ export const ResourceType = styled('div')(({ theme }) => ({
   borderRadius: '10px',
   transition: theme.transitions.create('opacity'),
   '&:hover': { opacity: 1 }
-}));
-
-export const ResourceDetailBox = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column'
-  }
 }));
 
 export const StyledModal = styled(Modal)(({ theme }) => ({
