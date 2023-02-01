@@ -20,22 +20,25 @@ import {
   StyledIcon,
   getCaption,
   StyledStack,
-  useStyles
+  useStyles,
+  displayLinkedIn
 } from './Common';
 
 const OffboardingModal = ({
   modalState,
   setModalState,
-  activeImage
+  activeImage,
+  cohort
 }: {
   modalState: boolean;
   setModalState: Function;
   activeImage: string;
+  cohort: any;
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const { user } = useAuth();
-  const courseLink = `https://getsphere.com/cohorts/applied-causal-inference?referrer=${user?.slug}&alumni=true`;
+  const courseLink = `${cohort?.registration_page_url}?referrer=${user?.slug}&alumni=true`;
   const classes = useStyles();
 
   const handleCopy = (text: string) => {
@@ -50,14 +53,12 @@ const OffboardingModal = ({
 
   const handleShareViaTwitter = () => {
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Twitter" button clicked', {});
-    window.open(
-      `https://twitter.com/intent/tweet?text=${getCaption('Twitter', user?.slug)}`,
-      '_blank'
-    );
+    const caption = getCaption('Twitter', user?.slug, cohort);
+    window.open(`https://twitter.com/intent/tweet?text=${caption}`, '_blank');
   };
 
   const handleShareViaEmail = () => {
-    window.open(`mailto:?body=${getCaption('Email', user?.slug)}`, '_blank');
+    window.open(`mailto:?body=${getCaption('Email', user?.slug, cohort)}`, '_blank');
     sendAnalyticsData('Cohort Offboarding - Share modal - "Share via Email" button clicked', {});
   };
 
@@ -78,7 +79,7 @@ const OffboardingModal = ({
         window.getSelection()?.removeAllRanges();
       }
     } catch (error) {
-      handleCopy(getCaption('LinkedIn', user?.slug));
+      handleCopy(getCaption('LinkedIn', user?.slug, cohort));
     }
     enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
     sendAnalyticsData(
@@ -113,8 +114,8 @@ const OffboardingModal = ({
               courses.
             </Typography>
             <Typography>
-              Once they have enrolled in [Applied Causal Inference], you will also receive $100
-              credit to use towards your next Sphere course.
+              Once they have enrolled in [{cohort?.name}], you will also receive $100 credit to use
+              towards your next Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />
             <StyledModalButton variant="contained" onClick={handleShareToLinkedin}>
@@ -139,47 +140,7 @@ const OffboardingModal = ({
             <SemiBoldText>
               Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
             </SemiBoldText>
-            <GreyCard>
-              <div>
-                <div id="linkedin-caption">
-                  <Typography>
-                    I’m excited to share that I recently completed a course on Applied Causal
-                    Inference taught by <b>@Robert Donnelly</b> through <b>@Sphere</b> where I
-                    learned to:
-                  </Typography>
-                  <br />
-                  <ul>
-                    <li>
-                      Formulate valid causal inference questions from business problems and
-                      available data
-                    </li>
-                    <li>
-                      Understand the use case and assumptions of both classic and cutting-edge
-                      causal inference methods, including double ML
-                    </li>
-                    <li>
-                      Leverage causal inference tools for better informed decisions about groups or
-                      individuals
-                    </li>
-                  </ul>
-                  <br />
-                  <Typography>
-                    If this course sounds useful to you and your professional development goals,
-                    register using my referral link to earn $100 to use towards future Sphere
-                    course:
-                  </Typography>
-                  <br />
-                  <ul>
-                    <li>
-                      <b>{courseLink}</b>
-                    </li>
-                    <li>Or, check out https://getsphere.com to explore more courses.</li>
-                  </ul>
-                  <br />
-                  <b>#causalinference #onlinecourse #ml #datascience</b>
-                </div>
-              </div>
-            </GreyCard>
+            {displayLinkedIn(cohort, courseLink)}
             <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
               Copy caption with referral link
             </OutlinedButton>

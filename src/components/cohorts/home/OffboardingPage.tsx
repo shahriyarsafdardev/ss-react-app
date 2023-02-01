@@ -82,6 +82,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         />
       )}
       <OffboardingModal
+        cohort={cohort}
         modalState={modal}
         setModalState={setModal}
         activeImage={certificates[activeCertificate]}

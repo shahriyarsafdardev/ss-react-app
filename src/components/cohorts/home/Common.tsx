@@ -10,7 +10,7 @@ import {
   Button,
   IconButton
 } from '@material-ui/core';
-import { memoize, uniq } from 'lodash';
+import { memoize, uniq, startCase } from 'lodash';
 import DoneIcon from '@material-ui/icons/Done';
 
 import moment from 'moment';
@@ -640,21 +640,39 @@ export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
   }
 }));
 
-export const getCaption = (socialMedia: string, slug: string) => {
+export const getCaption = (socialMedia: string, slug: string, cohort: any) => {
   let text = '';
   if (socialMedia === 'LinkedIn') {
-    text = LINKEDIN;
+    text = linkedin(cohort);
   }
   if (socialMedia === 'Twitter') {
-    text = TWITTER;
+    text = twitter(cohort);
   }
   if (socialMedia === 'Email') {
-    text = EMAIL;
+    text = email(cohort);
   }
   return text.replace(/firstname-lastname/g, slug);
 };
 
-export const LINKEDIN = `I’m excited to share that I recently completed a course on Applied Causal Inference taught by @Robert Donnelly through @Sphere where I learned to:
+export const getHashtag = (code: string) => {
+  if (code === 'ACI') {
+    return 'causalinference';
+  }
+  return 'forecasting';
+};
+
+export const getInstructorTwitter = (code: string) => {
+  if (code === 'ACI') {
+    return 'RobDonnelly47';
+  }
+  return 'timoschowski and Jan Gasthaus';
+};
+
+export const linkedin = (cohort: any) => {
+  if (cohort.code === 'ACI') {
+    return `I’m excited to share that I recently completed a course on ${startCase(
+      cohort.name
+    )} taught by @Robert Donnelly through @Sphere where I learned to:
 
   •  Formulate valid causal inference questions from business problems and available data
   •  Understand the use case and assumptions of both classic and cutting-edge causal inference methods, including double ML
@@ -662,22 +680,57 @@ export const LINKEDIN = `I’m excited to share that I recently completed a cour
 
   If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards future Sphere courses:
 
-  •  https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname&alumni=true 
+  •  ${cohort.registration_page_url}?referrer=firstname-lastname&alumni=true 
   •  Or, check out https://getsphere.com to explore more courses.
 
   #causalinference #onlinecourse #ml #datascience`;
+  }
+  return `I’m excited to share that I recently completed a course on ${startCase(
+    cohort.name
+  )} taught by @Tim Januschowski and @Jan Gasthaus through @Sphere where I learned to:
 
-export const TWITTER = `Just completed a course on Applied Causal Inference taught by @RobDonnelly47 through @get_sphere.%0D%0A
+  •  Identify the business problems that can benefit from modern time forecasting techniques
+  •  Use appropriate forecasting techniques to maximize the effectiveness of your solution
+  •  Present the results effectively to persuade a non-technical audience
+
+  If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards future Sphere courses:
+
+  •  ${cohort.registration_page_url}?referrer=firstname-lastname&alumni=true 
+  •  Or, check out https://getsphere.com to explore more courses.
+
+  #forecasting #onlinecourse #ml #datascience`;
+};
+
+export const twitter = (cohort: any) => `Just completed a course on ${startCase(
+  cohort.name
+)} taught by ${
+  cohort.code === 'ACI' ? '@RobDonelly47' : '@timoschowski and Jan Gasthaus'
+} through @get_sphere.%0D%0A
 Register using my referral link to earn $100 to use towards future Sphere courses!%0D%0A
-https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
-%23causalinference %23onlinecourse %23ml %23datascience`;
+${cohort.registration_page_url}?referrer=firstname-lastname%26alumni=true %0D%0A
+${
+  cohort.code === 'ACI' ? '%23causalinference' : '%23forecasting'
+} %23onlinecourse %23ml %23datascience`;
 
-export const EMAIL = `I’m excited to share that I recently completed a course on Applied Causal Inference taught by Rob Donnelly through Sphere where I learned to:%0D%0A%0D%0A
-  %E2%80%A2 Formulate valid causal inference questions from business problems and available data%0D%0A
+export const emailBullets = (code: string) => {
+  if (code === 'ACI') {
+    return `%E2%80%A2 Formulate valid causal inference questions from business problems and available data%0D%0A
   %E2%80%A2 Understand the use case and assumptions of both classic and cutting-edge causal inference methods including double ML%0D%0A
-  %E2%80%A2 Leverage causal inference tools for better informed decisions about groups or individuals%0D%0A%0D%0A
+  %E2%80%A2 Leverage causal inference tools for better informed decisions about groups or individuals%0D%0A%0D%0A`;
+  }
+  return `%E2%80%A2 Identify the business problems that can benefit from modern time forecasting techniques%0D%0A
+  %E2%80%A2 Use appropriate forecasting techniques to maximize the effectiveness of your solution%0D%0A
+  %E2%80%A2 Present the results effectively to persuade a non-technical audience%0D%0A%0D%0A`;
+};
+
+export const email = (
+  cohort: any
+) => `I’m excited to share that I recently completed a course on ${startCase(
+  cohort.name
+)} taught by ${cohort.host_full_names} through Sphere where I learned to:%0D%0A%0D%0A
+  ${emailBullets(cohort.code)}
 If this course sounds useful to you and your professional development goals, register using my referral link to earn $100 to use towards future Sphere courses:%0D%0A%0D%0A
-  %E2%80%A2 https://getsphere.com/cohorts/applied-causal-inference?referrer=firstname-lastname%26alumni=true %0D%0A
+  %E2%80%A2 ${cohort.registration_page_url}?referrer=firstname-lastname%26alumni=true %0D%0A
   %E2%80%A2 Or, check out https://getsphere.com to explore more courses.`;
 
 export const SurveyModal = memo(
@@ -709,3 +762,86 @@ export const SurveyModal = memo(
     </Modal>
   )
 );
+
+export const displayLinkedIn = (cohort: any, courseLink: string) => {
+  if (cohort.code === 'ACI') {
+    return (
+      <GreyCard>
+        <div>
+          <div id="linkedin-caption">
+            <Typography>
+              I’m excited to share that I recently completed a course on {startCase(cohort?.name)}{' '}
+              taught by <b>@Robert Donnelly</b> through <b>@Sphere</b> where I learned to:
+            </Typography>
+            <br />
+            <ul>
+              <li>
+                Formulate valid causal inference questions from business problems and available data
+              </li>
+              <li>
+                Understand the use case and assumptions of both classic and cutting-edge causal
+                inference methods, including double ML
+              </li>
+              <li>
+                Leverage causal inference tools for better informed decisions about groups or
+                individuals
+              </li>
+            </ul>
+            <br />
+            <Typography>
+              If this course sounds useful to you and your professional development goals, register
+              using my referral link to earn $100 to use towards future Sphere course:
+            </Typography>
+            <br />
+            <ul>
+              <li>
+                <b>{courseLink}</b>
+              </li>
+              <li>Or, check out https://getsphere.com to explore more courses.</li>
+            </ul>
+            <br />
+            <b>#causalinference #onlinecourse #ml #datascience</b>
+          </div>
+        </div>
+      </GreyCard>
+    );
+  }
+  return (
+    <GreyCard>
+      <div>
+        <div id="linkedin-caption">
+          <Typography>
+            I’m excited to share that I recently completed a course on {startCase(cohort?.name)}{' '}
+            taught by <b>@Tim Januschowski and @Jan Gasthaus</b> through <b>@Sphere</b> where I
+            learned to:
+          </Typography>
+          <br />
+          <ul>
+            <li>
+              Identify the business problems that can benefit from modern time forecasting
+              techniques
+            </li>
+            <li>
+              Use appropriate forecasting techniques to maximize the effectiveness of your solution
+            </li>
+            <li>Present the results effectively to persuade a non-technical audience</li>
+          </ul>
+          <br />
+          <Typography>
+            If this course sounds useful to you and your professional development goals, register
+            using my referral link to earn $100 to use towards future Sphere course:
+          </Typography>
+          <br />
+          <ul>
+            <li>
+              <b>{courseLink}</b>
+            </li>
+            <li>Or, check out https://getsphere.com to explore more courses.</li>
+          </ul>
+          <br />
+          <b>#forecasting #onlinecourse #ml #datascience</b>
+        </div>
+      </div>
+    </GreyCard>
+  );
+};
