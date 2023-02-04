@@ -129,7 +129,7 @@ export const DeatilsText = styled(Typography)(({ theme }) => ({
 export const CardTitle = styled(Typography)(({ theme }) => ({
   color: '#222C36',
   fontSize: '18px',
-  fontWeight: 900
+  fontWeight: 700
 }));
 
 export const ModalText = styled(Typography)(({ theme }) => ({
@@ -140,7 +140,7 @@ export const ModalText = styled(Typography)(({ theme }) => ({
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
   color: '#222C36',
-  fontWeight: 900,
+  fontWeight: 700,
   fontSize: '24px'
 }));
 

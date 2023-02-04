@@ -25,6 +25,25 @@ export type Course = {
   sessions: CourseSession[];
 };
 
+export type NewCourse = {
+  id: string;
+  cohort_id: string;
+  name: string;
+  code: string;
+  short_description: string;
+  instructor_headshot: string;
+  instructor_logos: string;
+  instructor_title: string;
+  instructor_names: string;
+  publically_listed: boolean;
+  business_function_category: string;
+  business_function_subcategory: string;
+  wait_listed: boolean;
+  registration_page_released: boolean;
+  registration_page_url: string;
+  amplitude_events_timeline: string;
+};
+
 export type CourseSession = {
   id: string;
   name: string;

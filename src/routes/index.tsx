@@ -89,7 +89,7 @@ export default function Router() {
           path: '/events',
           element: <EventsTab />
         },
-        { path: '/all-courses', element: <AllCourses /> },
+        { path: '/all-courses', element: <AllCoursesPage /> },
         { path: '/events/:eventID', element: <CommunityEvent /> },
         { path: '/suggest-course', element: <SuggestCourse /> },
         {
@@ -107,7 +107,7 @@ export default function Router() {
       ),
       children: [
         { path: '/', element: <RedirectToCohort /> },
-        { path: '/all-courses', element: <AllCourses /> },
+        { path: '/all-courses', element: <AllCoursesPage /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         {
           path: '/monthly-registrations',
@@ -389,6 +389,7 @@ const SubscriptionPayment = Loadable(
 );
 const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
 const CurriculumPage = Loadable(lazy(() => import('../pages/curriculum/CurriculumPage')));
+const AllCoursesPage = Loadable(lazy(() => import('../pages/courses/AllCoursesPage')));
 const TeamRegistration = Loadable(
   lazy(() => import('../pages/subscription/teams/TeamRegistration'))
 );

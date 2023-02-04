@@ -21,6 +21,8 @@ import cohortAttendanceRecordReducer from './slices/cohortSessionAttendance';
 import cohortCreditReducer from './slices/businessCredit';
 import adminRegistrationsReducer from './slices/adminRegistrations';
 import eventReducer from './slices/event';
+import courseReducer from './slices/course';
+
 // ----------------------------------------------------------------------
 
 const rootPersistConfig = {
@@ -56,7 +58,8 @@ const appReducer = combineReducers({
   adminRegistrations: adminRegistrationsReducer,
   referral: referralReducer,
   path: pathReducer,
-  event: eventReducer
+  event: eventReducer,
+  course: courseReducer
 });
 
 const rootReducer = (state: any, action: any) => {
