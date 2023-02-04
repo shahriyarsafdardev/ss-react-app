@@ -69,7 +69,7 @@ export default function TeamPackages() {
         )}
         <PathButton
           variant="contained"
-          onClick={() => window.open('https://www.getsphere.com/pages/subscription', '_blank')}
+          onClick={() => window.open('https://www.getsphere.com/pages/subscriptions', '_blank')}
         >
           Get Sphere for your team
         </PathButton>
