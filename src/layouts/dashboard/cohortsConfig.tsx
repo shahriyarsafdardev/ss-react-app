@@ -18,14 +18,14 @@ const ICONS = {
 
 const CODE_TAB_COHORTS = ['HPT', 'MLS'];
 
-export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any) => {
+export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any, isAdmin: boolean) => {
   const cohorts = rawCohorts?.sort((a: any, b: any) => (a.name > b.name ? 1 : -1)) || [];
   const mainObject = {
     subheader: 'Courses',
     items: cohorts?.map((cohort: any) => {
       const object: any = {
         id: cohort.id,
-        title: cohort.name,
+        title: isAdmin ? `${cohort.intake_name} ${cohort.name}` : cohort.name,
         path: PATH_DASHBOARD.cohorts.root(cohort.id),
         icon: ICONS.cohorts,
         children: [

@@ -119,7 +119,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               data-testid="member-sidebar"
               navConfig={learnerCohortsConfigV2(
                 getSortedLearnerCohorts(cohorts),
-                filteredPaths(paths)
+                filteredPaths(paths),
+                user?.type === 'admin'
               )}
               isShow={!isCollapse}
             />
