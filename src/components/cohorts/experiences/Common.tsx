@@ -101,6 +101,78 @@ export const ExcelDownload = memo(({ experience }: { experience: CohortExperienc
   );
 });
 
+const OutcomeAnalysisDownload = memo(({ experience }: { experience: CohortExperience }) => {
+  const fileName = `${moment().format()}-${experience.name} Outcome Analysis`;
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  const exportExcel = async (objects: any, fileName: string) => {
+    const schema = [
+      {
+        column: 'Full Name',
+        value: (item: any) => item.full_name,
+        width: 30
+      },
+      {
+        column: 'Role',
+        value: (item: any) => item.role,
+        width: 30
+      },
+      {
+        column: 'Company',
+        value: (item: any) => item.company,
+        width: 25,
+        wrap: true
+      },
+      ...[...Array(5)].map((v: any, i: number) => ({
+        column: `LO#${i + 1}`,
+        value: (item: any) => item.onboarding_importance[i],
+        width: 10
+      })),
+      ...[...Array(5)].map((v: any, i: number) => ({
+        column: `LO#${i + 1}`,
+        value: (item: any) => item.onboarding_effectiveness[i],
+        width: 10
+      })),
+      ...[...Array(5)].map((v: any, i: number) => ({
+        column: `LO#${i + 1}`,
+        value: (item: any) => item.offboarding_effectiveness[i],
+        width: 10
+      }))
+    ];
+
+    await writeXlsxFile(objects, {
+      schema,
+      headerStyle: {
+        backgroundColor: '#eeeeee',
+        fontWeight: 'bold',
+        align: 'left',
+        wrap: true
+      },
+      fileName
+    });
+  };
+
+  const exportData = async () => {
+    setLoading(true);
+    await axios
+      .get(`cohorts/${experience.id}/outcome_analysis.json`)
+      .then((res) => {
+        exportExcel(res.data.outcomes, fileName);
+        setLoading(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.message, { variant: 'error' });
+      });
+  };
+
+  return (
+    <StyledButton variant="text" color="primary" onClick={() => exportData()} loading={loading}>
+      Download Outcome Analysis
+    </StyledButton>
+  );
+});
+
 export const ExperienceActions = memo(
   ({ id, experience }: { id: string; experience: CohortExperience }) => {
     const [open, setOpen] = useState(false);
@@ -131,6 +203,9 @@ export const ExperienceActions = memo(
             >
               Attendance Sheet
             </Link>
+          </MenuItem>
+          <MenuItem>
+            <OutcomeAnalysisDownload experience={experience} />
           </MenuItem>
         </MenuPopover>
         <IconButton
