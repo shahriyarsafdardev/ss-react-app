@@ -25,7 +25,7 @@ export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any, isAdmin: boo
     items: cohorts?.map((cohort: any) => {
       const object: any = {
         id: cohort.id,
-        title: isAdmin ? `${cohort.intake_name} ${cohort.name}` : cohort.name,
+        title: isAdmin ? `${cohort.name} | ${cohort.intake_name} ` : cohort.name,
         path: PATH_DASHBOARD.cohorts.root(cohort.id),
         icon: ICONS.cohorts,
         children: [
