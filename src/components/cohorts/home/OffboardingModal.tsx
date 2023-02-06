@@ -105,7 +105,7 @@ const OffboardingModal = ({
           direction={{ xs: 'column', md: 'row' }}
           sx={{ height: '100%', alignItems: 'center' }}
         >
-          <StyledStack spacing={2} justifyContent="center">
+          <StyledStack spacing={2} justifyContent="center" sx={{ backgroundColor: '#fff' }}>
             <Typography variant="h3" sx={{ fontSize: '24px !important' }}>
               Share your accomplishment to give and get $100 📣
             </Typography>
