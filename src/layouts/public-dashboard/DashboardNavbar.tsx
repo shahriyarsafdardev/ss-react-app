@@ -6,6 +6,7 @@ import { Box, Button, IconButton } from '@material-ui/core';
 import { HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
 // hooks
 import { useEffect, useState } from 'react';
+import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
@@ -21,6 +22,7 @@ export default function DashboardNavbar({
   onOpenSidebar,
   setLoginModalState
 }: DashboardNavbarProps) {
+  const { isAuthenticated } = useAuth();
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
@@ -86,17 +88,19 @@ export default function DashboardNavbar({
               </HeadText>
             )}
             <Box sx={{ flexGrow: 1 }} />
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#7474D0',
-                padding: '14px 24px',
-                fontSize: '16px'
-              }}
-              onClick={() => setLoginModalState && setLoginModalState(true)}
-            >
-              Login
-            </Button>
+            {!isAuthenticated && (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#7474D0',
+                  padding: '14px 24px',
+                  fontSize: '16px'
+                }}
+                onClick={() => setLoginModalState && setLoginModalState(true)}
+              >
+                Login
+              </Button>
+            )}
           </ToolbarStyle>
         </NavbarRootStyle>
       </Box>

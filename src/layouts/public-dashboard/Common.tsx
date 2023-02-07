@@ -27,6 +27,7 @@ export const LoginModal = ({
     <StyledModal
       open={loginModalState}
       onClose={() => {
+        isRegistered && setIsAuthenticated();
         setLoginModalState(false);
       }}
       zIndex={1400}
