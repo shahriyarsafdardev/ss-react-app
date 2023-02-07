@@ -100,7 +100,7 @@ const OffboardingModal = ({
               courses.
             </Typography>
             <Typography>
-              Once they have enrolled in [{cohort?.name}], you will also receive $100 credit to use
+              Once they have enrolled in {cohort?.name}, you will also receive $100 credit to use
               towards your next Sphere course.
             </Typography>
             <StyledImage alt="certificate-download" src={activeImage} />

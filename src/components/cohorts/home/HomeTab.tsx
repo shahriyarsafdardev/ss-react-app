@@ -127,7 +127,7 @@ const Index = () => {
           cohort={cohort}
         />
       )}
-      <Container sx={{ marginBottom: '50px' }}>
+      <Container sx={{ marginBottom: '50px', paddingTop: '15px' }}>
         <CohortTimeLine cohort={cohort} sessions={sessions} activeStepper={activeStepper} />
         <StyledBox>{displayActiveStep()}</StyledBox>
       </Container>

@@ -217,13 +217,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   homePage: {
+    marginTop: '-24px',
     width: '100%',
     height: '100%',
     minHeight: '100%',
-    overflow: 'hidden',
-    [theme.breakpoints.up('md')]: {
-      paddingTop: '10px'
-    }
+    overflow: 'hidden'
   },
   checklistItemStack: {
     padding: '10px 0px',
@@ -673,7 +671,7 @@ ${cohort.offboarding_data.hashtags || ''}`;
 const appendHashtag = (hashtags: string) => hashtags?.replace(/#/g, '%23') || '';
 
 export const twitter = (cohort: any) =>
-  `Just completed a course on ${cohort.name} through @get_sphere. Thank you to ${
+  `Just completed a course on ${cohort.name} through @get_sphere. Special thanks to ${
     cohort.offboarding_data.twitter_usernames
   } for sharing their extensive knowledge and experience. More details here: ${
     cohort.registration_page_url
