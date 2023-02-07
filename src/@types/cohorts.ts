@@ -208,6 +208,14 @@ export type OnboardingData = {
   onboarding_is_any_question_unanswered: boolean;
 };
 
+export type OffboardingData = {
+  hashtags: string | null;
+  twitter_usernames: string;
+  linkedin_usernames: string;
+  host_titles: string;
+  target_persona: string;
+};
+
 export type Cohort = {
   id: string;
   name: string;
@@ -245,6 +253,7 @@ export type Cohort = {
   cohort_header_name?: string;
   instructor_pronoun?: string;
   certificate_links: string[];
+  offboarding_data: OffboardingData;
 };
 
 export type CodeOnboardingItem = {

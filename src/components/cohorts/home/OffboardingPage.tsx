@@ -6,7 +6,6 @@ import { useDispatch } from 'redux/store';
 import { updateSessionModalState } from 'redux/slices/sessionFeedback';
 import { updateSessionFeedbackStatus } from 'redux/slices/cohort';
 import { useLocation } from 'react-router-dom';
-import { startCase } from 'lodash';
 import { Cohort } from '../../../@types/cohorts';
 import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
@@ -28,7 +27,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   );
   const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
-  const certificates = cohort?.certificate_links;
+  const certificates = cohort.certificate_links;
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
@@ -66,7 +65,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
 
   const handleSurveyModalCompleted = () => {
     setHasCompletedFeedback(true);
-    dispatch(updateSessionFeedbackStatus(cohort?.id, lastSession?.id || ''));
+    dispatch(updateSessionFeedbackStatus(cohort.id, lastSession?.id || ''));
     dispatch(updateSessionModalState(lastSession?.id || ''));
   };
 
@@ -100,7 +99,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         className={classes.offboardingPageContainer}
       >
         <OffboardingHeader variant="h3">
-          Congratulations, you have completed {startCase(cohort?.name)}! 🎉
+          Congratulations, you have completed {cohort.name}! 🎉
         </OffboardingHeader>
 
         <OffboardingCarousel

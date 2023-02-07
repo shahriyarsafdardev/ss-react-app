@@ -67,21 +67,7 @@ const OffboardingModal = ({
   };
 
   const handleCopyCaption = () => {
-    const caption = document.createRange();
-    const target = document.getElementById('linkedin-caption');
-
-    try {
-      if (target) {
-        caption.selectNode(target);
-        window.getSelection()?.removeAllRanges();
-        window.getSelection()?.addRange(caption);
-        document.execCommand('copy');
-        window.getSelection()?.removeAllRanges();
-      }
-    } catch (error) {
-      handleCopy(getCaption('LinkedIn', user?.slug, cohort));
-    }
-    enqueueSnackbar('Copied to Clipboard!', { variant: 'success' });
+    handleCopy(getCaption('LinkedIn', user?.slug, cohort));
     sendAnalyticsData(
       'Cohort Offboarding - Share modal - "Copy caption with referral link" button clicked',
       {}
@@ -138,7 +124,7 @@ const OffboardingModal = ({
           </StyledStack>
           <StyledStack spacing={3}>
             <SemiBoldText>
-              Don’t forget to use LinkedIn’s @ feature to tag Rob Donnelly and Sphere!
+              Don’t forget to use LinkedIn’s @ feature to tag {cohort.host_full_names} and Sphere!
             </SemiBoldText>
             {displayLinkedIn(cohort, courseLink)}
             <OutlinedButton onClick={() => handleCopyCaption()} variant="outlined">
