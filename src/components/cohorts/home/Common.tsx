@@ -219,8 +219,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
   homePage: {
     marginTop: '-24px',
     width: '100%',
-    height: '100%',
-    minHeight: '100%',
+    height: 'calc(100% + 24px)',
+    minHeight: 'calc(100% + 24px)',
     overflow: 'hidden'
   },
   checklistItemStack: {
