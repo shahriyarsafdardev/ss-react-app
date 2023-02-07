@@ -257,11 +257,18 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   activeCertificate: {
     boxShadow: '0px 0px 25px #fff',
-    transform: 'scale(1.1)',
+    width: '50%',
     transition: 'opacity 0.5s',
     opacity: 1,
     [theme.breakpoints.down('md')]: {
-      transform: 'scale(1.05)'
+      width: '95%'
+    }
+  },
+  secondaryCertificate: {
+    width: '45%',
+    opacity: 0.8,
+    [theme.breakpoints.down('md')]: {
+      width: '75%'
     }
   },
   onlyCertificate: {
@@ -578,6 +585,8 @@ export const ModalStyle = styled(Card)(({ theme }) => ({
 
 export const GreyCard = styled(Stack)(({ theme }) => ({
   height: '115px',
+  width: '100%',
+  overflowWrap: 'break-word',
   minHeight: '115px',
   overflow: 'auto',
   border: '1px solid #E2E8F0',
@@ -628,14 +637,8 @@ export const OffboardingHeader = styled(Typography)(({ theme }) => ({
 }));
 
 export const MainImage = styled(LazyLoadImage)(({ theme }) => ({
-  width: '45%',
   height: 'auto',
-  cursor: 'pointer',
-  opacity: 0.8,
-  [theme.breakpoints.down('md')]: {
-    width: '95%',
-    height: 'auto'
-  }
+  cursor: 'pointer'
 }));
 
 export const getCaption = (socialMedia: string, slug: string, cohort: any) => {

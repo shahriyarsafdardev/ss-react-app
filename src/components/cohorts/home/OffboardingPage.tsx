@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, memo } from 'react';
-import { Stack, Button } from '@material-ui/core';
+import { Stack, Button, useTheme, useMediaQuery } from '@material-ui/core';
 import ReactConfetti from 'react-confetti';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useDispatch } from 'redux/store';
@@ -12,6 +12,8 @@ import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
 const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const url = new URLSearchParams(useLocation().search);
   const referrer = url.get('referrer') || '';
   const shouldOpenModal = url.get('open_eoc_survey') || '';
@@ -101,12 +103,13 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
         <OffboardingHeader variant="h3">
           Congratulations, you have completed {cohort.name}! 🎉
         </OffboardingHeader>
-
-        <OffboardingCarousel
-          activeCertificate={activeCertificate}
-          setActiveCertificate={setActiveCertificate}
-          certificates={certificates}
-        />
+        {isDesktop && (
+          <OffboardingCarousel
+            activeCertificate={activeCertificate}
+            setActiveCertificate={setActiveCertificate}
+            certificates={certificates}
+          />
+        )}
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           spacing={2}
@@ -132,6 +135,13 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
             </Button>
           )}
         </Stack>
+        {!isDesktop && (
+          <OffboardingCarousel
+            activeCertificate={activeCertificate}
+            setActiveCertificate={setActiveCertificate}
+            certificates={certificates}
+          />
+        )}
       </Stack>
     </StyledBox>
   );

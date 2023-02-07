@@ -22,13 +22,17 @@ const OffboardingCarousel = ({
       alignItems="center"
     >
       <MainImage
-        className={`${activeCertificate === 0 && classes.activeCertificate}`}
+        className={`${
+          activeCertificate === 0 ? classes.activeCertificate : classes.secondaryCertificate
+        }`}
         alt="certificate-download"
         src={certificates[0]}
         onClick={() => setActiveCertificate(0)}
       />
       <MainImage
-        className={`${activeCertificate === 1 && classes.activeCertificate}`}
+        className={`${
+          activeCertificate === 1 ? classes.activeCertificate : classes.secondaryCertificate
+        }`}
         alt="certificate-download"
         src={certificates[1]}
         onClick={() => setActiveCertificate(1)}
