@@ -1,7 +1,7 @@
-import { Card, Stack } from '@material-ui/core';
+import { Button, Card, Stack, styled } from '@material-ui/core';
 import { RegisterForm } from 'components/authentication/register';
 import useAuth from 'hooks/useAuth';
-import { ModalText, StyledButton, StyledModal } from 'pages/events/Common';
+import { ModalText, StyledModal } from 'pages/events/Common';
 import { trackEvent } from 'utils/eventTracking';
 
 export const LoginModal = ({
@@ -57,3 +57,13 @@ export const LoginModal = ({
     </StyledModal>
   );
 };
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#7474D0',
+  padding: '14px 24px',
+  fontSize: '16px',
+  [theme.breakpoints.down('md')]: {
+    padding: '6px 10px',
+    fontSize: '12px'
+  }
+}));

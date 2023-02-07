@@ -11,6 +11,7 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
 import EventNavbar from '../main/EventNavbar';
+import { StyledButton } from './Common';
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
@@ -89,17 +90,12 @@ export default function DashboardNavbar({
             )}
             <Box sx={{ flexGrow: 1 }} />
             {!isAuthenticated && (
-              <Button
+              <StyledButton
                 variant="contained"
-                sx={{
-                  backgroundColor: '#7474D0',
-                  padding: '14px 24px',
-                  fontSize: '16px'
-                }}
                 onClick={() => setLoginModalState && setLoginModalState(true)}
               >
                 Login
-              </Button>
+              </StyledButton>
             )}
           </ToolbarStyle>
         </NavbarRootStyle>
