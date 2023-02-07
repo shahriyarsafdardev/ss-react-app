@@ -299,7 +299,14 @@ export const ModalForm = ({
   }, []);
 
   if (formType === 'register') {
-    return <RegisterForm setFormType={setFormType} />;
+    return (
+      <RegisterForm
+        setFormType={setFormType}
+        heading="Looks like you’re not logged into Sphere!"
+        subHeading="Please create an account or log in to add this event to your calendar."
+        buttonText="Register"
+      />
+    );
   }
   if (formType === 'registrationSuccess') {
     return (

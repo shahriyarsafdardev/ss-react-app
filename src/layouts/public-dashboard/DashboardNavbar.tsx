@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { Box, IconButton } from '@material-ui/core';
+import { Box, Button, IconButton } from '@material-ui/core';
 import { HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
 // hooks
 import { useEffect, useState } from 'react';
@@ -14,9 +14,13 @@ import EventNavbar from '../main/EventNavbar';
 
 type DashboardNavbarProps = {
   onOpenSidebar: VoidFunction;
+  setLoginModalState?: Function;
 };
 
-export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
+export default function DashboardNavbar({
+  onOpenSidebar,
+  setLoginModalState
+}: DashboardNavbarProps) {
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
@@ -81,8 +85,18 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 {currentTab}
               </HeadText>
             )}
-
             <Box sx={{ flexGrow: 1 }} />
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: '#7474D0',
+                padding: '14px 24px',
+                fontSize: '16px'
+              }}
+              onClick={() => setLoginModalState && setLoginModalState(true)}
+            >
+              Login
+            </Button>
           </ToolbarStyle>
         </NavbarRootStyle>
       </Box>
