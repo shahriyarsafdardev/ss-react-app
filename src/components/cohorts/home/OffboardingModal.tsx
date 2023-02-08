@@ -93,16 +93,19 @@ const OffboardingModal = ({
         >
           <StyledStack spacing={2} justifyContent="center" sx={{ backgroundColor: '#fff' }}>
             <Typography variant="h3" sx={{ fontSize: '24px !important' }}>
-              Share your accomplishment to give and get $100 📣
+              Share your accomplishment to give and get {cohort?.code === 'AAB' ? '$50' : '$100'} 📣
             </Typography>
             <Typography>
-              Anyone who uses your referral link will receive $100 to use towards future Sphere
-              courses.
+              {cohort?.code === 'AAB'
+                ? 'When someone registers for Accelerating Innovation With A/B Testing using your referral link, you will both receive a $50 Amazon gift card!'
+                : 'Anyone who uses your referral link will receive $100 to use towards future Sphere courses.'}
             </Typography>
-            <Typography>
-              Once they have enrolled in {cohort?.name}, you will also receive $100 credit to use
-              towards your next Sphere course.
-            </Typography>
+            {cohort?.code !== 'AAB' && (
+              <Typography>
+                Once they have enrolled in {cohort?.name}, you will also receive $100 credit to use
+                towards your next Sphere course.
+              </Typography>
+            )}
             <StyledImage alt="certificate-download" src={activeImage} />
             <StyledModalButton variant="contained" onClick={handleShareToLinkedin}>
               Share to LinkedIn
