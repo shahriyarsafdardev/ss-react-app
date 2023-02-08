@@ -17,6 +17,7 @@ import MultiSelect from '../../MultiSelect';
 import { SurveyContent } from '../../../@types/cohorts';
 import OnboardingMatrixSelect from './OnboardingMatrixSelect';
 import OffboardingMatrixSelect from './OffboardingMatrixSelect';
+import MatrixSelection from './MatrixSelection';
 
 type SurveyRowProps = {
   item: SurveyContent;
@@ -87,6 +88,7 @@ const ANSWER_TYPES = {
   SLIDER: 'slider',
   STAR_RATING: 'star-rating',
   MULTIPLE_SELECT: 'multiple-select',
+  MATRIX: 'matrix',
   ONBOARDING_MATRIX_SELECT: 'onboarding-outcome-matrix',
   OFFBOARDING_MATRIX_SELECT: 'offboarding-outcome-matrix'
 };
@@ -299,6 +301,15 @@ export default function SurveyRow({
           values={submitted_answer ? submitted_answer.split(',') : []}
           onChange={(e: any) => onChange(_.toString(e))}
           maxLimit={item.maxLimit}
+        />
+      );
+    }
+    if (item.question_type === ANSWER_TYPES.MATRIX) {
+      return (
+        <MatrixSelection
+          options={item.options}
+          onChange={onChange}
+          submitted_answer={submitted_answer}
         />
       );
     }
