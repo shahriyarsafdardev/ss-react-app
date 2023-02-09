@@ -94,7 +94,7 @@ export default function DashboardNavbar({
                 variant="contained"
                 onClick={() => setLoginModalState && setLoginModalState(true)}
               >
-                Login
+                Log In
               </StyledButton>
             )}
           </ToolbarStyle>

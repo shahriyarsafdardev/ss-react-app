@@ -40,9 +40,13 @@ export const LoginModal = ({
               Now, you can add Sphere’s events to your calendar and share them with friends or
               colleagues.
             </ModalText>
-            <StyledButton variant="contained" onClick={() => registrationSuccess()}>
+            <Button
+              variant="contained"
+              sx={{ width: '100%', height: '46px', borderRadius: '30px' }}
+              onClick={() => registrationSuccess()}
+            >
               Continue
-            </StyledButton>
+            </Button>
           </Stack>
         ) : (
           <RegisterForm
@@ -59,11 +63,12 @@ export const LoginModal = ({
 };
 
 export const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: '#7474D0',
-  padding: '14px 24px',
+  background: 'linear-gradient(135.12deg, #7474D0 0.07%, #4D4DCD 100.02%) !important',
+  borderRadius: '5px',
+  padding: '9px 24px',
   fontSize: '16px',
   [theme.breakpoints.down('md')]: {
-    padding: '6px 10px',
+    padding: '7px 10px',
     fontSize: '12px'
   }
 }));
