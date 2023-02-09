@@ -90,12 +90,14 @@ export default function DashboardNavbar({
             )}
             <Box sx={{ flexGrow: 1 }} />
             {!isAuthenticated && (
-              <StyledButton
-                variant="contained"
-                onClick={() => setLoginModalState && setLoginModalState(true)}
-              >
-                Log In
-              </StyledButton>
+              <Box sx={{ minWidth: { xs: '70px', md: '110px' } }}>
+                <StyledButton
+                  variant="contained"
+                  onClick={() => setLoginModalState && setLoginModalState(true)}
+                >
+                  Log In
+                </StyledButton>
+              </Box>
             )}
           </ToolbarStyle>
         </NavbarRootStyle>

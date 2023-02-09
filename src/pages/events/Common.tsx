@@ -356,7 +356,7 @@ export const ModalForm = ({
                 trackModalEvents('All Events Page - Alumni only modal - Sign In Link Selected')
               }
             >
-              Sign in here
+              Log in here
             </Link>
           </Stack>
         )}
@@ -412,7 +412,7 @@ export const ModalForm = ({
                 trackModalEvents('All Events Page - Learners only modal - Sign In Link Selected')
               }
             >
-              Sign in here
+              Log in here
             </Link>
           </Stack>
         )}

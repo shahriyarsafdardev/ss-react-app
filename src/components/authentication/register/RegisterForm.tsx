@@ -52,14 +52,12 @@ export default function RegisterForm({
   setFormType,
   heading,
   subHeading,
-  buttonText,
-  setIsRegistered
+  buttonText
 }: {
   setFormType: Function;
   heading: string;
   subHeading: string;
   buttonText: string;
-  setIsRegistered?: Function;
 }) {
   const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
@@ -110,8 +108,7 @@ export default function RegisterForm({
             </MIconButton>
           )
         });
-        setFormType && setFormType('registrationSuccess');
-        setIsRegistered && setIsRegistered(true);
+        setFormType('registrationSuccess');
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -247,7 +244,7 @@ export default function RegisterForm({
               sx={{ textDecoration: 'underline' }}
               onClick={() => trackEvent(null, 'Event Page - Login Modal - Sign In Link Selected')}
             >
-              Sign in here
+              Log in here
             </Link>
           </Stack>
         </Stack>
