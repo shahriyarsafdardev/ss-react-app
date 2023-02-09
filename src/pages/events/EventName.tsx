@@ -67,7 +67,7 @@ const EventName = ({
   openModal: Function;
 }) => {
   const showButton =
-    moment(event?.time).subtract(15, 'minutes') <= moment() &&
+    moment(event?.time).subtract(30, 'minutes') <= moment() &&
     moment() <= moment(event?.time).add(2, 'hours');
 
   const handleButtonClick = () => {
