@@ -48,7 +48,19 @@ type CompanyData = {
   industries: string[];
 };
 
-export default function RegisterForm({ setFormType }: { setFormType: Function }) {
+export default function RegisterForm({
+  setFormType,
+  heading,
+  subHeading,
+  buttonText,
+  setIsRegistered
+}: {
+  setFormType: Function;
+  heading: string;
+  subHeading: string;
+  buttonText: string;
+  setIsRegistered?: Function;
+}) {
   const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -98,7 +110,8 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
             </MIconButton>
           )
         });
-        setFormType('registrationSuccess');
+        setFormType && setFormType('registrationSuccess');
+        setIsRegistered && setIsRegistered(true);
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -128,10 +141,8 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={4} alignItems="center">
           <div style={{ textAlign: 'center' }}>
-            <Typography variant="h5">Looks like you’re not logged into Sphere!</Typography>
-            <Typography variant="h5">
-              Please create an account or log in to add this event to your calendar.
-            </Typography>
+            <Typography variant="h5">{heading}</Typography>
+            <Typography variant="h5">{subHeading}</Typography>
           </div>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
           <Stack spacing={2} width="100%">
@@ -219,7 +230,7 @@ export default function RegisterForm({ setFormType }: { setFormType: Function })
             disabled={!isValid}
             sx={{ borderRadius: '35px' }}
           >
-            Register
+            {buttonText}
           </LoadingButton>
           <Stack
             direction={{ xs: 'column', md: 'row' }}

@@ -7,7 +7,7 @@ export default function EventNavbar({ eventName }: { eventName: string }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2} justifyContent="center">
+    <Stack direction="row" alignItems="center" justifyContent="center">
       <Stack
         sx={{ backgroundColor: '#F1F1FB', height: '92px', minWidth: '230px' }}
         justifyContent="center"
@@ -21,7 +21,7 @@ export default function EventNavbar({ eventName }: { eventName: string }) {
         </Link>
       </Stack>
 
-      {!isMobile && <Typography sx={{ color: '#071A33' }}>{eventName}</Typography>}
+      {!isMobile && <Typography sx={{ color: '#071A33', px: '30px' }}>{eventName}</Typography>}
     </Stack>
   );
 }

@@ -2,21 +2,28 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { Box, IconButton } from '@material-ui/core';
+import { Box, Button, IconButton } from '@material-ui/core';
 import { HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
 // hooks
 import { useEffect, useState } from 'react';
+import useAuth from 'hooks/useAuth';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
 import EventNavbar from '../main/EventNavbar';
+import { StyledButton } from './Common';
 // ----------------------------------------------------------------------
 
 type DashboardNavbarProps = {
   onOpenSidebar: VoidFunction;
+  setLoginModalState?: Function;
 };
 
-export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps) {
+export default function DashboardNavbar({
+  onOpenSidebar,
+  setLoginModalState
+}: DashboardNavbarProps) {
+  const { isAuthenticated } = useAuth();
   const { isCollapse } = useCollapseDrawer();
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
@@ -81,8 +88,15 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 {currentTab}
               </HeadText>
             )}
-
             <Box sx={{ flexGrow: 1 }} />
+            {!isAuthenticated && (
+              <StyledButton
+                variant="contained"
+                onClick={() => setLoginModalState && setLoginModalState(true)}
+              >
+                Log In
+              </StyledButton>
+            )}
           </ToolbarStyle>
         </NavbarRootStyle>
       </Box>

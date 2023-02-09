@@ -8,15 +8,27 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 //
 import DashboardSidebar from './DashboardSidebar';
 import DashboardNavbar from './DashboardNavbar';
+import { LoginModal } from './Common';
 
 export default function PublicDashboardLayout() {
   const theme = useTheme();
   const { collapseClick } = useCollapseDrawer();
   const [open, setOpen] = useState(false);
+  const [loginModalState, setLoginModalState] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   return (
     <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+      <LoginModal
+        loginModalState={loginModalState}
+        setLoginModalState={setLoginModalState}
+        isRegistered={isRegistered}
+        setIsRegistered={setIsRegistered}
+      />
+      <DashboardNavbar
+        onOpenSidebar={() => setOpen(true)}
+        setLoginModalState={setLoginModalState}
+      />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle
         sx={{

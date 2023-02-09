@@ -185,11 +185,6 @@ export const communitySidebarConfigCourses = (paths: any) => {
     subheader: 'courses',
     items: [
       {
-        title: 'login',
-        path: PATH_AUTH.login,
-        icon: ICONS.lock
-      },
-      {
         title: 'all courses',
         path: PATH_DASHBOARD.general.allCourses,
         icon: ICONS.bookshelf

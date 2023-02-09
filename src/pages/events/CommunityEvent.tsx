@@ -280,11 +280,11 @@ export default function CommuityEvent() {
           if (['learner', 'alumni'].includes(formType)) {
             trackEvent(
               null,
-              `All Events Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
+              `Event Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
               communityEventProperties(eventDetails)
             );
           } else if (formType === 'register') {
-            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+            trackEvent(null, 'Event Page - Login Modal - Close Button Selected');
           } else if (formType === 'registrationSuccess') {
             setIsAuthenticated();
           }
