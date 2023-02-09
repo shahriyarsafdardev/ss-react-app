@@ -209,6 +209,10 @@ export default function SurveyForm({
         JSON.parse(res)?.flat()?.filter(Boolean)?.length !==
           question?.options?.outcomes?.length * 2;
     }
+    if (question?.question_type === 'matrix' && res !== undefined) {
+      isDisabled =
+        isDisabled || JSON.parse(res)?.filter(Boolean)?.length !== question?.options?.length;
+    }
     return isDisabled;
   };
 
