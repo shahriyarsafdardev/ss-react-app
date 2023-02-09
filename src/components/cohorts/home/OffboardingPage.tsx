@@ -22,7 +22,9 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   const [displayConfetti, setDisplayConfetti] = useState(true);
   const [confetti, setConfetti] = useState(200);
   const classes = useStyles();
-  const lastSession = cohort.sessions.filter((session) => session.display_in_sessions_tab).pop();
+  const lastSession = cohort.sessions
+    .filter((session) => session.display_in_sessions_tab && Number.isInteger(session.number))
+    .pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const [feedbackModalState, setFeedbackModalState] = useState(
     !lastSession?.survey_completed && shouldOpenModal === 'true'

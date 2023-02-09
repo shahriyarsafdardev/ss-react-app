@@ -61,7 +61,7 @@ function CourseInvite() {
       const emails = values?.emails.split(',').map((email) => email.trim());
       let emailErrors = '';
       emails.forEach((email) => {
-        if (!/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/.test(email)) {
+        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
           emailErrors += `${email}, `;
         }
       });
@@ -101,14 +101,13 @@ function CourseInvite() {
     }
   });
 
+  const { values, isSubmitting, touched, errors, getFieldProps, setFieldValue, handleSubmit } =
+    formik;
+
   const handleSendInvite = () => {
     handleSubmit();
     setIsFormSubmit(true);
   };
-
-  const { values, isSubmitting, touched, errors, getFieldProps, setFieldValue, handleSubmit } =
-    formik;
-
   if (loading || !cohortID || !enrollmentID) {
     return (
       <LoadingContainer>
@@ -170,7 +169,9 @@ function CourseInvite() {
                 Refer Friends & Colleagues
               </Typography>
               <Typography className={classes.whiteFont} width="80%" margin="auto">
-                You’ll each receive $100 worth of Sphere courses after they join their first course.
+                You’ll each receive&nbsp;
+                {cohort?.code === 'AAB' ? 'a $50 Amazon gift card' : '$100 worth of Sphere courses'}
+                &nbsp; after they join their first course.
               </Typography>
               <FormikProvider value={formik}>
                 <Form autoComplete="off" style={{ width: '100%' }}>
