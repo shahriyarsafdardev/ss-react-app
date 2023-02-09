@@ -285,6 +285,8 @@ export default function CommuityEvent() {
             );
           } else if (formType === 'register') {
             trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+          } else if (formType === 'registrationSuccess') {
+            setIsAuthenticated();
           }
           setEventDetails({});
           setFormType('');
@@ -339,7 +341,14 @@ export default function CommuityEvent() {
         </MenuItem>
       </MenuPopover>
       <Stack direction="column" spacing={3} width="95%" sx={{ m: 'auto', pb: 5 }}>
-        <EventName event={event} />
+        <EventName
+          event={event}
+          isAuthenticated={isAuthenticated}
+          openModal={() => {
+            setFormType('register');
+            setModalState(true);
+          }}
+        />
         {event.recording_url && (
           <>
             {event.recording_url?.includes('vimeo') ? (

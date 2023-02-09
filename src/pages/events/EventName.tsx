@@ -1,7 +1,8 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
+import useAuth from 'hooks/useAuth';
 import { Event } from '../../@types/events';
 import {
   EventHosts,
@@ -56,11 +57,26 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }
 }));
 
-const EventName = ({ event }: { event: Event }) => {
+const EventName = ({
+  event,
+  isAuthenticated,
+  openModal
+}: {
+  event: Event;
+  isAuthenticated: boolean;
+  openModal: Function;
+}) => {
   const showButton =
     moment(event?.time).subtract(15, 'minutes') <= moment() &&
     moment() <= moment(event?.time).add(2, 'hours');
 
+  const handleButtonClick = () => {
+    if (isAuthenticated) {
+      window.open(event.zoom_url, '_blank');
+    } else {
+      openModal();
+    }
+  };
   return (
     <>
       <StyledCard>
@@ -111,8 +127,7 @@ const EventName = ({ event }: { event: Event }) => {
           {showButton && event?.zoom_url && (
             <Button
               variant="outlined"
-              href={event?.zoom_url}
-              target="_blank"
+              onClick={handleButtonClick}
               sx={{ width: '100%', height: '46px', borderRadius: '30px' }}
             >
               Join Event
