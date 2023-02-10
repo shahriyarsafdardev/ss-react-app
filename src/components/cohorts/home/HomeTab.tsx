@@ -8,6 +8,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { trackEvent } from 'utils/eventTracking';
 import { useLocation } from 'react-router-dom';
+import useAuth from 'hooks/useAuth';
 import { RootState, useDispatch, useSelector } from '../../../redux/store';
 import { getBriefSessions } from '../../../redux/slices/cohort';
 import { Session } from '../../../@types/cohorts';
@@ -35,10 +36,15 @@ const Index = () => {
   const [surveyModalState, setSurveyModalState] = useState(false);
   const url = new URLSearchParams(useLocation().search);
   const paramStep = url.get('active_step');
+  const eoc = url.get('eoc');
+  const { user } = useAuth();
+
   const cohort_id = window.location.pathname.split('/')[2] || '';
   const cohort = useSelector(
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
+  const EXPERT_OR_ADMIN = ['expert', 'admin'].includes(user?.type);
+
   const { sessions } = cohort || [];
   const { onboarding_data } = cohort || {};
   const classes = useStyles();
@@ -102,6 +108,7 @@ const Index = () => {
   };
 
   const checkAllSessionsPassed = () =>
+    sessions &&
     !sessions
       .filter((session) => Number.isInteger(session.number))
       .map((session) => moment(firstUpcomingDate(session.times)) < moment().subtract(1, 'hour'))
@@ -117,6 +124,10 @@ const Index = () => {
 
     return <NewHomeTab cohort={cohort} sessions={sessions} activeSession={activeSession} />;
   }, [activeStepper, cohort, activeSession, sessions]);
+
+  const SHOW_OFFBOARDING =
+    (checkAllSessionsPassed() && onboardingCompleted && cohort?.certificate_links?.length > 0) ||
+    (eoc === 'true' && EXPERT_OR_ADMIN);
 
   const homeTabSection = () => (
     <>
@@ -145,10 +156,8 @@ const Index = () => {
   return (
     <Page title="Sphere | Homepage" className={classes.homePage}>
       <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
-        {checkAllSessionsPassed() &&
-        onboardingCompleted &&
-        cohort?.certificate_links?.length > 0 ? (
-          <OffboardingPage cohort={cohort} />
+        {SHOW_OFFBOARDING ? (
+          <OffboardingPage cohort={cohort} showSurveyButton={EXPERT_OR_ADMIN} />
         ) : (
           homeTabSection()
         )}

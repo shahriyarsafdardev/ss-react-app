@@ -179,8 +179,7 @@ export default function SurveyForm({
       })
       .catch((err) => {
         setLoading(false);
-        enqueueSnackbar('Some error occurred!', { variant: 'error' });
-        onComplete();
+        enqueueSnackbar(err.message, { variant: 'error' });
       });
   };
 

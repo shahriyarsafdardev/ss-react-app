@@ -11,12 +11,22 @@ import OffboardingModal from './OffboardingModal';
 import OffboardingCarousel from './OffboardingCarousel';
 import { StyledBox, OffboardingHeader, useStyles, SurveyModal } from './Common';
 
-const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
+const PERSONALIZED_CERTIFICATE_1 =
+  'https://cohort-certificates.s3.eu-west-2.amazonaws.com/personalized-certificate-1.png';
+const PERSONALIZED_CERTIFICATE_2 =
+  'https://cohort-certificates.s3.eu-west-2.amazonaws.com/personalized-certificate-2.png';
+
+const OffboardingPage = ({
+  cohort,
+  showSurveyButton
+}: {
+  cohort: Cohort;
+  showSurveyButton: boolean;
+}) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const url = new URLSearchParams(useLocation().search);
   const referrer = url.get('referrer') || '';
-  const shouldOpenModal = url.get('open_eoc_survey') || '';
   const [modal, setModal] = useState(false);
   const [activeCertificate, setActiveCertificate] = useState(0);
   const [displayConfetti, setDisplayConfetti] = useState(true);
@@ -26,12 +36,12 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
     .filter((session) => session.display_in_sessions_tab && Number.isInteger(session.number))
     .pop();
   const { sendAnalyticsData } = useContext(AnalyticsContext);
-  const [feedbackModalState, setFeedbackModalState] = useState(
-    !lastSession?.survey_completed && shouldOpenModal === 'true'
-  );
+  const [feedbackModalState, setFeedbackModalState] = useState(!lastSession?.survey_completed);
   const [hasCompletedFeedback, setHasCompletedFeedback] = useState(false);
   const dispatch = useDispatch();
-  const certificates = cohort.certificate_links;
+  const certificates = cohort.certificate_links.length
+    ? cohort.certificate_links
+    : [PERSONALIZED_CERTIFICATE_1, PERSONALIZED_CERTIFICATE_2];
 
   useEffect(() => {
     sendAnalyticsData('Cohort Offboarding - Page loaded', {});
@@ -64,6 +74,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
 
   const handleSurveyModalClose = () => {
     setFeedbackModalState(false);
+    setHasCompletedFeedback(false);
     dispatch(updateSessionModalState(lastSession?.id || ''));
   };
 
@@ -126,7 +137,7 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
           >
             Download and Share
           </Button>
-          {!lastSession?.survey_completed && (
+          {(!lastSession?.survey_completed || showSurveyButton) && (
             <Button
               className={classes.linkButton}
               variant="outlined"
