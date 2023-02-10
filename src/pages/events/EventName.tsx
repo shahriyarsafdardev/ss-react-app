@@ -124,7 +124,7 @@ const EventName = ({
               </Stack>
             )}
           </Stack>
-          {showButton && event?.zoom_url && (
+          {showButton && (!isAuthenticated || (isAuthenticated && event?.zoom_url)) && (
             <Button
               variant="outlined"
               onClick={handleButtonClick}
