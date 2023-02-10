@@ -159,7 +159,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
             </ViewSwitcherStyle>
           </StyledBox>
         )}
-        {user?.type === 'learner' && (
+        {/* {user?.type === 'learner' && (
           <ReferralStyledBox>
             <ViewReferralLinks>
               <ShareReferralLink
@@ -170,7 +170,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
               />
             </ViewReferralLinks>
           </ReferralStyledBox>
-        )}
+        )} */}
       </Scrollbar>
     </>
   );

@@ -65,7 +65,7 @@ export default function AccountPopover() {
       dispatch(resetStore());
       await logout?.();
       if (isMountedRef.current) {
-        navigate('/');
+        navigate('/events');
         handleClose();
       }
     } catch (error) {

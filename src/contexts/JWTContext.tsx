@@ -246,7 +246,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     if (client.user) {
       await client.disconnectUser();
     }
-    navigate('/');
+    navigate('/events');
   };
 
   const resetPassword = async (email: string) => {

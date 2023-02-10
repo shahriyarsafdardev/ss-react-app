@@ -68,9 +68,9 @@ const OffboardingPage = ({ cohort }: { cohort: Cohort }) => {
   };
 
   const handleSurveyModalCompleted = () => {
-    setHasCompletedFeedback(true);
     dispatch(updateSessionFeedbackStatus(cohort.id, lastSession?.id || ''));
     dispatch(updateSessionModalState(lastSession?.id || ''));
+    cohort?.code === 'AAB' ? handleSurveyModalClose() : setHasCompletedFeedback(true);
   };
 
   return (
