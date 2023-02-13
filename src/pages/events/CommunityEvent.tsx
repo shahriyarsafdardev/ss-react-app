@@ -73,11 +73,12 @@ export default function CommuityEvent() {
 
   const CalendarEvent = {
     name: event?.name,
-    description: event?.description,
+    description: `${event?.description}<br/>[url]${pageURL()}[/url]`,
     startDate,
     endDate,
     startTime,
     endTime,
+    location: `${pageURL()}`,
     options: ['Apple', 'Google', 'iCal', 'Microsoft365', 'Outlook.com', 'Yahoo'],
     timeZone: 'America/Los_Angeles',
     iCalFileName: event?.name
