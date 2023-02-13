@@ -58,9 +58,7 @@ export default function App() {
     setSession(accessToken);
     axios.get('/cohorts.json').then((res) => {
       if (res.data.cohorts.length === 0) {
-        if (window.location.pathname.split('/')[1] !== 'events') {
-          navigate('/all-courses');
-        }
+        window.location.pathname === '/' && navigate('/all-courses');
       } else {
         dispatch(setCohorts(res.data.cohorts));
       }
