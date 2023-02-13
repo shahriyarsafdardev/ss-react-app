@@ -31,6 +31,11 @@ export default function RedirectToCohort() {
         (cohort) => currentDate <= new Date(cohort.start_date)
       );
 
+      const ongoingCohort = sortedCohorts.find(
+        (cohort) =>
+          currentDate >= new Date(cohort.start_date) && currentDate <= new Date(cohort.end_date)
+      );
+
       if (typeof upcomingCohort == 'undefined') {
         upcomingCohort = sortedCohorts[sortedCohorts.length - 1];
       }
@@ -40,7 +45,9 @@ export default function RedirectToCohort() {
           ? `/cohorts/${upcomingCohort.id}/peers`
           : `/cohorts/${upcomingCohort.id}/home`;
       } else if (user.type === 'expert') {
-        navigationUrl = `/cohorts/${upcomingCohort.id}/registrations`;
+        navigationUrl = ongoingCohort?.id
+          ? `/cohorts/${ongoingCohort?.id}/registrations`
+          : `/cohorts/${upcomingCohort?.id}/registrations`;
       } else {
         navigationUrl = `/monthly-registrations`;
       }
