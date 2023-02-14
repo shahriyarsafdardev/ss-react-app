@@ -267,7 +267,7 @@ const StudentProfileModal = ({
               data-testid="linkedin-url"
             >
               {' '}
-              <Text data-testid="linkedin-text">Connect with {first_name} on LinkedIn</Text>
+              <Text data-testid="linkedin-text">See {first_name}'s profile on LinkedIn</Text>
             </Link>
           </StyledRow>
         )}
