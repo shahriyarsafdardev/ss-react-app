@@ -40,11 +40,11 @@ export default function OnboardingMatrixSelect({
 
   const TABLE_HEAD = [
     { id: 'session-outcome', label: 'Session Outcome', description: '' },
-    { id: 'effectiveness', label: 'Effectiveness', description: '(1 = novice, 5 = master)' },
+    { id: 'effectiveness', label: 'Effectiveness', description: '(0 = novice, 5 = master)' },
     {
       id: 'importance',
       label: 'Importance',
-      description: '(1 = not important, 5 = very important)'
+      description: '(0 = not important, 5 = very important)'
     }
   ];
 
@@ -60,8 +60,8 @@ export default function OnboardingMatrixSelect({
       onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
       defaultValue={answers[outcomeIndex][answerIndex]}
     >
-      {[...Array(5)].map((x, i) => (
-        <FormControlLabel control={<Radio />} value={`${i + 1}`} label={`${i + 1}`} key={i} />
+      {[...Array(6)].map((x, i) => (
+        <FormControlLabel control={<Radio />} value={`${i}`} label={`${i}`} key={i} />
       ))}
     </RadioGroup>
   );
