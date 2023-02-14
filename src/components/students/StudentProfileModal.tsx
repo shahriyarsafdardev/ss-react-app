@@ -115,6 +115,9 @@ const StudentProfileModal = ({
       modalUser
     );
 
+  const possessiveName = (name: string) =>
+    ['s', 'S'].includes(name?.[name?.length - 1]) ? `${name}'` : `${name}'s`;
+
   return (
     <Modal className="small" open={modalState} onClose={handleModalClose} id="student-modal">
       <StyledContainer>
@@ -267,7 +270,9 @@ const StudentProfileModal = ({
               data-testid="linkedin-url"
             >
               {' '}
-              <Text data-testid="linkedin-text">See {first_name}'s profile on LinkedIn</Text>
+              <Text data-testid="linkedin-text">
+                See {possessiveName(first_name)} profile on LinkedIn
+              </Text>
             </Link>
           </StyledRow>
         )}
