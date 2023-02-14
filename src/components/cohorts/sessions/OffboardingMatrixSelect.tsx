@@ -45,12 +45,12 @@ export default function OffboardingMatrixSelect({
     {
       id: 'Your-response-before-the-cohort-started',
       label: 'Your response before the cohort started',
-      description: '(1 = novice, 5 = master)'
+      description: '(0 = novice, 5 = master)'
     },
     {
       id: 'how-you-feel-now',
       label: 'How you feel now?',
-      description: '(1 = not important, 5 = very important)'
+      description: '(0 = not important, 5 = very important)'
     }
   ];
 
@@ -69,11 +69,11 @@ export default function OffboardingMatrixSelect({
         onChange={(e, value) => handleChange(outcomeIndex, answerIndex, value)}
         defaultValue={answers[outcomeIndex][answerIndex]}
       >
-        {[...Array(5)].map((x, i) => (
+        {[...Array(6)].map((x, i) => (
           <FormControlLabel
             control={<Radio />}
-            value={`${i + 1}`}
-            label={`${i + 1}`}
+            value={`${i}`}
+            label={`${i}`}
             disabled={isDisabled()}
             key={i}
           />
