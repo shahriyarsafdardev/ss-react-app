@@ -242,6 +242,17 @@ export default function CommuityEvent() {
     }
   };
 
+  const markAttendance = async (type: string) => {
+    event &&
+      (await axiosV2
+        .post(`/events/${event.id}/mark_attendance.json`, { status: type })
+        .then((res) => {
+          type === 'attended_live' &&
+            res.data.message === 'Attendance Marked!' &&
+            trackEventPageEvents('Event Page - Live Attendance Marked');
+        }));
+  };
+
   const handleAddToCalendar = (e: any) => {
     trackEventPageEvents('Event Page - "Add to your calendar" Button Selected');
     if (user?.type) {
@@ -345,6 +356,7 @@ export default function CommuityEvent() {
         <EventName
           event={event}
           isAuthenticated={isAuthenticated}
+          markAttendance={markAttendance}
           openModal={() => {
             setFormType('register');
             setModalState(true);
@@ -358,6 +370,7 @@ export default function CommuityEvent() {
                   controls={true}
                   url={event.recording_url}
                   sx={{ maxWidth: '100%' }}
+                  onStart={() => markAttendance('watched_recording')}
                   onPlay={() => trackEventPageEvents('Event Page - Recording Played')}
                 />
               </VideoPlayerWrapper>
@@ -372,6 +385,10 @@ export default function CommuityEvent() {
                 controls
                 controlsList="nodownload"
                 autoPlay={false}
+                onPlay={(e) => {
+                  markAttendance('watched_recording');
+                  trackEventPageEvents('Event Page - Recording Played');
+                }}
                 data-testid="event-recording-url"
               />
             )}

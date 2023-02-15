@@ -1,8 +1,7 @@
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Typography, Stack, Button } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import moment from 'moment';
-import useAuth from 'hooks/useAuth';
 import { Event } from '../../@types/events';
 import {
   EventHosts,
@@ -60,11 +59,13 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 const EventName = ({
   event,
   isAuthenticated,
-  openModal
+  openModal,
+  markAttendance
 }: {
   event: Event;
   isAuthenticated: boolean;
   openModal: Function;
+  markAttendance: Function;
 }) => {
   const showButton =
     moment(event?.time).subtract(30, 'minutes') <= moment() &&
@@ -72,6 +73,7 @@ const EventName = ({
 
   const handleButtonClick = () => {
     if (isAuthenticated) {
+      markAttendance('attended_live');
       window.open(event.zoom_url, '_blank');
     } else {
       openModal();
