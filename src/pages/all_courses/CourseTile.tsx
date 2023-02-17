@@ -55,10 +55,9 @@ function CourseTile({ course }: { course: any }) {
               )}`,
               p: '20px'
             }}
-            spacing={{ xs: 3, md: 1.5 }}
-            height="190px"
-            minHeight="190px"
-            justifyContent="flex-end"
+            height="170px"
+            minHeight="170px"
+            justifyContent="space-around"
           >
             <Typography variant="h4" className={classes.courseName}>
               {course.name}
@@ -115,7 +114,7 @@ function CourseTile({ course }: { course: any }) {
             )}
           </Stack>
         </>
-        <CourseTileHover handleTileClick={handleTileClick} course={course} />
+        {/* <CourseTileHover handleTileClick={handleTileClick} course={course} /> */}
       </Stack>
     </Grid>
   );
