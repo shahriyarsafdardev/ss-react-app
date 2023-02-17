@@ -7,6 +7,7 @@ import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/MainLayout';
 import SphereNavbarLayout from '../layouts/SphereNavbarLayout';
+import CourseNavbarLayout from '../layouts/CourseNavbarLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
@@ -89,7 +90,7 @@ export default function Router() {
           path: '/events',
           element: <EventsTab />
         },
-        { path: '/all-courses', element: <AllCoursesPage /> },
+        // { path: '/all-courses', element: <AllCoursesPage /> },
         { path: '/events/:eventID', element: <CommunityEvent /> },
         { path: '/suggest-course', element: <SuggestCourse /> },
         {
@@ -107,7 +108,7 @@ export default function Router() {
       ),
       children: [
         { path: '/', element: <RedirectToCohort /> },
-        { path: '/all-courses', element: <AllCoursesPage /> },
+        // { path: '/all-courses', element: <AllCoursesPage /> },
         { path: 'analytics', element: <GeneralAnalytics /> },
         {
           path: '/monthly-registrations',
@@ -306,6 +307,12 @@ export default function Router() {
     },
     {
       path: '*',
+      element: <CourseNavbarLayout />,
+      children: [{ path: '/all-courses', element: <AllCourses /> }]
+    },
+
+    {
+      path: '*',
       element: <SphereNavbarLayout />,
       children: [{ path: 'cohorts/:cohortID/public_resources', element: <PublicResources /> }]
     },
@@ -372,7 +379,7 @@ const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const CommunityEvent = Loadable(lazy(() => import('../pages/events/CommunityEvent')));
-const AllCourses = Loadable(lazy(() => import('../pages/curriculum/AllCourses')));
+const AllCourses = Loadable(lazy(() => import('../pages/all_courses/AllCourses')));
 const PathsTab = Loadable(lazy(() => import('../pages/paths/PathsTab')));
 const Messaging = Loadable(lazy(() => import('../pages/dashboard/cohorts/messaging/Messaging')));
 const Payment = Loadable(lazy(() => import('../pages/Payment')));
