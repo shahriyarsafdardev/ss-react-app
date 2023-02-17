@@ -31,7 +31,15 @@ export default function CourseFiltersSidebar({
       spacing={2}
       direction="column"
       width={{ xs: '100%', md: '293px' }}
-      sx={{ padding: '40px 30px', pr: { xs: '0px' } }}
+      sx={{
+        padding: '40px 30px',
+        position: { md: 'sticky' },
+        top: '73px',
+        maxHeight: 'calc(100vh - 75px)',
+        overflow: 'auto',
+        height: 'fit-content',
+        pr: { xs: '0px' }
+      }}
     >
       <Typography className={classes.filtersHeader}>Filters</Typography>
       <Stack direction="column" spacing={2}>

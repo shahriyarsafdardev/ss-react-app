@@ -85,7 +85,7 @@ function CourseTile({ course }: { course: any }) {
             spacing={2}
             justifyContent="space-around"
             height="inherit"
-            sx={{ p: '20px', color: '#1e293b' }}
+            sx={{ p: '20px', color: '#1e293b', backgroundColor: '#fff' }}
           >
             {course?.instructor_names && (
               <Stack direction="row" spacing={2.5} sx={{ alignItems: 'center' }}>

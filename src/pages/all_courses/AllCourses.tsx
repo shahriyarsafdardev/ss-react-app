@@ -5,9 +5,9 @@ import LoadingScreen from 'components/LoadingScreen';
 import { LoadingContainer } from 'pages/admin/Common';
 import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
-import { Stack, Box } from '@material-ui/core';
+import { Stack } from '@material-ui/core';
 import axiosV2 from 'utils/axiosV2';
-import CoursesContainer from './CoursesContainer';
+import CoursesList from './CoursesList';
 import CourseFiltersSidebar from './CourseFiltersSidebar';
 import { useStyles } from './Common';
 import SearchBar from './SearchBar';
@@ -100,19 +100,17 @@ export default function AllCourses() {
   }
 
   return (
-    <Page title="Sphere | All Courses">
-      <Stack direction="column" className={classes.page}>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={handleTextChange} />
-        <Stack direction={{ xs: 'column', md: 'row' }} className={classes.sections}>
-          <CourseFiltersSidebar
-            categories={categories}
-            subCategories={subCategories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-          <Box className={classes.courseListComponent}>
-            <CoursesContainer courses={applyFilters()} />
-          </Box>
+    <Page title="Sphere | All Courses" className={classes.page}>
+      <SearchBar searchQuery={searchQuery} setSearchQuery={handleTextChange} />
+      <Stack direction={{ xs: 'column', md: 'row' }}>
+        <CourseFiltersSidebar
+          categories={categories}
+          subCategories={subCategories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+        <Stack alignItems="center" className={classes.courseListComponent}>
+          <CoursesList courses={applyFilters()} />
         </Stack>
       </Stack>
     </Page>

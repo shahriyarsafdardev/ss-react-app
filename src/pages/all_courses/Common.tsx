@@ -29,12 +29,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: '40px 30px'
     }
   },
-  sections: {
-    maxHeight: 'calc(100vh + 229px)',
-    [theme.breakpoints.down('md')]: {
-      maxHeight: 'unset'
-    }
-  },
   coursesHeaderText: {
     fontSize: '48px',
     fontWeight: 600,
@@ -62,20 +56,18 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   courseListComponent: {
-    minHeight: '100vh',
     backgroundColor: '#082139',
     width: 'calc(100% - 293px)',
     backgroundImage: 'linear-gradient(135.12deg, #2E0055 0.07%, #000000 100.02%)',
     [theme.breakpoints.down('md')]: {
-      width: '100%',
-      height: 'unset',
-      minHeight: 'unset'
+      width: '100%'
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 'calc(100vw - 293px)'
     }
   },
   courseTile: {
     height: '100%',
-    backgroundColor: '#fff',
-    color: '#000',
     borderRadius: '8px',
     position: 'relative',
     cursor: 'pointer',
@@ -112,12 +104,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
   page: {
     paddingTop: '73px',
     width: '100%',
-    height: 'calc(100vh + 226px)',
-    overflow: 'hidden',
-    [theme.breakpoints.down('md')]: {
-      height: 'calc(100vh + 73px)',
-      overflow: 'unset'
-    }
+    minHeight: 'calc(100vh - 73px)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
   },
   chipStyle: {
     color: '#101658',
@@ -170,22 +160,19 @@ export const useStyles = makeStyles((theme: Theme) => ({
     height: 56,
     alignSelf: 'center'
   },
-  justifyMobileCenter: {
+  coursesGrid: {
     maxWidth: '1280px',
     padding: '0px 40px',
     marginTop: '10px',
     marginBottom: '40px',
+    width: '100%',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center',
       marginTop: '10px',
       marginBottom: '20px'
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '0px 30px',
-      width: '100%'
-    },
-    [theme.breakpoints.up('lg')]: {
-      width: 'calc(100vw - 293px)'
+      padding: '0px 30px'
     }
   },
   font24Headings: {
