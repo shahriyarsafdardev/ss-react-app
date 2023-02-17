@@ -114,7 +114,7 @@ function CourseTile({ course }: { course: any }) {
             )}
           </Stack>
         </>
-        {/* <CourseTileHover handleTileClick={handleTileClick} course={course} /> */}
+        <CourseTileHover handleTileClick={handleTileClick} course={course} />
       </Stack>
     </Grid>
   );
