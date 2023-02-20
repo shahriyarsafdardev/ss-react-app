@@ -109,17 +109,11 @@ function PaymentSelectionPage() {
             direction={{ xs: 'column', md: 'row' }}
             width="100%"
             spacing={3}
-            justifyContent="space-around"
+            justifyContent="center"
             alignItems={`${!isDesktop && 'center'}`}
             marginTop={`${isDesktop && '40px !important'}`}
           >
             <OneTimePaymentDetails
-              cohortID={cohortID}
-              hostName={cohort?.host_full_names}
-              price={cohort?.price}
-              enrollmentID={enrollmentID}
-            />
-            <IndividualMembershipPaymentDetails
               cohortID={cohortID}
               hostName={cohort?.host_full_names}
               price={cohort?.price}
