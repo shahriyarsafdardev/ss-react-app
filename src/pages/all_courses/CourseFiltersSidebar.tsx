@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import { Stack, Typography, Chip } from '@material-ui/core';
-import { trackEvent } from 'utils/eventTracking';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useStyles, getColor } from './Common';
 
 export default function CourseFiltersSidebar({
@@ -13,6 +14,7 @@ export default function CourseFiltersSidebar({
   selectedCategory: string;
   setSelectedCategory: Function;
 }) {
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const classes = useStyles();
 
   const handleCategories = (value: string) => {
@@ -20,7 +22,7 @@ export default function CourseFiltersSidebar({
       setSelectedCategory('');
     } else {
       setSelectedCategory(value);
-      trackEvent(null, 'All Courses Page - Filter selected', {
+      sendAnalyticsData(null, 'All Courses Page - Filter selected', {
         'Filter Name': value
       });
     }

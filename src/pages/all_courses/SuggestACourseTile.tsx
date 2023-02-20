@@ -1,9 +1,11 @@
+import { useContext } from 'react';
 import { Button, Grid, Stack, Typography } from '@material-ui/core';
 import { PATH_DASHBOARD } from 'routes/paths';
-
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { useStyles } from './Common';
 
 export default function SuggestACourseTile() {
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const classes = useStyles();
 
   return (
@@ -18,6 +20,9 @@ export default function SuggestACourseTile() {
             fullWidth
             className={classes.suggestButton}
             href={PATH_DASHBOARD.community.suggestCourse}
+            onClick={() =>
+              sendAnalyticsData(null, 'All Courses Page - Suggest a Course Tile - Selected')
+            }
           >
             Suggest a Course
           </Button>

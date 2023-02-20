@@ -1,7 +1,7 @@
 import { Box, Stack, styled, Button, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { memo, useCallback, useMemo } from 'react';
-import { trackEvent } from 'utils/eventTracking';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
+import { memo, useCallback, useMemo, useContext } from 'react';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   headerContainer: {
@@ -249,12 +249,10 @@ export const CourseTileHover = memo(
       () => (!course?.registration_page_released ? 'Join the waitlist' : 'Learn more'),
       [course]
     );
+    const { sendAnalyticsData } = useContext(AnalyticsContext);
 
     const handleClick = useCallback(() => {
-      trackEvent(course, `All Courses Page - Course "${buttonText}" button clicked`, {
-        'Course Name': course?.name,
-        'Course ID': course?.id
-      });
+      sendAnalyticsData(course, `All Courses Page - Course "${buttonText}" button clicked`, {});
       handleTileClick();
     }, [course, buttonText, handleTileClick]);
 

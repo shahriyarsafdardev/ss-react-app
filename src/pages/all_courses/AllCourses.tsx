@@ -7,6 +7,7 @@ import useAuth from 'hooks/useAuth';
 import { trackEvent } from 'utils/eventTracking';
 import { Stack } from '@material-ui/core';
 import axiosV2 from 'utils/axiosV2';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import CoursesList from './CoursesList';
 import CourseFiltersSidebar from './CourseFiltersSidebar';
 import { useStyles } from './Common';
@@ -34,7 +35,7 @@ export default function AllCourses() {
     };
     getCourses();
     setSelectedCategory(categoryParam);
-    trackEvent(null, 'All Courses Page - Page Loaded');
+    sendAnalyticsData(null, 'All Courses Page - Page Loaded');
   }, []);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function AllCourses() {
     if (query) {
       const newTimer = setTimeout(
         async () =>
-          trackEvent(null, 'Courses Page - Search Query', {
+          sendAnalyticsData(null, 'All Courses Page - Search Query', {
             'Search Query': query,
             'Page URL': window.location.href
           }),
@@ -71,6 +72,9 @@ export default function AllCourses() {
     }
     window.history.pushState(null, '', pageURL.toString());
   }, [selectedCategory]);
+
+  const sendAnalyticsData = (course: any | null, eventName: string, eventData?: any) =>
+    trackEvent(course, eventName, eventData);
 
   const applyFilters = useCallback(() => {
     let filteredCourses: any = courses;
@@ -101,18 +105,20 @@ export default function AllCourses() {
 
   return (
     <Page title="Sphere | All Courses" className={classes.page}>
-      <SearchBar searchQuery={searchQuery} setSearchQuery={handleTextChange} />
-      <Stack direction={{ xs: 'column', md: 'row' }}>
-        <CourseFiltersSidebar
-          categories={categories}
-          subCategories={subCategories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
-        <Stack alignItems="center" className={classes.courseListComponent}>
-          <CoursesList courses={applyFilters()} />
+      <AnalyticsContext.Provider value={{ sendAnalyticsData }}>
+        <SearchBar searchQuery={searchQuery} setSearchQuery={handleTextChange} />
+        <Stack direction={{ xs: 'column', md: 'row' }}>
+          <CourseFiltersSidebar
+            categories={categories}
+            subCategories={subCategories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+          <Stack alignItems="center" className={classes.courseListComponent}>
+            <CoursesList courses={applyFilters()} />
+          </Stack>
         </Stack>
-      </Stack>
+      </AnalyticsContext.Provider>
     </Page>
   );
 }

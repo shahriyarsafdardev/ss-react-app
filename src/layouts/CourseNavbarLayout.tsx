@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { trackEvent } from 'utils/eventTracking';
 // material
 import { AppBar, Button, Stack, Link, MenuItem, IconButton } from '@material-ui/core';
 import { styled, alpha } from '@material-ui/core/styles';
@@ -26,6 +27,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 // ----------------------------------------------------------------------
 
+const sendAnalyticsData = (tabSelected: string) =>
+  trackEvent(null, 'All Courses Page - Navbar Tab Selected', { 'Tab Name': tabSelected });
+
 export default function CourseNavbarLayout() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -36,16 +40,31 @@ export default function CourseNavbarLayout() {
           <img src="/static/sphere_with_logo.svg" alt="logo" width="150px" />
         </RouterLink>
         <Stack sx={{ display: { xs: 'none', md: 'block' } }} direction="row" spacing={3}>
-          <StyledButton variant="text" size="large" href="/">
+          <StyledButton
+            variant="text"
+            size="large"
+            href="/"
+            onClick={() => sendAnalyticsData('My Courses')}
+          >
             My Courses
           </StyledButton>
-          <StyledButton variant="text" size="large" href="/events">
+          <StyledButton
+            variant="text"
+            size="large"
+            href="/events"
+            onClick={() => sendAnalyticsData('Events')}
+          >
             Events
           </StyledButton>
-          <Button size="large" variant="text">
+          <Button size="large" variant="text" onClick={() => sendAnalyticsData('All Courses')}>
             All Courses
           </Button>
-          <StyledButton variant="text" size="large" href="/contact-us">
+          <StyledButton
+            variant="text"
+            size="large"
+            href="/contact-us"
+            onClick={() => sendAnalyticsData('Contact Us')}
+          >
             Contact us
           </StyledButton>
         </Stack>
@@ -57,16 +76,24 @@ export default function CourseNavbarLayout() {
           anchorEl={menuRef.current}
         >
           <MenuItem>
-            <Link href="/">My Courses</Link>
+            <Link onClick={() => sendAnalyticsData('My Courses')} href="/">
+              My Courses
+            </Link>
           </MenuItem>
           <MenuItem>
-            <Link href="/events">Events</Link>
+            <Link onClick={() => sendAnalyticsData('Events')} href="/events">
+              Events
+            </Link>
           </MenuItem>
           <MenuItem>
-            <Link sx={{ fontWeight: 700 }}>All Courses</Link>
+            <Link onClick={() => sendAnalyticsData('All Courses')} sx={{ fontWeight: 700 }}>
+              All Courses
+            </Link>
           </MenuItem>
           <MenuItem>
-            <Link href="/contact-us">Contact us</Link>
+            <Link onClick={() => sendAnalyticsData('Contact Us')} href="/contact-us">
+              Contact us
+            </Link>
           </MenuItem>
         </MenuPopover>
         <IconButton

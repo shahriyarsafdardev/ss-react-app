@@ -1,11 +1,12 @@
 import { Grid, Stack, Typography, Chip, Avatar } from '@material-ui/core';
-import { memo, useCallback } from 'react';
-import { trackEvent } from 'utils/eventTracking';
+import { memo, useCallback, useContext } from 'react';
+import { AnalyticsContext } from 'contexts/AnalyticsContext';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
 import { CourseTileHover, useStyles, getColor } from './Common';
 
 function CourseTile({ course }: { course: any }) {
+  const { sendAnalyticsData } = useContext(AnalyticsContext);
   const classes = useStyles();
 
   let startTime: any = {};
@@ -20,20 +21,14 @@ function CourseTile({ course }: { course: any }) {
     let timeDiff = endTime - startTime;
     timeDiff /= 1000;
 
-    const hoverTime = Math.round(timeDiff % 60);
+    const hoverTime = Math.round(timeDiff);
     if (hoverTime >= 2) {
-      trackEvent(course, 'All Courses Page - Course Tile - Hover', {
-        'Course Name': course?.name,
-        'Course ID': course?.id
-      });
+      sendAnalyticsData(course, 'All Courses Page - Course Tile - Hover', {});
     }
   }
 
   const handleTileClick = useCallback(() => {
-    trackEvent(course, 'All Courses Page - Course Tile - Selected', {
-      'Course Name': course?.name,
-      'Course ID': course?.id
-    });
+    sendAnalyticsData(course, 'All Courses Page - Course Tile - Selected', {});
     const url = course?.registration_page_released
       ? course?.registration_page_url
       : `/registration/personal-details?cohort_id=${course?.cohort_id}`;
