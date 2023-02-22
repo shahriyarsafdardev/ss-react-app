@@ -3,6 +3,7 @@ import { useSnackbar } from 'notistack5';
 import { useRef, useState } from 'react';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import roundPeople from '@iconify/icons-ic/baseline-people';
+import bookFill from '@iconify/icons-eva/book-fill';
 
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -25,14 +26,19 @@ import MenuPopover from '../../components/MenuPopover';
 
 const MENU_OPTIONS = [
   {
-    label: 'Settings',
-    icon: settings2Fill,
-    linkTo: PATH_DASHBOARD.user.account
+    label: 'My Courses',
+    icon: bookFill,
+    linkTo: PATH_DASHBOARD.root
   },
   {
     label: 'Balance',
     icon: roundPeople,
     linkTo: PATH_DASHBOARD.user.referrals
+  },
+  {
+    label: 'Settings',
+    icon: settings2Fill,
+    linkTo: PATH_DASHBOARD.user.account
   }
 ];
 
@@ -44,7 +50,7 @@ const StyledImage = styled(LazyLoadImage)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({ publicNavbar }: { publicNavbar?: boolean }) {
   const navigate = useNavigate();
   const anchorRef = useRef(null);
   const { user, logout } = useAuth();
@@ -144,6 +150,9 @@ export default function AccountPopover() {
                 </MenuItem>
               )
             );
+          }
+          if (option.label === 'My Courses' && !publicNavbar) {
+            return <></>;
           }
           return (
             <MenuItem

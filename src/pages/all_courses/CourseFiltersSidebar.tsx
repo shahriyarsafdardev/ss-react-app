@@ -40,7 +40,8 @@ export default function CourseFiltersSidebar({
         maxHeight: 'calc(100vh - 75px)',
         overflow: 'auto',
         height: 'fit-content',
-        pr: { xs: '0px' }
+        pr: { xs: '0px' },
+        boxShadow: '0 0 2px 0 rgb(145 158 171 / 0.24), 0 16px 32px -4px rgb(145 158 171 / 0.24)'
       }}
     >
       <Typography className={classes.filtersHeader}>Filters</Typography>
