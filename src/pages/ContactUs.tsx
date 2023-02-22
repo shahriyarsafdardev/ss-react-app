@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Container, Grid, Box, Typography, Button } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import useSettings from 'hooks/useSettings';
-import useAuth from 'hooks/useAuth';
 import BookDemoBanner from 'components/BookDemoBanner';
 import Page from '../components/Page';
 import { StudentProfileModal, StudentProfileCard } from '../components/students';
 import { RootState, useSelector } from '../redux/store';
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-  marginBottom: '15px',
+  paddingBottom: '15px',
   [theme.breakpoints.down('sm')]: {
     display: 'block'
   }
@@ -20,9 +19,6 @@ export default function ContactUs() {
   const [modalState, modalHandler] = useState({});
   const [cohort, setCohort] = useState({});
   const [displayChatLink, setDisplayChatLink] = useState(false);
-  const { user, updateProfile, isAuthenticated } = useAuth();
-  const newUser: any = { ...user };
-  const { mode } = useSelector((state: RootState) => state.instructorView);
 
   const cohorts = useSelector((state: RootState) => state?.cohort?.cohorts);
   useEffect(() => {
@@ -33,15 +29,6 @@ export default function ContactUs() {
       }
     });
   }, []);
-
-  const displayWalkthrough = () => {
-    updateProfile({ ...newUser, new_instructor: true });
-  };
-
-  const StyledBox = styled(Box)(() => ({
-    display: 'flex',
-    justifyContent: 'space-between'
-  }));
 
   const contactInfoDetails = [
     {
@@ -175,13 +162,6 @@ export default function ContactUs() {
   return (
     <Page title="Sphere | Contact Us" sx={{ backgroundColor: '#F8FAFC', height: '100%' }}>
       <Container maxWidth={themeStretch ? false : 'lg'} sx={{ paddingTop: '30px' }}>
-        <StyledBox>
-          {isAuthenticated && mode === 'Instructor' && (
-            <Button variant="contained" size="large" onClick={() => displayWalkthrough()}>
-              Walkthrough
-            </Button>
-          )}
-        </StyledBox>
         <BookDemoBanner />
         <StudentProfileModal
           modalState={Object.keys(modalState).length > 0}
