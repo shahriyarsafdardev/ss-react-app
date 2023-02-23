@@ -6,6 +6,7 @@ import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
+import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
   Link,
@@ -20,6 +21,7 @@ import { LoadingButton } from '@material-ui/lab';
 // routes
 import { GENERIC_EVENTS, ONBOARDING_EVENTS, trackOnboardingEvent } from 'utils/amplitude';
 // hooks
+import { PATH_AUTH } from 'routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
@@ -133,6 +135,9 @@ export default function ModalLoginForm({ setFormType }: { setFormType: Function 
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
+            <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
+              Forgot password?
+            </Link>
           </Stack>
           <LoadingButton
             data-testid="loginBtn"
