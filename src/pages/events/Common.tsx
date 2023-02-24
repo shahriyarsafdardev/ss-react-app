@@ -326,7 +326,7 @@ export const ModalForm = ({
       <RegisterForm
         setFormType={setFormType}
         heading="Looks like you’re not logged into Sphere!"
-        subHeading="Please create an account or log in to Continue."
+        subHeading="Please create an account or log in to continue."
       />
     );
   }
@@ -339,7 +339,7 @@ export const ModalForm = ({
           width="50px"
           height="50px"
         />
-        <Stack alignItems="center" spacing={1}>
+        <Stack alignItems="center" textAlign="center" spacing={1}>
           <ModalText>Your Sphere account has been created</ModalText>
           <Typography sx={{ fontWeight: 400 }}>
             You now have access to Sphere’s community events and recordings.

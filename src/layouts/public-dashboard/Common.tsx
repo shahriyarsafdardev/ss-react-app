@@ -40,7 +40,7 @@ export const LoginModal = ({
       }}
       zIndex={1400}
     >
-      <Card sx={{ p: { xs: 3, md: 10 }, height: 1, overflow: 'visible' }}>
+      <Card sx={{ px: { xs: 3, md: 10 }, py: { xs: 6, md: 10 }, height: 1, overflow: 'visible' }}>
         {step === 'login' && <ModalLoginForm setFormType={() => setStep('register')} />}
         {step === 'register' &&
           (isRegistered ? (
