@@ -16,23 +16,16 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import moment from 'moment';
 import { Modal } from 'components/animate';
 import { RegisterForm } from 'components/authentication/register';
-import { PATH_AUTH } from 'routes/paths';
 import { trackEvent } from 'utils/eventTracking';
 import { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import { ModalLoginForm } from 'components/authentication/login';
 import { EventHost } from '../../@types/events';
 
 export const CALENDAR = '🗓️';
 export const LOCK = '🔒';
 export const PUBLIC = '🌎';
 export const PLATEFORM = '📍';
-
-export type Event = {
-  id: string;
-  name: string;
-  time: string;
-  description: string;
-};
 
 export const useStyles = makeStyles((theme: Theme) => ({
   oneLineText: {
@@ -144,6 +137,25 @@ export const SectionTitle = styled(Typography)(({ theme }) => ({
   fontSize: '24px'
 }));
 
+export const PrompContainer = styled(Stack)(({ theme }) => ({
+  width: 'calc(100% - 280px) !important',
+  position: 'absolute',
+  height: '-webkit-fill-available',
+  backdropFilter: 'blur(10px)',
+  marginTop: '-24px',
+  zIndex: 150,
+  backgroundSize: 'cover',
+  [theme.breakpoints.down('lg')]: {
+    width: '100% !important'
+  },
+  [theme.breakpoints.down('sm')]: {
+    overflow: 'auto',
+    width: '100% !important',
+    paddingBottom: '50px',
+    paddingTop: '180px'
+  }
+}));
+
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   backgroundColor: 'rgba(225, 228, 231, 0.3)',
   padding: '10px 18px',
@@ -178,7 +190,14 @@ export const getLocalTimeZone = () =>
     .match(/\b(\w)/g)
     ?.join('');
 
-export const formatTime = (eventTime: string) => moment(eventTime).format('MMM D, YYYY @ h:mm a z');
+export const formatTime = (startTime: string, endTime: string) => {
+  if (!startTime || !endTime) {
+    return 'Time TBD';
+  }
+  const start = moment(startTime);
+  const end = moment(endTime);
+  return `${start.format('MMM D, YYYY @ h:mm a')} - ${end.format('h:mm a')}`;
+};
 
 export const getAccessText = (accessType: string) => {
   if (accessType === 'public') {
@@ -226,8 +245,8 @@ export const communityEventProperties = (event: any) => ({
   'Event Type': eventType(event?.access_type),
   'Event Title': event.name,
   'Event Hosts': JSON.stringify(event.hosts.map((host: any) => host?.name)),
-  'Event Date': new Date(event.time),
-  'Event Time': new Date(event.time).toLocaleTimeString(),
+  'Event Date': new Date(event.start_time),
+  'Event Time': new Date(event.start_time).toLocaleTimeString(),
   'Event Permissions': event.access_type,
   'Event Location': event.location
 });
@@ -246,7 +265,7 @@ export const additionalCommunityEventProperties = (event: any) => {
   let hoursBeforeEvent = null;
   let hoursAfterEvent = null;
   const currentTime = new Date();
-  const eventTime = new Date(event.time);
+  const eventTime = new Date(event.start_time);
   if (currentTime > eventTime) {
     hoursAfterEvent = Math.floor((currentTime.getTime() - eventTime.getTime()) / 36e5);
   } else {
@@ -298,24 +317,34 @@ export const ModalForm = ({
     trackModalEvents(`All Events Page - ${formType.toUpperCase()} only modal - Opened`);
   }, []);
 
+  if (formType === 'login') {
+    return <ModalLoginForm setFormType={() => setFormType('register')} />;
+  }
+
   if (formType === 'register') {
     return (
       <RegisterForm
         setFormType={setFormType}
         heading="Looks like you’re not logged into Sphere!"
-        subHeading="Please create an account or log in to add this event to your calendar."
-        buttonText="Register"
+        subHeading="Please create an account or log in to Continue."
       />
     );
   }
   if (formType === 'registrationSuccess') {
     return (
-      <Stack textAlign="center" spacing={4}>
-        <ModalText>Your information has been saved!</ModalText>
-        <ModalText>
-          Now, you can add Sphere’s events to your calendar and share them with friends or
-          colleagues.
-        </ModalText>
+      <Stack alignItems="center" spacing={6}>
+        <img
+          src="https://sphere-public.s3.eu-west-2.amazonaws.com/Vector.svg"
+          alt="check"
+          width="50px"
+          height="50px"
+        />
+        <Stack alignItems="center" spacing={1}>
+          <ModalText>Your Sphere account has been created</ModalText>
+          <Typography sx={{ fontWeight: 400 }}>
+            You now have access to Sphere’s community events and recordings.
+          </Typography>
+        </Stack>
         <StyledButton variant="contained" onClick={() => registrationSuccess()}>
           Continue
         </StyledButton>
@@ -348,13 +377,12 @@ export const ModalForm = ({
           >
             Are you a Sphere alum?&nbsp;
             <Link
-              component={RouterLink}
               variant="subtitle2"
-              to={PATH_AUTH.login}
-              sx={{ textDecoration: 'underline' }}
-              onClick={() =>
-                trackModalEvents('All Events Page - Alumni only modal - Sign In Link Selected')
-              }
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              onClick={() => {
+                setFormType('login');
+                trackModalEvents('All Events Page - Alumni only modal - Sign In Link Selected');
+              }}
             >
               Log in here
             </Link>
@@ -404,13 +432,12 @@ export const ModalForm = ({
           >
             Are you enrolled in this cohort?&nbsp;
             <Link
-              component={RouterLink}
               variant="subtitle2"
-              to={PATH_AUTH.login}
-              sx={{ textDecoration: 'underline' }}
-              onClick={() =>
-                trackModalEvents('All Events Page - Learners only modal - Sign In Link Selected')
-              }
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              onClick={() => {
+                setFormType('login');
+                trackModalEvents('All Events Page - Learners only modal - Sign In Link Selected');
+              }}
             >
               Log in here
             </Link>

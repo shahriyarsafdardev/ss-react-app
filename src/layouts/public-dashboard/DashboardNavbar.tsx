@@ -2,8 +2,9 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { Box, Button, IconButton } from '@material-ui/core';
+import { Box, IconButton, useMediaQuery } from '@material-ui/core';
 import { HeadText, NavbarRootStyle, ToolbarStyle } from 'layouts/Common';
+import { useTheme } from '@material-ui/core/styles';
 // hooks
 import { useEffect, useState } from 'react';
 import useAuth from 'hooks/useAuth';
@@ -28,10 +29,13 @@ export default function DashboardNavbar({
   const [currentTab, setCurrentTab] = useState<string | null>(null);
   const paths = useSelector((state: RootState) => state?.path?.paths);
   const pathSlugs = paths.map((path) => path.slug);
-  const visibleHeaders = [...pathSlugs, 'messaging', 'events', 'contact-us', 'all-courses'];
+  const visibleHeaders = [...pathSlugs, 'messaging', 'contact-us', 'all-courses'];
   const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
   const pathTabs = window.location.pathname.split('/');
-  const displayEventsNanbar = communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const displayEventsNavbar =
+    !isMobile && communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -46,6 +50,8 @@ export default function DashboardNavbar({
         } else {
           setCurrentTab(section);
         }
+      } else if (pathTabs[1] === 'events') {
+        setCurrentTab('Events');
       } else {
         setCurrentTab(null);
       }
@@ -66,7 +72,7 @@ export default function DashboardNavbar({
         >
           <ToolbarStyle
             sx={{
-              ...(displayEventsNanbar && {
+              ...(displayEventsNavbar && {
                 padding: '0 40px 0 0 !important'
               })
             }}
@@ -77,9 +83,9 @@ export default function DashboardNavbar({
               </IconButton>
             </MHidden>
 
-            {displayEventsNanbar && <EventNavbar eventName={communityEvent.name} />}
+            {displayEventsNavbar && <EventNavbar eventName={communityEvent.name} />}
 
-            {currentTab && (
+            {!displayEventsNavbar && currentTab && (
               <HeadText
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}

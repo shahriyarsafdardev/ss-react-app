@@ -68,8 +68,8 @@ const EventName = ({
   markAttendance: Function;
 }) => {
   const showButton =
-    moment(event?.time).subtract(30, 'minutes') <= moment() &&
-    moment() <= moment(event?.time).add(2, 'hours');
+    moment(event?.start_time).subtract(30, 'minutes') <= moment() &&
+    moment() <= moment(event?.end_time);
 
   const handleButtonClick = () => {
     if (isAuthenticated) {
@@ -105,7 +105,8 @@ const EventName = ({
             <Stack direction="row" spacing={2} alignItems="left">
               {CALENDAR}&nbsp;&nbsp;
               <DeatilsText sx={{ fontWeight: 700 }}>{`${formatTime(
-                event?.time
+                event?.start_time,
+                event?.end_time
               )} ${getLocalTimeZone()}`}</DeatilsText>
             </Stack>
             <Stack

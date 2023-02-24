@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button, Card, Stack, styled } from '@material-ui/core';
-import { ModalRegisterForm } from 'components/authentication/register';
+import { Button, Card, Stack, styled, Typography } from '@material-ui/core';
+import { RegisterForm } from 'components/authentication/register';
 import { ModalLoginForm } from 'components/authentication/login';
 import useAuth from 'hooks/useAuth';
 import { ModalText, StyledModal } from 'pages/events/Common';
@@ -26,6 +26,11 @@ export const LoginModal = ({
     setIsAuthenticated();
   };
 
+  const handleFormType = (type: string) => {
+    type === 'login' && setStep('login');
+    type === 'registrationSuccess' && setIsRegistered(true);
+  };
+
   return (
     <StyledModal
       open={loginModalState}
@@ -39,12 +44,20 @@ export const LoginModal = ({
         {step === 'login' && <ModalLoginForm setFormType={() => setStep('register')} />}
         {step === 'register' &&
           (isRegistered ? (
-            <Stack textAlign="center" spacing={4}>
-              <ModalText>Your information has been saved!</ModalText>
-              <ModalText>
-                Now, you can add Sphere’s events to your calendar and share them with friends or
-                colleagues.
-              </ModalText>
+            <Stack alignItems="center" spacing={6}>
+              <img
+                src="https://sphere-public.s3.eu-west-2.amazonaws.com/Vector.svg"
+                alt="check"
+                width="50px"
+                height="50px"
+              />
+              <Stack alignItems="center" spacing={1}>
+                <ModalText>Your Sphere account has been created</ModalText>
+                <Typography sx={{ fontWeight: 400 }}>
+                  You now have access to Sphere’s community events and recordings.
+                </Typography>
+              </Stack>
+
               <Button
                 variant="contained"
                 sx={{ width: '100%', height: '46px', borderRadius: '30px' }}
@@ -54,10 +67,7 @@ export const LoginModal = ({
               </Button>
             </Stack>
           ) : (
-            <ModalRegisterForm
-              setFormType={() => setStep('login')}
-              setIsRegistered={() => setIsRegistered(true)}
-            />
+            <RegisterForm setFormType={handleFormType} />
           ))}
       </Card>
     </StyledModal>

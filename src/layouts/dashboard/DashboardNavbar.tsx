@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import { RootState, useSelector } from 'redux/store';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
-import { Box, Stack, IconButton } from '@material-ui/core';
+import { Box, Stack, IconButton, useMediaQuery } from '@material-ui/core';
 // hooks
 import { useEffect, useState } from 'react';
 import useAuth from 'hooks/useAuth';
@@ -14,6 +14,7 @@ import {
   NavbarRootStyle,
   ToolbarStyle
 } from 'layouts/Common';
+import { useTheme } from '@material-ui/core/styles';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import { MHidden } from '../../components/@material-extend';
@@ -62,7 +63,10 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
   const communityEvent = useSelector((state: RootState) => state?.event.communityEvent);
-  const displayEventsNanbar = communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const displayEventsNavbar =
+    !isMobile && communityEvent.id !== '' && pathTabs[1] === 'events' && !!pathTabs[2];
 
   useEffect(() => {
     const tab = window.location.href.split('/');
@@ -103,6 +107,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         } else {
           setCurrentTab(section);
         }
+      } else if (pathTabs[1] === 'events') {
+        setCurrentTab('Events');
       } else {
         setCurrentTab(null);
       }
@@ -131,7 +137,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         >
           <ToolbarStyle
             sx={{
-              ...(displayEventsNanbar && {
+              ...(displayEventsNavbar && {
                 padding: '0 40px 0 0 !important'
               })
             }}
@@ -141,10 +147,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 <Icon icon={menu2Fill} />
               </IconButton>
             </MHidden>
-
-            {displayEventsNanbar && <EventNavbar eventName={communityEvent.name} />}
-
-            {currentTab && (
+            {displayEventsNavbar && <EventNavbar eventName={communityEvent.name} />}
+            {!displayEventsNavbar && currentTab && (
               <HeadText
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
@@ -153,9 +157,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 {currentTab}
               </HeadText>
             )}
-
             <Box sx={{ flexGrow: 1 }} />
-
             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
               <ZoopAppAnnouncementPopover />
               <NotificationsPopover />

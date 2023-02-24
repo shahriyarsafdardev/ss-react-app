@@ -21,7 +21,7 @@ function UpcomingEvents({
   handleShowMore: Function;
 }) {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const [more, setMore] = useState(false);
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const [modalState, setModalState] = useState(false);
@@ -33,6 +33,12 @@ function UpcomingEvents({
     }
     setMore(!more);
     trackEvent(null, 'All Events Page - Show More Events');
+  };
+
+  const registrationSuccess = () => {
+    trackEvent(null, 'All Events Page - Login modal - "Continue" Selected');
+    setModalState(false);
+    setIsAuthenticated();
   };
 
   const handleEventClick = (event: Event) => {
@@ -63,6 +69,11 @@ function UpcomingEvents({
               `All Events Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
               communityEventProperties(eventDetails)
             );
+          } else if (formType === 'register') {
+            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+          } else if (formType === 'registrationSuccess') {
+            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+            setIsAuthenticated();
           }
           setEventDetails({});
           setFormType('');
@@ -76,7 +87,7 @@ function UpcomingEvents({
             eventDetails={eventDetails}
             isAuthenticated={isAuthenticated}
             setFormType={setFormType}
-            registrationSuccess={() => {}}
+            registrationSuccess={registrationSuccess}
           />
         </Card>
       </StyledModal>

@@ -4,8 +4,15 @@ import { ROOT_URL } from '../routes/paths';
 // ----------------------------------------------------------------------
 const ROOT_V2_URL = ROOT_URL.replace('v1', 'v2');
 
+const getToken = () => window.localStorage.getItem('accessToken');
+
 const axiosInstance = axios.create({
   baseURL: ROOT_V2_URL
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${getToken()}`;
+  return config;
 });
 
 axiosInstance.interceptors.response.use(

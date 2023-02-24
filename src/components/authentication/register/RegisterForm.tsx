@@ -21,9 +21,7 @@ import {
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
-import { Link as RouterLink } from 'react-router-dom';
 import { trackEvent } from 'utils/eventTracking';
-import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 //
@@ -51,13 +49,11 @@ type CompanyData = {
 export default function RegisterForm({
   setFormType,
   heading,
-  subHeading,
-  buttonText
+  subHeading
 }: {
   setFormType: Function;
-  heading: string;
-  subHeading: string;
-  buttonText: string;
+  heading?: string;
+  subHeading?: string;
 }) {
   const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
@@ -138,8 +134,8 @@ export default function RegisterForm({
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={4} alignItems="center">
           <div style={{ textAlign: 'center' }}>
-            <Typography variant="h5">{heading}</Typography>
-            <Typography variant="h5">{subHeading}</Typography>
+            <Typography variant="h5">{heading || 'Create a free Sphere account'}</Typography>
+            {subHeading && <Typography variant="h5">{subHeading}</Typography>}
           </div>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
           <Stack spacing={2} width="100%">
@@ -227,7 +223,7 @@ export default function RegisterForm({
             disabled={!isValid}
             sx={{ borderRadius: '35px' }}
           >
-            {buttonText}
+            Register
           </LoadingButton>
           <Stack
             direction={{ xs: 'column', md: 'row' }}
@@ -238,11 +234,12 @@ export default function RegisterForm({
           >
             Already have an account?&nbsp;
             <Link
-              component={RouterLink}
               variant="subtitle2"
-              to={PATH_AUTH.login}
-              sx={{ textDecoration: 'underline' }}
-              onClick={() => trackEvent(null, 'Event Page - Login Modal - Sign In Link Selected')}
+              sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+              onClick={() => {
+                setFormType('login');
+                trackEvent(null, 'Event Page - Login Modal - Sign In Link Selected');
+              }}
             >
               Log in here
             </Link>

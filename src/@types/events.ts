@@ -2,7 +2,8 @@ export type Event = {
   id: string;
   name: string;
   description: string;
-  time: string;
+  start_time: string;
+  end_time: string;
   location: string;
   thumbnail_url: string;
   recording_url: string;

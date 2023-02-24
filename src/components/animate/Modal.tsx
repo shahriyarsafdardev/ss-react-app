@@ -61,6 +61,7 @@ const Cross = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   marginBottom: 10,
+  cursor: 'pointer',
   marginLeft: 'auto',
   [theme.breakpoints.down('sm')]: {
     dispay: 'flex'

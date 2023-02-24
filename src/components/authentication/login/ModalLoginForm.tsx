@@ -13,9 +13,11 @@ import {
   Stack,
   Alert,
   TextField,
+  Checkbox,
   Typography,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  FormControlLabel
 } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // routes
@@ -31,6 +33,7 @@ import { MIconButton } from '../../@material-extend';
 type InitialValues = {
   email: string;
   password: string;
+  remember: boolean;
   afterSubmit?: string;
 };
 export default function ModalLoginForm({ setFormType }: { setFormType: Function }) {
@@ -48,7 +51,8 @@ export default function ModalLoginForm({ setFormType }: { setFormType: Function 
   const formik = useFormik<InitialValues>({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      remember: true
     },
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
@@ -87,7 +91,7 @@ export default function ModalLoginForm({ setFormType }: { setFormType: Function 
     }
   });
 
-  const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { values, errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -98,7 +102,7 @@ export default function ModalLoginForm({ setFormType }: { setFormType: Function 
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={4} alignItems="center">
           <div style={{ textAlign: 'center' }}>
-            <Typography variant="h5">Login to Sphere</Typography>
+            <Typography variant="h5">Log in to Sphere</Typography>
           </div>
           {errors.afterSubmit && <Alert severity={color}>{errors.afterSubmit}</Alert>}
 
@@ -135,6 +139,19 @@ export default function ModalLoginForm({ setFormType }: { setFormType: Function 
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
+          </Stack>
+          <Stack
+            width="100%"
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ my: 2 }}
+          >
+            <FormControlLabel
+              control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
+              label="Remember me"
+            />
+
             <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
               Forgot password?
             </Link>

@@ -45,12 +45,16 @@ export default function CommuityEvent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
-  const eventDate = convertToPST(event?.time);
-  const eventTime = convertToPST(event?.time);
-  const startDate = eventDate.format('YYYY-MM-DD');
-  const endDate = eventDate.add(2, 'hours').format('YYYY-MM-DD');
-  const startTime = eventTime.format('HH:mm');
-  const endTime = eventTime.add(2, 'hours').format('HH:mm');
+
+  const eventStartDate = convertToPST(event?.start_time);
+  const eventEndDate = convertToPST(event?.end_time);
+
+  const startDate = eventStartDate.format('YYYY-MM-DD');
+  const startTime = eventStartDate.format('HH:mm');
+
+  const endDate = eventEndDate.format('YYYY-MM-DD');
+  const endTime = eventEndDate.format('HH:mm');
+
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const { isAuthenticated, setIsAuthenticated, user } = useAuth();
   const navigate = useNavigate();
@@ -58,6 +62,7 @@ export default function CommuityEvent() {
   const [formType, setFormType] = useState('');
   const url = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const SHOWLOGINPROMPT = !isAuthenticated && event?.recording_url === 'login first';
 
   const urlParams = () => {
     if (isAuthenticated) {
@@ -90,6 +95,9 @@ export default function CommuityEvent() {
         .get(`/events/${eventID}.json`)
         .then((res) => {
           setEvent(res.data.event);
+          const notLoggedIn = !isAuthenticated && res.data.event?.recording_url === 'login first';
+          notLoggedIn && setFormType('register');
+          setModalState(notLoggedIn);
           setUpcomingEvents(res.data.upcoming_events);
           dispatch(setCommunityEvent(eventID, res.data.event.name));
           setLoading(false);
@@ -163,6 +171,15 @@ export default function CommuityEvent() {
     }
   }, []);
 
+  const handleLoginModal = () => {
+    setFormType('register');
+    setModalState(true);
+  };
+
+  const handleAuthCheck = () => {
+    setFormType('register');
+    setModalState(SHOWLOGINPROMPT);
+  };
   const getCaption = (media: string) =>
     `${event?.name}%0D%0A%0D%0A${
       media === 'Twitter' && event?.description && event?.description?.length > 120
@@ -204,10 +221,14 @@ export default function CommuityEvent() {
   };
 
   const handleFreeInvite = () => {
-    event?.recording_url
-      ? trackEventPageEvents('Event Page - "Share recording link" Button Selected')
-      : trackEventPageEvents('Event Page - "Share free invite" Button Selected');
-    setOpen(true);
+    if (SHOWLOGINPROMPT) {
+      handleLoginModal();
+    } else {
+      event?.recording_url
+        ? trackEventPageEvents('Event Page - "Share recording link" Button Selected')
+        : trackEventPageEvents('Event Page - "Share free invite" Button Selected');
+      setOpen(true);
+    }
   };
 
   const registerForEvent = async (e: string) => {
@@ -268,8 +289,7 @@ export default function CommuityEvent() {
         });
       });
     } else {
-      setFormType('register');
-      setModalState(true);
+      handleLoginModal();
     }
   };
 
@@ -284,7 +304,11 @@ export default function CommuityEvent() {
   return (
     <Page
       title={`Event | ${event?.name}`}
-      sx={{ maxWidth: '1200px', m: 'auto', marginTop: { xs: '20px', md: 'auto' } }}
+      sx={{
+        maxWidth: '1200px',
+        m: 'auto',
+        marginTop: '20px'
+      }}
     >
       <StyledModal
         open={modalState}
@@ -357,10 +381,7 @@ export default function CommuityEvent() {
           event={event}
           isAuthenticated={isAuthenticated}
           markAttendance={markAttendance}
-          openModal={() => {
-            setFormType('register');
-            setModalState(true);
-          }}
+          openModal={handleLoginModal}
         />
         {event.recording_url && (
           <>
@@ -370,6 +391,7 @@ export default function CommuityEvent() {
                   controls={true}
                   url={event.recording_url}
                   sx={{ maxWidth: '100%' }}
+                  onClickPreview={handleAuthCheck}
                   onStart={() => markAttendance('watched_recording')}
                   onPlay={() => trackEventPageEvents('Event Page - Recording Played')}
                 />
@@ -385,6 +407,7 @@ export default function CommuityEvent() {
                 controls
                 controlsList="nodownload"
                 autoPlay={false}
+                onClick={handleAuthCheck}
                 onPlay={(e) => {
                   markAttendance('watched_recording');
                   trackEventPageEvents('Event Page - Recording Played');

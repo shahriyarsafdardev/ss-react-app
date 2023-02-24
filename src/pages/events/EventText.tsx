@@ -7,7 +7,7 @@ export default function EventText({ event }: { event: any }) {
       <Stack direction="row" spacing={2} alignItems="baseline">
         {CALENDAR}&nbsp;&nbsp;
         <CardText>
-          {formatTime(event.time)} {getLocalTimeZone()}
+          {formatTime(event.start_time, event.end_time)} {getLocalTimeZone()}
         </CardText>
       </Stack>
       <Stack direction="row" spacing={2} alignItems="baseline" width="100%">

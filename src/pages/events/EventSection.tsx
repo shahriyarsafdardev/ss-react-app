@@ -20,7 +20,7 @@ export default function EventSection({
   handleShowMore: Function;
 }) {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
   const [more, setMore] = useState(false);
   const [eventDetails, setEventDetails] = useState<Event | any>({});
   const [modalState, setModalState] = useState(false);
@@ -32,6 +32,12 @@ export default function EventSection({
     }
     setMore(!more);
     trackEvent(null, 'All Events Page - Show More Recordings');
+  };
+
+  const registrationSuccess = () => {
+    trackEvent(null, 'All Events Page - Login modal - "Continue" Selected');
+    setModalState(false);
+    setIsAuthenticated();
   };
 
   const handleEventClick = (event: Event) => {
@@ -62,6 +68,11 @@ export default function EventSection({
               `All Events Page - ${formType.toUpperCase()} only modal - Close Button Selected`,
               communityEventProperties(eventDetails)
             );
+          } else if (formType === 'register') {
+            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+          } else if (formType === 'registrationSuccess') {
+            trackEvent(null, 'All Events Page - Login Modal - Close Button Selected');
+            setIsAuthenticated();
           }
           setEventDetails({});
           setFormType('');
@@ -75,7 +86,7 @@ export default function EventSection({
             eventDetails={eventDetails}
             isAuthenticated={isAuthenticated}
             setFormType={setFormType}
-            registrationSuccess={() => {}}
+            registrationSuccess={registrationSuccess}
           />
         </Card>
       </StyledModal>

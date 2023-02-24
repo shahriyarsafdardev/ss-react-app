@@ -1,11 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Link, Typography, Stack, useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Link, Typography, Stack } from '@material-ui/core';
 
 export default function EventNavbar({ eventName }: { eventName: string }) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   return (
     <Stack direction="row" alignItems="center" justifyContent="center">
       <Stack
@@ -20,8 +16,7 @@ export default function EventNavbar({ eventName }: { eventName: string }) {
           All Sphere Events
         </Link>
       </Stack>
-
-      {!isMobile && <Typography sx={{ color: '#071A33', px: '30px' }}>{eventName}</Typography>}
+      <Typography sx={{ color: '#071A33', px: '30px' }}>{eventName}</Typography>
     </Stack>
   );
 }
