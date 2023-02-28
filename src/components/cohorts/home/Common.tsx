@@ -37,7 +37,8 @@ export const SectionContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   '&.timeline': {
-    height: '150px',
+    minHeight: '150px',
+    height: 'auto',
     [theme.breakpoints.down('sm')]: {
       height: '310px',
       width: '95%',

@@ -20,6 +20,10 @@ const StyledSession = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   lineHeight: '130%',
   paddingTop: '5px',
+  display: '-webkit-box',
+  overflow: 'hidden',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 3,
   color: theme.palette.text.primary
 }));
 
