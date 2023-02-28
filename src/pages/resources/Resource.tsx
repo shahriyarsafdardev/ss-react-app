@@ -12,8 +12,9 @@ import useAuth from 'hooks/useAuth';
 import useSettings from 'hooks/useSettings';
 import { useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
+import { trackEvent } from 'utils/eventTracking';
 
-export const JUPYTER_SERVER_URL = 'http://ec2-3-235-230-161.compute-1.amazonaws.com:8888';
+export const JUPYTER_SERVER_URL = 'https://jupyter.getsphere.com';
 
 function Resource() {
   const { user } = useAuth();
@@ -35,6 +36,23 @@ function Resource() {
       });
   }, []);
 
+  const handleEvents = () => {
+    const iframe = document.querySelector('iframe');
+    const iframeDocument = iframe?.contentDocument || iframe?.contentWindow?.document;
+    const saveBtn = iframeDocument?.getElementById('save-notbook');
+    const cutBtn = iframeDocument?.querySelector('[title="cut selected cells"]');
+    const runBtn = iframeDocument?.querySelector('[title="run cell, select below"]');
+    saveBtn?.addEventListener('onclick', () => {
+      trackEvent(null, 'Jupyter Notebook - Save File Button Clicked');
+    });
+    cutBtn?.addEventListener('onclick', () => {
+      trackEvent(null, 'Jupyter Notebook - Cut Cell Button Clicked');
+    });
+    runBtn?.addEventListener('onclick', () => {
+      trackEvent(null, 'Jupyter Notebook - Run Notebook Button Clicked');
+    });
+  };
+
   const handleSeeMoreResources = () => {
     navigate(`/resources`);
   };
@@ -42,7 +60,7 @@ function Resource() {
   const saveNotebookInDB = (fileName: string) => {
     const { origin } = window.location;
     axios
-      .post('/resources.jon', {
+      .post('/resources/create_duplicate.json', {
         resource_id: resource?.id,
         user_id: user?.id,
         url: `${JUPYTER_SERVER_URL}/notebooks/${fileName}`
@@ -59,9 +77,8 @@ function Resource() {
       });
   };
 
-  const handleCopyNotebook = () => {
+  const saveNotebookInJupyterServer = () => {
     const fileName = `${resource?.name?.split(' ')?.join('-')}::${user?.slug}.ipynb`;
-    setIsCopying(true);
     axiosV3
       .post(`${JUPYTER_SERVER_URL}/api/contents`, {
         type: 'notebook',
@@ -80,6 +97,29 @@ function Resource() {
       .catch((error) => {
         enqueueSnackbar(error.message || 'Something went wrong!', { variant: 'error' });
       });
+  };
+
+  const handleCopyNotebook = () => {
+    setIsCopying(true);
+    const { origin } = window.location;
+    axios
+      .get('/resources/get_duplicate_resource.json', {
+        params: {
+          resource_name: resource?.name
+        }
+      })
+      .then((response) => {
+        setResource(response?.data?.resource);
+        const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
+        window.history.pushState(null, '', pageURL.toString());
+        setIsCopying(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.message || 'Something went wrong!', { variant: 'error' });
+      });
+    if (isCopying) {
+      saveNotebookInJupyterServer();
+    }
   };
 
   return (
@@ -144,7 +184,7 @@ function Resource() {
                 </LoadingButton>
               </Stack>
             )}
-            <Box>
+            <Box sx={{ position: 'relative' }}>
               {resource?.url && (
                 <iframe
                   id="notebook_iframe"
@@ -152,7 +192,12 @@ function Resource() {
                   src={resource?.url}
                   width="100%"
                   height="500px"
-                  style={{ pointerEvents: 'none' }}
+                  onLoad={handleEvents}
+                />
+              )}
+              {user?.id !== resource?.user_id && (
+                <Box
+                  sx={{ height: '100%', width: '90%', position: 'absolute', top: 0, left: '50px' }}
                 />
               )}
             </Box>
