@@ -1,9 +1,9 @@
 import { Typography, Stack, Card, Box } from '@material-ui/core';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
-import { useStyles } from './Common';
+import { DotsLoader, useStyles } from './Common';
 
 type Message = {
   role: string;
@@ -16,19 +16,21 @@ function ChatBot() {
   const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const element = document.getElementById('end-of-messages');
+    if (element) {
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messagesList?.length]);
 
   const handleMessageChange = (value: string) => {
     setMessage(value);
   };
 
-  const scrollToBottom = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollTop = element?.scrollHeight;
-    }
-  };
-
   const getMessageResponse = (newMessage: any) => {
+    setLoading(true);
     axiosV2
       .get('/chatbot.json', {
         params: {
@@ -36,8 +38,8 @@ function ChatBot() {
         }
       })
       .then((res) => {
+        setLoading(false);
         setMessagesList([...messagesList, newMessage, res?.data?.result]);
-        scrollToBottom('messages-stack');
       })
       .catch((err) => {
         enqueueSnackbar(err?.message || 'Something went wrong!', { variant: 'error' });
@@ -52,10 +54,7 @@ function ChatBot() {
     };
     setMessagesList([...messagesList, newMessage]);
     setMessage('');
-    scrollToBottom('messages-stack');
-    setTimeout(() => {
-      getMessageResponse(newMessage);
-    }, 1000);
+    getMessageResponse(newMessage);
   };
 
   const handleKeyDown = (e: any) => {
@@ -65,18 +64,8 @@ function ChatBot() {
   };
 
   return (
-    <Page
-      title="Sphere | ChatBot"
-      sx={{
-        height: '100%',
-        width: '100%',
-        backgroundImage: `url(
-          'https://sphere-public.s3.eu-west-2.amazonaws.com/chatbot-bg.svg'
-        )`,
-        backgroundSize: 'cover'
-      }}
-    >
-      <Stack className={classes.rootStack} id="messages-stack">
+    <Page title="Sphere | ChatBot" className={classes.rootPage} id="chatbot">
+      <Stack className={classes.rootStack}>
         <Typography variant="h4" sx={{ color: '#fff', textAlign: 'center' }}>
           Get personalized resources curated by Sphere’s AI Mentor
         </Typography>
@@ -93,8 +82,10 @@ function ChatBot() {
               {message.content}
             </Card>
           ))}
+          <Box id="end-of-messages" />
         </Stack>
         <Box className={classes.questionCardBox}>
+          {loading && <DotsLoader />}
           <Card className={classes.questionCard}>
             <Stack direction="row" spacing={1}>
               <img

@@ -1,14 +1,24 @@
 import { Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { ThreeDots } from 'react-loader-spinner';
 
 export const useStyles = makeStyles((theme: Theme) => ({
+  rootPage: {
+    height: '100%',
+    width: '100%',
+    backgroundImage: `url(
+          'https://sphere-public.s3.eu-west-2.amazonaws.com/chatbot-bg.png'
+        )`,
+    backgroundSize: 'cover',
+    maxHeight: '100%',
+    overflow: 'auto'
+  },
   rootStack: {
     padding: '40px',
     paddingBottom: '0px !important',
     height: '100%',
     maxWidth: '1200px',
     maxHeight: 'calc(100vh - 116px)',
-    overflow: 'auto',
     margin: '0px auto',
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
@@ -60,3 +70,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
+
+export const DotsLoader = () => (
+  <ThreeDots
+    height="30"
+    width="80"
+    radius="9"
+    color="#fff"
+    ariaLabel="three-dots-loading"
+    visible={true}
+    wrapperStyle={{ margin: '20px auto', width: 'fit-content' }}
+  />
+);
