@@ -64,7 +64,7 @@ export default function EarlyAccess() {
       <Logo src="https://sphere-public.s3.eu-west-2.amazonaws.com/sphere-white.png" alt="logo" />
       {isMember && membershipID && course ? (
         <Stack
-          className={`${classes.paymentData} ${classes.purpleBackground}`}
+          className={`${classes.successData} ${classes.purpleBackground}`}
           paddingTop={`${!isDesktop && '60px !important'}`}
           paddingBottom={`${!isDesktop && '40px !important'}`}
           spacing={3}

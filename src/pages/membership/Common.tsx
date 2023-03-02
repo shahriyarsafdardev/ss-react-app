@@ -49,12 +49,28 @@ export const useStyles = makeStyles((theme: Theme) => ({
     minHeight: '100vh',
     padding: '80px',
     [theme.breakpoints.down('lg')]: {
-      padding: '100px 60px'
+      padding: '80px 60px'
     },
     [theme.breakpoints.down('md')]: {
       padding: '60px',
       height: 'fit-content',
       minHeight: 'unset'
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '20px'
+    }
+  },
+  successData: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    minHeight: '100vh',
+    padding: '80px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '80px 60px'
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: '60px'
     },
     [theme.breakpoints.down('sm')]: {
       padding: '20px'
