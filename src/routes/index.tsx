@@ -328,6 +328,7 @@ export default function Router() {
     { path: 'registration/course-invite', element: <CourseInvite /> },
     { path: 'registration/subscription-payment', element: <SubscriptionPayment /> },
     { path: 'registration/course-payment', element: <CoursePayment /> },
+    { path: 'membership/early_access', element: <EarlyAccess /> },
     { path: 'curriculum', element: <CurriculumPage /> },
     { path: '*', element: <Navigate to="/404" replace /> },
     { path: '/auth/*', element: <Navigate to="/404" replace /> }
@@ -394,6 +395,7 @@ const PaymentSelection = Loadable(lazy(() => import('../pages/registration/Payme
 const SubscriptionPayment = Loadable(
   lazy(() => import('../pages/registration/SubscriptionPaymentPage'))
 );
+const EarlyAccess = Loadable(lazy(() => import('../pages/membership/EarlyAccess')));
 const CoursePayment = Loadable(lazy(() => import('../pages/registration/CoursePaymentPage')));
 const CurriculumPage = Loadable(lazy(() => import('../pages/curriculum/CurriculumPage')));
 const AllCoursesPage = Loadable(lazy(() => import('../pages/courses/AllCoursesPage')));
