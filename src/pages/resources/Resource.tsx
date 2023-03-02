@@ -13,6 +13,8 @@ import useSettings from 'hooks/useSettings';
 import { useNavigate } from 'react-router';
 import { LoadingButton } from '@material-ui/lab';
 import { trackEvent } from 'utils/eventTracking';
+import LoadingScreen from 'components/LoadingScreen';
+import { LoadingContainer, useStyles } from './Common';
 
 export const JUPYTER_SERVER_URL = 'https://jupyter.getsphere.com';
 
@@ -24,12 +26,17 @@ function Resource() {
   const [resource, setResource] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
   const [isCopying, setIsCopying] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     axios
       .get(`/resources/${resource_id}.json`)
       .then((res) => {
-        setResource(res.data.resource);
+        setResource(res?.data?.resource);
+        if (res?.data?.resource?.resource_type !== 'notebook' || !res?.data?.resource?.url) {
+          setLoading(true);
+        }
       })
       .catch((err) => {
         enqueueSnackbar('Something went wrong!', { variant: 'error' });
@@ -122,13 +129,19 @@ function Resource() {
     }
   };
 
+  if (loading || !resource_id) {
+    <LoadingContainer>
+      <LoadingScreen />
+    </LoadingContainer>;
+  }
+
   return (
     <>
       <Page title="Sphere | Resource">
         <Container
-          sx={{ px: '50px !important' }}
           key={resource_id}
           maxWidth={themeStretch ? false : 'xl'}
+          className={classes.rootContainer}
         >
           <Stack direction="column" width="100%" spacing={2}>
             <Button sx={{ width: 'fit-content' }} variant="text" onClick={handleSeeMoreResources}>
@@ -158,6 +171,7 @@ function Resource() {
               <Stack
                 direction={{ xs: 'column', md: 'row' }}
                 sx={{ alignItems: 'center', justifyContent: 'space-between', padding: '20px 0px' }}
+                spacing={2}
               >
                 <Stack direction="row" sx={{ alignItems: 'center' }}>
                   <Icon
@@ -195,11 +209,7 @@ function Resource() {
                   onLoad={handleEvents}
                 />
               )}
-              {user?.id !== resource?.user_id && (
-                <Box
-                  sx={{ height: '100%', width: '90%', position: 'absolute', top: 0, left: '50px' }}
-                />
-              )}
+              {user?.id !== resource?.user_id && <Box className={classes.viewOnlyBox} />}
             </Box>
           </Stack>
         </Container>
