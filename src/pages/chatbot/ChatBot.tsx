@@ -8,7 +8,7 @@ import { DotsLoader, useStyles } from './Common';
 type Message = {
   role: string;
   content: string;
-  time: Date;
+  // time: Date;
 };
 
 function ChatBot() {
@@ -34,7 +34,7 @@ function ChatBot() {
     axiosV2
       .get('/chatbot.json', {
         params: {
-          query: message
+          messages: JSON.stringify([...messagesList, newMessage])
         }
       })
       .then((res) => {
@@ -47,10 +47,14 @@ function ChatBot() {
   };
 
   const handleSendMessage = () => {
+    if (!message) {
+      enqueueSnackbar("Can't send empty message!", { variant: 'warning' });
+      return;
+    }
     const newMessage = {
       role: 'user',
-      content: message,
-      time: new Date()
+      content: message
+      // time: new Date()
     };
     setMessagesList([...messagesList, newMessage]);
     setMessage('');
