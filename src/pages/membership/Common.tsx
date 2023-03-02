@@ -53,7 +53,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down('md')]: {
       padding: '60px',
-      height: 'fit-content'
+      height: 'fit-content',
+      minHeight: 'unset'
     },
     [theme.breakpoints.down('sm')]: {
       padding: '20px'
