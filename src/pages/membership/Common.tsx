@@ -347,8 +347,8 @@ export const MembershipSurvey = ({
   const OPTIONS = [
     `Monthly live sessions with ${course.instructor_first_names}`,
     'Asynchronous resource access',
-    `An AI mentor fine-tuned on the topic of ${course.name}`,
-    `Access to the ${course.name} community`
+    `An AI mentor fine-tuned on the topic of ${course.name} Sphere`,
+    `Access to the ${course.name} Sphere community`
   ];
 
   const handleSelect = (value: string) => {
@@ -388,7 +388,8 @@ export const MembershipSurvey = ({
     >
       <Stack spacing={1} textAlign="center" width="100%">
         <Typography variant="h4" className={`${classes.heading} `}>
-          You have successfully joined the waitlist for {course?.instructor_names} {course?.name}!
+          You have successfully joined the waitlist for {course?.instructor_names} {course?.name}{' '}
+          Sphere!
         </Typography>
         <Typography sx={{ fontSize: '16px' }}>
           You will be notified one week before it launches.

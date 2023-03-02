@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { useSnackbar } from 'notistack5';
 import { useLocation } from 'react-router-dom';
+import { trackEvent } from 'utils/eventTracking';
 import { Stack, Box, useTheme, useMediaQuery } from '@material-ui/core';
 import axiosV2 from 'utils/axiosV2';
 import Page from 'components/Page';
@@ -28,10 +29,16 @@ export default function EarlyAccess() {
   const [interests, setInterests] = useState<string[]>([]);
   const [isMember, setIsMember] = useState<boolean>(false);
 
+  const sendErrorEvent = () =>
+    trackEvent({ 'Course Code': course_code }, 'Membership Promotion Page - Page Opened', {
+      Email: email
+    });
+
   useEffect(() => {
     if (course_code && email) {
       if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
         enqueueSnackbar('Invalid Email Address', { variant: 'error' });
+        sendErrorEvent();
       } else {
         axiosV2
           .get(`memberships/details.json?email=${email}&course_code=${course_code}`)
@@ -43,11 +50,22 @@ export default function EarlyAccess() {
             setClientSecret(res?.data?.client_secret);
             setCustomerID(res?.data?.customer_id);
             setLoading(false);
+            trackEvent(
+              { 'Course Code': course_code, ...res.data?.course },
+              'Membership Promotion Page - Page Opened',
+              {
+                Email: email,
+                'Membership ID': res.data?.membership_id
+              }
+            );
           })
           .catch((err) => {
             enqueueSnackbar(err.message, { variant: 'error' });
+            sendErrorEvent();
           });
       }
+    } else {
+      sendErrorEvent();
     }
   }, []);
 
