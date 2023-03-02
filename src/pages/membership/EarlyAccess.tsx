@@ -30,7 +30,8 @@ export default function EarlyAccess() {
   const [isMember, setIsMember] = useState<boolean>(false);
 
   const sendErrorEvent = () =>
-    trackEvent({ 'Course Code': course_code }, 'Membership Promotion Page - Page Opened', {
+    trackEvent(null, 'Membership Promotion Page - Page Opened', {
+      'Course Code': course_code,
       Email: email
     });
 
@@ -50,14 +51,12 @@ export default function EarlyAccess() {
             setClientSecret(res?.data?.client_secret);
             setCustomerID(res?.data?.customer_id);
             setLoading(false);
-            trackEvent(
-              { 'Course Code': course_code, ...res.data?.course },
-              'Membership Promotion Page - Page Opened',
-              {
-                Email: email,
-                'Membership ID': res.data?.membership_id
-              }
-            );
+            trackEvent(null, 'Membership Promotion Page - Page Opened', {
+              'Course Code': course_code,
+              ...res.data?.course,
+              Email: email,
+              'Membership ID': res.data?.membership_id
+            });
           })
           .catch((err) => {
             enqueueSnackbar(err.message, { variant: 'error' });
