@@ -1,14 +1,19 @@
-import { Typography, Stack, Card, Box } from '@material-ui/core';
+import { Typography, Stack, Card, Box, Link } from '@material-ui/core';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import { DotsLoader, useStyles } from './Common';
 
+type Resource = {
+  name: string;
+  url: string;
+};
+
 type Message = {
   role: string;
   content: string;
-  // time: Date;
+  resources?: Resource[];
 };
 
 function ChatBot() {
@@ -32,14 +37,18 @@ function ChatBot() {
   const getMessageResponse = (newMessage: any) => {
     setLoading(true);
     axiosV2
-      .get('/chatbot.json', {
+      .get('/chats.json', {
         params: {
-          messages: JSON.stringify([...messagesList, newMessage])
+          query: message
         }
       })
       .then((res) => {
+        const responseMessage = {
+          ...res?.data?.result,
+          resources: res?.data?.resources
+        };
         setLoading(false);
-        setMessagesList([...messagesList, newMessage, res?.data?.result]);
+        setMessagesList([...messagesList, newMessage, responseMessage]);
       })
       .catch((err) => {
         enqueueSnackbar(err?.message || 'Something went wrong!', { variant: 'error' });
@@ -54,7 +63,6 @@ function ChatBot() {
     const newMessage = {
       role: 'user',
       content: message
-      // time: new Date()
     };
     setMessagesList([...messagesList, newMessage]);
     setMessage('');
@@ -84,6 +92,39 @@ function ChatBot() {
               }}
             >
               {message.content}
+              {message?.role === 'assistant' && message?.resources && (
+                <>
+                  <Typography variant="h6" sx={{ marginTop: '16px' }}>
+                    Resources
+                  </Typography>
+                  <Stack>
+                    <ol style={{ marginLeft: '32px' }}>
+                      {message?.resources?.map(
+                        (res, index) =>
+                          message?.role === 'assistant' && (
+                            <li>
+                              <Link
+                                key={index}
+                                target="_blank"
+                                data-testid="resource-link"
+                                variant="body2"
+                                href={res.url}
+                                sx={{
+                                  fontWeight: 600,
+                                  fontSize: '16px',
+                                  width: 'fit-content',
+                                  textDecoration: 'underline'
+                                }}
+                              >
+                                {res.name}
+                              </Link>
+                            </li>
+                          )
+                      )}
+                    </ol>
+                  </Stack>
+                </>
+              )}
             </Card>
           ))}
           <Box id="end-of-messages" />
