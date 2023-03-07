@@ -95,7 +95,8 @@ export default function Router() {
         {
           path: 'paths/:pathSlug',
           children: [{ path: '/', element: <PathsTab /> }]
-        }
+        },
+        { path: '/chatbot', element: <ChatBot /> }
       ]
     },
     {
@@ -385,6 +386,7 @@ const Resource = Loadable(lazy(() => import('../pages/resources/Resource')));
 
 // Main
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
+const ChatBot = Loadable(lazy(() => import('../pages/chatbot/ChatBot')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const CommunityEvent = Loadable(lazy(() => import('../pages/events/CommunityEvent')));
