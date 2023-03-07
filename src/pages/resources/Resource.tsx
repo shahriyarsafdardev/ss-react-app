@@ -59,7 +59,7 @@ function Resource() {
       .post('/resources/create_duplicate.json', {
         resource_id: resource?.id,
         user_id: user?.id,
-        url: `${JUPYTER_SERVER_URL}/notebooks/${fileName}`
+        url: `${JUPYTER_SERVER_URL}/notebooks${fileName}`
       })
       .then((response) => {
         const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
