@@ -93,6 +93,9 @@ export const PATH_DASHBOARD = {
     account: path(ROOTS_DASHBOARD, '/user/account'),
     referrals: path(ROOTS_DASHBOARD, '/user/referrals')
   },
+  resources: {
+    resource: (resourceID: string) => path(ROOTS_DASHBOARD, `/resources/${resourceID}`)
+  },
   cohorts: {
     root: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}`),
     sessions: (cohortID: string) => path(ROOTS_DASHBOARD, `/cohorts/${cohortID}/sessions`),
