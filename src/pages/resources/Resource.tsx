@@ -30,6 +30,12 @@ function Resource() {
   const classes = useStyles();
 
   useEffect(() => {
+    window.addEventListener('message', (e) => {
+      if (e?.data && typeof e?.data === 'string') trackEvent(null, `Jupyter Notebook - ${e?.data}`);
+    });
+  }, []);
+
+  useEffect(() => {
     axios
       .get(`/resources/${resource_id}.json`)
       .then((res) => {
@@ -42,23 +48,6 @@ function Resource() {
         enqueueSnackbar('Something went wrong!', { variant: 'error' });
       });
   }, []);
-
-  const handleEvents = () => {
-    const iframe = document.querySelector('iframe');
-    const iframeDocument = iframe?.contentDocument || iframe?.contentWindow?.document;
-    const saveBtn = iframeDocument?.getElementById('save-notbook');
-    const cutBtn = iframeDocument?.querySelector('[title="cut selected cells"]');
-    const runBtn = iframeDocument?.querySelector('[title="run cell, select below"]');
-    saveBtn?.addEventListener('onclick', () => {
-      trackEvent(null, 'Jupyter Notebook - Save File Button Clicked');
-    });
-    cutBtn?.addEventListener('onclick', () => {
-      trackEvent(null, 'Jupyter Notebook - Cut Cell Button Clicked');
-    });
-    runBtn?.addEventListener('onclick', () => {
-      trackEvent(null, 'Jupyter Notebook - Run Notebook Button Clicked');
-    });
-  };
 
   const handleSeeMoreResources = () => {
     navigate(`/resources`);
@@ -84,8 +73,17 @@ function Resource() {
       });
   };
 
+  const generateFileName = () => {
+    const fileName = resource?.url?.split('notebooks')?.[1];
+    return fileName ? `${fileName?.split('.ipynb')?.[0]}::${user?.slug}.ipynb` : '';
+  };
+
   const saveNotebookInJupyterServer = () => {
-    const fileName = `${resource?.name?.split(' ')?.join('-')}::${user?.slug}.ipynb`;
+    const fileName = generateFileName();
+    if (!fileName) {
+      enqueueSnackbar('Something went wrong!', { variant: 'error' });
+      return;
+    }
     axiosV3
       .post(`${JUPYTER_SERVER_URL}/api/contents`, {
         type: 'notebook',
@@ -108,6 +106,7 @@ function Resource() {
 
   const handleCopyNotebook = () => {
     setIsCopying(true);
+    let copy: boolean = true;
     const { origin } = window.location;
     axios
       .get('/resources/get_duplicate_resource.json', {
@@ -116,15 +115,18 @@ function Resource() {
         }
       })
       .then((response) => {
-        setResource(response?.data?.resource);
-        const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
-        window.history.pushState(null, '', pageURL.toString());
-        setIsCopying(false);
+        if (response?.data?.resource) {
+          setResource(response?.data?.resource);
+          const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
+          window.history.pushState(null, '', pageURL.toString());
+          setIsCopying(false);
+          copy = false;
+        }
       })
       .catch((error) => {
         enqueueSnackbar(error.message || 'Something went wrong!', { variant: 'error' });
       });
-    if (isCopying) {
+    if (copy) {
       saveNotebookInJupyterServer();
     }
   };
@@ -144,9 +146,9 @@ function Resource() {
           className={classes.rootContainer}
         >
           <Stack direction="column" width="100%" spacing={2}>
-            <Button sx={{ width: 'fit-content' }} variant="text" onClick={handleSeeMoreResources}>
+            {/* <Button sx={{ width: 'fit-content' }} variant="text" onClick={handleSeeMoreResources}>
               {'< See More Resources'}
-            </Button>
+            </Button> */}
             <Typography variant="h3">{resource?.name}</Typography>
             <Typography>{resource?.description}</Typography>
             <Stack direction="row" spacing={2}>
@@ -205,8 +207,7 @@ function Resource() {
                   title="jupyter notebook"
                   src={resource?.url}
                   width="100%"
-                  height="500px"
-                  onLoad={handleEvents}
+                  height="600px"
                 />
               )}
               {user?.id !== resource?.user_id && <Box className={classes.viewOnlyBox} />}

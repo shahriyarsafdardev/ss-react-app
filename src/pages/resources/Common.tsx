@@ -10,6 +10,7 @@ export const LoadingContainer = styled(Box)(({ theme }) => ({
 export const useStyles = makeStyles((theme: Theme) => ({
   rootContainer: {
     padding: '50px !important',
+    paddingTop: '0px !important',
     [theme.breakpoints.down('sm')]: {
       padding: '20px !important'
     }
