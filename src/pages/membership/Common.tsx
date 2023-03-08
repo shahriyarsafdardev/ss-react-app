@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { LoadingButton } from '@material-ui/lab';
 import { useSnackbar } from 'notistack5';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import axiosV2 from 'utils/axiosV2';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Box, styled, Theme, Stack, Typography, Checkbox } from '@material-ui/core';
+import { Icon } from '@iconify/react';
+import dragVertical from '@iconify/icons-mdi/drag-vertical';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -184,9 +187,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
   whiteBox: {
     border: '1px solid #fff',
     borderRadius: '16px',
-    padding: '40px',
+    padding: '10px 40px 40px 40px',
     margin: '0px',
-    width: '100%'
+    width: '100%',
+    '& li': {
+      marginTop: '30px'
+    }
   },
   whiteBorder: {
     borderColor: '#fff',
@@ -277,6 +283,12 @@ export const BoldTypography = styled(Typography)(({ theme }) => ({
   fontWeight: 700
 }));
 
+export const ThinTypography = styled(Typography)(({ theme }) => ({
+  fontWeight: 400,
+  fontSize: '13px',
+  lineHeight: '24px'
+}));
+
 export const LoadingContainer = styled(Box)(() => ({
   position: 'absolute',
   top: '50%',
@@ -296,10 +308,11 @@ export const OptionStack = styled(Stack)(({ theme }) => ({
   background: ' rgba(255, 255, 255, 0.1)',
   borderRadius: '5px',
   padding: '10px',
-  border: '1px solid'
+  border: '1px solid',
+  marginTop: '12px'
 }));
 
-export const MembershipDetails = ({ course }: { course: any }) => {
+export const MembershipDetails = ({ course, type = 'type_1' }: { course: any; type?: string }) => {
   const classes = useStyles();
 
   return (
@@ -316,14 +329,19 @@ export const MembershipDetails = ({ course }: { course: any }) => {
             You will not be charged immediately - this is only to secure access to the 50% off
             promotion.
           </li>
-          <li style={{ marginTop: '30px' }}>
-            Once we release {course?.instructor_names} {course?.name} Sphere in{' '}
-            {course?.intake_month}, we will charge you $25 / month for 3 months (after which
-            membership will increase to $50 / month).
+          <li>
+            Once we release{' '}
+            {type === 'type_1'
+              ? `${course?.instructor_names} ${course?.name} Sphere in ${course?.intake_month}, `
+              : 'Sphere Access in early April, '}
+            we will charge you $25 / month for 3 months (after which membership will increase to $50
+            / month).
           </li>
-          <li style={{ marginTop: '30px' }}>
-            Cancel your commitment at any time by contacting nicholas@getsphere.com
-          </li>
+          {type === 'type_1' ? (
+            <li>Cancel your commitment at any time by contacting nicholas@getsphere.com</li>
+          ) : (
+            <></>
+          )}
         </ul>
       </Box>
     </>
@@ -432,6 +450,133 @@ export const MembershipSurvey = ({
         size="large"
         loading={isSubmitting}
         disabled={selected.length === 0}
+        className={classes.submitButton}
+        sx={{
+          background: '#fff !important',
+          color: '#000 !important',
+          '&.Mui-disabled': { opacity: 0.7 }
+        }}
+      >
+        Submit
+      </LoadingButton>
+    </Stack>
+  );
+};
+
+export const MembershipSurvey2 = ({
+  membershipID,
+  interests
+}: {
+  membershipID: any;
+  interests: string[];
+}) => {
+  const classes = useStyles();
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const OPTIONS = [
+    'AI search assistant fine-tuned on Data and ML topics across all cohorts',
+    'Clips from live courses led by industry experts across all cohorts',
+    'Events and networking across our entire Data and ML community',
+    'Frameworks and materials curated by instructors across all cohorts',
+    'Jupyter notebooks to help you repurpose vetted code for your business use cases'
+  ];
+  const [options, setOptions] = useState(interests.length ? interests : OPTIONS);
+
+  const onDragEnd = (result: any) => {
+    const { source, destination } = result;
+    if (!destination) return;
+
+    const temp = [...options];
+    const [removed] = temp.splice(source.index, 1);
+    temp.splice(destination.index, 0, removed);
+    setOptions(temp);
+  };
+
+  const handleSubmit = () => {
+    setSubmitting(true);
+    const selections = options.join('##');
+    axiosV2
+      .post('memberships/survey_feedback.json', {
+        membership_id: membershipID,
+        most_excited_for: selections
+      })
+      .then((res) => {
+        enqueueSnackbar('Preferences Saved', { variant: 'success' });
+        setSubmitting(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.message, { variant: 'error' });
+      });
+  };
+
+  return (
+    <Stack
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={7}
+      maxWidth="800px"
+    >
+      <Stack spacing={1} textAlign="center" width="100%">
+        <Typography variant="h4" className={`${classes.heading} `}>
+          You have successfully joined the waitlist for Sphere Access!
+        </Typography>
+        <Typography sx={{ fontSize: '16px' }}>
+          You will be notified one week before it launches.
+        </Typography>
+      </Stack>
+      <Typography sx={{ fontSize: '18px', fontWeight: 600, width: '100%', textAlign: 'center' }}>
+        Until then, <strong>drag to re-order</strong> the items below in order of what you are most
+        excited for:
+      </Typography>
+      <Stack direction="column" justifyContent="center" width="100%" alignItems="flex-start">
+        <ThinTypography>MOST EXCITING</ThinTypography>
+        <Stack sx={{ minHeight: 'fit-content', width: '100%' }}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable key="list" droppableId="0" type="column">
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {options.map((name: any, index: number) => (
+                    <Draggable draggableId={name} index={index} key={name}>
+                      {(provided, snapshot) => (
+                        <OptionStack
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          direction="row"
+                          alignItems="center"
+                          className={
+                            snapshot.isDragging ? classes.whiteBorder : classes.transparentBorder
+                          }
+                          spacing={1}
+                        >
+                          <Icon
+                            icon={dragVertical}
+                            color="rgba(255, 255, 255, 0.5)"
+                            width="24"
+                            height="24"
+                            style={{ minWidth: '24px' }}
+                          />
+                          <Typography sx={{ fontSize: '16px' }}>{name}</Typography>
+                        </OptionStack>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </Stack>
+        <ThinTypography sx={{ marginTop: '12px' }}>LEAST EXCITING</ThinTypography>
+      </Stack>
+      <LoadingButton
+        onClick={() => handleSubmit()}
+        type="submit"
+        variant="contained"
+        size="large"
+        loading={isSubmitting}
         className={classes.submitButton}
         sx={{
           background: '#fff !important',

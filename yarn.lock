@@ -2098,6 +2098,13 @@
   resolved "https://registry.npmjs.org/@iconify/icons-ic/-/icons-ic-1.1.8.tgz"
   integrity sha512-m7t8qnTvKry5U5hDjSgcWWnhDVHHdiaDLZ+TboseUeAIpH0yWgi7MOX0DyVqbUPgkf/6g4d6aKIbANa1AqOOhw==
 
+"@iconify/icons-mdi@^1.2.43":
+  version "1.2.43"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.2.43.tgz#e14563c1874780883bbc9a023ffe4d8eca72aa3e"
+  integrity sha512-Texi92FCDR4YCCo1wKXS5/eqY937uTPJGBShDXuTxUYZvszAx0CJFHQs4QNfHa7bHXZJjwl0+JBHGYj4IcBmvQ==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify/react@^1.1.4":
   version "1.1.4"
   resolved "https://registry.npmjs.org/@iconify/react/-/react-1.1.4.tgz"
