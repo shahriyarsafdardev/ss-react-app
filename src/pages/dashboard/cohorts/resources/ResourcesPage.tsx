@@ -8,10 +8,9 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { getCohortResources, getCohortSessionResources } from 'redux/slices/cohort';
 import { RootState, useDispatch, useSelector } from 'redux/store';
-import LoadingScreen from 'components/LoadingScreen';
 import ResourceFilter from './ResourceFilter';
 import ResourcesSection from './ResourcesSection';
-import { LoadingContainer } from '../code/CodeTab';
+import EmptyResourcePage from './EmptyResourcePage';
 
 export default function ResourcesPage() {
   const [isSearch, setIsSearch] = useState<boolean>(false);
@@ -48,11 +47,7 @@ export default function ResourcesPage() {
   };
 
   if (typeof resources === 'undefined' || resources?.length === 0) {
-    return (
-      <LoadingContainer>
-        <LoadingScreen />
-      </LoadingContainer>
-    );
+    return <EmptyResourcePage />;
   }
 
   const setState = (value: any, type: string) => {
