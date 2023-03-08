@@ -330,12 +330,9 @@ export const MembershipDetails = ({ course, type = 'type_1' }: { course: any; ty
             promotion.
           </li>
           <li>
-            Once we release{' '}
-            {type === 'type_1'
-              ? `${course?.instructor_names} ${course?.name} Sphere in ${course?.intake_month}, `
-              : 'Sphere Access in early April, '}
-            we will charge you $25 / month for 3 months (after which membership will increase to $50
-            / month).
+            You will be notified one week before launch, after which we will charge you $25 / month
+            for 3 months (membership will then increase to $50 / month after the promotional
+            period).
           </li>
           {type === 'type_1' ? (
             <li>Cancel your commitment at any time by contacting nicholas@getsphere.com</li>
@@ -520,7 +517,7 @@ export const MembershipSurvey2 = ({
     >
       <Stack spacing={1} textAlign="center" width="100%">
         <Typography variant="h4" className={`${classes.heading} `}>
-          You have successfully joined the waitlist for Sphere Access!
+          You have successfully joined the waitlist for our new membership!
         </Typography>
         <Typography sx={{ fontSize: '16px' }}>
           You will be notified one week before it launches.
