@@ -27,12 +27,14 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   messageCard: {
-    width: '48%',
+    minWidth: '48%',
+    maxWidth: '70%',
     padding: '12px',
     borderRadius: '8px',
     color: '#000',
     [theme.breakpoints.down('sm')]: {
-      width: '90%'
+      width: '90%',
+      maxWidth: '90%'
     }
   },
   questionCardBox: {
@@ -68,6 +70,36 @@ export const useStyles = makeStyles((theme: Theme) => ({
     '&:focus-visible': {
       outline: 'none'
     }
+  },
+  resourceGrid: {
+    width: '260px !important',
+    height: '100%',
+    maxHeight: '270px',
+    paddingRight: '16px',
+    paddingBottom: '16px'
+  },
+  resourceStack: {
+    borderRadius: '7px',
+    backgroundColor: '#fff',
+    cursor: 'pointer',
+    height: '100%'
+  },
+  resourceName: {
+    fontWeight: 700,
+    fontSize: '14px',
+    color: '#000',
+    display: '-webkit-box',
+    overflow: 'hidden',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 3
+  },
+  resourceInstructorNames: {
+    fontWeight: 600,
+    fontSize: '11px',
+    color: '#A6AEB7'
+  },
+  darkImage: {
+    filter: 'brightness(0.7)'
   }
 }));
 

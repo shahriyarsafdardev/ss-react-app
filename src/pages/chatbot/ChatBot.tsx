@@ -1,9 +1,10 @@
-import { Typography, Stack, Card, Box, Link } from '@material-ui/core';
+import { Typography, Stack, Card, Box } from '@material-ui/core';
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import { DotsLoader, useStyles } from './Common';
+import ResourcesGrid from './ResourcesGrid';
 
 type Resource = {
   name: string;
@@ -83,49 +84,20 @@ function ChatBot() {
         </Typography>
         <Stack spacing={5} sx={{ marginTop: '60px' }}>
           {messagesList.map((message, index) => (
-            <Card
-              className={classes?.messageCard}
-              key={index}
-              sx={{
-                marginLeft: message?.role === 'user' ? 'auto !important' : '0px !important',
-                backgroundColor: message?.role === 'user' ? '#F1F1FB' : '#F4F6F8'
-              }}
-            >
-              {message.content}
+            <>
+              <Card
+                className={classes?.messageCard}
+                sx={{
+                  marginLeft: message?.role === 'user' ? 'auto !important' : '0px !important',
+                  backgroundColor: message?.role === 'user' ? '#F1F1FB' : '#F4F6F8'
+                }}
+              >
+                {message.content}
+              </Card>
               {message?.role === 'assistant' && message?.resources && (
-                <>
-                  <Typography variant="h6" sx={{ marginTop: '16px' }}>
-                    Resources
-                  </Typography>
-                  <Stack>
-                    <ol style={{ marginLeft: '32px' }}>
-                      {message?.resources?.map(
-                        (res, index) =>
-                          message?.role === 'assistant' && (
-                            <li>
-                              <Link
-                                key={index}
-                                target="_blank"
-                                data-testid="resource-link"
-                                variant="body2"
-                                href={res.url}
-                                sx={{
-                                  fontWeight: 600,
-                                  fontSize: '16px',
-                                  width: 'fit-content',
-                                  textDecoration: 'underline'
-                                }}
-                              >
-                                {res.name}
-                              </Link>
-                            </li>
-                          )
-                      )}
-                    </ol>
-                  </Stack>
-                </>
+                <ResourcesGrid resources={message?.resources} />
               )}
-            </Card>
+            </>
           ))}
           <Box id="end-of-messages" />
         </Stack>
