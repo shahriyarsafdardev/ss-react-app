@@ -1,21 +1,24 @@
 import { Typography, Grid, Stack, Box } from '@material-ui/core';
+import { trackEvent } from 'utils/eventTracking';
 import { useStyles } from './Common';
 
-function ResourcesGrid({ resources }: { resources: any[] }) {
+function ResourcesGrid({ resources, messagesList }: { resources: any[]; messagesList: any }) {
   const classes = useStyles();
 
-  const handleResourceOnclick = (url: string) => {
-    window.open(url, '_blank');
+  const handleResourceOnclick = (resource: any) => {
+    trackEvent(null, 'AI Search Assistant Page - Resource Opened', {
+      'Resource ID': resource?.id,
+      'Resource Name': resource?.name,
+      History: messagesList
+    });
+    window.open(resource?.url, '_blank');
   };
 
   return (
     <Grid container sx={{ width: '70% !important' }}>
       {resources.map((resource: any) => (
         <Grid item xs={12} sm={6} md={4} className={classes.resourceGrid} key={resource?.id}>
-          <Stack
-            className={classes.resourceStack}
-            onClick={() => handleResourceOnclick(resource?.url)}
-          >
+          <Stack className={classes.resourceStack} onClick={() => handleResourceOnclick(resource)}>
             <Box sx={{ position: 'relative' }}>
               <img
                 src={resource?.thumbnail_image}

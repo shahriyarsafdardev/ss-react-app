@@ -3,6 +3,7 @@ import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
+import { trackEvent } from 'utils/eventTracking';
 import { DotsLoader, useStyles } from './Common';
 import ResourcesGrid from './ResourcesGrid';
 
@@ -25,6 +26,10 @@ function ChatBot() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    trackEvent(null, 'AI Search Assistant Page - Page Opened');
+  }, []);
+
+  useEffect(() => {
     const element = document.getElementById('end-of-messages');
     if (element) {
       element?.scrollIntoView({ behavior: 'smooth' });
@@ -36,6 +41,10 @@ function ChatBot() {
   };
 
   const getMessageResponse = (newMessage: any) => {
+    trackEvent(null, 'AI Search Assistant Page - Query Submitted', {
+      Query: message,
+      History: messagesList
+    });
     setLoading(true);
     axiosV2
       .get('/chats.json', {
@@ -49,7 +58,12 @@ function ChatBot() {
           resources: res?.data?.resources
         };
         setLoading(false);
-        setMessagesList([...messagesList, newMessage, responseMessage]);
+        const newList = [...messagesList, newMessage, responseMessage];
+        setMessagesList(newList);
+        trackEvent(null, 'AI Search Assistant Page - Response Received', {
+          Query: message,
+          History: newList
+        });
       })
       .catch((err) => {
         enqueueSnackbar(err?.message || 'Something went wrong!', { variant: 'error' });
@@ -80,7 +94,7 @@ function ChatBot() {
     <Page title="Sphere | ChatBot" className={classes.rootPage} id="chatbot">
       <Stack className={classes.rootStack}>
         <Typography variant="h4" sx={{ color: '#fff', textAlign: 'center' }}>
-          Get personalized resources curated by Sphere’s AI Mentor
+          Get personalized resources curated by Sphere's AI Mentor
         </Typography>
         <Stack spacing={5} sx={{ marginTop: '60px' }}>
           {messagesList.map((message, index) => (
@@ -95,7 +109,7 @@ function ChatBot() {
                 {message.content}
               </Card>
               {message?.role === 'assistant' && message?.resources && (
-                <ResourcesGrid resources={message?.resources} />
+                <ResourcesGrid resources={message?.resources} messagesList={messagesList} />
               )}
             </>
           ))}
