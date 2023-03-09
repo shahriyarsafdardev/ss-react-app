@@ -4,21 +4,23 @@ import { ThreeDots } from 'react-loader-spinner';
 
 export const useStyles = makeStyles((theme: Theme) => ({
   rootPage: {
-    height: '100%',
     width: '100%',
     backgroundImage: `url(
           'https://sphere-public.s3.eu-west-2.amazonaws.com/chatbot-bg.png'
         )`,
     backgroundSize: 'cover',
-    maxHeight: '100%',
-    overflow: 'auto'
+    height: 'calc(100vh - 92px)',
+    overflow: 'auto',
+    marginTop: '-24px',
+    [theme.breakpoints.down('lg')]: {
+      height: 'calc(100vh - 64px)'
+    }
   },
   rootStack: {
     padding: '40px',
     paddingBottom: '0px !important',
     height: '100%',
     maxWidth: '1200px',
-    maxHeight: 'calc(100vh - 116px)',
     margin: '0px auto',
     position: 'relative',
     [theme.breakpoints.down('sm')]: {
@@ -43,8 +45,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     position: 'sticky',
     bottom: 0,
     width: '100%',
-    padding: '20px 0px 40px 0px',
-    backdropFilter: 'blur(5px)',
+    padding: '30px 0px',
     [theme.breakpoints.down('sm')]: {
       padding: '10px 0px'
     }
@@ -111,6 +112,6 @@ export const DotsLoader = () => (
     color="#fff"
     ariaLabel="three-dots-loading"
     visible={true}
-    wrapperStyle={{ margin: '20px auto', width: 'fit-content' }}
+    wrapperStyle={{ margin: '20px auto 30px auto', width: 'fit-content' }}
   />
 );

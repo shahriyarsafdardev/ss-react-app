@@ -103,6 +103,7 @@ function ChatBot() {
                 className={classes?.messageCard}
                 sx={{
                   marginLeft: message?.role === 'user' ? 'auto !important' : '0px !important',
+                  marginRight: message?.role !== 'user' ? 'auto !important' : '0px !important',
                   backgroundColor: message?.role === 'user' ? '#F1F1FB' : '#F4F6F8'
                 }}
               >
@@ -117,18 +118,14 @@ function ChatBot() {
         </Stack>
         <Box className={classes.questionCardBox}>
           {loading && <DotsLoader />}
-          <Card className={classes.questionCard}>
-            <Stack direction="row" spacing={1}>
-              <img
-                width="24"
-                src="/static/icons/ic-search.svg"
-                alt="search"
-                style={{ paddingTop: '5px' }}
-              />
-              <input
+          <Card className={classes.questionCard} sx={{ boxShadow: '0px 0px 50px 50px #2A1D4D' }}>
+            <Stack direction="row" spacing={1} alignItems="flex-start">
+              <img width="24" src="/static/icons/ic-search.svg" alt="search" />
+              <textarea
                 placeholder="Ask me anything about causal inference..."
                 className={classes.questionInput}
                 value={message}
+                rows={3}
                 onChange={(e) => handleMessageChange(e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e)}
               />
