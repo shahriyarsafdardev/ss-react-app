@@ -61,10 +61,9 @@ function ChatBot() {
     });
     setLoading(true);
     axiosV2
-      .get('/chats.json', {
-        params: {
-          query: message
-        }
+      .post('/chats/get_response.json', {
+        query: message,
+        history: JSON.stringify(messagesList.map(({ resources, ...rest }) => rest))
       })
       .then((res) => {
         const responseMessage = {
@@ -121,7 +120,7 @@ function ChatBot() {
                   backgroundColor: message?.role === 'user' ? '#F1F1FB' : '#F4F6F8'
                 }}
               >
-                {message.content}
+                <div dangerouslySetInnerHTML={{ __html: message.content }} />
               </Card>
               {message?.role === 'assistant' && message?.resources && (
                 <ResourcesGrid resources={message?.resources} messagesList={messagesList} />
@@ -136,7 +135,7 @@ function ChatBot() {
             <Stack direction="row" spacing={1} alignItems="flex-start">
               <img width="24" src="/static/icons/ic-search.svg" alt="search" />
               <textarea
-                placeholder="Ask me anything about modern forecasting..."
+                placeholder="Ask me anything about forecasting..."
                 className={classes.questionInput}
                 value={message}
                 rows={3}
