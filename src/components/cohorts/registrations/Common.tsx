@@ -529,7 +529,7 @@ export const Actions = memo(
                   clickSetModalMessage(
                     <p>
                       Are you sure you want to accept {enrollment.name}’s application and
-                      {enrollment.card_added ? ' charge him' : ' send a payment link'} for
+                      {enrollment.card_added ? ' charge them' : ' send a payment link'} for
                       <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
                     </p>,
                     'accept_application'
@@ -562,7 +562,7 @@ export const Actions = memo(
                     clickSetModalMessage(
                       <p>
                         Are you sure you want to accept {enrollment.name}’s application and
-                        {enrollment.card_added ? ' charge him' : ' send a payment link'} for
+                        {enrollment.card_added ? ' charge them' : ' send a payment link'} for
                         <p style={{ color: '#12125c' }}> USD {enrollment.price}</p>
                       </p>,
                       'accept_application'
