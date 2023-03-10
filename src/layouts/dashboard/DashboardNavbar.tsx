@@ -58,7 +58,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'onboarding-calendar-instructions',
     'referrals',
     'all-courses',
-    'contact-us'
+    'contact-us',
+    'chatbot'
   ];
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
@@ -104,6 +105,9 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Contact Us');
         } else if (pathSlugs.includes(section)) {
           setCurrentTab(pathName(section));
+        } else if (section === 'chatbot') {
+          console.log('section:', section);
+          setCurrentTab('Get personalized responses based on expert insights');
         } else {
           setCurrentTab(section);
         }
@@ -153,6 +157,11 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
                 variant="h4"
+                sx={
+                  currentTab === 'Get personalized responses based on expert insights'
+                    ? { textTransform: 'none' }
+                    : {}
+                }
               >
                 {currentTab}
               </HeadText>

@@ -387,8 +387,8 @@ const Resource = Loadable(lazy(() => import('../pages/resources/Resource')));
 
 // Main
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
-const ChatBot = Loadable(lazy(() => import('../pages/chatbot/ChatBot')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
+const ChatBot = Loadable(lazy(() => import('../pages/chatbot/ChatBot')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const CommunityEvent = Loadable(lazy(() => import('../pages/events/CommunityEvent')));
 const AllCourses = Loadable(lazy(() => import('../pages/all_courses/AllCourses')));

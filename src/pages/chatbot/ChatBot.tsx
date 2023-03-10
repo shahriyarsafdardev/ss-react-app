@@ -4,8 +4,11 @@ import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import axiosV2 from 'utils/axiosV2';
 import { trackEvent } from 'utils/eventTracking';
+import useAuth from 'hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 import { DotsLoader, useStyles } from './Common';
 import ResourcesGrid from './ResourcesGrid';
+import { RootState, useSelector } from '../../redux/store';
 
 type Resource = {
   name: string;
@@ -19,11 +22,15 @@ type Message = {
 };
 
 function ChatBot() {
+  const { cohorts } = useSelector((state: RootState) => state.cohort);
+  const { isAuthenticated } = useAuth();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     trackEvent(null, 'AI Search Assistant Page - Page Opened');
@@ -35,6 +42,13 @@ function ChatBot() {
       element?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messagesList?.length]);
+
+  useEffect(() => {
+    const tsf = cohorts?.filter((cohort) => cohort.code === 'TSF')[0];
+    if (!isAuthenticated || (!tsf && cohorts.length > 0)) {
+      navigate(-1);
+    }
+  }, [cohorts]);
 
   const handleMessageChange = (value: string) => {
     setMessage(value);
@@ -122,7 +136,7 @@ function ChatBot() {
             <Stack direction="row" spacing={1} alignItems="flex-start">
               <img width="24" src="/static/icons/ic-search.svg" alt="search" />
               <textarea
-                placeholder="Ask me anything about forecasting..."
+                placeholder="Ask me anything about modern forecasting..."
                 className={classes.questionInput}
                 value={message}
                 rows={3}
