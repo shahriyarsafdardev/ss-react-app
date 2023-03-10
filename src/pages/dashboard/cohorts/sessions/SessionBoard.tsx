@@ -50,6 +50,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
   const { sendAnalyticsData } = useContext(AnalyticsContext);
   const feedback = params.get('open_feedback');
   const studentFeedback = params.get('student_feedback');
+  const chat_timestamp = params.get('timestamp');
   const [modalState, setModal] = useState(
     !feedbacks[session?.id || ''] && (feedback === 'true' || studentFeedback === 'true')
   );
@@ -57,6 +58,21 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
   const videoRefS3 = useRef<any>(null);
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
+
+  const jumpForwardInVideo = () => {
+    setLoading(false);
+    if (chat_timestamp) {
+      if (videoRefVimeo.current) {
+        videoRefVimeo.current.seekTo(Number(chat_timestamp));
+        setPlaying(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (videoRefS3.current) {
+        videoRefS3.current.currentTime = Number(chat_timestamp);
+        videoRefS3.current.play();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  };
 
   const handlePlayTimeStamp = (seconds: string) => {
     if (videoRefVimeo.current) {
@@ -197,7 +213,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                     ref={videoRefVimeo}
                     playing={playing}
                     className={loading ? classes.hidden : classes.shown}
-                    onReady={() => setLoading(false)}
+                    onReady={jumpForwardInVideo}
                     sx={{ maxWidth: '100%' }}
                     onStart={() => markAttendance('watched_recording')}
                     onPause={() => {
@@ -227,6 +243,7 @@ const SessionBoard = ({ session, isLearner, isFree }: SessionBoardProps) => {
                   return false;
                 }}
                 ref={videoRefS3}
+                onLoadedData={jumpForwardInVideo}
                 onPlay={(e) => {
                   markAttendance('watched_recording');
                   sendAnalyticsData('Sessions Page - Recording Player - Play Clicked', {
