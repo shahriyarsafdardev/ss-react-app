@@ -94,7 +94,7 @@ function ChatBot() {
     <Page title="Sphere | ChatBot" className={classes.rootPage} id="chatbot">
       <Stack className={classes.rootStack}>
         <Typography variant="h4" sx={{ color: '#fff', textAlign: 'center' }}>
-          Get personalized resources curated by Sphere's AI Mentor
+          Get personalized resources curated by Sphere's AI Search Assistant
         </Typography>
         <Stack spacing={5} sx={{ marginTop: '60px' }}>
           {messagesList.map((message, index) => (
@@ -122,7 +122,7 @@ function ChatBot() {
             <Stack direction="row" spacing={1} alignItems="flex-start">
               <img width="24" src="/static/icons/ic-search.svg" alt="search" />
               <textarea
-                placeholder="Ask me anything about causal inference..."
+                placeholder="Ask me anything about forecasting..."
                 className={classes.questionInput}
                 value={message}
                 rows={3}
