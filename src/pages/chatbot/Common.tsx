@@ -68,6 +68,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: '90%',
     overflow: 'auto',
     fontSize: '16px',
+    fontFamily: 'Public Sans,sans-serif',
     '&:focus-visible': {
       outline: 'none'
     }
@@ -88,6 +89,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   resourceName: {
     fontWeight: 700,
     fontSize: '14px',
+    lineHeight: 1.1,
     color: '#000',
     display: '-webkit-box',
     overflow: 'hidden',

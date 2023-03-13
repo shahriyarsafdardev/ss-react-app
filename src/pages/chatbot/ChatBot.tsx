@@ -29,7 +29,6 @@ function ChatBot() {
   const [message, setMessage] = useState('');
   const [messagesList, setMessagesList] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showChatbot, setShowChatbot] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -100,6 +99,7 @@ function ChatBot() {
   const handleKeyDown = (e: any) => {
     if (e?.key === 'Enter') {
       handleSendMessage();
+      e?.preventDefault();
     }
   };
 
@@ -107,7 +107,7 @@ function ChatBot() {
     <Page title="Sphere | ChatBot" className={classes.rootPage} id="chatbot">
       <Stack className={classes.rootStack}>
         <Typography variant="h4" sx={{ color: '#fff', textAlign: 'center' }}>
-          Get personalized resources curated by Sphere's AI Search Assistant
+          Get personalized responses based on expert insights
         </Typography>
         <Stack spacing={5} sx={{ marginTop: '60px' }}>
           {messagesList.map((message, index) => (

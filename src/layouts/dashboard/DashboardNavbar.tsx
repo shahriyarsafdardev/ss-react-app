@@ -106,8 +106,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
         } else if (pathSlugs.includes(section)) {
           setCurrentTab(pathName(section));
         } else if (section === 'chatbot') {
-          console.log('section:', section);
-          setCurrentTab('Get personalized responses based on expert insights');
+          setCurrentTab('AI Search Assistant');
         } else {
           setCurrentTab(section);
         }
@@ -157,11 +156,6 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
                 color="text.primary"
                 data-testid={`dashboard-navbar-${currentTab}`}
                 variant="h4"
-                sx={
-                  currentTab === 'Get personalized responses based on expert insights'
-                    ? { textTransform: 'none' }
-                    : {}
-                }
               >
                 {currentTab}
               </HeadText>
