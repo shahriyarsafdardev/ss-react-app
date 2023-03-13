@@ -15,8 +15,6 @@ import {
   ViewSwitcherStyle,
   SwitcherButtonContainer,
   LabelStyled,
-  ReferralStyledBox,
-  ViewReferralLinks,
   filteredPaths
 } from 'layouts/Common';
 import {
@@ -32,10 +30,12 @@ import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // components
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
+import PurpleNavSection from '../../components/PurpleNavSection';
 import { MHidden } from '../../components/@material-extend';
 
 //
 import adminToolsConfig from './AdminToolsConfig';
+import chatbotConfig from './ChatbotConfig';
 import { instructorCohortsConfig, learnerCohortsConfigV2 } from './cohortsConfig';
 
 // ----------------------------------------------------------------------
@@ -61,6 +61,14 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
     (state: RootState) => state?.cohort?.cohorts?.filter((cohort) => cohort_id === cohort.id)[0]
   );
   const paths = useSelector((state: RootState) => state?.path?.paths);
+  const [showChatbot, setShowChatbot] = useState(false);
+
+  useEffect(() => {
+    const tsf = cohorts?.filter((cohort) => cohort.code === 'TSF')[0];
+    if (tsf) {
+      setShowChatbot(true);
+    }
+  }, [cohorts]);
 
   const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
@@ -106,6 +114,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }: Dash
         <LogoContainer>
           <img src="/static/sphere_with_logo.svg" alt="logo.svg" width={150} />
         </LogoContainer>
+
+        {showChatbot ? <PurpleNavSection navConfig={chatbotConfig} isShow={!isCollapse} /> : <></>}
 
         {user?.type === 'admin' && (
           <NavSection data-testid="admin-tools" navConfig={adminToolsConfig} isShow={!isCollapse} />

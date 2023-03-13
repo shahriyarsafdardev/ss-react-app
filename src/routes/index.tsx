@@ -3,7 +3,6 @@ import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 // layouts
 import AnalyticsTab from 'components/cohorts/analytics/AnalyticsTab';
-import ResourcesPage from 'pages/dashboard/cohorts/resources/ResourcesPage';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 import MainLayout from '../layouts/MainLayout';
 import SphereNavbarLayout from '../layouts/SphereNavbarLayout';
@@ -96,7 +95,8 @@ export default function Router() {
         {
           path: 'paths/:pathSlug',
           children: [{ path: '/', element: <PathsTab /> }]
-        }
+        },
+        { path: '/chatbot', element: <ChatBot /> }
       ]
     },
     {
@@ -172,6 +172,10 @@ export default function Router() {
               <Dashboard />
             </RoleBasedGuard>
           )
+        },
+        {
+          path: '/resources',
+          children: [{ path: '/:id', element: <Resource /> }]
         },
         {
           path: 'cohorts/:cohortID',
@@ -376,9 +380,15 @@ const NetworkingTab = Loadable(
 const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
 const ReferralsPage = Loadable(lazy(() => import('../pages/referrals/ReferralsPage')));
 
+const ResourcesPage = Loadable(
+  lazy(() => import('../pages/dashboard/cohorts/resources/ResourcesPage'))
+);
+const Resource = Loadable(lazy(() => import('../pages/resources/Resource')));
+
 // Main
 const ContactUs = Loadable(lazy(() => import('../pages/ContactUs')));
 const PublicMessaging = Loadable(lazy(() => import('../pages/public/PublicMessaging')));
+const ChatBot = Loadable(lazy(() => import('../pages/chatbot/ChatBot')));
 const EventsTab = Loadable(lazy(() => import('../pages/events/EventsTab')));
 const CommunityEvent = Loadable(lazy(() => import('../pages/events/CommunityEvent')));
 const AllCourses = Loadable(lazy(() => import('../pages/all_courses/AllCourses')));

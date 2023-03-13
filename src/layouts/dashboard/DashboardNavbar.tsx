@@ -58,7 +58,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
     'onboarding-calendar-instructions',
     'referrals',
     'all-courses',
-    'contact-us'
+    'contact-us',
+    'chatbot'
   ];
 
   const pathName = (slug: any) => paths.filter((path) => path.slug === slug)[0].name;
@@ -104,6 +105,8 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
           setCurrentTab('Contact Us');
         } else if (pathSlugs.includes(section)) {
           setCurrentTab(pathName(section));
+        } else if (section === 'chatbot') {
+          setCurrentTab('AI Search Assistant');
         } else {
           setCurrentTab(section);
         }
@@ -159,7 +162,7 @@ export default function DashboardNavbar({ onOpenSidebar }: DashboardNavbarProps)
             )}
             <Box sx={{ flexGrow: 1 }} />
             <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-              <ZoopAppAnnouncementPopover />
+              {/* <ZoopAppAnnouncementPopover /> */}
               <NotificationsPopover />
               <AccountPopover />
             </Stack>
