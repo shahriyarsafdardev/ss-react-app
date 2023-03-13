@@ -1,6 +1,15 @@
-import { Typography, Stack, Card, Link } from '@material-ui/core';
+import { Typography, Stack, styled, Card, Link } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { useStyles } from './Common';
+
+const StyledImage = styled('img')(({ theme }) => ({
+  borderRadius: '7px 7px 0px 0px',
+  width: '25%',
+  dsiplay: 'block !important',
+  [theme.breakpoints.down('md')]: {
+    display: 'none !important'
+  }
+}));
 
 function ResourcesGrid({ resources, messagesList }: { resources: any[]; messagesList: any }) {
   const classes = useStyles();
@@ -19,10 +28,9 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
       {resources.map((resource: any) => (
         <Card className={classes.resourceCard} key={resource?.id}>
           <Stack direction={{ xs: 'column', md: 'row' }}>
-            <img
+            <StyledImage
               src={resource?.thumbnail_image}
               alt="Resource Preview"
-              style={{ borderRadius: '7px 7px 0px 0px' }}
               className={`${resource?.resource_type === 'Session Recording' && classes.darkImage}`}
             />
             <Stack className={classes.resourceDescriptionStack} spacing={2}>
@@ -39,7 +47,11 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
                 {resource.text}
                 <Link
                   className={classes.resourceName}
-                  sx={{ cursor: 'pointer', display: 'inline !important' }}
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'inline !important',
+                    color: '#43009A !important'
+                  }}
                   onClick={() => handleResourceOnclick(resource)}
                 >
                   <u>Click here to open</u>
