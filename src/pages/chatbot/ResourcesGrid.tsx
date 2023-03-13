@@ -18,7 +18,7 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
     <>
       {resources.map((resource: any) => (
         <Card className={classes.resourceCard} key={resource?.id}>
-          <Stack direction="row">
+          <Stack direction={{ xs: 'column', md: 'row' }}>
             <img
               src={resource?.thumbnail_image}
               alt="Resource Preview"

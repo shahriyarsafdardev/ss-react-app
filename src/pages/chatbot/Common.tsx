@@ -101,8 +101,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     color: '#212B36',
     display: '-webkit-box',
     overflow: 'hidden',
-    WebkitBoxOrient: 'vertical',
-    WebkitLineClamp: 3
+    WebkitBoxOrient: 'vertical'
   },
   darkImage: {
     filter: 'brightness(0.7)'
