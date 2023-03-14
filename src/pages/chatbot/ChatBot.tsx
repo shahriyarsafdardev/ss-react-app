@@ -120,7 +120,20 @@ function ChatBot() {
                   backgroundColor: message?.role === 'user' ? '#F1F1FB' : '#F4F6F8'
                 }}
               >
-                <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                <Stack spacing={2}>
+                  <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                  {message.resources?.length ? (
+                    <Typography>
+                      I’ve included&nbsp;
+                      {message.resources.length > 1
+                        ? 'several resources below which dive '
+                        : 'a resource below which dives '}
+                      into this topic in greater detail:
+                    </Typography>
+                  ) : (
+                    <></>
+                  )}
+                </Stack>
               </Card>
               {message?.role === 'assistant' && message?.resources && (
                 <ResourcesGrid resources={message?.resources} messagesList={messagesList} />

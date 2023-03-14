@@ -44,7 +44,7 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
                 {resource?.instructor_names ? ` | ${resource?.instructor_names}` : ''}
               </Typography>
               <Typography className={classes.resourceName}>
-                {resource.text}
+                {resource.text}&nbsp;
                 <Link
                   className={classes.resourceName}
                   sx={{
