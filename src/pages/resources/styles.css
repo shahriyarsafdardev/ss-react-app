@@ -1,0 +1,24 @@
+.cell-header {
+  display: none;
+}
+.cell-content * {
+  line-height: 1.6;
+}
+.cell-content > * {
+  margin: 8px 0px 6px;
+}
+.cell-content ul,
+.cell-content ol {
+  margin-left: 40px;
+}
+.cell-content h1,
+.cell-content h2,
+.cell-content h3,
+.cell-content h4,
+.cell-content h5,
+.cell-content h6 {
+  margin: 10px 0px;
+}
+.source-code-main > pre {
+  line-height: 1.24 !important;
+}

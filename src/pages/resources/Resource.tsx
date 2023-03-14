@@ -12,6 +12,7 @@ import { trackEvent } from 'utils/eventTracking';
 import LoadingScreen from 'components/LoadingScreen';
 import JupyterViewer from 'react-jupyter-notebook';
 import { LoadingContainer, useStyles, ViewOnlyBanner } from './Common';
+import './styles.css';
 
 export const JUPYTER_SERVER_URL = process.env.REACT_APP_JUPYTER_SERVER_URL;
 
@@ -155,6 +156,7 @@ function Resource() {
           const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
           window.history.pushState(null, '', pageURL.toString());
           copy = false;
+          setIsCopying(false);
         }
       })
       .catch((error) => {
@@ -162,7 +164,6 @@ function Resource() {
       });
     if (copy) {
       saveNotebookInJupyterServer();
-      setIsCopying(false);
     }
   };
 
@@ -217,7 +218,6 @@ function Resource() {
                     <Box
                       style={{
                         maxHeight: '600px',
-                        padding: '20px',
                         border: '1px solid #000',
                         overflow: 'auto'
                       }}
