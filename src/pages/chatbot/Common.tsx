@@ -74,9 +74,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   resourceCard: {
+    background: '#ffffff',
+    boxShadow: '0 0 2px 0 rgb(145 158 171 / 24%), 0 16px 32px -4px rgb(145 158 171 / 24%)',
+    borderRadius: '8px',
     minWidth: '48%',
     maxWidth: '70%',
-    borderRadius: '8px',
     color: '#000',
     [theme.breakpoints.down('sm')]: {
       width: '90%',
@@ -84,14 +86,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   resourceStack: {
-    borderRadius: '7px',
-    backgroundColor: '#fff',
     cursor: 'pointer',
     height: '100%'
   },
   resourceDescriptionStack: {
-    borderRadius: '7px',
-    backgroundColor: '#fff',
     height: '100%',
     padding: '30px'
   },
@@ -102,9 +100,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: '-webkit-box',
     overflow: 'hidden',
     WebkitBoxOrient: 'vertical'
-  },
-  darkImage: {
-    filter: 'brightness(0.7)'
   }
 }));
 

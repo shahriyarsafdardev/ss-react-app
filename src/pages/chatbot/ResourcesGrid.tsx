@@ -1,11 +1,10 @@
-import { Typography, Stack, styled, Card, Link } from '@material-ui/core';
+import { Typography, Stack, styled, Link } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
 import { useStyles } from './Common';
 
 const StyledImage = styled('img')(({ theme }) => ({
-  borderRadius: '7px 7px 0px 0px',
+  borderRadius: '7px 0 0 7px',
   width: '25%',
-  dsiplay: 'block !important',
   [theme.breakpoints.down('md')]: {
     display: 'none !important'
   }
@@ -26,13 +25,9 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
   return (
     <>
       {resources.map((resource: any) => (
-        <Card className={classes.resourceCard} key={resource?.id}>
-          <Stack direction={{ xs: 'column', md: 'row' }}>
-            <StyledImage
-              src={resource?.thumbnail_image}
-              alt="Resource Preview"
-              className={`${resource?.resource_type === 'Session Recording' && classes.darkImage}`}
-            />
+        <Stack className={classes.resourceCard} key={resource?.id}>
+          <Stack key={resource?.id} direction={{ xs: 'column', md: 'row' }}>
+            <StyledImage src={resource?.thumbnail_image} alt="Resource Preview" />
             <Stack className={classes.resourceDescriptionStack} spacing={2}>
               <Typography className={classes.resourceName}>
                 {resource?.resource_type === 'Other' ? (
@@ -59,7 +54,7 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
               </Typography>
             </Stack>
           </Stack>
-        </Card>
+        </Stack>
       ))}
     </>
   );
