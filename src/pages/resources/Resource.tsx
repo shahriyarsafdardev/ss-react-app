@@ -1,22 +1,19 @@
-import { Avatar, Box, Button, Container, Stack, Typography } from '@material-ui/core';
+import { Avatar, Box, Container, Stack, Typography } from '@material-ui/core';
 
 import Page from 'components/Page';
 import { useSnackbar } from 'notistack5';
 import { useEffect, useState } from 'react';
 import axiosV3 from 'utils/axiosV3';
-import { Icon } from '@iconify/react';
-import baselineContentCopy from '@iconify/icons-ic/baseline-content-copy';
-import baselineRemoveRedEye from '@iconify/icons-ic/baseline-remove-red-eye';
 import axios from 'utils/axios';
 import useAuth from 'hooks/useAuth';
 import useSettings from 'hooks/useSettings';
 import { useNavigate } from 'react-router';
-import { LoadingButton } from '@material-ui/lab';
 import { trackEvent } from 'utils/eventTracking';
 import LoadingScreen from 'components/LoadingScreen';
-import { LoadingContainer, useStyles } from './Common';
+import JupyterViewer from 'react-jupyter-notebook';
+import { LoadingContainer, useStyles, ViewOnlyBanner } from './Common';
 
-export const JUPYTER_SERVER_URL = 'https://jupyter.getsphere.com';
+export const JUPYTER_SERVER_URL = process.env.REACT_APP_JUPYTER_SERVER_URL;
 
 function Resource() {
   const { user } = useAuth();
@@ -26,32 +23,70 @@ function Resource() {
   const [resource, setResource] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
   const [isCopying, setIsCopying] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [notebook, setNotebook] = useState<any>();
   const classes = useStyles();
 
   useEffect(() => {
     window.addEventListener('message', (e) => {
       if (e?.data && typeof e?.data === 'string') trackEvent(null, `Jupyter Notebook - ${e?.data}`);
     });
+    if (resource_id) {
+      axios
+        .get(`/resources/${resource_id}.json`)
+        .then((res) => {
+          setResource(res?.data?.resource);
+          if (
+            res?.data?.resource?.resource_type === 'Jupyter Notebook' &&
+            res?.data?.resource?.url
+          ) {
+            const isUrlValid = evaluateResourceURL(res?.data?.resource?.url);
+            if (isUrlValid) getNotebookContent(res?.data?.resource?.url);
+          }
+        })
+        .catch((err) => {
+          enqueueSnackbar('Something went wrong!', { variant: 'error' });
+        });
+    }
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`/resources/${resource_id}.json`)
-      .then((res) => {
-        setResource(res?.data?.resource);
-        if (res?.data?.resource?.resource_type !== 'notebook' || !res?.data?.resource?.url) {
-          setLoading(true);
-        }
-      })
-      .catch((err) => {
-        enqueueSnackbar('Something went wrong!', { variant: 'error' });
-      });
-  }, []);
-
-  const handleSeeMoreResources = () => {
-    navigate(`/resources`);
+  const evaluateResourceURL = (url: string) => {
+    const re = new RegExp(`^${process.env.REACT_APP_JUPYTER_SERVER_URL}/notebooks/.*.ipynb$`);
+    return re.test(url);
   };
+
+  const getNotebookContent = (url: string) => {
+    const fileName = url?.split('notebooks')?.[1];
+    axiosV3
+      .get(`${JUPYTER_SERVER_URL}/api/contents${fileName}`)
+      .then((response) => {
+        const cells = response?.data?.content?.cells;
+        if (!cells || cells?.length === 0) {
+          enqueueSnackbar('Something went wrong!', { variant: 'error' });
+          return;
+        }
+        cells?.forEach((cell: any) => {
+          if (typeof cell?.source === 'string') {
+            cell.source = [cell.source];
+          }
+          const outputs = cell?.outputs?.map((output: any) => ({
+            ...output,
+            text: [output?.text],
+            data: { ...output?.data, 'text/html': [output?.data?.['text/html']] }
+          }));
+          cell.outputs = outputs;
+        });
+        setNotebook({ ...response?.data?.content, cells });
+        setLoading(false);
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.message || 'Something went wrong!', { variant: 'error' });
+      });
+  };
+
+  // const handleSeeMoreResources = () => {
+  //   navigate(`/resources`);
+  // };
 
   const saveNotebookInDB = (fileName: string) => {
     const { origin } = window.location;
@@ -59,7 +94,7 @@ function Resource() {
       .post('/resources/create_duplicate.json', {
         resource_id: resource?.id,
         user_id: user?.id,
-        url: `${JUPYTER_SERVER_URL}/notebooks/${fileName}`
+        url: `${JUPYTER_SERVER_URL}/notebooks${fileName}`
       })
       .then((response) => {
         const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
@@ -119,7 +154,6 @@ function Resource() {
           setResource(response?.data?.resource);
           const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
           window.history.pushState(null, '', pageURL.toString());
-          setIsCopying(false);
           copy = false;
         }
       })
@@ -128,24 +162,32 @@ function Resource() {
       });
     if (copy) {
       saveNotebookInJupyterServer();
+      setIsCopying(false);
     }
   };
 
   if (loading || !resource_id) {
-    <LoadingContainer>
-      <LoadingScreen />
-    </LoadingContainer>;
+    return (
+      <LoadingContainer>
+        <LoadingScreen />
+      </LoadingContainer>
+    );
   }
 
   return (
     <>
       <Page title="Sphere | Resource">
+        {user?.id !== resource?.user_id && (
+          <ViewOnlyBanner isCopying={isCopying} handleCopyNotebook={handleCopyNotebook} />
+        )}
         <Container
           key={resource_id}
           maxWidth={themeStretch ? false : 'xl'}
-          className={classes.rootContainer}
+          className={`${
+            user?.id !== resource?.user_id ? classes.viewOnlyContainer : classes.notebookContainer
+          }`}
         >
-          <Stack direction="column" width="100%" spacing={2}>
+          <Stack direction="column" width="100%" spacing={2} sx={{ position: 'relative' }}>
             {/* <Button sx={{ width: 'fit-content' }} variant="text" onClick={handleSeeMoreResources}>
               {'< See More Resources'}
             </Button> */}
@@ -169,48 +211,29 @@ function Resource() {
                 </Typography>
               </Stack>
             </Stack>
-            {user?.id !== resource?.user_id && (
-              <Stack
-                direction={{ xs: 'column', md: 'row' }}
-                sx={{ alignItems: 'center', justifyContent: 'space-between', padding: '20px 0px' }}
-                spacing={2}
-              >
-                <Stack direction="row" sx={{ alignItems: 'center' }}>
-                  <Icon
-                    icon={baselineRemoveRedEye}
-                    width={20}
-                    height={20}
-                    style={{ marginRight: '8px' }}
-                  />
-                  <Typography>You are viewing this notebook</Typography>
-                </Stack>
-                <LoadingButton
-                  variant="contained"
-                  sx={{ borderRadius: '30px', textTransform: 'none' }}
-                  onClick={handleCopyNotebook}
-                  loading={isCopying}
-                >
-                  <Icon
-                    icon={baselineContentCopy}
-                    width={20}
-                    height={20}
-                    style={{ marginRight: '8px' }}
-                  />
-                  Copy notebook to your library to edit
-                </LoadingButton>
-              </Stack>
-            )}
             <Box sx={{ position: 'relative' }}>
-              {resource?.url && (
-                <iframe
-                  id="notebook_iframe"
-                  title="jupyter notebook"
-                  src={resource?.url}
-                  width="100%"
-                  height="600px"
-                />
-              )}
-              {user?.id !== resource?.user_id && <Box className={classes.viewOnlyBox} />}
+              {user?.id !== resource?.user_id
+                ? notebook && (
+                    <Box
+                      style={{
+                        maxHeight: '600px',
+                        padding: '20px',
+                        border: '1px solid #000',
+                        overflow: 'auto'
+                      }}
+                    >
+                      <JupyterViewer rawIpynb={notebook} />
+                    </Box>
+                  )
+                : resource?.url && (
+                    <iframe
+                      id="notebook_iframe"
+                      title="jupyter notebook"
+                      src={resource?.url}
+                      width="100%"
+                      height="600px"
+                    />
+                  )}
             </Box>
           </Stack>
         </Container>
