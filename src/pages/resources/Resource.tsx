@@ -7,7 +7,6 @@ import axiosV3 from 'utils/axiosV3';
 import axios from 'utils/axios';
 import useAuth from 'hooks/useAuth';
 import useSettings from 'hooks/useSettings';
-import { useNavigate } from 'react-router';
 import { trackEvent } from 'utils/eventTracking';
 import LoadingScreen from 'components/LoadingScreen';
 import JupyterViewer from 'react-jupyter-notebook';
@@ -20,7 +19,6 @@ function Resource() {
   const { user } = useAuth();
   const resource_id = window.location.pathname.split('/')[2] || '';
   const { themeStretch } = useSettings();
-  const navigate = useNavigate();
   const [resource, setResource] = useState<any>();
   const { enqueueSnackbar } = useSnackbar();
   const [isCopying, setIsCopying] = useState(false);
@@ -28,15 +26,26 @@ function Resource() {
   const [notebook, setNotebook] = useState<any>();
   const classes = useStyles();
 
+  const customProperties = (resource: any) => ({
+    'Notebook ID': resource?.id,
+    'Notebook Name': resource?.name,
+    'Course ID': resource?.course_id
+  });
   useEffect(() => {
     window.addEventListener('message', (e) => {
-      if (e?.data && typeof e?.data === 'string') trackEvent(null, `Jupyter Notebook - ${e?.data}`);
+      if (e?.data && typeof e?.data === 'string')
+        trackEvent(null, `Juypter Notebook Page - ${e?.data}`, customProperties(resource));
     });
     if (resource_id) {
       axios
         .get(`/resources/${resource_id}.json`)
         .then((res) => {
           setResource(res?.data?.resource);
+          trackEvent(
+            null,
+            'Juypter Notebook Page - Page Opened',
+            customProperties(res?.data?.resource)
+          );
           if (
             res?.data?.resource?.resource_type === 'Jupyter Notebook' &&
             res?.data?.resource?.url
@@ -144,6 +153,11 @@ function Resource() {
     setIsCopying(true);
     let copy: boolean = true;
     const { origin } = window.location;
+    trackEvent(
+      null,
+      'Juypter Notebook Page - "Copy Notebook" Button Clicked',
+      customProperties(resource)
+    );
     axios
       .get('/resources/get_duplicate_resource.json', {
         params: {
