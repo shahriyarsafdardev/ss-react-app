@@ -231,7 +231,6 @@ function Resource() {
                 ? notebook && (
                     <Box
                       style={{
-                        maxHeight: '600px',
                         border: '1px solid #000',
                         overflow: 'auto'
                       }}
@@ -245,7 +244,6 @@ function Resource() {
                       title="jupyter notebook"
                       src={resource?.url}
                       width="100%"
-                      height="600px"
                     />
                   )}
             </Box>

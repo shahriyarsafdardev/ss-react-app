@@ -91,7 +91,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   resourceDescriptionStack: {
     height: '100%',
-    padding: '30px'
+    padding: '15px 30px'
   },
   resourceName: {
     fontSize: '14px',

@@ -5,6 +5,7 @@ import { useStyles } from './Common';
 const StyledImage = styled('img')(({ theme }) => ({
   borderRadius: '7px 0 0 7px',
   width: '25%',
+  minWidth: '150px',
   [theme.breakpoints.down('md')]: {
     display: 'none !important'
   }
