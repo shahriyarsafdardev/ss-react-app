@@ -6,20 +6,9 @@ import axiosV2 from 'utils/axiosV2';
 import { trackEvent } from 'utils/eventTracking';
 import useAuth from 'hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { DotsLoader, useStyles } from './Common';
+import { DotsLoader, useStyles, Message } from './Common';
 import ResourcesGrid from './ResourcesGrid';
 import { RootState, useSelector } from '../../redux/store';
-
-type Resource = {
-  name: string;
-  url: string;
-};
-
-type Message = {
-  role: string;
-  content: string;
-  resources?: Resource[];
-};
 
 function ChatBot() {
   const { cohorts } = useSelector((state: RootState) => state.cohort);
@@ -144,7 +133,7 @@ function ChatBot() {
         </Stack>
         <Box className={classes.questionCardBox}>
           {loading && <DotsLoader />}
-          <Card className={classes.questionCard} sx={{ boxShadow: '0px 0px 50px 50px #2A1D4D' }}>
+          <Card className={classes.questionCard}>
             <Stack direction="row" spacing={1} alignItems="flex-start">
               <img width="24" src="/static/icons/ic-search.svg" alt="search" />
               <textarea

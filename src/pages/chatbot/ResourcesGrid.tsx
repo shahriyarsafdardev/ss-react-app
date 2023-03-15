@@ -1,20 +1,11 @@
-import { Typography, Stack, styled, Link } from '@material-ui/core';
+import { Typography, Stack } from '@material-ui/core';
 import { trackEvent } from 'utils/eventTracking';
-import { useStyles } from './Common';
+import { useStyles, StyledImage, StyledLink, Resource } from './Common';
 
-const StyledImage = styled('img')(({ theme }) => ({
-  borderRadius: '7px 0 0 7px',
-  width: '25%',
-  minWidth: '150px',
-  [theme.breakpoints.down('md')]: {
-    display: 'none !important'
-  }
-}));
-
-function ResourcesGrid({ resources, messagesList }: { resources: any[]; messagesList: any }) {
+function ResourcesGrid({ resources, messagesList }: { resources: Resource[]; messagesList: any }) {
   const classes = useStyles();
 
-  const handleResourceOnclick = (resource: any) => {
+  const handleResourceOnclick = (resource: Resource) => {
     trackEvent(null, 'AI Search Assistant Page - Resource Opened', {
       'Resource ID': resource?.id,
       'Resource Name': resource?.name,
@@ -25,7 +16,7 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
 
   return (
     <>
-      {resources.map((resource: any) => (
+      {resources.map((resource: Resource) => (
         <Stack className={classes.resourceCard} key={resource?.id}>
           <Stack key={resource?.id} direction={{ xs: 'column', md: 'row' }}>
             <StyledImage src={resource?.thumbnail_image} alt="Resource Preview" />
@@ -41,17 +32,9 @@ function ResourcesGrid({ resources, messagesList }: { resources: any[]; messages
               </Typography>
               <Typography className={classes.resourceName}>
                 {resource.text}&nbsp;
-                <Link
-                  className={classes.resourceName}
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'inline !important',
-                    color: '#43009A !important'
-                  }}
-                  onClick={() => handleResourceOnclick(resource)}
-                >
-                  <u>Click here to open</u>
-                </Link>
+                <StyledLink onClick={() => handleResourceOnclick(resource)}>
+                  Click here to open
+                </StyledLink>
               </Typography>
             </Stack>
           </Stack>
