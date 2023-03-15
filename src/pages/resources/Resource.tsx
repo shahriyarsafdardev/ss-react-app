@@ -31,6 +31,7 @@ function Resource() {
     'Notebook Name': resource?.name,
     'Course ID': resource?.course_id
   });
+
   useEffect(() => {
     window.addEventListener('message', (e) => {
       if (e?.data && typeof e?.data === 'string')
@@ -40,18 +41,19 @@ function Resource() {
       axios
         .get(`/resources/${resource_id}.json`)
         .then((res) => {
-          setResource(res?.data?.resource);
+          const responseResource = res?.data?.resource;
+          setResource(responseResource);
           trackEvent(
             null,
             'Juypter Notebook Page - Page Opened',
-            customProperties(res?.data?.resource)
+            customProperties(responseResource)
           );
           if (
-            res?.data?.resource?.resource_type === 'Jupyter Notebook' &&
-            res?.data?.resource?.url
+            responseResource?.resource_type === 'Jupyter Notebook' &&
+            responseResource?.url &&
+            evaluateResourceURL(responseResource?.url)
           ) {
-            const isUrlValid = evaluateResourceURL(res?.data?.resource?.url);
-            if (isUrlValid) getNotebookContent(res?.data?.resource?.url);
+            getNotebookContent(responseResource?.url);
           }
         })
         .catch((err) => {
@@ -94,15 +96,10 @@ function Resource() {
       });
   };
 
-  // const handleSeeMoreResources = () => {
-  //   navigate(`/resources`);
-  // };
-
   const saveNotebookInDB = (fileName: string) => {
     const { origin } = window.location;
     axios
-      .post('/resources/create_duplicate.json', {
-        resource_id: resource?.id,
+      .post(`/resources/${resource?.id}/create_duplicate.json`, {
         user_id: user?.id,
         url: `${JUPYTER_SERVER_URL}/notebooks${fileName}`
       })
@@ -151,7 +148,6 @@ function Resource() {
 
   const handleCopyNotebook = () => {
     setIsCopying(true);
-    let copy: boolean = true;
     const { origin } = window.location;
     trackEvent(
       null,
@@ -169,16 +165,14 @@ function Resource() {
           setResource(response?.data?.resource);
           const pageURL = new URL(`${origin}/resources/${response?.data?.resource?.id}`);
           window.history.pushState(null, '', pageURL.toString());
-          copy = false;
           setIsCopying(false);
+        } else {
+          saveNotebookInJupyterServer();
         }
       })
       .catch((error) => {
         enqueueSnackbar(error.message || 'Something went wrong!', { variant: 'error' });
       });
-    if (copy) {
-      saveNotebookInJupyterServer();
-    }
   };
 
   if (loading || !resource_id) {
@@ -203,9 +197,6 @@ function Resource() {
           }`}
         >
           <Stack direction="column" width="100%" spacing={2} sx={{ position: 'relative' }}>
-            {/* <Button sx={{ width: 'fit-content' }} variant="text" onClick={handleSeeMoreResources}>
-              {'< See More Resources'}
-            </Button> */}
             <Typography variant="h3">{resource?.name}</Typography>
             <Typography>{resource?.description}</Typography>
             <Stack direction="row" spacing={2}>
