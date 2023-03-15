@@ -51,7 +51,10 @@ export const learnerCohortsConfigV2 = (rawCohorts: any, paths: any, isAdmin: boo
       };
       const { user } = useAuth();
 
-      if (CODE_TAB_COHORTS.includes(cohort?.code)) {
+      if (
+        CODE_TAB_COHORTS.includes(cohort?.code) &&
+        cohort.name !== 'Transformers for Enterprise Use Cases'
+      ) {
         object.children = [
           ...object.children,
           { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id) }
@@ -189,7 +192,10 @@ export const instructorCohortsConfig = (rawCohorts: any, header: string) => ({
         }
       ]
     };
-    if (CODE_TAB_COHORTS.includes(cohort?.code)) {
+    if (
+      CODE_TAB_COHORTS.includes(cohort?.code) &&
+      cohort.name !== 'Transformers for Enterprise Use Cases'
+    ) {
       object.children = [
         ...object.children,
         { title: 'code', path: PATH_DASHBOARD.cohorts.code(cohort.id), disabled: false }
