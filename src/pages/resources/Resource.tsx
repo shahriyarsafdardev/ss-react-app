@@ -57,7 +57,7 @@ function Resource() {
           }
         })
         .catch((err) => {
-          enqueueSnackbar('Something went wrong!', { variant: 'error' });
+          enqueueSnackbar(err?.message || 'Something went wrong!', { variant: 'error' });
         });
     }
   }, []);
