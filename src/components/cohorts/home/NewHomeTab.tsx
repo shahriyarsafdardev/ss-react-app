@@ -1,5 +1,6 @@
 import { Box, Button, Container, Divider, Stack } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
+import moment from 'moment';
 import { useContext, useEffect, useState, memo, useCallback, useMemo } from 'react';
 import axios from 'utils/axios';
 import { AnalyticsContext } from 'contexts/AnalyticsContext';
@@ -214,7 +215,7 @@ function NewHomeTab({
             variant="contained"
             onClick={handleJoinSession}
           >
-            Join Session
+            Join Zoom
           </Button>
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
             {!activeSession?.networking_session && <SupplementaryButton />}
@@ -290,14 +291,22 @@ function NewHomeTab({
     if (typeof activeSession === 'undefined') {
       return <GoodbyeSection cohort={cohort} />;
     }
-    if (list.length && currentStep < list.length) {
+    if (
+      list.length &&
+      currentStep < list.length &&
+      moment(activeSession.times[0]) > moment().add(30, 'minute')
+    ) {
       return <PreReadingData sessionMaterial={list[currentStep]} />;
     }
     return <SessionDetailStep />;
   };
 
   const selectHeading = useCallback(() => {
-    if (list.length && currentStep < list.length) {
+    if (
+      list.length &&
+      currentStep < list.length &&
+      moment(activeSession?.times[0]) > moment().add(30, 'minute')
+    ) {
       return `👋 Welcome ${user?.first_name}, make sure you get ready for our ${sessionName(
         activeSession,
         `Session ${activeSession?.number}`

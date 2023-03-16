@@ -174,6 +174,7 @@ const TimerPreview = memo(
               onClick={() => clickEvent(sessionNumber)}
               className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
               target="_blank"
+              sx={{ borderRadius: '30px' }}
               href={`${zoomUrl}`}
               data-testid="session-invite"
             >
@@ -212,10 +213,12 @@ const SessionInProgress = memo(
           </Box>
           {zoomUrl && (
             <Button
+              variant="contained"
               className={displayType === 'small' ? classes.smallBtn : classes.primaryBtn}
               onClick={() => clickEvent(sessionNumber)}
               target="_blank"
               href={`${zoomUrl}`}
+              sx={{ borderRadius: '30px' }}
               data-testid="session-invite"
             >
               Join Zoom
