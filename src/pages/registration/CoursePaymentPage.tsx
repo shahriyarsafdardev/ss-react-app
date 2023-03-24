@@ -23,6 +23,7 @@ function CoursePaymentPage() {
   const url = new URLSearchParams(useLocation().search);
   const cohortID = url.get('cohort_id') || '';
   const enrollmentID = url.get('enrollment_id') || '';
+  const paymentLinkOpened = url.get('link_opened') || '';
   const [cohort, setCohort] = useState<any>();
   const [registrantEmail, setRegistrantEmail] = useState('');
 
@@ -39,6 +40,14 @@ function CoursePaymentPage() {
         })
         .catch((err) => {
           enqueueSnackbar('Some error occurred!', { variant: 'error' });
+        });
+    }
+    if (paymentLinkOpened && paymentLinkOpened !== 'false') {
+      axiosV2
+        .post(`enrollments/${enrollmentID}/payment_opened.json`)
+        .then((res) => {})
+        .catch((err) => {
+          enqueueSnackbar(err.message || 'Some error occurred!', { variant: 'error' });
         });
     }
   }, []);
