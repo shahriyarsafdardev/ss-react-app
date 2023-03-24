@@ -129,7 +129,7 @@ function PersonalDetailsPage() {
           });
           !cohort?.wait_listed &&
             navigate(
-              `/registration/payment-options?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}&link_opened=false`
+              `/registration/course-payment?cohort_id=${cohortID}&enrollment_id=${res?.data?.enrollment_id}&link_opened=false`
             );
           setSubmitting(false);
           resetForm();
